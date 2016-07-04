@@ -595,11 +595,15 @@ Route::get('reservacion/{id}','ReservaController@reserva');
 //FUNCIONE COMO DEBE SER
 //ROL ALUMNOS 
 // Route::group(['middleware' => ['role:alumnos|recepcionista|admin']], function() {
+Route::group(['middleware' => ['auth']], function () {
+    
+    Route::get('/inicio', 'AcademiaConfiguracionController@index');
 
-Route::get('/inicio', 'AcademiaConfiguracionController@index');
+    Route::get('/', function () {
+        return view('menu.index');
+    });
 
-Route::get('/', function () {
-    return view('menu.index');
+//
 });
 
 // USUARIO
