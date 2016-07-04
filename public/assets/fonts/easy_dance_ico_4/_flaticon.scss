@@ -1,0 +1,97 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 13/06/2016 15:56
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-adelante:before { content: "\f100"; }
+.flaticon-bien-hecho:before { content: "\f101"; }
+.flaticon-cantidad:before { content: "\f102"; }
+.flaticon-category:before { content: "\f103"; }
+.flaticon-concurso:before { content: "\f104"; }
+.flaticon-coreografia:before { content: "\f105"; }
+.flaticon-familia:before { content: "\f106"; }
+.flaticon-ficha-medica:before { content: "\f107"; }
+.flaticon-impuesto:before { content: "\f108"; }
+.flaticon-inscripcion:before { content: "\f109"; }
+.flaticon-invitar:before { content: "\f10a"; }
+.flaticon-lupa:before { content: "\f10b"; }
+.flaticon-multihorarios:before { content: "\f10c"; }
+.flaticon-nina:before { content: "\f10d"; }
+.flaticon-nino:before { content: "\f10e"; }
+.flaticon-normativas:before { content: "\f10f"; }
+.flaticon-objetivo:before { content: "\f110"; }
+.flaticon-opciones-avanzadas:before { content: "\f111"; }
+.flaticon-personaliza:before { content: "\f112"; }
+.flaticon-personalizada:before { content: "\f113"; }
+.flaticon-premio:before { content: "\f114"; }
+.flaticon-reporte:before { content: "\f115"; }
+.flaticon-salva-vidas:before { content: "\f116"; }
+.flaticon-servicios:before { content: "\f117"; }
+.flaticon-servicios-1:before { content: "\f118"; }
+.flaticon-sorprendido:before { content: "\f119"; }
+.flaticon-stop:before { content: "\f11a"; }
+.flaticon-transferir:before { content: "\f11b"; }
+.flaticon-validar:before { content: "\f11c"; }
+    
+    $font-Flaticon-adelante: "\f100";
+    $font-Flaticon-bien-hecho: "\f101";
+    $font-Flaticon-cantidad: "\f102";
+    $font-Flaticon-category: "\f103";
+    $font-Flaticon-concurso: "\f104";
+    $font-Flaticon-coreografia: "\f105";
+    $font-Flaticon-familia: "\f106";
+    $font-Flaticon-ficha-medica: "\f107";
+    $font-Flaticon-impuesto: "\f108";
+    $font-Flaticon-inscripcion: "\f109";
+    $font-Flaticon-invitar: "\f10a";
+    $font-Flaticon-lupa: "\f10b";
+    $font-Flaticon-multihorarios: "\f10c";
+    $font-Flaticon-nina: "\f10d";
+    $font-Flaticon-nino: "\f10e";
+    $font-Flaticon-normativas: "\f10f";
+    $font-Flaticon-objetivo: "\f110";
+    $font-Flaticon-opciones-avanzadas: "\f111";
+    $font-Flaticon-personaliza: "\f112";
+    $font-Flaticon-personalizada: "\f113";
+    $font-Flaticon-premio: "\f114";
+    $font-Flaticon-reporte: "\f115";
+    $font-Flaticon-salva-vidas: "\f116";
+    $font-Flaticon-servicios: "\f117";
+    $font-Flaticon-servicios-1: "\f118";
+    $font-Flaticon-sorprendido: "\f119";
+    $font-Flaticon-stop: "\f11a";
+    $font-Flaticon-transferir: "\f11b";
+    $font-Flaticon-validar: "\f11c";

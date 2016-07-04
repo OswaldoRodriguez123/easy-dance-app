@@ -1,0 +1,153 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("../fonts/flaticon/flaticon.eot");
+	src: url("../fonts/flaticon/flaticon.eot#iefix") format("embedded-opentype"),
+	url("../fonts/flaticon/flaticon.woff") format("woff"),
+	url("../fonts/flaticon/flaticon.ttf") format("truetype"),
+	url("../fonts/flaticon/flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        /*font-size: 20px;*/
+font-style: normal;
+}.flaticon-asistencia:before {
+	content: "\e000";
+}
+.flaticon-estadistica:before {
+	content: "\e001";
+}
+.flaticon-reportes:before {
+	content: "\e002";
+}
+.flaticon-talleres:before {
+	content: "\e003";
+}
+.flaticon-abonar:before {
+	content: "\e004";
+}
+.flaticon-agendacontactos:before {
+	content: "\e005";
+}
+.flaticon-acuerdodepago:before {
+	content: "\e006";
+}
+.flaticon-agregar:before {
+	content: "\e007";
+}
+.flaticon-alumnos:before {
+	content: "\e008";
+}
+.flaticon-anticipo:before {
+	content: "\e009";
+}
+.flaticon-asistencias:before {
+	content: "\e00a";
+}
+.flaticon-visitantespresenciales:before {
+	content: "\e00b";
+}
+.flaticon-comprar:before {
+	content: "\e00c";
+}
+.flaticon-curso:before {
+	content: "\e00d";
+}
+.flaticon-programasdebaile:before {
+	content: "\e00e";
+}
+.flaticon-instructor:before {
+	content: "\e00f";
+}
+.flaticon-especialidad:before {
+	content: "\e010";
+}
+.flaticon-estatusadministrativo:before {
+	content: "\e011";
+}
+.flaticon-estudio-sala:before {
+	content: "\e012";
+}
+.flaticon-etiqueta:before {
+	content: "\e013";
+}
+.flaticon-facebook:before {
+	content: "\e014";
+}
+.flaticon-academia:before {
+	content: "\e015";
+}
+.flaticon-consultas:before {
+	content: "\e016";
+}
+.flaticon-fcaturaporpagar:before {
+	content: "\e017";
+}
+.flaticon-pdf:before {
+	content: "\e018";
+}
+.flaticon-estadisticas:before {
+	content: "\e019";
+}
+.flaticon-google-plus:before {
+	content: "\e01a";
+}
+.flaticon-historialdepago:before {
+	content: "\e01b";
+}
+.flaticon-horarios:before {
+	content: "\e01c";
+}
+.flaticon-inscribirse:before {
+	content: "\e01d";
+}
+.flaticon-instagram:before {
+	content: "\e01e";
+}
+.flaticon-siguiente:before {
+	content: "\e01f";
+}
+.flaticon-correo:before {
+	content: "\e020";
+}
+.flaticon-imprimir:before {
+	content: "\e021";
+}
+.flaticon-paquete:before {
+	content: "\e022";
+}
+.flaticon-personalizada:before {
+	content: "\e023";
+}
+.flaticon-puntodeventa:before {
+	content: "\e024";
+}
+.flaticon-retrasodepago:before {
+	content: "\e025";
+}
+.flaticon-registarse:before {
+	content: "\e026";
+}
+.flaticon-mostrar:before {
+	content: "\e027";
+}
+.flaticon-devolucion:before {
+	content: "\e028";
+}
+.flaticon-configuracion:before {
+	content: "\e029";
+}
+.flaticon-twitter:before {
+	content: "\e02a";
+}
+.flaticon-usuario:before {
+	content: "\e02b";
+}
+.flaticon-niveles:before {
+	content: "\e02c";
+}
+.flaticon-youtube30:before {
+	content: "\e02d";
+}

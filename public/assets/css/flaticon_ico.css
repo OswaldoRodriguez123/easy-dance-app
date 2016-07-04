@@ -1,0 +1,19 @@
+@font-face {
+	font-family: "flaticon_ico";
+	src: url("../fonts/flaticon_ico/flaticon_ico.eot");
+	src: url("../fonts/flaticon_ico/flaticon_ico.eot#iefix") format("embedded-opentype"),
+	url("../fonts/flaticon_ico/flaticon_ico.woff") format("woff"),
+	url("../fonts/flaticon_ico/flaticon_ico.ttf") format("truetype"),
+	url("../fonts/flaticon_ico/flaticon_ico.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon_ico-"]:before, [class*=" flaticon_ico-"]:before,
+[class^="flaticon_ico-"]:after, [class*=" flaticon_ico-"]:after {   
+	font-family: flaticon_ico;
+        /*font-size: 20px;*/
+font-style: normal;
+/*margin-left: 20px;*/
+}.flaticon_ico-compate:before {
+	content: "\e000";
+}

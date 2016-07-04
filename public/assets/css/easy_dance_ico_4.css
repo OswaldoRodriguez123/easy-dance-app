@@ -1,0 +1,59 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 13/06/2016 15:56
+  	*/
+
+@font-face {
+  font-family: "Easy-Icon_4";
+  src: url("../../assets/fonts/easy_dance_ico_4/easy_ico_4.eot");
+  src: url("../../assets/fonts/easy_dance_ico_4/easy_ico_4.eot?#iefix") format("embedded-opentype"),
+       url("../../assets/fonts/easy_dance_ico_4/easy_ico_4.woff") format("woff"),
+       url("../../assets/fonts/easy_dance_ico_4/easy_ico_4.ttf") format("truetype"),
+       url("../../assets/fonts/easy_dance_ico_4/easy_ico_4.svg#easy_ico_4") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Easy-Icon_4";
+    src: url("../../assets/fonts/easy_dance_ico_4/easy_ico_4.svg#easy_ico_4") format("svg");
+  }
+}
+
+[class^="icon_d-"]:before, [class*=" icon_d-"]:before,
+[class^="icon_d-"]:after, [class*=" icon_d-"]:after {   
+  font-family: "Easy-Icon_4";
+        /*font-size: 20px;*/
+font-style: normal;
+/*margin-left: 20px;*/
+}
+
+.icon_d-adelante:before { content: "\f100"; }
+.icon_d-bien-hecho:before { content: "\f101"; }
+.icon_d-cantidad:before { content: "\f102"; }
+.icon_d-category:before { content: "\f103"; }
+.icon_d-concurso:before { content: "\f104"; }
+.icon_d-coreografia:before { content: "\f105"; }
+.icon_d-familia:before { content: "\f106"; }
+.icon_d-ficha-medica:before { content: "\f107"; }
+.icon_d-impuesto:before { content: "\f108"; }
+.icon_d-inscripcion:before { content: "\f109"; }
+.icon_d-invitar:before { content: "\f10a"; }
+.icon_d-lupa:before { content: "\f10b"; }
+.icon_d-multihorarios:before { content: "\f10c"; }
+.icon_d-nino:before { content: "\f10e"; }
+.icon_d-normativas:before { content: "\f10f"; }
+.icon_d-objetivo:before { content: "\f110"; }
+.icon_d-opciones-avanzadas:before { content: "\f111"; }
+.icon_d-personaliza:before { content: "\f112"; }
+.icon_d-personalizada:before { content: "\f113"; }
+.icon_d-premio:before { content: "\f114"; }
+.icon_d-reporte:before { content: "\f115"; }
+.icon_d-salva-vidas:before { content: "\f116"; }
+.icon_d-servicios:before { content: "\f117"; }
+.icon_d-servicios-1:before { content: "\f118"; }
+.icon_d-sorprendido:before { content: "\f119"; }
+.icon_d-stop:before { content: "\f11a"; }
+.icon_d-transferir:before { content: "\f11b"; }
+.icon_d-validar:before { content: "\f11c"; }

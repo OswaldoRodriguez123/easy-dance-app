@@ -1,0 +1,161 @@
+
+.estatusc-amarillo:hover{
+    border: 1px solid #FFC107 !important;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    text-shadow: #CCC;
+}
+
+.estatusc-rojo:hover{
+    border: 1px solid #C32C2C !important;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+.estatusc-verde:hover{
+    border: 1px solid #4CAF50 !important;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.estatusc-gris:hover{
+	border: 1px solid #CCC !important;
+}
+
+/*ESTILO PARA EL LOGIN*/
+body.login-content:before {  
+  background: #4E1E43 !important;
+ 
+}
+
+
+.login-content:before {
+    height: 30%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #00bcd4;
+    content: "";
+    z-index: 0;
+  padding-top:200px;
+}
+.lc-block:not(.lcb-alt) {
+    padding: 35px 55px 10px 55px;
+}
+
+.lc-block {    
+    /*margin-top: 0px;    */
+    background: #fff;
+    box-shadow: 0 1px 11px rgba(0,0,0,0.27);
+    border-radius: 2px;
+    width: 500px;
+    display: inline-block;
+    margin-top: 42px;
+    vertical-align: middle;
+    position: relative;    
+}
+
+
+.login-content:before {
+    background: #4E1E43 !important;
+}
+
+/*ESTILOS AGREGADOS EL LUNES 16 DE MAYO*/
+
+.guia a{
+    color: #646464 !important;
+}
+.guia a:hover{
+    color: #4E1E43 !important;
+}
+
+.guia .padding{
+    padding-left: 20px;
+}
+
+.guia .padding-talleres{
+    padding-left: 100px;
+}
+
+.guia .padding-promocion{
+    padding-left: 30px;
+}
+
+.guia .padding-punto{
+    padding-left: 10px;
+}
+
+.guia .padding-go-menu{
+    padding-left: 190px;
+}
+.btn-blanco{
+    color:#4E1E43;
+    padding: 10px;
+    border: dotted 1px #4E1E43;
+}
+.btn-blanco:hover{
+    background-color: #4E1E43;
+    color:#fff !important;
+    border: solid 2px #fff;
+}
+
+.btn-morado{
+    color:#4E1E43;
+    padding: 10px;
+    border: dotted 1px #4E1E43;    
+}
+
+.btn-morado:hover{
+    background-color: #4E1E43;
+    color:#fff !important;
+    border: solid 2px #fff;
+    opacity: 0.8;
+}
+
+/*NEW*/
+.form-control.caja {
+   display: block;
+   width: 100%;
+   height: 34px;
+   padding: 6px 12px;
+   font-size: 14px;
+   line-height: 1.42857143;
+   color: #555;
+   background-color: #fff;
+   background-image: none;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+   -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+   -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.form-control.caja:hover {
+   
+   box-shadow: 0 2px 25px rgba(78, 30, 67, 0.5) !important;
+   
+}
+input.caja, textarea.caja {
+   font-family: inherit;
+   font-size: inherit;
+   line-height: inherit;
+}
+input.caja {
+   line-height: normal;
+}
+input.caja, textarea.caja {
+   margin: 0;
+   font: inherit;
+   color: inherit;
+}
+
+
+
+.seleccion:hover{
+  background: rgba(151,82,135,0.1) !important;  
+  cursor:pointer;
+  color: #4E1E43;
+  font-weight: bold; 
+}

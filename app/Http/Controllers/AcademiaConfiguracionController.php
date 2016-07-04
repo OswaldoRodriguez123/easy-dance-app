@@ -1,0 +1,975 @@
+<?php namespace App\Http\Controllers;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use App\Academia;
+use App\Alumno;
+use App\Impuesto;
+use App\Instructor;
+use App\ConfigProductos;
+use App\ClaseGrupal;
+use App\ConfigServicios;
+use App\ConfigClasesGrupales;
+use App\ConfigEspecialidades;
+use App\ConfigEstudios;
+use App\ConfigNiveles;
+use App\InscripcionClaseGrupal;
+use App\ItemsFacturaProforma;
+use App\Paises;
+use Validator;
+use Carbon\Carbon;
+use Storage;
+use Session;
+use Illuminate\Support\Facades\Auth;
+use DB;
+
+class AcademiaConfiguracionController extends Controller {
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+	public function index()
+	{
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->fecha_comprobacion != Carbon::now()){
+            return $this->pagorecurrente();
+        }
+
+		// $alumnos = DB::table('alumnos')
+  //           ->select('alumnos.correo')
+  //           ->where('')
+  //       ->get();  
+        return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]);                    
+	}
+
+    public function listo()
+    {
+
+        return view('flujo_registro.listo');                    
+    }
+
+
+
+    public function configuracion(){
+
+        if (Session::has('academia')) {
+            Session::forget('academia'); 
+        }
+
+        if (Session::has('estudio')) {
+            Session::forget('estudio'); 
+        }
+
+        if (Session::has('niveles')) {
+            Session::forget('niveles'); 
+        }
+        
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia){
+        //Simple Marker
+        $config['center'] = '10.6913156,-71.6800493';
+        $config['zoom'] = 14;
+        \Gmaps::initialize($config);
+
+        $marker = array();
+        $marker['position'] = '10.6913156,-71.6800493';
+        $marker['draggable'] = true;
+        $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
+        \Gmaps::add_marker($marker);
+
+        $map = \Gmaps::create_map();
+
+        if($academia->correo)
+        {
+            return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with('id', Auth::user()->academia_id);
+ 
+        }
+
+        else{
+
+            return view('configuracion.academia.configuracion' , compact('map'))->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all() ]);
+        }
+
+        //Devolver vista con datos del mapa
+        
+
+        }else{
+           return redirect("/"); 
+        }
+    }
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+
+    public function store(Request $request)
+    {
+        //dd($request->all());
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $arreglo = Session::get('academia');
+
+        $correo = $arreglo[0]['correo'];
+        $telefono = $arreglo[0]['telefono'];
+        $celular = $arreglo[0]['celular'];
+        $direccion = $arreglo[0]['direccion'];
+        $facebook = $arreglo[0]['facebook'];
+        $twitter = $arreglo[0]['twitter'];
+        $linkedin = $arreglo[0]['linkedin'];
+        $instagram = $arreglo[0]['instagram'];
+        $pagina_web = $arreglo[0]['pagina_web'];
+        $youtube = $arreglo[0]['youtube'];
+        $normativa = $arreglo[0]['normativa'];
+        $manual = $arreglo[0]['manual'];
+        $programacion = $arreglo[0]['programacion'];
+        $numero_factura = $arreglo[0]['numero_factura'];
+        $incluye_iva = $arreglo[0]['incluye_iva'];
+
+        $academia->correo = $correo;
+        $academia->telefono = $telefono;
+        $academia->celular = $celular;
+        $academia->direccion = $direccion;
+        $academia->facebook = $facebook;
+        $academia->twitter = $twitter;
+        $academia->linkedin = $linkedin;
+        $academia->instagram = $instagram;
+        $academia->pagina_web = $pagina_web;
+        $academia->youtube = $youtube;
+        $academia->normativa = $normativa;
+        $academia->manual = $manual;
+        $academia->programacion = $programacion;
+        $academia->numero_factura = $numero_factura;
+        $academia->incluye_iva = $incluye_iva;
+        
+        if($academia->save()){
+
+            if($request->imageBase64){
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "academia-". $academia->id . $extension;
+                $image = base64_decode($base64_string);
+
+                \Storage::disk('academia')->put($nombre_img,  $image);
+
+                $academia->imagen = $nombre_img;
+                $academia->save();
+
+            }
+
+            $array_estudio = Session::get('estudio');
+
+            for($i = 0; $i < count($array_estudio) ; $i++)
+            {
+                
+                $estudio = new ConfigEstudios;
+
+                $estudio->academia_id = Auth::user()->academia_id;
+                $estudio->nombre = $array_estudio[$i][0]['nombre'];
+                $estudio->capacidad = $array_estudio[$i][0]['cantidad'];
+
+                $estudio->save();
+
+            }
+
+            $array_nivel = Session::get('niveles');
+
+            for($i = 0; $i < count($array_nivel) ; $i++)
+            {
+                
+                $nivel = new ConfigNiveles;
+
+                $nivel->academia_id = Auth::user()->academia_id;
+                $nivel->nombre = $array_estudio[$i][0]['nombre'];
+
+                $nivel->save();
+
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function PrimerPaso(Request $request)
+    {
+        //dd($request->all());
+
+
+    $rules = [
+        'nombre' => 'required|min:3|max:60',
+        'identificacion' => 'min:6|max:20',
+        'especialidades_id' => 'required',
+        'pais_id' => 'required',
+        'estado' => 'required|min:3|max:40',
+    ];
+
+    $messages = [
+
+        'nombre.required' => 'Ups! El campo Nombre es requerido',
+        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+        'nombre.max' => 'El maximo de caracteres permitidos son 60',
+        'indentificacion.min' => 'El mínimo de caracteres permitidos son 6',
+        'indentificacion.max' => 'El maximo de caracteres permitidos son 20',
+        'especialidades_id.required' => 'Ups! La Especialidad es requerida',
+        'pais_id.required' => 'Ups! El Pais es requerido',
+        'estado.required' => 'Ups! El Estado es requerido',
+        'estado.min' => 'El mínimo de caracteres permitidos son 3',
+        'estado.max' => 'El máximo de caracteres permitidos son 40',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $pais = Paises::find($request->pais_id);
+
+        $porcentaje_impuesto = Impuesto::where('pais_id' , '=', $request->pais_id)->first();
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+
+        $academia->nombre = $nombre;
+        $academia->identificacion = $request->identificacion;
+        $academia->especialidades_id = $request->especialidades_id;
+        $academia->pais_id = $request->pais_id;
+        $academia->estado = $request->estado;
+        $academia->moneda = $pais->moneda;
+        $academia->porcentaje_impuesto = $porcentaje_impuesto->impuesto;
+
+        if($academia->save()){
+            // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("/home");
+        //return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }
+    }
+
+	public function SegundoPaso(Request $request)
+	{
+		//dd($request->all());
+
+    $rules = [
+    	'identificacion' => 'required|min:8|max:20|unique:academias,identificacion',
+        'imagen' => 'required',
+        'descripcion' => 'required|min:3|max:300',
+    ];
+
+    $messages = [
+
+        'identificacion.required' => 'Ups! El campo RIF es requerido',
+        'identificacion.min' => 'El mínimo de caracteres permitidos son 8',
+        'identificacion.max' => 'El maximo de caracteres permitidos son 20',
+        'identificacion.unique' => 'Ups! Ya el campo RIF esta registrado, intente con otra identidad fiscal.',
+        'imagen.required' => 'Ups! La imagen es requerida',
+        'descripcion.required' => 'Ups! La Descripcion es requerida',
+        'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
+        'descripcion.max' => 'El máximo de caracteres permitidos son 300',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+        $academia = Academia::find($request->academia_id);
+
+		$academia->identificacion = $request->identificacion;
+		$academia->imagen = $request->imagen;
+		$academia->descripcion = $request->descripcion;
+
+		if($academia->save()){
+            // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            return view('academia.contacto')->with('academia', $academia);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+	}
+	}
+
+	public function storeContacto(Request $request){
+
+    $request->merge(array('correo' => trim($request->correo)));
+
+    $rules = [
+        'correo' => 'required|email|max:255|unique:academias,correo',
+        // 'telefono' => 'required',
+        'celular' => 'required',
+    ];
+
+    $messages = [
+
+        'correo.required' => 'Ups! El correo es requerido',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'correo.max' => 'El máximo de caracteres permitidos son 255',
+        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        'telefono.required' => 'Ups! El Teléfono Local es requerido',
+        'celular.required' => 'Ups! El Teléfono Móvil es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+    }
+
+    else{
+
+        $array = array(['correo' => $request->correo , 'telefono' => $request->telefono , 'celular' => $request->celular, 'direccion' => $request->direccion, 'facebook' => $request->facebook, 'twitter' => $request->twitter, 'linkedin' => $request->linkedin, 'instagram' => $request->instagram, 'pagina_web' => $request->pagina_web, 'youtube' => $request->youtube]);
+
+            Session::put('academia', $array);
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+            }
+		}
+
+	public function storeEspeciales(Request $request){
+
+        // dd($request->all());
+
+        $arreglo = Session::get('academia');
+
+        $correo = $arreglo[0]['correo'];
+        $telefono = $arreglo[0]['telefono'];
+        $celular = $arreglo[0]['celular'];
+        $direccion = $arreglo[0]['direccion'];
+        $facebook = $arreglo[0]['facebook'];
+        $twitter = $arreglo[0]['twitter'];
+        $linkedin = $arreglo[0]['linkedin'];
+        $instagram = $arreglo[0]['instagram'];
+        $pagina_web = $arreglo[0]['pagina_web'];
+        $youtube = $arreglo[0]['youtube'];
+
+        $array = array(['correo' => $correo , 'telefono' => $telefono , 'celular' => $celular, 'direccion' => $direccion, 'facebook' => $facebook, 'twitter' => $twitter, 'linkedin' => $linkedin, 'instagram' => $instagram, 'pagina_web' => $pagina_web, 'youtube' => $youtube, 'normativa' => $request->normativa , 'manual' => $request->manual , 'programacion' => $request->programacion]);
+
+        Session::put('academia', $array);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+
+	}
+
+    public function storeAdministrativo(Request $request){
+
+        // dd($request->all());
+
+    $rules = [
+
+        'numero_factura' => 'numeric',
+
+    ];
+
+    $messages = [
+        
+        'porcentaje_retraso.numeric' => 'Ups! El campo de “ Porcentaje de retraso de pago ” es inválido , debe contener sólo números',
+        'numero_factura.numeric' => 'Ups! El campo de “ Próximo número de factura ” es inválido, debe contener sólo  números',
+        'tiempo_tolerancia.numeric' => 'Ups! El campo de “ Tiempo de Tolerancia ” es inválido, debe contener sólo  números',
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $arreglo = Session::get('academia');
+
+        $correo = $arreglo[0]['correo'];
+        $telefono = $arreglo[0]['telefono'];
+        $celular = $arreglo[0]['celular'];
+        $direccion = $arreglo[0]['direccion'];
+        $facebook = $arreglo[0]['facebook'];
+        $twitter = $arreglo[0]['twitter'];
+        $linkedin = $arreglo[0]['linkedin'];
+        $instagram = $arreglo[0]['instagram'];
+        $pagina_web = $arreglo[0]['pagina_web'];
+        $youtube = $arreglo[0]['youtube'];
+        $normativa = $arreglo[0]['normativa'];
+        $manual = $arreglo[0]['manual'];
+        $programacion = $arreglo[0]['programacion'];
+
+        $array = array(['correo' => $correo , 'telefono' => $telefono , 'celular' => $celular, 'direccion' => $direccion, 'facebook' => $facebook, 'twitter' => $twitter, 'linkedin' => $linkedin, 'instagram' => $instagram, 'pagina_web' => $pagina_web, 'youtube' => $youtube, 'normativa' => $normativa , 'manual' => $manual , 'programacion' => $programacion,  'numero_factura' => $request->numero_factura , 'incluye_iva' => $request->incluye_iva]);
+
+        Session::put('academia', $array);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+        // $academia = Academia::find($request->academia_id);
+
+        // $academia->porcentaje_impuesto = $request->porcentaje_impuesto;
+        // $academia->numero_factura = $request->numero_factura;
+
+        
+        // if($academia->save()){
+        //     // return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        //     return view('alumno.index')->with('academia', $academia);
+        // }else{
+        //     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        // }
+        // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
+    public function agregarestudio(Request $request){
+        
+    $rules = [
+
+        'nombre_estudio' => 'required',
+        'cantidad_estudio' => 'required|numeric|min:1',
+    ];
+
+    $messages = [
+
+        'nombre_estudio.required' => 'Ups! El Nombre es requerido',
+        'cantidad_estudio.required' => 'Ups! El Cantidad es invalida, solo se aceptan numeros',
+        'cantidad_estudio.numeric' => 'Ups! La Cantidad es requerida',
+        'cantidad_estudio.min' => 'El mínimo de cantidad permitida es 1',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_estudio))));
+        
+        $array = array(['nombre' => $nombre , 'cantidad' => $request->cantidad_estudio]);
+
+        Session::push('estudio', $array);
+
+        $contador = count(Session::get('estudio'));
+        $contador = $contador - 1;
+
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function agregarnivel(Request $request){
+        
+    $rules = [
+
+        'nombre_nivel' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_nivel.required' => 'Ups! El Nombre es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_nivel))));
+
+        $array = array(['nombre' => $nombre]);
+
+        Session::push('niveles', $array);
+
+        $contador = count(Session::get('niveles'));
+        $contador = $contador - 1;
+
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminarestudio($id){
+
+        $arreglo = Session::get('estudio');
+
+        unset($arreglo[$id]);
+        Session::put('estudio', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function eliminarniveles($id){
+
+        $arreglo = Session::get('niveles');
+
+        unset($arreglo[$id]);
+        Session::put('niveles', $arreglo);
+
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+    {   
+        $academia = Academia::find($id);
+        if($academia){
+            
+            $config['center'] = '10.6913156,-71.6800493';
+            $config['zoom'] = 14;
+            \Gmaps::initialize($config);
+
+            $marker = array();
+            $marker['position'] = '10.6913156,-71.6800493';
+            $marker['draggable'] = true;
+            $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
+            \Gmaps::add_marker($marker);
+
+            $map = \Gmaps::create_map();
+
+           return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'));
+        }else{
+           return redirect("/"); 
+        }
+    }
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+
+    public function updateContacto(Request $request){
+
+    $rules = [
+        'correo' => 'required|email|max:255|unique:academias,correo, '.$request->id.'',
+        'celular' => 'required',
+    ];
+
+    $messages = [
+        'correo.required' => 'Ups! El correo es requerido',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'correo.max' => 'El máximo de caracteres permitidos son 255',
+        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        'celular.required' => 'Ups! El Teléfono Móvil es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("alumno/edit/{$request->id}")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->correo = $request->correo;
+        $academia->telefono = $request->telefono;
+        $academia->celular = $request->celular;
+        $academia->direccion = $request->direccion;
+
+        if($academia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+    }
+
+    public function updateImagen(Request $request)
+    {
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "academia-". Auth::user()->academia_id . $extension;
+                $image = base64_decode($base64_string);
+
+                \Storage::disk('academia')->put($nombre_img,  $image);
+
+                $academia = Academia::find(Auth::user()->academia_id);
+
+                $academia->imagen = $nombre_img;
+                $academia->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function updateRedes(Request $request){
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->facebook = $request->facebook;
+        $academia->twitter = $request->twitter;
+        $academia->instagram = $request->instagram;
+        $academia->pagina_web = $request->pagina_web;
+        $academia->linkedin = $request->linkedin;
+        $academia->youtube = $request->youtube;
+        $academia->link_video = $request->link_video;
+        
+        if($academia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+        public function updateEspeciales(Request $request){
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->normativa = $request->normativa;
+        $academia->manual = $request->manual;
+        $academia->programacion = $request->programacion;
+        
+        if($academia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateAdministrativo(Request $request){
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->incluye_iva = $request->incluye_iva;
+        
+        if($academia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+
+
+    /**
+      * PAGOS RECURRENTES o MENSUALIDADES
+      * Var $tipo => Tipo de Accion,
+      *     $result => Arreglo donde se guarda
+                       la respuesta a mostrar, podria
+                       no usuarse mas adelante.
+      *     $cantidad => Valor Cantidad de la Base de Datos,
+                         en este caso sera una constante.
+      *     $ConfigClasesGrupales => consulta al modelo de Configuracion
+                                    de clases grupales para obtener los
+                                    datos de la clase
+            $InscripcionClaseGrupal => Consulta al modelo de Inscripcion de
+                                    de clase grupales para verificar si hay
+                                    alumnos inscritos, para luego cargarles
+                                    una deuda en caso de tenerla
+            $FacturaProforma => Consulta al modelo de detalles de
+                                Proforma para verificar si hay deuda para
+                                no cargarle una misma deuda mas de una vez           
+      */
+    public function pagorecurrente()
+    {
+        $result = array();
+        $tipo = 4;
+        $cantidad = 1;
+        $id = 0;
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->fecha_comprobacion = Carbon::now();
+        $academia->save();
+
+        $ConfigClasesGrupales = ConfigClasesGrupales::select('config_clases_grupales.id',
+                'config_clases_grupales.nombre','config_clases_grupales.costo_inscripcion',
+                'config_clases_grupales.costo_mensualidad', 'clases_grupales.id',
+                'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final',
+                'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.id as clase_grupal_id')
+                ->join('clases_grupales', 'clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
+                ->get();
+
+        $InscripcionClaseGrupal = InscripcionClaseGrupal::select('inscripcion_clase_grupal.clase_grupal_id AS ClaseGrupalID', 
+            'inscripcion_clase_grupal.alumno_id AS AlumnoId',
+            'inscripcion_clase_grupal.fecha_pago', 
+            'alumnos.identificacion AS Identificacion', 'alumnos.nombre AS NombreAlumno', 
+            'alumnos.apellido AS ApellidoAlumno', 'alumnos.telefono AS TelefonoAlumno', 
+            'alumnos.celular as CelularAlumno','config_clases_grupales.nombre AS ClaseNombre', 'inscripcion_clase_grupal.id as InscripcionID', 'inscripcion_clase_grupal.costo_mensualidad AS Costo')
+                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id','=',
+                       'clases_grupales.id')
+                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+                ->join('config_clases_grupales', 'config_clases_grupales.id','=',
+                       'clases_grupales.clase_grupal_id')
+                ->get();
+        
+        
+            //Desgloso la Fecha Preferencial
+                foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
+
+                    $fecha_cuota_explode=explode('-', $InscripcionClase->fecha_pago);
+
+                            foreach ($ConfigClasesGrupales as $configClases) {
+
+                                if ($configClases->fecha_inicio_preferencial <= Carbon::now()->format('Y-m-d')){
+
+                                    $fecha_inicio_preferencial = Carbon::createFromFormat('Y-m-d', $configClases->fecha_inicio_preferencial);
+
+                                    $fecha_inicio_preferencial = $fecha_inicio_preferencial->addMonth()->toDateString();
+
+                                    $clase_grupal = ClaseGrupal::find($configClases->clase_grupal_id);
+                                    $clase_grupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
+                                    $clase_grupal->save();
+
+                                    $id = $clase_grupal->id;
+
+                                }
+
+                                if ($InscripcionClase->fecha_pago <= Carbon::now()->format('Y-m-d')){
+
+                                    if($configClases->id == $InscripcionClase->ClaseGrupalID){
+
+                                        $FacturaProforma = ItemsFacturaProforma::select(
+                                        'items_factura_proforma.tipo', 
+                                        'items_factura_proforma.alumno_id')
+                                        ->where('items_factura_proforma.tipo','=',$tipo)
+                                        ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                                        ->get()->count();
+
+                                        /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
+                                            OBTENER LA FECHA LIMITE DE PAGO **/
+                                        $fecha_cuota = Carbon::create($fecha_cuota_explode[0], $fecha_cuota_explode[1], $fecha_cuota_explode[2],0);
+
+                                        /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
+                                        $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
+                                        
+                                        if($FacturaProforma == 0 ){
+
+                                            $fecha_cuota = $fecha_cuota->addMonth()->toDateString();
+                                            
+                                            $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
+
+                                            $clasegrupal->fecha_pago = $fecha_cuota;
+                                            // $clasegrupal->save();
+
+                                            $item_factura = new ItemsFacturaProforma;
+                                            
+                                            $item_factura->alumno_id = $InscripcionClase->AlumnoId;
+                                            $item_factura->academia_id = Auth::user()->academia_id;
+                                            $item_factura->fecha = Carbon::now()->toDateString();
+                                            $item_factura->item_id = $id;
+                                            $item_factura->nombre = 'Cuota ' . $configClases->nombre;
+                                            $item_factura->tipo = $tipo;
+                                            $item_factura->cantidad = $cantidad;
+                                            // $item_factura->precio_neto = $configClases->costo_mensualidad;
+                                            //$item_factura->impuesto = $impuesto;
+                                            $item_factura->importe_neto = $InscripcionClase->Costo;
+                                            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                            $item_factura->save();
+
+                                            }else{
+                                                $result[] = array(
+                                                    'mensaje' => 'Ya hay Deuda Asignada para la Clase '.$configClases->nombre,
+                                                    'alumno' => $InscripcionClase->NombreAlumno.' '.$InscripcionClase->ApellidoAlumno,
+                                                    );
+                                            }
+                                            
+
+                            //                 $result[] = array(
+                            //                     'mensaje' => 'Fecha Limite de Pago, se le cargara un porcentaje adicional a su factura',
+                            //                     'alumno' => $InscripcionClase->NombreAlumno.' '.$InscripcionClase->ApellidoAlumno,
+                            //                     'monto' => $configClases->costo_mensualidad,
+                            //                     'mora' => $mora,
+
+                            // );
+                        }
+                                     
+                   
+                }    
+
+                // $result[] = array(
+                //     'id' => $configClases->id,
+                //     'mensaje' => 'La Clase Grupal '.$configClases->nombre.' tiene deuda',
+                //     'fecha_de_pago' => $configClases->fecha_inicio_preferencial,
+                //     'monto' => $configClases->costo_mensualidad,  );
+            }
+                // else{
+            //     $result[] = array(
+            //         'id' => $configClases->id,
+            //         'mensaje' => 'La Clase Grupal '.$configClases->nombre.' no tiene deuda',
+            //         'fecha_de_pago' => $configClases->fecha_inicio_preferencial,
+            //         'monto' => $configClases->costo_mensualidad,  );
+            // }
+            // $result;
+        }
+        // return response()->json($result);
+
+        return $this->tiempotolerancia();
+        
+
+
+    }
+
+    public function tiempotolerancia(){
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $tipo = 'Cuota Clase Grupal';
+
+        $ConfigClasesGrupales = ConfigClasesGrupales::select('config_clases_grupales.id',
+                'config_clases_grupales.nombre','config_clases_grupales.costo_inscripcion',
+                'config_clases_grupales.costo_mensualidad', 'clases_grupales.id',
+                'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final',
+                'clases_grupales.fecha_inicio_preferencial', 'config_clases_grupales.tiempo_tolerancia', 'config_clases_grupales.porcentaje_retraso')
+                        ->join('clases_grupales', 'clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
+                        ->get();
+
+        $InscripcionClaseGrupal = InscripcionClaseGrupal::select('inscripcion_clase_grupal.clase_grupal_id AS ClaseGrupalID', 
+            'inscripcion_clase_grupal.alumno_id AS AlumnoId',
+            'inscripcion_clase_grupal.fecha_pago', 
+            'alumnos.identificacion AS Identificacion', 'alumnos.nombre AS NombreAlumno', 
+            'alumnos.apellido AS ApellidoAlumno', 'alumnos.telefono AS TelefonoAlumno', 
+            'alumnos.celular as CelularAlumno','config_clases_grupales.nombre AS ClaseNombre', 'inscripcion_clase_grupal.id as InscripcionID', 'inscripcion_clase_grupal.costo_mensualidad AS Costo')
+                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id','=',
+                       'clases_grupales.id')
+                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+                ->join('config_clases_grupales', 'config_clases_grupales.id','=',
+                       'clases_grupales.clase_grupal_id')
+                ->get();
+        
+        
+            //Desgloso la Fecha Preferencial
+                foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
+
+                            foreach ($ConfigClasesGrupales as $configClases) {
+
+                                    if($configClases->id == $InscripcionClase->ClaseGrupalID){
+
+                                        $FacturaProforma = ItemsFacturaProforma::select(
+                                        'items_factura_proforma.tipo', 
+                                        'items_factura_proforma.alumno_id')
+                                        ->where('items_factura_proforma.tipo','=',$tipo)
+                                        ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                                        ->get()->count();
+
+                                        /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
+                                            OBTENER LA FECHA LIMITE DE PAGO **/
+
+                                        $fecha_cuota_explode=explode('-', $InscripcionClase->fecha_pago);
+                                        $fecha_cuota = Carbon::create($fecha_cuota_explode[0], $fecha_cuota_explode[1], $fecha_cuota_explode[2],0);
+
+                                        /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
+                                        $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
+                                        
+                                            //CONDICION PARA EL TIEMPO DE TOLERANCIA, SI SE CUMPLE
+                                            //CALCULARA SEGUN EL PORCENTAJE CONFIGURADO Y SE LE SUMARA
+                                            //AL MONTO DE LA CUOTA
+                                        $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
+
+                                            
+                                           if($FacturaProforma != 0 && Carbon::now()->format('Y-m-d') > $tolerancia && $clasegrupal->tiene_mora == 0){
+
+                                                $mora = ($configClases->costo_mensualidad * $configClases->porcentaje_retraso)/100;
+
+                                                $item_factura = new ItemsFacturaProforma;
+                                                                            
+                                                $item_factura->alumno_id = $InscripcionClase->AlumnoId;
+                                                $item_factura->academia_id = Auth::user()->academia_id;
+                                                $item_factura->fecha = Carbon::now()->toDateString();
+                                                                                //$item_factura->item_id = $id;
+                                                $item_factura->nombre = 'Retraso de pago ' .  $configClases->nombre;
+                                                $item_factura->tipo = 8;
+                                                $item_factura->cantidad = 1;
+                                                                                // $item_factura->precio_neto = $configClases->costo_mensualidad;
+                                                                                //$item_factura->impuesto = $impuesto;
+                                                $item_factura->importe_neto = $mora;
+                                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                                $item_factura->save();
+
+                                                $clasegrupal->tiene_mora = 1;
+                                                $clasegrupal->save();
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]);   
+    }
+
+}

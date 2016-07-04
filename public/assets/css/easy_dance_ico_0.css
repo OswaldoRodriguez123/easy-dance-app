@@ -1,0 +1,82 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 22/04/2016 00:51
+  	*/
+
+@font-face {
+  font-family: "Easy-Icon";
+  src: url("../../assets/fonts/easy_dance_ico_0/easy_ico_0.eot");
+  src: url("../../assets/fonts/easy_dance_ico_0/easy_ico_0.eot?#iefix") format("embedded-opentype"),
+       url("../../assets/fonts/easy_dance_ico_0/easy_ico_0.woff") format("woff"),
+       url("../../assets/fonts/easy_dance_ico_0/easy_ico_0.ttf") format("truetype"),
+       url("../../assets/fonts/easy_dance_ico_0/easy_ico_0.svg#easy_ico_0") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Easy-Icon";
+    src: url("../../assets/fonts/easy_dance_ico_0/easy_ico_0.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="icon_a-"]:before, [class*=" icon_a-"]:before,
+[class^="icon_a-"]:after, [class*=" icon_a-"]:after {   
+  font-family: Easy-Icon;
+        /*font-size: 20px;*/
+font-style: normal;
+/*margin-left: 20px;*/
+
+}
+
+.icon_a-acuerdo-de-pago:before { content: "\f100"; }
+.icon_a-agendar:before { content: "\f101"; }
+.icon_a-agendar-1:before { content: "\f102"; }
+.icon_a-alumnos:before { content: "\f103"; }
+.icon_a-anticipo:before { content: "\f104"; }
+.icon_a-ayuda:before { content: "\f105"; }
+.icon_a-boletos:before { content: "\f106"; }
+.icon_a-campana:before { content: "\f107"; }
+.icon_a-cancelacion-temprana-tardia:before { content: "\f108"; }
+.icon_a-carga-inicial:before { content: "\f109"; }
+.icon_a-categorias:before { content: "\f10a"; }
+.icon_a-checador:before { content: "\f10b"; }
+.icon_a-citas:before { content: "\f10c"; }
+.icon_a-clase-personalizada:before { content: "\f10d"; }
+.icon_a-clases-grupales:before { content: "\f10e"; }
+.icon_a-configuracion:before { content: "\f10f"; }
+.icon_a-consultas-y-reportes:before { content: "\f110"; }
+.icon_a-correo:before { content: "\f111"; }
+.icon_a-devolucion:before { content: "\f112"; }
+.icon_a-diagnostico:before { content: "\f113"; }
+.icon_a-especiales:before { content: "\f114"; }
+.icon_a-especialidad:before { content: "\f115"; }
+.icon_a-estatus-de-clases:before { content: "\f116"; }
+.icon_a-estatus-economico:before { content: "\f117"; }
+.icon_a-estudio-salon:before { content: "\f118"; }
+.icon_a-examen:before { content: "\f119"; }
+.icon_a-fama-de-alumnos:before { content: "\f11a"; }
+.icon_a-fiesta:before { content: "\f11b"; }
+.icon_a-habilidades:before { content: "\f11c"; }
+.icon_a-id-pasaporte:before { content: "\f11d"; }
+.icon_a-instructor:before { content: "\f11e"; }
+.icon_a-ir-a-inicio:before { content: "\f11f"; }
+.icon_a-multi-horarios:before { content: "\f120"; }
+.icon_a-niveles:before { content: "\f121"; }
+.icon_a-operaciones:before { content: "\f122"; }
+.icon_a-pagar:before { content: "\f123"; }
+.icon_a-paquete:before { content: "\f124"; }
+.icon_a-participantes:before { content: "\f125"; }
+.icon_a-precios-y-servicios:before { content: "\f126"; }
+.icon_a-presupuesto:before { content: "\f127"; }
+.icon_a-programa-de-baile:before { content: "\f128"; }
+.icon_a-promocion:before { content: "\f129"; }
+.icon_a-punto-de-venta:before { content: "\f12a"; }
+.icon_a-reservaciones:before { content: "\f12b"; }
+.icon_a-shows-y-bodas:before { content: "\f12c"; }
+.icon_a-talleres:before { content: "\f12d"; }
+.icon_a-tarjeta-de-regalo:before { content: "\f12e"; }
+.icon_a-tutorial:before { content: "\f12f"; }
+.icon_a-tutoriales:before { content: "\f130"; }
+.icon_a-visitante-presencial:before { content: "\f131"; }

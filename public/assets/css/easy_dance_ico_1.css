@@ -1,0 +1,43 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 26/04/2016 18:19
+  	*/
+
+@font-face {
+  font-family: "Easy-Icon_1";
+  src: url("../../assets/fonts/easy_dance_ico_1/easy_ico_1.eot");
+  src: url("../../assets/fonts/easy_dance_ico_1/easy_ico_1.eot?#iefix") format("embedded-opentype"),
+       url("../../assets/fonts/easy_dance_ico_1/easy_ico_1.woff") format("woff"),
+       url("../../assets/fonts/easy_dance_ico_1/easy_ico_1.ttf") format("truetype"),
+       url("../../assets/fonts/easy_dance_ico_1/easy_ico_1.svg#easy_ico_1") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Easy-Icon_1";
+    src: url("../../assets/fonts/easy_dance_ico_1/easy_ico_1.svg#easy_ico_1") format("svg");
+  }
+}
+
+[class^="icon_b-"]:before, [class*=" icon_b-"]:before,
+[class^="icon_b-"]:after, [class*=" icon_b-"]:after {   
+  font-family: Easy-Icon_1;
+        /*font-size: 20px;*/
+font-style: normal;
+/*margin-left: 20px;¨*/
+
+}
+
+.icon_b-como-se-entero:before { content: "\f100"; }
+.icon_b-costo:before { content: "\f101"; }
+.icon_b-cuentales-historia:before { content: "\f102"; }
+.icon_b-dias-de-clase:before { content: "\f103"; }
+.icon_b-fecha-de-nacimiento:before { content: "\f104"; }
+.icon_b-nombres:before { content: "\f105"; }
+.icon_b-paleta-de-colores:before { content: "\f106"; }
+.icon_b-parentesco:before { content: "\f107"; }
+.icon_b-sexo:before { content: "\f108"; }
+.icon_b-telefono:before { content: "\f109"; }
+.icon_b-video:before { content: "\f10a"; }
