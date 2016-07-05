@@ -23,6 +23,7 @@ class CreateConfigServiciosTable extends Migration
             $table->string('descripcion',300);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

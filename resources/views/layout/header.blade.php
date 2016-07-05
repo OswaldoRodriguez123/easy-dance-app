@@ -19,26 +19,26 @@
 
                 <li class="pull-right m-r-5">
                     <ul class="top-menu">
-                        <!--<li id="toggle-width" data-original-title="" type="button" data-toggle="popover" data-placement="bottom" title="" data-trigger='hover' data-content="Suiche" >
+                        {{--<li id="toggle-width" data-original-title="" type="button" data-toggle="popover" data-placement="bottom" title="" data-trigger='hover' data-content="Suiche" >
                             <div class="toggle-switch">
                                 <span class="p-r-10 f-700 c-blanco">Off</span><input id="tw-switch" type="checkbox" hidden="hidden">
                                 <label for="tw-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 c-blanco">On</span>
                             </div>
-                        </li>-->
+                        </li>
 
 
-                        <!-- <li class="dropdown" data-original-title="" data-content="Notificación" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
+                        <li class="dropdown" data-original-title="" data-content="Notificación" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                             <a href="{{url('/')}}/notificacion">
                                 <i class="tm-icon zmdi zmdi-notifications f-18 f-18"></i>
                             </a>
-                        </li>   -->
+                        </li>
 
-<!--                         <li class="dropdown" data-original-title="" data-content="Validar" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
+                         <li class="dropdown" data-original-title="" data-content="Validar" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                             <a href="{{url('/')}}/validar">
                                 <i class="tm-icon zmdi zmdi-check f-18"></i>
                             </a>
-                        </li> -->
-
+                        </li> --}}
+                        @if(Auth::check())
                         <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                             <a href="{{url('/')}}/agendar">
                                 <i class="tm-icon zmdi zmdi-calendar-check f-18 f-18"></i>
@@ -53,18 +53,18 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
                                 </li>
-                                <!-- <li class="hidden-xs">
+                                {{-- <li class="hidden-xs">
                                     <a href=""><i class="zmdi zmdi-help"></i> Ayuda</a>
-                                </li> -->
+                                </li> --}}
                                 <li class="hidden-xs">
                                     <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
                                 </li>
                                 <li class="hidden-xs">
                                     <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
                                 </li>
-                                <!-- <li class="hidden-xs">
+                                {{-- <li class="hidden-xs">
                                     <a href="{{url('configuracion/coreografias')}}"><i class="icon_d-coreografia f-16"></i>&nbsp;&nbsp;&nbsp;&nbsp; Coreografías</a>
-                                </li> -->
+                                </li> --}}
 
                                 <li class="hidden-xs">
                                     <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-16"></i> Productos</a>
@@ -75,7 +75,8 @@
                                 </li>
                             </ul>
 
-                        </li>
+                        </li> 
+                        @endif
 
                         <!-- <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
                             <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>

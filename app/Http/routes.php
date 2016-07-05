@@ -332,8 +332,12 @@ Route::post('especiales/regalos/agregar', 'RegaloController@store');
 
 // ---- CONFIGURACION ----
 
-Route::get('configuracion', function () {
-    return view('configuracion.index');
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('configuracion', function () {
+        return view('configuracion.index');
+
+    });
 
 });
 
