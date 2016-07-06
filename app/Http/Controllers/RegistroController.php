@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Usuario;
+use App\Sucursal;
 use App\ConfigEspecialidades;
 use App\Paises;
 use App\ComoNosConociste;
