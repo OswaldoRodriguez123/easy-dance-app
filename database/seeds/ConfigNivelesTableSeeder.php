@@ -16,18 +16,22 @@ class ConfigNivelesTableSeeder extends Seeder
 
 		ConfigNiveles::create(array(
 	      'nombre' => 'Básico',
+	      'academia_id' => null,
 	    ));
 
 	    ConfigNiveles::create(array(
 	      'nombre' => 'Intermedio',
+	      'academia_id' => null,
 	    ));
 
 	    ConfigNiveles::create(array(
 	      'nombre' => 'Avanzado',
+	      'academia_id' => null,
 	    ));
 
 	    ConfigNiveles::create(array(
 	      'nombre' => 'Master',
+	      'academia_id' => null,
 	    ));
     }
 }

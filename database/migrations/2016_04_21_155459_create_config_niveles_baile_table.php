@@ -15,7 +15,7 @@ class CreateConfigNivelesBaileTable extends Migration
         Schema::create('config_niveles_baile', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->integer('academia_id')->unsigned()->nullable;
+            $table->integer('academia_id')->unsigned()->nullable();
             $table->foreign('academia_id')->references('id')->on('academias');
             $table->string('nombre',30);
 
