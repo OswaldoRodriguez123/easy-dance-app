@@ -482,6 +482,221 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalCategorias-Academia" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Academia<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_administrativo_academia" id="edit_administrativo_academia"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               
+                              
+                               
+                          <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="id">Estudios /Salones</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre y la capacidad de personas dentro de tu salón o salones de bailes." title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEstudio" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+
+                                    <div id="collapseEstudio" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    
+                                    <div class="panel-body">
+                                    
+                                    <label for="nombre_estudio" id="id-nombre_estudio">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del Salón" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_estudio" id="nombre_estudio" placeholder="Ej. Salón">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-nombre_estudio">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_estudio_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <label for="cantidad_estudio" id="id-cantidad_estudio">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de personas del Salón" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="cantidad_estudio" id="cantidad_estudio" placeholder="Ej. 50">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-cantidad_estudio">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_estudio_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+                               </div>
+
+                              <br>
+
+                              <div class="card-header text-left">
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-14" name= "añadirestudio" id="añadirestudio" > Agregar Linea</button>
+
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tableestudio" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="nombre"></th>
+                                    <th class="text-center" data-column-id="cantidad"></th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($estudios as $estudio)
+                                <?php $id = $estudio->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$estudio->nombre}}</td>
+                                    <td class="text-center previa">{{$estudio->capacidad}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                  </tr>
+                            @endforeach 
+                   
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                        </div>
+                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseEstudio')" ></i></div>
+
+                                    <div class="clearfix p-b-35"></div>
+                                      <hr></hr>                                
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               
+
+
+                        <div class="clearfix p-b-35"></div>
+
+
+                                    <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="id">Niveles de baile</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos niveles de baile que ofreces en tu academia" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseNivel" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseNivel" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    
+                                    <div class="panel-body">
+                                    
+                                    <label for="nombre_nivel" id="id-nombre_nivel">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la fiesta o evento" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_nivel" id="nombre_nivel" placeholder="Ej. Basico">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-nombre_nivel">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_nivel_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+                               </div>
+
+                              <br>
+
+                              <div class="card-header text-left">
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" id="añadirniveles" name="añadirniveles" >Agregar Linea</button>
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tableniveles" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="nombre"></th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($niveles as $nivel)
+                                <?php $id = $nivel->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$nivel->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                  </tr>
+                            @endforeach 
+                   
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                        </div>
+                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseNivel')" ></i></div>
+
+                                    <div class="clearfix p-b-35"></div>
+                                      <hr></hr>
+                                
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
+                            </div>
+
+
+                               <div class="clearfix"></div> 
+<!--                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_administrativo_academia" data-update="administrativo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div> --></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalAdministrativo-Academia" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -632,6 +847,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr> 
+                            <tr class="detalle" data-toggle="modal" href="#modalCategorias-Academia">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi {{ empty($academia->numero_factura) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="icon_d icon_d-category f-22"></i> </span>
+                               <span class="f-14"> Categorias </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="academia-administrativo"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr> 
                            </table>
                           </div>
                           
@@ -709,6 +932,76 @@
             }, animationDuration);
 
       });
+
+     var t=$('#tableniveles').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+  var h=$('#tableestudio').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
 
     
      $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
@@ -892,6 +1185,241 @@
         })
        
     })
+
+    $("#añadirestudio").click(function(){
+
+                nombre_estudio = $('#nombre_estudio').val();
+                cantidad_estudio = $('#cantidad_estudio').val();
+                procesando();
+                var route = "{{url('/')}}/configuracion/academia/estudio";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = "&nombre_estudio="+nombre_estudio+"&cantidad_estudio="+cantidad_estudio;
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data: datos ,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var nombre = respuesta.array.nombre;
+                          var capacidad = respuesta.array.capacidad;
+
+                          var rowId=respuesta.id;
+                          var rowNode=h.row.add( [
+                          ''+nombre+'',
+                          ''+capacidad+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                          // $("#agregar_item")[0].reset();
+                          // rechargeServicio();
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $("#añadirniveles").click(function(){
+
+                nombre_nivel = $('#nombre_nivel').val();
+                procesando();
+                var route = "{{url('/')}}/configuracion/academia/nivel";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = "&nombre_nivel="+nombre_nivel;
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data: datos ,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var nombre = respuesta.array.nombre;
+
+                          var rowId=respuesta.id;
+                          var rowNode=t.row.add( [
+                          ''+nombre+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                          // $("#agregar_item")[0].reset();
+                          // rechargeServicio();
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $('#tableniveles tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: "{{url('/')}}/configuracion/academia/eliminarnivel/"+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+                      
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+              t.row( $(this).parents('tr') )
+                .remove()
+                .draw();
+          });
+
+    $('#tableestudio tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: "{{url('/')}}/configuracion/academia/eliminarestudio/"+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+                      
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+              h.row( $(this).parents('tr') )
+                .remove()
+                .draw();
+          });
+
+
     
    </script> 
 

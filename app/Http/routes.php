@@ -76,8 +76,8 @@ Route::get('/restablecer/fallo', function () {
 
 // LOGIN
 
-Route::get('/login', 'Auth\AuthController@getLogin');
-Route::post('/login', 'Auth\AuthController@postLogin');
+Route::get('/login', 'LoginController@getLogin');
+Route::post('/login', 'LoginController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
 
@@ -332,12 +332,8 @@ Route::post('especiales/regalos/agregar', 'RegaloController@store');
 
 // ---- CONFIGURACION ----
 
-Route::group(['middleware' => ['auth']], function () {
-
-    Route::get('configuracion', function () {
-        return view('configuracion.index');
-
-    });
+Route::get('configuracion', function () {
+    return view('configuracion.index');
 
 });
 
@@ -599,15 +595,11 @@ Route::get('reservacion/{id}','ReservaController@reserva');
 //FUNCIONE COMO DEBE SER
 //ROL ALUMNOS 
 // Route::group(['middleware' => ['role:alumnos|recepcionista|admin']], function() {
-Route::group(['middleware' => ['auth']], function () {
-    
-    Route::get('/inicio', 'AcademiaConfiguracionController@index');
 
-    Route::get('/', function () {
-        return view('menu.index');
-    });
+Route::get('/inicio', 'AcademiaConfiguracionController@index');
 
-//
+Route::get('/', function () {
+    return view('menu.index');
 });
 
 // USUARIO

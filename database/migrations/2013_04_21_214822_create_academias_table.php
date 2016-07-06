@@ -27,7 +27,7 @@ class CreateAcademiasTable extends Migration
 
             $table->string('estado');
             $table->string('identificacion',20);
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
             $table->string('descripcion');
             $table->string('telefono');
             $table->string('celular');

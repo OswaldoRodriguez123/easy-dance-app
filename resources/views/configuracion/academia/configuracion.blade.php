@@ -4,121 +4,54 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
-@stop
-
-@section('css')
-
-<link href="{{url('/')}}/assets/css/easy_dance_ico_3.css" rel="stylesheet">
-
 @stop
 
 @section('js_vendor')
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
+<!--<script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.es.js"></script>-->
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-@stop
 
+@stop
 @section('content')
-  
-	<section id="content">
-        <div class="container">
-        
+   
+
+            <section id="content">
+                <div class="container">
+                
                     <div class="block-header">
                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Configuración</a>
-                    </div> 
+                    </div>  
                     
-                    <div class="card">
-                      <div class="card-header">
-                            
-                            
-                      </div>
-                      <div class="card-body p-b-20">
-                        <div class="row">
-                        <div class="container">
-                         <div class="col-sm-3">
-          					        <div class="p-t-30">       
-          					          <div class="row p-b-15">
-          					            <div class="col-md-12" >
-          					              <div class="text-center">
-          					                <ul class="ca-menu-planilla">
-                                    <li>
-                                        <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="icon_a-alumnos"></i></span>
-                                            <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Academia</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo academia</h3>
-                                            </div>
-                                        </a>
-                                    </li>
-                                  </ul>
-          					              </div>
-          					            </div>  
+                      <div class="card">
+                        <div class="card-header text-center">
+                            <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Personaliza tu Academia </span>     
+                        </div>
+                        
 
-          					          </div>
-                              <div class="row p-l-10 p-b-0">
 
-                              <hr>
+                        <div class="card-body p-b-20">
+                          <form name="configurar_academia" id="configurar_academia"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <div class="row p-l-10 p-r-10">
+                            <hr>
+                            <div class="clearfix p-b-15"></div>
 
-                              <label class="text-left f-16">Nombre de la academia:</label>
-                              <p class="text-left" >{{$academia->nombre}}</p>
+                                <div class="col-sm-12">
 
-                              <label class="text-left f-16" >Identidad fiscal:</label>
-                              <p class="text-left">{{$academia->identificacion}}</p> 
+                                <span class="f-30 text-center c-morado">Contacto</span>
+                                    
+                                <hr></hr>
 
-                              <!--<label class="text-left" >Descripción:</label>
-                              <p class="text-left" >...</p> -->
+                                <div class="clearfix p-b-15"></div>
 
-                              </div>
-
-                              <div class="row p-l-0 p-b-0 text-center f-9">
-                               <hr>
-                               <div class="col-xs-3 p-l-5 p-r-5">
-                                 <div><i id="proceso_contacto" class="zmdi zmdi-dot-circle zmdi-hc-fw f-35 c-morado"></i></div>
-                                 Contacto
-                               </div>
-                               <div class="col-xs-3 p-l-5 p-r-5">
-                                 <div><i id="proceso_especiales" class="zmdi zmdi-dot-circle zmdi-hc-fw f-35"></i></div>
-                                 Especiales
-                               </div>
-
-                               <div class="col-xs-3 p-l-5 p-r-5">
-                                 <div><i id="proceso_administrativo" class="zmdi zmdi-dot-circle zmdi-hc-fw f-35"></i></div>
-                                 <span>Administrativo</span>
-                               </div>
-                               <div class="col-xs-3 p-l-5 p-r-5">
-                                 <div><i id="proceso_categorias" class="zmdi zmdi-dot-circle zmdi-hc-fw f-35"></i></div>
-                                 Categorias
-                               </div>
-                              </div>
-          					         
-          					                
-          					      </div>
-					           </div>
-
-					           	<div class="col-sm-9">
-                        <div role="tabpanel">
-                                <ul class="tab-nav tn-justified" role="tablist">
-                                    <li id="tab_contacto" class="active"><div class="icon_b icon_b-telefono f-30"></div><a name="a_contacto" href="#contacto" aria-controls="contacto" role="tab" data-toggle="tab">Contacto</a></li>
-                                    <li id="tab_especiales" ><div class="icon_a icon_a-especialidad f-30"></div><a name="a_especiales">Especiales</a></li>
-                                    <li id="tab_administrativo"><div class="icon_a icon_a-punto-de-venta f-30"></div><a name="a_administrativo">Administrativo</a></li>
-                                    <li id="tab_categorias"><div class="icon_d icon_d-category f-30"></div><a name="a_categorias">Categoria</a></li>
-                                </ul>
-
-                                <form name="configurar_academia" id="configurar_academia"  >
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="contacto">
-
-                                    <!-- CONTACTO -->
-
-                                        <div class="row p-t-10 p-b-0">
-                                         <div class="clearfix p-b-20"></div>
-                                         <div class="col-sm-12">                                         
+                               <div class="col-sm-12">                                         
                                               
                                               <label for="id" id="id-correo">Correo electrónico de la academia</label>
                                                <div class="input-group">
@@ -290,12 +223,12 @@
                                               <i class="zmdi zmdi-link f-20 c-morado"></i>
                                               </span>
                                               <div class="fg-line">                       
-                                                  <input type="text" class="form-control caja input-sm" name="web" id="web" placeholder="Ej: www.easydancelatino.com">
+                                                  <input type="text" class="form-control caja input-sm" name="pagina_web" id="pagina_web" placeholder="Ej: www.easydancelatino.com">
                                               </div>
                                             </div>
-                                              <div class="has-error" id="error-web">
+                                              <div class="has-error" id="error-pagina_web">
                                                 <span >
-                                                    <small id="error-web_mensaje" class="help-block error-span" ></small>                                           
+                                                    <small id="error-pagina_web_mensaje" class="help-block error-span" ></small>                                           
                                                 </span>
                                               </div>
                                           
@@ -360,31 +293,22 @@
                                               </div>
                                           
                                          </div>
-
-                                         <div class="clearfix p-b-20"></div>
-
-                                         <!-- <div class="col-sm-7 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div> -->
-                                        <div class="col-sm-5 col-md-offset-7">                            
-                                          <button type="button" class="btn bgm-morado pull-right guardar" data-proceso="contacto" data-siguiente="especiales" >Guardar y Siguiente</button>
                                         </div>
 
-                                        </div>
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="especiales">
+                              <div class="clearfix p-b-35"></div>
+                          
 
-                                    <!-- ESPECIALES -->
+                                    <div class="col-sm-12">
+                                 
+                                    <span class="f-30 text-center c-morado">Especiales</span>
+                                    
 
-                                       <div class="row p-t-20 p-b-0">
-                                         <div class="col-sm-12">
+
+                                    <hr></hr>
+
+                                    <div class="clearfix p-b-35"></div>
+                                    
+                                    <div class="col-sm-12">
                                           <label class="m-b-10">Normativas de la academia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las normativas de tu academia, de modo que, tus alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución, este
                                           soporta sólo el tipo de documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                    
                                           <!-- <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -439,7 +363,7 @@
                                                   <span class="btn btn-lg btn-file m-r-10">
                                                       <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
                                                       <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
-                                                      <input type="file" name="programacion">
+                                                      <input type="file" name="programacion" id="programacion">
                                                   </span>
                                                   <span class="fileinput-filename"></span>
                                                   <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
@@ -451,72 +375,20 @@
                                               </div>
                                           </div>
                                          </div>
-
-                                         <div class="clearfix p-b-20"></div>
-                                        <!--  <div class="clearfix p-b-20"></div>
-                                          
-                                        <div class="col-sm-12">
-                                          <div class="form-group">
-                                              <label class="m-b-10">Especialidades</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación de clases, de modo que, tu equipo de instructores y alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>
-
-                                         <select class="selectpicker bs-select-hidden" id="especialidades" name="especialidades" multiple="" data-max-options="5" title="Selecciona">
-
-                                         @foreach ( $especialidades as $especialidad )
-                                          <option value = "{{ $especialidad['nombre'] }}">{{ $especialidad['nombre'] }}</option>
-                                          @endforeach
-                                        </select>
-                                        <div class="has-error" id="error-programacion">
-                                                <span >
-                                                    <small id="error-programacion_mensaje" class="help-block error-span" ></small>                                           
-                                                </span>
-                                              </div>
-                                          </div>
-                                         </div>
-
-                                        <div class="clearfix p-b-20"></div> -->
-
-                                         <!-- <div class="col-sm-12">
-                                               <label class="m-b-10">Estatus de alumnos</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indícale al sistema según tú criterio, cuál sería la cantidad de clases en que el alumno se encuentra en Riego de ausencia, en Easy dance recomendamos que 3 faltas continuas, pudiera representar un alumno en Riego de ausencia y un aproximado de 8 clases se convertirá en un alumno inactivo. Easy Dance actúa para que puedas lograrlo de manera fácil y rápida identificando el estatus que corresponda dependiendo la situación particular de cada academia y participante." title="" data-original-title="Ayuda"></i>                                      
-                                               <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon_a-estatus-de-clases f-22"></i></span>
-                                              <div class="fg-line">
-                                                 
-
-                                                  <input type="text" class="form-control input-sm" name="estatu_alumno" id="estatu_alumno" placeholder="Selecciona">
-                                              </div>
-                                              </div>
-                                              <div class="has-error" id="error-estatu_alumno">
-                                                <span >
-                                                    <small id="error-estatu_alumno_mensaje" class="help-block error-span" ></small>                                           
-                                                </span>
-                                              </div>
-                                          </div> -->
-
-                                          <div class="clearfix p-b-20"></div>
-
-                                         <!-- <div class="col-sm-7 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div> -->
-                                        <div class="col-sm-5 col-md-offset-7">                            
-                                          <button type="button" class="btn bgm-morado pull-right guardar" data-proceso="especiales" data-siguiente="administrativo" >Guardar y Siguiente</button>
                                         </div>
-                                         
 
-                                       </div>
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="administrativo">
 
-                                    <!-- Administrativo -->
-                                     
-                                     <div class="row p-t-20 p-b-0">  
-                                      <div class="col-sm-12">
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+
+                                <span class="f-30 text-center c-morado">Administrativo</span>
+                                    
+                                <hr></hr>
+
+                                <div class="clearfix p-b-15"></div>
+
+                               <div class="col-sm-12">
                                        <div class="form-group fg-line ">
                                           <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
                                           
@@ -555,59 +427,19 @@
                                                 </span>
                                               </div>
                                           
-                                    </div>
-
-
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <!-- <div class="col-sm-12">
-                                      <label for="apellido">Próxima fecha de pago</label>
-                                      <div class="input-group">
-                                                <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>                                                
-                                      
-                                              <div class="dtp-container fg-line">
-                                                  <input name="fecha_pago" id="fecha_pago" class="form-control date-picker" placeholder="Seleciona" type="text">
-                                              </div>
-                                      </div>
-                                      
-                                      <div class="has-error" id="error-fecha_pago">
-                                        <span >
-                                            <small class="help-block error-span" id="error-fecha_pago_mensaje" ></small>                                           
-                                        </span>
-                                      </div>
-                                    </div>
-
-                                    <div class="clearfix p-b-20"></div> -->
-
-                               <div class="clearfix p-b-35"></div>
-
-                                    
-
-
-
-                                         <!-- <div class="col-sm-7 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div> -->
-                                        <div class="col-sm-5 col-md-offset-7">                            
-                                          <button type="button" class="btn bgm-morado pull-right guardar" data-proceso="administrativo" data-siguiente="categorias" >Guardar y Siguiente</button>
+                                            </div>
                                         </div>
 
-                                    </div>
+                              <div class="clearfix p-b-35"></div>
+<div class="col-sm-12">
 
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="categorias">
+                                <span class="f-30 text-center c-morado">Categorias</span>
+                                    
+                                <hr></hr>
 
-                                   <!--  CATEGORIAS -->
+                                <div class="clearfix p-b-15"></div>
 
-                                    <div class="row p-t-30 p-b-0"> 
-                                    <div class="col-sm-12">
+                               <div class="col-sm-12">
                                     <div class="form-group fg-line">
                                     <label for="id">Estudios /Salones</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre y la capacidad de personas dentro de tu salón o salones de bailes." title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -767,41 +599,53 @@
                                     </div>
                                  </div>
                                </div>
-
-
-                        <div class="clearfix p-b-35"></div>
-
-                               
-
-
-                                      <div class="clearfix p-b-20"></div>
-
-
-                                         <!-- <div class="col-sm-7 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div> -->
-                                        <div class="col-sm-5 col-md-offset-7">                            
-                                          <button type="button" class="btn bgm-morado pull-right guardar" data-proceso="completar" data-siguiente="completar" data-redirect="completar" id ="guardar" name= "guardar">Guardar</button>
-                                        </div>
-
-                                    </div>
-                                  </div></form>
-                                </div>
                             </div>
-					           	</div>
-					    </div>
-					  </div>
-					</div>
-	            </div>
-	    </div>
-	</section>
+
+                              <div class="clearfix p-b-35"></div>
+                            
+                          <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 text-left">
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
+
+                              <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div> 
+
+          
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <nav class="navbar navbar-default navbar-fixed-bottom">
+              <div class="container">
+                
+                <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
+                <div class="col-xs-11">
+                  <div class="clearfix p-b-20"></div>
+                  <div class="progress-fino progress-striped m-b-10">
+                    <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+            </nav>
 @stop
 
 @section('js') 
@@ -892,12 +736,58 @@
                     }
         });
 
+  setInterval(porcentaje, 1000);
+
+  function porcentaje(){
+    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "video_promocional" , "normativa", "manual", "programacion", "numero_factura"];
+    fLen = campo.length;
+    var porcetaje=0;
+    var cantidad =0;
+    var porciento= fLen / fLen;
+    for (i = 0; i < fLen; i++) {
+      var valor="";
+      valor=$("#"+campo[i]).val();
+      valor=valor.trim();
+      if(campo[i]=="color_etiqueta"){
+        if ( valor.length > 6 ){        
+          cantidad=cantidad+1;
+        }else if (valor.length == 0){
+          $("#"+campo[i]).val('#');
+        }
+      }else{
+        if ( valor.length > 0 ){        
+          cantidad=cantidad+1;
+        }
+      }
+      
+    }
+
+    porcetaje=(cantidad/fLen)*100;
+    porcetaje=porcetaje.toFixed(2);
+    //console.log(porcetaje);
+    $("#text-progreso").text(porcetaje+"%");
+    $("#barra-progreso").css({
+      "width": (porcetaje + "%")
+   });
+    
+
+    if(porcetaje=="100" || porcetaje=="100.00"){
+      $("#barra-progreso").removeClass('progress-bar-morado');
+      $("#barra-progreso").addClass('progress-bar-success');
+    }else{
+      $("#barra-progreso").removeClass('progress-bar-success');
+      $("#barra-progreso").addClass('progress-bar-morado');
+    }
+    //$("#barra-progreso").s
+
+  }
+
   $(".guardar").click(function(){
 
                 proceso=$(this).data('proceso');
                 siguiente=$(this).data('siguiente');
 
-                var route = "{{url('/')}}/configuracion/academia/"+proceso;
+                var route = "{{url('/')}}/configuracion/academia/completar";
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#configurar_academia" ).serialize(); 
                 // $("#guardar").attr("disabled","disabled");
@@ -924,22 +814,10 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          console.log(proceso);
-                          if(proceso=="completar"){
+
                             window.location="{{url('/')}}/configuracion";
-                          }
 
-                          finprocesado();
-                          $('#proceso_'+siguiente).addClass('c-morado');
-                          $('#proceso_'+proceso).removeClass('c-morado');
-                          $('#proceso_'+proceso).addClass('c-azul');
-
-                          $('#tab_'+siguiente).html('<a href="#'+siguiente+'" aria-controls="'+siguiente+'" role="tab" data-toggle="tab">'+siguiente+'</a>');
-
-                          $('#tab_'+proceso).html('<a href= "#" aria-controls="#" role="tab" data-toggle="tab">'+proceso+'</a>');
-
-                          $('.tab-nav a[href="#'+siguiente+'"]').tab('show'); 
-                          $('body,html').animate({scrollTop : 0}, 500);
+                            
 
                         }else{
                           var nTitle="Ups! ";
@@ -953,7 +831,7 @@
                           //   "opacity": ("1")
                           // });
                           $(".cancelar").removeAttr("disabled");
-
+                          finprocesado();
                           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                         }                       
                         
@@ -1013,13 +891,13 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array[0].nombre;
-                          var cantidad = respuesta.array[0].cantidad;
+                          var nombre = respuesta.array.nombre;
+                          var capacidad = respuesta.array.capacidad;
 
                           var rowId=respuesta.id;
                           var rowNode=h.row.add( [
                           ''+nombre+'',
-                          ''+cantidad+'',
+                          ''+capacidad+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
@@ -1097,7 +975,7 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array[0].nombre;
+                          var nombre = respuesta.array.nombre;
 
                           var rowId=respuesta.id;
                           var rowNode=t.row.add( [
@@ -1323,3 +1201,4 @@
 
 </script> 
 @stop
+

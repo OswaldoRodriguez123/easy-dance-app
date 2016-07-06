@@ -20,10 +20,10 @@ class CreateConfigServiciosTable extends Migration
             $table->string('nombre',15);
             $table->integer('costo');
             $table->string('impuesto',20);
+            $table->string('imagen')->nullable();
             $table->string('descripcion',300);
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

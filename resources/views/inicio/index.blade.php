@@ -69,6 +69,22 @@
                       <div class="clearfix m-20 m-b-25"></div>
 
                       <div class="col-sm-7">
+                                <div class="form-group ">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Identificación </label> 
+                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" placeholder="Ej. J-27283354-7">
+                                    </div>
+                                </div>
+                                <div class="has-error" id="error-identificacion">
+                                    <span >
+                                     <small id="error-identificacion_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>
+                      </div>
+
+                      <div class="clearfix m-20 m-b-25"></div>
+
+                      <div class="col-sm-7">
                                            <label>Especialidad </label>
                                           <div class="form-group">
                                               <div class="fg-line">

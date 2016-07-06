@@ -29,7 +29,7 @@ class CreateClasesGrupalesTable extends Migration
             $table->integer('cantidad_hombres');
             $table->integer('cantidad_mujeres');
             $table->string('link_video');
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
 
             $table->integer('clase_grupal_id')->unsigned()->nullable();
             $table->foreign('clase_grupal_id')->references('id')->on('config_clases_grupales');

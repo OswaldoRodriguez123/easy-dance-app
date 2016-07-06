@@ -197,25 +197,25 @@ class AlumnoController extends Controller
 
         if($alumno->save()){
             
-            if($request->correo){
+            // if($request->correo){
 
-                $academia = Academia::find(Auth::user()->academia_id);
-                $contrasena = str_random(6);
-                $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+            //     $academia = Academia::find(Auth::user()->academia_id);
+            //     $contrasena = str_random(6);
+            //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
 
-                $array = [
-                   'nombre' => $request->nombre,
-                   'academia' => $academia->nombre,
-                   'usuario' => $request->correo,
-                   'contrasena' => $contrasena,
-                   'subj' => $subj
-                ];
+            //     $array = [
+            //        'nombre' => $request->nombre,
+            //        'academia' => $academia->nombre,
+            //        'usuario' => $request->correo,
+            //        'contrasena' => $contrasena,
+            //        'subj' => $subj
+            //     ];
 
-                Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['usuario']);
-                    });
-            }
+            //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+            //             $msj->subject($array['subj']);
+            //             $msj->to($array['usuario']);
+            //         });
+            // }
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 200]);
         }else{

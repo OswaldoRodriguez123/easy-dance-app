@@ -22,7 +22,7 @@ class CreateConfigProductosTable extends Migration
             $table->tinyinteger('sesiones');
             $table->tinyinteger('servicio_expira');
             $table->string('meses_despues');
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
             $table->string('descripcion');
             $table->boolean('incluye_iva');
 

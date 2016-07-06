@@ -93,7 +93,10 @@ class AcademiaConfiguracionController extends Controller {
 
         if($academia->correo)
         {
-            return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with('id', Auth::user()->academia_id);
+            $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
+            $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
+
+            return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with(['id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios]);
  
         }
 
@@ -118,104 +121,116 @@ class AcademiaConfiguracionController extends Controller {
 
     public function store(Request $request)
     {
-        //dd($request->all());
 
-        $academia = Academia::find(Auth::user()->academia_id);
+        $request->merge(array('correo' => trim($request->correo)));
 
-        $arreglo = Session::get('academia');
+        $rules = [
+            'correo' => 'required|email|max:255|unique:academias,correo',
+            // 'telefono' => 'required',
+            'celular' => 'required',
+            'numero_factura' => 'numeric',
+        ];
 
-        $correo = $arreglo[0]['correo'];
-        $telefono = $arreglo[0]['telefono'];
-        $celular = $arreglo[0]['celular'];
-        $direccion = $arreglo[0]['direccion'];
-        $facebook = $arreglo[0]['facebook'];
-        $twitter = $arreglo[0]['twitter'];
-        $linkedin = $arreglo[0]['linkedin'];
-        $instagram = $arreglo[0]['instagram'];
-        $pagina_web = $arreglo[0]['pagina_web'];
-        $youtube = $arreglo[0]['youtube'];
-        $normativa = $arreglo[0]['normativa'];
-        $manual = $arreglo[0]['manual'];
-        $programacion = $arreglo[0]['programacion'];
-        $numero_factura = $arreglo[0]['numero_factura'];
-        $incluye_iva = $arreglo[0]['incluye_iva'];
 
-        $academia->correo = $correo;
-        $academia->telefono = $telefono;
-        $academia->celular = $celular;
-        $academia->direccion = $direccion;
-        $academia->facebook = $facebook;
-        $academia->twitter = $twitter;
-        $academia->linkedin = $linkedin;
-        $academia->instagram = $instagram;
-        $academia->pagina_web = $pagina_web;
-        $academia->youtube = $youtube;
-        $academia->normativa = $normativa;
-        $academia->manual = $manual;
-        $academia->programacion = $programacion;
-        $academia->numero_factura = $numero_factura;
-        $academia->incluye_iva = $incluye_iva;
-        
-        if($academia->save()){
+        $messages = [
 
-            if($request->imageBase64){
+            'correo.required' => 'Ups! El correo es requerido',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+            'telefono.required' => 'Ups! El Teléfono Local es requerido',
+            'celular.required' => 'Ups! El Teléfono Móvil es requerido',
+            'numero_factura.numeric' => 'Ups! El campo de “ Próximo número de factura ” es inválido, debe contener sólo  números',
+        ];
 
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            // return redirect("/home")
+
+            // ->withErrors($validator)
+            // ->withInput();
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            //dd($validator);
+
+        }
+
+        else{
+    
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            // $arreglo = Session::get('academia');
+
+            // $correo = $arreglo[0]['correo'];
+            // $telefono = $arreglo[0]['telefono'];
+            // $celular = $arreglo[0]['celular'];
+            // $direccion = $arreglo[0]['direccion'];
+            // $facebook = $arreglo[0]['facebook'];
+            // $twitter = $arreglo[0]['twitter'];
+            // $linkedin = $arreglo[0]['linkedin'];
+            // $instagram = $arreglo[0]['instagram'];
+            // $pagina_web = $arreglo[0]['pagina_web'];
+            // $youtube = $arreglo[0]['youtube'];
+            // $normativa = $arreglo[0]['normativa'];
+            // $manual = $arreglo[0]['manual'];
+            // $programacion = $arreglo[0]['programacion'];
+            // $numero_factura = $arreglo[0]['numero_factura'];
+            // $incluye_iva = $arreglo[0]['incluye_iva'];
+
+            $academia->correo = $request->correo;
+            $academia->telefono = $request->telefono;
+            $academia->celular = $request->celular;
+            $academia->direccion = $request->direccion;
+            $academia->facebook = $request->facebook;
+            $academia->twitter = $request->twitter;
+            $academia->linkedin = $request->linkedin;
+            $academia->instagram = $request->instagram;
+            $academia->pagina_web = $request->pagina_web;
+            $academia->youtube = $request->youtube;
+            $academia->link_video = $request->video_promocional;
+            $academia->normativa = $request->normativa;
+            $academia->manual = $request->manual;
+            $academia->numero_factura = $request->numero_factura;
+            $academia->incluye_iva = $request->incluye_iva;
+            
+            if($academia->save()){
+
+                if($request->imageBase64){
+
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "academia-". $academia->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('academia')->put($nombre_img,  $image);
+
+                    $academia->imagen = $nombre_img;
+                    $academia->save();
+
                 }
 
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
 
-                $nombre_img = "academia-". $academia->id . $extension;
-                $image = base64_decode($base64_string);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
-                \Storage::disk('academia')->put($nombre_img,  $image);
-
-                $academia->imagen = $nombre_img;
-                $academia->save();
-
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-
-            $array_estudio = Session::get('estudio');
-
-            for($i = 0; $i < count($array_estudio) ; $i++)
-            {
-                
-                $estudio = new ConfigEstudios;
-
-                $estudio->academia_id = Auth::user()->academia_id;
-                $estudio->nombre = $array_estudio[$i][0]['nombre'];
-                $estudio->capacidad = $array_estudio[$i][0]['cantidad'];
-
-                $estudio->save();
-
-            }
-
-            $array_nivel = Session::get('niveles');
-
-            for($i = 0; $i < count($array_nivel) ; $i++)
-            {
-                
-                $nivel = new ConfigNiveles;
-
-                $nivel->academia_id = Auth::user()->academia_id;
-                $nivel->nombre = $array_estudio[$i][0]['nombre'];
-
-                $nivel->save();
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 
@@ -498,12 +513,20 @@ class AcademiaConfiguracionController extends Controller {
         
         $array = array(['nombre' => $nombre , 'cantidad' => $request->cantidad_estudio]);
 
-        Session::push('estudio', $array);
+        // Session::push('estudio', $array);
 
-        $contador = count(Session::get('estudio'));
-        $contador = $contador - 1;
+        // $contador = count(Session::get('estudio'));
+        // $contador = $contador - 1;
+        // 
+        $estudio = new ConfigEstudios;
+                                        
+        $estudio->academia_id = Auth::user()->academia_id;
+        $estudio->nombre = $nombre;
+        $estudio->capacidad = $request->cantidad_estudio;
 
-         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+        $estudio->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $estudio, 'id' => $estudio->id, 200]);
 
         }
     }
@@ -532,24 +555,36 @@ class AcademiaConfiguracionController extends Controller {
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_nivel))));
 
-        $array = array(['nombre' => $nombre]);
+        // $array = array(['nombre' => $nombre]);
 
-        Session::push('niveles', $array);
+        // Session::push('niveles', $array);
 
-        $contador = count(Session::get('niveles'));
-        $contador = $contador - 1;
+        // $contador = count(Session::get('niveles'));
+        // $contador = $contador - 1;
+        // 
+        
+        $nivel = new ConfigNiveles;
+                                        
+        $nivel->academia_id = Auth::user()->academia_id;
+        $nivel->nombre = $nombre;
 
-         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+        $nivel->save();
+
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $nivel, 'id' => $nivel->id, 200]);
 
         }
     }
 
     public function eliminarestudio($id){
 
-        $arreglo = Session::get('estudio');
+        // $arreglo = Session::get('estudio');
 
-        unset($arreglo[$id]);
-        Session::put('estudio', $arreglo);
+        // unset($arreglo[$id]);
+        // Session::put('estudio', $arreglo);
+        // 
+        $estudio = ConfigEstudios::find($id);
+
+        $estudio->delete();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
@@ -557,10 +592,15 @@ class AcademiaConfiguracionController extends Controller {
 
     public function eliminarniveles($id){
 
-        $arreglo = Session::get('niveles');
+        // $arreglo = Session::get('niveles');
 
-        unset($arreglo[$id]);
-        Session::put('niveles', $arreglo);
+        // unset($arreglo[$id]);
+        // Session::put('niveles', $arreglo);
+        // 
+        
+        $nivel = ConfigNiveles::find($id);
+
+        $nivel->delete();
 
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);

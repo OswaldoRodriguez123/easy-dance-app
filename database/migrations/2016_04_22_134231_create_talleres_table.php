@@ -29,7 +29,7 @@ class CreateTalleresTable extends Migration
             $table->tinyinteger('cupo_minimo');
             $table->tinyinteger('cupo_maximo');
             $table->tinyinteger('cupo_reservacion');
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
             $table->string('condiciones');
 
             $table->integer('especialidad_id')->unsigned()->nullable();
