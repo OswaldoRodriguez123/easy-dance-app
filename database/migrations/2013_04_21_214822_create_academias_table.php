@@ -17,6 +17,9 @@ class CreateAcademiasTable extends Migration
         {
             $table->increments('id');
 
+            $table->integer('sucursal_id')->unsigned()->nullable();
+            $table->foreign('sucursal_id')->references('id')->on('sucursales');
+
             $table->string('nombre');
 
             $table->integer('especialidades_id')->unsigned()->nullable();

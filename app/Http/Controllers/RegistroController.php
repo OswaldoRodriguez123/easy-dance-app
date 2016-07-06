@@ -91,13 +91,18 @@ class RegistroController extends Controller {
      * @return User
      */
     protected function create(array $data)
-    {
+    {   
+        $sucursal = new Sucursal;
+        $sucursal->save();
+
         $academia = new Academia;
+        $academia->sucursal_id = $sucursal->id;
+        $academia->save();
 
         $data['email'] = trim($data['email']);
 
-        $academia->save();
-
+        
+        
         $array = [
            'nombre' => $data['nombre'],
            'email' => $data['email']
