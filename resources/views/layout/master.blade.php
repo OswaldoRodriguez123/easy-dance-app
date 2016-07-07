@@ -30,6 +30,8 @@
       <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 
+      <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />
+
 			@yield('css')
 		
 	</head>

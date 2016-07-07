@@ -13,39 +13,6 @@
 
 Route::auth();
 
-//EXTRA
-
-
-Route::get('administrativo/prueba1', 'AdministrativoController@prueba1');
-Route::get('administrativo/prueba2', 'AdministrativoController@prueba2');
-Route::get('administrativo/prueba3', 'AdministrativoController@prueba3');
-
-Route::get('/contacto', function () {
-    return view('contacto.index');
-});
-
-//INICIO
-
-Route::get('/prueba', function () {
-    return view('avance.avance1.confirmatucuenta');
-});
-
-Route::get('/latam', function () {
-    return view('empresa.latam');
-});
-
-
-
-
-Route::get('/inicio2', function () {
-    return view('inicio.indexx');
-});
-
-
-Route::get('/pagina', function () {
-    return view('pagina_web.index');
-});
-
 // FLUJO DE REGISTRO
 
 
@@ -80,6 +47,10 @@ Route::get('/login', 'LoginController@getLogin');
 Route::post('/login', 'LoginController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
+
+
+
+// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
 
 //EL ROL ADMIN TENDRA ACCESO LIBRE A TODAS LA RUTAS
@@ -291,7 +262,7 @@ Route::put('especiales/promociones/update/fecha', 'PromocionController@updateFec
 Route::put('especiales/promociones/update/sexo', 'PromocionController@updateSexo');
 Route::put('especiales/promociones/update/edad', 'PromocionController@updateEdad');
 
-// //EXAMENES
+//EXAMENES
 
 // Route::get('especiales/examenes', 'ExamenController@principal');
 // Route::get('especiales/examenes/agregar', 'ExamenController@create');
@@ -336,6 +307,13 @@ Route::get('configuracion', function () {
     return view('configuracion.index');
 
 });
+
+
+// SUCURSAL
+
+Route::get('configuracion/sucursales','SucursalController@index');
+Route::get('configuracion/sucursales/agregar','SucursalController@create');
+
 
 // ACADEMIA
 
