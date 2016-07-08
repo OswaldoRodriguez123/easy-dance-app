@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" data-formulario="edit_nombre_campana" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_nombre_campana" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" data-formulario="edit_eslogan_campana" data-update="eslogan" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_eslogan_campana" data-update="eslogan" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -168,7 +168,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_historia_campana" data-update="historia" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" href="#" data-formulario="edit_historia_campana" data-update="historia" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" data-formulario="edit_cantidad_campana" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cantidad_campana" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -278,7 +278,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" data-formulario="edit_plazo_campana" data-update="plazo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_plazo_campana" data-update="plazo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -301,8 +301,11 @@
                                     <div class="form-group fg-line">
                                         <label for="id">Cargar Imagen</label>
                                         <div class="clearfix p-b-15"></div>
+                                        <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" style="line-height: 150px;">
+                                        </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
                                                 <span class="fileinput-new">Seleccionar Imagen</span>
@@ -344,7 +347,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-morado m-r-5 f-12 guardar" id="guardar" data-formulario="edit_imagen_campana" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-morado m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_campana" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -401,7 +404,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" data-formulario="edit_link_campana" data-update="video" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_link_campana" data-update="video" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -529,7 +532,7 @@
                             
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-16 guardar" id="guardar" data-formulario="edit_datos_campana" data-update="datos" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-16 guardar" href="#" id="guardar" data-formulario="edit_datos_campana" data-update="datos" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
 
@@ -539,6 +542,157 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalRecompensa-Campana" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Campaña<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_recompensa_campana" id="edit_recompensa_campana"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               
+                               
+                          <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Las recompensas son incentivos que se ofrecen a los colaboradores a cambio de su apoyo. Puedes editar una recompensa hasta antes de que sea reclamada por un colaborador. A continuación presentaremos el tipo de recompensa que no debes ofrecer: 
+
+                                    1.- Capital, patrimonio neto u otra participación en una empresa o negocio.
+                                    2.- Todo producto para el consumo de alcohol.
+                                    3.- Sustancia controlada o parafernalia de fármacos.
+                                    4.- Armas, municiones y accesorios relacionados.
+                                    5.- Toda forma de lotería o juego de apuestas" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <label for="nombre_estudio" id="id-nombre_recompensa">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la recompensa" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_recompensa" id="nombre_recompensa" placeholder="Ej. Pase VIP">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-nombre_recompensa">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_recompensa_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de la recompensa" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="cantidad_recompensa" id="cantidad_recompensa" data-mask="0000000" placeholder="Ej. 50">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-cantidad_recompensa">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_recompensa_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <label for="descripcion_recompensa" id="id-descripcion_recompensa">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la recompensa" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b-cuentales-historia f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="descripcion_recompensa" id="descripcion_recompensa" placeholder="Ingresa la descripción">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-descripcion_recompensa">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_recompensa_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+                               </div>
+
+                              <br>
+
+                              <div class="card-header text-left">
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" id="add" >Agregar Linea</button>
+                              </div>
+
+                              <br></br>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <thead>
+                                <tr>
+                                    
+                                    <th class="text-center" data-column-id="recompensa"></th>
+                                    <th class="text-center" data-column-id="cantidad" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="descripcion"></th>
+                                    <th class="text-center" data-column-id="operaciones"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                                           
+                            </tbody>
+                            </table>
+
+                            </div>
+                            </div>
+
+                            <div class="clearfix p-b-35"></div>
+                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+
+                            <div class="clearfix p-b-35"></div>
+                                      <hr></hr>
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
+                               
+
+
+                               <div class="clearfix"></div> 
+<!--                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_administrativo_academia" data-update="administrativo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div> --></form>
+                    </div>
+                </div>
+            </div>
+          </div>
             
             <section id="content">
                 <div class="container">
@@ -628,7 +782,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-flash zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Eslogan </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="campana-eslogan"><span>{{$campana->eslogan}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="campana-eslogan" class="f-14 m-l-15" data-valor="{{$campana->eslogan}}" ><span id="campana-historia"><span>{{ str_limit($campana->eslogan, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCantidad-Campana">
                              <td>
@@ -670,6 +824,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="campana-datos"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalRecompensa-Campana">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($recompensas) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_c-piggy-bank f-22"></i> </span>
+                               <span class="f-14"> Recompensa </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="campana-recompensa"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
 
 
                            </table>
@@ -698,8 +860,21 @@
     route_update="{{url('/')}}/especiales/campañas/update";
     route_eliminar="{{url('/')}}/especiales/campañas/eliminar/";
     route_principal="{{url('/')}}/especiales/campañas";
+    route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensa";
+    route_eliminarrecompensa="{{url('/')}}/especiales/campañas/eliminarrecompensa";
 
     $(document).ready(function(){
+
+        $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagena img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
@@ -725,45 +900,21 @@
        $("#historia").val(historia);
     })
 
-    $('#modalNombre-Proveedor').on('show.bs.modal', function (event) {
+    $('#modalNombre-Campana').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#nombre").val($("#proveedor-nombre").text()); 
-      $("#apellido").val($("#proveedor-apellido").text());
-    })
-    $('#modalFechaNacimiento-Proveedor').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#fecha_nacimiento").val($("#proveedor-fecha_nacimiento").text()); 
-    })
-    $('#modalSexo-Proveedor').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      var sexo=$("#proveedor-sexo").data('valor');
-      if(sexo=="M"){
-        $("#hombre").prop("checked", true);
-      }else{
-        $("#mujer").prop("checked", true);
-      }
-      
+      var nombre=$("#campana-nombre").data('valor');
+       $("#nombre").val(nombre);
     })
 
-    $('#modalCorreo-Proveedor').on('show.bs.modal', function (event) {
+    $('#modalEslogan-Campana').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#correo").val($("#proveedor-correo").text()); 
-    })
-
-    $('#modalTelefono-Proveedor').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#telefono").val($("#proveedor-telefono").text());
-      $("#celular").val($("#proveedor-celular").text()); 
-    })
-
-    $('#modalEmpresa-Proveedor').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#empresa").val($("#proveedor-empresa").text());
+      var eslogan=$("#campana-nombre").data('valor');
+       $("#eslogan").val(eslogan);
     })
 
 
     function limpiarMensaje(){
-        var campo = ["nombre", "apellido", "sexo", "correo", "telefono", "celular", "empresa"];
+        var campo = ["nombre", "cantidad", "historia", "eslogan", "plazo", "link_video"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -772,7 +923,7 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["nombre", "apellido", "sexo", "correo", "telefono", "celular", "empresa"];
+        var campo = ["nombre", "cantidad", "historia", "eslogan", "plazo", "link_video"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -802,6 +953,12 @@
              $("#campana-"+c.name).data('valor',c.value);
              $("#campana-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='eslogan'){
+             $("#campana-"+c.name).data('valor',c.value);
+             $("#campana-"+c.name).html(c.value.substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='plazo'){
+             $("#campana-"+c.name).text(c.value + " Dias");
           }else{
             $("#campana-"+c.name).text(c.value);
           }
@@ -810,6 +967,41 @@
           $("#estatus-"+c.name).addClass('c-verde');
         });
       }
+
+      var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -989,6 +1181,117 @@
                                 }
                 });
       }
+
+      $("#add").click(function(){
+
+                var route = route_recompensa;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#agregar_campana" ).serialize(); 
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var recompensa = respuesta.array[0].recompensa;
+                          var cantidad = respuesta.array[0].cantidad;
+                          var descripcion = respuesta.array[0].descripcion;
+
+                          var rowId=respuesta.id;
+                          var rowNode=t.row.add( [
+                          ''+recompensa+'',
+                          ''+cantidad+'',
+                          ''+descripcion+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = $('input:hidden[name=_token]').val();
+        var id = $(this).closest('tr').attr('id');
+              $.ajax({
+                   url: route_eliminarrecompensa+"/"+id,
+                   headers: {'X-CSRF-TOKEN': token},
+                   type: 'POST',
+                   dataType: 'json',                
+                  success: function (data) {
+                    if(data.status=='OK'){
+                        
+                                         
+                    }else{
+                      swal(
+                        'Solicitud no procesada',
+                        'Ha ocurrido un error, intente nuevamente por favor',
+                        'error'
+                      );
+                    }
+                  },
+                  error:function (xhr, ajaxOptions, thrownError){
+                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                  }
+                })
+
+                t.row( $(this).parents('tr') )
+                  .remove()
+                  .draw();
+            });
     
    </script> 
 

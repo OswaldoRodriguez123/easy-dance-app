@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Campana;
+use App\Recompensa;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -37,6 +38,8 @@ class CampanaController extends Controller {
      */
     public function create()
     {
+        Session::forget('recompensa');
+
         return view('especiales.campana.create');
     }
 
@@ -50,15 +53,17 @@ class CampanaController extends Controller {
         
     $rules = [
 
-        'recompensa' => 'required',
-        'cantidad' => 'required|numeric',
+        'nombre_recompensa' => 'required',
+        'cantidad_recompensa' => 'required|numeric',
+        'descripcion_recompensa' => 'required',
     ];
 
     $messages = [
 
-        'recompensa.required' => 'Ups! La recompensa es  requerida',
-        'cantidad.required' => 'Ups! La cantidad es  requerida',
-        'cantidad.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+        'nombre_recompensa.required' => 'Ups! La recompensa es  requerida',
+        'cantidad_recompensa.required' => 'Ups! La cantidad es  requerida',
+        'cantidad_recompensa.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+        'descripcion_recompensa.required' => 'Ups! La descripcion es  requerida',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -71,12 +76,13 @@ class CampanaController extends Controller {
 
     else{
 
-        $array = array(['recompensa' => $request->recompensa, 'cantidad' => $request->cantidad]);
+        $array = array(['recompensa' => $request->nombre_recompensa, 'cantidad' => $request->cantidad_recompensa, 'descripcion' => $request->descripcion_recompensa]);
 
         Session::push('recompensa', $array);
 
-        $contador = count(Session::get('recompensa'));
-        $contador = $contador - 1;
+        $items = Session::get('recompensa');
+        end( $items );
+        $contador = key( $items );
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
 
@@ -89,8 +95,7 @@ class CampanaController extends Controller {
 
         // unset($arreglo[$id]);
         unset($arreglo[$id]);
-        Session::forget('recompensa');
-        Session::push('recompensa', $arreglo);
+        Session::put('recompensa', $arreglo);
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
@@ -104,7 +109,8 @@ class CampanaController extends Controller {
     public function store(Request $request)
     {
         //dd($request->all());
-
+        //
+    
 
     $rules = [
         'cantidad' => 'required|numeric',
@@ -139,55 +145,84 @@ class CampanaController extends Controller {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        if($request->plazo <= 45){
 
-        $campana = new Campana;
+            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
-        $campana->academia_id = Auth::user()->academia_id;
-        $campana->nombre = $nombre;
-        $campana->cantidad = $request->cantidad;
-        $campana->historia = $request->historia;
-        $campana->eslogan = $request->eslogan;
-        $campana->plazo = $request->plazo;
-        $campana->link_video = $request->link_video;
-        $campana->recompensa = $request->recompensa;
-        $campana->correo = $request->correo;
-        $campana->nombre_banco = $request->nombre_banco;
-        $campana->tipo_cuenta = $request->tipo_cuenta;
-        $campana->rif = $request->rif;
-        $campana->condiciones = $request->condiciones;
+            $campana = new Campana;
 
-        if($campana->save()){
+            $fecha_inicio = Carbon::now()->toDateString();
+            $fecha_final = Carbon::now()->addDays($request->plazo)->toDateString();
 
-            if($request->imageBase64){
+            $campana->academia_id = Auth::user()->academia_id;
+            $campana->nombre = $nombre;
+            $campana->cantidad = $request->cantidad;
+            $campana->fecha_inicio = $fecha_inicio;
+            $campana->fecha_final = $fecha_final;
+            $campana->historia = $request->historia;
+            $campana->eslogan = $request->eslogan;
+            $campana->plazo = $request->plazo;
+            $campana->link_video = $request->link_video;
+            $campana->correo = $request->correo;
+            $campana->nombre_banco = $request->nombre_banco;
+            $campana->tipo_cuenta = $request->tipo_cuenta;
+            $campana->rif = $request->rif;
+            $campana->condiciones = $request->condiciones;
 
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+            if($campana->save()){
+
+                if($request->imageBase64){
+
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "campana-". $campana->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('campana')->put($nombre_img,  $image);
+
+                    $campana->imagen = $nombre_img;
+                    $campana->save();
+
                 }
 
-                if($ext == 'png'){
-                    $extension = '.png';
+                $arreglos = Session::get('recompensa');
+
+                if($arreglos)
+                {
+                    foreach($arreglos as $arreglo){
+
+                        $recompensa = New Recompensa;
+
+                        $recompensa->campana_id = $campana->id;
+                        $recompensa->nombre = $arreglo[0]['recompensa'];
+                        $recompensa->cantidad = $arreglo[0]['cantidad'];
+                        $recompensa->descripcion = $arreglo[0]['descripcion'];
+
+                        $recompensa->save();
+
+                    }
                 }
 
-                $nombre_img = "campana-". $campana->id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('campana')->put($nombre_img,  $image);
-
-                $campana->imagen = $nombre_img;
-                $campana->save();
-
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+
+            return response()->json(['errores' => ['plazo' => [0, 'El plazo no puede ser mayor a 45 dias']], 'status' => 'ERROR'],422);
         }
     }
     }
@@ -338,9 +373,6 @@ class CampanaController extends Controller {
     
     public function updatePlazo(Request $request){
 
-        $campana = Campana::find($request->id);
-        $campana->plazo = $request->plazo;
-
         $rules = [
             'plazo' => 'required|numeric',
         ];
@@ -361,10 +393,26 @@ class CampanaController extends Controller {
 
         else{
 
-            if($campana->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            if($request->plazo <= 45){
+
+
+                $fecha_inicio = Carbon::now()->toDateString();
+                $fecha_final = Carbon::now()->addDays($request->plazo)->toDateString();
+
+                $campana = Campana::find($request->id);
+                $campana->plazo = $request->plazo;
+                $campana->fecha_inicio = $fecha_inicio;
+                $campana->fecha_final = $fecha_final;
+
+                if($campana->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
             }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+
+                return response()->json(['errores' => ['plazo' => [0, 'El plazo no puede ser mayor a 45 dias']], 'status' => 'ERROR'],422);
             }
         }
         // return redirect("alumno/edit/{$request->id}");
@@ -416,6 +464,35 @@ class CampanaController extends Controller {
         }
     }
 
+    public function updateImagen(Request $request)
+    {
+                $campana = Campana::find($request->id);
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "campana-". $campana->id . $extension;
+                $image = base64_decode($base64_string);
+
+                \Storage::disk('campana')->put($nombre_img,  $image);
+
+                $campana->imagen = $nombre_img;
+                $campana->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -444,7 +521,8 @@ class CampanaController extends Controller {
         $campana = Campana::find($id);
 
         if($campana){
-           return view('especiales.campana.planilla')->with('campana', $campana);
+            $recompensas = Recompensa::where('campana_id' , $id)->get();
+           return view('especiales.campana.planilla')->with(['campana' => $campana, 'recompensas' => $recompensas]);
         }else{
            return redirect("especiales/campañas"); 
         }

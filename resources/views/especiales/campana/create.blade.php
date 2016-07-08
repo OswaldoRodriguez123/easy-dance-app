@@ -313,23 +313,23 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
-                                    <label for="nombre_estudio" id="id-nombre_estudio">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del Salón" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre_estudio" id="id-nombre_recompensa">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la recompensa" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="recompensa" id="recompensa" placeholder="Ej. Pase VIP">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_recompensa" id="nombre_recompensa" placeholder="Ej. Pase VIP">
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-nombre_estudio">
+                                 <div class="has-error" id="error-nombre_recompensa">
                                       <span >
-                                          <small class="help-block error-span" id="error-nombre_estudio_mensaje" ></small>                               
+                                          <small class="help-block error-span" id="error-nombre_recompensa_mensaje" ></small>                               
                                       </span>
                                   </div>
 
                                   <div class="clearfix p-b-35"></div>
 
-                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de personas del Salón" title="" data-original-title="Ayuda"></i>
+                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de la recompensa" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
@@ -337,9 +337,25 @@
                                         <input type="text" class="form-control input-sm input-mask" name="cantidad_recompensa" id="cantidad_recompensa" data-mask="0000000" placeholder="Ej. 50">
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-cantidad_estudio">
+                                 <div class="has-error" id="error-cantidad_recompensa">
                                       <span >
-                                          <small class="help-block error-span" id="error-cantidad_estudio_mensaje" ></small>                               
+                                          <small class="help-block error-span" id="error-cantidad_recompensa_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <label for="descripcion_recompensa" id="id-descripcion_recompensa">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la recompensa" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b-cuentales-historia f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="descripcion_recompensa" id="descripcion_recompensa" placeholder="Ingresa la descripción">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-descripcion_recompensa">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_recompensa_mensaje" ></small>                               
                                       </span>
                                   </div>
                                </div>
@@ -360,6 +376,8 @@
                                     
                                     <th class="text-center" data-column-id="recompensa"></th>
                                     <th class="text-center" data-column-id="cantidad" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="descripcion"></th>
+                                    <th class="text-center" data-column-id="operaciones"></th>
 
                                 </tr>
                             </thead>
@@ -762,11 +780,13 @@
 
                           var recompensa = respuesta.array[0].recompensa;
                           var cantidad = respuesta.array[0].cantidad;
+                          var descripcion = respuesta.array[0].descripcion;
 
                           var rowId=respuesta.id;
                           var rowNode=t.row.add( [
                           ''+recompensa+'',
                           ''+cantidad+'',
+                          ''+descripcion+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )

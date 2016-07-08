@@ -26,7 +26,6 @@ class CreateCampanasTable extends Migration
             $table->string('historia');
             $table->integer('plazo');
             $table->string('link_video');
-            $table->string('recompensa');
             $table->string('correo');
             $table->string('numero_cuenta');
             $table->string('nombre_banco');
