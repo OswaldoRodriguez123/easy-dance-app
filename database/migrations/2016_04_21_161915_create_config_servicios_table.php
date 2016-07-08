@@ -22,6 +22,10 @@ class CreateConfigServiciosTable extends Migration
             $table->string('impuesto',20);
             $table->string('imagen')->nullable();
             $table->string('descripcion',300);
+            $table->integer('cantidad_sesiones')->nullable();
+            $table->integer('meses_expiracion')->nullable();
+            $table->tinyinteger('meses_despues')->nullable();
+            $table->tinyinteger('incluye_iva');
 
             $table->timestamps();
             $table->softDeletes();
