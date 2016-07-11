@@ -19,6 +19,8 @@
         <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
         <link href="{{url('/')}}/assets/css/david.css" rel="stylesheet">
 
+        <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />
+
     </head>
 
     <body class="login-content" >
