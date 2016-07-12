@@ -184,6 +184,8 @@ class AgendarController extends Controller
 	    //return redirect('home/dashboard'); 
 	    $fecha_inicio= $fecha_carbon->format('d-m-Y');
 
+        //dd($fecha_inicio);
+
 	    if($request->agendar=="clases-grupales"){
 			return redirect('agendar/clases-grupales/agregar')->with('fecha_inicio', $fecha_inicio);
 	    }elseif($request->agendar=="clases-personalizadas"){

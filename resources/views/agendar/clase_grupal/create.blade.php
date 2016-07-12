@@ -78,7 +78,11 @@
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
                                       <div class="fg-line">
-                                              <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha">
+                                              <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha"
+                                              @if (session('fecha_inicio'))
+                                                  value="{{session('fecha_inicio')}} - {{session('fecha_inicio')}}"
+                                              @endif
+                                              >
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-fecha">

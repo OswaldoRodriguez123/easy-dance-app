@@ -1,11 +1,11 @@
 
 <!DOCTYPE html>
-    <html class="login-content" data-ng-app="materialAdmin">
+    <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Material Admin</title>
+        <title>Easy Dance</title>
 
         <!-- Vendor CSS -->
         <link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
@@ -19,16 +19,28 @@
         <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
         <link href="{{url('/')}}/assets/css/david.css" rel="stylesheet">
 
+        <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />
+
     </head>
 
     <body class="login-content" >
 
         <!-- Login -->
 
-
-        <div class="lc-block toggled" id="l-login">
+        <!--<div class="lc-block toggled" id="l-login" style="padding:0px 0px 0px 0px; background: #4E1E43 !important;margin-bottom:0px;">
+             <img src="{{url('/')}}/assets/img/logo.png" width="200" >
+        </div>-->
+        <div id="formlogin" >
+        
+        <div class="lc-block toggled"  style="padding:0px 0px 0px 0px; background: #4E1E43 !important;margin-bottom:10px; vertical-align: top; box-shadow: none;">
+             <img id="imagen" src="{{url('/')}}/assets/img/logo.png" width="200" >
+        </div><div class="clearfix"></div>
+        <div class="lc-block toggled" id="l-login" style="margin-top:10px;vertical-align: top;">
+             
+             
+       
             <!-- <form id="FormLogin"> -->
-            <form name="agregar" method="POST" action="{{ url('/login') }}" >
+            <form  name="agregar" method="POST" action="{{ url('/login') }}" >
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="input-group m-b-30">
                     <span class="input-group-addon"><i class="zmdi zmdi-account zmdi-hc-2x"></i></span>
@@ -81,6 +93,8 @@
 
 
             </form>
+
+            </div>
 
 
 
@@ -252,9 +266,10 @@
         <![endif]-->
 
         <script src="{{url('/')}}/assets/js/functions.js"></script>
+        <script src="{{url('/')}}/assets/js/demo.js"></script>
 
 
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
 
     route_login="{{url('/')}}/login";
 
@@ -348,7 +363,29 @@
             };
 
 
-    </script>
+    </script>-->
+
+         <script type="text/javascript">
+            $(document).ready(function(){
+                @if (count($errors) > 0)
+                    var animation = 'shake';
+                    var cardImg = $('#formlogin');
+                    if (animation === "hinge") {
+                        animationDuration = 20100;
+                    }
+                    else {
+                        animationDuration = 20200;
+                    }
+                    
+                    cardImg.removeAttr('class');
+                    cardImg.addClass('animated '+animation);
+                    
+                    setTimeout(function(){
+                        cardImg.removeClass(animation);
+                    }, animationDuration);
+                @endif                
+            });
+        </script>
 
         
     </body>
