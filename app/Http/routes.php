@@ -174,7 +174,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('agendar/clases-grupales/inscribir/{id}', 'ClaseGrupalController@inscribir');
 	Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
-	Route::delete('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
+	Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
 
 	//CLASES PERSONALIZADAS
 

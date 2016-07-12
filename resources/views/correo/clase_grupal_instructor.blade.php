@@ -66,7 +66,7 @@
 			</tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b> {{$nombre_instructor}} </b> La academia <b>{{$academia}}</b> ha asignado una Clase personalizada llamada <b>{{$nombre_clase}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Por favor confirma que ya estás enterado pulsando el siguiente link:
+                                    Hola <b> {{$nombre_instructor}} </b> La academia <b>{{$academia}}</b> ha asignado una Clase personalizada llamada <b>{{$nombre_clase}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Por favor confirma tu asistencia en la administración de la academia.
 
                                     </font>
                                 </td>
@@ -79,18 +79,16 @@
                                 <td style="font-size:2px" height="20">
                                 </td>
                               </tr>
+
+                              <tr>
+                                <td valign="top" style="text-align:center;">
+                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> ¡Suerte! <br><br>
+                                  </font>
+                              </td></tr>
                               
                               <tr>
                                 <td style="font-size:2px" height="20">
                                 </td>
-                              </tr>
-                              
-                              <tr>
-                                
-                                <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
-            
-              <a href="http://app.easydancelatino.com/inicio" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Estoy Enterado</a>
-            </td>
                               </tr>
 
                               <tr>

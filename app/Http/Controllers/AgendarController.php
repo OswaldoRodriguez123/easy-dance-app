@@ -64,6 +64,7 @@ class AgendarController extends Controller
                 ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                 ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion')
                 ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
 		$arrayClases=array();
@@ -101,6 +102,7 @@ class AgendarController extends Controller
 				->join('alumnos', 'alumnos.id', '=', 'clases_personalizadas.alumno_id')
                 ->select('clases_personalizadas.*' , 'alumnos.nombre', 'alumnos.apellido')
                 ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
+                ->where('clases_personalizadas.deleted_at', '=', null)
         ->get();
 
 		$arrayClasespersonalizadas=array();
@@ -134,6 +136,7 @@ class AgendarController extends Controller
 		$fiestas = DB::table('fiestas')
                 ->select('fiestas.*')
                 ->where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
+                ->where('fiestas.deleted_at', '=', null)
         ->get();
 
 		$arrayFiestas=array();

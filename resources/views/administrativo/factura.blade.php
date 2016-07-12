@@ -62,8 +62,6 @@
                         <div class="card-header text-center header-invoice">
                             @if ($academia->imagen_academia)
                             <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
-                            @else
-                            <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
                             @endif
                         </div>
                         

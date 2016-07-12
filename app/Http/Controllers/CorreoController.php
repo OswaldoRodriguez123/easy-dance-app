@@ -98,6 +98,8 @@ class CorreoController extends Controller {
 			{
 				$alumno = Alumno::find($request->id);
 
+				if($alumno->correo){
+
 				    $subj = 'Feliz cumpleaños';
 
 		        	$msj_html = $request->msj_html;
@@ -112,6 +114,10 @@ class CorreoController extends Controller {
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
 			            });
+			    else{
+
+			    	return response()->json(['errores' => ['nombre' => [0, 'Ups! Este alumno no posee correo electronico']], 'status' => 'ERROR'],422);
+			    }
 
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 			}
@@ -120,6 +126,8 @@ class CorreoController extends Controller {
 			{
 				$alumno = Instructor::find($request->id);
 
+				if($alumno->correo){
+
 				    $subj = 'Feliz cumpleaños';
 
 		        	$msj_html = $request->msj_html;
@@ -134,8 +142,14 @@ class CorreoController extends Controller {
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
 			            });
+			      
+			       }else{
+
+			       		return response()->json(['errores' => ['nombre' => [0, 'Ups! Este instructor no posee correo electronico']], 'status' => 'ERROR'],422);
+			       }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+			       }
 			}
 
 			if($tipo == 3)

@@ -1013,13 +1013,14 @@
         function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
+         var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
                 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
+                        type: 'POST',
                     dataType: 'json',
-                    data:id,
+                    data: "&alumno_id=" + id + "&clase_grupal_id=" + clase_grupal_id,
                     success:function(respuesta){
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');

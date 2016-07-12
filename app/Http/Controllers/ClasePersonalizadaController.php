@@ -44,6 +44,7 @@ class ClasePersonalizadaController extends Controller {
             ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'clases_personalizadas.id', 'clases_personalizadas.fecha_inicio')
             ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
+            ->where('clases_personalizadas.deleted_at', '=', null)
             ->get();
 
         return view('agendar.clase_personalizada.index')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clase_personalizada_join' => $clase_personalizada_join]);

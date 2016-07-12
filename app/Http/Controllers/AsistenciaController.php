@@ -48,7 +48,7 @@ class AsistenciaController extends Controller
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
+            ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
@@ -84,6 +84,8 @@ class AsistenciaController extends Controller
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();
 
      // dd($claseGrupal);
@@ -148,6 +150,7 @@ class AsistenciaController extends Controller
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
         ->get();
+
      	$alumno=Alumno::all();
   
 	    $arrayTalleres=array();
@@ -392,9 +395,8 @@ class AsistenciaController extends Controller
             ->where('id',$clase_id[0])
             ->get();
 
-            //dd(count($ClasesAsociadas));
+            // dd(count($id_instructor));
 
-            
             
             $estatu="no_asociado";
             if(count($ClasesAsociadas)>0){              
@@ -403,8 +405,7 @@ class AsistenciaController extends Controller
               
              if($estatu=="asociado") {
 
-                $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->first();
-
+                $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
 
                   $actual = Carbon::now();
                   $actual->tz = 'America/Caracas';
@@ -415,6 +416,7 @@ class AsistenciaController extends Controller
                   if($check)
                   {
                     $check->hora_salida = $hora_actual;
+                    $check->save();
                   }
                   else{
 
@@ -472,11 +474,12 @@ class AsistenciaController extends Controller
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
 
-                $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->first();
+                $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
 
                 if($check)
                 {
                   $check->hora_salida = $hora_actual;
+                  $check->save();
                 }
                 else{
 

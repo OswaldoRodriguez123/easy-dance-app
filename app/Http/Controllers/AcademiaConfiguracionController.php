@@ -736,7 +736,7 @@ class AcademiaConfiguracionController extends Controller {
                     $nombre_img = "academia-". Auth::user()->academia_id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('academia')->put($nombre_img,  $imagen);
+                    \Storage::disk('academia')->put($nombre_img,  $image);
 
                 }else{
                     $nombre_img = "";
@@ -849,6 +849,9 @@ class AcademiaConfiguracionController extends Controller {
                 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final',
                 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.id as clase_grupal_id')
                 ->join('clases_grupales', 'clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
+                ->where('config_clases_grupales.academia_id','=', Auth::user()->academia_id)
+                ->where('clases_grupales.deleted_at', '=', null)
+                ->where('clases_grupales.fecha_final', '<', Carbon::now()->toDateString())
                 ->get();
 
         $InscripcionClaseGrupal = InscripcionClaseGrupal::select('inscripcion_clase_grupal.clase_grupal_id AS ClaseGrupalID', 
@@ -862,6 +865,7 @@ class AcademiaConfiguracionController extends Controller {
                 ->join('alumnos', 'inscripcion_clase_grupal.alumno_id','=','alumnos.id')
                 ->join('config_clases_grupales', 'config_clases_grupales.id','=',
                        'clases_grupales.clase_grupal_id')
+                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
                 ->get();
         
         
@@ -895,6 +899,7 @@ class AcademiaConfiguracionController extends Controller {
                                         'items_factura_proforma.alumno_id')
                                         ->where('items_factura_proforma.tipo','=',$tipo)
                                         ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                                        ->where('items_factura_proforma.item_id', '=', $configClases->clase_grupal_id)
                                         ->get()->count();
 
                                         /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
@@ -906,28 +911,34 @@ class AcademiaConfiguracionController extends Controller {
                                         
                                         if($FacturaProforma == 0 ){
 
-                                            $fecha_cuota = $fecha_cuota->addMonth()->toDateString();
-                                            
-                                            $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
+                                            $fecha_final = Carbon::createFromFormat('Y-m-d', $configClases->fecha_final);
 
-                                            $clasegrupal->fecha_pago = $fecha_cuota;
-                                            // $clasegrupal->save();
+                                            if($fecha_final > Carbon::now()){
+                                                
+                                                $fecha_cuota = $fecha_cuota->addMonth()->toDateString();
+                                                
+                                                $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
 
-                                            $item_factura = new ItemsFacturaProforma;
-                                            
-                                            $item_factura->alumno_id = $InscripcionClase->AlumnoId;
-                                            $item_factura->academia_id = Auth::user()->academia_id;
-                                            $item_factura->fecha = Carbon::now()->toDateString();
-                                            $item_factura->item_id = $id;
-                                            $item_factura->nombre = 'Cuota ' . $configClases->nombre;
-                                            $item_factura->tipo = $tipo;
-                                            $item_factura->cantidad = $cantidad;
-                                            // $item_factura->precio_neto = $configClases->costo_mensualidad;
-                                            //$item_factura->impuesto = $impuesto;
-                                            $item_factura->importe_neto = $InscripcionClase->Costo;
-                                            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                                                $clasegrupal->fecha_pago = $fecha_cuota;
+                                                // $clasegrupal->save();
 
-                                            $item_factura->save();
+                                                $item_factura = new ItemsFacturaProforma;
+                                                
+                                                $item_factura->alumno_id = $InscripcionClase->AlumnoId;
+                                                $item_factura->academia_id = Auth::user()->academia_id;
+                                                $item_factura->fecha = Carbon::now()->toDateString();
+                                                $item_factura->item_id = $id;
+                                                $item_factura->nombre = 'Cuota ' . $configClases->nombre;
+                                                $item_factura->tipo = $tipo;
+                                                $item_factura->cantidad = $cantidad;
+                                                // $item_factura->precio_neto = $configClases->costo_mensualidad;
+                                                //$item_factura->impuesto = $impuesto;
+                                                $item_factura->importe_neto = $InscripcionClase->Costo;
+                                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                                $item_factura->save();
+
+                                            }
 
                                             }else{
                                                 $result[] = array(
@@ -976,7 +987,7 @@ class AcademiaConfiguracionController extends Controller {
 
         $academia = Academia::find(Auth::user()->academia_id);
 
-        $tipo = 'Cuota Clase Grupal';
+        $tipo = 8;
 
         $ConfigClasesGrupales = ConfigClasesGrupales::select('config_clases_grupales.id',
                 'config_clases_grupales.nombre','config_clases_grupales.costo_inscripcion',

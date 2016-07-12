@@ -224,7 +224,7 @@
                 ''+array.clase+'',
                 ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
                 ''+array.hora+'',
-                ''+array.hora+'',
+                ''+array.hora_salida+'',
                 '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )

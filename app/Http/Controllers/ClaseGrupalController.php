@@ -47,6 +47,7 @@ class ClaseGrupalController extends Controller {
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
         ->get();
         
         return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $clase_grupal_join]);
@@ -89,6 +90,7 @@ class ClaseGrupalController extends Controller {
                 ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                 ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial')
                 ->where('clases_grupales.id', '=', $id)
+                ->where('clases_grupales.deleted_at', '=', null)
         ->first();
 
         return view('agendar.clase_grupal.inscripcion')->with(['alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'id' => $id, 'clasegrupal' => $clasegrupal]);
@@ -108,6 +110,7 @@ class ClaseGrupalController extends Controller {
                 ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
 
         // $alumnos = DB::table('alumnos')
@@ -129,11 +132,10 @@ class ClaseGrupalController extends Controller {
         return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos]);
     }
 
-    public function eliminarinscripcion($id)
+    public function eliminarinscripcion(Request $request)
     {
         // $inscripcion = InscripcionClaseGrupal::find($id);
-
-        $inscripcion = InscripcionClaseGrupal::where('alumno_id', $id)->first();
+        $inscripcion = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
         
         if($inscripcion->delete()){
             return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
@@ -341,12 +343,15 @@ class ClaseGrupalController extends Controller {
 
         $diferencia = $fecha_inicio->diffInDays($fecha_final);
 
-        if($diferencia > 30)
-        {
-            $fecha_inicio_preferencial = $fechatmp->addMonth()->toDateString();
-        }else{
-            $fecha_inicio_preferencial = "0000-00-00";
-        }
+        // if($diferencia > 30)
+        // {
+        $fecha_inicio_preferencial = $fechatmp->addMonth()->toDateString();
+
+        // }else{
+
+        //     $fecha_inicio_preferencial = "0000-00-00";
+
+        // }
 
         $fecha_inicio = $fecha_inicio->toDateString();
         $fecha_final = $fecha_final->toDateString();
@@ -557,7 +562,7 @@ class ClaseGrupalController extends Controller {
 
             $clasegrupal = DB::table('config_clases_grupales')
                     ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                    ->select('config_clases_grupales.nombre')
+                    ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio')
                     ->where('clases_grupales.id', '=', $request->clase_grupal_id)
                 ->first();
 
@@ -587,7 +592,7 @@ class ClaseGrupalController extends Controller {
                 $item_factura->precio_neto = 0;
                 $item_factura->impuesto = 0;
                 $item_factura->importe_neto = $request->costo_inscripcion;
-                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
                     
                 $item_factura->save();
 
@@ -603,7 +608,7 @@ class ClaseGrupalController extends Controller {
                 $item_factura->precio_neto = 0;
                 $item_factura->impuesto = 0;
                 $item_factura->importe_neto = $request->costo_mensualidad;
-                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
                     
                 $item_factura->save();
 

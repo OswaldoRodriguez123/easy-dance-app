@@ -41,6 +41,7 @@ class AlumnoController extends Controller
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
         ->get();
 
         $collection=collect($alumnod);
