@@ -24,7 +24,7 @@ class CreateTalleresTable extends Migration
             $table->date('fecha_final');
             $table->time('hora_inicio');
             $table->time('hora_final');
-            $table->string('link_video',30);
+            $table->string('link_video');
             $table->string('color_etiqueta',30);
             $table->tinyinteger('cupo_minimo');
             $table->tinyinteger('cupo_maximo');

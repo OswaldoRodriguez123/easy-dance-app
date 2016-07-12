@@ -264,7 +264,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                  <label for="id" id="id-video_promocional">Ingresa url del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+                                  <label for="id" id="id-link_video">Ingresa url del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
                                   <br></br>
 
                                   <span class="f-16">Antes de crear el video, te sugerimos las siguientes recomendaciones que hemos creado para ti.</span> <span data-toggle="modal" id="modalAgregarBtn" href="#modalAgregar" class="f-14 p-t-0 text-success pointer">Ver Recomendaciones</span>
@@ -280,9 +280,9 @@
                                     </div>
                                    </div>
                                    
-                                   <div class="has-error" id="error-video_promocional">
+                                   <div class="has-error" id="error-link_video">
                                     <span >
-                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                     <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
                                     </span>
                                     </div>                                          
                                 </div>

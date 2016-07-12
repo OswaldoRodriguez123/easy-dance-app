@@ -82,7 +82,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="costo">Costo</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="00000000" placeholder="Ej. 5000">
+                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="00000000" placeholder="Ej. 5000" value="{{$servicio->costo}}">
                                  </div>
                                  <div class="has-error" id="error-costo">
                                       <span >
@@ -533,7 +533,15 @@
     route_eliminar="{{url('/')}}/configuracion/servicios/eliminar/";
     route_principal="{{url('/')}}/configuracion/servicios";
 
+   function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
+
     $(document).ready(function(){
+
+      costo = parseFloat("{{$servicio->costo}}");
+
+      $('#servicio-costo').text(formatmoney(costo));
 
       $("#imagen").bind("change", function() {
             //alert('algo cambio');
@@ -583,11 +591,6 @@
       $("#nombre").val($("#servicio-nombre").text()); 
     })
 
-    $('#modalCosto-Servicio').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#costo").val($("#servicio-costo").text()); 
-    })
-
     $('#modalDescripcion-Servicio').on('show.bs.modal', function (event) {
       limpiarMensaje();
        var descripcion=$("#servicio-descripcion").data('valor');
@@ -630,6 +633,8 @@
             }else{
               $("#servicio-"+c.name).text('No');
             }
+          }else if(c.name==='costo'){
+             $("#servicio-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
             $("#servicio-"+c.name).text(c.value);
           }

@@ -89,7 +89,7 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-              <a href="http://email.getpocket.com/wf/click?upn=LXCONJs6iIV8-2BJ131IqBsAjDZr9HuzqDsPfcbnydb7OHh47wu5LPkq6sEpgrsM0qe1woIvVLAzd8SpkUHH0r5RytJvT0mhUNjlXvY9qMYK2Rgsp-2BLuY5DEX3-2B5tvjMEAkoDuIgxk-2FIItFjIPli2mgWanqQdfQMD986wr4Lg9wRWUCVgv9IiKGdYOl29y5bINYB1vvpxrNAagZMYL-2BgCqvjnel-2B6K4btqORKuFRhmHwgTi7nrAFC8apuic3H-2BRcmC_epSKwdSimeNxuLFQaHUGgEofcy3PFWs3MvgwDmSlUyUKyRdk6G9sJZgSYEzPAxU56lxqthoL5CQuAc-2BlekM7teJh8pMDCPhFakyV1bd4ycpobLKk9UhYipy4D1JkoBBggtVcctQQLxbmqhG-2Fy6-2BEg77eh4wfqNJsbt-2FWe5DSfJGxShmhMpRvdbqgbrT8Lm2cbxJwyobKnumzuvjI8ZL1qo7pp2TFY-2FkhtWXg-2F2cKYxcbU2EsT-2FpGXKOpKzd3EY2WYQ9bPHiPzrOg9M70iB1YfiD-2FW89LphUnIxRUsX5lXAr3nYWK7NCHcrCae9SSFoxv4OdwPFqiaUBIYEhUQRt7B-2BMHEfvviiDRALRWgNLDrw0P7nu5bjdShJdsMOiVKYVBy0w3iOTre5gynCkRFmyz-2Fg-3D-3D" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Ver Regalo</a>
+              <a href="http://app.easydancelatino.com/inicio" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Ver Regalo</a>
             </td>
                               </tr>
 

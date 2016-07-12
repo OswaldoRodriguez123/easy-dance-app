@@ -198,25 +198,31 @@ class ConfigProductosController extends Controller {
     public function updateImagen(Request $request)
     {
                 $producto = ConfigProductos::find($request->id);
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
+                if($request->imageBase64){
 
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "producto-". $producto->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('producto')->put($nombre_img,  $image);
+
+                }else{
+                    $nombre_img = "";
                 }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "producto-". $producto->id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('producto')->put($nombre_img,  $image);
 
                 $producto->imagen = $nombre_img;
                 $producto->save();

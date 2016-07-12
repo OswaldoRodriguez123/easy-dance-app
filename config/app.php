@@ -157,6 +157,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         GeneaLabs\Phpgmaps\PhpgmapsServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Watson\Autologin\AutologinServiceProvider::class,
 
     ],
 
@@ -205,6 +207,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Gmaps' => GeneaLabs\Phpgmaps\Facades\PhpgmapsFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Autologin' => Watson\Autologin\Facades\Autologin::class,
 
     ],
 

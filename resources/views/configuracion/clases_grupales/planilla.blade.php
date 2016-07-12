@@ -82,7 +82,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="costo">Costo Inscripcion</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="costo_inscripcion" id="costo_inscripcion" data-mask="00000000" placeholder="Ej. 5000">
+                                    <input type="text" class="form-control input-sm input-mask" name="costo_inscripcion" id="costo_inscripcion" data-mask="00000000" placeholder="Ej. 5000" value="{{$clasegrupal->costo_inscripcion}}">
                                  </div>
                                  <div class="has-error" id="error-costo_inscripcion">
                                       <span >
@@ -136,7 +136,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="costo">Costo Mensualidad</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="costo_mensualidad" id="costo_mensualidad" data-mask="00000000" placeholder="Ej. 5000">
+                                    <input type="text" class="form-control input-sm input-mask" name="costo_mensualidad" id="costo_mensualidad" data-mask="00000000" placeholder="Ej. 5000" value="{{$clasegrupal->costo_mensualidad}}">
                                  </div>
                                  <div class="has-error" id="error-costo_mensualidad">
                                       <span >
@@ -414,7 +414,17 @@
     route_eliminar="{{url('/')}}/configuracion/clases-grupales/eliminar/";
     route_principal="{{url('/')}}/configuracion/clases-grupales";
 
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
+
     $(document).ready(function(){
+
+      costo_inscripcion = parseFloat("{{$clasegrupal->costo_inscripcion}}");
+      costo_mensualidad = parseFloat("{{$clasegrupal->costo_mensualidad}}");
+
+      $('#clasegrupal-costo_inscripcion').text(formatmoney(costo_inscripcion));
+      $('#clasegrupal-costo_mensualidad').text(formatmoney(costo_mensualidad));
 
       if("{{$clasegrupal->incluye_iva}}" == 1){
           $("#incluye_iva").val('1');  //VALOR POR DEFECTO
@@ -452,15 +462,6 @@
       limpiarMensaje();
       $("#nombre").val($("#clasegrupal-nombre").text()); 
     })
-    $('#modalCostoInscripcion-ClaseGrupal').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#costo_inscripcion").val($("#clasegrupal-costo_inscripcion").text()); 
-    })
-
-    $('#modalCostoMensualidad-ClaseGrupal').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#costo_mensualidad").val($("#clasegrupal-costo_mensualidad").text()); 
-    })
 
     $('#modalDescripcion-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();
@@ -492,26 +493,34 @@
         });
       }
 
-      function campoValor(form){
-        $.each(form, function (n, c) {
-          console.log(c.name);
-        if(c.name=='descripcion' || c.name=='nombre'){
-             $("#clasegrupal-"+c.name).data('valor',c.value);
-             $("#clasegrupal-"+c.name).html(c.value.substr(0, 30) + "...");
+      function campoValor(nombre,valor){
+        // $.each(form, function (n, c) {
+        if(nombre=='descripcion' || nombre=='nombre'){
+             $("#clasegrupal-"+nombre).data('valor',valor);
+             $("#clasegrupal-"+nombre).html(valor.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if (c.name=='incluye_iva'){
-            if(c.value ==1){
-              $("#clasegrupal-"+c.name).text('Si');
+          }else if (nombre=='incluye_iva'){
+            if(valor ==1){
+              $("#clasegrupal-"+nombre).text('Si');
             }else{
-              $("#clasegrupal-"+c.name).text('No');
+              $("#clasegrupal-"+nombre).text('No');
             }
+          }else if(nombre=='costo_inscripcion' || nombre=='costo_mensualidad'){
+             $("#clasegrupal-"+nombre).text(formatmoney(parseFloat(valor)));
           }else{
-            $("#clasegrupal-"+c.name).text(c.value);
+            $("#clasegrupal-"+nombre).text(valor);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
-        });
+          if(valor == ''){
+            $("#estatus-"+nombre).removeClass('c-verde zmdi-check');
+            $("#estatus-"+nombre).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+nombre).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+nombre).addClass('c-verde zmdi-check');
+          }
+
+        // });
       }
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
@@ -589,8 +598,8 @@
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){
-                  finprocesado(); 
-                  campoValor(datos_array);            
+                  finprocesado();
+                  campoValor(respuesta.nombre , respuesta.valor);            
                   var nType = 'success';
                   var nTitle="Ups! ";
                   var nMensaje=respuesta.mensaje;                                      

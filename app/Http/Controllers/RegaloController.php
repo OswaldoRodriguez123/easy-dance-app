@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Regalo;
 use App\Academia;
+use App\ItemsFacturaProforma;
+use App\Alumno;
 use Validator;
 use DB;
 use Mail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class RegaloController extends Controller {
@@ -38,7 +41,7 @@ class RegaloController extends Controller {
 
     public function create()
     {
-        return view('especiales.regalo.create');
+        return view('especiales.regalo.create')->with('alumnos' , Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
     }
 
     /**
@@ -55,10 +58,10 @@ class RegaloController extends Controller {
 
     $rules = [
         'nombre' => 'required|min:3|max:50',
-        'costo' => 'required|numeric',
+        'costo' => 'required',
         'descripcion' => 'required|min:3|max:500',
         'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'de_parte_de' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'alumno_id' => 'required',
         'correo' => 'required|email',
     ];
 
@@ -73,11 +76,9 @@ class RegaloController extends Controller {
         'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
         'descripcion.max' => 'El máximo de caracteres permitidos son 500',
         'costo.required' => 'Ups! El Costo es requerido',
-        'costo.numeric' => 'Ups! El Costo es inválido , debe contener sólo números',
-        'de_parte_de.required' => 'Ups! El campo “de parte de” es requerido',
+        'alumno_id.required' => 'Ups! El campo “de parte de” es requerido',
         'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
         'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
-        'de_parte_de.regex' => 'Ups! El campo “de parte de” es inválido, debe contener sólo letras',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -92,12 +93,14 @@ class RegaloController extends Controller {
 
         $regalo = new Regalo;
 
+        $costo = str_replace(".", "", $request->costo);
+
         $regalo->academia_id = Auth::user()->academia_id;
         $regalo->nombre = $request->nombre;
         $regalo->descripcion = $request->descripcion;
-        $regalo->costo = $request->costo;
+        $regalo->costo = $costo;
         $regalo->dirigido_a = $request->dirigido_a;
-        $regalo->de_parte_de = $request->de_parte_de;
+        $regalo->de_parte_de = $request->alumno_id;
         $regalo->correo = $request->correo;
 
         if($regalo->save()){
@@ -106,12 +109,14 @@ class RegaloController extends Controller {
 
             $subj = 'FELICIDADES, HAS RECIBIDO UNA TARJETA DE REGALO';
 
+            $alumno = Alumno::find($request->alumno_id);
+
             $array = [
 
                'correo' => $request->correo,
                'academia' => $academia->nombre,
                'dirigido_a' => $request->dirigido_a,
-               'de_parte_de' => $request->de_parte_de,
+               'de_parte_de' => $alumno->nombre . " " . $alumno->apellido,
                'subj' => $subj
             ];
 
@@ -120,7 +125,23 @@ class RegaloController extends Controller {
                     $msj->to($array['correo']);
                 });
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            $item_factura = new ItemsFacturaProforma;
+                    
+                $item_factura->alumno_id = $request->alumno_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $regalo->id;
+                $item_factura->nombre = 'Regalo para ' . $regalo->dirigido_a;
+                $item_factura->tipo = 10;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $regalo->costo;
+                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                    
+                $item_factura->save();
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

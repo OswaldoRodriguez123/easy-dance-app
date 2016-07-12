@@ -687,7 +687,6 @@
 
       });
 
-
     $('#modalFecha-Fiesta').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#fecha_inicio").val($("#fiesta-fecha_inicio").text()); 
@@ -749,8 +748,15 @@
             $("#fiesta-"+c.name).text(c.value);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+          
         });
       }
 

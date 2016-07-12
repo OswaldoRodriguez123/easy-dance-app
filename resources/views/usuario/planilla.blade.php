@@ -203,9 +203,9 @@
                                     <label for="correo">Correo</label>
                                     <input type="text" class="form-control input-sm" name="email" id="email" placeholder="Ej. example@correo.com">
                                  </div>
-                                 <div class="has-error" id="error-correo">
+                                 <div class="has-error" id="error-email">
                                       <span >
-                                          <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-email_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -696,7 +696,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalRedes-Usuario">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty(Auth::user()->facebook) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-facebook" class="zmdi {{ empty(Auth::user()->facebook) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-share zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Redes Sociales </span>
                              </td>
@@ -816,7 +816,6 @@
       
     })
 
-
     function limpiarMensaje(){
         var campo = ["nombre", "apellido", "sexo", "email", "telefono", "celular", "direccion", "password", "password_confirmation"];
         fLen = campo.length;
@@ -857,8 +856,15 @@
             $("#usuario-"+c.name).text(c.value);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+          
         });
       }
 

@@ -246,25 +246,30 @@ class ConfigServiciosController extends Controller {
     public function updateImagen(Request $request)
     {
                 $servicio = ConfigServicios::find($request->id);
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
+                if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
 
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "servicio-". $servicio->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('servicio')->put($nombre_img,  $image);
+
+                }else{
+                    $nombre_img = "";
                 }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "servicio-". $servicio->id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('servicio')->put($nombre_img,  $image);
 
                 $servicio->imagen = $nombre_img;
                 $servicio->save();

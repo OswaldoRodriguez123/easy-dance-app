@@ -630,8 +630,14 @@
             $("#proveedor-"+c.name).text(c.value);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
         });
       }
 
@@ -826,7 +832,7 @@
                     success:function(respuesta){
 
                         procesando();
-                        window.location="{{url('/')}}/correo/{{$id}}"  
+                        window.location="{{url('/')}}/correo/{{$proveedor->id}}"  
 
                     },
                     error:function(msj){

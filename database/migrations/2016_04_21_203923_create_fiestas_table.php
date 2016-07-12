@@ -24,7 +24,7 @@ class CreateFiestasTable extends Migration
             $table->time('hora_inicio');
             $table->time('hora_final');
             $table->string('lugar',200);
-            $table->string('link_video',30);
+            $table->string('link_video');
             $table->string('color_etiqueta',30);
             $table->string('imagen')->nullable();
             $table->string('condiciones');

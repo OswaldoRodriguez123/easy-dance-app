@@ -54,7 +54,7 @@
                                     <td class="text-center previa">{{$talleres['nombre']}}</td>
                                     <td class="text-center previa">{{$talleres['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$talleres['hora_inicio']}} - {{$talleres['hora_final']}}</td>
-                                    <td class="text-center previa disabled">{{$talleres['costo']}}</td>
+                                    <td class="text-center previa">{{ number_format($talleres['costo'], 2) }}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach  

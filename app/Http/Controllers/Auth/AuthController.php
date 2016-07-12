@@ -30,7 +30,9 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/inicio';
+    protected $loginPath = '/login';
+    protected $redirectPath = '/inicio';
 
     /**
      * Create a new authentication controller instance.
@@ -130,6 +132,4 @@ class AuthController extends Controller
         return view('login.index');
     }
 
-    protected $loginPath = '/login';
-    protected $redirectPath = '/inicio';
 }

@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "genealabs/phpgmaps": "~0.3.0",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "intervention/image": "^2.3",
+        "watson/autologin": "^0.4.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

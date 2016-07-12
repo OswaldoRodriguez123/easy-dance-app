@@ -110,7 +110,7 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-                                    <a href="{{url('/')}}/registro" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Ingresar a Easy Dance</a>
+                                    <a href="http://app.easydancelatino.com/registro" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Ingresar a Easy Dance</a>
                                   </td>
                               </tr>
                               

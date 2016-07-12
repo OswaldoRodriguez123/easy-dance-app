@@ -53,7 +53,7 @@
 
                                <div class="col-sm-12">                                         
                                               
-                                              <label for="id" id="id-correo">Correo electrónico de la academia</label>
+                                              <label for="id" id="id-correo">Correo electrónico de la academia</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico de la academia" title="" data-original-title="Ayuda"></i>
                                                <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                 <div class="fg-line">
@@ -72,7 +72,7 @@
 
                                          <div class="col-sm-12">
                                           
-                                              <label for="id" id="id-celular">Teléfono móvil de la academia</label>
+                                              <label for="id" id="id-celular">Teléfono móvil de la academia</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número del teléfono movil de la academia" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
                                                  <div class="fg-line">                                                 
@@ -90,7 +90,7 @@
                                          <div class="clearfix p-b-35"></div>
 
                                          <div class="col-sm-12">
-                                              <label for="id" id="id-telefono">Teléfono local de la academia </label>
+                                              <label for="id" id="id-telefono">Teléfono local de la academia </label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número del teléfono local del instructor" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
                                                  <div class="fg-line">                                                  
@@ -110,7 +110,7 @@
 
                                     <div class="col-sm-12">
                                     <div class="form-group fg-line">
-                                    <label for="direccion" id="id-direccion">Dirección</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la dirección del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="direccion" id="id-direccion">Dirección</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la dirección de la academia" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i></span>
                                       <div class="fg-line">
@@ -283,12 +283,12 @@
                                               <i class="zmdi zmdi-videocam f-20 c-morado"></i>
                                               </span>                                             
                                               <div class="fg-line">                       
-                                                  <input type="text" class="form-control caja input-sm" name="video_promocional" id="video_promocional" placeholder="Ingresa la url">
+                                                  <input type="text" class="form-control caja input-sm" name="link_video" id="link_video" placeholder="Ingresa la url">
                                               </div>
                                             </div>
-                                              <div class="has-error" id="error-video_promocional">
+                                              <div class="has-error" id="error-link_video">
                                                 <span >
-                                                    <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                                    <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
                                                 </span>
                                               </div>
                                           
@@ -509,6 +509,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+                            @foreach ($estudios as $estudio)
+                                <?php $id = $estudio->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$estudio->nombre}}</td>
+                                    <td class="text-center previa">{{$estudio->capacidad}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                  </tr>
+                            @endforeach 
                    
                             </tbody>
                           </table>
@@ -581,6 +590,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+
+                            @foreach ($niveles as $nivel)
+                                <?php $id = $nivel->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$nivel->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                  </tr>
+                            @endforeach 
                    
                             </tbody>
                           </table>
@@ -654,8 +672,8 @@
 
   $(document).ready(function(){
 
-        $("#incluye_iva").val('1');  //VALOR POR DEFECTO
-        $("#iva").attr("checked", true); //VALOR POR DEFECTO
+        $("#incluye_iva").val('0');  //VALOR POR DEFECTO
+        $("#iva").attr("checked", false); //VALOR POR DEFECTO
         $("#iva").on('change', function(){
           if ($("#iva").is(":checked")){
             $("#incluye_iva").val('1');
@@ -739,7 +757,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "video_promocional" , "normativa", "manual", "programacion", "numero_factura"];
+    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "link_video" , "normativa", "manual", "programacion", "numero_factura"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -904,6 +922,8 @@
                           .attr('id',rowId)
                           .addClass('seleccion');
 
+                          $('#nombre_estudio').val('');
+                          $('#cantidad_estudio').val('');
                           // $("#agregar_item")[0].reset();
                           // rechargeServicio();
 
@@ -985,6 +1005,8 @@
                           $( rowNode )
                           .attr('id',rowId)
                           .addClass('seleccion');
+
+                          $('#nombre_nivel').val('');
 
                           // $("#agregar_item")[0].reset();
                           // rechargeServicio();
@@ -1094,7 +1116,7 @@
 
   
   function limpiarMensaje(){
-      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia"];
+      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia", "link_video", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1102,7 +1124,7 @@
       }
 
       function errores(merror){
-      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia"];
+      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia", "link_video", "imagen"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -1197,7 +1219,14 @@
         $("#guardar").css({"opacity": ("1")});
       })
 
-
+      $( "#cancelar" ).click(function() {
+        $("#configurar_academia")[0].reset();
+        limpiarMensaje();
+        $('html,body').animate({
+        scrollTop: $("#id-correo").offset().top-90,
+        }, 1500);
+        document.getElementById("correo").focus();
+      });
 
 </script> 
 @stop

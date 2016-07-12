@@ -138,6 +138,24 @@ class TallerController extends Controller {
             return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
         }
 
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
         $taller = new Taller;
 
         $fecha = explode(" - ", $request->fecha);
@@ -161,7 +179,9 @@ class TallerController extends Controller {
         $taller->color_etiqueta = $request->color_etiqueta;
         $taller->cupo_minimo = $request->cupo_minimo;
         $taller->cupo_maximo = $request->cupo_maximo;
+        $taller->cupo_reservacion = $request->cupo_reservacion;
         $taller->condiciones = $request->condiciones;
+        $taller->link_video = $request->link_video;
 
         // return redirect("/home");
         if($taller->save()){
@@ -513,6 +533,46 @@ class TallerController extends Controller {
 
     }
 
+    public function updateCuposOnline(Request $request){
+
+    $rules = [
+
+        'cupo_reservacion' => 'required|numeric',
+    ];
+
+    $messages = [
+
+        'cupo_reservacion.required' => 'Ups! La cantidad de cupos son requerido',
+        'cupo_reservacion.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+        $taller = Taller::find($request->id);
+        $taller->cupo_reservacion = $request->cupo_reservacion;
+
+
+        if($taller->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
     public function updateEtiqueta(Request $request){
         $taller = Taller::find($request->id);
         $taller->etiqueta = $request->etiqueta;
@@ -525,6 +585,25 @@ class TallerController extends Controller {
     }
 
     public function updateLink(Request $request){
+
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
         $taller = Taller::find($request->id);
         $taller->link_video = $request->link_video;
 
@@ -563,25 +642,31 @@ class TallerController extends Controller {
     public function updateImagen(Request $request)
     {
                 $taller = Taller::find($request->id);
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-
-                $ext = $type[1];
                 
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "taller-". $taller->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('taller')->put($nombre_img,  $image);
+
+                }else{
+                    $nombre_img = "";
                 }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "taller-". $taller->id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('taller')->put($nombre_img,  $image);
 
                 $taller->imagen = $nombre_img;
                 $taller->save();

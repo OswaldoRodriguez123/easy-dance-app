@@ -615,9 +615,9 @@
                                     <br></br>
                                     <input type="text" class="form-control caja input-sm" name="link_video" id="link_video" placeholder="Ingresa la url">
                                  </div>
-                                    <div class="has-error" id="error-link">
+                                    <div class="has-error" id="error-link_video">
                                       <span >
-                                          <small id="error-link_mensaje" class="help-block error-span" ></small>                                           
+                                          <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
                                     </div>
                                 </div>
@@ -1380,8 +1380,15 @@
           } 
           
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+          
         });
       }
 

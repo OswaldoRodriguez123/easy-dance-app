@@ -24,6 +24,7 @@ use Storage;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use Image;
 
 class AcademiaConfiguracionController extends Controller {
 
@@ -76,6 +77,8 @@ class AcademiaConfiguracionController extends Controller {
         }
         
         $academia = Academia::find(Auth::user()->academia_id);
+        $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
+        $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
 
         if($academia){
         //Simple Marker
@@ -93,8 +96,6 @@ class AcademiaConfiguracionController extends Controller {
 
         if($academia->correo)
         {
-            $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
-            $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
 
             return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with(['id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios]);
  
@@ -102,7 +103,7 @@ class AcademiaConfiguracionController extends Controller {
 
         else{
 
-            return view('configuracion.academia.configuracion' , compact('map'))->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all() ]);
+            return view('configuracion.academia.configuracion' , compact('map'))->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles]);
         }
 
         //Devolver vista con datos del mapa
@@ -181,6 +182,31 @@ class AcademiaConfiguracionController extends Controller {
             // $numero_factura = $arreglo[0]['numero_factura'];
             // $incluye_iva = $arreglo[0]['incluye_iva'];
 
+            if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
+            if($request->numero_factura){
+                $numero_factura = $request->numero_factura;
+            }
+            else{
+                $numero_factura = 1;
+            }
+
             $academia->correo = $request->correo;
             $academia->telefono = $request->telefono;
             $academia->celular = $request->celular;
@@ -191,10 +217,10 @@ class AcademiaConfiguracionController extends Controller {
             $academia->instagram = $request->instagram;
             $academia->pagina_web = $request->pagina_web;
             $academia->youtube = $request->youtube;
-            $academia->link_video = $request->video_promocional;
+            $academia->link_video = $request->link_video;
             $academia->normativa = $request->normativa;
             $academia->manual = $request->manual;
-            $academia->numero_factura = $request->numero_factura;
+            $academia->numero_factura = $numero_factura;
             $academia->incluye_iva = $request->incluye_iva;
             
             if($academia->save()){
@@ -691,26 +717,30 @@ class AcademiaConfiguracionController extends Controller {
 
     public function updateImagen(Request $request)
     {
+            if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
 
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
 
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "academia-". Auth::user()->academia_id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('academia')->put($nombre_img,  $imagen);
+
+                }else{
+                    $nombre_img = "";
                 }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "academia-". Auth::user()->academia_id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('academia')->put($nombre_img,  $image);
 
                 $academia = Academia::find(Auth::user()->academia_id);
 
@@ -721,6 +751,24 @@ class AcademiaConfiguracionController extends Controller {
     }
 
     public function updateRedes(Request $request){
+
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
 
         $academia = Academia::find(Auth::user()->academia_id);
         $academia->facebook = $request->facebook;

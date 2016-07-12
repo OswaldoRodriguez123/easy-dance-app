@@ -304,7 +304,9 @@
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($campana->imagen)
                                           <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" style="line-height: 150px;">
+                                          @endif
                                         </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
@@ -790,11 +792,11 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-pagar f-22"></i> </span>
                                <span class="f-14"> Cantidad a Recaudar </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="campana-cantidad"><span>{{$campana->cantidad}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="campana-cantidad"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalPlazo-Campana">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-plazo" class="zmdi {{ empty($campana->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-plazo" class="zmdi {{ empty($campana->plazo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-hourglass-alt zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Plazo de Financiamiento </span>
                              </td>
@@ -802,7 +804,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImagen-Campana">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($campana->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($campana->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Imagen </span>
                              </td>
@@ -814,7 +816,7 @@
                                <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
                                <span class="f-14"> Link Promocional </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="campana-link"><span>{{$campana->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="campana-link_video"><span>{{$campana->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDatos-Campana">
                              <td>
@@ -827,7 +829,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalRecompensa-Campana">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($recompensas) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_c-piggy-bank f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_d-premio f-22"></i> </span>
                                <span class="f-14"> Recompensa </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="campana-recompensa"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -863,7 +865,15 @@
     route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensa";
     route_eliminarrecompensa="{{url('/')}}/especiales/campañas/eliminarrecompensa";
 
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
+
     $(document).ready(function(){
+
+      cantidad = parseFloat("{{$campana->cantidad}}");
+
+      $('#campana-cantidad').text(formatmoney(cantidad));
 
         $("#imagen").bind("change", function() {
             //alert('algo cambio');
@@ -959,12 +969,21 @@
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name=='plazo'){
              $("#campana-"+c.name).text(c.value + " Dias");
+          }else if(c.name=='cantidad'){
+             $("#campana-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
             $("#campana-"+c.name).text(c.value);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+
         });
       }
 

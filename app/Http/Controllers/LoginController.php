@@ -23,6 +23,9 @@ class LoginController extends Controller {
         $this->middleware('guest', ['except' => ['getLogout', 'checkSession']]);
     }
 
+    protected $redirectPath = '/inicio';
+    protected $redirectTo = '/inicio';
+
 	public function getLogin()
     {
         // return $this->showLoginForm();
@@ -152,7 +155,9 @@ class LoginController extends Controller {
             return $this->authenticated($request, Auth::guard($this->getGuard())->user());
         }
 
-        return redirect()->intended('/inicio');
+        // return redirect()->intended('/inicio');
+        return redirect()->to('/inicio');
+        // return Redirect::to('home');
     }
 
     /**

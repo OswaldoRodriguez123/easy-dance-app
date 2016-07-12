@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Academia;
+use Autologin;
 
 
 class RegistroController extends Controller {
@@ -28,7 +29,7 @@ class RegistroController extends Controller {
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/inicio';
 
     /**
      * Create a new authentication controller instance.
@@ -102,18 +103,6 @@ class RegistroController extends Controller {
 
         $data['email'] = trim($data['email']);
 
-        
-        
-        $array = [
-           'nombre' => $data['nombre'],
-           'email' => $data['email']
-        ];
-
-        Mail::send('correo.correo', $array, function($msj) use ($array){
-                $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
-                $msj->to($array['email']);
-            });
-
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($data['nombre']))));
 
@@ -171,9 +160,28 @@ class RegistroController extends Controller {
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }
 
-        Auth::guard($this->getGuard())->login($this->create($request->all()));
+        $user = $this->create($request->all());
+        // Auth::guard($this->getGuard())->login($this->create($request->all()));
 
         // return redirect($this->redirectPath());
+
+        // User class implements UserInterface
+        $usuario = User::find($user->id);
+        // $link = Autologin::user($usuario);
+        $link = Autologin::to($usuario, '/inicio');
+
+        $array = [
+           'nombre' => $usuario->nombre,
+           'email' => $usuario->email,
+           'link' => $link
+        ];
+
+        Mail::send('correo.correo', $array, function($msj) use ($array){
+                $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
+                $msj->to($array['email']);
+            });
+
+
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
@@ -194,7 +202,8 @@ class RegistroController extends Controller {
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }
 
-        Auth::guard($this->getGuard())->login($this->create($request->all()));
+        $this->create($request->all());
+        // Auth::guard($this->getGuard())->login($this->create($request->all()));
 
         // return redirect($this->redirectPath());
 

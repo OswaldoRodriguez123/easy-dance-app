@@ -221,6 +221,24 @@ class FiestaController extends Controller {
 
     else{
 
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
         $fiesta = new Fiesta;
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
@@ -427,6 +445,25 @@ class FiestaController extends Controller {
     }
 
     public function updateLink(Request $request){
+
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
         $fiesta = Fiesta::find($request->id);
         $fiesta->link_video = $request->link_video;
 
@@ -451,25 +488,30 @@ class FiestaController extends Controller {
     public function updateImagen(Request $request)
     {
                 $fiesta = Fiesta::find($request->id);
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
+                if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
 
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "fiesta-". $fiesta->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('fiesta')->put($nombre_img,  $image);
+                    
+                }else{
+                    $nombre_img = "";
                 }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "fiesta-". $fiesta->id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('fiesta')->put($nombre_img,  $image);
 
                 $fiesta->imagen = $nombre_img;
                 $fiesta->save();

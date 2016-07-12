@@ -13,6 +13,8 @@
 
 Route::auth();
 
+Route::get('autologin/{token}', ['as' => 'autologin', 'uses' => '\Watson\Autologin\AutologinController@autologin']);
+
 // FLUJO DE REGISTRO
 
 
@@ -46,14 +48,10 @@ Route::get('/restablecer/fallo', function () {
 Route::get('/login', 'LoginController@getLogin');
 Route::post('/login', 'LoginController@postLogin');
 
-
-
 Route::group(['middleware' => 'auth'], function () {
 
 
 	Route::get('/logout', 'Auth\AuthController@getLogout');
-
-
 
 
 	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
@@ -220,6 +218,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('agendar/talleres/update/estudio', 'TallerController@updateEstudio');
 	Route::put('agendar/talleres/update/video', 'TallerController@updateLink');
 	Route::put('agendar/talleres/update/cupo', 'TallerController@updateCupos');
+	Route::put('agendar/talleres/update/cuporeservacion', 'TallerController@updateCuposOnline');
 	Route::put('agendar/talleres/update/imagen', 'TallerController@updateImagen');
 
 	Route::post('agendar/talleres/update/costo_taller', 'TallerController@updateCostoTaller');
@@ -298,6 +297,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('especiales/campañas/update/cantidad', 'CampanaController@updateCantidad');
 	Route::put('especiales/campañas/update/plazo', 'CampanaController@updatePlazo');
 	Route::put('especiales/campañas/update/video', 'CampanaController@updateLink');
+	Route::put('especiales/campañas/update/imagen', 'CampanaController@updateImagen');
 	Route::put('especiales/campañas/update/datos', 'CampanaController@updateDatosBancarios');
 	Route::post('especiales/campañas/agregarrecompensa', 'CampanaController@agregarrecompensa');
 	Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');

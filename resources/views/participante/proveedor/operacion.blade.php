@@ -39,7 +39,7 @@
 
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class ="eliminar">
-                            <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" data-original-title="Eliminar" id="{{$id}}" name="eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" data-original-title="Eliminar" id="{{$proveedor->id}}" name="eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Eliminar</h2>
                                 <h3 class="ca-sub-c"></h3>
@@ -137,7 +137,7 @@
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
+         var route = route_eliminar + "{{$proveedor->id}}";
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({

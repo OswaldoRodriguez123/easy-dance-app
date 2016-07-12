@@ -484,9 +484,9 @@
                                     </div>
                                    </div>
                                    
-                                   <div class="has-error" id="error-video_promocional">
+                                   <div class="has-error" id="error-link_video">
                                     <span >
-                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                     <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
                                     </span>
                                     </div>                                          
                                 </div>

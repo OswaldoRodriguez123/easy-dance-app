@@ -65,7 +65,7 @@
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                       <div class="dtp-container fg-line">
-                                              <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="000000" placeholder="Ej. 2500">
+                                              <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="000.000.000" placeholder="Ej. 2500">
                                           </div>
 
                                     </div>
@@ -117,18 +117,27 @@
                                 <div class="col-sm-12">
                                     
                                       <label for="fecha_inicio" id="id-de_parte_de"> De Parte de </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de quien emite el regalo" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-long-arrow-left zmdi-hc-fw f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="de_parte_de" id="de_parte_de" class="form-control" placeholder="Ej. Oswaldo Rodriguez" type="text">
-                                          </div>
 
-                                    </div>
-                                    <div class="has-error" id="error-de_parte_de">
+
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="zmdi zmdi-long-arrow-left zmdi-hc-fw f-22"></i></span>
+                                      <div class="fg-line">
+                                        <div class="select">
+                                          <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
+
+                                           @foreach ( $alumnos as $alumno )
+                                            <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="has-error" id="error-alumno_id">
                                         <span >
-                                            <small class="help-block error-span" id="error-de_parte_de_mensaje" ></small>                                           
+                                          <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
                                         </span>
+                                      </div>
                                     </div>
+
                                 </div>
 
                                 <div class="clearfix p-b-35"></div>
@@ -226,7 +235,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["nombre", "costo", "descripcion", "dirigido_a", "de_parte_de", "correo"];
+    var campo = ["nombre", "costo", "descripcion", "dirigido_a", "alumno_id", "correo"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -341,6 +350,7 @@
                           $("#agregar_regalo")[0].reset();
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
+                          window.location = "{{url('/')}}/participante/alumno/deuda/" + respuesta.id;
 
                         }else{
                           var nTitle="Ups! ";
@@ -389,7 +399,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["nombre", "costo", "descripcion", "dirigido_a", "de_parte_de", "correo"];
+        var campo = ["nombre", "costo", "descripcion", "dirigido_a", "alumno_id", "correo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -397,7 +407,7 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "costo", "descripcion", "dirigido_a", "de_parte_de", "correo"];
+      var campo = ["nombre", "costo", "descripcion", "dirigido_a", "alumno_id", "correo"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

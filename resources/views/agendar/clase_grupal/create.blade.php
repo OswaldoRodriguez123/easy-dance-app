@@ -513,7 +513,7 @@
                                <div class="clearfix p-b-35"></div> -->
 
                                <div class="col-sm-12">
-                                  <label for="id" id="id-video_promocional">Ingresa url del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+                                  <label for="id" id="id-link_video">Ingresa url del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
                                   
                                     <div class="input-group">
                                     <span class="input-group-addon">
@@ -521,13 +521,13 @@
                                     </span>  
 
                                     <div class="fg-line">                       
-                                      <input type="text" class="form-control caja input-sm" name="video_promocional" id="video_promocional" placeholder="Ingresa la url">
+                                      <input type="text" class="form-control caja input-sm" name="link_video" id="link_video" placeholder="Ingresa la url">
                                     </div>
                                    </div>
                                    
-                                   <div class="has-error" id="error-video_promocional">
+                                   <div class="has-error" id="error-link_video">
                                     <span >
-                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                     <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
                                     </span>
                                     </div>                                          
                                 </div>
@@ -656,7 +656,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["clase_grupal_id", "fecha", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "video_promocional"];
+    var campo = ["clase_grupal_id", "fecha", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "link_video", "imagen"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -984,7 +984,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["clase_grupal_id", "fecha", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "video_promocional"];
+      var campo = ["clase_grupal_id", "fecha", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "link_video", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -992,7 +992,7 @@
       }
 
       function errores(merror){
-      var campo = ["clase_grupal_id", "fecha", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "video_promocional"];
+      var campo = ["clase_grupal_id", "fecha", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "link_video", "imagen"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

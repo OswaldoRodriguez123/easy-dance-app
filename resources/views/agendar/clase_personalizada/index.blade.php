@@ -43,7 +43,6 @@
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>                                 
                                     <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Fin]</th>
-                                    <th class="text-center" data-column-id="dia" data-order="desc">Dia</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                 </tr>
@@ -56,7 +55,6 @@
                                     <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clases_personalizadas->fecha_inicio)->format('d/m/Y')}}</td>
                                     <td class="text-center previa">{!! $clases_personalizadas->alumno_nombre !!} {!! $clases_personalizadas->alumno_apellido !!}</td>
                                     <td class="text-center previa">{{$clases_personalizadas->hora_inicio}} - {{$clases_personalizadas->hora_final}} </td>
-                                    <td class="text-center previa"></td>
                                     <td class="text-center previa">{{$clases_personalizadas->instructor_nombre}} {{$clases_personalizadas->instructor_apellido}} </td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>

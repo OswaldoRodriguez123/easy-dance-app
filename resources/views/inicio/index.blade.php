@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+
 @stop
 
 @section('js_vendor')
@@ -18,7 +19,10 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 
+
+
 @stop
+
 @section('content')
 
 <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
@@ -26,12 +30,12 @@
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"> <h4>
-          <div class="iconox-icon">
+          <!-- <div class="iconox-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
               <title>Confirma tu academia</title>
               <circle fill="#692A5A" cx="16" cy="16" r="16"/>
 <img src="{{url('/')}}/assets/img/icono_easydance2.png"  height="26" width="28" style="margin-top: -30px; margin-left: 3px;"/></svg>
-</div>Confirma tu academia </h4> <!-- <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> --></h4>
+</div> -->Confirma tu academia </h4> <!-- <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> --></h4>
                         </div>
                                   
 <form name="configurarAcademia" id="configurarAcademia">

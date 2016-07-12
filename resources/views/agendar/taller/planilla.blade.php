@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Costo</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="0000000000" placeholder="Ej. 2500">
+                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="0000000000" placeholder="Ej. 2500" value="{{$taller->costo}}">
                                  </div>
                                     <div class="has-error" id="error-costo">
                                       <span >
@@ -529,9 +529,9 @@
                                     <label for="link_video">Link Promocional</label>
                                     <input type="text" class="form-control input-sm" name="link_video" id="link_video" placeholder="Ej. http://youtube.com">
                                  </div>
-                                    <div class="has-error" id="error-link">
+                                    <div class="has-error" id="error-link_video">
                                       <span >
-                                          <small id="error-link_mensaje" class="help-block error-span" ></small>                                           
+                                          <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
                                     </div>
                                 </div>
@@ -906,7 +906,7 @@
                                <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
                                <span class="f-14"> Cantidad de Cupos  </span>
                              </td>
-                             <td  class="f-14 m-l-15"> <span id="taller-cupo-minimo">{{$taller->cupo_minimo}}</span> - <span id="taller-cupo-maximo">{{$taller->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15"> <span id="taller-cupo_minimo">{{$taller->cupo_minimo}}</span> - <span id="taller-cupo_maximo">{{$taller->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-Taller">
                              <td>
@@ -914,7 +914,7 @@
                                <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
                                <span class="f-14"> Cantidad de cupos para reserva online  </span>
                              </td>
-                             <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_reservacion">{{$taller->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15"> <span id="taller-cupo_reservacion">{{$taller->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalLink-Taller">
                              <td>
@@ -948,7 +948,15 @@
     route_eliminar="{{url('/')}}/agendar/talleres/eliminar/";
     route_principal="{{url('/')}}/agendar/talleres";
 
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
+
     $(document).ready(function(){
+
+      costo = parseFloat("{{$taller->costo}}");
+
+      $('#taller-costo').text(formatmoney(costo));
 
       $("#imagen").bind("change", function() {
             //alert('algo cambio');
@@ -984,10 +992,7 @@
       limpiarMensaje();
       $("#nombre").val($("#taller-nombre").text()); 
     })
-    $('#modalCosto-Taller').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#costo").val($("#taller-costo").text()); 
-    })
+
     $('#modalDescripcion-Taller').on('show.bs.modal', function (event) {
       limpiarMensaje();
       var descripcion=$("#taller-descripcion").data('valor');
@@ -1025,8 +1030,8 @@
 
     $('#modalCupo-Taller').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#cupo_minimo").val($("#taller-cupo-minimo").text());
-      $("#cupo_maximo").val($("#taller-cupo-maximo").text()); 
+      $("#cupo_minimo").val($("#taller-cupo_minimo").text());
+      $("#cupo_maximo").val($("#taller-cupo_maximo").text()); 
     })
 
     $('#modalCupoOnline-Taller').on('show.bs.modal', function (event) {
@@ -1077,12 +1082,21 @@
              $("#taller-"+c.name).data('valor',c.value);
              $("#taller-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name==='costo'){
+             $("#taller-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
             $("#taller-"+c.name).text(c.value);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+
         });
       }
 

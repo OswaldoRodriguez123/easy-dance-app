@@ -51,7 +51,7 @@
                                 <?php $id = $producto['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$producto['nombre']}}</td>
-                                    <td class="text-center previa">{{$producto['costo']}} </td>
+                                    <td class="text-center previa">{{ number_format($producto['costo'], 2) }}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 

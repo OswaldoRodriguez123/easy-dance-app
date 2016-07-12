@@ -1234,7 +1234,7 @@
                     success:function(respuesta){
 
                         procesando();
-                        window.location="{{url('/')}}/correo/{{$id}}"  
+                        window.location="{{url('/')}}/correo/{{$instructor->id}}"  
 
                     },
                     error:function(msj){

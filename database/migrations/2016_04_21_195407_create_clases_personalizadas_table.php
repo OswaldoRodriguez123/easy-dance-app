@@ -27,8 +27,6 @@ class CreateClasesPersonalizadasTable extends Migration
             $table->string('descripcion');
             $table->string('condiciones');
 
-            $table->integer('clase_personalizada_id')->unsigned();
-            $table->foreign('clase_personalizada_id')->references('id')->on('config_clases_personalizadas');
             $table->integer('especialidad_id')->unsigned();
             $table->foreign('especialidad_id')->references('id')->on('config_especialidades');
             $table->integer('instructor_id')->unsigned();

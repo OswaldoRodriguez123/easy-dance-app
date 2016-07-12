@@ -44,8 +44,8 @@ class ConfigClasesGrupalesController extends Controller {
     $rules = [
 
         'nombre' => 'required',
-        'costo_inscripcion' => 'required|numeric',
-        'costo_mensualidad' => 'required|numeric',
+        'costo_inscripcion' => 'numeric',
+        'costo_mensualidad' => 'numeric',
         'descripcion' => 'required',
         'porcentaje_retraso' => 'numeric',
         'tiempo_tolerancia' => 'numeric',
@@ -55,8 +55,6 @@ class ConfigClasesGrupalesController extends Controller {
     $messages = [
 
         'nombre.required' => 'Ups! El Nombre  es requerido',
-        'costo_inscripcion.required' => 'Ups! El costo de la inscripción es requerido',
-        'costo_mensualidad.required' => 'Ups! El costo de la mensualidad es requerida',
         'costo_inscripcion.numeric' => 'Ups! El campo del costo de la inscripcion es inválido , debe contener sólo números',
         'costo_mensualidad.numeric' => 'Ups! El campo del costo de la mensualidad es inválido , debe contener sólo números',
         'descripcion.required' => 'Ups! La descripción es requerida',  
@@ -75,13 +73,23 @@ class ConfigClasesGrupalesController extends Controller {
     else{
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $costo_inscripcion = trim($request->costo_inscripcion);
+        $costo_mensualidad =  trim($request->costo_mensualidad);
+
+        if($costo_inscripcion == ''){
+            $costo_inscripcion = 0;
+        }
+
+        if($costo_mensualidad == ''){
+            $costo_mensualidad = 0;
+        }
 
         $clasegrupal = new ConfigClasesGrupales;
         
         $clasegrupal->academia_id = Auth::user()->academia_id;
         $clasegrupal->nombre = $nombre;
-        $clasegrupal->costo_inscripcion = $request->costo_inscripcion;
-        $clasegrupal->costo_mensualidad = $request->costo_mensualidad;
+        $clasegrupal->costo_inscripcion = $costo_inscripcion;
+        $clasegrupal->costo_mensualidad = $costo_mensualidad;
         $clasegrupal->descripcion = $request->descripcion;
         $clasegrupal->condiciones = $request->condiciones;
         $clasegrupal->incluye_iva = $request->incluye_iva;
@@ -118,7 +126,7 @@ class ConfigClasesGrupalesController extends Controller {
         $clasegrupal->nombre = $nombre;
 
         if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'nombre', 'valor' => $nombre, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -129,7 +137,7 @@ class ConfigClasesGrupalesController extends Controller {
 
     $rules = [
 
-        'costo_inscripcion' => 'required|numeric',
+        'costo_inscripcion' => 'numeric',
 
     ];
 
@@ -151,10 +159,16 @@ class ConfigClasesGrupalesController extends Controller {
     else{
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
-        $clasegrupal->costo_inscripcion = $request->costo_inscripcion;
 
+        $costo_inscripcion = $request->costo_inscripcion;
+
+        if(trim($costo_inscripcion) == ''){
+            $costo_inscripcion = 0;
+        }
+        
+        $clasegrupal->costo_inscripcion = $costo_inscripcion;
         if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_inscripcion', 'valor' => $costo_inscripcion, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -166,7 +180,7 @@ class ConfigClasesGrupalesController extends Controller {
 
     $rules = [
 
-        'costo_mensualidad' => 'required|numeric',
+        'costo_mensualidad' => 'numeric',
 
     ];
 
@@ -187,10 +201,16 @@ class ConfigClasesGrupalesController extends Controller {
     else{
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
-        $clasegrupal->costo_mensualidad = $request->costo_mensualidad;
+
+        $costo_mensualidad = $request->costo_mensualidad;
+
+        if(trim($costo_mensualidad) == ''){
+            $costo_mensualidad = 0;
+        }
+        $clasegrupal->costo_mensualidad = $costo_mensualidad;
 
         if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_mensualidad', 'valor' => $costo_mensualidad, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -201,10 +221,13 @@ class ConfigClasesGrupalesController extends Controller {
     public function updateDescripcion(Request $request){
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
-        $clasegrupal->descripcion = $request->descripcion;
+
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $clasegrupal->descripcion = $descripcion;
 
         if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'descripcion', 'valor' => $descripcion, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -217,7 +240,7 @@ class ConfigClasesGrupalesController extends Controller {
         $clasegrupal->incluye_iva = $request->incluye_iva;
 
         if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'incluye_iva', 'valor' => $request->incluye_iva, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

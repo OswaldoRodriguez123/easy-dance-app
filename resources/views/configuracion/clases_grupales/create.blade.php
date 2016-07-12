@@ -43,7 +43,7 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  <div class="form-group">
-                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase grupal" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase grupal" title="" data-original-title="Ayuda"></i>
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
@@ -63,7 +63,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="costo_inscripcion" id="id-costo_inscripcion">Costo Inscripcion</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de la inscripcion, en caso de que la clase grupal no posea costo alguno, procede a dejar el campo vacío" title="" data-original-title="Ayuda"></i>
+                                        <label for="costo_inscripcion" id="id-costo_inscripcion">Costo Inscripcion</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de la inscripcion, en caso de que la clase grupal no posea costo alguno, procede a dejar el campo vacío" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
@@ -85,7 +85,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="costo_mensualidad" id="id-costo_mensualidad">Costo Mensualidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de la mensualidad, en caso de que la clase grupal no posea costo alguno, procede a dejar el campo vacío" title="" data-original-title="Ayuda"></i>
+                                        <label for="costo_mensualidad" id="id-costo_mensualidad">Costo Mensualidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de la mensualidad, en caso de que la clase grupal no posea costo alguno, procede a dejar el campo vacío" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                         <div class="fg-line">
@@ -105,7 +105,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="descripcion" id="id-descripcion">Descripcion</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
+                                    <label for="descripcion" id="id-descripcion">Descripcion</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
                                     </div>
@@ -139,7 +139,7 @@
 
                                <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" id="incluye_iva" name="incluye_iva" value="" hidden="hidden">
@@ -170,7 +170,7 @@
 
                                    <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Opciones Avanzadas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Opciones Avanzadas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección de opción avanzada podrás generar una mora por retraso de pago e incluir el porcentaje que consideres pertinente" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -187,7 +187,7 @@
                                     <div class="clearfix p-b-35"></div>
 
                                     <div class="col-sm-12">
-                                          <label for="id" id="id-porcentaje_retraso">Porcentaje de retraso de pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En el caso que estés facturando en tu academia y deseas continuar ,sólo debes indicar el siguiente número y así mantendrás la consecutividad , de igual manera te brindamos la oportunidad de iniciar desde cero (0)" title="" data-original-title="Ayuda"></i>
+                                          <label for="id" id="id-porcentaje_retraso">Porcentaje de retraso de pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un porcentaje de mora por retraso de pago correspondiente al servicio que ofreces" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
                                                  <div class="fg-line"> 
@@ -207,7 +207,7 @@
                                       <div class="clearfix p-b-35"></div>
 
                                       <div class="col-sm-12">
-                                          <label for="id" id="id-tiempo_tolerancia">Tiempo de Tolerancia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En el caso que estés facturando en tu academia y deseas continuar ,sólo debes indicar el siguiente número y así mantendrás la consecutividad , de igual manera te brindamos la oportunidad de iniciar desde cero (0)" title="" data-original-title="Ayuda"></i>
+                                          <label for="id" id="id-tiempo_tolerancia">Tiempo de Tolerancia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los días de tolerancia que ofreces a tus clientes para la gestión del pago del servicio, al vencerse dicha fecha el sistema generará una mora por retraso de pago, según el porcentaje que hayas indicado" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
                                                  <div class="fg-line"> 

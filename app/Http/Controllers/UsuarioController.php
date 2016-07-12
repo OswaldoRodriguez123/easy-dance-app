@@ -100,7 +100,7 @@ class UsuarioController extends Controller {
     public function updateCorreo(Request $request){
 
     $rules = [
-        'email' => 'email|max:255|unique:users,email, '.$request->id.'',
+        'email' => 'email|max:255|unique:users,email, '.Auth::user()->id.'',
     ];
 
     $messages = [

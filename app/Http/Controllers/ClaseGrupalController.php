@@ -266,6 +266,7 @@ class ClaseGrupalController extends Controller {
     public function store(Request $request)
     {
 
+
     $rules = [
         'clase_grupal_id' => 'required',
         'fecha' => 'required',
@@ -312,24 +313,44 @@ class ClaseGrupalController extends Controller {
 
     else{
 
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
         $fecha = explode(" - ", $request->fecha);
 
         $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fechatmp = Carbon::createFromFormat('d/m/Y', $fecha[0]);
         $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
         // $diferencia = $fecha_inicio->diffInDays($fecha_final)->format('%d');
 
         $diferencia = $fecha_inicio->diffInDays($fecha_final);
+
         if($diferencia > 30)
         {
-            $fecha_inicio_preferencial = $fecha_inicio->addMonth()->toDateString();
-
+            $fecha_inicio_preferencial = $fechatmp->addMonth()->toDateString();
         }else{
             $fecha_inicio_preferencial = "0000-00-00";
         }
 
         $fecha_inicio = $fecha_inicio->toDateString();
         $fecha_final = $fecha_final->toDateString();
+
 
         if($fecha_inicio > $fecha_final)
         {
@@ -379,6 +400,7 @@ class ClaseGrupalController extends Controller {
         $clasegrupal->cupo_minimo = $request->cupo_minimo;
         $clasegrupal->cupo_maximo = $request->cupo_maximo;
         $clasegrupal->cupo_reservacion = $request->cupo_reservacion;
+        $clasegrupal->link_video = $request->link_video;
         // $clasegrupal->cantidad_hombres = $request->cantidad_hombre;
         // $clasegrupal->cantidad_mujeres = $request->cantidad_mujer;
 
@@ -949,7 +971,23 @@ class ClaseGrupalController extends Controller {
 
     public function updateLink(Request $request){
 
-        // dd($request->all());
+        if($request->link_video){
+
+            $parts = parse_url($request->link_video);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
 
         $clasegrupal = ClaseGrupal::find($request->id);
         $clasegrupal->link_video = $request->link_video;
@@ -964,25 +1002,31 @@ class ClaseGrupalController extends Controller {
     public function updateImagen(Request $request)
     {
                 $clasegrupal = ClaseGrupal::find($request->id);
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-
-                $ext = $type[1];
                 
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "clasegrupal-". $clasegrupal->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    \Storage::disk('clase_grupal')->put($nombre_img,  $image);
                 }
-
-                if($ext == 'png'){
-                    $extension = '.png';
+                else{
+                    $nombre_img = "";
                 }
-
-                $nombre_img = "clasegrupal-". $clasegrupal->id . $extension;
-                $image = base64_decode($base64_string);
-
-                \Storage::disk('clase_grupal')->put($nombre_img,  $image);
 
                 $clasegrupal->imagen = $nombre_img;
                 $clasegrupal->save();

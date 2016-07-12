@@ -95,6 +95,8 @@ class AgendarController extends Controller
 
 		}
 
+        // dd($arrayClases);
+
 		$clasespersonalizadas = DB::table('clases_personalizadas')
 				->join('alumnos', 'alumnos.id', '=', 'clases_personalizadas.alumno_id')
                 ->select('clases_personalizadas.*' , 'alumnos.nombre', 'alumnos.apellido')
