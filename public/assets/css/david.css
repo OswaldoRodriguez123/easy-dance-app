@@ -159,3 +159,19 @@ input.caja, textarea.caja {
   color: #4E1E43;
   font-weight: bold; 
 }
+
+.four-zero {
+  background: #4E1E43;
+  box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+  border-radius: 2px;
+  position: absolute;
+  top: 50%;
+  margin-top: -150px;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  height: 300px;
+  width: 980px;
+  left: 33%;
+  margin-left: -250px;
+}

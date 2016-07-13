@@ -24,8 +24,8 @@
     <body class="four-zero-content" >
 
         <div class="four-zero">
-            <h2>ERROR 404</h2>
-            <small>Pagina no Encontrada o No existe</small>
+            <h2>ERROR 403</h2>
+            <small>Acceso Prohibido</small>
             
             <footer>
                 <a href="{{url()->previous()}}"><i class="zmdi zmdi-arrow-back"></i></a>

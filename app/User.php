@@ -23,4 +23,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function roles(){
+        return $this->belongsToMany('App\Role');
+    }
+
+    public function isType()
+    {
+        $rol = $this->roles()->select('role_id','name')->first();
+        return $rol->name;
+    }    
 }

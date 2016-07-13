@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaisesTableSeeder::class);
         $this->call(ImpuestoTableSeeder::class);
         $this->call(FormasPagoSeeder::class);
+        $this->call(RolesTableSeeder::class);
     }
 }
