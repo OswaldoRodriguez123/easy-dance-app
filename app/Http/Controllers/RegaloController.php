@@ -94,6 +94,7 @@ class RegaloController extends Controller {
         $regalo = new Regalo;
 
         $costo = str_replace(".", "", $request->costo);
+        $correo = strtolower($request->correo);
 
         $regalo->academia_id = Auth::user()->academia_id;
         $regalo->nombre = $request->nombre;
@@ -101,7 +102,7 @@ class RegaloController extends Controller {
         $regalo->costo = $costo;
         $regalo->dirigido_a = $request->dirigido_a;
         $regalo->de_parte_de = $request->alumno_id;
-        $regalo->correo = $request->correo;
+        $regalo->correo = $correo;
 
         if($regalo->save()){
 

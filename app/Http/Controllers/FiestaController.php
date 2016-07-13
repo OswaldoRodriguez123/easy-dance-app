@@ -15,6 +15,7 @@ use DB;
 use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class FiestaController extends Controller {
 
@@ -243,12 +244,16 @@ class FiestaController extends Controller {
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
+        $lugar = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->lugar))));
+
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
         $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
 
         $fiesta->academia_id = Auth::user()->academia_id;
         $fiesta->nombre = $nombre;
-        $fiesta->descripcion = $request->descripcion;
-        $fiesta->lugar = $request->lugar;
+        $fiesta->descripcion = $descripcion;
+        $fiesta->lugar = $lugar;
         $fiesta->fecha_inicio = $fecha;
         $fiesta->fecha_final = $fecha;
         $fiesta->hora_inicio = $request->hora_inicio;
@@ -279,7 +284,9 @@ class FiestaController extends Controller {
                 $nombre_img = "fiesta-". $fiesta->id . $extension;
                 $image = base64_decode($base64_string);
 
-                \Storage::disk('fiesta')->put($nombre_img,  $image);
+                // \Storage::disk('fiesta')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/fiesta/'.$nombre_img);
 
                 $fiesta->imagen = $nombre_img;
                 $fiesta->save();
@@ -359,7 +366,10 @@ class FiestaController extends Controller {
 
     }
         $fiesta = Fiesta::find($request->id);
-        $fiesta->descripcion = $request->descripcion;
+
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $fiesta->descripcion = $descripcion;
 
         if($fiesta->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -424,7 +434,10 @@ class FiestaController extends Controller {
 
     }
         $fiesta = Fiesta::find($request->id);
-        $fiesta->lugar = $request->lugar;
+
+        $lugar = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->lugar))));
+
+        $fiesta->lugar = $lugar;
 
         if($fiesta->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -507,7 +520,9 @@ class FiestaController extends Controller {
                     $nombre_img = "fiesta-". $fiesta->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('fiesta')->put($nombre_img,  $image);
+                    // \Storage::disk('fiesta')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/fiesta/'.$nombre_img);
                     
                 }else{
                     $nombre_img = "";

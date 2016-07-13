@@ -725,7 +725,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="instructor-nombre">{{$instructor->nombre}}</span> <span id="instructor-apellido">{{$instructor->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="instructor-nombre" class="capitalize">{{$instructor->nombre}}</span> <span id="instructor-apellido" class="capitalize">{{$instructor->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Instructor">
                              <td>
@@ -771,7 +771,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="instructor-direccion" class="f-14 m-l-15" data-valor="{{$instructor->direccion}}" ><span ><span>{{ str_limit($instructor->direccion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="instructor-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$instructor->direccion}}" >{{ str_limit($instructor->direccion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Instructor">
                              <td>
@@ -1032,14 +1032,20 @@
             $("#instructor-"+c.name).html(valor);
           }else if(c.name=='direccion'){
              $("#instructor-"+c.name).data('valor',c.value);
-             $("#instructor-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#instructor-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            //$("#instructor-"+c.name).text(c.value);
+            $("#instructor-"+c.name).text(c.value.toLowerCase());
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
         });
       }
 

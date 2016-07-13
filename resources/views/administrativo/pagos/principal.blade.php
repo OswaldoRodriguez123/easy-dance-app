@@ -54,7 +54,7 @@
                                 <div class="clearfix"></div>
                                 
                                 <div class="col-md-12">
-                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{$total}}</span>
+                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
                                 </div>
                                 <br><br>
                                 <!-- <div class="clearfix"></div> -->
@@ -117,6 +117,10 @@
             route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
 
         tipo = 'pagadas';
+
+        function formatmoney(n) {
+            return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+        } 
 
         $(document).ready(function(){
 
@@ -243,7 +247,7 @@
                 ''+array.nombre+ ' '+array.apellido+'',
                 ''+array.concepto+'',
                 ''+array.fecha+'',
-                ''+array.total+'',
+                ''+formatmoney(array.total)+'',
                 '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
@@ -265,7 +269,7 @@
                 ''+array.nombre+ ' '+array.apellido+'',
                 ''+array.cantidad+ ' ' +array.concepto+'',
                 ''+array.fecha_vencimiento+'',
-                ''+array.total+'',
+                ''+formatmoney(array.total)+'',
                 '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
@@ -313,12 +317,12 @@
             var nAnimOut = $(this).attr('data-animation-out')
                         swal("Exito!","El correo ha sido enviado!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
+                        enviar(id, element);
           }
                 });
             });
       
-        function eliminar(id, element){
+        function enviar(id, element){
          var route = route_enviar + id;
          var token = "{{ csrf_token() }}";
                 
@@ -343,6 +347,79 @@
                           // t.row( $(element).parents('tr') )
                           //   .remove()
                           //   .draw();
+                        
+                        }
+                    },
+                    error:function(msj){
+                                $("#msj-danger").fadeIn(); 
+                                var text="";
+                                console.log(msj);
+                                var merror=msj.responseJSON;
+                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                $("#msj-error").html(text);
+                                setTimeout(function(){
+                                         $("#msj-danger").fadeOut();
+                                        }, 3000);
+                                }
+                });
+      }
+
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+
+                var id = $(this).closest('tr').attr('id');
+                // var temp = row.split('_');
+                // var id = temp[1];
+                element = this;
+
+                swal({   
+                    title: "Desea eliminar la proforma?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        swal("Exito!","La campaña ha sido eliminada!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
+          }
+                });
+            });
+      
+        function eliminar(id, element){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}";
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
                         
                         }
                     },

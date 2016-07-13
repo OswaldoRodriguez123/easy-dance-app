@@ -57,8 +57,7 @@
 
                                   <hr></hr>
                                   
-                                  <i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$visitante->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
                                   <br></br>
                                     
@@ -94,7 +93,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="visitante-nombre">{{$visitante->nombre}}</span> <span id="visitante-apellido">{{$visitante->apellido}}</span></td>
+                             <td class="f-14 m-l-15" ><span id="visitante-nombre" class="capitalize">{{$visitante->nombre}}</span> <span id="visitante-apellido" class="capitalize">{{$visitante->apellido}}</span></td>
                             </tr>
                             <tr class="disabled" data-toggle="modal" href="#modalFechaNacimiento-Visitante">
                              <td>
@@ -316,11 +315,18 @@
              $("#visitante-"+c.name).text(texto);
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            $("#visitante-"+c.name).text(c.value);
+            $("#visitante-"+c.name).text(c.value.toLowerCase());
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+          
         });
       }
 
@@ -474,6 +480,36 @@
           }
                 });
             });
+
+    $(".email").click(function(){
+         var route = route_email + 3;
+         var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/{{$visitante->id}}"  
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      });
     
    </script> 
 

@@ -137,7 +137,7 @@
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
+         var route = route_eliminar + "{{$id}}";
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -152,15 +152,17 @@
 
                     },
                     error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                //         
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
       }

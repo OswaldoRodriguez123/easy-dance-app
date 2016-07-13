@@ -48,11 +48,11 @@
 
                             @foreach ($fiesta as $fiestas)
                                 <?php $id = $fiestas->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion"> 
+                                <tr id="{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$fiestas->nombre}}</td>
                                     <td class="text-center previa">{{$fiestas->fecha_inicio}}</td>
                                     <td class="text-center previa">{{$fiestas->hora_inicio}} - {{$fiestas->hora_final}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach  
                                                            
@@ -82,6 +82,7 @@
 
         route_detalle="{{url('/')}}/agendar/fiestas/detalle";
         route_operacion="{{url('/')}}/agendar/fiestas/operaciones";
+        route_eliminar="{{url('/')}}/agendar/fiestas/eliminar/";
 
         $(document).ready(function(){
 
@@ -158,14 +159,82 @@
     function previa(t){
         var row = $(t).closest('tr').attr('id');
         var id_fiesta = row.split('_');
-        var route =route_detalle+"/"+id_fiesta[1];
+        var route =route_detalle+"/"+row;
         window.location=route;
       }
 
-      $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+
+                var id = $(this).closest('tr').attr('id');
+                // var temp = row.split('_');
+                // var id = temp[1];
+                element = this;
+
+                swal({   
+                    title: "Desea eliminar la fiesta o evento?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        swal("Exito!","La fiesta o evento ha sido eliminada!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
+          }
+                });
+            });
+      
+        function eliminar(id, element){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}";
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+                        
+                        }
+                    },
+                    error:function(msj){
+                                $("#msj-danger").fadeIn(); 
+                                var text="";
+                                console.log(msj);
+                                var merror=msj.responseJSON;
+                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                $("#msj-error").html(text);
+                                setTimeout(function(){
+                                         $("#msj-danger").fadeOut();
+                                        }, 3000);
+                                }
+                });
+      }
 
     </script>
 @stop

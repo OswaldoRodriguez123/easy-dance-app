@@ -12,6 +12,7 @@ use Validator;
 use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class UsuarioController extends Controller {
 
@@ -128,7 +129,8 @@ class UsuarioController extends Controller {
     else{
 
         $usuario = User::find(Auth::user()->id);
-        $usuario->email = $request->email;
+        $email = strtolower($request->email);
+        $usuario->email = $email;
 
         if($usuario->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -153,7 +155,11 @@ class UsuarioController extends Controller {
 
     public function updateDireccion(Request $request){
         $usuario = User::find(Auth::user()->id);
-        $usuario->direccion = $request->direccion;
+
+
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $usuario->direccion = $direccion;
         
         if($usuario->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -224,7 +230,8 @@ class UsuarioController extends Controller {
     }
 
     public function updateImagen(Request $request)
-    {
+    {          
+            if($request->imageBase64){
 
                 $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                 $path = storage_path();
@@ -244,7 +251,13 @@ class UsuarioController extends Controller {
                 $nombre_img = "usuario-". Auth::user()->id . $extension;
                 $image = base64_decode($base64_string);
 
-                \Storage::disk('usuario')->put($nombre_img,  $image);
+                // \Storage::disk('usuario')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/usuario/'.$nombre_img);
+
+                }else{
+                    $nombre_img = "";
+                }
 
                 $usuario = User::find(Auth::user()->id);
 

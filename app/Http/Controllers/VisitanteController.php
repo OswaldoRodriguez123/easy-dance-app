@@ -126,15 +126,19 @@ class VisitanteController extends Controller {
 
         $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
 
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $correo = strtolower($request->correo);
+
         $visitante->academia_id = Auth::user()->academia_id;
         $visitante->identificacion = $request->identificacion;
         $visitante->nombre = $nombre;
         $visitante->apellido = $apellido;
         $visitante->sexo = $request->sexo;
-        $visitante->correo = $request->correo;
+        $visitante->correo = $correo;
         $visitante->como_nos_conociste_id = $request->como_nos_conociste_id;
         $visitante->fecha_nacimiento = $fecha_nacimiento;
-        $visitante->direccion = $request->direccion;
+        $visitante->direccion = $direccion;
         $visitante->dias_clase_id = $request->dias_clase_id;
         $visitante->especialidad_id = $request->especialidad_id;
         $visitante->fecha_registro = Carbon::now();

@@ -9,6 +9,7 @@ use App\Academia;
 use Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class ConfigProductosController extends Controller {
 
@@ -59,14 +60,16 @@ class ConfigProductosController extends Controller {
     else{
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-     
+
+         $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
         $producto = new ConfigProductos;
         
         $producto->academia_id = Auth::user()->academia_id;
         $producto->nombre = $nombre;
         $producto->costo = $request->costo;
         $producto->imagen = $request->imagen;
-        $producto->descripcion = $request->descripcion;
+        $producto->descripcion = $descripcion;
         $producto->incluye_iva = $request->incluye_iva;
 
         if($producto->save()){
@@ -90,7 +93,9 @@ class ConfigProductosController extends Controller {
                 $nombre_img = "producto-". $producto->id . $extension;
                 $image = base64_decode($base64_string);
 
-                \Storage::disk('producto')->put($nombre_img,  $image);
+                // \Storage::disk('producto')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/producto/'.$nombre_img);
 
                 $producto->imagen = $nombre_img;
                 $producto->save();
@@ -172,7 +177,10 @@ class ConfigProductosController extends Controller {
     public function updateDescripcion(Request $request){
 
         $producto = ConfigProductos::find($request->id);
-        $producto->descripcion = $request->descripcion;
+
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $producto->descripcion = $descripcion;
 
         if($producto->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -218,7 +226,9 @@ class ConfigProductosController extends Controller {
                     $nombre_img = "producto-". $producto->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('producto')->put($nombre_img,  $image);
+                    // \Storage::disk('producto')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/producto/'.$nombre_img);
 
                 }else{
                     $nombre_img = "";

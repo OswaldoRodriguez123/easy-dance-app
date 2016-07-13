@@ -162,7 +162,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este visitante no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_cumpleaños' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -192,7 +192,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este proveedor no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_cumpleaños' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -336,7 +336,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este visitante no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_ausencia' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -366,7 +366,8 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este proveedor no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+
+			          	return response()->json(['errores' => ['combo_ausencia' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -509,7 +510,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este visitante no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_cobro' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -539,7 +540,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este proveedor no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_cobro' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -683,7 +684,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este visitante no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_suspension' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -713,7 +714,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este proveedor no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_suspension' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -855,7 +856,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este visitante no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_adelanto' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
@@ -885,7 +886,7 @@ class CorreoController extends Controller {
 			          }
 			          else{
 
-			          	return response()->json(['errores'=>'Este proveedor no tiene correo electrónico configurado', 'status' => 'ERROR-CORREO'],422);
+			          	return response()->json(['errores' => ['combo_adelanto' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
 			          }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);

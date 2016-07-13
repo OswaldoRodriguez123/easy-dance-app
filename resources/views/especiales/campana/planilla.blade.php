@@ -559,26 +559,15 @@
                                
                           <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Las recompensas son incentivos que se ofrecen a los colaboradores a cambio de su apoyo. Puedes editar una recompensa hasta antes de que sea reclamada por un colaborador. A continuación presentaremos el tipo de recompensa que no debes ofrecer: 
+<!--                                     <label for="nombre">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Las recompensas son incentivos que se ofrecen a los colaboradores a cambio de su apoyo. Puedes editar una recompensa hasta antes de que sea reclamada por un colaborador. A continuación presentaremos el tipo de recompensa que no debes ofrecer: 
 
                                     1.- Capital, patrimonio neto u otra participación en una empresa o negocio.
                                     2.- Todo producto para el consumo de alcohol.
                                     3.- Sustancia controlada o parafernalia de fármacos.
                                     4.- Armas, municiones y accesorios relacionados.
                                     5.- Toda forma de lotería o juego de apuestas" title="" data-original-title="Ayuda"></i>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
                                     
-                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div> -->
                                     <div class="clearfix p-b-35"></div>
 
                                     <label for="nombre_estudio" id="id-nombre_recompensa">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la recompensa" title="" data-original-title="Ayuda"></i>
@@ -656,25 +645,14 @@
 
                             </div>
                             </div>
+                            </div>
+                            </div>
+                            </div>
 
-                            <div class="clearfix p-b-35"></div>
-                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+                        <div class="clearfix p-b-35"></div>
 
-                            <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
-
-
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                               </div>
-                               
-
-
-                               <div class="clearfix"></div> 
-<!--                        <div class="modal-footer p-b-20 m-b-20">
+                        <div class="clearfix"></div> 
+                       <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
                               <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
@@ -687,10 +665,12 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_administrativo_academia" data-update="administrativo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 dismiss" href="#" data-formulario="edit_administrativo_academia" data-update="administrativo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                              <div class="clearfix p-b-35"></div>
 
                             </div>
-                        </div> --></form>
+                        </div></form>
                     </div>
                 </div>
             </div>
@@ -768,7 +748,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td id="campana-nombre" class="f-14 m-l-15" data-valor="{{$campana->nombre}}" ><span id="campana-nombre"><span>{{ str_limit($campana->nombre, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="campana-nombre" class="f-14 m-l-15 capitalize" data-valor="{{$campana->nombre}}" >{{ str_limit($campana->nombre, $limit = 30, $end = '...') }}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalHistoria-Campana">
                              <td>
@@ -776,7 +756,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Historia </span>
                              </td>
-                             <td id="campana-historia" class="f-14 m-l-15" data-valor="{{$campana->historia}}" ><span id="campana-historia"><span>{{ str_limit($campana->historia, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="campana-historia" class="f-14 m-l-15 capitalize" data-valor="{{$campana->historia}}" >{{ str_limit($campana->historia, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalEslogan-Campana">
                              <td>
@@ -784,7 +764,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-flash zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Eslogan </span>
                              </td>
-                             <td id="campana-eslogan" class="f-14 m-l-15" data-valor="{{$campana->eslogan}}" ><span id="campana-historia"><span>{{ str_limit($campana->eslogan, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="campana-eslogan" class="f-14 m-l-15 capitalize" data-valor="{{$campana->eslogan}}" >{{ str_limit($campana->eslogan, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCantidad-Campana">
                              <td>
@@ -955,24 +935,16 @@
             }
             $("#campana-"+c.name).data('valor',c.value);
             $("#campana-"+c.name).html(valor);
-          }else if(c.name=='historia'){
+          }else if(c.name=='historia' || c.name=='nombre' || c.name=='eslogan'){
              $("#campana-"+c.name).data('valor',c.value);
-             $("#campana-"+c.name).html(c.value.substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if(c.name=='nombre'){
-             $("#campana-"+c.name).data('valor',c.value);
-             $("#campana-"+c.name).html(c.value.substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if(c.name=='eslogan'){
-             $("#campana-"+c.name).data('valor',c.value);
-             $("#campana-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#campana-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name=='plazo'){
              $("#campana-"+c.name).text(c.value + " Dias");
           }else if(c.name=='cantidad'){
              $("#campana-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
-            $("#campana-"+c.name).text(c.value);
+            $("#campana-"+c.name).text(c.value.toLowerCase());
           }
 
           if(c.value == ''){
@@ -1311,6 +1283,10 @@
                   .remove()
                   .draw();
             });
+
+          $(".dismiss").click(function(){
+            $('.modal').modal('hide');
+          });
     
    </script> 
 

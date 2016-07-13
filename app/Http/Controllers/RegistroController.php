@@ -112,7 +112,7 @@ class RegistroController extends Controller {
             'nombre' => $nombre,
             'telefono' => $data['telefono'],
             'como_nos_conociste_id' => $data['como_nos_conociste_id'],
-            'email' => $data['email'],
+            'email' => strtolower($data['email']),
             'password' => bcrypt($data['password'])
 
         ]);

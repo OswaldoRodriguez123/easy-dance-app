@@ -1379,7 +1379,6 @@
                 $("#clasegrupal-"+c.name).text(c.value);
           } 
           
-
           if(c.value == ''){
             $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
             $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');

@@ -11,6 +11,7 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use Image;
 
 class CampanaController extends Controller {
 
@@ -167,6 +168,10 @@ class CampanaController extends Controller {
 
             $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
+            $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
+
+            $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
+
             $campana = new Campana;
 
             $fecha_inicio = Carbon::now()->toDateString();
@@ -177,8 +182,8 @@ class CampanaController extends Controller {
             $campana->cantidad = $request->cantidad;
             $campana->fecha_inicio = $fecha_inicio;
             $campana->fecha_final = $fecha_final;
-            $campana->historia = $request->historia;
-            $campana->eslogan = $request->eslogan;
+            $campana->historia = $historia;
+            $campana->eslogan = $eslogan;
             $campana->plazo = $request->plazo;
             $campana->link_video = $request->link_video;
             $campana->correo = $request->correo;
@@ -208,7 +213,9 @@ class CampanaController extends Controller {
                     $nombre_img = "campana-". $campana->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('campana')->put($nombre_img,  $image);
+                    // \Storage::disk('campana')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/campana/'.$nombre_img);
 
                     $campana->imagen = $nombre_img;
                     $campana->save();
@@ -320,9 +327,6 @@ class CampanaController extends Controller {
 
     public function updateEslogan(Request $request){
 
-        $campana = Campana::find($request->id);
-        $campana->eslogan = $request->eslogan;
-
         $rules = [
             'eslogan' => 'required|min:3|max:100',
         ];
@@ -344,6 +348,10 @@ class CampanaController extends Controller {
 
         else{
 
+            $campana = Campana::find($request->id);
+            $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
+            $campana->eslogan = $eslogan;
+
             if($campana->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
@@ -354,9 +362,6 @@ class CampanaController extends Controller {
     }
 
     public function updateHistoria(Request $request){
-
-        $campana = Campana::find($request->id);
-        $campana->historia = $request->historia;
 
         $rules = [
             'historia' => 'required|min:3|max:100',
@@ -378,6 +383,12 @@ class CampanaController extends Controller {
         }
 
         else{
+
+            $campana = Campana::find($request->id);
+
+            $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
+        
+            $campana->historia = $historia;
 
             if($campana->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -524,7 +535,9 @@ class CampanaController extends Controller {
                     $nombre_img = "campana-". $campana->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('campana')->put($nombre_img,  $image);
+                    // \Storage::disk('campana')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/campana/'.$nombre_img);
                 }
                 else{
                     $nombre_img = "";

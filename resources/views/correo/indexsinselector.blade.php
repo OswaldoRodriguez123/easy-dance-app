@@ -94,7 +94,7 @@
 
                                 <div class="clearfix p-b-15"></div>
  -->
-                        <div class="col-sm-12">
+                          <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Nombre</label>
 
@@ -105,10 +105,9 @@
                                         <!-- <select class="selectpicker bs-select-hidden" id="combo_cumpleaños" name="combo_cumpleaños" multiple="" data-max-options="5" title="Selecciona"> -->
 
                                     </div>
-                                 </div>
                                  <div class="has-error" id="error-combo_cumpleaños">
                                       <span >
-                                          <small class="help-block error-span" id="error-combo_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-combo_cumpleaños_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -848,10 +847,12 @@
             });  
              
              $("#EnviarCumpleaños").on('click', function(){
+                
                 var datos = $( "#correo_cumpleaños" ).serialize();
-                procesando();
 
-              
+                procesando();
+                limpiarMensaje();
+
                 // Aqui se enviara el correo y el mensaje
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
@@ -866,58 +867,75 @@
                     type: 'POST',
                     dataType: 'json',
                     data: datos + "&msj_html="+html + "&id={{$id}}",
-                    // {
-                    //         msj_html: html, 
-                    //         combo: combo,
-                    //         tipo: tipo
-                    //     }
-                })
-                .done(function() {
-                    // finprocesado();
-                    // setTimeout(function(){ 
-                    //     var nFrom = $(this).attr('data-from');
-                    //     var nAlign = $(this).attr('data-align');
-                    //     var nIcons = $(this).attr('data-icon');
-                    //     var nAnimIn = "animated flipInY";
-                    //     var nAnimOut = "animated flipOutY"; 
-                    //     var nType = 'success';
-                    //     var nTitle="Ups! ";
-                    //     var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                    //     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    //   }, 1000);
-                    // console.log("success");
-                    // $('#modalBirthday').modal('hide');
-                })
-                .fail(function() {
-                    // $('#modalBirthday').modal('hide');
-                    // finprocesado();
-                    // console.log("fail")
-                })
-                .always(function() {
-
+                    success:function(respuesta){
+                      setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="Tu correo ha sido enviado exitósamente";
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalBirthday').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                    finprocesado();
-                    $('#modalBirthday').modal('hide');
-                    console.log("always")
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
                 });
                         
             });
 
             $("#EnviarAusencia").on('click', function(){
+                
                 var datos = $( "#correo_ausencia" ).serialize();
 
                 procesando();
+                limpiarMensaje();
 
                 // Aqui se enviara el correo y el mensaje
                 // $html guardara toda la configuracion html y css que contenga
@@ -933,50 +951,65 @@
                     type: 'POST',
                     dataType: 'json',
                     data: datos + "&msj_html="+html + "&id={{$id}}",
-                    // {
-                    //         msj_html: html, 
-                    //         combo: combo,
-                    //         tipo: tipo
-                    //     }
-                })
-                .done(function() {
-                    // finprocesado();
-                    // setTimeout(function(){ 
-                    //     var nFrom = $(this).attr('data-from');
-                    //     var nAlign = $(this).attr('data-align');
-                    //     var nIcons = $(this).attr('data-icon');
-                    //     var nAnimIn = "animated flipInY";
-                    //     var nAnimOut = "animated flipOutY"; 
-                    //     var nType = 'success';
-                    //     var nTitle="Ups! ";
-                    //     var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                    //     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    //   }, 1000);
-                    // console.log("success");
-                    // $('#modalBirthday').modal('hide');
-                })
-                .fail(function() {
-                    // $('#modalBirthday').modal('hide');
-                    // finprocesado();
-                    // console.log("fail")
-                })
-                .always(function() {
-
+                    success:function(respuesta){
+                      setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="Tu correo ha sido enviado exitósamente";
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalAusencia').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                    finprocesado();
-                    $('#modalAusencia').modal('hide');
-                    console.log("always")
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
                 });
                         
             }); 
@@ -985,8 +1018,8 @@
                 var datos = $( "#correo_suspension" ).serialize();
 
                 procesando();
+                limpiarMensaje();
 
-           
                 // Aqui se enviara el correo y el mensaje
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
@@ -1001,60 +1034,75 @@
                     type: 'POST',
                     dataType: 'json',
                     data: datos + "&msj_html="+html + "&id={{$id}}",
-                    // {
-                    //         msj_html: html, 
-                    //         combo: combo,
-                    //         tipo: tipo
-                    //     }
-                })
-                .done(function() {
-                    // finprocesado();
-                    // setTimeout(function(){ 
-                    //     var nFrom = $(this).attr('data-from');
-                    //     var nAlign = $(this).attr('data-align');
-                    //     var nIcons = $(this).attr('data-icon');
-                    //     var nAnimIn = "animated flipInY";
-                    //     var nAnimOut = "animated flipOutY"; 
-                    //     var nType = 'success';
-                    //     var nTitle="Ups! ";
-                    //     var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                    //     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    //   }, 1000);
-                    // console.log("success");
-                    // $('#modalBirthday').modal('hide');
-                })
-                .fail(function() {
-                    // $('#modalBirthday').modal('hide');
-                    // finprocesado();
-                    // console.log("fail")
-                })
-                .always(function() {
-
+                    success:function(respuesta){
+                      setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="Tu correo ha sido enviado exitósamente";
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalSuspension').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                    finprocesado();
-                    $('#modalSuspension').modal('hide');
-                    console.log("always")
-                });
-                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });   
             }); 
 
             $("#EnviarCobro").on('click', function(){
+                
                 var datos = $( "#correo_cobro" ).serialize();
 
                 procesando();
+                limpiarMensaje();
 
-                
                 // Aqui se enviara el correo y el mensaje
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
@@ -1068,59 +1116,76 @@
                     url: route_cobro,
                     type: 'POST',
                     dataType: 'json',
-                    data: datos  + "&msj_html="+html  + "&id={{$id}}",
-                    // {
-                    //         msj_html: html, 
-                    //         combo: combo,
-                    //         tipo: tipo
-                    //     }
-                })
-                .done(function() {
-                    // finprocesado();
-                    // setTimeout(function(){ 
-                    //     var nFrom = $(this).attr('data-from');
-                    //     var nAlign = $(this).attr('data-align');
-                    //     var nIcons = $(this).attr('data-icon');
-                    //     var nAnimIn = "animated flipInY";
-                    //     var nAnimOut = "animated flipOutY"; 
-                    //     var nType = 'success';
-                    //     var nTitle="Ups! ";
-                    //     var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                    //     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    //   }, 1000);
-                    // console.log("success");
-                    // $('#modalBirthday').modal('hide');
-                })
-                .fail(function() {
-                    // $('#modalBirthday').modal('hide');
-                    // finprocesado();
-                    // console.log("fail")
-                })
-                .always(function() {
-
+                    data: datos + "&msj_html="+html + "&id={{$id}}",
+                    success:function(respuesta){
+                      setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="Tu correo ha sido enviado exitósamente";
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalCobro').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                    finprocesado();
-                    $('#modalCobro').modal('hide');
-                    console.log("always")
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
                 });
                         
             });
 
             $("#EnviarAdelanto").on('click', function(){
-                var datos = $( "#correo_adelanto" ).serialize();
+               
+               var datos = $( "#correo_adelanto" ).serialize();
 
                 procesando();
+                limpiarMensaje();
 
                 // Aqui se enviara el correo y el mensaje
                 // $html guardara toda la configuracion html y css que contenga
@@ -1136,55 +1201,97 @@
                     type: 'POST',
                     dataType: 'json',
                     data: datos + "&msj_html="+html + "&id={{$id}}",
-                    // {
-                    //         msj_html: html, 
-                    //         combo: combo,
-                    //         tipo: tipo
-                    //     }
-                })
-                .done(function() {
-                    // finprocesado();
-                    // setTimeout(function(){ 
-                    //     var nFrom = $(this).attr('data-from');
-                    //     var nAlign = $(this).attr('data-align');
-                    //     var nIcons = $(this).attr('data-icon');
-                    //     var nAnimIn = "animated flipInY";
-                    //     var nAnimOut = "animated flipOutY"; 
-                    //     var nType = 'success';
-                    //     var nTitle="Ups! ";
-                    //     var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                    //     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    //   }, 1000);
-                    // console.log("success");
-                    // $('#modalBirthday').modal('hide');
-                })
-                .fail(function() {
-                    // $('#modalBirthday').modal('hide');
-                    // finprocesado();
-                    // console.log("fail")
-                })
-                .always(function() {
-
+                    success:function(respuesta){
+                      setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="Tu correo ha sido enviado exitósamente";
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalAdelanto').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                    finprocesado();
-                    $('#modalAdelanto').modal('hide');
-                    console.log("always")
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
                 });
                         
             });
 
             });
+            
+
+        function errores(merror){
+          var campo = ["combo_cobro", "combo_cumpleaños", "combo_suspension", "combo_adelanto", "combo_ausencia"];
+          var elemento="";
+          var contador=0;
+          $.each(merror, function (n, c) {
+          if(contador==0){
+          elemento=n;
+          }
+          contador++;
+
+           $.each(this, function (name, value) {              
+              var error=value;
+              $("#error-"+n+"_mensaje").html(error);             
+           });
+        });     
+
+      }
+
+      function limpiarMensaje(){
+        var campo = ["combo_cobro", "combo_cumpleaños", "combo_suspension", "combo_adelanto", "combo_ausencia"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
+      }
 
             
         </script>

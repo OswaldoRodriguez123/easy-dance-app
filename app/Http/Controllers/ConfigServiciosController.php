@@ -9,6 +9,7 @@ use App\Academia;
 use Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class ConfigServiciosController extends Controller {
 
@@ -99,7 +100,10 @@ class ConfigServiciosController extends Controller {
                 $nombre_img = "servicio-". $servicio->id . $extension;
                 $image = base64_decode($base64_string);
 
-                \Storage::disk('servicio')->put($nombre_img,  $image);
+                // \Storage::disk('servicio')->put($nombre_img,  $image);
+
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/servicio/'.$nombre_img);
 
                 $servicio->imagen = $nombre_img;
                 $servicio->save();
@@ -265,7 +269,9 @@ class ConfigServiciosController extends Controller {
                     $nombre_img = "servicio-". $servicio->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('servicio')->put($nombre_img,  $image);
+                    // \Storage::disk('servicio')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/servicio/'.$nombre_img);
 
                 }else{
                     $nombre_img = "";

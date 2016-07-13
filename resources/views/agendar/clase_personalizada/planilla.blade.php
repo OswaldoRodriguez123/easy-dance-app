@@ -580,7 +580,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Descripción </span>
                              </td>
-                             <td id="clasepersonalizada-descripcion" class="f-14 m-l-15" data-valor="{{$clasepersonalizada->descripcion}}" ><span id="clasepersonalizada-descripcion">{{ str_limit($clasepersonalizada->descripcion, $limit = 30, $end = '...') }}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="clasepersonalizada-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$clasepersonalizada->descripcion}}" >{{ str_limit($clasepersonalizada->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFecha-ClasePersonalizada">
                              <td width="50%"> 
@@ -760,7 +760,11 @@
             }
             $("#clasepersonalizada-"+c.name).data('valor',c.value);
             $("#clasepersonalizada-"+c.name).html(valor);
-          }else if(c.name=='descripcion' || c.name=='condiciones'){
+          }else if(c.name=='descripcion'){
+             $("#clasepersonalizada-"+c.name).data('valor',c.value);
+             $("#clasepersonalizada-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='condiciones'){
              $("#clasepersonalizada-"+c.name).data('valor',c.value);
              $("#clasepersonalizada-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
@@ -775,9 +779,15 @@
             $("#clasepersonalizada-"+c.name).text(c.value);
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
-          $("#estatus-"+c.name).addClass('c-verde zmdi-check');
-
+         if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+          
         });
       }
 

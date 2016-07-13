@@ -125,6 +125,10 @@ class InstructorController extends Controller {
 
         $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
 
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $correo = strtolower($request->correo);
+
         $instructor = new Instructor;
 
         $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
@@ -135,10 +139,10 @@ class InstructorController extends Controller {
         $instructor->apellido = $apellido;
         $instructor->sexo = $request->sexo;
         $instructor->fecha_nacimiento = $fecha_nacimiento;
-        $instructor->correo = $request->correo;
+        $instructor->correo = $correo;
         $instructor->telefono = $request->telefono;
         $instructor->celular = $request->celular;
-        $instructor->direccion = $request->direccion;
+        $instructor->direccion = $direccion;
         $instructor->alergia = $request->alergia;
         $instructor->asma = $request->asma;
         $instructor->convulsiones = $request->convulsiones;
@@ -321,7 +325,8 @@ class InstructorController extends Controller {
 
     else{
         $instructor = Instructor::find($request->id);
-        $instructor->correo = $request->correo;
+        $correo = strtolower($request->correo);
+        $instructor->correo = $correo;
 
         if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -348,7 +353,12 @@ class InstructorController extends Controller {
 
     public function updateDireccion(Request $request){
         $instructor = Instructor::find($request->id);
-        $instructor->direccion = $request->direccion;
+
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $instructor->direccion = $direccion;
+
+
 
         if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

@@ -63,7 +63,7 @@
                                     <td class="text-center previa"><span>{{$proforma->fecha_vencimiento}} {{ empty($proforma->vencido) ? '' : "&nbsp;&nbsp;(Factura Vencida)" }}</span></td>
                                     <td class="text-center previa">{{$proforma->nombre}}</td>
                                     <td class="text-center previa">{{$proforma->cantidad}}</td>
-                                    <td class="text-center previa">{{$proforma->importe_neto}}</td>
+                                    <td class="text-center previa">{{ number_format($proforma->importe_neto, 2) }}</td>
                                     
                                 </tr>
                             @endforeach 

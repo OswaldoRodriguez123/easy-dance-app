@@ -22,7 +22,7 @@ class CreateInstructoresTable extends Migration {
 			$table->string('apellido',15);
 			$table->date('fecha_nacimiento');
 			$table->string('sexo',30);
-			$table->string('correo',30);
+			$table->string('correo');
 			$table->string('telefono',11);
 			$table->string('celular',11);
 			$table->string('direccion',200);

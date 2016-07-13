@@ -351,7 +351,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_d-servicios f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-nombre">{{$clasegrupal->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-nombre" class="capitalize">{{$clasegrupal->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCostoInscripcion-ClaseGrupal">
                              <td>

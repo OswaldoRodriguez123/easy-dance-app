@@ -18,6 +18,7 @@ use DB;
 use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class TallerController extends Controller {
 
@@ -165,8 +166,11 @@ class TallerController extends Controller {
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+
         $taller->academia_id = Auth::user()->academia_id;
-        $taller->descripcion = $request->descripcion;
+        $taller->descripcion = $descripcion;
         $taller->nombre = $nombre;
         $taller->costo = $request->costo;
         $taller->fecha_inicio = $fecha_inicio;
@@ -205,7 +209,9 @@ class TallerController extends Controller {
                 $nombre_img = "taller-". $taller->id . $extension;
                 $image = base64_decode($base64_string);
 
-                \Storage::disk('taller')->put($nombre_img,  $image);
+                // \Storage::disk('taller')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/taller/'.$nombre_img);
 
                 $taller->imagen = $nombre_img;
                 $taller->save();
@@ -252,7 +258,10 @@ class TallerController extends Controller {
     else{
 
         $taller = Taller::find($request->id);
-        $taller->nombre = $request->nombre;
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+
+        $taller->nombre = $nombre;
 
         if($taller->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -340,7 +349,10 @@ class TallerController extends Controller {
     else{
 
         $taller = Taller::find($request->id);
-        $taller->descripcion = $request->descripcion;
+
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $taller->descripcion = $descripcion;
 
         if($taller->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -662,7 +674,9 @@ class TallerController extends Controller {
                     $nombre_img = "taller-". $taller->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('taller')->put($nombre_img,  $image);
+                    // \Storage::disk('taller')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/taller/'.$nombre_img);
 
                 }else{
                     $nombre_img = "";
@@ -683,6 +697,7 @@ class TallerController extends Controller {
                 ->join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*')
                 ->where('inscripcion_taller.taller_id', '=', $id)
+                ->where('inscripcion_taller.deleted_at', '=', null)
         ->get();
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -720,6 +735,16 @@ class TallerController extends Controller {
     else{
 
             // $alumnos = explode('-',$request->alumno_id);
+
+        $alumnostaller = DB::table('inscripcion_taller') 
+            ->select('inscripcion_taller.*')
+            ->where('inscripcion_taller.alumno_id', '=', $request->alumno_id)
+            ->where('inscripcion_taller.taller_id', '=', $request->taller_id)
+            ->where('inscripcion_taller.deleted_at', '=', null)
+            ->first(); 
+
+        // comprobar si esta inscrito
+        if(!$alumnostaller){ 
 
             $taller = Taller::find($request->taller_id);
 
@@ -765,7 +790,22 @@ class TallerController extends Controller {
             // else{
             //     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $array[1]->id, 200]);
             // }
+            }
+            return response()->json(['errores' => ['alumno_id' => [0, 'Ya este alumno esta inscrito']], 'status' => 'ERROR'],422);
         }
+    }
+
+    public function eliminarinscripcion(Request $request)
+    {
+        // $inscripcion = InscripcionClaseGrupal::find($id);
+        $inscripcion = InscripcionTaller::where('alumno_id', $request->alumno_id)->where('taller_id', $request->taller_id)->first();
+        
+        if($inscripcion->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
     }
 
 
@@ -837,13 +877,20 @@ class TallerController extends Controller {
      */
     public function destroy($id)
     {
+        $exist = InscripcionTaller::where('taller_id', $id)->first();
 
-        $taller = Taller::find($id);
-        
-        if($taller->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        if(!$exist)
+        {
+            $taller = Taller::find($id);
+            
+            if($taller->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            return response()->json(['error_mensaje'=> 'Ups! Este taller no puede ser eliminado ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
         }
     }
 

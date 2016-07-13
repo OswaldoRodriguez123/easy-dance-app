@@ -441,7 +441,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="proveedor-nombre">{{$proveedor->nombre}}</span> <span id="proveedor-apellido">{{$proveedor->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="proveedor-nombre" class="capitalize">{{$proveedor->nombre}}</span> <span id="proveedor-apellido" class="capitalize">{{$proveedor->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              <tr class="detalle" data-toggle="modal" href="#modalSexo-Proveedor">
                              <td> 
@@ -479,7 +479,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="proveedor-direccion" class="f-14 m-l-15" data-valor="{{$proveedor->direccion}}" ><span ><span>{{ str_limit($proveedor->direccion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="proveedor-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$proveedor->direccion}}" >{{ str_limit($proveedor->direccion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalEmpresa-Proveedor">
                              <td>
@@ -625,10 +625,10 @@
             $("#proveedor-"+c.name).html(valor);
           }else if(c.name=='direccion'){
              $("#proveedor-"+c.name).data('valor',c.value);
-             $("#proveedor-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#proveedor-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            $("#proveedor-"+c.name).text(c.value);
+            $("#proveedor-"+c.name).text(c.value.toLowerCase());
           }
 
           if(c.value == ''){

@@ -383,9 +383,10 @@
                 });
             };
 
-        $("#agregar").click(function(){
+         $("#agregar").click(function(){
 
                 var costo = $("#taller-costo").text();
+
                 var values = $('#alumno_id').val();
 
                 if(values){
@@ -398,6 +399,7 @@
 
                 // }
 
+                procesando();
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var taller_id = $('input:hidden[name=taller_id]').val();
@@ -475,6 +477,7 @@
                         }                       
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
+                        // finprocesado();
                         $("#guardar").removeAttr("disabled");
                         $(".cancelar").removeAttr("disabled");
 
@@ -494,6 +497,7 @@
                         }                        
                         $("#guardar").removeAttr("disabled");
                         $(".cancelar").removeAttr("disabled");
+                        finprocesado();
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
                         var nFrom = $(this).attr('data-from');
@@ -638,13 +642,14 @@
         function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
+         var taller_id = $('input:hidden[name=taller_id]').val();
                 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
+                        type: 'POST',
                     dataType: 'json',
-                    data:id,
+                    data: "&alumno_id=" + id + "&taller_id=" + taller_id,
                     success:function(respuesta){
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');

@@ -24,6 +24,7 @@ use DB;
 use Mail;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class ClaseGrupalController extends Controller {
 
@@ -430,7 +431,9 @@ class ClaseGrupalController extends Controller {
                 $nombre_img = "clasegrupal-". $clasegrupal->id . $extension;
                 $image = base64_decode($base64_string);
 
-                \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/clase_grupal/'.$nombre_img);
 
                 $clasegrupal->imagen = $nombre_img;
                 $clasegrupal->save();
@@ -1027,7 +1030,9 @@ class ClaseGrupalController extends Controller {
                     $nombre_img = "clasegrupal-". $clasegrupal->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/clase_grupal/'.$nombre_img);
                 }
                 else{
                     $nombre_img = "";

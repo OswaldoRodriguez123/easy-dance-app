@@ -608,7 +608,9 @@
                                     <input type="hidden" name="imageBase64" id="imageBase64">
                                       <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if(Auth::user()->imagen)
                                           <img src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" style="line-height: 150px;">
+                                          @endif
                                         </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
@@ -654,7 +656,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="usuario-nombre">{{Auth::user()->nombre}}</span> <span id="usuario-apellido">{{Auth::user()->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="usuario-nombre" class="capitalize">{{Auth::user()->nombre}}</span> <span id="usuario-apellido" class="capitalize">{{Auth::user()->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              <tr class="detalle" data-toggle="modal" href="#modalSexo-Usuario">
                              <td> 
@@ -692,7 +694,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="usuario-direccion" class="f-14 m-l-15" data-valor="{{Auth::user()->direccion}}" ><span ><span>{{ str_limit(Auth::user()->direccion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="usuario-direccion" class="f-14 m-l-15 capitalize" data-valor="{{Auth::user()->direccion}}" >{{ str_limit(Auth::user()->direccion, $limit = 30, $end = '...') }}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalRedes-Usuario">
                              <td>
@@ -850,10 +852,10 @@
             $("#usuario-"+c.name).html(valor);
           }else if(c.name=='direccion'){
              $("#usuario-"+c.name).data('valor',c.value);
-             $("#usuario-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#usuario-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            $("#usuario-"+c.name).text(c.value);
+            $("#usuario-"+c.name).text(c.value.toLowerCase());
           }
 
           if(c.value == ''){

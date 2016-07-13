@@ -141,7 +141,9 @@
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($servicio->imagen)
                                           <img src="{{url('/')}}/assets/uploads/servicio/{{$servicio->imagen}}" style="line-height: 150px;">
+                                          @endif
                                         </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
@@ -458,7 +460,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_d-servicios f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="servicio-nombre">{{$servicio->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="servicio-nombre" class="capitalize">{{$servicio->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCosto-Servicio">
                              <td>
@@ -625,7 +627,7 @@
         $.each(form, function (n, c) {
           if(c.name=='descripcion' || c.name=='nombre'){
              $("#servicio-"+c.name).data('valor',c.value);
-             $("#servicio-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#servicio-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if (c.name=='incluye_iva'){
             if(c.value ==1){
@@ -636,11 +638,18 @@
           }else if(c.name==='costo'){
              $("#servicio-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
-            $("#servicio-"+c.name).text(c.value);
+            $("#servicio-"+c.name).text(c.value.toLowerCase());
           }
 
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+
         });
       }
 

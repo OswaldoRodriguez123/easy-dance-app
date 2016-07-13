@@ -179,16 +179,20 @@ class AlumnoController extends Controller
 
         $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
 
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $correo = strtolower($request->correo);
+
         $alumno->academia_id = Auth::user()->academia_id;
         $alumno->identificacion = $request->identificacion;
         $alumno->nombre = $nombre;
         $alumno->apellido = $apellido;
         $alumno->sexo = $request->sexo;
         $alumno->fecha_nacimiento = $fecha_nacimiento;
-        $alumno->correo = $request->correo;
+        $alumno->correo = $correo;
         $alumno->telefono = $request->telefono;
         $alumno->celular = $request->celular;
-        $alumno->direccion = $request->direccion;
+        $alumno->direccion = $direccion;
         $alumno->alergia = $request->alergia;
         $alumno->asma = $request->asma;
         $alumno->convulsiones = $request->convulsiones;
@@ -510,7 +514,8 @@ class AlumnoController extends Controller
 
     else{
         $alumno = Alumno::find($request->id);
-        $alumno->correo = $request->correo;
+        $correo = strtolower($request->correo);
+        $alumno->correo = $correo;
 
         if($alumno->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -535,7 +540,10 @@ class AlumnoController extends Controller
 
     public function updateDireccion(Request $request){
         $alumno = Alumno::find($request->id);
-        $alumno->direccion = $request->direccion;
+
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $alumno->direccion = $direccion;
         
         if($alumno->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

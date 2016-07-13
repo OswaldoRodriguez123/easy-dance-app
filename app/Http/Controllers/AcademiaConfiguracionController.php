@@ -25,6 +25,7 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Image;
+use Illuminate\Support\Facades\Input;
 
 class AcademiaConfiguracionController extends Controller {
 
@@ -207,10 +208,14 @@ class AcademiaConfiguracionController extends Controller {
                 $numero_factura = 1;
             }
 
-            $academia->correo = $request->correo;
+            $correo = strtolower($request->correo);
+
+            $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+            $academia->correo = $correo;
             $academia->telefono = $request->telefono;
             $academia->celular = $request->celular;
-            $academia->direccion = $request->direccion;
+            $academia->direccion = $direccion;
             $academia->facebook = $request->facebook;
             $academia->twitter = $request->twitter;
             $academia->linkedin = $request->linkedin;
@@ -244,7 +249,9 @@ class AcademiaConfiguracionController extends Controller {
                     $nombre_img = "academia-". $academia->id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('academia')->put($nombre_img,  $image);
+                    // \Storage::disk('academia')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/academia/'.$nombre_img);
 
                     $academia->imagen = $nombre_img;
                     $academia->save();
@@ -701,11 +708,15 @@ class AcademiaConfiguracionController extends Controller {
 
     else{
 
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $correo = strtolower($request->correo);
+
         $academia = Academia::find(Auth::user()->academia_id);
-        $academia->correo = $request->correo;
+        $academia->correo = $correo;
         $academia->telefono = $request->telefono;
         $academia->celular = $request->celular;
-        $academia->direccion = $request->direccion;
+        $academia->direccion = $direccion;
 
         if($academia->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -716,7 +727,7 @@ class AcademiaConfiguracionController extends Controller {
     }
 
     public function updateImagen(Request $request)
-    {
+    {       
             if($request->imageBase64){
                     $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                     $path = storage_path();
@@ -727,16 +738,17 @@ class AcademiaConfiguracionController extends Controller {
                     
                     if($ext == 'jpeg' || 'jpg'){
                         $extension = '.jpg';
-                    }
-
-                    if($ext == 'png'){
+                    }elseif($ext == 'png'){
                         $extension = '.png';
                     }
 
                     $nombre_img = "academia-". Auth::user()->academia_id . $extension;
                     $image = base64_decode($base64_string);
 
-                    \Storage::disk('academia')->put($nombre_img,  $image);
+                    // \Storage::disk('academia')->put($nombre_img,  $image);
+
+                    $img = Image::make($image)->resize(640, 480);
+                    $img->save('assets/uploads/academia/'.$nombre_img);
 
                 }else{
                     $nombre_img = "";
@@ -791,7 +803,15 @@ class AcademiaConfiguracionController extends Controller {
         $academia = Academia::find(Auth::user()->academia_id);
         $academia->normativa = $request->normativa;
         $academia->manual = $request->manual;
-        $academia->programacion = $request->programacion;
+
+        if($request->programacion){
+
+            $nombre_archivo = 'programacion-'.Auth::user()->academia_id.'.pdf';
+
+            \Storage::disk('programacion')->put($nombre_archivo,  \File::get($request->programacion));
+
+            $academia->programacion = $nombre_archivo;
+        }
         
         if($academia->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

@@ -1565,3 +1565,8 @@ text-shadow: 0 2px 20px rgba(38, 61, 178, 1) !important;
     transform:translate(0,-.125rem)
 }
 
+.capitalize{
+    
+    text-transform:capitalize;
+}
+

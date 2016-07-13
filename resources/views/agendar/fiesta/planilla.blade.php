@@ -541,7 +541,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="fiesta-nombre"><span>{{$fiesta->nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="fiesta-nombre" class="capitalize">{{$fiesta->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Fiesta">
                              <td>
@@ -549,7 +549,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Descripción </span>
                              </td>
-                             <td id="fiesta-descripcion" class="f-14 m-l-15" data-valor="{{$fiesta->descripcion}}" ><span id="fiesta-descripcion"><span>{{ str_limit($fiesta->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="fiesta-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$fiesta->descripcion}}" >{{ str_limit($fiesta->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFecha-Fiesta">
                              <td>
@@ -573,7 +573,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-estudio-salon f-22"></i> </span>
                                <span class="f-14"> Lugar o Sitio </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="fiesta-lugar"><span>{{$fiesta->lugar}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="fiesta-lugar" class="capitalize">{{$fiesta->lugar}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 <!--                             <tr class="detalle" data-toggle="modal" href="#modalBoletos-Fiesta">
                              <td width="50%"> 
@@ -740,12 +740,16 @@
             }
             $("#fiesta-"+c.name).data('valor',c.value);
             $("#fiesta-"+c.name).html(valor);
-          }else if(c.name=='descripcion' || c.name=='condiciones'){
+          }else if(c.name=='descripcion'){
+             $("#fiesta-"+c.name).data('valor',c.value);
+             $("#fiesta-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='condiciones'){
              $("#fiesta-"+c.name).data('valor',c.value);
              $("#fiesta-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            $("#fiesta-"+c.name).text(c.value);
+            $("#fiesta-"+c.name).text(c.value.toLowerCase());
           }
 
           if(c.value == ''){

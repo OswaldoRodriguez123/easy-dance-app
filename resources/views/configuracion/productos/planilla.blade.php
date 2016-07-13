@@ -365,7 +365,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_d-servicios f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="producto-nombre">{{$producto->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="producto-nombre" class="capitalize">{{$producto->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCosto-Producto">
                              <td>
@@ -389,7 +389,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Descripción </span>
                              </td>
-                             <td id="producto-descripcion" class="f-14 m-l-15" data-valor="{{$producto->descripcion}}" ><span ><span>{{ str_limit($producto->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="producto-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$producto->descripcion}}">{{ str_limit($producto->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImpuesto-Producto">
                              <td>
@@ -520,7 +520,7 @@
         $.each(form, function (n, c) {
           if(c.name=='descripcion' || c.name=='nombre'){
              $("#producto-"+c.name).data('valor',c.value);
-             $("#producto-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#producto-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if (c.name=='incluye_iva'){
             if(c.value ==1){
@@ -531,7 +531,7 @@
           }else if(c.name==='costo'){
              $("#producto-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
-            $("#producto-"+c.name).text(c.value);
+            $("#producto-"+c.name).text(c.value.toLowerCase());
           }
 
           $("#estatus-"+c.name).removeClass('c-amarillo');

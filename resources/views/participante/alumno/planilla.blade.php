@@ -693,7 +693,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-nombre">{{$alumno->nombre}}</span> <span id="alumno-apellido">{{$alumno->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-nombre" class="capitalize">{{$alumno->nombre}}</span> <span id="alumno-apellido" class="capitalize">{{$alumno->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Alumno">
                              <td>
@@ -739,7 +739,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="alumno-direccion" class="f-14 m-l-15" data-valor="{{$alumno->direccion}}" ><span ><span>{{ str_limit($alumno->direccion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="alumno-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$alumno->direccion}}" >{{ str_limit($alumno->direccion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Alumno">
                              <td>
@@ -988,13 +988,21 @@
             $("#alumno-"+c.name).html(valor);
           }else if(c.name=='direccion'){
              $("#alumno-"+c.name).data('valor',c.value);
-             $("#alumno-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            $("#alumno-"+c.name).text(c.value);
+
+            $("#alumno-"+c.name).text(c.value.toLowerCase());
+            
           }
-          $("#estatus-"+c.name).removeClass('c-amarillo');
-          $("#estatus-"+c.name).addClass('c-verde');
+          if(c.value == ''){
+            $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
+            $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
+          }
+          else{
+            $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
         });
       }
 
@@ -1266,7 +1274,7 @@
       //   })
 
       // });
-    
+
    </script> 
 
    <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        

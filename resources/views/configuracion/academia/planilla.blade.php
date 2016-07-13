@@ -438,12 +438,12 @@
 
                                          <div class="col-sm-12">
                                           <div class="form-group">
-                                              <label class="m-b-10">Programación de clases</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación de clases, de modo que, tu equipo de instructores y alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                    
+                                              <label class="m-b-10">Programación de clases</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación de clases, de modo que, tu equipo de instructores y alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>
                                               <div class="fileinput fileinput-new" data-provides="fileinput">
                                                   <span class="btn btn-lg btn-file m-r-10">
                                                       <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
                                                       <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
-                                                      <input type="file" name="programacion">
+                                                      <input type="file" name="programacion" id="programacion">
                                                   </span>
                                                   <span class="fileinput-filename"></span>
                                                   <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
@@ -811,7 +811,7 @@
                            <table class="table table-striped table-bordered">
                             <tr class="detalle" data-toggle="modal" href="#modalContacto-Academia">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($academia->telefono) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($academia->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
                                <span class="f-14"> Contacto </span>
                              </td>
@@ -819,11 +819,11 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalRedes-Academia">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($academia->facebook) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-facebook" class="zmdi {{ empty($academia->facebook) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-share zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Redes Sociales </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="academia-redes"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="academia-facebook"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImagen-Academia">
                              <td>
@@ -898,7 +898,6 @@
       $("#nombre_nivel").val('');
       $("#cantidad_estudio").val('');
 
-
       if("{{$academia->incluye_iva}}" == 1){
           $("#incluye_iva").val('1');  //VALOR POR DEFECTO
           $("#iva").attr("checked", true); //VALOR POR DEFECTO
@@ -912,7 +911,6 @@
           console.log($("#incluye_iva").val());     
         });
 
-
       $("#imagen").bind("change", function() {
             //alert('algo cambio');
             
@@ -924,6 +922,16 @@
 
         });
 
+      // $("#programacion").bind("change", function() {
+      //       //alert('algo cambio');
+            
+      //       setTimeout(function(){
+      //         var programacion = document.getElementById('programacion');
+      //         var files = programacion.files;
+      //         var file64 = $("input:hidden[name=fileBase64]").val(files);
+      //       },500);
+
+      //   });
 
         $("#telefono").val("{{$academia->telefono}}");
         $("#celular").val("{{$academia->celular}}");
@@ -1142,7 +1150,21 @@
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
-        var datos = $( "#"+form ).serialize();
+        console.log(form);
+        if(form != 'edit_especiales_academia'){
+          var datos = $( "#"+form ).serialize();
+        }
+        else{
+
+          var data = new FormData();
+          var programacion = document.getElementById('programacion');
+          data.append('programacion', programacion.files[0]);
+          data.append('normativa', $('#normativa').val());
+          data.append('manual', $('#manual').val());
+          console.log(data);
+          var datos = data;
+        }
+        
         var datos_array=  $( "#"+form ).serializeArray();
         console.log(datos_array);
         
@@ -1150,9 +1172,12 @@
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
-            type: 'PUT',
+            type: 'POST',
             dataType: 'json',
-            data: datos,                
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,                
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){
@@ -1250,7 +1275,7 @@
                           .attr('id',rowId)
                           .addClass('seleccion');
 
-                          // $("#agregar_item")[0].reset();
+                          $("#edit_estudio_academia")[0].reset();
                           // rechargeServicio();
 
                         }else{
@@ -1334,7 +1359,7 @@
                           .attr('id',rowId)
                           .addClass('seleccion');
 
-                          // $("#agregar_item")[0].reset();
+                          $("#edit_nivel_academia")[0].reset();
                           // rechargeServicio();
 
                         }else{
@@ -1442,6 +1467,50 @@
                 .draw();
           });
 
+
+    // $(document).on("change", function(e){
+    // $("#programacion").bind("change", function() {
+  
+    //   var miurl="{{url('/')}}/configuracion/academia/update/especiales";
+
+    //   var data = new FormData();
+    //   var programacion = document.getElementById('programacion');
+    //   var files = programacion.files;
+    //   data.append('programacion', files);
+    
+    //   console.log(data);
+
+    //   $.ajaxSetup({
+    //       headers: {
+    //           'X-CSRF-TOKEN': $('input:hidden[name=_token]').val()
+    //       }
+    //   });
+
+    //  $.ajax({
+    //         url: miurl, 
+    //         type: 'POST',
+    
+    //         // Form data
+    //         //datos del formulario
+    //         data: data,
+    //         //necesario para subir archivos via ajax
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+
+    //         //una vez finalizado correctamente
+    //         success: function(data){
+    //           var codigo='<div class="mailbox-attachment-info"><a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i>'+ data +'</a><span class="mailbox-attachment-size"> </span></div>';
+    //           $("#"+divresul+"").html(codigo);
+                       
+    //         },
+    //         //si ha ocurrido un error
+    //         error: function(data){
+    //            $("#"+divresul+"").html(data);
+               
+    //         }
+    //     });
+    // })
 
     
    </script> 

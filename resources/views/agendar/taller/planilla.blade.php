@@ -834,7 +834,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a-talleres f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="taller-nombre"><span>{{$taller->nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="taller-nombre" class="capitalize"><span>{{$taller->nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCosto-Taller">
                              <td>
@@ -850,7 +850,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Descripcion </span>
                              </td>
-                             <td id="taller-descripcion" class="f-14 m-l-15" data-valor="{{$taller->descripcion}}" ><span id="taller-descripcion"><span>{{ str_limit($taller->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="taller-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$taller->descripcion}}" >{{ str_limit($taller->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFechaInicio-Taller">
                              <td width="50%"> 
@@ -1080,12 +1080,12 @@
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name=='descripcion'){
              $("#taller-"+c.name).data('valor',c.value);
-             $("#taller-"+c.name).html(c.value.substr(0, 30) + "...");
+             $("#taller-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name==='costo'){
              $("#taller-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else{
-            $("#taller-"+c.name).text(c.value);
+            $("#taller-"+c.name).text(c.value.toLowerCase());
           }
 
           if(c.value == ''){
@@ -1251,8 +1251,8 @@
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
-         var token = $('input:hidden[name=_token]').val();
+         var route = route_eliminar + "{{$taller->id}}";
+         var token = '{{ csrf_token() }}';
                 
                 $.ajax({
                     url: route,
@@ -1266,15 +1266,17 @@
 
                     },
                     error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                //         
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
       }

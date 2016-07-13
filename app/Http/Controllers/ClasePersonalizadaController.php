@@ -123,6 +123,8 @@ class ClasePersonalizadaController extends Controller {
 
     else{
 
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
         $clasepersonalizada = new ClasePersonalizada;
         
         $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
@@ -139,6 +141,7 @@ class ClasePersonalizadaController extends Controller {
         $clasepersonalizada->especialidad_id = $request->especialidad_id;
         $clasepersonalizada->estudio_id = $request->estudio_id;
         $clasepersonalizada->condiciones = $request->condiciones;
+        $clasepersonalizada->descripcion = $descripcion;
 
         // return redirect("/home");
         if($clasepersonalizada->save()){
@@ -214,6 +217,7 @@ class ClasePersonalizadaController extends Controller {
 
         if($clasepersonalizada->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'nombre', 'valor' => $nombre, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -309,7 +313,10 @@ class ClasePersonalizadaController extends Controller {
     public function updateDescripcion(Request $request){
 
         $clasepersonalizada = ClasePersonalizada::find($request->id);
-        $clasepersonalizada->descripcion = $request->descripcion;
+
+        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $clasepersonalizada->descripcion = $descripcion;
 
         if($clasepersonalizada->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

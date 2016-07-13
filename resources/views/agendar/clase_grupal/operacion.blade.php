@@ -141,7 +141,7 @@
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
+         var route = route_eliminar + "{{$id}}";
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({

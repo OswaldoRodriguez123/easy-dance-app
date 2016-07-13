@@ -205,7 +205,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('agendar/talleres/operaciones/{id}', 'TallerController@operar');
 	Route::delete('agendar/talleres/eliminar/{id}', 'TallerController@destroy');
 	Route::get('agendar/talleres/participantes/{id}', 'TallerController@participantes');
-	Route::delete('agendar/talleres/eliminarinscripcion/{id}', 'TallerController@eliminarinscripcion');
+	Route::post('agendar/talleres/eliminarinscripcion/{id}', 'TallerController@eliminarinscripcion');
 	Route::post('agendar/talleres/inscribir', 'TallerController@storeInscripcion');
 
 	Route::put('agendar/talleres/update/nombre', 'TallerController@updateNombre');
@@ -336,11 +336,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('configuracion/academia/eliminarnivel/{id}','AcademiaConfiguracionController@eliminarniveles');
 	Route::post('configuracion/academia/completar','AcademiaConfiguracionController@store');
 
-	Route::put('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');
-	Route::put('configuracion/academia/update/imagen', 'AcademiaConfiguracionController@updateImagen');
-	Route::put('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
-	Route::put('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
-	Route::put('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
+	Route::post('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');
+	Route::post('configuracion/academia/update/imagen', 'AcademiaConfiguracionController@updateImagen');
+	Route::post('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
+	Route::post('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
+	Route::post('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
 
 	// PRODUCTOS
 

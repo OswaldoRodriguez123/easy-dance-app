@@ -120,13 +120,18 @@ class ProveedorController extends Controller {
 
         $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
 
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $correo = strtolower($request->correo);
+
         $proveedor->academia_id = Auth::user()->academia_id;
         $proveedor->nombre = $nombre;
         $proveedor->apellido = $apellido;
-        $proveedor->correo = $request->correo;
+        $proveedor->correo = $correo;
         $proveedor->telefono = $request->telefono;
         $proveedor->celular = $request->celular;
         $proveedor->sexo = $request->sexo;
+        $proveedor->direccion = $direccion;
 
         if($proveedor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -215,7 +220,8 @@ class ProveedorController extends Controller {
 
     else{
         $proveedor = Proveedor::find($request->id);
-        $proveedor->correo = $request->correo;
+        $correo = strtolower($request->correo);
+        $proveedor->correo = $correo;
 
         if($proveedor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -263,7 +269,10 @@ class ProveedorController extends Controller {
 
     public function updateDireccion(Request $request){
         $proveedor = Proveedor::find($request->id);
-        $proveedor->direccion = $request->direccion;
+
+        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        $proveedor->direccion = $direccion;
 
         // return redirect("alumno/edit/{$request->id}");
         if($proveedor->save()){
