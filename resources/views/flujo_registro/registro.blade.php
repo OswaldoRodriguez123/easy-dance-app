@@ -306,12 +306,28 @@
 
 @section('js') 
             
-		<script type="text/javascript">
+	<script type="text/javascript">
 
     route_agregar="{{url('/')}}/registro";
     route_completado="{{url('/')}}/registro/completado";
 
     $(document).ready(function(){
+
+    $('#email').bind("cut copy paste",function(e) {
+        e.preventDefault();
+    });
+
+    $('#email_confirmation').bind("cut copy paste",function(e) {
+        e.preventDefault();
+    });
+
+    $('#password').bind("cut copy paste",function(e) {
+        e.preventDefault();
+    });
+
+    $('#password_confirmation').bind("cut copy paste",function(e) {
+        e.preventDefault();
+    });
 
         $(".tercero").attr("disabled","disabled");
         $(".tercero").css({
@@ -452,7 +468,9 @@
                     error:function(msj){
                       console.log(msj.responseJSON);
                       setTimeout(function(){ 
-                        
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         errores(msj.responseJSON.errores);
                         
                         var nTitle="   Ups! "; 

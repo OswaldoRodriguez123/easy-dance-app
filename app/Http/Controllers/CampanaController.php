@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Campana;
 use App\Recompensa;
+use App\Alumno;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -115,8 +116,8 @@ class CampanaController extends Controller {
 
     $rules = [
         'cantidad' => 'required|numeric',
-        'nombre' => 'required',
-        'eslogan' => 'required',
+        'nombre' => 'required|min:5|max:50',
+        'eslogan' => 'required|min:5|max:30',
         'historia' => 'required',
         'plazo' => 'required|numeric',
     ];
@@ -126,11 +127,11 @@ class CampanaController extends Controller {
         'cantidad.required' => 'Ups! La cantidad de dinero a recaudar es  requerida',
         'cantidad.numeric' => 'Ups! El campo de recaudar es inválido, debe contener sólo números',
         'nombre.required' => 'Ups! El título de la campaña es requerido',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+        'nombre.min' => 'El mínimo de caracteres permitidos son 5',
         'nombre.max' => 'El máximo de caracteres permitidos son 50',
         'eslogan.required' => 'Ups! El Eslogan es requerido',
-        'eslogan.min' => 'El mínimo de caracteres permitidos son 3',
-        'eslogan.max' => 'El máximo de caracteres permitidos son 100', 
+        'eslogan.min' => 'El mínimo de caracteres permitidos son 5',
+        'eslogan.max' => 'El máximo de caracteres permitidos son 30', 
         'historia.required' => 'Ups! La Historia es requerida',
         'plazo.required' => 'Ups! El plazo es requerido',
         'plazo.numeric' => 'Ups! El plazo es inválido, debe contener sólo números',
@@ -191,6 +192,7 @@ class CampanaController extends Controller {
             $campana->tipo_cuenta = $request->tipo_cuenta;
             $campana->rif = $request->rif;
             $campana->condiciones = $request->condiciones;
+            $campana->presentacion = $request->presentacion;
 
             if($campana->save()){
 
@@ -214,10 +216,38 @@ class CampanaController extends Controller {
                     $image = base64_decode($base64_string);
 
                     // \Storage::disk('campana')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(640, 480);
+                    $img = Image::make($image)->resize(1440, 500);
                     $img->save('assets/uploads/campana/'.$nombre_img);
 
                     $campana->imagen = $nombre_img;
+                    $campana->save();
+
+                }
+
+                if($request->imagePresentacionBase64){
+
+                    $base64_string = substr($request->imagePresentacionBase64, strpos($request->imagePresentacionBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imagePresentacionBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "campanapresentacion-". $campana->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('campana')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(1440, 500);
+                    $img->save('assets/uploads/campana/'.$nombre_img);
+
+                    $campana->imagen_presentacion = $nombre_img;
                     $campana->save();
 
                 }
@@ -513,7 +543,8 @@ class CampanaController extends Controller {
     }
 
     public function updateImagen(Request $request)
-    {
+    {           
+
                 $campana = Campana::find($request->id);
                 if($request->imageBase64){
 
@@ -536,7 +567,7 @@ class CampanaController extends Controller {
                     $image = base64_decode($base64_string);
 
                     // \Storage::disk('campana')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(640, 480);
+                    $img = Image::make($image)->resize(1440, 500);
                     $img->save('assets/uploads/campana/'.$nombre_img);
                 }
                 else{
@@ -593,6 +624,53 @@ class CampanaController extends Controller {
     public function update($id)
     {
 
+    }
+
+    public function progreso($id)
+    {
+
+         $campaña = Campana::find($id);
+
+         if($campaña->link_video){
+
+            $parts = parse_url($campaña->link_video);
+            $partes = explode( '=', $parts['query'] );
+            $link_video = $partes[1];
+
+            }
+            else{
+                $link_video = '';
+            }
+
+        $recompensas = Recompensa::where('campana_id', $id)->get();
+
+         // $cantidad_reservaciones = DB::table('reservaciones')
+         //     ->select('reservaciones.*')
+         //     ->where('tipo_id', '=', $id)
+         //     ->where('tipo_reservacion', '=', 1)
+         // ->count();
+
+         // if($clase_grupal_join->cupo_reservacion == 0){
+         //    $cupo_reservacion = 1;
+         // }
+         // else{
+         //    $cupo_reservacion = $clase_grupal_join->cupo_reservacion;
+         // }
+
+         // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+
+         $privilegio = Auth::user()->tipo_usuario;
+
+         if($privilegio == 10){
+            $administrador = 1;
+         }
+         else{
+             $administrador = 0;
+         }
+
+         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'administrador' => $administrador, 'link_video' => $link_video, 'recompensas' => $recompensas, 'alumnos' => $alumnos]);
     }
 
     /**

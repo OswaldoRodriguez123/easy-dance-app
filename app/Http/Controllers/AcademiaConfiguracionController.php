@@ -806,7 +806,8 @@ class AcademiaConfiguracionController extends Controller {
 
         if($request->programacion){
 
-            $nombre_archivo = 'programacion-'.Auth::user()->academia_id.'.pdf';
+            $extension = $request->programacion->getClientOriginalExtension();
+            $nombre_archivo = 'programacion-'.Auth::user()->academia_id.'.'.$extension;
 
             \Storage::disk('programacion')->put($nombre_archivo,  \File::get($request->programacion));
 

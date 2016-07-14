@@ -7,6 +7,9 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
+
 @stop
 
 @section('js_vendor')
@@ -103,7 +106,9 @@
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($clasegrupal->imagen)
                                           <img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clasegrupal->imagen}}" style="line-height: 150px;">
+                                          @endif
                                         </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
@@ -988,7 +993,9 @@
                               <hr></hr>
                               
                               <a href="{{url('/')}}/agendar/clases-grupales/participantes/{{$clasegrupal->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                              <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasegrupal->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+
 
                               <br></br>
                                 
@@ -1491,6 +1498,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -1571,12 +1581,13 @@
                 });
       }
 
-      $("button[name=progreso]").click(function(id){
+    $(".progreso").click(function(){
+               
+      window.location = "{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}";
 
-          var route =route_progreso+this.id;
-          window.location=route;
+    });
 
-      });
+
 
     
    </script> 

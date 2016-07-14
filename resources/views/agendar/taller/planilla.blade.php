@@ -4,6 +4,8 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -707,7 +709,9 @@
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                        @if($taller->imagen)
                                           <img src="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" style="line-height: 150px;">
+                                        @endif
                                         </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
@@ -801,6 +805,7 @@
                                   <hr></hr>
 
                                   <a href="{{url('/')}}/agendar/talleres/participantes/{{$taller->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a href="{{url('/')}}/agendar/talleres/progreso/{{$taller->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$taller->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   
                                   <br></br>
@@ -1200,6 +1205,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);

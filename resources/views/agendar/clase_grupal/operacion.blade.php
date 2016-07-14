@@ -3,6 +3,7 @@
 @section('css_vendor')
 
 <link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 
 @stop
 
@@ -21,9 +22,9 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-4"></div>
+            <div class = "col-sm-3"></div>
 
-			<ul class="ca-menu-c col-sm-4" style="width: 720px;">
+			<ul class="ca-menu-c col-sm-5" style="width: 720px;">
         		<li data-ripplecator class ="dark-ripples">
                         <a class="participantes">
                             <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
@@ -33,6 +34,18 @@
                             </div>
                         </a>
                     </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class = "progreso">
+                            <span class="ca-icon-c"><i class="icon_e-ver-progreso f-35 boton blue sa-warning" 
+                                   data-original-title="Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Ver Progreso</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar">
                             <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
@@ -58,7 +71,7 @@
                     
                 </ul>
 
-                <div class = "col-sm-4"></div>
+                <div class = "col-sm-2"></div>
                 
                 </div>
             </div>
@@ -111,6 +124,12 @@
   $(".participantes").click(function(){
                
     window.location = "{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}";
+
+    });
+
+  $(".progreso").click(function(){
+               
+    window.location = "{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}";
 
     });
 

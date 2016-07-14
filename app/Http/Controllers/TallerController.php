@@ -210,7 +210,7 @@ class TallerController extends Controller {
                 $image = base64_decode($base64_string);
 
                 // \Storage::disk('taller')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(640, 480);
+                $img = Image::make($image)->resize(1440, 500);
                 $img->save('assets/uploads/taller/'.$nombre_img);
 
                 $taller->imagen = $nombre_img;
@@ -675,7 +675,7 @@ class TallerController extends Controller {
                     $image = base64_decode($base64_string);
 
                     // \Storage::disk('taller')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(640, 480);
+                    $img = Image::make($image)->resize(1440, 500);
                     $img->save('assets/uploads/taller/'.$nombre_img);
 
                 }else{

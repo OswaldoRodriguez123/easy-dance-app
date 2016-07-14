@@ -891,6 +891,7 @@
    <script type="text/javascript">
 
     route_update="{{url('/')}}/configuracion/academia/update";
+    contenido = true;
 
     $(document).ready(function(){
 
@@ -1150,33 +1151,33 @@
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
-        console.log(form);
         if(form != 'edit_especiales_academia'){
           var datos = $( "#"+form ).serialize();
+          tipo = 'PUT';
+          contenido = null;
         }
         else{
-
+          tipo = 'POST';
           var data = new FormData();
           var programacion = document.getElementById('programacion');
           data.append('programacion', programacion.files[0]);
           data.append('normativa', $('#normativa').val());
           data.append('manual', $('#manual').val());
-          console.log(data);
           var datos = data;
+          contenido = false;
         }
         
         var datos_array=  $( "#"+form ).serializeArray();
-        console.log(datos_array);
         
         var route = route_update+"/"+update;
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
-            type: 'POST',
+            type: tipo,
             dataType: 'json',
             data: datos,
             cache: false,
-            contentType: false,
+            // contentType: contenido,
             processData: false,                
             success: function (respuesta) {
               setTimeout(function() {
@@ -1206,6 +1207,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -1294,6 +1298,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -1378,6 +1385,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

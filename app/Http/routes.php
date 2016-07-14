@@ -56,6 +56,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
+	Route::get('error', function () {
+	    return view('errors.error_sistema');
+
+	});
 
 	//EL ROL ADMIN TENDRA ACCESO LIBRE A TODAS LA RUTAS
 	// Route::group(['middleware' => ['role:admin|recepcionista']], function() {
@@ -301,11 +305,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('especiales/campañas/update/datos', 'CampanaController@updateDatosBancarios');
 	Route::post('especiales/campañas/agregarrecompensa', 'CampanaController@agregarrecompensa');
 	Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');
+	Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
 
 	//REGALOS
 
 	Route::get('especiales/regalos/agregar', 'RegaloController@create');
 	Route::post('especiales/regalos/agregar', 'RegaloController@store');
+	Route::post('especiales/regalos/verificar', 'RegaloController@verify');
 
 	// ---- CONFIGURACION ----
 
@@ -337,10 +343,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('configuracion/academia/completar','AcademiaConfiguracionController@store');
 
 	Route::post('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');
-	Route::post('configuracion/academia/update/imagen', 'AcademiaConfiguracionController@updateImagen');
-	Route::post('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
+	Route::put('configuracion/academia/update/imagen', 'AcademiaConfiguracionController@updateImagen');
+	Route::put('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
 	Route::post('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
-	Route::post('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
+	Route::put('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
 
 	// PRODUCTOS
 

@@ -299,12 +299,12 @@
                 element = this;
 
                 swal({   
-                    title: "Desea enviar la factura por correo electrónico?",   
-                    text: "Confirmar envio!",   
+                    title: "Desea re-enviar la factura por correo electrónico?",   
+                    text: "Confirmar re-envio!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Enviar!",  
+                    confirmButtonText: "Re-Enviar!",  
                     cancelButtonText: "Cancelar",         
                     closeOnConfirm: false 
                 }, function(isConfirm){   

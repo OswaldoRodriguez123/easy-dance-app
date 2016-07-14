@@ -434,6 +434,9 @@
                       }, 1000);
                     },
                     error:function(msj){
+                      if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                       setTimeout(function(){ 
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);

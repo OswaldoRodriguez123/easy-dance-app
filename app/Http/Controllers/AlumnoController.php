@@ -89,11 +89,16 @@ class AlumnoController extends Controller
         
         $deuda = $grouped->toArray();
 
-        $alumno = DB::table('alumnos')
-            ->select('alumnos.*')
-            ->where('academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('deleted_at', '!=' ,  NULL)
-        ->get();
+        // $alumno = DB::table('alumnos')
+        //     ->select('alumnos.*')
+        //     ->where('academia_id', '=' ,  Auth::user()->academia_id)
+        //     ->where('deleted_at', '!=' ,  NULL)
+        // ->get();
+
+        $alumno = Alumno::onlyTrashed()
+                ->where('academia_id', Auth::user()->academia_id)
+                ->whereNotNull('deleted_at')
+            ->get();
 
         // $proforma = DB::table('items_factura_proforma')
         //     ->groupBy('alumno_id')
@@ -105,8 +110,6 @@ class AlumnoController extends Controller
         //    // ->lists('sum','alumno_id');
         // dd($total);
 
-        
-
 
         return view('participante.alumno.bandeja')->with(['alumnos' => $alumno, 'deuda' => $deuda]);
     }
@@ -114,7 +117,7 @@ class AlumnoController extends Controller
 	public function store(Request $request)
 	{
 		$request->merge(array('correo' => trim($request->correo)));
-    
+
     $rules = [
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
         'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',

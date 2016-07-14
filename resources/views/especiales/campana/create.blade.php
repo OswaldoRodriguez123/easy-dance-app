@@ -286,17 +286,65 @@
                                     </span>
                                     </div>                                          
                                 </div>
+                                
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-presentacion">Presentación general de la campaña</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Preséntate, presenta tus antecedentes, tu campaña y por qué es importante para ti. Expresa la magnitud de lo que te ayudarán a lograr tus colaboradores" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="presentacion" name="presentacion" rows="2" placeholder="500 Caracteres"></textarea>
+                                    </div>
+                                 <div class="has-error" id="error-presentacion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-presentacion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                            <label for="apellido" id="id-imagen_presentacion">Imagen de la presentación general</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
+                            
+                            <div class="clearfix p-b-15"></div>
+                              
+                              <input type="hidden" name="imagePresentacionBase64" id="imagePresentacionBase64">
+                              <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                <div>
+                                    <span class="btn btn-info btn-file">
+                                        <span class="fileinput-new">Seleccionar Imagen</span>
+                                        <span class="fileinput-exists">Cambiar</span>
+                                        <input type="file" name="imagen_presentacion" id="imagen_presentacion" >
+                                    </span>
+                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                </div>
+                            </div>
+                              <div class="has-error" id="error-imagen_presentacion">
+                              <span >
+                                  <small class="help-block error-span" id="error-imagen_presentacion_mensaje"  ></small>
+                              </span>
+                            </div>
+                          </div>
 
                             <div class="clearfix p-b-35"></div>
 
                             <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Las recompensas son incentivos que se ofrecen a los colaboradores a cambio de su apoyo. Puedes editar una recompensa hasta antes de que sea reclamada por un colaborador. A continuación presentaremos el tipo de recompensa que no debes ofrecer: 
-
+                                    <label for="nombre">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-html="true" data-content="Las recompensas son incentivos que se ofrecen a los colaboradores a cambio de su apoyo. Puedes editar una recompensa hasta antes de que sea reclamada por un colaborador. A continuación presentaremos el tipo de recompensa que no debes ofrecer: 
+                                    <br>
                                     1.- Capital, patrimonio neto u otra participación en una empresa o negocio.
+                                    <br>
                                     2.- Todo producto para el consumo de alcohol.
+                                    <br>
                                     3.- Sustancia controlada o parafernalia de fármacos.
+                                    <br>
                                     4.- Armas, municiones y accesorios relacionados.
+                                    <br>
                                     5.- Toda forma de lotería o juego de apuestas" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
@@ -313,7 +361,7 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
-                                    <label for="nombre_estudio" id="id-nombre_recompensa">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la recompensa" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre_estudio" id="id-nombre_recompensa">Título</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El título para esta recompensa es lo que aparecerá en tu página de la campaña de Easy Dance . Crear un título que describa bien el contenido de lo que ofrece esta recompensa" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
@@ -329,7 +377,7 @@
 
                                   <div class="clearfix p-b-35"></div>
 
-                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de la recompensa" title="" data-original-title="Ayuda"></i>
+                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Precio</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Este monto representa lo que deseas recaudar  de los patrocinadores que busquen esta recompensa, por los elementos incluidos en este campo" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
@@ -345,7 +393,7 @@
 
                                   <div class="clearfix p-b-35"></div>
 
-                                  <label for="descripcion_recompensa" id="id-descripcion_recompensa">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la recompensa" title="" data-original-title="Ayuda"></i>
+                                  <label for="descripcion_recompensa" id="id-descripcion_recompensa">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe los detalles de esta recompensa. Sé creativo, esta es tu oportunidad de  orientar a tus seguidores  sobre lo que recibirán después de que reclamen esta recompensa" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b-cuentales-historia f-22"></i></span>
@@ -629,12 +677,23 @@
 
         });
 
+        $("#imagen_presentacion").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagenb img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imagePresentacionBase64]").val(fileinput);
+            },500);
+
+        });
+
       }); 
 
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "cantidad", "imagen", "historia", "eslogan", "plazo", "link_video", "nombre_banco", "tipo_cuenta", "numero_cuenta", "rif", "correo", "condiciones"];
+    var campo = ["nombre", "cantidad", "imagen", "historia", "eslogan", "plazo", "link_video", "nombre_banco", "tipo_cuenta", "numero_cuenta", "rif", "correo", "condiciones", "presentacion", "imagen_presentacion"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -808,6 +867,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

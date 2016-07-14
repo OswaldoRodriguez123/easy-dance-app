@@ -141,7 +141,9 @@
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                        @if($producto->imagen)
                                           <img src="{{url('/')}}/assets/uploads/producto/{{$producto->imagen}}" style="line-height: 150px;">
+                                        @endif
                                         </div>
                                         <div>
                                             <span class="btn btn-info btn-file">
@@ -639,6 +641,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);

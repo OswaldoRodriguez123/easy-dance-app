@@ -61,7 +61,7 @@
                                     </td>
                                     <td class="text-center previa">{{$visitantes['nombre']}} {{$visitantes['apellido']}} </td>
                                     <td class="text-center disabled">
-                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones"></i></td>
+                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones email"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -90,6 +90,7 @@
     <script type="text/javascript">
 
             route_detalle="{{url('/')}}/participante/visitante/detalle";
+            route_email="{{url('/')}}/correo/sesion/";
             
             $(document).ready(function(){
 
@@ -169,6 +170,37 @@
         var route =route_detalle+"/"+id_visitante[1];
         window.location=route;
       }
+
+      $(".email").click(function(){
+         var route = route_email + 3;
+         var token = '{{ csrf_token() }}';
+         var id = this.id;
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/" + id;  
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      });
 
 
     </script>

@@ -3,7 +3,7 @@
 
 @section('js_vendor')
 <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css">
+<!-- <link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css"> -->
 @stop
 {{-- <div class="myback2" > --}}
 @section('content')
@@ -22,7 +22,7 @@
                     <div class="container">
                     
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        <a class="btn-blanco m-r-10 f-16 volver pointer" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
                     </div>
                     
                     
@@ -130,4 +130,13 @@
 
 @section('js') 
 
+<script>
+
+    $(".volver").click(function(){
+
+        window.location="/";
+
+    });
+
+</script>
 @stop

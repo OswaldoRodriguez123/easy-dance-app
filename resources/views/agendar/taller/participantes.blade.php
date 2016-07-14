@@ -486,6 +486,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -581,6 +584,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         finprocesado();
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);

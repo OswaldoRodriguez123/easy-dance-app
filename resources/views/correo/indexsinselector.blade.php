@@ -857,7 +857,8 @@
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
                 // el estilo
-                var html = $("div.note-editable.panel-body").html();
+                // var html = $("div.note-editable.panel-body").html();
+                var html = $('#html-cumpleaños').summernote('code');
                 // var combo = $("#combo").val();
                 // var tipo = $("#tipo").val();
                 var token = $('input:hidden[name=_token]').val();
@@ -941,7 +942,8 @@
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
                 // el estilo
-                var html = $("div.note-editable.panel-body").html();
+                // var html = $("div.note-editable.panel-body").html();
+                var html = $('#html-ausencia').summernote('code');
                 // var combo = $("#combo").val();
                 // var tipo = $("#tipo").val();
                 var token = $('input:hidden[name=_token]').val();
@@ -1020,11 +1022,14 @@
                 procesando();
                 limpiarMensaje();
 
+                var html = $('#html-suspension').summernote('code');
+
                 // Aqui se enviara el correo y el mensaje
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
                 // el estilo
-                var html = $("div.note-editable.panel-body").html();
+                // var html = $("div.note-editable.panel-body").html();
+                console.log(html);
                 // var combo = $("#combo").val();
                 // var tipo = $("#tipo").val();
                 var token = $('input:hidden[name=_token]').val();
@@ -1107,7 +1112,8 @@
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
                 // el estilo
-                var html = $("div.note-editable.panel-body").html();
+                // var html = $("div.note-editable.panel-body").html();
+                var html = $('#html-cobro').summernote('code');
                 // var combo = $("#combo").val();
                 // var tipo = $("#tipo").val();
                 var token = $('input:hidden[name=_token]').val();
@@ -1191,7 +1197,8 @@
                 // $html guardara toda la configuracion html y css que contenga
                 // el mensaje para poder ser enviada al correo y que mantenga
                 // el estilo
-                var html = $("div.note-editable.panel-body").html();
+                // var html = $("div.note-editable.panel-body").html();
+                var html = $('#html-adelanto').summernote('code');
                 // var combo = $("#combo").val();
                 // var tipo = $("#tipo").val();
                 var token = $('input:hidden[name=_token]').val();

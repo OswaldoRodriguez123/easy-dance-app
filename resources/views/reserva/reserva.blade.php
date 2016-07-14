@@ -141,16 +141,21 @@
           					    </p>
 
           					    <div class="clearfix p-b-20"></div>
+                        
+                        @if($clase_grupal->link_video)
 
-          					    <div class="col-sm-offset-3 col-sm-6 m-b-20">                                   
-                                    <div class="embed-responsive embed-responsive-4by3">
-                                        <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/{{$clase_grupal->link_video}}"></iframe>
-                                    </div>
-                                </div>
+            					    <div class="col-sm-offset-3 col-sm-6 m-b-20">                                   
+                            <div class="embed-responsive embed-responsive-4by3">
+                              <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/{{$clase_grupal->link_video}}"></iframe>
+                            </div>
+                          </div>
 
-                                <div class="clearfix p-b-20"></div>
-                                <div class="clearfix p-b-20"></div>
-                                <div class="clearfix p-b-20"></div>
+                        @endif
+
+
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
 
           					    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">

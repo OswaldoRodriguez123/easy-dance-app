@@ -76,14 +76,14 @@
                             </ul>
 
                         </li> 
+
+                        <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
+                            <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
+                        </li>  
+
                         @endif
 
-                        <!-- <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
-                            <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
-                        </li>      -->
-
-                        
-
+                           
                         <!-- <li class="dropdown" data-original-title="" data-content="Asistencia" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600">
                             <a data-toggle="dropdown" href="#">
                                 <i class="tm-icon icon_a icon_a-checador f-18"></i>

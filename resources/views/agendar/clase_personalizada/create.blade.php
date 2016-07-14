@@ -159,7 +159,7 @@
                                <div class="clearfix p-b-35"></div>
                                     <div class="col-sm-12">
                                  
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo, dirígete a la sección de instructores y procede a registrarlo" title="" data-original-title="Ayuda"></i>
+                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -185,7 +185,7 @@
                                 
                                     <div class="col-sm-12">
                                  
-                                    <label for="estudio" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general" title="" data-original-title="Ayuda"></i>
+                                    <label for="estudio" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-estudio-salon f-22"></i></span>
@@ -684,6 +684,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -771,6 +774,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -884,6 +890,52 @@
         scrollTop: $("#id-alumno_id").offset().top-90,
         }, 1000);
       });
+
+                 $('#pop-instructor').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).click(function(e) {
+
+                  if($('.popover').hasClass('in')){
+                     $(this).popover('hide');
+                  } else {
+                    $(this).popover('show');
+                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-instructor f-22"></i></a>');
+                  }
+            
+                    $('.redirect').click(function(e){
+                        window.location = "{{url('/')}}/participante/instructor/agregar";
+                    });
+                    e.preventDefault();
+          });
+
+          $('#pop-salon').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).click(function(e) {
+
+                  if($('.popover').hasClass('in')){
+                     $(this).popover('hide');
+                  } else {
+                    $(this).popover('show');
+                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-estudio-salon f-22"></i></a>');
+                  }
+            
+                    $('.redirect').click(function(e){
+                        window.location = "{{url('/')}}/configuracion/academia";
+                    });
+                    e.preventDefault();
+          });
+
+          $('body').on('click', function (e) {
+            $('[data-toggle="popover"]').each(function () {
+                //the 'is' for buttons that trigger popups
+                //the 'has' for icons within a button that triggers a popup
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
 </script> 
 @stop
 

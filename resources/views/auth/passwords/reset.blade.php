@@ -54,7 +54,7 @@
                             <div class="clearfix m-20 m-b-25"></div>
 
                             <div class="col-md-12">
-                                <input type="password" class="form-control caja" name="password">
+                                <input type="password" class="form-control caja" id ="password" name="password">
                                 <div class="has-error" id="error-password">
                                       <span >
                                           <small class="help-block error-span" id="error-password_mensaje" ></small>                                
@@ -67,7 +67,7 @@
                             <label class="col-md-12 control-label">Escribe tu contraseña nueva una vez más</label>
                             <div class="clearfix m-20 m-b-25"></div>
                             <div class="col-md-12">
-                                <input type="password" class="form-control caja" name="password_confirmation">
+                                <input type="password" class="form-control caja" id ="password_confirmation" name="password_confirmation">
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
@@ -117,6 +117,18 @@
 @section('js') 
             
 		<script type="text/javascript">
+
+      $(document).ready(function(){
+
+        $('#password').bind("cut copy paste",function(e) {
+            e.preventDefault();
+        });
+
+        $('#password_confirmation').bind("cut copy paste",function(e) {
+            e.preventDefault();
+        });
+
+      });
 
         function errores(merror){
             console.log(merror);
@@ -214,6 +226,10 @@
                     error:function(msj){
                       setTimeout(function(){
 
+                      if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        
                       if(msj.responseJSON.status=="TOKEN"){
                           
                           // var nTitle="    Ups! "; 

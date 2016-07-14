@@ -1677,6 +1677,7 @@ class AdministrativoController extends Controller {
 
                 $acuerdo = new Acuerdo;
 
+                $acuerdo->academia_id = Auth::user()->academia_id;
                 $acuerdo->alumno_id = $request->alumno_id;
                 $acuerdo->fecha_inicio = Carbon::createFromFormat('d-m-Y', $arreglo['fechas_acuerdo'][0]['fecha_frecuencia'])->toDateString();
                 $acuerdo->frecuencia = $arreglo['frecuencia'];

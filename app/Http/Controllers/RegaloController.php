@@ -150,6 +150,54 @@ class RegaloController extends Controller {
     }
     }
 
+    public function verify(Request $request)
+    {
+        //dd($request->all());
+
+        $request->merge(array('correo' => trim($request->correo)));
+
+
+    $rules = [
+        'nombre' => 'required|min:3|max:50',
+        'costo' => 'required',
+        'descripcion' => 'required|min:3|max:500',
+        'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'alumno_id' => 'required',
+        'correo' => 'required|email',
+    ];
+
+    $messages = [
+
+        'nombre.required' => 'Ups! El Nombre es requerido ',
+        'correo.required' => 'Ups! El Correo es requerido ',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+        'nombre.max' => 'El máximo de caracteres permitidos son 50',
+        'descripcion.required' => 'Ups! La Descripcion es requerida',
+        'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
+        'descripcion.max' => 'El máximo de caracteres permitidos son 500',
+        'costo.required' => 'Ups! El Costo es requerido',
+        'alumno_id.required' => 'Ups! El campo “de parte de” es requerido',
+        'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
+        'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+       
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+
+    }
+    }
+
     /**
      * Display the specified resource.
      *

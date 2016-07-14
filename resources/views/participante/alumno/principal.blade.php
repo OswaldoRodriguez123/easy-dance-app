@@ -30,11 +30,9 @@
                         <div class="card-header">
 
                             
-                            <div class ="col-md-6 text-left">                                
- 
-                                <span id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
-                                    <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-25"></i></a>
-                                </span>
+                            <div class ="col-md-6 text-left">  
+                                                      
+                               <i name="restablecer" id="restablecer" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer bandeja detalle" data-html="true" data-original-title="" data-content=" <br> Restablecer participante <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eliminado" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" onclick="procesando()"></i>
 
                             </div>
 
@@ -187,6 +185,12 @@
             var route =route_detalle+"/"+id_alumno[1];
             window.location=route;
         }
+
+        
+
+        $(".bandeja").click(function(){
+            window.location="{{url('/')}}/participante/alumno/inactivos";
+         });
 
          $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;

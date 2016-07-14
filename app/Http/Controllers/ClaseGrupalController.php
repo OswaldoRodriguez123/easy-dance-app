@@ -432,7 +432,7 @@ class ClaseGrupalController extends Controller {
                 $image = base64_decode($base64_string);
 
                 // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(640, 480);
+                $img = Image::make($image)->resize(1440, 500);
                 $img->save('assets/uploads/clase_grupal/'.$nombre_img);
 
                 $clasegrupal->imagen = $nombre_img;
@@ -503,11 +503,7 @@ class ClaseGrupalController extends Controller {
 
     else{
 
-         $alumnosclasegrupal = DB::table('inscripcion_clase_grupal') 
-            ->select('inscripcion_clase_grupal.*')
-            ->where('inscripcion_clase_grupal.alumno_id', '=', $request->alumno_id)
-            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
-            ->first(); 
+        $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
 
         // comprobar si esta inscrito
         if(!$alumnosclasegrupal){ 
@@ -1031,7 +1027,7 @@ class ClaseGrupalController extends Controller {
                     $image = base64_decode($base64_string);
 
                     // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(640, 480);
+                    $img = Image::make($image)->resize(1440, 500);
                     $img->save('assets/uploads/clase_grupal/'.$nombre_img);
                 }
                 else{

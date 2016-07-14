@@ -4,6 +4,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -570,7 +571,7 @@
                                     <div class="clearfix p-b-35"></div> -->
                                     <div class="clearfix p-b-35"></div>
 
-                                    <label for="nombre_estudio" id="id-nombre_recompensa">Recompensa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la recompensa" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre_estudio" id="id-nombre_recompensa">Título</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El título para esta recompensa es lo que aparecerá en tu página de la campaña de Easy Dance . Crear un título que describa bien el contenido de lo que ofrece esta recompensa" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
@@ -586,7 +587,7 @@
 
                                   <div class="clearfix p-b-35"></div>
 
-                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de la recompensa" title="" data-original-title="Ayuda"></i>
+                                  <label for="cantidad_recompensa" id="id-cantidad_recompensa">Precio</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Este monto representa lo que deseas recaudar  de los patrocinadores que busquen esta recompensa, por los elementos incluidos en este campo" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
@@ -602,7 +603,7 @@
 
                                   <div class="clearfix p-b-35"></div>
 
-                                  <label for="descripcion_recompensa" id="id-descripcion_recompensa">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la recompensa" title="" data-original-title="Ayuda"></i>
+                                  <label for="descripcion_recompensa" id="id-descripcion_recompensa">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe los detalles de esta recompensa. Sé creativo, esta es tu oportunidad de  orientar a tus seguidores  sobre lo que recibirán después de que reclamen esta recompensa" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b-cuentales-historia f-22"></i></span>
@@ -718,6 +719,7 @@
 
                                   <hr></hr>
                                   
+                                  <a href="{{url('/')}}/especiales/campañas/progreso/{{$campana->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$campana->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -725,7 +727,6 @@
                                   <hr></hr>
 
                                   <br></br>
-                                  <a class="btn-blanco m-r-10 f-18 guardar" id="guardar"> Ver Progreso <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
                                    
                                 </div>
 
@@ -1094,6 +1095,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -1227,6 +1231,10 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                        
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

@@ -103,7 +103,7 @@
                               <tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Si no has creado una cuenta de  Easy Dance, simplemente ignora este mensaje. Si tienes alguna duda o pregunta, ponte en contacto con nosotros en <a href="mailto:soporte@easydance.com" target="_blank">soportet@easydance.com</a>. </font>
+                                    Si no has creado una cuenta de  Easy Dance, simplemente ignora este mensaje. Si tienes alguna duda o pregunta, ponte en contacto con nosotros en <a href="mailto:soporte@easydance.com" target="_blank">soporte@easydance.com</a>. </font>
                                 </td>
                               </tr>
                               
