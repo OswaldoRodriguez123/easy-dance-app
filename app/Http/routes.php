@@ -273,18 +273,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//EXAMENES
 
-	// Route::get('especiales/examenes', 'ExamenController@principal');
-	// Route::get('especiales/examenes/agregar', 'ExamenController@create');
-	// Route::post('especiales/examenes/agregar', 'ExamenController@store');
-	// Route::get('especiales/examenes/detalle/{id}', 'ExamenController@edit');
-	// Route::get('especiales/examenes/operaciones/{id}', 'ExamenController@operar');
-	// Route::delete('especiales/examenes/eliminar/{id}', 'ExamenController@destroy');
-
-	// Route::put('especiales/examenes/update/nombre', 'ExamenController@updateNombre');
-	// Route::put('especiales/examenes/update/descripcion', 'ExamenController@updateDescripcion');
-	// Route::put('especiales/examenes/update/fecha', 'ExamenController@updateFecha');
-	// Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
-	// Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
+	Route::get('especiales/examenes', 'ExamenController@principal');
+	Route::get('especiales/examenes/agregar', 'ExamenController@create');
+	Route::post('especiales/examenes/agregar', 'ExamenController@store');
+	Route::get('especiales/examenes/detalle/{id}', 'ExamenController@edit');
+	Route::get('especiales/examenes/operaciones/{id}', 'ExamenController@operar');
+	Route::delete('especiales/examenes/eliminar/{id}', 'ExamenController@destroy');
+	
+	Route::put('especiales/examenes/update/nombre', 'ExamenController@updateNombre');
+	Route::put('especiales/examenes/update/descripcion', 'ExamenController@updateDescripcion');
+	Route::put('especiales/examenes/update/fecha', 'ExamenController@updateFecha');
+	Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
+	Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
 
 	//CAMPAÑAS
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Examen;
 use App\Alumno;
 use App\Instructor;
+use App\ItemsExamenes;
 use Validator;
 use Carbon\Carbon;
 use DB;
@@ -260,9 +261,25 @@ class ExamenController extends Controller {
         return view('especiales.examen.operacion')->with(['id' => $id, 'examen' => $examen]);        
     }
 
-    public function evaluar()
+    public function evaluar($id)
     {   
-        return view('especiales.examen.evaluar')->with('alumno', Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get());        
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        $examen_join = DB::table('examenes')
+            ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta')
+            ->where('examenes.id', '=', $id)
+        ->first();
+  
+        $hoy = Carbon::now()->format('m-d-Y');
+
+
+        $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();
+
+        //dd($items_examenes);
+
+        return view('especiales.examen.evaluar')
+               ->with(['alumno' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $items_examenes]);
     }
 
 	/**
