@@ -264,7 +264,7 @@ class ExamenController extends Controller {
     public function evaluar($id)
     {   
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
+        //dd($alumnos);
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta')
