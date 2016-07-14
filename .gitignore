@@ -4,6 +4,7 @@
 Homestead.yaml
 Homestead.json
 .env
+/public/assets/uploads/
 /public/assets/uploads/academia/
 /public/assets/uploads/campana/
 /public/assets/uploads/clase_grupal/
