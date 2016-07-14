@@ -27,7 +27,8 @@ class AlterItemsExamenesTable extends Migration
     public function down()
     {
         Schema::table('items_examenes', function (Blueprint $table) {
-            //
+            $table->dropForeign('items_examenes_examen_id_foreign');
+            //$table->dropColumn('examen_id');
         });
     }
 }
