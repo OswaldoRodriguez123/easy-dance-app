@@ -88,7 +88,13 @@
                             <li class = "help-block error-span c-youtube">{!! $error !!}</li>
                         @endforeach
                     </ul>
-                @endif    
+                @endif 
+
+                @if(session('alert_confirmacion'))
+                    <ul>
+                        <li class = "help-block error-span c-youtube">{{ session('alert_confirmacion') }}</li>
+                    </ul>
+                @endif  
             
 
 

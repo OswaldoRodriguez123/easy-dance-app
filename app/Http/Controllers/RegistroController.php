@@ -113,7 +113,8 @@ class RegistroController extends Controller {
             'telefono' => $data['telefono'],
             'como_nos_conociste_id' => $data['como_nos_conociste_id'],
             'email' => strtolower($data['email']),
-            'password' => bcrypt($data['password'])
+            'password' => bcrypt($data['password']),
+            'confirmation_token'=>str_random(40)
 
         ]);
     }
@@ -168,7 +169,8 @@ class RegistroController extends Controller {
         // User class implements UserInterface
         $usuario = User::find($user->id);
         // $link = Autologin::user($usuario);
-        $link = Autologin::to($usuario, '/inicio');
+        //$link = Autologin::to($usuario, '/inicio');
+        $link = route('confirmacion', ['token' => $user->confirmation_token, 'email'=>$user->email]);
 
         $array = [
            'nombre' => $usuario->nombre,
@@ -243,6 +245,18 @@ class RegistroController extends Controller {
         return view('flujo_registro.registro')->with('como_nos_conociste' ,ComoNosConociste::all());
     }
 
+
+    public function confirmacion($token,$email){
+        $user = User::where('confirmation_token', $token)
+        ->where('email',$email)->firstOrFail();
+        $user->confirmation_token = null;
+        $user->save();
+
+        Auth::login($user);
+
+        return redirect('inicio')
+            ->with('alert', '¡Tu email ya fue confirmado!');
+    }
 
 
 }

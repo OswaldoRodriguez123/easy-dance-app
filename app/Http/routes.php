@@ -15,6 +15,10 @@ Route::auth();
 
 Route::get('autologin/{token}', ['as' => 'autologin', 'uses' => '\Watson\Autologin\AutologinController@autologin']);
 
+Route::get('confirmacion/{token}/{email}', [
+    'uses' => 'RegistroController@confirmacion',
+    'as'   => 'confirmacion'
+]);
 // FLUJO DE REGISTRO
 
 
@@ -48,7 +52,7 @@ Route::get('/restablecer/fallo', function () {
 Route::get('/login', 'LoginController@getLogin');
 Route::post('/login', 'LoginController@postLogin');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth','verified'] ], function () {
 
 
 	Route::get('/logout', 'Auth\AuthController@getLogout');
