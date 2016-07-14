@@ -4,3 +4,12 @@
 Homestead.yaml
 Homestead.json
 .env
+/public/assets/uploads/academia/
+/public/assets/uploads/campana/
+/public/assets/uploads/clase_grupal/
+/public/assets/uploads/fiesta/
+/public/assets/uploads/producto/
+/public/assets/uploads/programacion/
+/public/assets/uploads/servicio/
+/public/assets/uploads/taller/
+/public/assets/uploads/usuario/

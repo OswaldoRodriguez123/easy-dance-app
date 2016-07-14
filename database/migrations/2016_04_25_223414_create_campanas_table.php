@@ -23,7 +23,7 @@ class CreateCampanasTable extends Migration
             $table->string('moneda',50);
             $table->string('nombre',50);
             $table->string('eslogan',50);
-            $table->string('historia' , 1000);
+            $table->string('historia');
             $table->integer('plazo');
             $table->string('link_video');
             $table->string('correo');
@@ -33,9 +33,7 @@ class CreateCampanasTable extends Migration
             $table->string('rif');
             $table->string('condiciones',1500);
             $table->string('imagen',50);
-            $table->string('presentacion', 1000);
-            $table->string('imagen_presentacion',50);
-
+            
             $table->timestamps();
         });
     }

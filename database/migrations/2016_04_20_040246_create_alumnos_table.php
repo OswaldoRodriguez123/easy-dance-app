@@ -22,7 +22,7 @@ class CreateAlumnosTable extends Migration {
 			$table->string('apellido',15);
 			$table->date('fecha_nacimiento');
 			$table->string('sexo',15);
-			$table->string('correo');
+			$table->string('correo',30);
 			$table->string('telefono',11);
 			$table->string('celular',11);
 			$table->string('imagen');
