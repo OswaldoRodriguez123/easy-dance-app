@@ -1570,3 +1570,26 @@ text-shadow: 0 2px 20px rgba(38, 61, 178, 1) !important;
     text-transform:capitalize;
 }
 
+.tab-nav li > a:hover{
+    color: #2196f3 !important;
+    font-weight: bold;
+}
+
+.tab-nav li:hover{
+    box-shadow: inset 0 -2px 0 0 #2196f3 !important;
+    opacity: 1;    
+}
+
+.tab-nav li.active:hover{
+    box-shadow: inset 0 -2px 0 0 #2196f3 !important; 
+    opacity: 1;    
+}
+
+.tab-nav:not([data-tab-color]) > li.active:hover{
+    box-shadow: inset 0 -2px 0 0 #2196f3 !important; 
+}
+
+/*.tab-nav:not([data-tab-color]) > li > a::after {
+    background: #2196f3;
+}*/
+

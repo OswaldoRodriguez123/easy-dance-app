@@ -58,7 +58,7 @@
         <div class="pm-body clearfix">
             <div role="tabpanel">
             <div class="form-wizard-basic fw-container">
-            <ul class="tab-nav tn-justified" role="tablist">
+            <ul class="tab-nav tn-justified efecto-hover" role="tablist">
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Empresa</a></li>
                 <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Nuestro Equipo</a></li>
                 <li class="waves-effect"><a href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">FAQs</a></li>
