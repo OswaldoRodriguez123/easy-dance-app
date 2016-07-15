@@ -20,7 +20,7 @@ class SmsController extends Controller
     {
 
         $user = Auth::user();
-        $SMS = new CentauroSMS('348458591232465', 'BRDiTQKqASBISaFeWJRq');
+        $SMS = new CentauroSMS(env('CENTAURO_KEY'), env('CENTAURO_SECRET'));
 
         //Mensajes a un solo Destinatario
         $destinatarios = array("id" => "0","cel" => getLimpiarNumero($user->telefono),"nom" => $user->nombre.' '.$user->apellido);
