@@ -20,7 +20,7 @@ class IsVerified
 
         if ($user->confirmation_token != null) {
             Auth::logout();
-            return redirect('login')->with('alert_confirmacion', 'Tu cuenta no se encuentra activa por favor confima tu cuenta de correo');
+            return redirect('login')->with('alert_confirmacion', 'Tu cuenta no esta activa, confirma tu correo electrónico si no ves el correo electrónico en tu bandeja de entrada, revisa otros lugares donde podría estar.');
         }
 
         return $next($request);
