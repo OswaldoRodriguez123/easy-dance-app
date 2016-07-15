@@ -15,7 +15,7 @@ class AlterCampanasTable extends Migration
         Schema::table('campanas', function (Blueprint $table) {
             $table->string('historia', 1000)->change();
             $table->string('presentacion', 1000)->after('imagen');
-            $table->string('imagen_presentacion',50)->after('imagen');;
+            $table->string('imagen_presentacion',50)->after('imagen');
         });
     }
 

@@ -21,7 +21,7 @@ class CreateConfigClasesGrupalesTable extends Migration
             $table->integer('costo_inscripcion');
             $table->integer('costo_mensualidad');
             $table->boolean('incluye_iva');
-            $table->string('descripcion',1000);
+            $table->string('descripcion',300);
             $table->string('condiciones');
             $table->integer('porcentaje_retraso');
             $table->integer('tiempo_tolerancia');
