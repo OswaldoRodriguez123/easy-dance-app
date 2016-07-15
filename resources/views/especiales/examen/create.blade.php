@@ -70,8 +70,8 @@
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
 
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
                                           @endforeach
                                         
                                         </select>

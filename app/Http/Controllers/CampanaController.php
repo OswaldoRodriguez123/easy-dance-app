@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Campana;
 use App\Recompensa;
 use App\Alumno;
+use App\Patrocinador;
+use App\ItemsFacturaProforma;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -14,23 +16,40 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use Image;
 
-class CampanaController extends Controller {
+class CampanaController extends BaseController {
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     
     public function index()
     {
 
-        return view('especiales.campana.principal')->with('campana', Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        $campanas = DB::table('campanas')
+            ->select('campanas.*')
+            ->where('campanas.academia_id' , '=' , Auth::user()->academia_id)
+            ->OrderBy('campanas.created_at')
+        ->get();
+
+        $array=array();
+        $i = 0;
+        $cantidad = 0;
+        $total = 0;
+
+        foreach($campanas as $campana){
+            
+            $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+            $collection=collect($campana);     
+            $campana_array = $collection->toArray();
+            
+            $campana_array['total']=$recaudado;
+            $array[$campana->id] = $campana_array;
+    
+        }
+
+        return view('especiales.campana.principal')->with('campanas', $array);
     }
 
     /**
@@ -103,6 +122,60 @@ class CampanaController extends Controller {
 
     }
 
+    public function agregarrecompensafija(Request $request){
+        
+    $rules = [
+
+        'nombre_recompensa' => 'required',
+        'cantidad_recompensa' => 'required|numeric',
+        'descripcion_recompensa' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_recompensa.required' => 'Ups! La recompensa es  requerida',
+        'cantidad_recompensa.required' => 'Ups! La cantidad es  requerida',
+        'cantidad_recompensa.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+        'descripcion_recompensa.required' => 'Ups! La descripcion es  requerida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_recompensa))));
+
+        $recompensa = New Recompensa;
+
+        $recompensa->academia_id = Auth::user()->academia_id;
+        $recompensa->campana_id = $request->id;
+        $recompensa->nombre = $nombre;
+        $recompensa->cantidad = $request->cantidad_recompensa;
+        $recompensa->descripcion = $request->descripcion_recompensa;
+
+        $recompensa->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $recompensa, 'id' => $recompensa->id, 200]);
+
+        }
+    }
+
+    public function eliminarrecompensafija($id){
+
+        $recompensa = Recompensa::find($id);
+
+        $recompensa->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -118,7 +191,7 @@ class CampanaController extends Controller {
         'cantidad' => 'required|numeric',
         'nombre' => 'required|min:5|max:50',
         'eslogan' => 'required|min:5|max:30',
-        'historia' => 'required',
+        'historia' => 'required|max:1000',
         'plazo' => 'required|numeric',
     ];
 
@@ -133,6 +206,7 @@ class CampanaController extends Controller {
         'eslogan.min' => 'El mínimo de caracteres permitidos son 5',
         'eslogan.max' => 'El máximo de caracteres permitidos son 30', 
         'historia.required' => 'Ups! La Historia es requerida',
+        'historia.max' => 'El máximo de caracteres permitidos son 1000', 
         'plazo.required' => 'Ups! El plazo es requerido',
         'plazo.numeric' => 'Ups! El plazo es inválido, debe contener sólo números',
     ];
@@ -260,6 +334,7 @@ class CampanaController extends Controller {
 
                         $recompensa = New Recompensa;
 
+                        $recompensa->academia_id = Auth::user()->academia_id;
                         $recompensa->campana_id = $campana->id;
                         $recompensa->nombre = $arreglo[0]['recompensa'];
                         $recompensa->cantidad = $arreglo[0]['cantidad'];
@@ -281,6 +356,74 @@ class CampanaController extends Controller {
         }
     }
     }
+
+    public function storePatrocinador(Request $request)
+    {
+
+        $rules = [
+            'alumno_id' => 'required|numeric',
+            'recompensa_id' => 'required',
+            'campana_id' => 'required',
+        ];
+
+        $messages = [
+            
+            'alumno_id.required' => 'Ups! El patrocinador es requerido',
+            'recompensa_id.required' => 'Ups! La recompensa es requerida',
+            'campana_id.required' => 'Ups! La campaña es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+                $recompensa = Recompensa::find($request->recompensa_id);
+
+                $patrocinador = new Patrocinador;
+
+                $patrocinador->academia_id = Auth::user()->academia_id;
+                $patrocinador->campana_id = $request->campana_id;
+                $patrocinador->campana_id = $request->campana_id;
+                $patrocinador->usuario_id = $request->alumno_id;
+                $patrocinador->tipo_id = 1;
+                $patrocinador->monto = $recompensa->cantidad;
+
+                if($patrocinador->save()){
+
+                    $item_factura = new ItemsFacturaProforma;
+                    
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $request->recompensa_id;
+                    $item_factura->nombre = 'Campaña - Contribucion';
+                    $item_factura->tipo = 11;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $recompensa->cantidad;
+                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                    if($item_factura->save()){
+
+                        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+                    }
+                    else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }
+        }
 
     public function updateCantidad(Request $request){
 
@@ -394,14 +537,14 @@ class CampanaController extends Controller {
     public function updateHistoria(Request $request){
 
         $rules = [
-            'historia' => 'required|min:3|max:100',
+            'historia' => 'required|min:3|max:1000',
         ];
 
         $messages = [
 
             'historia.required' => 'Ups! La Historia es requerida',
             'historia.min' => 'El mínimo de caracteres permitidos son 3',
-            'historia.max' => 'El máximo de caracteres permitidos son 100',
+            'historia.max' => 'El máximo de caracteres permitidos son 1000',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -418,7 +561,7 @@ class CampanaController extends Controller {
 
             $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
         
-            $campana->historia = $historia;
+            $campana->historia = $request->historia;
 
             if($campana->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -669,8 +812,19 @@ class CampanaController extends Controller {
          }
 
          $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+         $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
+         $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'administrador' => $administrador, 'link_video' => $link_video, 'recompensas' => $recompensas, 'alumnos' => $alumnos]);
+         $patrocinadores = DB::table('patrocinadores')
+             ->join('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+             ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+             ->where('patrocinadores.campana_id', '=', $id)
+             ->orderBy('patrocinadores.monto', 'desc')
+         ->get();
+
+         $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
+
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'administrador' => $administrador, 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos]);
     }
 
     /**
@@ -683,11 +837,18 @@ class CampanaController extends Controller {
     {
 
         $campana = Campana::find($id);
-        
-        if($campana->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+        $fecha_final = Carbon::createFromFormat('Y-m-d', $campana->fecha_final);
+
+        if($fecha_final < Carbon::now()){
+            
+            if($campana->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            return response()->json(['error_mensaje'=> 'Ups! Esta campaña no puede ser eliminada ya que esta activa' , 'status' => 'ERROR-BORRADO'],422);
         }
     }
 

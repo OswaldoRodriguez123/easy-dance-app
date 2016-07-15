@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 
-class VisitanteController extends Controller {
+class VisitanteController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -21,11 +21,6 @@ class VisitanteController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index()
     {
 

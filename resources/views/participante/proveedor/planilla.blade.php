@@ -281,8 +281,9 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="correo">Dirección</label>
-                                    <input type="text" class="form-control input-sm" name="direccion" id="direccion" placeholder="Ej. Avenida 10 con Calle 70">
+                                    <input type="text" class="form-control input-sm" name="direccion" id="direccion" placeholder="Ej. Avenida 10 con Calle 70" maxlength="180" onkeyup="countChar(this)">
                                  </div>
+                                 <div class="opaco-0-8 text-right">Resta <span id="charNum">180</span> Caracteres</div>
                                  <div class="has-error" id="error-direccion">
                                       <span >
                                           <small class="help-block error-span" id="error-direccion_mensaje" ></small>                                
@@ -853,6 +854,15 @@
                                 }
                 });
       });
+
+      function countChar(val) {
+        var len = val.value.length;
+        if (len >= 180) {
+          val.value = val.value.substring(0, 180);
+        } else {
+          $('#charNum').text(180 - len);
+        }
+      };
     
    </script> 
 

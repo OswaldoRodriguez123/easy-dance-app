@@ -327,8 +327,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	// SUCURSAL
 
-	Route::get('configuracion/sucursales','SucursalController@index');
+	Route::get('configuracion/sucursales','SucursalController@principal');
 	Route::get('configuracion/sucursales/agregar','SucursalController@create');
+	Route::post('configuracion/sucursales/agregar','SucursalController@store');
 
 
 	// ACADEMIA

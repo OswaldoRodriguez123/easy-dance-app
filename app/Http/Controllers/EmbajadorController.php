@@ -10,7 +10,7 @@ use Session;
 use App\Academia;
 use Illuminate\Support\Facades\Auth;
 
-class EmbajadorController extends Controller {
+class EmbajadorController extends BaseController {
 
     public function index(){
 

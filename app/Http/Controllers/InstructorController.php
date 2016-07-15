@@ -11,7 +11,7 @@ use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class InstructorController extends Controller {
+class InstructorController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -19,10 +19,6 @@ class InstructorController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     
     public function index()
     {

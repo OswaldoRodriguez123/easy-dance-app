@@ -21,7 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
-class ReporteController extends Controller
+class ReporteController extends BaseController
 {
 
 	public function Inscritos(){

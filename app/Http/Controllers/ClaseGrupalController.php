@@ -26,18 +26,13 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
 
-class ClaseGrupalController extends Controller {
+class ClaseGrupalController extends BaseController {
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function principal(){
 
@@ -77,7 +72,7 @@ class ClaseGrupalController extends Controller {
 
             //dd($clase_grupal_join);
 
-        return view('agendar.clase_grupal.index')->with(['clase_grupal' => ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(),'alumnosclasegrupal' => $alumnosclasegrupal, 'clase_grupal_join' => $clase_grupal_join]);
+        return view('agendar.clase_grupal.index')->with(['clase_grupal' => ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(),'alumnosclasegrupal' => $alumnosclasegrupal, 'clase_grupal_join' => $clase_grupal_join]);
     }
 
     /**
@@ -159,6 +154,19 @@ class ClaseGrupalController extends Controller {
             ->where('clases_grupales.id','=', $id)
         ->first();
 
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($clase_grupal_join->link_video){
+
+            $parts = parse_url($clase_grupal_join->link_video);
+            $partes = explode( '=', $parts['query'] );
+            $link_video = $partes[1];
+
+            }
+            else{
+                $link_video = '';
+            }
+
          $cantidad_reservaciones = DB::table('reservaciones')
              ->select('reservaciones.*')
              ->where('tipo_id', '=', $id)
@@ -172,6 +180,12 @@ class ClaseGrupalController extends Controller {
             $cupo_reservacion = $clase_grupal_join->cupo_reservacion;
          }
 
+         $cupos_restantes = $cupo_reservacion - $cantidad_reservaciones;
+
+         if($cupos_restantes < 0){
+            $cupos_restantes = 0;
+         }
+
          $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
          $privilegio = Auth::user()->tipo_usuario;
@@ -183,7 +197,7 @@ class ClaseGrupalController extends Controller {
              $administrador = 0;
          }
 
-        return view('reserva.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'administrador' => $administrador]);
+        return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'administrador' => $administrador, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes]);
     }
 
     public function create()
@@ -192,7 +206,7 @@ class ClaseGrupalController extends Controller {
             Session::forget('horario'); 
         }
 
-        return view('agendar.clase_grupal.create')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'dias_de_semana' => DiasDeSemana::all(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('agendar.clase_grupal.create')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'dias_de_semana' => DiasDeSemana::all(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get() , 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     public function agregarhorario(Request $request){
@@ -268,7 +282,6 @@ class ClaseGrupalController extends Controller {
      */
     public function store(Request $request)
     {
-
 
     $rules = [
         'clase_grupal_id' => 'required',
@@ -363,7 +376,10 @@ class ClaseGrupalController extends Controller {
             return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
         }
 
-        if($request->hora_inicio > $request->hora_final)
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+
+        if($hora_inicio > $hora_final)
         {
 
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
@@ -848,7 +864,7 @@ class ClaseGrupalController extends Controller {
 
     public function updateHorario(Request $request){
 
-        $rules = [
+    $rules = [
         'hora_inicio' => 'required',
         'hora_final' => 'required',
     ];
@@ -869,6 +885,16 @@ class ClaseGrupalController extends Controller {
 
     else{
         $clasegrupal = ClaseGrupal::find($request->id);
+
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+
+        if($hora_inicio > $hora_final)
+        {
+
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+        }
+
         $clasegrupal->hora_inicio = $request->hora_inicio;
         $clasegrupal->hora_final = $request->hora_final;
 
@@ -1184,7 +1210,7 @@ class ClaseGrupalController extends Controller {
 
                 //dd($clase_grupal_join);
 
-            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all()]);
+            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all()]);
 
         }else{
            return redirect("agendar/clases-grupales"); 

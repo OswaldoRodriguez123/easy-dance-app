@@ -10,7 +10,7 @@ use App\Reservacion;
 use Session;
 use Validator;
 
-class ReservaController extends Controller
+class ReservaController extends BaseController
 {
    
 	public function reserva($id)

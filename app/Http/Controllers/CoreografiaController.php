@@ -19,12 +19,8 @@ use Mail;
 use Session;
 use Illuminate\Support\Facades\Auth;
 
-class CoreografiaController extends Controller {
+class CoreografiaController extends BaseController {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
  	public function principal(){
 

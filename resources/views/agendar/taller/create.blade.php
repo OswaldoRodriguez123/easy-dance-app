@@ -187,7 +187,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nivel_baile" id="id-nivel_id">Nivel de Baile</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles" title="" data-original-title="Ayuda"></i>
+                                    <label for="nivel_baile" id="id-nivel_id">Nivel de Baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -221,8 +221,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -431,8 +431,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="instructor_acordeon_id" id="instructor_acordeon_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -1088,6 +1088,24 @@
                   } else {
                     $(this).popover('show');
                     $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-estudio-salon f-22"></i></a>');
+                  }
+            
+                    $('.redirect').click(function(e){
+                        window.location = "{{url('/')}}/configuracion/academia";
+                    });
+                    e.preventDefault();
+          });
+
+          $('#pop-nivel').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).click(function(e) {
+
+                  if($('.popover').hasClass('in')){
+                     $(this).popover('hide');
+                  } else {
+                    $(this).popover('show');
+                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-niveles f-22"></i></a>');
                   }
             
                     $('.redirect').click(function(e){

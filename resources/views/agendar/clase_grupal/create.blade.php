@@ -207,7 +207,8 @@
                                <div class="clearfix p-b-35"></div>
                                 <div class="col-sm-12">
                                  
-                                     <label for="nivel_baile" id="id-nivel_baile_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-nivel_baile_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
                                     <div class="fg-line">
@@ -242,9 +243,10 @@
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
 
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
-                                          @endforeach
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{$instructor['id'] }}">{{$instructor['nombre'] }} {{$instructor['apellido'] }}</option>
+                                          @endforeach 
+                                          
                                         
                                         </select>
                                       </div>
@@ -420,8 +422,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="instructor_acordeon_id" id="instructor_acordeon_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -845,9 +847,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -1059,6 +1061,23 @@
         }, 1500);
       });
 
+      $('#pop-nombre_clase').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).click(function(e) {
+
+                  if($('.popover').hasClass('in')){
+                     $(this).popover('hide');
+                  } else {
+                    $(this).popover('show');
+                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-clases-grupales f-22"></i></a>');
+                  }
+            
+                    $('.redirect').click(function(e){
+                        window.location = "{{url('/')}}/configuracion/clases-grupales/agregar";
+                    });
+                    e.preventDefault();
+          });
 
           $('#pop-instructor').popover({
                     html: true,
@@ -1088,6 +1107,24 @@
                   } else {
                     $(this).popover('show');
                     $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-estudio-salon f-22"></i></a>');
+                  }
+            
+                    $('.redirect').click(function(e){
+                        window.location = "{{url('/')}}/configuracion/academia";
+                    });
+                    e.preventDefault();
+          });
+
+          $('#pop-nivel').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).click(function(e) {
+
+                  if($('.popover').hasClass('in')){
+                     $(this).popover('hide');
+                  } else {
+                    $(this).popover('show');
+                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-niveles f-22"></i></a>');
                   }
             
                     $('.redirect').click(function(e){

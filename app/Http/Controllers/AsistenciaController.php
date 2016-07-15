@@ -26,7 +26,7 @@ use Validator;
 
 use Illuminate\Support\Facades\Auth;
 
-class AsistenciaController extends Controller
+class AsistenciaController extends BaseController
 {
 
     public function principal()

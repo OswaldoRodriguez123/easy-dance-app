@@ -27,7 +27,7 @@ use DB;
 use Image;
 use Illuminate\Support\Facades\Input;
 
-class AcademiaConfiguracionController extends Controller {
+class AcademiaConfiguracionController extends BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -35,11 +35,6 @@ class AcademiaConfiguracionController extends Controller {
 	 * @return Response
 	 */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
 	public function index()
 	{
         $academia = Academia::find(Auth::user()->academia_id);
@@ -48,11 +43,10 @@ class AcademiaConfiguracionController extends Controller {
             return $this->pagorecurrente();
         }
 
-		// $alumnos = DB::table('alumnos')
-  //           ->select('alumnos.correo')
-  //           ->where('')
-  //       ->get();  
-        return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]);                    
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]);                    
 	}
 
     public function listo()
@@ -60,7 +54,6 @@ class AcademiaConfiguracionController extends Controller {
 
         return view('flujo_registro.listo');                    
     }
-
 
 
     public function configuracion(){
@@ -861,7 +854,7 @@ class AcademiaConfiguracionController extends Controller {
         $cantidad = 1;
         $id = 0;
         $academia = Academia::find(Auth::user()->academia_id);
-        $academia->fecha_comprobacion = Carbon::now();
+        $academia->fecha_comprobacion = Carbon::now()->addDay();
         $academia->save();
 
         $ConfigClasesGrupales = ConfigClasesGrupales::select('config_clases_grupales.id',
@@ -1089,7 +1082,10 @@ class AcademiaConfiguracionController extends Controller {
                                     }
                                 }
 
-                                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]);   
+                                $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                                $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+                                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]); 
     }
 
 }

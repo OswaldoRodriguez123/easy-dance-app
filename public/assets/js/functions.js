@@ -104,17 +104,15 @@ $(document).ready(function(){
 
         $('body').on('click', '#chat-trigger', function(e){
             e.preventDefault();
-
             
             var x = $(this).data('trigger');
 
             $(x).toggleClass('toggled');
             $(this).toggleClass('open');
 
-            //$("#content").toggleClass("opacity-content");
-            //$("footer").toggleClass("opacity-content");
-            //$("header").toggleClass("abierto");
-
+            $("#content").toggleClass("opacity-content");
+            $("footer").toggleClass("opacity-content");
+            $("header").toggleClass("abierto");
 
     	    //Close opened sub-menus
     	    $('.sub-menu.toggled').not('.active').each(function(){
@@ -169,8 +167,8 @@ $(document).ready(function(){
                             $($elem).removeClass('toggled');
                             $('#header').removeClass('sidebar-toggled');
                             $($elem2).removeClass('open');
-                            //$("#content").removeClass("opacity-content");
-                            //$("footer").removeClass("opacity-content");
+                            $("#content").removeClass("opacity-content");
+                            $("footer").removeClass("opacity-content");
                         });
                     }
                 });

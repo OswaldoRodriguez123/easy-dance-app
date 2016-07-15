@@ -21,7 +21,7 @@ use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Auth;
 
-class ClasePersonalizadaController extends Controller {
+class ClasePersonalizadaController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -29,11 +29,6 @@ class ClasePersonalizadaController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index()
     {
 
@@ -122,6 +117,15 @@ class ClasePersonalizadaController extends Controller {
     }
 
     else{
+
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+
+        if($hora_inicio > $hora_final)
+        {
+
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+        }
 
         $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
 
@@ -226,19 +230,37 @@ class ClasePersonalizadaController extends Controller {
 
     public function updateFecha(Request $request){
 
-        $clasepersonalizada = ClasePersonalizada::find($request->id);
+    $rules = [
+        'fecha_inicio' => 'required',
+    ];
 
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+    $messages = [
 
-        //$fecha_final = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+        'fecha_inicio.required' => 'Ups! La fecha es requerida',
+    ];
 
-        $clasepersonalizada->fecha_inicio = $fecha;
-        $clasepersonalizada->fecha_final = $fecha;
+    $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($clasepersonalizada->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $clasepersonalizada = ClasePersonalizada::find($request->id);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
+
+            $clasepersonalizada->fecha_inicio = $fecha_inicio;
+            $clasepersonalizada->fecha_final = $fecha_inicio;
+
+            if($clasepersonalizada->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
         // return redirect("alumno/edit/{$request->id}");
     }
@@ -299,14 +321,56 @@ class ClasePersonalizadaController extends Controller {
     }
 
     public function updateHorario(Request $request){
-        $clasepersonalizada = ClasePersonalizada::find($request->id);
-        $clasepersonalizada->hora_inicio = $request->hora_inicio;
-        $clasepersonalizada->hora_final = $request->hora_final;
 
-        if($clasepersonalizada->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+    $rules = [
+
+        'hora_inicio' => 'required',
+        'hora_final' => 'required',
+
+    ];
+
+    $messages = [
+
+        'hora_inicio.required' => 'Ups! El horario es requerido',
+        'hora_final.required' => 'Ups! El horario es requerido',
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+            $hora_inicio = strtotime($request->hora_inicio);
+            $hora_final = strtotime($request->hora_final);
+
+            if($hora_inicio > $hora_final)
+            {
+
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $clasepersonalizada = ClasePersonalizada::find($request->id);
+            $clasepersonalizada->hora_inicio = $request->hora_inicio;
+            $clasepersonalizada->hora_final = $request->hora_final;
+
+            if($clasepersonalizada->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 

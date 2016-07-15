@@ -16,12 +16,7 @@ use Mail;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
-class CorreoController extends Controller {
-
-	public function __construct()
-    {
-        $this->middleware('auth');
-    }
+class CorreoController extends BaseController {
 
 	public function index(){
 

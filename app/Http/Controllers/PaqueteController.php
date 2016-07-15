@@ -9,7 +9,7 @@ use App\CaracteristicasPaquete;
 use Validator;
 use DB;
 
-class PaqueteController extends Controller {
+class PaqueteController extends BaseController {
 
     /**
      * Display a listing of the resource.

@@ -9,18 +9,13 @@ use Validator;
 use DB;
 use Carbon\Carbon;
 
-class CampanaController extends Controller {
+class CampanaController extends BaseController {
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     
     public function index()
     {
