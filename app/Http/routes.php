@@ -231,6 +231,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::post('agendar/talleres/update/costo_taller', 'TallerController@updateCostoTaller');
 
+    Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
+
 
 
 	//FIESTAS
@@ -310,6 +312,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('especiales/campañas/agregarrecompensa', 'CampanaController@agregarrecompensa');
 	Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');
 	Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
+    Route::post('especiales/campañas/contribuir', 'CampanaController@storePatrocinador');
+    Route::post('especiales/campañas/agregarrecompensafija', 'CampanaController@agregarrecompensafija');
+    Route::post('especiales/campañas/eliminarrecompensafija/{id}', 'CampanaController@eliminarrecompensafija');
 
 	//REGALOS
 
