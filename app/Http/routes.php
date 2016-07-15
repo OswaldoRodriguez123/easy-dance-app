@@ -616,4 +616,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	// });
 
+	//SMS
+
+	Route::get('sms', 'SmsController@send');
+
 });
