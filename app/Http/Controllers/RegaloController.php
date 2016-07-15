@@ -14,7 +14,7 @@ use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class RegaloController extends Controller {
+class RegaloController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -22,11 +22,6 @@ class RegaloController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index()
     {
 

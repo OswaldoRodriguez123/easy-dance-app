@@ -21,13 +21,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
-class AlumnoController extends Controller
+class AlumnoController extends BaseController
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     // public function __construct()
     // {

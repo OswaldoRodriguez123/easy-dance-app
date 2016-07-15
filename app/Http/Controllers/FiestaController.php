@@ -17,7 +17,7 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
 
-class FiestaController extends Controller {
+class FiestaController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -25,11 +25,6 @@ class FiestaController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index()
     {
         // $taller_join = DB::table('talleres')
@@ -240,6 +235,15 @@ class FiestaController extends Controller {
             
             }
 
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+
+        if($hora_inicio > $hora_final)
+        {
+
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+        }
+
         $fiesta = new Fiesta;
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
@@ -380,30 +384,93 @@ class FiestaController extends Controller {
 
     public function updateFecha(Request $request){
 
-        $fiesta = Fiesta::find($request->id);
+    $rules = [
+        'fecha' => 'required',
+    ];
 
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+    $messages = [
 
-        $fiesta->fecha_final = $fecha;
-        $fiesta->fecha_inicio = $fecha;
+        'fecha.required' => 'Ups! La fecha es requerida',
+    ];
 
-        if($fiesta->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $fiesta = Fiesta::find($request->id);
+
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+
+            $fiesta->fecha_final = $fecha;
+            $fiesta->fecha_inicio = $fecha;
+
+            if($fiesta->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
         // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateHorario(Request $request){
-        $fiesta = Fiesta::find($request->id);
-        $fiesta->hora_inicio = $request->hora_inicio;
-        $fiesta->hora_final = $request->hora_final;
 
-        if($fiesta->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+    $rules = [
+
+        'hora_inicio' => 'required',
+        'hora_final' => 'required',
+
+    ];
+
+    $messages = [
+
+        'hora_inicio.required' => 'Ups! El horario es requerido',
+        'hora_final.required' => 'Ups! El horario es requerido',
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+            $hora_inicio = strtotime($request->hora_inicio);
+            $hora_final = strtotime($request->hora_final);
+
+            if($hora_inicio > $hora_final)
+            {
+
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $fiesta = Fiesta::find($request->id);
+
+            $fiesta->hora_inicio = $request->hora_inicio;
+            $fiesta->hora_final = $request->hora_final;
+
+            if($fiesta->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 

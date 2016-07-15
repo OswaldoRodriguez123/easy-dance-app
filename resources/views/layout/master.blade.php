@@ -290,11 +290,11 @@
                             @endforeach 
                             @endif
                             
-                            @if(isset($instructor))                            
-                            @foreach ($instructor as $instructores)
+                            @if(isset($instructores))                            
+                            @foreach ($instructores as $instructor)
                                 
-                                <?php $id = $instructores['id']; ?>
-                                <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructores['nombre']}} {{$instructores['apellido']}}" data-identificacion-participante="{{$instructores['identificacion']}}" data-tipo-participante="insctructor" >
+                                <?php $id = $instructor['id']; ?>
+                                <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
                                     <td class="p-10" >
                                       <div class="listview">
                                       <a class="lv-item" href="javascript:void(0)"  >
@@ -304,8 +304,8 @@
                                                       <i class="chat-status-busy"></i>
                                                   </div>
                                                   <div class="media-body">
-                                                      <div class="lv-title">{{$instructores['nombre']}} {{$instructores['apellido']}}</div>
-                                                      <small class="lv-small">{{$instructores['identificacion']}}</small>
+                                                      <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
+                                                      <small class="lv-small">{{$instructor['identificacion']}}</small>
                                                   </div>
                                               </div>
                                       </a>

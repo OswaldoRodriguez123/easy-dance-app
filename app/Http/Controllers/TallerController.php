@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Taller;
 use App\Alumno;
+use App\Academia;
 use App\ConfigEstudios;
 use App\ConfigEspecialidades;
 use App\ConfigNiveles;
@@ -20,7 +21,7 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
 
-class TallerController extends Controller {
+class TallerController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -28,11 +29,6 @@ class TallerController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index()
     {
         // $taller_join = DB::table('talleres')
@@ -58,7 +54,7 @@ class TallerController extends Controller {
             Session::forget('horario'); 
         }
 
-        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::all(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     /**
@@ -127,7 +123,20 @@ class TallerController extends Controller {
 
     else{
 
-        if($request->hora_inicio > $request->hora_final)
+        $fecha = explode(" - ", $request->fecha);
+
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0])->toDateString();
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1])->toDateString();
+
+        if($fecha_inicio > $fecha_final)
+        {
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
+        }
+
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+
+        if($hora_inicio > $hora_final)
         {
 
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
@@ -158,11 +167,6 @@ class TallerController extends Controller {
             }
 
         $taller = new Taller;
-
-        $fecha = explode(" - ", $request->fecha);
-
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0])->toDateString();
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1])->toDateString();
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
@@ -444,14 +448,18 @@ class TallerController extends Controller {
 
     else{
 
-        $taller = Taller::find($request->id);
-        $taller->horario_inicio = $request->horario_inicio;
-        $taller->horario_final = $request->horario_final;
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
 
-        if( $request->horario_inicio > $request->horario_final)
+        if($hora_inicio > $hora_final)
         {
-            return response()->json(['errores'=>'Hora Inicio Mayor', 'status' => 'ERROR-SERVIDOR'],422);
+
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
+
+        $taller = Taller::find($request->id);
+        $taller->hora_inicio = $request->hora_inicio;
+        $taller->hora_final = $request->hora_final;
 
         if($taller->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -806,6 +814,64 @@ class TallerController extends Controller {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
 
+    }
+
+    public function progreso($id)
+    {
+
+        $taller_join = DB::table('talleres')
+            ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->join('academias', 'talleres.academia_id', '=', 'academias.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'talleres.nombre as taller_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.cupo_reservacion', 'talleres.fecha_inicio', 'talleres.imagen', 'talleres.descripcion', 'academias.imagen as imagen_academia', 'talleres.link_video', 'talleres.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre')
+            ->where('talleres.id','=', $id)
+        ->first();
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($taller_join->link_video){
+
+            $parts = parse_url($taller_join->link_video);
+            $partes = explode( '=', $parts['query'] );
+            $link_video = $partes[1];
+
+            }
+            else{
+                $link_video = '';
+            }
+
+         $cantidad_reservaciones = DB::table('reservaciones')
+             ->select('reservaciones.*')
+             ->where('tipo_id', '=', $id)
+             ->where('tipo_reservacion', '=', 2)
+         ->count();
+
+         if($taller_join->cupo_reservacion == 0){
+            $cupo_reservacion = 1;
+         }
+         else{
+            $cupo_reservacion = $taller_join->cupo_reservacion;
+         }
+
+         $cupos_restantes = $cupo_reservacion - $cantidad_reservaciones;
+
+         if($cupos_restantes < 0){
+            $cupos_restantes = 0;
+         }
+
+         $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+
+         $privilegio = Auth::user()->tipo_usuario;
+
+         if($privilegio == 10){
+            $administrador = 1;
+         }
+         else{
+             $administrador = 0;
+         }
+
+        return view('agendar.taller.reserva')->with(['taller' => $taller_join, 'id' => $id, 'porcentaje' => $porcentaje, 'administrador' => $administrador, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes]);
     }
 
 

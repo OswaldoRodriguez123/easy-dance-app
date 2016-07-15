@@ -11,12 +11,8 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
 
-class ConfigServiciosController extends Controller {
+class ConfigServiciosController extends BaseController {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
 	public function principalservicios()
     {

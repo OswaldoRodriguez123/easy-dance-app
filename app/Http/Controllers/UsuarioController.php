@@ -14,12 +14,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Image;
 
-class UsuarioController extends Controller {
+class UsuarioController extends BaseController {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function perfil()
     {

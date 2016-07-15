@@ -640,6 +640,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+                            @foreach ($recompensas as $recompensa)
+                                <?php $id = $recompensa->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$recompensa->nombre}}</td>
+                                    <td class="text-center previa">{{$recompensa->cantidad}}</td>
+                                    <td class="text-center previa">{{$recompensa->descripcion}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                  </tr>
+                            @endforeach 
                                                            
                             </tbody>
                             </table>
@@ -651,6 +661,8 @@
                             </div>
 
                         <div class="clearfix p-b-35"></div>
+
+                        <input type="hidden" name="id" value="{{$campana->id}}"></input>
 
                         <div class="clearfix"></div> 
                        <div class="modal-footer p-b-20 m-b-20">
@@ -743,7 +755,7 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Campana">
+                            <tr class="disabled">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($campana->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
@@ -767,7 +779,7 @@
                              </td>
                              <td id="campana-eslogan" class="f-14 m-l-15 capitalize" data-valor="{{$campana->eslogan}}" >{{ str_limit($campana->eslogan, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCantidad-Campana">
+                            <tr class="disabled">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi {{ empty($campana->cantidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-pagar f-22"></i> </span>
@@ -775,7 +787,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="campana-cantidad"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalPlazo-Campana">
+                            <tr class="disabled">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-plazo" class="zmdi {{ empty($campana->plazo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-hourglass-alt zmdi-hc-fw f-22"></i> </span>
@@ -843,8 +855,8 @@
     route_update="{{url('/')}}/especiales/campañas/update";
     route_eliminar="{{url('/')}}/especiales/campañas/eliminar/";
     route_principal="{{url('/')}}/especiales/campañas";
-    route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensa";
-    route_eliminarrecompensa="{{url('/')}}/especiales/campañas/eliminarrecompensa";
+    route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensafija";
+    route_eliminarrecompensa="{{url('/')}}/especiales/campañas/eliminarrecompensafija";
 
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -1181,7 +1193,7 @@
 
                 var route = route_recompensa;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_campana" ).serialize(); 
+                var datos = $( "#edit_recompensa_campana" ).serialize(); 
 
                 $.ajax({
                     url: route,
@@ -1201,9 +1213,9 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          var recompensa = respuesta.array[0].recompensa;
-                          var cantidad = respuesta.array[0].cantidad;
-                          var descripcion = respuesta.array[0].descripcion;
+                          var recompensa = respuesta.array.nombre;
+                          var cantidad = respuesta.array.cantidad;
+                          var descripcion = respuesta.array.descripcion;
 
                           var rowId=respuesta.id;
                           var rowNode=t.row.add( [
@@ -1232,9 +1244,9 @@
                     error:function(msj){
                       setTimeout(function(){ 
                         
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

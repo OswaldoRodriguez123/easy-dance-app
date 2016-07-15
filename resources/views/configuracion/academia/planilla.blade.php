@@ -94,8 +94,9 @@
                                               <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-20"></i>
                                               </span>
                                               <div class="fg-line">                       
-                                              <textarea class="form-control" id="direccion" name="direccion" rows="1" placeholder="Ej. Avenida 10 con Calle 70" value="{{$academia->direccion}}"></textarea>
+                                              <textarea class="form-control" id="direccion" name="direccion" rows="1" placeholder="Ej. Avenida 10 con Calle 70" value="{{$academia->direccion}}"  maxlength="180" onkeyup="countCharDir(this)"></textarea>
                                               </div>
+                                              <div class="opaco-0-8 text-right">Resta <span id="charNumDir">180</span> Caracteres</div>
                                             </div>
                                  </div>
                                  <div class="has-error" id="error-direccion">
@@ -1207,9 +1208,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                // if (typeof msj.responseJSON === "undefined") {
+                //           window.location = "{{url('/')}}/error";
+                //         }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -1521,7 +1522,14 @@
     //         }
     //     });
     // })
-
+    function countCharDir(val) {
+        var len = val.value.length;
+        if (len >= 180) {
+          val.value = val.value.substring(0, 180);
+        } else {
+          $('#charNumDir').text(180 - len);
+        }
+      };
     
    </script> 
 

@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 
-class ExamenController extends Controller {
+class ExamenController extends BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -21,10 +21,6 @@ class ExamenController extends Controller {
 	 * @return Response
 	 */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     
 	public function index()
 	{

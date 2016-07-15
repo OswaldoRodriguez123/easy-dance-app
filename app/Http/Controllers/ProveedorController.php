@@ -8,18 +8,13 @@ use App\Proveedor;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
-class ProveedorController extends Controller {
+class ProveedorController extends BaseController {
 
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     
     public function index()
     {

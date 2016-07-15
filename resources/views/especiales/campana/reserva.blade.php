@@ -19,8 +19,80 @@
 
 @section('content')
 
-<div class="container">
 
+<div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title">Verificación de datos<button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div class="modal-body">
+                        <div class="row p-l-10 p-r-10">
+
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-2"><i class="zmdi zmdi-favorite-outline zmdi-hc-fw f-75"></i> </div>
+                        <div class="col-sm-5"></div>
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="text-center">
+                            <span class="f-25 c-morado text-center">Gracias por tu bondad</span>  
+                            <br></br>   
+                            <span class="f-16 c-morado">Selecciona el patrocinador</span>  
+                        </div>
+
+                        <hr></hr>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="col-sm-12">
+                            
+                                      
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <!-- <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $alumnos as $alumno )
+                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          @endforeach
+                                        </select>
+ -->
+                                        <!-- <select class="selectpicker bs-select-hidden" id="alumno_id" name="alumno_id" multiple="" data-max-options="5" title="Selecciona"> -->
+
+                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
+
+                                         @foreach ( $alumnos as $alumno )
+                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-alumno_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="clearfix p-b-15"></div>
+
+                        <hr></hr>
+                      
+
+                        <div class="clearfix p-b-15"></div>
+
+                        <div class="text-center">
+
+                          <button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Contribuir</button>
+
+                        </div>
+
+                        <div class="clearfix p-b-15"></div>
+                           
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="container">
 
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
@@ -36,13 +108,31 @@
 
             <div class="pmo-block pmo-contact hidden-xs">
                 <hr>
-                              <p class="text-left f-15 f-700"> 42,523.00 recaudado  por <br> 477 patrocinantes </p>
+                            <p class="text-left f-15 f-700"> {{ number_format($recaudado, 2) }} recaudado  
+
+                            @if($cantidad == 0)
+
+                            @elseif($cantidad == 1)
+                            
+                              por <br> {{$cantidad}}  patrocinador 
+                            
+                            @else
+
+                              por <br> {{$cantidad}}  patrocinantes
+
+                            @endif
+
+                              </p>
                               <div class="clearfix"></div>
 
-                              <div class="progress progress-striped m-b-10">
-                                <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                              <?php if($porcentaje < 1){
+                                $porcentaje = 1;
+                              }
+                              ?>
+                              <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" id="barra-progreso" style="width: {{$porcentaje}}%;"></div>
                               </div>
-                              <p class="text-center f-700" > 147% de 29,000.00</p> 
+                              <p class="text-center f-700" > {{$porcentaje}} % de {{ number_format($campana->cantidad, 2) }}</p> 
 
                               <style type="text/css">
                                 @import url(http://fonts.googleapis.com/css?family=Comfortaa);
@@ -68,18 +158,33 @@
                           
                           <div class="clearfix p-b-15"></div>
 
-                          <hr class="linea-morada">
 
                           @foreach ($recompensas as $recompensa)
+
+                          <div style="border: 1px solid;">
+                          <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Recompensa</div>
+
                           
-                        
-                            <span class="text-center f-25 f-700" > {{$recompensa->cantidad}}</span> 
+                        <div class="col-sm-12">
+                            <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2) }} </span> 
                             <br>
                             <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
                             <br>
-                            <span class="text-center f-15 f-700" > {{$recompensa->descripcion}}</span> 
+                            <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
 
-                          <hr class="linea-morada">
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+
+                        </div>
+
+                            <span class="text-center">
+                                 <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>
+                            </span>
+
+                          </div>
+
+                          <div class="clearfix p-b-15"></div>
 
                           @endforeach
 
@@ -105,10 +210,6 @@
                                 
                               </p>
                               
-
-                                <p class="text-center">
-                                 <button id="reserva" name ="reserva" class="btn-blanco m-r-10 f-22 f-700 p-l-20 p-r-20" > </i> Lo quiero </button>
-                                </p>
                               
                               @endif
             </div>
@@ -192,7 +293,7 @@
                         @endif
 
 
-                         <table class="table" id="tablelistar_asistencia" >
+                         <table class="table" id="tablelistar" >
 
                             <thead>
                                 <tr class="hidden">    
@@ -202,9 +303,8 @@
                             <tbody>
                           
                                                  
-                            @foreach ($alumnos as $alumno)
-                                
-                                <?php $id = $alumno['id']; ?>
+                            @foreach ($patrocinadores as $patrocinador)
+                                <?php $id = $patrocinador->id; ?>
                                 <tr id="tablelistar" class="">
                                     <td class="p-10" >
                                       <div class="listview">
@@ -216,14 +316,14 @@
                                                   </div>
                                                   <div class="col-sm-6">
                                                     <div class="media-body">
-                                                        <div class="lv-title"><span class="c-morado">{{$alumno['nombre']}} {{$alumno['apellido']}}</span></div>
-                                                        <small class="lv-small">hace 10 minutos</small>
+                                                        <div class="lv-title"><span class="c-morado">{{$patrocinador->nombre}} {{$patrocinador->apellido}}</span></div>
+                                                        <!-- <small class="lv-small">hace 10 minutos</small> -->
                                                     </div>
                                                   </div>
 
                                                    <div class="col-sm-5">
                                                      <div class="pull-right p-relative">
-                                                        <div class="lv-title"><span class="c-morado">99 BsF</span></div>
+                                                        <div class="lv-title"><span class="c-morado">{{ number_format($patrocinador->monto, 2) }} BsF</span></div>
                                                     </div>
                                                   </div>
                                                   
@@ -300,11 +400,16 @@
 @stop
 
 @section('js') 
+        
 
         <script src="{{url('/')}}/assets/js/soon.min.js" data-auto="false"></script>
 
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
+
+        route_agregar="{{url('/')}}/especiales/campañas/contribuir";
+
+        var recompensa = 0;
 
           // (function(){
 
@@ -341,7 +446,7 @@
               // create a simple soon counter on the supplied element
             $(document).ready(function() {
               $(".soon").soon({
-                  due:"2016-07-14",
+                  due:"{{$campana->fecha_final}}",
                   layout:"group"
               });
 
@@ -353,8 +458,31 @@
               //     separateChars:false,
               //     eventComplete:function(){ alert("done!"); }
               // });
+
+              if("{{$porcentaje}}" >= 100){
+                $("#barra-progreso").removeClass('progress-bar-morado');
+                $("#barra-progreso").addClass('progress-bar-success');
+              }else{
+                $("#barra-progreso").removeClass('progress-bar-success');
+                $("#barra-progreso").addClass('progress-bar-morado');
+              }
           });
 
+      function errores(merror){
+        console.log(merror);
+        var campo = ["alumno_id"];
+         $.each(merror, function (n, c) {
+             console.log(n);
+           $.each(this, function (name, value) {
+              //console.log(this);
+              var error=value;
+              $("#error-"+n+"_mensaje").html(error);
+              console.log(value);
+           });
+        });
+       }
+
+      
             /*$(document).ready(function(){
 
                 $('li').hover(function(){
@@ -376,5 +504,96 @@
                     }, animationDuration);
                 });
             });*/
+
+              $("#guardar").click(function(){
+
+                procesando();
+                var route = route_agregar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = "&recompensa_id="+recompensa+"&campana_id={{$campana->id}}&alumno_id="+$("#alumno_id").val(); 
+                $("#guardar").attr("disabled","disabled");
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                procesando();
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          window.location = "{{url('/')}}/participante/alumno/deuda/" + respuesta.id;
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        // finprocesado();
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
+        $(".recompensa").click(function(){
+
+          recompensa = this.id;
+
+        });
+
         </script>
 @stop        

@@ -48,14 +48,15 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($campana as $campanas)
-                                <?php $id = $campanas->id; ?>
+                            @foreach ($campanas as $campana)
+
+                                <?php $id = $campana['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$campanas->nombre}}</td>
-                                    <td class="text-center previa">{{$campanas->fecha_inicio}}</td>
-                                    <td class="text-center previa">{{$campanas->fecha_final}}</td>
-                                    <td class="text-center previa">{{ number_format($campanas->cantidad, 2) }} </td>
-                                    <td class="text-center previa">{{ number_format(20000, 2) }}</td>
+                                    <td class="text-center previa">{{$campana['nombre']}}</td>
+                                    <td class="text-center previa">{{$campana['fecha_inicio']}}</td>
+                                    <td class="text-center previa">{{$campana['fecha_final']}}</td>
+                                    <td class="text-center previa">{{ number_format($campana['cantidad'], 2) }} </td>
+                                    <td class="text-center previa">{{ number_format($campana['total'], 2) }}</td>
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
                                   </tr>
                             @endforeach 
@@ -196,7 +197,7 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","La campaña ha sido eliminada!","success");
+                        
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                         eliminar(id, element);
           }
@@ -228,19 +229,22 @@
                           t.row( $(element).parents('tr') )
                             .remove()
                             .draw();
+
+                        swal("Exito!","La campaña ha sido eliminada!","success");
                         
                         }
                     },
                     error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
       }

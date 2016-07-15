@@ -13,7 +13,7 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class PromocionController extends Controller {
+class PromocionController extends BaseController {
 
     /**
      * Display a listing of the resource.
@@ -21,11 +21,6 @@ class PromocionController extends Controller {
      * @return Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     public function index()
     {
 

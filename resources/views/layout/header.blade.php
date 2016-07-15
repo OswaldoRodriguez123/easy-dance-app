@@ -77,10 +77,12 @@
 
                         </li> 
 
-                        <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
-                            <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
-                        </li>  
 
+                            <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
+                                <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
+                            </li>  
+
+         
                         @endif
 
                            

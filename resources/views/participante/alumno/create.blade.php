@@ -199,8 +199,9 @@
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="direccion" id="direccion" placeholder="Calle santa marta, Av 23">
+                                      <input type="text" class="form-control input-sm proceso" name="direccion" id="direccion" placeholder="Calle santa marta, Av 23" maxlength="180" onkeyup="countChar(this)">
                                       </div>
+                                     <div class="opaco-0-8 text-right">Resta <span id="charNum">180</span> Caracteres</div>
                                     </div>
                                  <div class="has-error" id="error-direccion">
                                       <span >
@@ -735,6 +736,16 @@
             $("#hipertension").val('0');
           }     
         });
+
+
+    function countChar(val) {
+        var len = val.value.length;
+        if (len >= 180) {
+          val.value = val.value.substring(0, 180);
+        } else {
+          $('#charNum').text(180 - len);
+        }
+      };
 
 </script> 
 @stop

@@ -92,8 +92,8 @@
                                     <label for="alumno">Alumno</label>
                                     <div class="select">
                                         <select class="form-control" id="alumno_id" name="alumno_id">
-                                        @foreach ( $alumno as $alumnos )
-                                        <option value = "{!! $alumnos['id'] !!}">{!! $alumnos->nombre !!} {!! $alumnos->apellido !!}</option>
+                                        @foreach ( $alumnos as $alumno )
+                                        <option value = "{!! $alumno['id'] !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!}</option>
                                         @endforeach 
                                         </select>
                                       </div> 
@@ -154,13 +154,18 @@
                                     <label for="hora_inicio">Hora de Inicio</label>
                                     <input type="text" class="form-control time-picker input-sm" name="hora_inicio" id="hora_inicio" placeholder="Ej. 00:00">
                                  </div>
+                                 <div class="has-error" id="error-hora_inicio">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
+                                      </span>
+                                  </div>
                                  <div class="form-group fg-line">
                                     <label for="hora_final">Hora Final</label>
                                     <input type="text" class="form-control time-picker input-sm" name="hora_final" id="hora_final" placeholder="Ej. 00:00">
                                  </div>                                 
-                                 <div class="has-error" id="error-horario">
+                                 <div class="has-error" id="error-hora_final">
                                       <span >
-                                          <small class="help-block error-span" id="error-horario_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -218,8 +223,8 @@
 
                                       <div class="select">
                                         <select class="form-control" id="instructor_id" name="instructor_id">
-                                        @foreach ( $instructor as $instructores )
-                                        <option value = "{!! $instructores['id'] !!}">{!! $instructores['nombre'] !!} {!! $instructores['apellido'] !!}</option>
+                                        @foreach ( $instructores as $instructor )
+                                        <option value = "{!! $instructor['id'] !!}">{!! $instructor['nombre'] !!} {!! $instructor['apellido'] !!}</option>
                                         @endforeach 
                                         </select>
                                       </div> 

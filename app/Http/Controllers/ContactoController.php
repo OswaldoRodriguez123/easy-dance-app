@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Mail;
 
-class ContactoController extends Controller {
+class ContactoController extends BaseController {
 
     /**
      * Display a listing of the resource.
