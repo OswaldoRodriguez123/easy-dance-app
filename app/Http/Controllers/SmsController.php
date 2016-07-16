@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class SmsController extends Controller
 {
-
     function __construct()
     {
         $this->middleware('auth');
@@ -18,13 +17,12 @@ class SmsController extends Controller
 
     public function send()
     {
-
         $user = Auth::user();
         $SMS = new CentauroSMS(env('CENTAURO_KEY'), env('CENTAURO_SECRET'));
 
         //Mensajes a un solo Destinatario
         $destinatarios = array("id" => "0","cel" => getLimpiarNumero($user->telefono),"nom" => $user->nombre.' '.$user->apellido);
-        $msg = 'Probando con usuarios AUTH y que estan en la BD de Easy Dance';
+        $msg = 'Probando Clase de CentauroSMS con PSR-4';
         $js = json_encode($destinatarios);
         $result = $SMS->set_sms_send($js,$msg); // Comando para enviar SMS Normales
         if($result['status']=='200'){
@@ -44,7 +42,7 @@ class SmsController extends Controller
                     'status' => 'OK', 200
                 ]);
         }else{
-
+            //RESPUESTA DE ERROR DEL SERVER
             if ($result['status']=='305'){ 
                 return response()->json(['mensaje' => "No tiene SMS disponibles para realizar este envio", 'status' => 305, 305]);
             }
@@ -66,7 +64,6 @@ class SmsController extends Controller
 
         }
         
-
         //Mensajes a varios destinatarios
         /*$destinatarios = '{"id":"0","cel":"04149687144","nom":"Robert Virona"},{"id":"0","cel":"04261626673","nom":"Oswaldo"},{"id":"0","cel":"04263670894","nom":"Alejandro"},{"id":"0","cel":"04146139488","nom":"David Acurero"}';
 
