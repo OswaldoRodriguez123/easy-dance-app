@@ -997,14 +997,20 @@
         $("#content").removeClass("opacity-content");
         $("header").removeClass("abierto");
         $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
       })
 
 
-    $('body').on('click', '#content, footer, header.abierto', function(e){
+    $('body').on('click', '#what_we_do, #menuTopConfig, #main,#content, footer, header.abierto', function(e){
 
-      $("#content").removeClass("opacity-content");
+            $("#content").removeClass("opacity-content");
             $("footer").removeClass("opacity-content");
             $("header").removeClass("abierto");
+            $("#main").removeClass("opacity-content");
+            $("#chat").removeClass("toggled");
+            $("#what_we_do").removeClass("opacity-content");
 
             //$("footer").toggleClass("opacity-content");
             //$("header").toggleClass("abierto");
@@ -1016,7 +1022,7 @@
         });
         $('body').on('change', '#menu-trigger.open', function(e){
 
-      $("#content").addClass("opacity-content");
+            $("#content").addClass("opacity-content");
             $("footer").addClass("opacity-content");
             $("header").addClass("abierto");
 
