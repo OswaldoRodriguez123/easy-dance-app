@@ -113,7 +113,6 @@ class AlumnoController extends BaseController
 	public function store(Request $request)
 	{
 		$request->merge(array('correo' => trim($request->correo)));
-        $data = array();
 
     $rules = [
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',

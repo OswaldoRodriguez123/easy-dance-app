@@ -84,7 +84,6 @@ class CorreoController extends BaseController {
 
  	public function correoCumpleaños(Request $request){
 
- 		//dd($request->all());
  		$tipo = Session::get('tipo');
 
 		if($tipo){
@@ -107,16 +106,6 @@ class CorreoController extends BaseController {
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
 			            });
-
-			    //Envio de SMS
-				$data = collect([
-					'nombre' => $alumno->nombre,
-					'apellido' => $alumno->apellido,
-					'celular' => $alumno->celular
-				]);
-	            $academia = Academia::find($alumno->academia_id);
-	            $msg = 'Hola '.$alumno->nombre.', '.$academia->nombre.' te desea un feliz cumpleaños, en este día tan especial';
-			    $sms = $this->sendAlumno($data, $msg);
 
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 			}
