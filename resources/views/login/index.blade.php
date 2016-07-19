@@ -34,11 +34,11 @@
         
         <div class="lc-block toggled"  style="padding:0px 0px 0px 0px; background: #4E1E43 !important;margin-bottom:10px; vertical-align: top; box-shadow: none;">
              <img id="imagen" src="{{url('/')}}/assets/img/logo.png" width="200" >
-        </div><div class="clearfix"></div>
+        </div><div class="clearfix m-b-20"></div>
         <div class="lc-block toggled" id="l-login" style="margin-top:10px;vertical-align: top;">
              
              
-       
+            
             <!-- <form id="FormLogin"> -->
             <form  name="agregar" method="POST" action="{{ url('/login') }}" >
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -81,7 +81,7 @@
 
                 </div>
 
-                <button type= "submit" class="btn btn-login bgm-morado btn-float opaco-0-8"><i class="zmdi zmdi-arrow-forward"></i></button>
+                <button type= "submit" class="btn btn-login bgm-blue btn-float opaco-0-8"><i class="zmdi zmdi-arrow-forward"></i></button>
                 @if (count($errors) > 0)
                     <ul>
                         @foreach ($errors->all() as $error)

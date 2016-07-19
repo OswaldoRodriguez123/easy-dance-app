@@ -104,17 +104,15 @@ $(document).ready(function(){
 
         $('body').on('click', '#chat-trigger', function(e){
             e.preventDefault();
-
             
             var x = $(this).data('trigger');
 
             $(x).toggleClass('toggled');
             $(this).toggleClass('open');
 
-            //$("#content").toggleClass("opacity-content");
-            //$("footer").toggleClass("opacity-content");
-            //$("header").toggleClass("abierto");
-
+            $("#content").toggleClass("opacity-content");
+            $("footer").toggleClass("opacity-content");
+            $("header").toggleClass("abierto");
 
     	    //Close opened sub-menus
     	    $('.sub-menu.toggled').not('.active').each(function(){
@@ -150,8 +148,6 @@ $(document).ready(function(){
                 $("#content").toggleClass("opacity-content");
                 $("header").toggleClass("abierto");
                 $("footer").toggleClass("opacity-content");
-                $("#what_we_do").toggleClass("opacity-content");
-
 
                 $('#menu-trigger').removeClass('open');
 
@@ -457,7 +453,7 @@ $(document).ready(function(){
      * Input Slider
      */
     //Basic
-    if($('.input-slider')[0]) {
+    /*if($('.input-slider')[0]) {
         $('.input-slider').each(function(){
             var isStart = $(this).data('is-start');
 
@@ -498,7 +494,7 @@ $(document).ready(function(){
 
 	$('.input-slider-values').Link('lower').to($('#value-lower'));
         $('.input-slider-values').Link('upper').to($('#value-upper'), 'html');
-    }
+    }*/
 
     /*
      * Input Mask

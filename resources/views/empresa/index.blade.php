@@ -55,7 +55,7 @@
 
         </div>
 
-        <div class="pm-body clearfix">
+        <div class="pm-body clearfix" id="id-tabs">
             <div role="tabpanel">
             <div class="form-wizard-basic fw-container">
             <ul class="tab-nav tn-justified efecto-hover" role="tablist">
@@ -486,8 +486,8 @@
 
                     <ul class="fw-footer pagination wizard">
                         <!--<li class="previous first"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
-                        <li class="previous"><a class="a-prevent" href=""><i class="zmdi zmdi-arrow-back"></i></a></li>
-                        <li class="next"><a class="a-prevent" href=""><i class="zmdi zmdi-arrow-forward"></i></a></li>
+                        <li class="previous"><a class="a-prevent" href="" onclick="irArriba('tabs')"><i class="zmdi zmdi-arrow-back"></i></a></li>
+                        <li class="next"><a class="a-prevent" href="" onclick="irArriba('tabs')"><i class="zmdi zmdi-arrow-forward"></i></a></li>
                         <!--<li class="next last"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
                     </ul>
 
@@ -532,5 +532,10 @@
                     }, animationDuration);
                 });
             });*/
+            function irArriba(elemento){
+                $('html,body').animate({
+                        scrollTop: $("#id-"+elemento).offset().top-90,
+                }, 300); 
+            }
         </script>
 @stop        

@@ -48,7 +48,7 @@
                         </li>
 
                         <li class="dropdown" data-original-title="" data-content="Configuración" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600">
-                            <a data-toggle="dropdown" href="#">
+                            <a data-toggle="dropdown" href="#" id="menuTopConfig">
                                 <i class="tm-icon zmdi zmdi-settings f-18"></i>
                             </a>
                             <ul class="dropdown-menu dm-icon pull-right">
