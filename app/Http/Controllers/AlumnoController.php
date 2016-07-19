@@ -113,6 +113,7 @@ class AlumnoController extends BaseController
 	public function store(Request $request)
 	{
 		$request->merge(array('correo' => trim($request->correo)));
+        $data = array();
 
     $rules = [
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
@@ -220,6 +221,17 @@ class AlumnoController extends BaseController
             //             $msj->to($array['usuario']);
             //         });
             // }
+
+            //Envio de Sms
+            $data = collect([
+                'nombre' => $request->nombre,
+                'apellido' => $request->apellido,
+                'celular' => $request->celular
+            ]);
+            $academia = Academia::find($alumno->academia_id);
+            $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
+            $sms = $this->sendAlumno($data, $msg);
+
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 200]);
         }else{

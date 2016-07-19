@@ -23,7 +23,6 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
@@ -38,25 +37,27 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
+                                    <th class="text-center" data-column-id="academia" data-order="desc">Academia</th>
                                     <th class="text-center" data-column-id="email" data-order="desc">Correo Electrónico</th>
                                     <th class="text-center" data-column-id="password" data-order="desc">Contraseña</th>
-                                    <!--<th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Estatus E</th>-->
                                     <th class="text-center" data-column-id="direccion" data-order="desc">Dirección</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                                <tr id="row_" class="seleccion" >
-                                    <td class="text-center previa"></td>
-                                    <td class="text-center previa"></td>
-                                    <td class="text-center previa"> </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id= class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                            @foreach ($usuarios as $usuario)
+                                <?php $id = $usuario->id; ?>
+                                <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$usuario->nombre}} {{$usuario->apellido}}</td>
+                                    <td class="text-center previa">{{$usuario->academia_id}}</td>
+                                    <td class="text-center previa">{{$usuario->email}}</td>
+                                    <td class="text-center previa">{{$usuario->password}}</td>
+                                    <td class="text-center previa">{{$usuario->direccion}}</td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                   </tr>
+                            @endforeach 
                                                            
                             </tbody>
                         </table>
@@ -82,8 +83,8 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
-        route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones";
+        route_detalle="{{url('/')}}/configuracion/sucursales/detalle";
+        route_operacion="{{url('/')}}/configuracion/sucursales/operaciones";
 
         $(document).ready(function(){
 

@@ -10,6 +10,7 @@ use App\Instructor;
 use App\Proveedor;
 use App\Visitante;
 use App\ClaseGrupal;
+use App\Academia;
 use Validator;
 use DB;
 use Mail;
@@ -83,8 +84,7 @@ class CorreoController extends BaseController {
 
  	public function correoCumpleaños(Request $request){
 
- 		// dd($request->all());
-
+ 		//dd($request->all());
  		$tipo = Session::get('tipo');
 
 		if($tipo){
@@ -107,6 +107,16 @@ class CorreoController extends BaseController {
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
 			            });
+
+			    //Envio de SMS
+				$data = collect([
+					'nombre' => $alumno->nombre,
+					'apellido' => $alumno->apellido,
+					'celular' => $alumno->celular
+				]);
+	            $academia = Academia::find($alumno->academia_id);
+	            $msg = 'Hola '.$alumno->nombre.', '.$academia->nombre.' te desea un feliz cumpleaños, en este día tan especial';
+			    $sms = $this->sendAlumno($data, $msg);
 
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 			}
@@ -220,6 +230,19 @@ class CorreoController extends BaseController {
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
 			                 });
+
+					//Envio de SMS
+				    if($request->birthday_SMS == 1){
+						$data = collect([
+							'nombre' => $alumno->nombre,
+							'apellido' => $alumno->apellido,
+							'celular' => $alumno->celular
+						]);
+			            $academia = Academia::find($alumno->academia_id);
+			            $msg = 'Hola '.$alumno->nombre.', '.$academia->nombre.' te desea un feliz cumpleaños, en este día tan especial';
+					    $sms = $this->sendAlumno($data, $msg);
+					}
+
 	 			}
 			}
 	 	// }else{
@@ -432,8 +455,8 @@ class CorreoController extends BaseController {
 
  		public function correoCobro(Request $request){
 
-
- 			 				$tipo = Session::get('tipo');
+ 		//dd($request->all());
+		$tipo = Session::get('tipo');
 
 		if($tipo){
 
@@ -562,10 +585,23 @@ class CorreoController extends BaseController {
 			            'subj' => $subj
 			             ];
 
-			            Mail::send('correo.cobro', $array, function($msj) use ($array){
+			            /*Mail::send('correo.cobro', $array, function($msj) use ($array){
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
-			                 });
+			                 });*/
+
+					//Envio de SMS
+			        if($request->cobro_SMS == 1){
+						$data = collect([
+							'nombre' => $alumno->nombre,
+							'apellido' => $alumno->apellido,
+							'celular' => $alumno->celular
+						]);
+			            $academia = Academia::find($alumno->academia_id);
+			            $msg = 'Saludos '.$alumno->nombre.' en '.$academia->nombre.' te recordamos que el /_/_/ vence tu mensualidad. Gracias...';
+					    $sms = $this->sendAlumno($data, $msg);
+					}
+
 	 			}
 			}
 	 	// }else{

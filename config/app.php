@@ -159,6 +159,7 @@ return [
         GeneaLabs\Phpgmaps\PhpgmapsServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Watson\Autologin\AutologinServiceProvider::class,
+        LivePixel\MercadoPago\Providers\MercadoPagoServiceProvider::class,
 
     ],
 
@@ -209,6 +210,7 @@ return [
         'Gmaps' => GeneaLabs\Phpgmaps\Facades\PhpgmapsFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Autologin' => Watson\Autologin\Facades\Autologin::class,
+        'MP' => LivePixel\MercadoPago\Facades\MP::class,
 
     ],
 

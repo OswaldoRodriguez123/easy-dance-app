@@ -21,8 +21,7 @@ class SucursalController extends Controller
 
     public function principal()
     {
-        # code...
-        return view('configuracion.sucursales.principal');
+        return view('configuracion.sucursales.principal')->with('usuarios', User::all());
     }
     /**
      * Display a listing of the resource.

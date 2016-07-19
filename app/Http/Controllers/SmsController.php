@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\CentauroSMS\CentauroSMS;
+use App\Academia;
 use Illuminate\Support\Facades\Auth;
 
 class SmsController extends Controller
@@ -70,6 +71,7 @@ class SmsController extends Controller
         $result = $SMS->set_sms_send($destinatarios,$msg); // Comando para enviar SMS Normales
         return response()->json([$result]);*/
     }
+
 
     /**
      * Display a listing of the resource.

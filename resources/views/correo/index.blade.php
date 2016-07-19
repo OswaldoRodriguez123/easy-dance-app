@@ -95,6 +95,7 @@
                                 <div class="clearfix p-b-15"></div>
  -->
                         <div class="col-sm-12">
+                                 <input type="hidden" id="birthday_SMS" name="birthday_SMS">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Nombre</label>
                                     <div class="fg-line">
@@ -178,6 +179,7 @@
                                 <div class="clearfix p-b-15"></div> -->
 
                         <div class="col-sm-12">
+                                 <input type="hidden" id="ausencia_SMS" name="ausencia_SMS">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Nombre</label>
                                     <div class="fg-line">
@@ -261,6 +263,7 @@
                                 <div class="clearfix p-b-15"></div> -->
 
                         <div class="col-sm-12">
+                                <input type="hidden" id="cobro_SMS" name="cobro_SMS">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Nombre</label>
                                     <div class="fg-line">
@@ -344,6 +347,7 @@
                                 <div class="clearfix p-b-15"></div> -->
 
                         <div class="col-sm-12">
+                                 <input type="hidden" id="suspension_SMS" name="suspension_SMS">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Nombre</label>
                                     <div class="fg-line">
@@ -427,6 +431,7 @@
                                 <div class="clearfix p-b-15"></div>
  -->
                         <div class="col-sm-12">
+                                 <input type="hidden" id="adelanto_SMS" name="adelanto_SMS">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Nombre</label>
                                     <div class="fg-line">
@@ -524,6 +529,14 @@
                                         </a>
                                         <div class="media-body p-t-5">
                                             <strong class="d-block f-20">AVISO DE COBRO </strong>
+                                            <div class="pull-right f-16">Habilitar envio de SMS
+
+                                              <div class="toggle-switch p-l-10 m-l-10" data-ts-color="purple">
+                                                  <span class="p-r-10 f-700 f-16">No</span><input id="cobroSMS-switch" type="checkbox" hidden="hidden">
+                                                  <label for="cobroSMS-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                              </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="tv-body">
@@ -557,6 +570,16 @@
                                         </a>
                                         <div class="media-body p-t-5">
                                             <strong class="d-block f-20">FELIZ CUMPLEAÑOS   </strong>
+
+                                            <div class="pull-right f-16">Habilitar envio de SMS
+
+                                              <div class="toggle-switch p-l-10 m-l-10" data-ts-color="purple">
+                                                  <span class="p-r-10 f-700 f-16">No</span><input id="birthdaySMS-switch" type="checkbox" hidden="hidden">
+                                                  <label for="birthdaySMS-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                              </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="tv-body">
@@ -590,6 +613,15 @@
                                         </a>
                                         <div class="media-body p-t-5">
                                             <strong class="d-block f-20">SUSPENSIÓN DE CLASES    </strong>
+
+                                            <div class="pull-right f-16">Habilitar envio de SMS
+
+                                              <div class="toggle-switch p-l-10 m-l-10 disabled" data-ts-color="purple">
+                                                  <span class="p-r-10 f-700 f-16">No</span><input id="suspensionSMS-switch" type="checkbox" disabled="disabled" hidden="hidden">
+                                                  <label for="suspensionSMS-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                              </div>
+
+                                            </div>                                            
                                         </div>
                                     </div>
                                     <div class="tv-body">
@@ -622,7 +654,17 @@
                                             <i class="zmdi zmdi-rotate-right zmdi-hc-fw f-30 m-r-5 boton blue sa-warning"></i>
                                         </a>
                                         <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">ADELANTO DE  NUEVAS APERTURAS     </strong>
+                                            <strong class="d-block f-20">ADELANTO DE  NUEVAS APERTURAS</strong>
+
+                                            <div class="pull-right f-16">Habilitar envio de SMS
+
+                                              <div class="toggle-switch p-l-10 m-l-10 disabled" data-ts-color="purple">
+                                                  <span class="p-r-10 f-700 f-16">No</span><input id="adelantoSMS-switch" type="checkbox" disabled="disabled" hidden="hidden">
+                                                  <label for="adelantoSMS-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                              </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="tv-body">
@@ -656,6 +698,16 @@
                                         </a>
                                         <div class="media-body p-t-5">
                                             <strong class="d-block f-20">RIESGO DE AUSENCIA     </strong>
+
+                                            <div class="pull-right f-16">Habilitar envio de SMS
+
+                                              <div class="toggle-switch p-l-10 m-l-10 disabled" data-ts-color="purple">
+                                                  <span class="p-r-10 f-700 f-16">No</span><input id="ausenciaSMS-switch" type="checkbox" disabled="disabled" hidden="hidden">
+                                                  <label for="ausenciaSMS-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                              </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="tv-body">
@@ -770,6 +822,53 @@
               $('#combo_suspension').selectpicker('refresh');
 
             }
+
+            //******HABILITACION DE MENSAJES DE TEXTO******//
+            $("#cobro_SMS").val('0'); //Valor por Defecto
+            $("#cobroSMS-switch").on('change', function(){
+              if ($("#cobroSMS-switch").is(":checked")){
+                $("#cobro_SMS").val('1');
+              }else{
+                $("#cobro_SMS").val('0');
+              }     
+            });
+
+            $("#birthday_SMS").val('0'); //Valor por Defecto
+            $("#birthdaySMS-switch").on('change', function(){
+              if ($("#birthdaySMS-switch").is(":checked")){
+                $("#birthday_SMS").val('1');
+              }else{
+                $("#birthday_SMS").val('0');
+              }     
+            });
+
+            $("#suspension_SMS").val('0'); //Valor por Defecto
+            $("#suspensionSMS-switch").on('change', function(){
+              if ($("#suspensionSMS-switch").is(":checked")){
+                $("#suspension_SMS").val('1');
+              }else{
+                $("#suspension_SMS").val('0');
+              }     
+            });
+
+            $("#adelanto_SMS").val('0'); //Valor por Defecto
+            $("#adelantoSMS-switch").on('change', function(){
+              if ($("#adelantoSMS-switch").is(":checked")){
+                $("#adelanto_SMS").val('1');
+              }else{
+                $("#adelanto_SMS").val('0');
+              }     
+            });
+
+            $("#ausencia_SMS").val('0'); //Valor por Defecto
+            $("#ausenciaSMS-switch").on('change', function(){
+              if ($("#ausenciaSMS-switch").is(":checked")){
+                $("#ausencia_SMS").val('1');
+              }else{
+                $("#ausencia_SMS").val('0');
+              }     
+            });
+
 
              //EDICION DE TEXTO DE CUMPLEAÑOS
              //AGREGADO EL 15-06-2016
