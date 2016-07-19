@@ -55,8 +55,8 @@
                                     <td class="text-center previa">{{$campana['nombre']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_final']}}</td>
-                                    <td class="text-center previa">{{ number_format($campana['cantidad'], 2) }} </td>
-                                    <td class="text-center previa">{{ number_format($campana['total'], 2) }}</td>
+                                    <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
+                                    <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
                                   </tr>
                             @endforeach 

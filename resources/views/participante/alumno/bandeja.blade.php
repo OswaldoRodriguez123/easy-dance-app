@@ -67,7 +67,7 @@
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                     <td class="text-center disabled"> 
 
-                                    <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="operacion" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="" title="" data-original-title="Restablecer"></i></td>
+                                    <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="operacion" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer" title="" data-original-title=""></i></td>
                                 </tr>
                             @endforeach 
                                                            

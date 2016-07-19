@@ -1,5 +1,6 @@
 <header id="header" class="clearfix" data-current-skin="orange">
             <ul class="header-inner">
+            @if(Auth::check())
                 <li id="menu-trigger" data-trigger="#sidebar">
                     <div class="line-wrap" data-original-title="" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="Menú">
                         <div class="line top"></div>
@@ -7,12 +8,13 @@
                         <div class="line bottom"></div>
                     </div>
                 </li>
+            @endif
 
                 <!--<li class="logo hidden-xs">
                     <a href="index-2.html">Habana Maracaibo</a>
                 </li>-->
                 <li class="logo hidden-xs" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
-                    <a data-ui-sref="home" href="{{url('/')}}/inicio"data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="{{url('/')}}/assets/img/logo.png" class="img-opaco" width="90"></a>
+                    <a data-ui-sref="home" href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}"data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="{{url('/')}}/assets/img/logo.png" class="img-opaco" width="90"></a>
                 </li>
 
 

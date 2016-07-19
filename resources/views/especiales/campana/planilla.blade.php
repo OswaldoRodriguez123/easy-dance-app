@@ -177,6 +177,59 @@
                 </div>
             </div>
 
+
+            <div class="modal fade" id="modalPresentacion-Campana" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Campaña<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_presentacion_campana" id="edit_presentacion_campana"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="edad">Presentación general de la campaña</label>
+                                    <textarea class="form-control" id="presentacion" name="presentacion" rows="2" placeholder="250 Caracteres"></textarea>
+                                 </div>
+                                 <div class="has-error" id="error-presentacion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-presentacion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$campana->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" href="#" data-formulario="edit_presentacion_campana" data-update="presentacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalCantidad-Campana" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -351,6 +404,78 @@
                             <div class="col-sm-12">                            
 
                               <a class="btn-morado m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_campana" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="modalImagenPresentacion-Campana" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Campaña<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_imagen_presentacion_campana" id="edit_imagen_presentacion_campana"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Cargar Imagen</label>
+                                        <div class="clearfix p-b-15"></div>
+                                        <input type="hidden" name="imagePresentacionBase64" id="imagePresentacionBase64">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($campana->imagen_presentacion)
+                                          <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen_presentacion}}" style="line-height: 150px;">
+                                          @endif
+                                        </div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen_presentacion" id="imagen_presentacion" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="has-error" id="error-imagen">
+                                      <span >
+                                          <small id="error-imagen_presentacion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$campana->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-morado m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_presentacion_campana" data-update="imagen_presentacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -785,7 +910,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-pagar f-22"></i> </span>
                                <span class="f-14"> Cantidad a Recaudar </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="campana-cantidad"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="campana-cantidad"><span>{{ number_format($campana->cantidad, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="disabled">
                              <td>
@@ -810,6 +935,22 @@
                                <span class="f-14"> Link Promocional </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="campana-link_video"><span>{{$campana->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalPresentacion-Campana">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-presentacion" class="zmdi {{ empty($campana->presentacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Presentación general de la campaña </span>
+                             </td>
+                             <td id="campana-presentacion" class="f-14 m-l-15 capitalize" data-valor="{{$campana->presentacion}}" >{{ str_limit($campana->presentacion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalImagenPresentacion-Campana">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagePresentacionBase64" class="zmdi {{ empty($campana->imagen_presentacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Imagen de la presentación general </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="campana-imagen_presentacion"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDatos-Campana">
                              <td>
@@ -864,10 +1005,6 @@
 
     $(document).ready(function(){
 
-      cantidad = parseFloat("{{$campana->cantidad}}");
-
-      $('#campana-cantidad').text(formatmoney(cantidad));
-
         $("#imagen").bind("change", function() {
             //alert('algo cambio');
             
@@ -875,6 +1012,17 @@
               var fileinput = $("#imagena img").attr('src');
               //alert(fileinput);
               var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
+
+        $("#imagen_presentacion").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagenb img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imagePresentacionBase64]").val(fileinput);
             },500);
 
         });
@@ -901,6 +1049,12 @@
       limpiarMensaje();
       var historia=$("#campana-historia").data('valor');
        $("#historia").val(historia);
+    })
+
+    $('#modalPresentacion-Campana').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var presentacion=$("#campana-presentacion").data('valor');
+       $("#presentacion").val(presentacion);
     })
 
     $('#modalNombre-Campana').on('show.bs.modal', function (event) {
@@ -948,7 +1102,7 @@
             }
             $("#campana-"+c.name).data('valor',c.value);
             $("#campana-"+c.name).html(valor);
-          }else if(c.name=='historia' || c.name=='nombre' || c.name=='eslogan'){
+          }else if(c.name=='historia' || c.name=='nombre' || c.name=='eslogan' || c.name=='presentacion'){
              $("#campana-"+c.name).data('valor',c.value);
              $("#campana-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));

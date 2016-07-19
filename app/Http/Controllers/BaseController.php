@@ -12,12 +12,15 @@ class BaseController extends Controller {
 
     public function __construct() {
 
-       $alumno = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+    if (Auth::check()) { 
 
-       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+	       $alumno = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-       View::share ( 'alumnos', $alumno  );
-       View::share ( 'instructores', $instructor );
+	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+	       View::share ( 'alumnos', $alumno  );
+	       View::share ( 'instructores', $instructor );
+   		}
 
     }  
 

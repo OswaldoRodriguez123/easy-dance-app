@@ -49,6 +49,11 @@ class AcademiaConfiguracionController extends BaseController {
         return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]);                    
 	}
 
+    public function principal()
+    {
+        return view('configuracion.index');                  
+    }
+
     public function listo()
     {
 

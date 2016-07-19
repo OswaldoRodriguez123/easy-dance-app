@@ -291,7 +291,7 @@
 
                                 <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-presentacion">Presentación general de la campaña</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Preséntate, presenta tus antecedentes, tu campaña y por qué es importante para ti. Expresa la magnitud de lo que te ayudarán a lograr tus colaboradores" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-presentacion">Presentación general de la campaña</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Preséntate, presenta tus antecedentes, tu campaña y por qué es importante para ti. Expresa la magnitud de lo que te ayudarán a lograr tus colaboradores" title="" data-original-title="Ayuda"></i>
 
                                     <br></br>
 

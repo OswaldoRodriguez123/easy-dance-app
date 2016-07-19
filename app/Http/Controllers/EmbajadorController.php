@@ -20,6 +20,18 @@ class EmbajadorController extends BaseController {
 
     }
 
+    public function principal(){
+
+        return view('empresa.embajadores');
+
+    }
+
+    public function enhorabuena(){
+
+        return view('empresa.enhorabuena');
+
+    }
+
 	public function agregarlinea(Request $request){
         
     $rules = [

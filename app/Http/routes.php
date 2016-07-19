@@ -161,7 +161,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('agendar/clases-grupales/alumnos/eliminar', 'ClaseGrupalController@eliminarAlumnos');
 	Route::post('agendar/clases-grupales/agregarhorario', 'ClaseGrupalController@agregarhorario');
 	Route::post('agendar/clases-grupales/eliminarhorario/{id}', 'ClaseGrupalController@eliminarhorario');
-	Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
 
 	Route::put('agendar/clases-grupales/update/nombre', 'ClaseGrupalController@updateNombre');
 	Route::put('agendar/clases-grupales/update/fecha', 'ClaseGrupalController@updateFecha');
@@ -231,9 +230,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::post('agendar/talleres/update/costo_taller', 'TallerController@updateCostoTaller');
 
-    Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
-
-
+    
 
 	//FIESTAS
 
@@ -308,10 +305,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('especiales/campañas/update/plazo', 'CampanaController@updatePlazo');
 	Route::put('especiales/campañas/update/video', 'CampanaController@updateLink');
 	Route::put('especiales/campañas/update/imagen', 'CampanaController@updateImagen');
+	Route::put('especiales/campañas/update/presentacion', 'CampanaController@updatePresentacion');
+	Route::put('especiales/campañas/update/imagen_presentacion', 'CampanaController@updateImagenPresentacion');
 	Route::put('especiales/campañas/update/datos', 'CampanaController@updateDatosBancarios');
 	Route::post('especiales/campañas/agregarrecompensa', 'CampanaController@agregarrecompensa');
 	Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');
-	Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
     Route::post('especiales/campañas/contribuir', 'CampanaController@storePatrocinador');
     Route::post('especiales/campañas/agregarrecompensafija', 'CampanaController@agregarrecompensafija');
     Route::post('especiales/campañas/eliminarrecompensafija/{id}', 'CampanaController@eliminarrecompensafija');
@@ -324,10 +322,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	// ---- CONFIGURACION ----
 
-	Route::get('configuracion', function () {
-	    return view('configuracion.index');
-
-	});
+	Route::get('configuracion', 'AcademiaConfiguracionController@principal');
 
 
 	// SUCURSAL
@@ -335,7 +330,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('configuracion/sucursales','SucursalController@principal');
 	Route::get('configuracion/sucursales/agregar','SucursalController@create');
 	Route::post('configuracion/sucursales/agregar','SucursalController@store');
-
 
 	// ACADEMIA
 
@@ -352,10 +346,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('configuracion/academia/eliminarnivel/{id}','AcademiaConfiguracionController@eliminarniveles');
 	Route::post('configuracion/academia/completar','AcademiaConfiguracionController@store');
 
-	Route::post('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');
+	Route::put('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');
 	Route::put('configuracion/academia/update/imagen', 'AcademiaConfiguracionController@updateImagen');
 	Route::put('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
-	Route::post('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
+	Route::put('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
 	Route::put('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
 
 	// PRODUCTOS
@@ -516,23 +510,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	    return view('soporte.normas');
 	});
 
-	Route::get('empresa/sobre-la-empresa', function () {
-	    return view('empresa.index');
-	});
-
-	Route::get('empresa/embajadores', function () {
-	    return view('empresa.embajadores');
-	});
+	Route::get('empresa/sobre-la-empresa', 'EmpresaController@index');
 
 	//EMBAJADOR
 
+	Route::get('empresa/embajadores', 'EmbajadorController@principal');
 	Route::get('/invitar', 'EmbajadorController@index');
-
 	Route::post('/invitar', 'EmbajadorController@invitar');
-
-	Route::get('invitar/enhorabuena', function () {
-	    return view('empresa.enhorabuena');
-	});
+	Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');
 	Route::post('/embajadores/agregar', 'EmbajadorController@agregarlinea');
 	Route::post('/embajadores/eliminar/{id}', 'EmbajadorController@eliminarlinea');
 
@@ -621,3 +606,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('sms', 'SmsController@send');
 
 });
+
+
+	Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
+	Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
+	Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
+	Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');

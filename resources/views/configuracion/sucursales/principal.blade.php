@@ -41,7 +41,7 @@
                                     <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="email" data-order="desc">Correo Electronico</th>
+                                    <th class="text-center" data-column-id="email" data-order="desc">Correo Electrónico</th>
                                     <th class="text-center" data-column-id="password" data-order="desc">Contraseña</th>
                                     <!--<th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Estatus E</th>-->

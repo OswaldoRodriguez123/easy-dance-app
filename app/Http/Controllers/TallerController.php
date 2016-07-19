@@ -824,11 +824,11 @@ class TallerController extends BaseController {
             ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->join('academias', 'talleres.academia_id', '=', 'academias.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'talleres.nombre as taller_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.cupo_reservacion', 'talleres.fecha_inicio', 'talleres.imagen', 'talleres.descripcion', 'academias.imagen as imagen_academia', 'talleres.link_video', 'talleres.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'talleres.nombre as taller_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.cupo_reservacion', 'talleres.fecha_inicio', 'talleres.imagen', 'talleres.descripcion', 'academias.imagen as imagen_academia', 'talleres.link_video', 'talleres.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre', 'academias.id as academia_id')
             ->where('talleres.id','=', $id)
         ->first();
 
-        $academia = Academia::find(Auth::user()->academia_id);
+        $academia = Academia::find($taller_join->academia_id);
 
         if($taller_join->link_video){
 
@@ -862,16 +862,7 @@ class TallerController extends BaseController {
 
          $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-         $privilegio = Auth::user()->tipo_usuario;
-
-         if($privilegio == 10){
-            $administrador = 1;
-         }
-         else{
-             $administrador = 0;
-         }
-
-        return view('agendar.taller.reserva')->with(['taller' => $taller_join, 'id' => $id, 'porcentaje' => $porcentaje, 'administrador' => $administrador, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes]);
+        return view('agendar.taller.reserva')->with(['taller' => $taller_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes]);
     }
 
 

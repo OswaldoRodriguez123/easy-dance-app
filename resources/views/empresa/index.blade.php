@@ -138,7 +138,7 @@
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
                                         <a href="" class="tvh-user pull-left">
-                                            <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/oswaldo.jpg" alt="">
                                         </a>
                                         <div class="media-body p-t-5">
                                             <strong class="d-block">Oswaldo Rodriguez</strong>
@@ -153,8 +153,15 @@
                                         <p>Vive en Maracaibo - Venezuela.</p>
                                                                         
                                         <div class="clearfix"></div>
-                                    
-                                        <a href="https://www.linkedin.com/in/samuelospina" target="_blank">
+                                        
+
+                                       
+
+                                        <a href=" https://www.facebook.com/oswaldorodriguez20" target="_blank">
+                                        <i class="zmdi zmdi-facebook-box f-22"></i>
+                                        </a>
+
+                                        <a href="https://ve.linkedin.com/in/oswaldorodriguez20" target="_blank">
                                         <i class="zmdi zmdi-linkedin-box f-22"></i>
                                         </a>
 

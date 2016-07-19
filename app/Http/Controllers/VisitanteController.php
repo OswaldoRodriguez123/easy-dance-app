@@ -131,6 +131,8 @@ class VisitanteController extends BaseController {
         $visitante->apellido = $apellido;
         $visitante->sexo = $request->sexo;
         $visitante->correo = $correo;
+        $visitante->telefono = $request->telefono;
+        $visitante->celular = $request->celular;
         $visitante->como_nos_conociste_id = $request->como_nos_conociste_id;
         $visitante->fecha_nacimiento = $fecha_nacimiento;
         $visitante->direccion = $direccion;

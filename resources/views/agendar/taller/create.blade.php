@@ -345,7 +345,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-descripcion">Descripcion</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos del taller e infórmale de los beneficios que recibirán al momento de realizarlo" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-descripcion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos del taller e infórmale de los beneficios que recibirán al momento de realizarlo" title="" data-original-title="Ayuda"></i>
 
                                     <br></br>
 

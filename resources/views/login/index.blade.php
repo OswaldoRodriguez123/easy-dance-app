@@ -128,7 +128,7 @@
         </div>        
 
 
-        <footer id="footer" style="padding-top: 2px;">
+        <footer id="footer" style="padding-top: 20px;">
 
             <div class=" p-10 footer-text">
             <p> <b><a href="http://easydancelatino.com/" target="_blank" > www.easydancelatino.com </a></b></p> 

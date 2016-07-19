@@ -469,7 +469,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
                                <span class="f-14"> Costo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="servicio-costo"><span>{{$servicio->costo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="servicio-costo"><span>{{ number_format($servicio->costo, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImagen-Servicio">
                              <td>
@@ -541,10 +541,6 @@
     } 
 
     $(document).ready(function(){
-
-      costo = parseFloat("{{$servicio->costo}}");
-
-      $('#servicio-costo').text(formatmoney(costo));
 
       $("#imagen").bind("change", function() {
             //alert('algo cambio');

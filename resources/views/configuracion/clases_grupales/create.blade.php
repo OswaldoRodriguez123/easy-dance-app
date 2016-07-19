@@ -105,7 +105,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="descripcion" id="id-descripcion">Descripcion</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
+                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
                                     </div>

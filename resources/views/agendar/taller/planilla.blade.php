@@ -149,7 +149,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Descripcion</label>
+                                    <label for="nombre">Descripción</label>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
                                     </div>
@@ -852,7 +852,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-costo f-22"></i> </span>
                                <span class="f-14"> Costo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="taller-costo"><span>{{$taller->costo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="taller-costo"><span>{{ number_format($taller->costo, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Taller">
                              <td>
@@ -963,10 +963,6 @@
     } 
 
     $(document).ready(function(){
-
-      costo = parseFloat("{{$taller->costo}}");
-
-      $('#taller-costo').text(formatmoney(costo));
 
       $("#imagen").bind("change", function() {
             //alert('algo cambio');

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Campana;
+use App\Academia;
 use App\Recompensa;
 use App\Alumno;
 use App\Patrocinador;
@@ -572,6 +573,43 @@ class CampanaController extends BaseController {
         }
     }
 
+    public function updatePresentacion(Request $request){
+
+        $rules = [
+            'presentacion' => 'min:3|max:1000',
+        ];
+
+        $messages = [
+
+            'presentacion.min' => 'El mínimo de caracteres permitidos son 3',
+            'presentacion.max' => 'El máximo de caracteres permitidos son 1000',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $campana = Campana::find($request->id);
+
+            $presentacion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->presentacion))));
+        
+            $campana->presentacion = $request->presentacion;
+
+            if($campana->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+            // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
     
     public function updatePlazo(Request $request){
 
@@ -723,6 +761,44 @@ class CampanaController extends BaseController {
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function updateImagenPresentacion(Request $request)
+    {           
+
+                $campana = Campana::find($request->id);
+                if($request->imagePresentacionBase64){
+
+                    $base64_string = substr($request->imagePresentacionBase64, strpos($request->imagePresentacionBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imagePresentacionBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "campanapresentacion-". $campana->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('campana')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(1440, 500);
+                    $img->save('assets/uploads/campana/'.$nombre_img);
+                }
+                else{
+                    $nombre_img = "";
+                }
+                
+                $campana->imagen_presentacion = $nombre_img;
+                $campana->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -802,16 +878,7 @@ class CampanaController extends BaseController {
 
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-         $privilegio = Auth::user()->tipo_usuario;
-
-         if($privilegio == 10){
-            $administrador = 1;
-         }
-         else{
-             $administrador = 0;
-         }
-
-         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+         $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
          $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
@@ -823,8 +890,16 @@ class CampanaController extends BaseController {
          ->get();
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
+         $academia = Academia::find($campaña->academia_id);
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'administrador' => $administrador, 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos]);
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia]);
+    }
+
+    public function contribuir($id)
+    {   
+        $campana = Campana::find($id);
+        $academia = Academia::find($campana->academia_id);
+        return view('especiales.campana.contribuir')->with(['id' => $id, 'campana' => $campana, 'academia' => $academia]);        
     }
 
     /**

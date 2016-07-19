@@ -485,7 +485,7 @@
                 </div>
             </div>
 
-                        <div class="modal fade" id="modalAdministrativo-Academia" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalAdministrativo-Academia" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -836,7 +836,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalEspeciales-Academia">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especiales" class="zmdi {{ empty($academia->normativa) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-normativa" class="zmdi {{ empty($academia->normativa) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Especiales </span>
                              </td>
@@ -844,7 +844,7 @@
                             </tr> 
                             <tr class="detalle" data-toggle="modal" href="#modalAdministrativo-Academia">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi {{ empty($academia->numero_factura) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="icon_a-punto-de-venta f-22"></i> </span>
                                <span class="f-14"> Administrativo </span>
                              </td>
@@ -852,7 +852,7 @@
                             </tr> 
                             <tr class="detalle" data-toggle="modal" href="#modalEstudio-Academia">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi {{ empty($academia->numero_factura) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="icon_a-estudio-salon f-22"></i> </span>
                                <span class="f-14"> Estudios /Salones </span>
                              </td>
@@ -860,7 +860,7 @@
                             </tr> 
                             <tr class="detalle" data-toggle="modal" href="#modalNivel-Academia">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi {{ empty($academia->numero_factura) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="icon_a-niveles f-22"></i> </span>
                                <span class="f-14"> Niveles de baile </span>
                              </td>
@@ -1152,21 +1152,21 @@
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
-        if(form != 'edit_especiales_academia'){
+        // if(form != 'edit_especiales_academia'){
           var datos = $( "#"+form ).serialize();
           tipo = 'PUT';
-          contenido = null;
-        }
-        else{
-          tipo = 'POST';
-          var data = new FormData();
-          var programacion = document.getElementById('programacion');
-          data.append('programacion', programacion.files[0]);
-          data.append('normativa', $('#normativa').val());
-          data.append('manual', $('#manual').val());
-          var datos = data;
-          contenido = false;
-        }
+        //   contenido = null;
+        // }
+        // else{
+        //   tipo = 'POST';
+        //   var data = new FormData();
+        //   var programacion = document.getElementById('programacion');
+        //   data.append('programacion', programacion.files[0]);
+        //   data.append('normativa', $('#normativa').val());
+        //   data.append('manual', $('#manual').val());
+        //   var datos = data;
+        //   contenido = false;
+        // }
         
         var datos_array=  $( "#"+form ).serializeArray();
         

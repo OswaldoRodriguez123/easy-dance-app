@@ -359,7 +359,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
                                <span class="f-14"> Costo Inscripcion </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion"><span>{{$clasegrupal->costo_inscripcion}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion"><span>{{ number_format($clasegrupal->costo_inscripcion, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCostoMensualidad-ClaseGrupal">
                              <td>
@@ -367,7 +367,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
                                <span class="f-14"> Costo Mensualidad</span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad"><span>{{$clasegrupal->costo_mensualidad}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad"><span>{{ number_format($clasegrupal->costo_mensualidad, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDescripcion-ClaseGrupal">
                              <td>
@@ -419,12 +419,6 @@
     } 
 
     $(document).ready(function(){
-
-      costo_inscripcion = parseFloat("{{$clasegrupal->costo_inscripcion}}");
-      costo_mensualidad = parseFloat("{{$clasegrupal->costo_mensualidad}}");
-
-      $('#clasegrupal-costo_inscripcion').text(formatmoney(costo_inscripcion));
-      $('#clasegrupal-costo_mensualidad').text(formatmoney(costo_mensualidad));
 
       if("{{$clasegrupal->incluye_iva}}" == 1){
           $("#incluye_iva").val('1');  //VALOR POR DEFECTO
