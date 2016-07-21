@@ -5,9 +5,9 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 
 <!--     <link href="{{url('/')}}/assets/css/styles.min.css" rel="stylesheet"> -->
-    <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
+    
     <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
-
+<link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
 
 @stop
 
@@ -183,28 +183,29 @@
                               </div>
                               <p class="text-center f-700" > {{$porcentaje}} % de {{ number_format($campana->cantidad, 2, '.' , '.') }}</p> 
 
-                              <style type="text/css">
-                                @import url(http://fonts.googleapis.com/css?family=Comfortaa);
-                                #my-soon-watch-red {background-color:#030303;}
-                                #my-soon-watch-red .soon-reflection {background-color:#030303;background-image:linear-gradient(#030303 25%,rgba(3,3,3,0));}
-                                #my-soon-watch-red {color:#ffffff;}
-                                #my-soon-watch-red .soon-label {color:#ffffff;color:rgba(255,255,255,0.75);}
-                                #my-soon-watch-red {font-family:"Comfortaa",sans-serif;}
-                                #my-soon-watch-red .soon-ring-progress {background-color:#410918;}
-                                #my-soon-watch-red .soon-ring-progress {border-top-width:14px;}
-                                #my-soon-watch-red .soon-ring-progress {border-bottom-width:13px;}
-                            </style>
-                          
-                           <p class="text-center f-18 f-700" >Tiempo restante</p>
+         
 
-                          <div class="soon" id="my-soon-watch-red"
-                               data-layout="group tight label-uppercase label-small"
-                               data-format="d,h,m,s"
-                               data-face="slot"
-                               data-padding="false"
-                               data-visual="ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0">
-                          </div> 
-                          
+            <style type="text/css">
+                  @import url(http://fonts.googleapis.com/css?family=Comfortaa);
+                  #my-soon-watch-red {background-color:#030303;}
+                  #my-soon-watch-red .soon-reflection {background-color:#030303;background-image:linear-gradient(#030303 25%,rgba(3,3,3,0));}
+                  #my-soon-watch-red {color:#ffffff;}
+                  #my-soon-watch-red .soon-label {color:#ffffff;color:rgba(255,255,255,0.75);}
+                  #my-soon-watch-red {font-family:"Comfortaa",sans-serif;}
+                  #my-soon-watch-red .soon-ring-progress {background-color:#410918;}
+                  #my-soon-watch-red .soon-ring-progress {border-top-width:14px;}
+                  #my-soon-watch-red .soon-ring-progress {border-bottom-width:13px;}
+              </style>
+              <div class="soon" id="my-soon-watch-red"
+                   data-layout="group tight label-uppercase label-small"
+                   data-format="d,h,m,s"
+                   data-face="slot"
+                   data-padding="false"
+                   data-visual="ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0">
+              </div>
+             
+
+               
                           <div class="clearfix p-b-15"></div>
 
                           @foreach ($recompensas as $recompensa)
@@ -459,8 +460,9 @@
 @section('js') 
         
 
-        <script src="{{url('/')}}/assets/js/soon.min.js" data-auto="false"></script>
+        
         <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
+        <script src="{{url('/')}}/assets/js/soon.min.js" data-auto="false"></script>
 
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
@@ -505,8 +507,18 @@
             $(document).ready(function() {
               $(".soon").soon({
                   due:"{{$campana->fecha_final}}",
-                  layout:"group"
+                  //layout:"group"
+                  layout:"group tight label-uppercase label-small",
+                  format:"d,h,m,s",
+                  face:"slot",
+                  padding:"false",
+                  visual:"ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0"
               });
+
+
+
+    
+
 
               // create a more advanced counter
               // $(".your-advanced-counter").soon({
