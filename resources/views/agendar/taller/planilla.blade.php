@@ -4,6 +4,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
@@ -12,6 +13,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 @stop
 
 @section('content')
@@ -210,11 +212,13 @@
                                 <div class="form-group">
                                     <div class="form-group fg-line">
                                     <label for="fecha_inicio">Fecha de Inicio</label>
-                                    <input type="text" class="form-control date-picker input-sm" name="fecha_inicio" id="fecha_inicio" placeholder="Ej. 00/00/0000" value="{{$taller->fecha_inicio}}">
+                                    <div class="fg-line">
+                                        <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha">
+                                    </div>
                                  </div>
-                                    <div class="has-error" id="error-fecha_inicio">
+                                    <div class="has-error" id="error-fecha">
                                       <span >
-                                          <small id="error-fecha_inicio_mensaje" class="help-block error-span" ></small>                                           
+                                          <small id="error-fecha_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
                                     </div>
                                 </div>
@@ -866,9 +870,9 @@
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi {{ empty($taller->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>        
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
-                              <span class="f-14">Fecha de Inicio </span>
+                              <span class="f-14">Fecha Desde / Hasta</span>
                              </td>
-                             <td class="f-14 m-l-15" id="taller-FechaInicio"><span id="taller-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$taller->fecha_inicio)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" id="taller-FechaInicio"><span id="taller-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$taller->fecha_inicio)->format('d/m/Y')}}</span> - <span id="taller-fecha_final">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$taller->fecha_final)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalHorario-Taller">
                              <td>
@@ -964,6 +968,40 @@
 
     $(document).ready(function(){
 
+      $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "left",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+        });
+
       $("#imagen").bind("change", function() {
             //alert('algo cambio');
             
@@ -1006,7 +1044,7 @@
     })
     $('#modalFechaInicio-Taller').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha_inicio").val($("#taller-FechaInicio").text()); 
+      $("#fecha").val($("#taller-fecha_inicio").text() + '-' + $("#taller-fecha_final").text()); 
     })
     $('#modalEspecialidades-Taller').on('show.bs.modal', function (event) {
       limpiarMensaje();

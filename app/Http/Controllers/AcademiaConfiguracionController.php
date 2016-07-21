@@ -15,6 +15,9 @@ use App\ConfigClasesGrupales;
 use App\ConfigEspecialidades;
 use App\ConfigEstudios;
 use App\ConfigNiveles;
+use App\Taller;
+use App\Fiesta;
+use App\Campana;
 use App\InscripcionClaseGrupal;
 use App\ItemsFacturaProforma;
 use App\Paises;
@@ -46,7 +49,22 @@ class AcademiaConfiguracionController extends BaseController {
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
         $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]);                    
+        if(Auth::user()->usuario_tipo == 1){
+
+            return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]); 
+        }
+        else{
+
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+        ->get();
+
+             return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); ; 
+        }
+                           
 	}
 
     public function principal()
@@ -1087,10 +1105,22 @@ class AcademiaConfiguracionController extends BaseController {
                                     }
                                 }
 
-                                $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-                                $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                                if(Auth::user()->usuario_tipo == 1){
 
-                                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]); 
+                                    return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
+                                }
+                                else{
+
+                                    $clase_grupal_join = DB::table('clases_grupales')
+                                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                                    ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen')
+                                    ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                                    ->where('clases_grupales.deleted_at', '=', null)
+                                ->get();
+
+                                    return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); 
+       
+                                }
     }
 
 }

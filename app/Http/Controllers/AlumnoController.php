@@ -14,6 +14,7 @@ use App\InscripcionCoreografia;
 use App\ClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\Academia;
+use App\User;
 use Mail;
 use DB;
 use Validator;
@@ -120,7 +121,7 @@ class AlumnoController extends BaseController
         'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255|unique:alumnos,correo, '.$request->id.'',
+        'correo' => 'required|email|max:255|unique:users,email, '.$request->id.'',
     ];
 
     $messages = [
@@ -200,39 +201,59 @@ class AlumnoController extends BaseController
         $alumno->lesiones = $request->lesiones;
 
         if($alumno->save()){
+
+            $usuario = new User;
+
+            $usuario->academia_id = Auth::user()->academia_id;
+            $usuario->nombre = $nombre;
+            $usuario->apellido = $apellido;
+            $usuario->telefono = $request->telefono;
+            $usuario->celular = $request->celular;
+            $usuario->sexo = $request->sexo;
+            $usuario->email = $correo;
+            $usuario->como_nos_conociste_id = 1;
+            $usuario->direccion = $direccion;
+            $usuario->confirmation_token = str_random(40);
+            $usuario->password = bcrypt(str_random(8));
+            $usuario->usuario_id = $alumno->id;
+            $usuario->usuario_tipo = 2;
+
+            if($usuario->save()){
             
-            // if($request->correo){
+                // if($request->correo){
 
-            //     $academia = Academia::find(Auth::user()->academia_id);
-            //     $contrasena = str_random(6);
-            //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                //     $academia = Academia::find(Auth::user()->academia_id);
+                //     $contrasena =  $usuario->password;
+                //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
 
-            //     $array = [
-            //        'nombre' => $request->nombre,
-            //        'academia' => $academia->nombre,
-            //        'usuario' => $request->correo,
-            //        'contrasena' => $contrasena,
-            //        'subj' => $subj
-            //     ];
+                //     $array = [
+                //        'nombre' => $request->nombre,
+                //        'academia' => $academia->nombre,
+                //        'usuario' => $request->correo,
+                //        'contrasena' => $contrasena,
+                //        'subj' => $subj
+                //     ];
 
-            //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-            //             $msj->subject($array['subj']);
-            //             $msj->to($array['usuario']);
-            //         });
-            // }
+                //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                //             $msj->subject($array['subj']);
+                //             $msj->to($array['usuario']);
+                //         });
+                // }
 
-            //Envio de Sms
-            $data = collect([
-                'nombre' => $request->nombre,
-                'apellido' => $request->apellido,
-                'celular' => $request->celular
-            ]);
-            $academia = Academia::find($alumno->academia_id);
-            $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
-            $sms = $this->sendAlumno($data, $msg);
+                //Envio de Sms
+                
+                // $data = collect([
+                //     'nombre' => $request->nombre,
+                //     'apellido' => $request->apellido,
+                //     'celular' => $request->celular
+                // ]);
+                
+                // $academia = Academia::find($alumno->academia_id);
+                // $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
+                // $sms = $this->sendAlumno($data, $msg);
 
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
         }
@@ -462,7 +483,18 @@ class AlumnoController extends BaseController
         $alumno->apellido = $apellido;
 
         if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+
+            $usuario->nombre = $nombre;
+            $usuario->apellido = $apellido;
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -488,7 +520,16 @@ class AlumnoController extends BaseController
 
         // return redirect("alumno/edit/{$request->id}");
         if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+
+            $usuario->sexo = $request->sexo;
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -497,7 +538,7 @@ class AlumnoController extends BaseController
     public function updateCorreo(Request $request){
 
     $rules = [
-        'correo' => 'email|max:255|unique:alumnos,correo, '.$request->id.'',
+        'correo' => 'email|max:255|unique:users,email, '.$request->id.'',
     ];
 
     $messages = [
@@ -528,7 +569,15 @@ class AlumnoController extends BaseController
         $alumno->correo = $correo;
 
         if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+
+            $usuario->email = $correo;
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -542,7 +591,17 @@ class AlumnoController extends BaseController
         $alumno->celular = $request->celular;
 
         if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+
+            $usuario->telefono = $request->telefono;
+            $usuario->celular = $request->celular;
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -556,7 +615,16 @@ class AlumnoController extends BaseController
         $alumno->direccion = $direccion;
         
         if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+
+            $usuario->direccion = $direccion;
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

@@ -33,6 +33,8 @@ class AsistenciaController extends BaseController
     {
         // $alumnos = Asistencia::where('academia_id','=', Auth::user()->academia_id)->get();
 
+      if(Auth::user()->usuario_tipo == 1)
+      {
         $alumnos = DB::table('alumnos')
             ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
@@ -52,7 +54,25 @@ class AsistenciaController extends BaseController
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
-        return view('inicio.asistencia')->with(['alumnos_asistencia' => $alumnos, 'instructores_asistencia' => $instructores]);                    
+        return view('inicio.asistencia')->with(['alumnos_asistencia' => $alumnos, 'instructores_asistencia' => $instructores]);   
+        }  
+
+        if(Auth::user()->usuario_tipo == 2)
+        {       
+
+          $alumnos = DB::table('alumnos')
+            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('academias', 'asistencias.academia_id', '=', 'academias.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'alumnos.nombre', 'alumnos.apellido')
+            ->where('alumnos.id','=',Auth::user()->usuario_id)
+        ->get();
+
+          return view('vista_alumno.asistencia')->with(['alumnos_asistencia' => $alumnos]); 
+
+        }        
     }
 
     private function deuda($id){

@@ -38,7 +38,7 @@
                                     <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                 </div>
                                 <div class="modal-body m-b-20">
-                                    <h2 class="text-center p-t-0 c-morado-suave">Hey {{Auth::user()->nombre}}. Que bueno tenerte aquí... </h2> 
+                                    <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}. Que bueno tenerte aquí... </p> 
                                     <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para agendar? Empieza yaaa...</p>
                                     <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

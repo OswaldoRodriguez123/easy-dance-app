@@ -1,6 +1,6 @@
 <header id="header" class="clearfix" data-current-skin="orange">
             <ul class="header-inner">
-            @if(Auth::check())
+            @if(Auth::check() && Auth::user()->usuario_tipo == 1)
                 <li id="menu-trigger" data-trigger="#sidebar">
                     <div class="line-wrap" data-original-title="" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="Menú">
                         <div class="line top"></div>
@@ -40,7 +40,61 @@
                                 <i class="tm-icon zmdi zmdi-check f-18"></i>
                             </a>
                         </li> --}}
+
                         @if(Auth::check())
+              
+                            <li class="dropdown" data-original-title="" data-content="Perfil" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" style="color:white">
+
+                                <a href="{{url('/')}}/perfil">
+
+                                    @if(Auth::user()->imagen)
+                                        <img class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  
+                                    @else
+                                     @if(Auth::user()->sexo=='F')
+                                          <img class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="45px" height="auto">        
+                                       @else
+                                          <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
+                                       @endif
+                                    @endif
+
+                                    <br>
+                                    
+                                    <span class="f-700 f-14"> {{Auth::user()->nombre}} {{Auth::user()->apellido}} </span>
+
+                                </a>
+                            </li>
+
+                        @endif
+
+                        @if(Auth::check() && Auth::user()->usuario_tipo == 2)
+
+
+                            <li class="dropdown" data-original-title="" data-content="Administrativo" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" style="height:36px">
+                                <a href="{{url('/')}}/administrativo" style="height:36px">
+                                    <i class="tm-icon icon_a icon_a-punto-de-venta f-18"></i>
+                                </a>
+                            </li>
+
+                            <li class="dropdown" data-original-title="" data-content="Asistencia" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
+                                <a href="{{url('/')}}/asistencia">
+                                    <i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i>
+                                </a>
+                            </li>
+
+                            <li class="dropdown" data-original-title="" data-content="Documentos y normativas" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
+                                <a href="{{url('/')}}/documentos">
+                                    <i class="tm-icon zmdi zmdi-file-text f-18 f-18"></i>
+                                </a>
+                            </li>
+
+                            <li class="dropdown" data-original-title="" data-content="Cerrar sesion" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
+                                    <a href="{{url('/')}}/logout"><i class="tm-icon zmdi zmdi-time-restore f-18 f-18"></i></a>
+                                </li>
+
+                        @endif
+
+                        @if(Auth::check() && Auth::user()->usuario_tipo == 1)
+
                         <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                             <a href="{{url('/')}}/agendar">
                                 <i class="tm-icon zmdi zmdi-calendar-check f-18 f-18"></i>

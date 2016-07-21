@@ -363,7 +363,7 @@
 
  $("#guardar").click(function(){
 
-                if(totalglobal == 0){
+                // if(totalglobal == 0){
 
                   var id = "{{$alumno->id}}";
                   var route = route_factura + id;
@@ -421,9 +421,9 @@
                       },
                       error:function(msj){
                         setTimeout(function(){ 
-                          if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        //   if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                           if(msj.responseJSON.status=="ERROR"){
                             console.log(msj.responseJSON.errores);
                             errores(msj.responseJSON.errores);
@@ -451,15 +451,15 @@
                         }, 1000);
                       }
                   });
-                }
-                else{
+                // }
+                // else{
 
-                  $("#error-linea_mensaje").html("Debes ingresar la cantidad solicitada");
-                  $('html,body').animate({
-                      scrollTop: $("#id-linea").offset().top-90,
-                  }, 1000);   
+                //   $("#error-linea_mensaje").html("Debes ingresar la cantidad solicitada");
+                //   $('html,body').animate({
+                //       scrollTop: $("#id-linea").offset().top-90,
+                //   }, 1000);   
 
-                }
+                // }
             });
 
         $("#add").click(function(){

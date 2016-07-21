@@ -190,7 +190,7 @@ class CampanaController extends BaseController {
 
     $rules = [
         'cantidad' => 'required|numeric',
-        'nombre' => 'required|min:5|max:50',
+        'nombre' => 'required|min:5|max:40',
         'eslogan' => 'required|min:5|max:30',
         'historia' => 'required|max:1000',
         'plazo' => 'required|numeric',
@@ -202,7 +202,7 @@ class CampanaController extends BaseController {
         'cantidad.numeric' => 'Ups! El campo de recaudar es inválido, debe contener sólo números',
         'nombre.required' => 'Ups! El título de la campaña es requerido',
         'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-        'nombre.max' => 'El máximo de caracteres permitidos son 50',
+        'nombre.max' => 'El máximo de caracteres permitidos son 40',
         'eslogan.required' => 'Ups! El Eslogan es requerido',
         'eslogan.min' => 'El mínimo de caracteres permitidos son 5',
         'eslogan.max' => 'El máximo de caracteres permitidos son 30', 
@@ -463,14 +463,14 @@ class CampanaController extends BaseController {
     public function updateNombre(Request $request){
 
         $rules = [
-            'nombre' => 'required|min:3|max:50',
+            'nombre' => 'required|min:3|max:40',
         ];
 
         $messages = [
 
             'nombre.required' => 'Ups! El Nombre es requerido',
             'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'nombre.max' => 'El máximo de caracteres permitidos son 40',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -714,7 +714,7 @@ class CampanaController extends BaseController {
         $campana->nombre_banco = $request->nombre_banco;
         $campana->tipo_cuenta = $request->tipo_cuenta;
         $campana->rif = $request->rif;
-        $campana->correo_electrico = $request->correo_electrico;
+        $campana->correo = $request->correo;
 
         if($campana->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

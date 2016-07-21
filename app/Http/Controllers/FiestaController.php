@@ -179,7 +179,7 @@ class FiestaController extends BaseController {
 
     $rules = [
         'nombre' => 'required|min:3|max:50',
-        'fecha_inicio' => 'required',
+        'fecha' => 'required',
         'hora_inicio' => 'required',
         'hora_final' => 'required',
         'color_etiqueta' => 'required',
@@ -191,7 +191,7 @@ class FiestaController extends BaseController {
         'nombre.required' => 'Ups! El Nombre es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
         'nombre.max' => 'El máximo de caracteres permitidos son 50',
-        'fecha_inicio.required' => 'Ups! La fecha es requerida',
+        'fecha.required' => 'Ups! La fecha es requerida',
         'lugar.required' => 'Ups! El Lugar o sitio es requerido',
         'lugar.min' => 'El mínimo de caracteres permitidos son 3',
         'lugar.max' => 'El máximo de caracteres permitidos son 200',
@@ -235,6 +235,13 @@ class FiestaController extends BaseController {
             
             }
 
+        if($request->fecha < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la fiesta no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+
+        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
 
@@ -244,6 +251,7 @@ class FiestaController extends BaseController {
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
+
         $fiesta = new Fiesta;
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
@@ -251,8 +259,6 @@ class FiestaController extends BaseController {
         $lugar = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->lugar))));
 
         $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
-
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
 
         $fiesta->academia_id = Auth::user()->academia_id;
         $fiesta->nombre = $nombre;
@@ -385,12 +391,12 @@ class FiestaController extends BaseController {
     public function updateFecha(Request $request){
 
     $rules = [
-        'fecha' => 'required',
+        'fecha_inicio' => 'required',
     ];
 
     $messages = [
 
-        'fecha.required' => 'Ups! La fecha es requerida',
+        'fecha_inicio.required' => 'Ups! La fecha es requerida',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -403,9 +409,14 @@ class FiestaController extends BaseController {
 
     else{
 
+            if($request->fecha_inicio < Carbon::now()){
+
+                return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la fiesta no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
+
             $fiesta = Fiesta::find($request->id);
 
-            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
 
             $fiesta->fecha_final = $fecha;
             $fiesta->fecha_inicio = $fecha;

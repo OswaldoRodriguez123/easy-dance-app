@@ -1589,6 +1589,10 @@ text-shadow: 0 2px 20px rgba(38, 61, 178, 1) !important;
     box-shadow: inset 0 -2px 0 0 #2196f3 !important; 
 }
 
+a > .agregar{
+    color:#4E1E43;
+}
+
 /*.tab-nav:not([data-tab-color]) > li > a::after {
     background: #2196f3;
 }*/

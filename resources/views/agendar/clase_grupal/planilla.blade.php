@@ -223,7 +223,7 @@
               BEGIN
               MODAL EDITAR FECHA INICIO
             -->     
-           <!--  <div class="modal fade" id="modalFechaCobro-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalFechaCobro-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -274,7 +274,7 @@
                     </div>
                 </div>
             </div>
-            <!-- END -->
+            <!-- END
 
             <!--
               BEGIN
@@ -1048,7 +1048,7 @@
                              </td>
                              <td class="f-14 m-l-15" id="clasegrupal-fecha" ><span id="clasegrupal-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y')}}</span> - <span id="clasegrupal-fecha_final">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_final)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="disabled">
+                            <tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi  {{ empty($clasegrupal->fecha_inicio_preferencial) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
@@ -1272,7 +1272,7 @@
     })
     $('#modalFechaInicio-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha_inicio").val($("#clasegrupal-FechaInicio").text()); 
+      $("#fecha").val($("#clasegrupal-fecha_inicio").text() + '-' + $("#clasegrupal-fecha_final").text()); 
     })
     $('#modalFechaCobro-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();

@@ -358,14 +358,19 @@ class ClaseGrupalController extends BaseController {
 
         // }
 
+        if($fecha_inicio < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+
         $fecha_inicio = $fecha_inicio->toDateString();
         $fecha_final = $fecha_final->toDateString();
 
 
-        if($fecha_inicio > $fecha_final)
-        {
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
-        }
+        // if($fecha_inicio > $fecha_final)
+        // {
+        //     return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
+        // }
 
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
@@ -782,8 +787,16 @@ class ClaseGrupalController extends BaseController {
 
         $fecha = explode(" - ", $request->fecha);
 
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0])->toDateString();
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1])->toDateString();
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+
+        if($fecha_inicio < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+
+        $fecha_inicio = $fecha_inicio->toDateString();
+        $fecha_final = $fecha_final->toDateString();
 
         $clasegrupal->fecha_inicio = $fecha_inicio;
         $clasegrupal->fecha_final = $fecha_final;

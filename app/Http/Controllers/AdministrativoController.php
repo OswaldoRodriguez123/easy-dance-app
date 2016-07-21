@@ -18,6 +18,8 @@ use App\Presupuesto;
 use App\ItemsPresupuesto;
 use App\ConfigProductos;
 use App\ConfigServicios;
+use App\User;
+use App\Familia;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -37,8 +39,42 @@ class AdministrativoController extends BaseController {
     
 	public function index()
 	{
+        if(Auth::user()->usuario_tipo == 2)
+        {
 
-		return view('administrativo.primerpaso')->with('alumnos', Alumno::all());                      
+
+		  $factura_join = DB::table('facturas')
+            ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+            ->where('facturas.alumno_id' , '=' , Auth::user()->usuario_id)
+            ->OrderBy('facturas.created_at')
+        ->get();
+
+        $array=array();
+
+        foreach($factura_join as $factura){
+
+
+            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+            $collection=collect($factura);     
+            $factura_array = $collection->toArray();
+            
+            $factura_array['total']=$total;
+            $array[$factura->id] = $factura_array;
+
+        }
+
+            $proforma_join = DB::table('items_factura_proforma')
+                ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
+                ->where('items_factura_proforma.alumno_id' , '=' , Auth::user()->usuario_id)
+            ->get();
+
+            return view('vista_alumno.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join]); 
+        }
+        else{
+            return redirect("/"); 
+        }                   
 	}
 
 	/**
@@ -112,43 +148,21 @@ class AdministrativoController extends BaseController {
 
         $factura_join = DB::table('facturas')
             ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            // ->join('pagos', 'facturas.id', '=', 'pagos.factura_id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
             ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('facturas.created_at')
         ->get();
 
-        $alumnod = DB::table('facturas')
-            ->join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
-            ->select('items_factura.importe_neto', 'facturas.id')
-            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->OrderBy('facturas.created_at')
-        ->get();
+        foreach($factura_join as $factura){
 
-        $collection=collect($alumnod);
-        $grouped = $collection->groupBy('id');     
-        $deuda = $grouped->toArray();
 
-        $array=array();
-        $i = 0;
-        $importe_neto = 0;
-        $total = 0;
-
-        foreach($deuda as $item){
-            $importe_neto = 0;
+            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+            $collection=collect($factura);     
+            $factura_array = $collection->toArray();
             
-            foreach($item as $tmp){
+            $factura_array['total']=$total;
+            $array[$factura->id] = $factura_array;
 
-            $factura_id = $tmp->id;
-            $importe_neto = $importe_neto + $tmp->importe_neto;
-            // $id_alumno = $item['']
-            // $iva = $item['costo'] * ($academia->porcentaje_impuesto / 100);
-            }
-            // $factura_join[$i]->setAttribute('total',  $importe_neto);
-            // $factura_join[$id]->total = $importe_neto;
-            $factura_join[$i]->total=$importe_neto;
-            $array[$factura_id] = $factura_join[$i];
-            $i = $i + 1;
         }
 
         $proforma_join = DB::table('items_factura_proforma')
@@ -580,10 +594,7 @@ class AdministrativoController extends BaseController {
 
             }
 
-        // $proforma = FacturaProforma::find($request->id);
-
         $total_proforma = $request->total;
-
         $total_pago = 0;
 
         $numerofactura = DB::table('facturas')
@@ -618,7 +629,7 @@ class AdministrativoController extends BaseController {
             $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre . '...';
         }
         else{
-           $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre;
+            $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre;
         }
 
         $factura = new Factura;
@@ -631,6 +642,9 @@ class AdministrativoController extends BaseController {
         $factura->concepto = $concepto;
        
         if($factura->save()){
+
+            $factura_id = $factura->id;
+
 
             for($i = 0; $i < count($arreglo) ; $i++)
             
@@ -666,98 +680,127 @@ class AdministrativoController extends BaseController {
 
                 $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
 
-                if($item_proforma){
-
-                    $item_factura = new ItemsFactura;
-
-                    $item_factura->factura_id = $factura->id;
-                    $item_factura->item_id = $item_proforma->item_id;
-                    $item_factura->nombre = $item_proforma->nombre;
-                    $item_factura->tipo = $item_proforma->tipo;
-                    $item_factura->cantidad = $item_proforma->cantidad;
-                    $item_factura->precio_neto = $item_proforma->precio_neto;
-                    $item_factura->impuesto = $item_proforma->impuesto;
-                    $item_factura->importe_neto = $item_proforma->importe_neto;
-
-                    $item_factura->save();
-
-                    array_push($array_descripcion, $item_proforma->cantidad . ' ' . $item_proforma->nombre);
-                    }
-
-                }
-
-                $descripcion = implode(",", $array_descripcion);
             }
+
+            $descripcion = implode(",", $array_descripcion);
 
             if($total_proforma <= $total_pago)
             {
-                for($i = 0; $i < $contador ; $i++)
-                    {
-                        $id = $id_proforma[$i];
-
-                        $item_proforma = ItemsFacturaProforma::find($id)->delete();
-                
-                    }
-
-                    // return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 200]); 
-            }
-            else{
 
                 for($i = 0; $i < $contador ; $i++)
                 {
                     $id = $id_proforma[$i];
 
-                    $item_proforma = ItemsFacturaProforma::find($id)->delete();
-                
+                    $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
+
+                    if($item_proforma){
+
+                        $item_factura = new ItemsFactura;
+
+                        $item_factura->factura_id = $factura_id;
+                        $item_factura->item_id = $item_proforma->item_id;
+                        $item_factura->nombre = $item_proforma->nombre;
+                        $item_factura->tipo = $item_proforma->tipo;
+                        $item_factura->cantidad = $item_proforma->cantidad;
+                        $item_factura->precio_neto = $item_proforma->precio_neto;
+                        $item_factura->impuesto = $item_proforma->impuesto;
+                        $item_factura->importe_neto = $item_proforma->importe_neto;
+
+                        $item_factura->save();
+
+                        $item_proforma = ItemsFacturaProforma::find($id)->delete();
+                        
+                        }
+                    }
                 }
 
-                $deuda = $total_proforma - $total_pago;
+                else{
 
-                $items_factura_proforma = new ItemsFacturaProforma;
+                    for($i = 0; $i < $contador ; $i++)
+                    {
+                        $id = $id_proforma[$i];
 
-                $items_factura_proforma->alumno_id = $request->id;
-                $items_factura_proforma->academia_id = Auth::user()->academia_id;
-                $items_factura_proforma->fecha = Carbon::now()->toDateString();
-                $items_factura_proforma->item_id = $factura->id;
-                $items_factura_proforma->nombre = 'Remanente Factura ' . $numero_factura;
-                $items_factura_proforma->tipo = 7;
-                $items_factura_proforma->cantidad = 1;
-                $items_factura_proforma->precio_neto = 0;
-                $items_factura_proforma->impuesto = 0;
-                $items_factura_proforma->importe_neto = $deuda;
-                $items_factura_proforma->fecha_vencimiento = Carbon::now()->toDateString();
-                
-                $items_factura_proforma->save();
+                        $item_proforma = ItemsFacturaProforma::find($id)->delete();
+                    
+                    }
 
-                // return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'entro' => 'entro', 200]);
+                    $deuda = $total_proforma - $total_pago;
 
-            }
+                    $item_factura = new ItemsFactura;
 
-            //FINAL
+                    $item_factura->factura_id = $factura_id;
+                    $item_factura->item_id = $factura->id;
+                    $item_factura->nombre = 'Abono Factura ' . $numero_factura;
+                    $item_factura->tipo = 11;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $total_pago;
+                    
+                    $item_factura->save();
 
-            $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::find($request->id);
+                    $items_factura_proforma = new ItemsFacturaProforma;
 
-            $subj = 'Pago realizado exitósamente';
+                    $items_factura_proforma->alumno_id = $request->id;
+                    $items_factura_proforma->academia_id = Auth::user()->academia_id;
+                    $items_factura_proforma->fecha = Carbon::now()->toDateString();
+                    $items_factura_proforma->item_id = $factura->id;
+                    $items_factura_proforma->nombre = 'Remanente Factura ' . $numero_factura;
+                    $items_factura_proforma->tipo = 7;
+                    $items_factura_proforma->cantidad = 1;
+                    $items_factura_proforma->precio_neto = 0;
+                    $items_factura_proforma->impuesto = 0;
+                    $items_factura_proforma->importe_neto = $deuda;
+                    $items_factura_proforma->fecha_vencimiento = Carbon::now()->toDateString();
+                    
+                    $items_factura_proforma->save();
 
-            $array = [
+                    // return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'entro' => 'entro', 200]);
 
-               'correo_destino' => $alumno->correo,
-               'nombre' => $academia->nombre,
-               'correo' => $academia->correo,
-               'telefono' => $academia->celular,
-               'fecha' => Carbon::now()->toDateString(),
-               'hora' => Carbon::now()->toTimeString(),
-               'factura' => $numero_factura,
-               'total' => $total_pago,
-               'descripcion' => $descripcion,
-               'subj' => $subj
-            ];
+                }
 
-            Mail::send('correo.factura', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo_destino']);
+                //FINAL
+
+                $academia = Academia::find(Auth::user()->academia_id);
+                $usuario = User::where('usuario_id', $request->id)->first();
+
+                if($usuario->familia_id){
+                    $es_representante = Familia::where('representante_id', $usuario->id)->first();
+                    if($es_representante){
+                        $correo = $usuario->email;
+                    }else{
+                        $familia = Familia::find($usuario->familia_id);
+                        $representante = User::find($familia->representante_id);
+                        $correo = $representante->email;
+                    }
+                }else{
+                    $correo = $usuario->email;
+                }
+
+                $subj = 'Pago realizado exitósamente';
+
+                $array = [
+
+                   'correo_destino' => $correo,
+                   'nombre' => $academia->nombre,
+                   'correo' => $academia->correo,
+                   'telefono' => $academia->celular,
+                   'fecha' => Carbon::now()->toDateString(),
+                   'hora' => Carbon::now()->toTimeString(),
+                   'factura' => $numero_factura,
+                   'total' => $total_pago,
+                   'descripcion' => $descripcion,
+                   'subj' => $subj
+                ];
+
+                Mail::send('correo.factura', $array, function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo_destino']);
                 });
+            }else{
+
+                return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error con la factura']], 'status' => 'ERRORFACTURA'],422);
+            }
 
             Session::forget('id_proforma');
             Session::forget('pagos');

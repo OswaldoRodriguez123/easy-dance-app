@@ -61,11 +61,11 @@
 
                                 <div class="col-sm-12">
                                     
-                                      <label for="fecha_inicio" id="id-fecha_inicio">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el día del evento o fiesta que vas a crear" title="" data-original-title="Ayuda"></i>
+                                      <label for="fecha" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el día del evento o fiesta que vas a crear" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
                                       <div class="dtp-container fg-line">
-                                              <input name="fecha_inicio" id="fecha_inicio" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text"
+                                              <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text"
                                                   @if (session('fecha_inicio'))
                                                     value="{{session('fecha_inicio')}} - {{session('fecha_inicio')}}"
                                                   @endif
@@ -73,9 +73,9 @@
                                           </div>
 
                                     </div>
-                                    <div class="has-error" id="error-fecha_inicio">
+                                    <div class="has-error" id="error-fecha">
                                         <span >
-                                            <small class="help-block error-span" id="error-fecha_inicio_mensaje" ></small>                                           
+                                            <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                           
                                         </span>
                                     </div>
                                 </div>
@@ -585,7 +585,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "descripcion", "fecha_inicio", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "condiciones"];
+    var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "condiciones"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -1063,7 +1063,7 @@
 
 
       function limpiarMensaje(){
-        var campo = ["nombre", "descripcion", "fecha_inicio", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "tipo", "cantidad", "costo", "condiciones"];
+        var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "tipo", "cantidad", "costo", "condiciones"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1080,7 +1080,7 @@
     });
 
     function errores(merror){
-      var campo = ["nombre", "descripcion", "fecha_inicio", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "tipo", "cantidad", "costo", "condiciones"];
+      var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "tipo", "cantidad", "costo", "condiciones"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

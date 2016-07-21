@@ -704,7 +704,7 @@
     })
     $('#modalFecha-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha").val($("#clasepersonalizada-fecha").text()); 
+      $("#fecha_inicio").val($("#clasepersonalizada-fecha_inicio").text()); 
     })
     $('#modalEspecialidades-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();

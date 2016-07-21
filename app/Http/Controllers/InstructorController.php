@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Instructor;
 use App\Academia;
+use App\User;
 use Mail;
 use Validator;
 use Carbon\Carbon;
@@ -148,24 +149,43 @@ class InstructorController extends BaseController {
 
         if($instructor->save()){
 
-            $academia = Academia::find(Auth::user()->academia_id);
-            $contrasena = str_random(6);
-            $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+            $usuario = new User;
 
-            // $array = [
-            //    'nombre' => $request->nombre,
-            //    'academia' => $academia->nombre,
-            //    'usuario' => $request->correo,
-            //    'contrasena' => $contrasena,
-            //    'subj' => $subj
-            // ];
+            $usuario->academia_id = Auth::user()->academia_id;
+            $usuario->nombre = $nombre;
+            $usuario->apellido = $apellido;
+            $usuario->telefono = $request->telefono;
+            $usuario->celular = $request->celular;
+            $usuario->sexo = $request->sexo;
+            $usuario->email = $correo;
+            $usuario->como_nos_conociste_id = 1;
+            $usuario->direccion = $direccion;
+            $usuario->confirmation_token = str_random(40);
+            $usuario->password = bcrypt(str_random(8));
+            $usuario->usuario_id = $instructor->id;
+            $usuario->usuario_tipo = 3;
 
-            // Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-            //         $msj->subject($array['subj']);
-            //         $msj->to($array['usuario']);
-            //     });
+            if($usuario->save()){
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+                // $academia = Academia::find(Auth::user()->academia_id);
+                // $contrasena = $usuario->password;
+                // $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+
+                // $array = [
+                //    'nombre' => $request->nombre,
+                //    'academia' => $academia->nombre,
+                //    'usuario' => $request->correo,
+                //    'contrasena' => $contrasena,
+                //    'subj' => $subj
+                // ];
+
+                // Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                //         $msj->subject($array['subj']);
+                //         $msj->to($array['usuario']);
+                //     });
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

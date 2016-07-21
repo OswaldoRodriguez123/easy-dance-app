@@ -128,6 +128,11 @@ class TallerController extends BaseController {
         $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0])->toDateString();
         $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1])->toDateString();
 
+        if($fecha_inicio < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+
         if($fecha_inicio > $fecha_final)
         {
             return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
@@ -372,13 +377,13 @@ class TallerController extends BaseController {
 
     $rules = [
 
-        'fecha_inicio' => 'required',
+        'fecha' => 'required',
 
     ];
 
     $messages = [
 
-        'fecha_inicio.required' => 'Ups! La fecha de inicio es requerida',
+        'fecha.required' => 'Ups! La fecha de inicio es requerida',
 
     ];
 
@@ -402,9 +407,21 @@ class TallerController extends BaseController {
 
         $taller = Taller::find($request->id);
 
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
+        $fecha = explode(" - ", $request->fecha);
+
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+
+        if($fecha_inicio < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+        
+        $fecha_inicio = $fecha_inicio->toDateString();
+        $fecha_final = $fecha_final->toDateString();
 
         $taller->fecha_inicio = $fecha_inicio;
+        $taller->fecha_final = $fecha_final;
 
         if($taller->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -901,7 +918,7 @@ class TallerController extends BaseController {
                 ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
                 ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen')
                 ->where('talleres.id', '=', $id)
                 ->first();
 

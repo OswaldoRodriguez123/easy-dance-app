@@ -70,11 +70,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::get('/listo', 'AcademiaConfiguracionController@listo');
 
-	//AGENDAR
-
-	Route::get('agendar','AgendarController@index');
-	Route::post('agendar','AgendarController@store');
-
 	//ALUMNO
 
 	Route::get('participante/alumno', 'AlumnoController@principal');
@@ -132,6 +127,24 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('participante/visitante/update/como_se_entero','VisitanteController@updateComoSeEntero');
 	Route::put('participante/visitante/update/especialidad','VisitanteController@updateEspecialidad');
 
+	//FAMILIA
+
+	Route::get('participante/familia', 'FamiliaController@principal');
+	Route::post('participante/familia/agregar', 'FamiliaController@store');
+	Route::get('participante/familia/agregar', 'FamiliaController@create');
+	Route::post('participante/familia/agregarparticipante', 'FamiliaController@agregarparticipante');
+	Route::post('participante/familia/eliminarparticipante/{id}', 'FamiliaController@eliminarparticipante');
+	Route::delete('participante/proveedor/eliminar/{id}', 'ProveedorController@destroy');
+	Route::get('participante/proveedor/detalle/{id}', 'ProveedorController@edit');
+	Route::get('participante/proveedor/operaciones/{id}', 'ProveedorController@operar');
+	Route::put('participante/proveedor/update/nombre','ProveedorController@updateNombre');
+	Route::put('participante/proveedor/update/fecha_nacimiento','ProveedorController@updateFecha');
+	Route::put('participante/proveedor/update/sexo','ProveedorController@updateSexo');
+	Route::put('participante/proveedor/update/correo','ProveedorController@updateCorreo');
+	Route::put('participante/proveedor/update/telefono','ProveedorController@updateTelefono');
+	Route::put('participante/proveedor/update/direccion','ProveedorController@updateDireccion');
+	Route::put('participante/proveedor/update/empresa','ProveedorController@updateEmpresa');
+
 	//PROVEEDOR
 
 	Route::get('participante/proveedor', 'ProveedorController@principal');
@@ -147,6 +160,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('participante/proveedor/update/telefono','ProveedorController@updateTelefono');
 	Route::put('participante/proveedor/update/direccion','ProveedorController@updateDireccion');
 	Route::put('participante/proveedor/update/empresa','ProveedorController@updateEmpresa');
+
+
+	//AGENDAR
+
+	Route::get('agendar','AgendarController@index');
+	Route::post('agendar','AgendarController@store');
 
 	//CLASES GRUPALES
 
@@ -407,6 +426,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('configuracion/coreografias/inscribir', 'CoreografiaController@storeInscripcion');
 
 	// --- ADMINISTRATIVO --- 
+
+
+	Route::get('administrativo', 'AdministrativoController@index');
 
 	//PAGOS
 

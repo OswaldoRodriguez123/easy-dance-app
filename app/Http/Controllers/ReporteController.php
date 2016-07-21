@@ -41,7 +41,7 @@ class ReporteController extends BaseController
 	public function Presenciales(){
 
 		$presenciales = DB::table('visitantes_presenciales')
-            ->join('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
         ->get();

@@ -17,58 +17,51 @@
 @stop
 @section('content')
 
+<a href="{{url('/')}}/participante/familia/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Alumno</a>
+                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
+                            <span class="f-16 p-t-0 text-success">Agregar una Familia <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-mood-bad zmdi-hc-fw f-25"></i> Bandeja Inactivos</p>
-                            <hr class="linea-morada">
-                                                         
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-instructor f-25"></i> Sección de Familias</p>
+                            <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="fecha">Fecha de Inactividad</th>
-                                    <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="familia">Familia</th>
+                                    <th class="text-center" data-column-id="representante">Representante</th>
+                                    <th class="text-center" data-column-id="integrantes">Integrantes</th>
                                     <th class="text-center" data-column-id="estatu_e">Balance E</th>
-                                    <th class="text-center" data-column-id="operacion">Acciones</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-center" >
 
-                            @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno->id; ?>
+                            @foreach ($familias as $familia)
+                                <?php $id = $familia['id']; ?>
+                                
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center disabled">{{$alumno->deleted_at}}</td>
-                                    <td class="text-center disabled">{{$alumno->identificacion}}</td>
-                                    <td class="text-center disabled">
-                                    @if($alumno->sexo=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
-                                    @endif
+                                    <td class="text-center previa">{{$familia['apellido']}}</td>
+                                    <td class="text-center previa">
+                                        {{$familia['representante_nombre']}} {{$familia['representante_apellido']}} 
                                     </td>
-                                    <td class="text-center disabled">{{$alumno->nombre}} {{$alumno->apellido}} </td>
-                                    <td class="text-center disabled">
-                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
-                                    </td>
+                                    <td class="text-center previa">{{$familia['total']}}</td>
+                                    <td class="text-center previa"><i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i></td>
                                     <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center disabled"> 
-
-                                    <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="operacion" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer" title="" data-original-title=""></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
+
                             @endforeach 
                                                            
                             </tbody>
@@ -92,17 +85,19 @@
 @stop
 
 @section('js') 
-            
-        <script type="text/javascript">
-            route_operacion="{{url('/')}}/participante/alumno/operaciones";
-            route_restablecer="{{url('/')}}/participante/alumno/restablecer/";
 
+        <script type="text/javascript">
+            
+            route_detalle="{{url('/')}}/participante/instructor/detalle";
+            route_operacion="{{url('/')}}/participante/instructor/operaciones";
+            
         $(document).ready(function(){
+
 
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[0, 'desc']],
+        order: [[2, 'asc']],
         fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
@@ -112,6 +107,7 @@
         paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -165,70 +161,20 @@
                         iconUp: 'zmdi-expand-less'
                     }
                 });
-            });
+      });
 
-         $("i[name=operacion").click(function(){
-                id = this.id;
-                element = this;
-                var padre=$(this).parents('tr');
-                swal({   
-                    title: "Desea restablecer al alumno?",   
-                    text: "Confirmar restablecimiento!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Restablecer!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        restablecer(id, element);
-          }
-                });
-            });
-      function restablecer(id){
-         var route = route_restablecer + id;
-         var token = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-
-                        t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
-                        swal("Exito!","El alumno ha sido reestablecido!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
+      function previa(t){
+        var row = $(t).closest('tr').attr('id');
+        var id_instructor = row.split('_');
+        var route =route_detalle+"/"+id_instructor[1];
+        window.location=route;
       }
 
+      $("i[name=operacion").click(function(){
+            var route =route_operacion+"/"+this.id;
+            window.location=route;
+         });
 
 
-        </script>
-
+    </script>
 @stop

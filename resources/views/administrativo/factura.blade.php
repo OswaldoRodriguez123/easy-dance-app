@@ -59,7 +59,7 @@
                     </div>
                     
                     <div class="card">
-                        <div class="card-header text-center header-invoice">
+                        <div class="card-header ch-alt text-center">
                             @if ($academia->imagen_academia)
                             <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
                             @endif
@@ -156,12 +156,12 @@
                                         
                                       <?php $id = $detalle->item_id ?>
                                         <tr id="row_{{$id}}" class="seleccion" >
-                                            <td class="text-center previa">{{ $detalle->item_id }}</td>
-                                            <td class="">{!! $detalle->nombre !!}</td>
-                                            <td class="">{{ $detalle->cantidad }}</td>
-                                            <td class="">Bs {{ number_format($detalle->importe_neto,2,",",".") }}</td>
-                                            <td class="">% {{$detalle->impuesto}} </td>
-                                            <td class="highlight">Bs {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
+                                            <td class="text-center disabled">{{ $detalle->item_id }}</td>
+                                            <td class="disabled">{!! $detalle->nombre !!}</td>
+                                            <td class="disabled">{{ $detalle->cantidad }}</td>
+                                            <td class="disabled">Bs {{ number_format($detalle->importe_neto,2,",",".") }}</td>
+                                            <td class="disabled">% {{$detalle->impuesto}} </td>
+                                            <td class="highlight disabled">Bs {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
                                             <!--<td class="text-center previa"><label class="label label-success f-13">Activo</label></td>
                                             <td class="text-center previa"><label class="label label-success f-13">Bien</label></td>-->
                                             <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-wrench f-20 p-r-10 operacionModal"></i></td>-->

@@ -76,7 +76,28 @@ class UsuarioController extends BaseController {
         $usuario->apellido = $apellido;
 
         if($usuario->save()){
+
+            if(Auth::user()->usuario_tipo == 2){
+
+                $alumno = Alumno::find(Auth::user()->usuario_id);
+
+                if($alumno){
+
+                    $alumno->nombre = $nombre;
+                    $alumno->apellido = $apellido;
+
+                    if($alumno->save()){
+
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }
+            }
+
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -88,6 +109,25 @@ class UsuarioController extends BaseController {
 
         // return redirect("alumno/edit/{$request->id}");
         if($usuario->save()){
+
+            if(Auth::user()->usuario_tipo == 2){
+
+                $alumno = Alumno::find(Auth::user()->usuario_id);
+
+                if($alumno){
+
+                    $alumno->sexo = $request->sexo;
+
+                    if($alumno->save()){
+
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }
+            }
+
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -129,6 +169,25 @@ class UsuarioController extends BaseController {
         $usuario->email = $email;
 
         if($usuario->save()){
+
+            if(Auth::user()->usuario_tipo == 2){
+
+                $alumno = Alumno::find(Auth::user()->usuario_id);
+
+                if($alumno){
+
+                    $alumno->correo = $email;
+
+                    if($alumno->save()){
+
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }
+            }
+
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -143,6 +202,26 @@ class UsuarioController extends BaseController {
         $usuario->celular = $request->celular;
 
         if($usuario->save()){
+
+            if(Auth::user()->usuario_tipo == 2){
+
+                $alumno = Alumno::find(Auth::user()->usuario_id);
+
+                if($alumno){
+
+                    $alumno->telefono = $request->telefono;
+                    $alumno->celular = $request->celular;
+
+                    if($alumno->save()){
+
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }
+            }
+
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -158,6 +237,25 @@ class UsuarioController extends BaseController {
         $usuario->direccion = $direccion;
         
         if($usuario->save()){
+
+            if(Auth::user()->usuario_tipo == 2){
+
+                $alumno = Alumno::find(Auth::user()->usuario_id);
+
+                if($alumno){
+
+                    $alumno->direccion = $direccion;
+
+                    if($alumno->save()){
+
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }
+            }
+            
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -248,7 +346,7 @@ class UsuarioController extends BaseController {
                 $image = base64_decode($base64_string);
 
                 // \Storage::disk('usuario')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(640, 480);
+                $img = Image::make($image)->resize(300, 300);
                 $img->save('assets/uploads/usuario/'.$nombre_img);
 
                 }else{

@@ -127,6 +127,11 @@ class ClasePersonalizadaController extends BaseController {
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
+        if($request->fecha_inicio < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+
         $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
 
         $clasepersonalizada = new ClasePersonalizada;
@@ -248,6 +253,11 @@ class ClasePersonalizadaController extends BaseController {
     }
 
     else{
+
+            if($request->fecha_inicio < Carbon::now()){
+
+                return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
 
             $clasepersonalizada = ClasePersonalizada::find($request->id);
 

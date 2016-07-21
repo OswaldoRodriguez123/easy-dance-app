@@ -228,6 +228,7 @@
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#formComparte").serialize(); 
+                limpiarMensaje();
 
                 $.ajax({
                     url: route,
@@ -284,6 +285,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                         if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           errores(msj.responseJSON.errores);
                           var nTitle="    Ups! "; 
@@ -371,6 +375,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
+                         if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

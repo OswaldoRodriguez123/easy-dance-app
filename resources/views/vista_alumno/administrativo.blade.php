@@ -21,7 +21,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/administrativo/pagos/generar" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Pagos</a>
+                        <a class="btn-blanco m-r-10 f-16" href="/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
@@ -53,9 +53,6 @@
 
                                 <div class="clearfix"></div>
                                 
-                                <div class="col-md-12">
-                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
-                                </div>
                                 <br><br>
                                 <!-- <div class="clearfix"></div> -->
 
@@ -246,8 +243,6 @@
         function rechargeProforma(){
             var proforma = <?php echo json_encode($proforma);?>;
 
-            $('#monto').css('opacity', '1');
-
             document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento'; 
 
             $.each(proforma, function (index, array) {
@@ -261,7 +256,7 @@
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
-                    .addClass('text-center');
+                    .addClass('disabled');
             });
         }
 
