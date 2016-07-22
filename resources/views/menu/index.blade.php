@@ -73,7 +73,7 @@
                                     <div class="text-center">
                                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul">
                                            
-                                            <li class="active">
+                                            <li class="active" >
                       
                       
                       <a href="#participantes" aria-controls="participantes" role="tab" data-toggle="tab"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;  " ></div><p style=" margin-bottom: -2px ; color:#2196f3;">Participantes</p></a></li>

@@ -1485,6 +1485,9 @@ color: #4E1E43;
 .tab-menu[data-menu-color="morado"] > li > a:after{
     background: #e91e63;
 }
+.tab-menu[data-menu-color="morado-oscuro"] > li > a:after{
+    background: #4E1E43;
+}
 .tab-menu[data-menu-color="naranja"] > li > a:after{
     background: #ff5722;
 }
@@ -1596,4 +1599,8 @@ a > .agregar{
 /*.tab-nav:not([data-tab-color]) > li > a::after {
     background: #2196f3;
 }*/
+
+
+
+
 

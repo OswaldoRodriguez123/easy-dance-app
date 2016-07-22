@@ -1,6 +1,6 @@
 <header id="header" class="clearfix" data-current-skin="orange">
             <ul class="header-inner">
-            @if(Auth::check() && Auth::user()->usuario_tipo == 1)
+            @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5))
                 <li id="menu-trigger" data-trigger="#sidebar">
                     <div class="line-wrap" data-original-title="" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="Menú">
                         <div class="line top"></div>
