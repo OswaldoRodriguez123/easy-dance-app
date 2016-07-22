@@ -175,6 +175,13 @@
   
   $(document).ready(function(){
 
+    $('#responsable').mask('AAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-z]/}
+        }
+
+      });
+
         
 
         $('body,html').animate({scrollTop : 0}, 500);

@@ -28,7 +28,7 @@
                     <div class="card">
                         <div class="card-header text-center">
 
-                        <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-25"></i> Sección de Facturas</p>
+                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a icon_a-punto-de-venta f-25"></i> Sección Administrativa</p>
                         <hr class="linea-morada">
                                                               
                         </div>
@@ -37,14 +37,14 @@
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="pagadas" value="pagadas" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Pagadas <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
                                         <input name="tipo" id="pendientes" value="pendientes" type="radio">
                                         <i class="input-helper"></i>  
-                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw f-20"></i>
+                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="pagadas" value="pagadas" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Balance <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
                                     </label>
                                     </div>
                                     
@@ -62,11 +62,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="factura" data-order="asc">#</th>
-                                    <th class="text-center" data-column-id="cliente">Cliente</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="fecha" id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="total">Total</th>
-                                    <th class="text-center" data-column-id="operacion">Acciones</th>
+                                    <!-- <th class="text-center" data-column-id="operacion">Acciones</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,10 +95,10 @@
         <script type="text/javascript">
             route_detalle="{{url('/')}}/administrativo/factura";
             route_enviar="{{url('/')}}/administrativo/factura/enviar/";
-            route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
+            route_gestion="{{url('/')}}/administrativo/pagar/";
             route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
 
-        tipo = 'pagadas';
+        tipo = 'proformas';
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -107,7 +106,7 @@
 
         $(document).ready(function(){
 
-        $("#pagadas").prop("checked", true);
+        $("#pendientes").prop("checked", true);
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -181,7 +180,7 @@
                     }
                 });
 
-                rechargeFactura();
+                rechargeProforma();
             });
 
         function previa(t){
@@ -228,11 +227,10 @@
 
                 var rowNode=t.row.add( [
                 ''+array.factura+'',
-                ''+array.nombre+ ' '+array.apellido+'',
                 ''+array.concepto+'',
                 ''+array.fecha+'',
-                ''+formatmoney(array.total)+'',
-                '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                ''+formatmoney(array.total)+''
+                // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -248,15 +246,14 @@
             $.each(proforma, function (index, array) {
                 var rowNode=t.row.add( [
                 ''+array.id+'',
-                ''+array.nombre+ ' '+array.apellido+'',
                 ''+array.cantidad+ ' ' +array.concepto+'',
                 ''+array.fecha_vencimiento+'',
-                ''+formatmoney(array.total)+'',
-                '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                ''+formatmoney(array.total)+''
+                // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
-                    .addClass('disabled');
+                    .addClass('seleccion');
             });
         }
 
@@ -329,79 +326,6 @@
                           // t.row( $(element).parents('tr') )
                           //   .remove()
                           //   .draw();
-                        
-                        }
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
-
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-
-                var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
-                element = this;
-
-                swal({   
-                    title: "Desea eliminar la proforma?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","La campaña ha sido eliminada!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
-          }
-                });
-            });
-      
-        function eliminar(id, element){
-         var route = route_eliminar + id;
-         var token = "{{ csrf_token() }}";
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-
-                          t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
                         
                         }
                     },

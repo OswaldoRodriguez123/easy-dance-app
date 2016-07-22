@@ -14,6 +14,7 @@ use App\InscripcionCoreografia;
 use App\ClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\Academia;
+use App\Familia;
 use App\User;
 use Mail;
 use DB;
@@ -113,6 +114,7 @@ class AlumnoController extends BaseController
 
 	public function store(Request $request)
 	{
+
 		$request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
@@ -179,9 +181,22 @@ class AlumnoController extends BaseController
 
         $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
 
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
-
         $correo = strtolower($request->correo);
+
+        if($request->telefono)
+        {
+            $telefono = $request->telefono;
+        }else{
+            $telefono = '';
+        }
+
+        if($request->direccion)
+        {
+            $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        }else{
+            $direccion = '';
+        }
 
         $alumno->academia_id = Auth::user()->academia_id;
         $alumno->identificacion = $request->identificacion;
@@ -190,7 +205,7 @@ class AlumnoController extends BaseController
         $alumno->sexo = $request->sexo;
         $alumno->fecha_nacimiento = $fecha_nacimiento;
         $alumno->correo = $correo;
-        $alumno->telefono = $request->telefono;
+        $alumno->telefono = $telefono;
         $alumno->celular = $request->celular;
         $alumno->direccion = $direccion;
         $alumno->alergia = $request->alergia;
@@ -213,10 +228,30 @@ class AlumnoController extends BaseController
             $usuario->email = $correo;
             $usuario->como_nos_conociste_id = 1;
             $usuario->direccion = $direccion;
-            $usuario->confirmation_token = str_random(40);
+            // $usuario->confirmation_token = str_random(40);
             $usuario->password = bcrypt(str_random(8));
             $usuario->usuario_id = $alumno->id;
             $usuario->usuario_tipo = 2;
+
+            if($request->familia_id){
+
+                $familia = Familia::find($request->familia_id);
+                $representante = User::find($familia->representante_id);
+                $usuario->familia_id = $request->familia_id;
+
+                if(!$request->telefono){
+                    $usuario->telefono = $representante->telefono;
+                    $alumno->telefono = $representante->telefono;
+                }
+                if(!$request->direccion){
+                    $usuario->direccion = $representante->direccion;
+                    $alumno->direccion = $representante->direccion;
+                }
+
+                if(!$request->telefono || !$request->direccion){
+                    $alumno->save();
+                }
+            }
 
             if($usuario->save()){
             
@@ -252,7 +287,7 @@ class AlumnoController extends BaseController
                 // $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
                 // $sms = $this->sendAlumno($data, $msg);
 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
@@ -265,21 +300,8 @@ class AlumnoController extends BaseController
 
     public function create()
     {
-        //Simple Marker
-        $config['center'] = '10.6913156,-71.6800493';
-        $config['zoom'] = 14;
-        \Gmaps::initialize($config);
-
-        $marker = array();
-        $marker['position'] = '10.6913156,-71.6800493';
-        $marker['draggable'] = true;
-        $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-        \Gmaps::add_marker($marker);
-
-        $map = \Gmaps::create_map();
  
-        //Devolver vista con datos del mapa
-        return view('participante.alumno.create' , compact('map'));
+        return view('participante.alumno.create');
     }
 
     public function edit($id)
@@ -290,18 +312,6 @@ class AlumnoController extends BaseController
 
             $subtotal = 0;
             $impuesto = 0;
-            
-            $config['center'] = '10.6913156,-71.6800493';
-            $config['zoom'] = 14;
-            \Gmaps::initialize($config);
-
-            $marker = array();
-            $marker['position'] = '10.6913156,-71.6800493';
-            $marker['draggable'] = true;
-            $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-            \Gmaps::add_marker($marker);
-
-            $map = \Gmaps::create_map();
 
             $item_factura = DB::table('items_factura_proforma')
             ->select('items_factura_proforma.*')
@@ -315,7 +325,7 @@ class AlumnoController extends BaseController
                     
             }
 
-           return view('participante.alumno.planilla', compact('map'))->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal]);
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -484,7 +494,15 @@ class AlumnoController extends BaseController
 
         if($alumno->save()){
 
-            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+            $tmp = User::where('usuario_id', $request->id)->first();
+            $es_representante = Familia::where('representante_id', $tmp->id);
+
+            if(!$es_representante){
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+            }
+            else{
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+            }
 
             $usuario->nombre = $nombre;
             $usuario->apellido = $apellido;
@@ -521,7 +539,15 @@ class AlumnoController extends BaseController
         // return redirect("alumno/edit/{$request->id}");
         if($alumno->save()){
 
-            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+            $tmp = User::where('usuario_id', $request->id)->first();
+            $es_representante = Familia::where('representante_id', $tmp->id);
+
+            if(!$es_representante){
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+            }
+            else{
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+            }
 
             $usuario->sexo = $request->sexo;
 
@@ -569,7 +595,15 @@ class AlumnoController extends BaseController
         $alumno->correo = $correo;
 
         if($alumno->save()){
-            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+            $tmp = User::where('usuario_id', $request->id)->first();
+            $es_representante = Familia::where('representante_id', $tmp->id);
+
+            if(!$es_representante){
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+            }
+            else{
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+            }
 
             $usuario->email = $correo;
 
@@ -592,7 +626,15 @@ class AlumnoController extends BaseController
 
         if($alumno->save()){
 
-            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+            $tmp = User::where('usuario_id', $request->id)->first();
+            $es_representante = Familia::where('representante_id', $tmp->id);
+
+            if(!$es_representante){
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+            }
+            else{
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+            }
 
             $usuario->telefono = $request->telefono;
             $usuario->celular = $request->celular;
@@ -616,7 +658,15 @@ class AlumnoController extends BaseController
         
         if($alumno->save()){
 
-            $usuario = User::where('usuario_id' , $request->id)->where('usuario_tipo', 2)->first();
+            $tmp = User::where('usuario_id', $request->id)->first();
+            $es_representante = Familia::where('representante_id', $tmp->id);
+
+            if(!$es_representante){
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+            }
+            else{
+                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+            }
 
             $usuario->direccion = $direccion;
 

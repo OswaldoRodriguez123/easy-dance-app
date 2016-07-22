@@ -43,7 +43,6 @@
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="clase">Clase</th>
                                     <th class="text-center" data-column-id="instructor">Instructor</th>
-                                    <th class="text-center" data-column-id="participante" id="participante">Participante</th>
                                     <th class="text-center" data-column-id="hora" id="hora">Hora</th>
                                 </tr>
                             </thead>
@@ -156,15 +155,11 @@
         function rechargeAlumno(){
             var alumno = <?php echo json_encode($alumnos_asistencia);?>;
 
-            document.getElementById('participante').innerHTML = 'Participante';
-            document.getElementById('hora').innerHTML = 'Hora';  
-
             $.each(alumno, function (index, array) {
                 var rowNode=t.row.add( [
                 ''+array.fecha+'',
                 ''+array.clase+'',
                 ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
-                ''+array.nombre+ ' '+array.apellido+'',
                 ''+array.hora+'',
                 '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();

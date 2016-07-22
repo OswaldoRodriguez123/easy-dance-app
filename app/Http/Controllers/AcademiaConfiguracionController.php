@@ -40,6 +40,7 @@ class AcademiaConfiguracionController extends BaseController {
 
 	public function index()
 	{
+        
         $academia = Academia::find(Auth::user()->academia_id);
 
         if($academia->fecha_comprobacion != Carbon::now()){
@@ -49,10 +50,11 @@ class AcademiaConfiguracionController extends BaseController {
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
         $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        if(Auth::user()->usuario_tipo == 1){
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
 
             return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'alumnos' => $alumnos, 'instructor' => $instructores]); 
         }
+
         else{
 
         $clase_grupal_join = DB::table('clases_grupales')
@@ -1105,7 +1107,7 @@ class AcademiaConfiguracionController extends BaseController {
                                     }
                                 }
 
-                                if(Auth::user()->usuario_tipo == 1){
+                                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
 
                                     return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
                                 }

@@ -43,9 +43,8 @@
 
                         @if(Auth::check())
               
-                            <li class="dropdown" data-original-title="" data-content="Perfil" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" style="color:white">
-
-                                <a href="{{url('/')}}/perfil">
+                            <li class="dropdown" data-original-title="" data-toggle="popover" data-placement="bottom" title="" type="button" data-animation="fadeInLeft,fadeOutLeft,600">
+                            <a data-toggle="dropdown" href="#" id="menuTopConfig" style="color:white">
 
                                     @if(Auth::user()->imagen)
                                         <img class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  
@@ -53,7 +52,7 @@
                                      @if(Auth::user()->sexo=='F')
                                           <img class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="45px" height="auto">        
                                        @else
-                                          <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
+                                          <img class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
                                        @endif
                                     @endif
 
@@ -62,11 +61,20 @@
                                     <span class="f-700 f-14"> {{Auth::user()->nombre}} {{Auth::user()->apellido}} </span>
 
                                 </a>
-                            </li>
+                            <ul class="dropdown-menu dm-icon pull-right">
+                                <li class="hidden-xs">
+                                    <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
+                                </li>
+                                <li>
+                                    <a href="{{url('/')}}/logout"><i class="zmdi zmdi-time-restore"></i> Cerrar Sesión</a>
+                                </li>
+                            </ul>
+
+                        </li> 
 
                         @endif
 
-                        @if(Auth::check() && Auth::user()->usuario_tipo == 2)
+                        <!-- @if(Auth::check() && Auth::user()->usuario_tipo == 2)
 
 
                             <li class="dropdown" data-original-title="" data-content="Administrativo" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" style="height:36px">
@@ -91,9 +99,9 @@
                                     <a href="{{url('/')}}/logout"><i class="tm-icon zmdi zmdi-time-restore f-18 f-18"></i></a>
                                 </li>
 
-                        @endif
+                        @endif -->
 
-                        @if(Auth::check() && Auth::user()->usuario_tipo == 1)
+                        @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5))
 
                         <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                             <a href="{{url('/')}}/agendar">
@@ -106,9 +114,6 @@
                                 <i class="tm-icon zmdi zmdi-settings f-18"></i>
                             </a>
                             <ul class="dropdown-menu dm-icon pull-right">
-                                <li class="hidden-xs">
-                                    <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
-                                </li>
                                 {{-- <li class="hidden-xs">
                                     <a href=""><i class="zmdi zmdi-help"></i> Ayuda</a>
                                 </li> --}}
@@ -125,10 +130,14 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-16"></i> Productos</a>
                                 </li>
+
+                                @if(Auth::user()->usuario_tipo == 1)
+        
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/sucursales')}}"><i class="zmdi zmdi-city zmdi-hc-fw p-r-5 f-16"></i> Sucursales</a>
+                                    </li>
+                                @endif
                                 
-                                <li>
-                                    <a href="{{url('/')}}/logout"><i class="zmdi zmdi-time-restore"></i> Cerrar Sesión</a>
-                                </li>
                             </ul>
 
                         </li> 

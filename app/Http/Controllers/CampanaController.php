@@ -883,7 +883,7 @@ class CampanaController extends BaseController {
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
          $patrocinadores = DB::table('patrocinadores')
-             ->join('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+             ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
              ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
              ->where('patrocinadores.campana_id', '=', $id)
              ->orderBy('patrocinadores.monto', 'desc')

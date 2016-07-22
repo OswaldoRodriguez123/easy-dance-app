@@ -88,8 +88,8 @@
 
         <script type="text/javascript">
             
-            route_detalle="{{url('/')}}/participante/instructor/detalle";
-            route_operacion="{{url('/')}}/participante/instructor/operaciones";
+            route_detalle="{{url('/')}}/participante/familia/detalle";
+            route_operacion="{{url('/')}}/participante/familia/operaciones";
             
         $(document).ready(function(){
 
