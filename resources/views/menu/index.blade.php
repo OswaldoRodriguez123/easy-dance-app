@@ -5,9 +5,9 @@
 <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
 <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/easy_dance_ico_0.css" />
 <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/easy_dance_ico_1.css" />
-<link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 <style type="text/css">
   body {
     background-color: #FFFFFF !important;
@@ -17,10 +17,11 @@
 
 @section('js_vendor')
   
+  {{--<script type="text/javascript" src="{{url('/')}}/assets/js/jquery.js"></script>--}}
   <script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script>
   <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
-<script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+  <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 
 @section('content')
@@ -214,7 +215,6 @@
 
 
 @section('js') 
-
 
 
   <script type="text/javascript">
