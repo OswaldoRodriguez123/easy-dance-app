@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterSoftDeletesFamiliasTable.php extends Migration
+class AlterSoftDeletesFamiliasTable extends Migration
 {
     /**
      * Run the migrations.

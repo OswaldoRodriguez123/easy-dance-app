@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterNumerosTable.php extends Migration
+class AlterNumerosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -51,33 +51,33 @@ class AlterNumerosTable.php extends Migration
     public function down()
     {
         Schema::table('alumnos', function ($table) {
-            $table->string('telefono')->change();
-            $table->string('celular')->change();
+            $table->string('telefono',11)->change();
+            $table->string('celular',11)->change();
         });
 
         Schema::table('instructores', function ($table) {
-            $table->string('telefono')->change();
-            $table->string('celular')->change();
+            $table->string('telefono',11)->change();
+            $table->string('celular',11)->change();
         });
 
         Schema::table('visitantes_presenciales', function ($table) {
-            $table->string('telefono')->change();
-            $table->string('celular')->change();
+            $table->string('telefono',11)->change();
+            $table->string('celular',11)->change();
         });
 
         Schema::table('proveedores', function ($table) {
-            $table->string('telefono')->change();
-            $table->string('celular')->change();
+            $table->string('telefono',11)->change();
+            $table->string('celular',11)->change();
         });
 
         Schema::table('users', function ($table) {
-            $table->string('telefono')->change();
-            $table->string('celular')->change();
+            $table->string('telefono',11)->change();
+            $table->string('celular',11)->change();
         });
 
         Schema::table('academias', function ($table) {
-            $table->string('telefono')->change();
-            $table->string('celular')->change();
+            $table->string('telefono',11)->change();
+            $table->string('celular',11)->change();
         });
     }
 }
