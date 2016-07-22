@@ -40,9 +40,7 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="academia" data-order="desc">Academia</th>
                                     <th class="text-center" data-column-id="email" data-order="desc">Correo Electrónico</th>
-                                    <th class="text-center" data-column-id="password" data-order="desc">Contraseña</th>
                                     <th class="text-center" data-column-id="direccion" data-order="desc">Dirección</th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -51,11 +49,9 @@
                                 <?php $id = $usuario->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$usuario->nombre}} {{$usuario->apellido}}</td>
-                                    <td class="text-center previa">{{$usuario->academia_id}}</td>
+                                    <td class="text-center previa">{{$usuario->nombre_academia}}</td>
                                     <td class="text-center previa">{{$usuario->email}}</td>
-                                    <td class="text-center previa">{{$usuario->password}}</td>
                                     <td class="text-center previa">{{$usuario->direccion}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                   </tr>
                             @endforeach 
                                                            
@@ -101,7 +97,6 @@
         paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -157,18 +152,6 @@
                 });
 
             });
-
-    function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_clasegrupal = row.split('_');
-        var route =route_detalle+"/"+id_clasegrupal[1];
-        window.location=route;
-      }
-
-      $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
 
 
     </script>

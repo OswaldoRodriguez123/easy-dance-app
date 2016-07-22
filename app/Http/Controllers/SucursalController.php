@@ -10,6 +10,7 @@ use App\Sucursal;
 use App\Academia;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use DB;
 
 class SucursalController extends Controller
 {
@@ -21,7 +22,18 @@ class SucursalController extends Controller
 
     public function principal()
     {
-        return view('configuracion.sucursales.principal')->with('usuarios', User::all());
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $usuarios = DB::table('users')
+            ->join('academias', 'users.academia_id', '=', 'academias.id')
+            ->join('sucursales', 'academias.sucursal_id', '=', 'sucursales.id')
+            ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id')
+            ->where('sucursales.id','=', $academia->sucursal_id)
+            ->where('users.usuario_tipo', 5)
+        ->get();
+
+        return view('configuracion.sucursales.principal')->with('usuarios', $usuarios);
     }
     /**
      * Display a listing of the resource.
@@ -60,7 +72,7 @@ class SucursalController extends Controller
             'email_confirmation' => 'required',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required',
-            'responsable' => 'required'
+            'responsable' => 'required|min:3|max:40|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
 
         ];
 
@@ -76,7 +88,10 @@ class SucursalController extends Controller
             'password.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
             'password.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
             'password_confirmation.required' => 'Ups! La contraseña es requerida',
-            'responsable.required' => 'Ups! Debe agregar un Responsable o Coordinaor'
+            'responsable.required' => 'Ups! Debe agregar un Responsable o Coordinador',
+            'responsable.min' => 'El mínimo de caracteres permitidos son 3',
+            'responsable.max' => 'El máximo de caracteres permitidos son 40',
+            'responsable.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
 
         ];
 
@@ -100,21 +115,24 @@ class SucursalController extends Controller
             $request->email = trim($request->email);
 
 
-            //$nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($data['nombre']))));
+            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->responsable))));
 
-            User::create([
+            $usuario = new User;
 
-                'academia_id' => $academia->id,
-                //'nombre' => $nombre,
-                //'telefono' => $data['telefono'],
-                'como_nos_conociste_id' => 1,
-                'email' => strtolower($request->email),
-                'password' => bcrypt($request->password)
+            $usuario->academia_id = $academia->id;
+            $usuario->nombre = $nombre;
+            $usuario->email = strtolower($request->email);
+            $usuario->como_nos_conociste_id = 1;
+            // $usuario->confirmation_token = str_random(40);
+            $usuario->password = bcrypt($request->password);
+            $usuario->usuario_tipo = 5;
 
-            ]);
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);            
-
+            if($usuario->save())
+            {
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);   
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
         }
         
     }

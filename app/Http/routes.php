@@ -19,6 +19,7 @@ Route::get('confirmacion/{token}/{email}', [
     'uses' => 'RegistroController@confirmacion',
     'as'   => 'confirmacion'
 ]);
+
 // FLUJO DE REGISTRO
 
 
@@ -51,6 +52,15 @@ Route::get('/restablecer/fallo', function () {
 
 Route::get('/login', 'LoginController@getLogin');
 Route::post('/login', 'LoginController@postLogin');
+
+
+// PROGRESO
+
+
+Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
+Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
+Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
+Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
@@ -134,16 +144,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('participante/familia/agregar', 'FamiliaController@create');
 	Route::post('participante/familia/agregarparticipante', 'FamiliaController@agregarparticipante');
 	Route::post('participante/familia/eliminarparticipante/{id}', 'FamiliaController@eliminarparticipante');
-	Route::delete('participante/proveedor/eliminar/{id}', 'ProveedorController@destroy');
-	Route::get('participante/proveedor/detalle/{id}', 'ProveedorController@edit');
-	Route::get('participante/proveedor/operaciones/{id}', 'ProveedorController@operar');
-	Route::put('participante/proveedor/update/nombre','ProveedorController@updateNombre');
-	Route::put('participante/proveedor/update/fecha_nacimiento','ProveedorController@updateFecha');
-	Route::put('participante/proveedor/update/sexo','ProveedorController@updateSexo');
-	Route::put('participante/proveedor/update/correo','ProveedorController@updateCorreo');
-	Route::put('participante/proveedor/update/telefono','ProveedorController@updateTelefono');
-	Route::put('participante/proveedor/update/direccion','ProveedorController@updateDireccion');
-	Route::put('participante/proveedor/update/empresa','ProveedorController@updateEmpresa');
+	Route::delete('participante/familia/eliminar/{id}', 'FamiliaController@destroy');
+	Route::get('participante/familia/detalle/{id}', 'FamiliaController@edit');
+	Route::get('participante/familia/operaciones/{id}', 'FamiliaController@operar');
+	Route::get('participante/familia/participantes/{id}', 'FamiliaController@participantes');
 
 	//PROVEEDOR
 
@@ -451,6 +455,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::post('administrativo/pagos/factura/{id}', 'AdministrativoController@storeFactura');
 
+	Route::get('administrativo/pagar/{id}', 'AdministrativoController@pagar');
 
 	//ACUERDOS
 
@@ -543,7 +548,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('/embajadores/agregar', 'EmbajadorController@agregarlinea');
 	Route::post('/embajadores/eliminar/{id}', 'EmbajadorController@eliminarlinea');
 
-
 	// CORREO
 
 	Route::get('/correo','CorreoController@index');
@@ -595,8 +599,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	// });
 
-
-
 	//HAY QUE ANALIZAR BIEN EL COMPONENTE/LIBRERIA YA QUE NO ENTIENDO POR QUE DEBO
 	//AGREGAR LOS ROLES DE ADMIN Y RECEPCIONISTA PARA QUE EL ROLE ALUMNOS
 	//FUNCIONE COMO DEBE SER
@@ -621,6 +623,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('perfil/update/redes','UsuarioController@updateRedes');
 	Route::put('perfil/update/password','UsuarioController@updatePassword');
 
+	Route::get('/documentos', 'UsuarioController@documentos');
+
 	// });
 
 	//SMS
@@ -628,9 +632,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('sms', 'SmsController@send');
 
 });
+	
 
 
-	Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
-	Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
-	Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
-	Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');

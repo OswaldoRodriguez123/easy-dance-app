@@ -25,6 +25,7 @@ class FamiliaController extends BaseController {
             ->join('users', 'familias.representante_id', '=', 'users.id')
             ->select('familias.*', 'users.nombre as representante_nombre', 'users.apellido as representante_apellido')
             ->where('familias.academia_id' , '=' , Auth::user()->academia_id)
+            ->where('familias.deleted_at', '=', null)
         ->get();
 
         $alumnod = DB::table('alumnos')
@@ -174,7 +175,7 @@ class FamiliaController extends BaseController {
         $usuario->email = $correo;
         $usuario->como_nos_conociste_id = 1;
         $usuario->direccion = $direccion;
-        $usuario->confirmation_token = str_random(40);
+        // $usuario->confirmation_token = str_random(40);
         $usuario->password = bcrypt(str_random(8));
         $usuario->usuario_tipo = 4;
 
@@ -296,7 +297,7 @@ class FamiliaController extends BaseController {
                             $usuario->email = $correo;
                             $usuario->como_nos_conociste_id = 1;
                             $usuario->direccion = $direccion;
-                            $usuario->confirmation_token = str_random(40);
+                            // $usuario->confirmation_token = str_random(40);
                             $usuario->password = bcrypt(str_random(8));
                             $usuario->usuario_id = $alumno->id;
                             $usuario->usuario_tipo = 2;
@@ -435,6 +436,74 @@ class FamiliaController extends BaseController {
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
+    }
+
+    public function edit($id)
+    {   
+
+        $alumnos = DB::table('alumnos')
+            ->join('users', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.*')
+            ->where('users.familia_id' , '=' ,$id)
+        ->get();
+
+        $i = 0;
+
+        foreach($alumnos as $alumno){
+
+
+            $total = ItemsFacturaProforma::where('alumno_id', '=' ,  $alumno->id)->sum('importe_neto');
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            
+            $alumno_array['total']=$total;
+            $array[$i] = $alumno_array;
+
+            $i = $i + 1;
+
+        }
+
+        if($alumnos){
+
+           return view('participante.familia.planilla')->with(['alumno' => $array , 'id' => $id]);
+
+        }else{
+           return redirect("participante/familia"); 
+        }
+    }
+
+    public function operar($id)
+    {   
+        $familia = Familia::find($id);
+
+        return view('participante.familia.operacion')->with(['id' => $id , 'familia' => $familia]);       
+    }
+
+
+    public function participantes($id)
+    {
+   
+        $participantes = DB::table('users')
+            ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.*')
+            ->where('users.familia_id' , '=' , $id)
+        ->get();
+
+        $familia = Familia::find($id);
+
+        return view('participante.familia.participantes')->with(['participantes' => $participantes, 'familia_id' => $familia->id, 'familia' => $familia]);
+
+    }
+
+    public function destroy($id)
+    {
+        $familia = Familia::find($id);
+        
+        if($familia->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
 }

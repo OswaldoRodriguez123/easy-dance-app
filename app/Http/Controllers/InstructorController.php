@@ -160,7 +160,7 @@ class InstructorController extends BaseController {
             $usuario->email = $correo;
             $usuario->como_nos_conociste_id = 1;
             $usuario->direccion = $direccion;
-            $usuario->confirmation_token = str_random(40);
+            // $usuario->confirmation_token = str_random(40);
             $usuario->password = bcrypt(str_random(8));
             $usuario->usuario_id = $instructor->id;
             $usuario->usuario_tipo = 3;

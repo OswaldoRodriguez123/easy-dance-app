@@ -10,12 +10,11 @@
 @section('content')
 <section id="content">
         <div class="container">
-            <div class="block-header">
-                <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/instructor"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Instructor</a>
-
+           <div class="block-header">
+                <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/familia"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Familia</a>
             </div> 
             
-            <h4 class ="c-morado text-right">Instructor: {{$instructor->nombre}} {{$instructor->apellido}}</h4>
+            <h4 class ="c-morado text-right">Familia: {{$familia->apellido}}</h4>
             <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
             <hr class="linea-morada">
             <br>
@@ -27,11 +26,10 @@
             <ul class="ca-menu-c col-sm-4" style="width: 720px;">
 
                     <li data-ripplecator class ="dark-ripples">
-                        <a class="email">
-                            <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" 
-                                   data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                        <a class="participantes">
+                            <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
-                                <h2 class="ca-main-c">Enviar Correo</h2>
+                                <h2 class="ca-main-c f-20">Participantes</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
@@ -39,14 +37,13 @@
 
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar">
-                            <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" data-original-title="Eliminar" id="{{$id}}" name="eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Eliminar</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
                     </li>
-
 
                     <!--<li>
                         <a href="#">
@@ -59,9 +56,12 @@
                     </li>-->
                     
 
+
+                    
                 </ul>
 
                 <div class = "col-sm-4"></div>
+
                 </div>
             </div>
         </div>
@@ -70,11 +70,10 @@
 @section('js') 
 	<script type="text/javascript">
 
-        route_eliminar="{{url('/')}}/participante/instructor/eliminar/";
-        route_principal="{{url('/')}}/participante/instructor";
-        route_email="{{url('/')}}/correo/sesion/";
+    route_eliminar="{{url('/')}}/participante/familia/eliminar/";
+    route_principal="{{url('/')}}/participante/familia";
 
-        $(document).ready(function(){
+  $(document).ready(function(){
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInUpBig';
@@ -93,7 +92,6 @@
             }, animationDuration);
 
       });
-
 		function setAnimation(animation, target) {
              $('#'+target).addClass(animation);
 
@@ -115,7 +113,7 @@
   $(".eliminar").click(function(){
                 id = this.id;
                 swal({   
-                    title: "Desea eliminar al instructor?",   
+                    title: "Desea eliminar la familia?",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -166,35 +164,11 @@
                 });
       }
 
-      $(".email").click(function(){
-         var route = route_email + 2;
-         var token = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    success:function(respuesta){
+    $(".participantes").click(function(){
+               
+        window.location = "{{url('/')}}/participante/familia/participantes/{{$id}}";
 
-                        procesando();
-                        window.location="{{url('/')}}/correo/{{$id}}"  
-
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
-      });
+    });
   
   setAnimation('fadeInUp', 'content');
 	</script>

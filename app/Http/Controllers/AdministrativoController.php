@@ -2020,5 +2020,46 @@ class AdministrativoController extends BaseController {
 
     }
 
+    public function pagar($id){
+
+        if (Session::has('pagos')) {
+            Session::forget('pagos'); 
+        }
+
+        if (Session::has('id_proforma')) {
+            Session::forget('id_proforma'); 
+        }
+        
+        $academia = Academia::find(Auth::user()->academia_id);
+        $factura = DB::table('facturas')->orderBy('created_at', 'desc')->where('academia_id', '=', Auth::user()->academia_id)->first();
+
+            $formas_pago = DB::table('formas_pago')->get();
+
+            if($factura){
+
+                $numero_factura = $factura->numero_factura + 1;
+            }
+            else{
+
+                if($academia->numero_factura){
+                    $numero_factura = $academia->numero_factura;
+                }
+                else{
+                    $numero_factura = 1;
+                }
+                
+            }
+
+            $factura_proforma = ItemsFacturaProforma::find($id);
+
+            $alumno_id = $factura_proforma->alumno_id;
+            $alumno = Alumno::where('id', '=', $alumno_id)->first();
+            $total = $factura_proforma->importe_neto;
+            Session::push('id_proforma', $id);
+
+        return view('vista_alumno.pagar')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto]);
+
+    }
+
     
 }

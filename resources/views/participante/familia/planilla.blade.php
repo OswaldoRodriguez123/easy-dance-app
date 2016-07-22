@@ -14,13 +14,13 @@
 
 @section('content')
      
-            <div class="modal fade" id="modalID-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalID-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_id_instructor" id="edit_id_instructor"  >
+                        <form name="edit_id_alumno" id="edit_id_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -28,7 +28,7 @@
                                 <div class="form-group">
                                     <div class="form-group fg-line">
                                         <label for="id">Id - Pasaporte</label>
-                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" placeholder="Ej. 16234987" value="{{$instructor->identificacion}}">
+                                        <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="0000000000" placeholder="Ej: 16133223">
                                     </div>
                                     <div class="has-error" id="error-identificacion">
                                       <span >
@@ -37,8 +37,6 @@
                                     </div>
                                 </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -61,20 +59,20 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_id_instructor" data-update="identificacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_id_alumno" data-update="identificacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="modalNombre-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalNombre-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_nombre_instructor" id="edit_nombre_instructor"  >
+                        <form name="edit_nombre_alumno" id="edit_nombre_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -104,8 +102,6 @@
                                       </span>
                                   </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -128,20 +124,20 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_nombre_instructor" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_nombre_alumno" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="modalFechaNacimiento-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalFechaNacimiento-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_fecha_nacimiento_instructor" id="edit_fecha_nacimiento_instructor"  >
+                        <form name="edit_fecha_nacimiento_alumno" id="edit_fecha_nacimiento_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -158,8 +154,6 @@
                                       </span>
                                  </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -182,20 +176,20 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_fecha_nacimiento_instructor" data-update="fecha_nacimiento" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_fecha_nacimiento_alumno" data-update="fecha_nacimiento" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="modalSexo-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalSexo-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_sexo_instructor" id="edit_sexo_instructor"  >
+                        <form name="edit_sexo_alumno" id="edit_sexo_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -222,8 +216,6 @@
                                       </span>
                                   </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -246,7 +238,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_sexo_instructor" data-update="sexo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_sexo_alumno" data-update="sexo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
                              
                             </div>
                         </div></form>
@@ -254,14 +246,13 @@
                 </div>
             </div>
 
-
-            <div class="modal fade" id="modalCorreo-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalCorreo-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_correo_instructor" id="edit_correo_instructor"  >
+                        <form name="edit_correo_alumno" id="edit_correo_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -278,8 +269,6 @@
                                </div>
 
                                <div class="clearfix"></div> 
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
 
                                
                                
@@ -299,7 +288,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_correo_instructor" data-update="correo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_correo_alumno" data-update="correo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -307,13 +296,13 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalTelefono-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalTelefono-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_telefono_instructor" id="edit_telefono_instructor"  >
+                        <form name="edit_telefono_alumno" id="edit_telefono_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -343,8 +332,6 @@
                                       </span>
                                   </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -367,7 +354,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_telefono_instructor" data-update="telefono" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_telefono_alumno" data-update="telefono" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -375,66 +362,14 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalDireccion-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+
+            <div class="modal fade" id="modalFicha-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_direccion_instructor" id="edit_direccion_instructor"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="correo">Dirección</label>
-                                    <input type="text" class="form-control input-sm" name="direccion" id="direccion" placeholder="Ej. Avenida 10 con Calle 70" maxlength="180" onkeyup="countChar(this)">
-                                 </div>
-                                 <div class="opaco-0-8 text-right">Resta <span id="charNum">180</span> Caracteres</div>
-                                 <div class="has-error" id="error-direccion">
-                                      <span >
-                                          <small class="help-block error-span" id="error-direccion_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-                               
-                               <div class="clearfix"></div> 
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_direccion_instructor" data-update="direccion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalFicha-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_ficha_instructor" id="edit_ficha_instructor"  >
+                        <form name="edit_ficha_alumno" id="edit_ficha_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -540,9 +475,6 @@
                                           <label for="lesiones-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
-
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -567,7 +499,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_ficha_instructor" data-update="ficha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_ficha_alumno" data-update="ficha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                             </div>
@@ -576,42 +508,30 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalEstatus-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
+            <div class="modal fade" id="modalDireccion-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_estatus_instructor" id="edit_estatus_instructor"  >
+                        <form name="edit_direccion_alumno" id="edit_direccion_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                <div class="form-group fg-line ">
-                                    <label for="estatus p-t-10">Estatus</label>
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="estatus" id="activo" value="1" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Activo
-                                    </label>
-                                    <label class="radio radio-inline m-r-20 ">
-                                        <input name="estatus" id="inactivo" value="0" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Inactivo
-                                    </label>
-                                    </div>
-                                    
+                                 <div class="form-group fg-line">
+                                    <label for="correo">Dirección</label>
+                                    <input type="text" class="form-control input-sm" name="direccion" id="direccion" placeholder="Ej. Avenida 10 con Calle 70" maxlength="180" onkeyup="countChar(this)">
                                  </div>
-                                 <div class="has-error" id="error-estatus">
+                                 
+                                 <div class="opaco-0-8 text-right">Resta <span id="charNum">180</span> Caracteres</div>
+                                 <div class="has-error" id="error-direccion">
                                       <span >
-                                          <small class="help-block error-span" id="error-estatus_mensaje" ></small>                                           
+                                          <small class="help-block error-span" id="error-direccion_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
-                              
+                                     
 
                                <div class="clearfix"></div> 
 
@@ -620,7 +540,7 @@
                            </div>
                            
                         </div>
-                        <div class="modal-footer p-b-20 m-b-20">
+                       <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
                               <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
@@ -632,9 +552,9 @@
                               </div>
                             </div>
                             <div class="col-sm-12">                            
-                            
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_estatus_instructor" data-update="estatus" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-                             
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_direccion_alumno" data-update="direccion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
                             </div>
                         </div></form>
                     </div>
@@ -643,162 +563,192 @@
             <section id="content">
                 <div class="container">
                 
+
+
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/instructor" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Instructor</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/familia" onclick="procesando()" > <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Familia</a>
                     </div> 
                     
                     <div class="card">
-                      <div class="card-header">
-                            
-                        <a href="" class="pull-right">
-                           @if($instructor->sexo=='F')
-                              <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
-                           @else
-                              <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                           @endif
 
-                        </a>
+                      <div class="card-header">
+
+                      <br>
+                          
+                          <div class="row">
+                          <div class="col-sm-6 text-center">
+                        
+                                     <label for="alumno" id="id-alumno_id"><i class="icon_a-alumnos f-22"></i> Selecciona el participante</label>
+
+                                     <hr class="linea-morada">
+
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $alumno as $alum )
+                                          <option value = "{{ $alum['id'] }}">{{ $alum['nombre'] }} {{ $alum['apellido'] }} {{ $alum['identificacion'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
+
+                        <div class="col-sm-6">
+                          <a href="" class="pull-right">
+                             @if($alumno[0]['sexo']=='F')
+                                <img class="img-responsive img-circle imagen_mostrar" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
+                             @else
+                                <img class="img-responsive img-circle imagen_mostrar" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                             @endif
+
+                          </a>
+                        </div>
+                        </div>
                       </div>
                       <div class="card-body p-b-20">
                         <div class="row">
                         <div class="container">
                          <div class="col-sm-3">
-                            <div class="text-center p-t-30">       
-                              <div class="row p-b-15 ">
-                                <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
+          					        <div class="text-center p-t-30">       
+          					          <div class="row p-b-15 ">
+          					            <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
+          					              <!--<div class="text-center">
+          					                <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
+          					              </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
-                                        <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="icon_a-instructor"></i></span>
+                                        <a href="#" class="mousehand disabled">
+                                            <span class="ca-icon-planilla"><i class="icon_a-alumnos"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Instructor</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo instructor</h3>
+                                                <h2 class="ca-main-planilla">Vista Alumno</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo alumno</h3>
                                             </div>
                                         </a>
                                     </li>
                                   </ul>
 
-                                  <div class="col-sm-12 text-center"> 
+                                  <div class="col-sm-12 text-left"> 
 
                                   <br></br>
+  
+                                  <table class="table table-striped table-bordered historial">
+                                   <tr class="detalle historial">
+                                   <td class = "historial"></td>
+                                   <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700 historial">Balance E: </span><span class = "f-12 f-700 historial" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($alumno[0]['total']) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5 historial estatus_e"></i></td>
+                                  </tr>
+                                  </table>
+
+
+                                  </div>
+
+                                  <div class="col-sm-12 text-center"> 
+
+                                  <br>
 
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-                                  
+
+                                  <a href="{{url('/')}}/participante/familia/participantes/{{$id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="pagar"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$instructor->id}}" name= "eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <a class="transferir"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
                                    
                                 </div>
 
-                                </div>                
-                              </div>
-                              <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
-                                    
-                          </div>
-                     </div>
+          					            </div>                
+          					          </div>
+          					          <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
+          					                
+          					      </div>
+					           </div>
 
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos del Instructor</p>
+                              <p class="text-center opaco-0-8 f-22">Datos del Alumno</p>
                           </div>
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modalID-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($instructor->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($alumno[0]['identificacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-account-box f-22"></i> </span>
                               <span class="f-14">Id / pasaporte </span>
                              </td>
-                             <td class="f-14 m-l-15" id="instructor-identificacion">{{$instructor->identificacion}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                             <td class="f-14 m-l-15" id="alumno-identificacion">{{$alumno[0]['identificacion']}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($instructor->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($alumno[0]['nombre']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="instructor-nombre" class="capitalize">{{$instructor->nombre}}</span> <span id="instructor-apellido" class="capitalize">{{$instructor->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-nombre" class="capitalize">{{$alumno[0]['nombre']}}</span> <span id="alumno-apellido" class="capitalize">{{$alumno[0]['apellido']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($instructor->fecha_nacimiento) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($alumno[0]['fecha_nacimiento']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
                                <span class="f-14"> Fecha de nacimiento  </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="instructor-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$instructor->fecha_nacimiento)->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15" id="alumno-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$alumno[0]['fecha_nacimiento'])->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                             <tr class="detalle" data-toggle="modal" href="#modalSexo-Instructor">
+                             <tr class="detalle" data-toggle="modal" href="#modalSexo-Alumno">
                              <td> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($instructor->sexo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($alumno[0]['sexo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
                               <span class="f-14"> Sexo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="instructor-sexo" data-valor="{{$instructor->sexo}}">
-                               @if($instructor->sexo=='F')
+                             <td class="f-14 m-l-15" ><span id="alumno-sexo" data-valor="{{$alumno[0]['sexo']}}">
+                               @if($alumno[0]['sexo']=='F')
                                   <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                @else
                                   <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                @endif
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCorreo-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalCorreo-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($instructor->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($alumno[0]['correo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
                                <span class="f-14"> Correo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="instructor-correo"><span>{{$instructor->correo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$alumno[0]['correo']}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalTelefono-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalTelefono-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($instructor->telefono) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($alumno[0]['telefono']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
                                <span class="f-14"> Contacto </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="instructor-telefono">{{$instructor->telefono}}</span> / <span id="instructor-celular">{{$instructor->celular}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-telefono">{{$alumno[0]['telefono']}}</span> / <span id="alumno-celular">{{$alumno[0]['celular']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalDireccion-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalDireccion-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($instructor->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($alumno[0]->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="instructor-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$instructor->direccion}}" >{{ str_limit($instructor->direccion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="alumno-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$alumno[0]['direccion']}}" >{{ str_limit($alumno[0]['direccion'], $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFicha-Instructor">
+                            <tr class="detalle" data-toggle="modal" href="#modalFicha-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-ficha" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_d-ficha-medica f-22"></i> </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class=icon_d-ficha-medica f-22"></i> </span>
                                <span class="f-14"> Ficha Médica </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEstatus-Instructor">
-                             <td> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-estatus" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                              <span class="m-l-10 m-r-10"> <i class="icon_a-estatus-de-clases f-20"></i> </span>
-                              <span class="f-14"> Estatus </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="instructor-estatus" data-valor="{{$instructor->estatus}}">
-                               @if($instructor->estatus==1)
-                                  <i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i> </span>
-                               @else
-                                  <i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i></span>
-                               @endif
-                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-
                            </table>
-
+                          </div>
+                          
                           
                           <div class="clearfix"></div>   
                
@@ -820,40 +770,63 @@
 
 @section('js') 
    <script type="text/javascript">
+    route_update="{{url('/')}}/participante/alumno/update";
+    route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
+    route_principal="{{url('/')}}/participante/alumno";
+    route_sesion="{{url('/')}}/participante/alumno/sesion";
+    route_historial = "{{url('/')}}/participante/alumno/historial/";
+    route_email="{{url('/')}}/correo/sesion/";
 
-   route_update="{{url('/')}}/participante/instructor/update";
-   route_eliminar="{{url('/')}}/participante/instructor/eliminar/";
-   route_principal="{{url('/')}}/participante/instructor";
-   route_email="{{url('/')}}/correo/sesion/";
+    total = "{{$alumno[0]['total']}}";
+    id = "{{$alumno[0]['id']}}";
 
-   $(document).ready(function(){
+    // $(document).on("click", function () {
+    //    var clickedBtnID = this; // or var clickedBtnID = this.id
+    //    console.log(this);
+    // });
 
-    if("{{$instructor->alergia}}" == 1){
+    function formatmoney(n) {
+        return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+      }
+
+    $(document).ready(function(){
+
+    
+      $("#alumno_id").val("{{$alumno[0]['id']}}");
+
+      if(total){
+        $("#total").text(formatmoney(parseFloat(total)));
+      }
+      else{
+        $("#total").text(formatmoney(0));
+      }
+      
+      if("{{$alumno[0]['alergia']}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
           $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$instructor->asma}}" == 1){
+        if("{{$alumno[0]['asma']}}" == 1){
           $("#asma").val('1');  //VALOR POR DEFECTO
           $("#asma-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$instructor->convulsiones}}" == 1){
+        if("{{$alumno[0]['convulsiones']}}" == 1){
           $("#convulsiones").val('1');  //VALOR POR DEFECTO
           $("#convulsiones-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$instructor->cefalea}}" == 1){
+        if("{{$alumno[0]['cefalea']}}" == 1){
           $("#cefalea").val('1');  //VALOR POR DEFECTO
           $("#cefalea-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$instructor->hipertension}}" == 1){
+        if("{{$alumno[0]['hipertension']}}" == 1){
           $("#hipertension").val('1');  //VALOR POR DEFECTO
           $("#hipertension-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$instructor->lesiones}}" == 1){
+        if("{{$alumno[0]['lesiones']}}" == 1){
           $("#lesiones").val('1');  //VALOR POR DEFECTO
           $("#lesiones-switch").attr("checked", true); //VALOR POR DEFECTO
         }
@@ -906,7 +879,8 @@
           }     
         });
 
-    $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
+
+      $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-z]/}
         }
@@ -938,22 +912,22 @@
 
       });
 
-    $('#modalID-Instructor').on('show.bs.modal', function (event) {
+    $('#modalID-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#identificacion").val($("#instructor-identificacion").text()); 
+      $("#identificacion").val($("#alumno-identificacion").text()); 
     })
-    $('#modalNombre-Instructor').on('show.bs.modal', function (event) {
+    $('#modalNombre-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#nombre").val($("#instructor-nombre").text()); 
-      $("#apellido").val($("#instructor-apellido").text());
+      $("#nombre").val($("#alumno-nombre").text()); 
+      $("#apellido").val($("#alumno-apellido").text());
     })
-    $('#modalFechaNacimiento-Instructor').on('show.bs.modal', function (event) {
+    $('#modalFechaNacimiento-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha_nacimiento").val($("#instructor-fecha_nacimiento").text()); 
+      $("#fecha_nacimiento").val($("#alumno-fecha_nacimiento").text()); 
     })
-    $('#modalSexo-Instructor').on('show.bs.modal', function (event) {
+    $('#modalSexo-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      var sexo=$("#instructor-sexo").data('valor');
+      var sexo=$("#alumno-sexo").data('valor');
       if(sexo=="M"){
         $("#hombre").prop("checked", true);
       }else{
@@ -961,37 +935,28 @@
       }
       
     })
-
-    $('#modalCorreo-Instructor').on('show.bs.modal', function (event) {
+    
+     $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#correo").val($("#instructor-correo").text()); 
+      $("#correo").val($("#alumno-correo").text()); 
     })
 
-    $('#modalTelefono-Instructor').on('show.bs.modal', function (event) {
+    $('#modalTelefono-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#telefono").val($("#instructor-telefono").text());
-      $("#celular").val($("#instructor-celular").text()); 
+      $("#telefono").val($("#alumno-telefono").text());
+      $("#celular").val($("#alumno-celular").text()); 
     })
 
-    $('#modalDireccion-Instructor').on('show.bs.modal', function (event) {
+    $('#modalDireccion-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      var direccion=$("#instructor-direccion").data('valor');
+       var direccion=$("#alumno-direccion").data('valor');
        $("#direccion").val(direccion);
+      //$("#direccion").val($("#alumno-direccion").text());
     })
 
-    $('#modalEstatus-Instructor').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      var status= $("#instructor-estatus").data('valor');
-      if(status==1){
-        $("#activo").prop("checked", true);
-      }else{
-        $("#inactivo").prop("checked", true);
-      }
-      
-    })
 
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1000,7 +965,7 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -1014,31 +979,23 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-
           if(c.name=='sexo'){
             if(c.value=='M'){              
               var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
             }else if(c.value=='F'){
               var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
             }
-            $("#instructor-"+c.name).data('valor',c.value);
-            $("#instructor-"+c.name).html(valor);
-          }else if(c.name=='estatus'){
-            if(c.value==1){              
-              var valor='<i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i>';                              
-            }else if(c.value==0){
-              var valor='<i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i>';
-            }
-            $("#instructor-"+c.name).data('valor',c.value);
-            $("#instructor-"+c.name).html(valor);
+            $("#alumno-"+c.name).data('valor',c.value);
+            $("#alumno-"+c.name).html(valor);
           }else if(c.name=='direccion'){
-             $("#instructor-"+c.name).data('valor',c.value);
-             $("#instructor-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
+             $("#alumno-"+c.name).data('valor',c.value);
+             $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
-            $("#instructor-"+c.name).text(c.value.toLowerCase());
-          }
 
+            $("#alumno-"+c.name).text(c.value.toLowerCase());
+            
+          }
           if(c.value == ''){
             $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
             $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
@@ -1114,6 +1071,7 @@
         var datos = $( "#"+form ).serialize();
         var datos_array=  $( "#"+form ).serializeArray();
         console.log(datos_array);
+        console.log(id);
         
         var route = route_update+"/"+update;
         $.ajax({
@@ -1121,12 +1079,12 @@
             headers: {'X-CSRF-TOKEN': token},
             type: 'PUT',
             dataType: 'json',
-            data: datos,                
+            data: datos + "&id="+id,                
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){
                   finprocesado(); 
-                  campoValor(datos_array);           
+                  campoValor(datos_array);            
                   var nType = 'success';
                   var nTitle="Ups! ";
                   var nMensaje=respuesta.mensaje;                                      
@@ -1150,11 +1108,10 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                
-                if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
                 var nType = 'danger';
+                // if (typeof msj.responseJSON === "undefined") {
+                //           window.location = "{{url('/')}}/error";
+                //         }
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
                   errores(msj.responseJSON.errores);
@@ -1179,10 +1136,40 @@
        
     })
 
-   $("i[name=eliminar]").click(function(){
-                id = this.id;
+    $(".email").click(function(){
+         var route = route_email + 1;
+         var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/" + id;  
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      });
+
+    $("i[name=eliminar]").click(function(){
+                
                 swal({   
-                    title: "Desea eliminar al instructor?",   
+                    title: "Desea eliminar al alumno?",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -1206,7 +1193,7 @@
             });
       function eliminar(id){
          var route = route_eliminar + id;
-         var token = $('input:hidden[name=_token]').val();
+         var token = '{{ csrf_token() }}';
                 
                 $.ajax({
                     url: route,
@@ -1216,36 +1203,8 @@
                     data:id,
                     success:function(respuesta){
 
-                        window.location=route_principal; 
-
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
-
-      $(".email").click(function(){
-         var route = route_email + 2;
-         var token = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    success:function(respuesta){
-
                         procesando();
-                        window.location="{{url('/')}}/correo/{{$instructor->id}}"  
+                        window.location=route_principal; 
 
                     },
                     error:function(msj){
@@ -1261,7 +1220,26 @@
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
-      });
+      }
+
+      $(".historial").click(function(){
+
+          window.location = route_historial + id;
+          
+      }); 
+
+      $(".pagar").click(function(){
+
+          window.location = "{{url('/')}}/participante/alumno/deuda/" + id;
+          
+      }); 
+
+      $(".transferir").click(function(){
+
+          window.location = "{{url('/')}}/participante/alumno/transferir/" + id;
+          
+      }); 
+ 
 
       function countChar(val) {
         var len = val.value.length;
@@ -1271,7 +1249,105 @@
           $('#charNum').text(180 - len);
         }
       };
-    
+
+      $("#alumno_id").change(function(){
+
+        id = $(this).val();
+
+        var alumnos = <?php echo json_encode($alumno);?>;
+
+        var alumno = $.grep(alumnos, function(e){ return e.id == id; });
+
+        $.each(alumno, function (index, array) {
+
+          $("#alumno-identificacion").text(array.identificacion)
+          $("#alumno-nombre").text(array.nombre)
+          $("#alumno-apellido").text(array.apellido)
+          $("#alumno-fecha_nacimiento").text(array.fecha_nacimiento)
+          $("#alumno-correo").text(array.correo)
+          $("#alumno-telefono").text(array.telefono)
+          $("#alumno-celular").text(array.celular)
+          $("#alumno-direccion").text(array.direccion)
+
+        if(array.alergia == 1){
+          $("#alergia").val('1');  //VALOR POR DEFECTO
+          $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#alergia").val('0');  //VALOR POR DEFECTO
+          $("#alergia-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        if(array.asma == 1){
+          $("#asma").val('1');  //VALOR POR DEFECTO
+          $("#asma-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#asma").val('0');  //VALOR POR DEFECTO
+          $("#asma-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        if(array.convulsiones == 1){
+          $("#convulsiones").val('1');  //VALOR POR DEFECTO
+          $("#convulsiones-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#convulsiones").val('0');  //VALOR POR DEFECTO
+          $("#convulsiones-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        if(array.cefalea == 1){
+          $("#cefalea").val('1');  //VALOR POR DEFECTO
+          $("#cefalea-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#cefalea").val('0');  //VALOR POR DEFECTO
+          $("#cefalea-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        if(array.hipertension == 1){
+          $("#hipertension").val('1');  //VALOR POR DEFECTO
+          $("#hipertension-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#hipertension").val('0');  //VALOR POR DEFECTO
+          $("#hipertension-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        if(array.lesiones == 1){
+          $("#lesiones").val('1');  //VALOR POR DEFECTO
+          $("#lesiones-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#lesiones").val('0');  //VALOR POR DEFECTO
+          $("#lesiones-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+          if(array.sexo=='F'){
+
+            $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/1.jpg');
+
+          }
+
+          else{
+
+            $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/2.jpg');
+
+          }
+         
+          $("#total").text(formatmoney(parseFloat(array.total)));
+
+          if(array.total == 0)
+          {
+            $(".estatus_e").removeClass('c-youtube');
+            $(".estatus_e").addClass('c-verde');
+          }else{
+            $(".estatus_e").addClass('c-youtube');
+            $(".estatus_e").removeClass('c-verde');
+          }
+          
+
+
+
+        });
+
+        
+      });
+
    </script> 
 
    <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        

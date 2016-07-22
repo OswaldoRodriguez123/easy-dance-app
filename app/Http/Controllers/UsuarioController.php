@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use App\User;
 use App\ConfigEspecialidades;
 use App\Paises;
+use App\Alumno;
 use App\ComoNosConociste;
 use Validator;
 use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use DB;
 
 class UsuarioController extends BaseController {
 
@@ -359,6 +361,21 @@ class UsuarioController extends BaseController {
                 $usuario->save();
 
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function documentos(){
+
+        $alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->get();
+        // $clasegrupal = ClaseGrupal::where('academia_id', '=', Auth::user()->academia_id)->get();
+
+        $clasegrupal = DB::table('config_clases_grupales')
+                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->select('config_clases_grupales.nombre', 'clases_grupales.id')
+                    ->where('clases_grupales.academia_id', '=', Auth::user()->academia_id)
+                ->get();
+    
+        return view('vista_alumno.normativas')->with(['alumnos' => $alumnos, 'clasegrupal' => $clasegrupal]);
+
     }
 
 }
