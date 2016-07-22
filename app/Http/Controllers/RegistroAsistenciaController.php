@@ -55,7 +55,6 @@ class CampanaController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-    }
 
     /**
      * Display the specified resource.
