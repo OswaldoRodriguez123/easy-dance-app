@@ -61,6 +61,11 @@ Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progr
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
 Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');
+//NUEVA
+Route::get('especiales/campañas/contribuir_pagar/{id}', 'CampanaController@contribuirPagar');
+//PAGO CON MERCADOPAGO
+Route::post('especiales/campañas/contribuir_mercadopago', 'CampanaController@storeMercadopago');
+
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
@@ -455,6 +460,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::post('administrativo/pagos/factura/{id}', 'AdministrativoController@storeFactura');
 
+	//PAGO CON MERCADOPAGO
+	Route::post('administrativo/pagos/facturamercadopago', 'AdministrativoController@storeMercadopago');
+
 	Route::get('administrativo/pagar/{id}', 'AdministrativoController@pagar');
 
 	//ACUERDOS
@@ -630,8 +638,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	//SMS
 
 	Route::get('sms', 'SmsController@send');
+	Route::get('mercadopago', 'MercadopagoController@mercadopago');
 
 });
-	
-
-

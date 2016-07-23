@@ -228,7 +228,9 @@
                         </div>
 
                             <span class="text-center">
-                                 <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>
+                                 <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
+
+                                <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
                             </span>
 
                           </div>
@@ -467,7 +469,8 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-        route_agregar="{{url('/')}}/especiales/campañas/contribuir";
+        //route_agregar="{{url('/')}}/especiales/campañas/contribuir";
+        route_agregar="{{url('/')}}/especiales/campañas/contribuir_pagar";
 
         var recompensa = 0;
 
@@ -662,7 +665,8 @@
         $(".recompensa").click(function(){
 
           recompensa = this.id;
-
+          var route=route_agregar+"/"+recompensa;
+          window.location=route;
         });
 
         $(".a-prevent").click(function(){

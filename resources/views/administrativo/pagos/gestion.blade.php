@@ -17,7 +17,8 @@
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-
+<!--MERCADO PAGO MODAL -->
+<script type="text/javascript" src="http://resources.mlstatic.com/mptools/render.js"></script>
 @stop
 @section('content')
 
@@ -210,7 +211,9 @@
                             </div>
 
 
-                            <div class="col-sm-6 text-right">                          
+                            <div class="col-sm-6 text-right">  
+                              
+                              <a href="{{ $datos['response']['init_point'] }}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>                                                    
                               <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "guardar" id="guardar" >Pagar Ya <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
                               <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
@@ -239,6 +242,7 @@
   route_eliminar="{{url('/')}}/administrativo/pagos/eliminarpago";
   route_cancelar = "{{url('/')}}/administrativo/pagos/cancelargestion";
   route_imprimir="{{url('/')}}/administrativo/factura/";
+  route_mercadopago="{{url('/')}}/administrativo/pagos/facturamercadopago/";
 
   $( document ).ready(function() {
 
@@ -720,6 +724,147 @@
         scrollTop: $("#id-generar").offset().top-90,
         }, 1000);
       });
+
+      //RETURN DE MERCADOPAGO
+      function respuesta_mercadopago(json) {
+
+          var nFrom = $(this).attr('data-from');
+          var nAlign = $(this).attr('data-align');
+          var nIcons = $(this).attr('data-icon');
+          var nAnimIn = "animated flipInY";
+          var nAnimOut = "animated flipOutY";                       
+
+          var response = JSON.stringify(json);
+          //alert(json);
+          if (json.collection_status=='approved'){
+              //$("#test").html('Pago acreditado');
+              //$("#test").addClass('alert alert-success')
+              var nTitle = 'Pago acreditado!';
+              var nMensaje = ' Hemos recibido su pago satisfactoriamente, gracias';
+              var nType = 'success';
+          } else if(json.collection_status=='pending'){
+              //$("#test").html('El usuario no completó el pago');
+              //$("#test").addClass('alert alert-warning')
+              var nTitle = 'Oops';
+              var nMensaje = ' El usuario no completó el pago';
+              var nType = 'warning';              
+          } else if(json.collection_status=='in_process'){    
+              //$("#test").html('El pago está siendo revisado');
+              //$("#test").addClass('alert alert-info')
+              var nTitle = 'Pago en Proceso';
+              var nMensaje = ' El pago está siendo revisado';
+              var nType = 'info';
+          } else if(json.collection_status=='rejected'){
+              //$("#test").html('El pago fué rechazado, el usuario puede intentar nuevamente el pago');
+              //$("#test").addClass('alert alert-danger')
+              var nTitle = 'Oops';
+              var nMensaje = ' El pago fué rechazado, el usuario puede intentar nuevamente el pago';
+              var nType = 'warning';              
+          } else if(json.collection_status==null){
+              var nTitle = 'Proceso Imcompleto!';
+              var nMensaje = ' El usuario no completó el proceso de pago, no se ha generado ningún pago';
+              var nType = 'warning';
+              
+          }
+          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          procesar_mercadopago(json);
+      }
+
+      function procesar_mercadopago(response){
+
+                  var id = "{{$alumno->id}}";
+                  var numero_factura = "{{$numero_factura}}";
+                  var route = route_mercadopago;
+                  var token = $('input:hidden[name=_token]').val();
+                  //var datos = $( "#gestionar_pago" ).serialize(); 
+                  //$("#guardar").attr("disabled","disabled");
+                  //procesando();
+                  /*$("#guardar").css({
+                    "opacity": ("0.2")
+                  });*/
+                  //$(".cancelar").attr("disabled","disabled");
+                  //$(".procesando").removeClass('hidden');
+                  //$(".procesando").addClass('show');         
+                  //limpiarMensaje();
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                          dataType: 'json',
+                          //data: "&json="+response+"&alumno="+id,
+                          data: {
+                              json: response,
+                              alumno: id,
+                              numero_factura : numero_factura
+                          },
+                      success:function(respuesta){
+                          //alert(respuesta);
+                        /*setTimeout(function(){ 
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          if(respuesta.status=="OK"){
+
+                            //window.location = route_principal;
+                          }else{
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+
+                            $(".procesando").removeClass('show');
+                            $(".procesando").addClass('hidden');
+                            $("#guardar").removeAttr("disabled");
+                            finprocesado();
+                            $("#guardar").css({
+                              "opacity": ("1")
+                            });
+                            $(".cancelar").removeAttr("disabled");
+
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                          }                       
+                          
+                        }, 1000);*/
+                      },
+                      error:function(msj){
+                        /*setTimeout(function(){ 
+                        //   if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                          if(msj.responseJSON.status=="ERROR"){
+                            console.log(msj.responseJSON.errores);
+                            errores(msj.responseJSON.errores);
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                          }else{
+                            var nTitle="   Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          }                        
+                          $("#guardar").removeAttr("disabled");
+                          finprocesado();
+                          $("#guardar").css({
+                            "opacity": ("1")
+                          });
+                          $(".cancelar").removeAttr("disabled");
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nType = 'danger';
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY";                       
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                        }, 1000);*/
+                      }
+                  });
+
+
+      }
+
+
+
 
 </script> 
 @stop

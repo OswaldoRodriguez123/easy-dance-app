@@ -10,12 +10,15 @@ use App\Recompensa;
 use App\Alumno;
 use App\Patrocinador;
 use App\ItemsFacturaProforma;
+use App\Factura;
+use App\MercadopagoMovs;
 use Validator;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Image;
+use MP;
 
 class CampanaController extends BaseController {
 
@@ -901,6 +904,97 @@ class CampanaController extends BaseController {
         $academia = Academia::find($campana->academia_id);
         return view('especiales.campana.contribuir')->with(['id' => $id, 'campana' => $campana, 'academia' => $academia]);        
     }
+
+    public function contribuirPagar($id)
+    {   
+        $recompensa = Recompensa::find($id);
+        $academia = Academia::find($recompensa->academia_id);
+
+        $campana = Campana::find($academia->id);
+        $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->get();
+        //dd($alumnos->all());
+        //MERCADO PAGO
+        $preference_data = array(
+            "items" => array(
+                array(
+                //"id" => $array['mov_id'],
+                "currency_id" => "VEF",
+                "title" => $recompensa->nombre,
+                "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
+                "description" => $recompensa->descripcion,
+                "quantity" => 1,
+                "unit_price" =>  intval($recompensa->cantidad)
+                )
+            )
+        );
+        $preference = MP::create_preference($preference_data);
+
+        return view('especiales.campana.pagar_contribuir')->with(['id' => $id, 'recompensas' => $recompensa, 'academia' => $academia, 'datos' => $preference, 'campana' => $campana, 'alumnos' => $alumnos]);
+    }
+
+    //FUNCTION MERADOPAGO
+    public function storeMercadopago(Request $request)
+    {
+
+        //dd($request->all());
+        $numerofactura = DB::table('facturas')
+            ->select('facturas.*')
+            ->orderBy('created_at', 'desc')
+            ->where('facturas.academia_id', '=', Auth::user()->academia_id)
+        ->first();
+
+        if($numerofactura){
+           $numero_factura = $numerofactura->numero_factura + 1;
+        }else{
+            $academia = Academia::find(Auth::user()->academia_id);
+                
+                if($academia->numero_factura){
+                    $numero_factura = $academia->numero_factura;
+                }
+                else{
+                    $numero_factura = 1;
+                }
+        }
+
+        $mercadopago = new MercadopagoMovs;
+        $factura = new Factura;
+        $patrocinador = new Patrocinador;
+
+        if($request->json['collection_status']!=null){
+
+            $factura->alumno_id = $request->alumno;
+            $factura->academia_id = Auth::user()->academia_id;
+            $factura->fecha = Carbon::now()->toDateString();
+            $factura->hora = Carbon::now()->toTimeString();
+            $factura->numero_factura = $numero_factura;
+            $factura->concepto = $request->recompensa;
+
+            $factura->save();
+
+            $mercadopago->academia_id = Auth::user()->academia_id;
+            $mercadopago->alumno_id = $request->alumno;
+            $mercadopago->numero_factura = $numero_factura;
+            $mercadopago->status_pago = $request->json['collection_status'];
+            $mercadopago->pago_id = $request->json['collection_id'];
+            $mercadopago->preference_id = $request->json['preference_id'];
+            $mercadopago->tipo_pago = $request->json['payment_type'];
+
+            $mercadopago->save();
+
+            $patrocinador->academia_id = Auth::user()->academia_id;
+            $patrocinador->campana_id = $request->campana_id;
+            $patrocinador->usuario_id = $request->alumno;
+            $patrocinador->tipo_id = 1;
+            $patrocinador->monto = $request->monto;
+
+            $patrocinador->save();
+
+            return 'Movimiento Generado en Base de Datos';
+        }
+        return 'No se genero ningun Registro en Base de Datos';
+
+    }
+
 
     /**
      * Remove the specified resource from storage.

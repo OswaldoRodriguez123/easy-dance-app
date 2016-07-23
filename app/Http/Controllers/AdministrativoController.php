@@ -18,8 +18,10 @@ use App\Presupuesto;
 use App\ItemsPresupuesto;
 use App\ConfigProductos;
 use App\ConfigServicios;
+use App\MercadopagoMovs;
 use App\User;
 use App\Familia;
+use MP;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -452,7 +454,31 @@ class AdministrativoController extends BaseController {
                 $acuerdo = 0;
             }
 
-        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo]);
+        //MERCADO PAGO
+        $preference_data = array(
+        "items" => array(
+            array(
+            //"id" => $array['mov_id'],
+            //"title" => $array['mov_nomplan'].', este paquete incluye '.$array['mov_sms'].' SMS',
+            "currency_id" => "VEF",
+            "title" => 'Servicio',
+            "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
+            "description" => 'Servicio de Baile',
+            //"category_id" => "Category",
+            "quantity" => 1,
+            "unit_price" =>  4 //intval($total)
+            )
+        ),
+            "payer" => array(
+              "name" => $alumno->nombre,
+              "surname" => $alumno->apellido,
+              "email" => $alumno->correo,
+              //"date_created" => "2014-07-28T09:50:37.521-04:00"
+            )
+        );
+        $preference = MP::create_preference($preference_data);
+
+        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo, 'datos' => $preference]);
 
     }
 
@@ -2058,6 +2084,28 @@ class AdministrativoController extends BaseController {
             Session::push('id_proforma', $id);
 
         return view('vista_alumno.pagar')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto]);
+
+    }
+
+    //FUNCTION MERADOPAGO
+    public function storeMercadopago(Request $request)
+    {
+
+        $mercadopago = new MercadopagoMovs;
+
+        if($request->json['collection_status']!=null){
+
+            $mercadopago->academia_id = Auth::user()->academia_id;
+            $mercadopago->alumno_id = $request->alumno;
+            $mercadopago->status_pago = $request->json['collection_status'];
+            $mercadopago->pago_id = $request->json['collection_id'];
+            $mercadopago->preference_id = $request->json['preference_id'];
+            $mercadopago->tipo_pago = $request->json['payment_type'];
+
+            $mercadopago->save();
+            return 'Movimiento Generado en Base de Datos';
+        }
+        return 'No se genero ningun Registro en Base de Datos';
 
     }
 
