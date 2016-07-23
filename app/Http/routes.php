@@ -106,6 +106,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('participante/alumno/update/telefono','AlumnoController@updateTelefono');
 	Route::put('participante/alumno/update/direccion','AlumnoController@updateDireccion');
 	Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
+	Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
 
 	//INSTRUCTOR
 
@@ -344,9 +345,19 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	//REGALOS
 
+    Route::get('especiales/regalos', 'RegaloController@index');
+    Route::get('especiales/regalos/detalle/{id}', 'RegaloController@edit');
+	Route::get('especiales/regalos/operaciones/{id}', 'RegaloController@operar');
+	Route::delete('especiales/regalos/eliminar/{id}', 'RegaloController@destroy');
 	Route::get('especiales/regalos/agregar', 'RegaloController@create');
 	Route::post('especiales/regalos/agregar', 'RegaloController@store');
+
+	Route::put('especiales/regalos/update/nombre', 'RegaloController@updateNombre');
+	Route::put('especiales/regalos/update/costo', 'RegaloController@updateCosto');
+	Route::put('especiales/regalos/update/descripcion', 'RegaloController@updateDescripcion');
 	Route::post('especiales/regalos/verificar', 'RegaloController@verify');
+	Route::get('especiales/regalos/enviar/{id}', 'RegaloController@CrearRegaloUsuario');
+	Route::post('especiales/regalos/enviar', 'RegaloController@EnviarRegaloUsuario');
 
 	// ---- CONFIGURACION ----
 
@@ -468,11 +479,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	//ACUERDOS
 
 	Route::get('administrativo/acuerdos', 'AdministrativoController@principalacuerdo');
+	Route::get('administrativo/acuerdos/detalle/{id}', 'AdministrativoController@detalleacuerdo');
 	Route::get('administrativo/acuerdos/generar', 'AdministrativoController@acuerdo');
 	Route::get('administrativo/acuerdos/generar/{id}', 'AdministrativoController@acuerdoconalumno');
 	Route::post('administrativo/acuerdo/generar', 'AdministrativoController@generar_acuerdo');
 	Route::post('administrativo/pagos/pendiente/{id}', 'AdministrativoController@pagospendientes');
 	Route::post('administrativo/acuerdo/guardar', 'AdministrativoController@storeAcuerdo');
+	Route::delete('administrativo/acuerdo/eliminar/{id}', 'AdministrativoController@eliminaracuerdo');
 
 	//PRESUPUESTOS
 
@@ -615,9 +628,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::get('/inicio', 'AcademiaConfiguracionController@index');
 
-	Route::get('/', function () {
-	    return view('menu.index');
-	});
+	Route::get('/', 'AcademiaConfiguracionController@menu');
 
 	// USUARIO
 

@@ -46,7 +46,7 @@
                     <span class="input-group-addon"><i class="zmdi zmdi-account zmdi-hc-2x"></i></span>
                     <div class="fg-line">
 
-                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                        <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
                     </div>
                 </div>
                 

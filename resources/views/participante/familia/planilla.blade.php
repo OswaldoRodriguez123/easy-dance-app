@@ -560,6 +560,70 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalRol-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_rol_alumno" id="edit_rol_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group fg-line ">
+                                    <label for="sexo p-t-10">Rol del representante dentro de la academia</label>
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="rol" id="representante" value="0" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Sólo representante  <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="rol" id="alumno" value="1" type="radio">
+                                        <i class="input-helper"></i>  
+                                        También participa como alumno activo <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                 </div>
+                                 <div class="has-error" id="error-rol">
+                                      <span >
+                                          <small class="help-block error-span" id="error-rol_mensaje" ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_rol_alumno" data-update="rol" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                             
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -585,7 +649,6 @@
                                     <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
                                           @foreach ( $alumno as $alum )
                                           <option value = "{{ $alum['id'] }}">{{ $alum['nombre'] }} {{ $alum['apellido'] }} {{ $alum['identificacion'] }}</option>
                                           @endforeach
@@ -745,6 +808,20 @@
                                <span class="f-14"> Ficha Médica </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalRol-Alumno" id="rol_representate" name="rol_representate">
+                             <td> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-rol" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
+                              <span class="f-14"> Rol del representante dentro de la academia </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$alumno[0]['deleted_at']}}">
+                               @if($alumno[0]['deleted_at']==null)
+                                  También participa como alumno activo </span>
+                               @else
+                                  Sólo representante </span>
+                               @endif
+                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                            </table>
                           </div>
@@ -935,6 +1012,18 @@
       }
       
     })
+
+    $('#modalRol-Alumno').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var rol=$("#alumno-rol").data('valor');
+      console.log(rol);
+      if(rol==''){
+        $("#alumno").prop("checked", true);
+      }else{
+        $("#representante").prop("checked", true);
+      }
+      
+    })
     
      $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
@@ -984,6 +1073,14 @@
               var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
             }else if(c.value=='F'){
               var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+            }
+            $("#alumno-"+c.name).data('valor',c.value);
+            $("#alumno-"+c.name).html(valor);
+          }else if(c.name=='rol'){
+            if(c.value==0){              
+              var valor='Sólo representante';                              
+            }else if(c.value==1){
+              var valor='También participa como alumno activo';   
             }
             $("#alumno-"+c.name).data('valor',c.value);
             $("#alumno-"+c.name).html(valor);
@@ -1259,6 +1356,13 @@
         var alumno = $.grep(alumnos, function(e){ return e.id == id; });
 
         $.each(alumno, function (index, array) {
+
+          if(array.es_representante == 0)
+          {
+            $("#rol_representate").hide();
+          }else{
+            $("#rol_representate").show();
+          }
 
           $("#alumno-identificacion").text(array.identificacion)
           $("#alumno-nombre").text(array.nombre)

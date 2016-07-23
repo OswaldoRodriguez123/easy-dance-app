@@ -33,7 +33,7 @@ class AsistenciaController extends BaseController
     {
         // $alumnos = Asistencia::where('academia_id','=', Auth::user()->academia_id)->get();
 
-      if(Auth::user()->usuario_tipo == 1)
+      if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
       {
         $alumnos = DB::table('alumnos')
             ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')

@@ -37,7 +37,7 @@
                                 <div class="form-group">
                                     <div class="form-group fg-line">
                                         <label for="id" id="id-identificacion_participante">Id - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
-                                        <input type="text" class="form-control input-sm" name="identificacion_participante" id="identificacion_participante" placeholder="Ej. 16234987">
+                                        <input type="text" class="form-control input-sm" name="identificacion_participante" id="identificacion_participante" data-mask="0000000000" placeholder="Ej. 16234987">
                                     </div>
                                     <div class="has-error" id="error-identificacion_participante">
                                       <span >
@@ -48,7 +48,7 @@
                                </div>
                                <div class="col-sm-6">
                                  <div class="form-group fg-line">
-                                    <label for="nombre" id="id-nombre_participante">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre_participante">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante" title="" data-original-title="Ayuda"></i>
                                     <input type="text" class="form-control input-sm" name="nombre_participante" id="nombre_participante" placeholder="Ej. Valeria">
                                  </div>
                                  <div class="has-error" id="error-nombre_participante">
@@ -63,7 +63,7 @@
 
                                <div class="col-sm-6">
                                  <div class="form-group fg-line">
-                                    <label for="id-apellido" id="id-apellido_participante">Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el apellido del participante" title="" data-original-title="Ayuda"></i> 
+                                    <label for="id-apellido" id="id-apellido_participante">Apellido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el apellido del participante" title="" data-original-title="Ayuda"></i> 
                                     <input type="text" class="form-control input-sm" name="apellido_participante" id="apellido_participante" placeholder="Ej. Sánchez">
                                  </div>
                                  <div class="has-error" id="error-apellido_participante">
@@ -75,7 +75,7 @@
 
                                <div class="col-sm-6">
                                     <div class="form-group fg-line">
-                                    <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
                                             <div class="dtp-container fg-line">
                                             <input name="fecha_nacimiento_participante" id="fecha_nacimiento_participante" class="form-control date-picker" placeholder="Seleciona" type="text">
                                         </div>
@@ -92,7 +92,7 @@
                                                                
                                <div class="col-sm-6">
                                  <div class="form-group fg-line ">
-                                    <label for="sexo p-t-10" id="id-sexo_participante">Sexo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="sexo p-t-10" id="id-sexo_participante">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del participante" title="" data-original-title="Ayuda"></i>
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
                                         <input name="sexo_participante" id="mujer_participante" value="F" type="radio">
@@ -628,6 +628,20 @@
       });
 
       $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-z]/}
+        }
+
+      });
+
+      $('#nombre_participante').mask('AAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-z]/}
+        }
+
+      });
+
+      $('#apellido_participante').mask('AAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-z]/}
         }

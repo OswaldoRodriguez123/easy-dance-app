@@ -16,20 +16,27 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
-
+@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
 <a href="{{url('/')}}/agendar/talleres/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+@endif
 
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        @else
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        @endif
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                             <span class="f-16 p-t-0 text-success">Agregar un Taller <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                        @endif
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-talleres f-25"></i> Sección de Talleres</p>
                             <hr class="linea-morada">                                                          
@@ -43,19 +50,23 @@
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <th class="text-center" data-column-id="costo" data-order="desc">Costo</th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                        <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
                             @foreach ($taller as $talleres)
                                 <?php $id = $talleres['id']; ?>
-                                <tr id="row_{{$id}}" class="seleccion">
+                                <tr id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$talleres['nombre']}}</td>
                                     <td class="text-center previa">{{$talleres['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$talleres['hora_inicio']}} - {{$talleres['hora_final']}}</td>
                                     <td class="text-center previa">{{ number_format($talleres['costo'], 2, '.' , '.') }}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                        <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    @endif
                                 </tr>
                             @endforeach  
                                                            
@@ -85,6 +96,7 @@
 
         route_detalle="{{url('/')}}/agendar/talleres/detalle";
         route_operacion="{{url('/')}}/agendar/talleres/operaciones";
+        route_progreso="{{url('/')}}/agendar/talleres/progreso";
 
         $(document).ready(function(){
 
@@ -160,8 +172,12 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        var id_taller = row.split('_');
-        var route =route_detalle+"/"+id_taller[1];
+        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
+        {
+            var route =route_detalle+"/"+row;
+        }else{
+            var route =route_progreso+"/"+row;
+        }
         window.location=route;
       }
 

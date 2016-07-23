@@ -447,7 +447,7 @@ class AlumnoController extends BaseController
         if ($validator->fails()){
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }else{
-            $alumno = Alumno::find($request->id);
+            $alumno = Alumno::withTrashed()->find($request->id);
             $alumno->identificacion = $request->identificacion;        
             if($alumno->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -483,7 +483,7 @@ class AlumnoController extends BaseController
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }
-        $alumno = Alumno::find($request->id);
+        $alumno = Alumno::withTrashed()->find($request->id);
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
@@ -521,7 +521,7 @@ class AlumnoController extends BaseController
     public function updateFecha(Request $request){
 
 
-        $alumno = Alumno::find($request->id);
+        $alumno = Alumno::withTrashed()->find($request->id);
         $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
         $alumno->fecha_nacimiento = $fecha_nacimiento;
 
@@ -533,7 +533,8 @@ class AlumnoController extends BaseController
         // return redirect("alumno/edit/{$request->id}");
     }
     public function updateSexo(Request $request){
-        $alumno = Alumno::find($request->id);
+
+        $alumno = Alumno::withTrashed()->find($request->id);
         $alumno->sexo = $request->sexo;
 
         // return redirect("alumno/edit/{$request->id}");
@@ -590,7 +591,7 @@ class AlumnoController extends BaseController
     }
 
     else{
-        $alumno = Alumno::find($request->id);
+        $alumno = Alumno::withTrashed()->find($request->id);
         $correo = strtolower($request->correo);
         $alumno->correo = $correo;
 
@@ -620,7 +621,7 @@ class AlumnoController extends BaseController
 
     public function updateTelefono(Request $request){
 
-        $alumno = Alumno::find($request->id);
+        $alumno = Alumno::withTrashed()->find($request->id);
         $alumno->telefono = $request->telefono;
         $alumno->celular = $request->celular;
 
@@ -650,7 +651,7 @@ class AlumnoController extends BaseController
     }
 
     public function updateDireccion(Request $request){
-        $alumno = Alumno::find($request->id);
+        $alumno = Alumno::withTrashed()->find($request->id);
 
         $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
 
@@ -681,7 +682,7 @@ class AlumnoController extends BaseController
     }
 
     public function updateFicha(Request $request){
-        $alumno = Alumno::find($request->id);
+        $alumno = Alumno::withTrashed()->find($request->id);
         $alumno->asma = $request->asma;
         $alumno->alergia = $request->alergia;
         $alumno->convulsiones = $request->convulsiones;
@@ -691,6 +692,26 @@ class AlumnoController extends BaseController
 
        if($alumno->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateRol(Request $request){
+        
+        $alumno = Alumno::withTrashed()->find($request->id);
+
+        if($request->rol == 0){
+            $alumno->deleted_at = Carbon::now();
+        }
+        else{
+            $alumno->deleted_at = null;
+        }
+        
+        // return redirect("alumno/edit/{$request->id}");
+        if($alumno->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

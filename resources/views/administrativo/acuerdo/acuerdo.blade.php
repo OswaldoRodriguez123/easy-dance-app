@@ -353,15 +353,21 @@
   });
   // $('#someid').removeProp('readonly');
 
+  function formatmoney(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  }
+
   $( document ).ready(function() {
 
     tmp = "{{{ $acuerdo or 'Default' }}}";
 
     if(tmp == 0 && tmp != 'Default'){
 
+      totalglobal = parseFloat("{{{$total or 'Default' }}}");
+
       $("#alumno_id").val("{{{$id or 'Default' }}}");
       $('#alumno_id').selectpicker('refresh');
-      $('#total2').text("{{{$total or 'Default' }}}");
+      $("#total2").text(formatmoney(totalglobal));
       totalglobal = "{{{$total or 'Default' }}}";
 
       $('#fecha').prop('readonly', false);
@@ -582,9 +588,9 @@
       },
       error:function(msj){
         setTimeout(function(){ 
-          if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+          // if (typeof msj.responseJSON === "undefined") {
+          //                 window.location = "{{url('/')}}/error";
+          //               }
           $(".generar_acuerdo").removeAttr("disabled");
           if(msj.responseJSON.status=="ERROR"){
             console.log(msj.responseJSON.errores);
@@ -657,9 +663,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -834,9 +840,7 @@
                 scrollTop: $("#id-linea").offset().top-90,
               }, 1000);
 
-            console.log(respuesta.total);
-
-            $("#total2").text(respuesta.total);
+            $("#total2").text(formatmoney(respuesta.total));
             totalglobal = respuesta.total;
 
           }else{

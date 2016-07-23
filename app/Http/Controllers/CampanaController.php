@@ -268,6 +268,7 @@ class CampanaController extends BaseController {
             $campana->correo = $request->correo;
             $campana->nombre_banco = $request->nombre_banco;
             $campana->tipo_cuenta = $request->tipo_cuenta;
+            $campana->numero_cuenta = $request->numero_cuenta;
             $campana->rif = $request->rif;
             $campana->condiciones = $request->condiciones;
             $campana->presentacion = $request->presentacion;
@@ -716,6 +717,7 @@ class CampanaController extends BaseController {
         $campana = Campana::find($request->id);
         $campana->nombre_banco = $request->nombre_banco;
         $campana->tipo_cuenta = $request->tipo_cuenta;
+        $campana->numero_cuenta = $request->numero_cuenta;
         $campana->rif = $request->rif;
         $campana->correo = $request->correo;
 

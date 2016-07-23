@@ -215,7 +215,7 @@
 
                                     <div class="col-sm-12">
                                  
-                                    <span class="f-30 text-center c-morado">Cliente</span>
+                                    <span class="f-30 text-center c-morado" id="id-cliente">Cliente</span>
                                 
 
                                     <hr></hr>
@@ -298,7 +298,7 @@
                                     
                                     <div class="clearfix p-b-35"></div>
 
-                                    <span class="f-20 text-center">Producto o Servicio</span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Se refiere a todos aquellos servicios y productos que ofreces en tu academia, algunos ejemplos de estos  son, clases personalizadas,  clases  grupales,  secciones de asesoría, , franelas, gorras, gomas de baile entre otros,  los productos y  servicios  que deseas podrán ser agregados en la sección de configuración general en el campo llamado productos  y servicios" title="" data-original-title="Ayuda"></i>
+                                    <span class="f-20 text-center" id="id-combo">Producto o Servicio</span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Se refiere a todos aquellos servicios y productos que ofreces en tu academia, algunos ejemplos de estos  son, clases personalizadas,  clases  grupales,  secciones de asesoría, , franelas, gorras, gomas de baile entre otros,  los productos y  servicios  que deseas podrán ser agregados en la sección de configuración general en el campo llamado productos  y servicios" title="" data-original-title="Ayuda"></i>
 
                                     <!-- <hr></hr> -->
 
@@ -569,6 +569,15 @@
     // impuestoglobal = $("#impuesto option:selected").val();
     impuestoglobal = 0;
     subtotalglobal = 0;
+
+    setTimeout(function(){ 
+
+      $('html,body').animate({
+            scrollTop: $("#id-cliente").offset().top-90,
+            }, 1000);
+
+      }, 1000);
+
   });
 
   function formatmoney(n) {

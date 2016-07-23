@@ -16,19 +16,26 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
-
+@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
 <a href="{{url('/')}}/especiales/campañas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+@endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        @else
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        @endif
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                             <span class="f-16 p-t-0 text-success">Agregar una Campaña <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                        @endif
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-campana f-25"></i> Sección de Campañas</p>
                             <hr class="linea-morada">                                                         
@@ -43,7 +50,9 @@
                                     <th class="text-center" data-column-id="fecha_final" data-order="desc">Fecha Final</th>
                                     <th class="text-center" data-column-id="meta" data-order="desc">Meta</th>
                                     <th class="text-center" data-column-id="actual" data-order="desc">Actual</th>
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -57,7 +66,9 @@
                                     <td class="text-center previa">{{$campana['fecha_final']}}</td>
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
                                     <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                        <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                    @endif
                                   </tr>
                             @endforeach 
                                                            
@@ -88,6 +99,7 @@
         route_detalle="{{url('/')}}/especiales/campañas/detalle";
         route_operacion="{{url('/')}}/especiales/campañas/operaciones";
         route_eliminar="{{url('/')}}/especiales/campañas/eliminar/";
+        route_progreso="{{url('/')}}/especiales/campañas/progreso";
 
         $(document).ready(function(){
 
@@ -164,7 +176,12 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+row;
+        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
+        {
+            var route =route_detalle+"/"+row;
+        }else{
+            var route =route_progreso+"/"+row;
+        }
         window.location=route;
       }
 

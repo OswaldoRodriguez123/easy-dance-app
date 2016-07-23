@@ -215,33 +215,36 @@ class FamiliaController extends BaseController {
                 $familia_id = $familia->id;
 
                  $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
+                 $alumno = new Alumno;
+
+                $alumno->academia_id = Auth::user()->academia_id;
+                $alumno->identificacion = $request->identificacion;
+                $alumno->nombre = $nombre;
+                $alumno->apellido = $apellido;
+                $alumno->sexo = $request->sexo;
+                $alumno->fecha_nacimiento = $fecha_nacimiento;
+                $alumno->correo = $correo;
+                $alumno->telefono = $request->telefono;
+                $alumno->celular = $request->celular;
+                $alumno->direccion = $direccion;
+                $alumno->alergia = 0;
+                $alumno->asma = 0;
+                $alumno->convulsiones = 0;
+                $alumno->cefalea = 0;
+                $alumno->hipertension = 0;
+                $alumno->lesiones = 0;
+
+                $alumno->save();
+
+                $usuario->usuario_id = $alumno->id;
+                $usuario->save();
                 
 
-                if($request->rol == "1"){
+                if($request->rol == "0"){
 
-                    $alumno = new Alumno;
-
-                    $alumno->academia_id = Auth::user()->academia_id;
-                    $alumno->identificacion = $request->identificacion;
-                    $alumno->nombre = $nombre;
-                    $alumno->apellido = $apellido;
-                    $alumno->sexo = $request->sexo;
-                    $alumno->fecha_nacimiento = $fecha_nacimiento;
-                    $alumno->correo = $correo;
-                    $alumno->telefono = $request->telefono;
-                    $alumno->celular = $request->celular;
-                    $alumno->direccion = $direccion;
-                    $alumno->alergia = 0;
-                    $alumno->asma = 0;
-                    $alumno->convulsiones = 0;
-                    $alumno->cefalea = 0;
-                    $alumno->hipertension = 0;
-                    $alumno->lesiones = 0;
-
+                    $alumno->deleted_at = Carbon::now();
                     $alumno->save();
-
-                    $usuario->usuario_id = $alumno->id;
-                    $usuario->save();
 
                 }
 
@@ -286,24 +289,28 @@ class FamiliaController extends BaseController {
 
                             $alumno->save();
 
-                            $usuario = new User;
+                            if($correo){
 
-                            $usuario->academia_id = Auth::user()->academia_id;
-                            $usuario->nombre = $nombre;
-                            $usuario->apellido = $apellido;
-                            $usuario->telefono = $request->telefono;
-                            $usuario->celular = $item['celular'];
-                            $usuario->sexo = $item['sexo'];
-                            $usuario->email = $correo;
-                            $usuario->como_nos_conociste_id = 1;
-                            $usuario->direccion = $direccion;
-                            // $usuario->confirmation_token = str_random(40);
-                            $usuario->password = bcrypt(str_random(8));
-                            $usuario->usuario_id = $alumno->id;
-                            $usuario->usuario_tipo = 2;
-                            $usuario->familia_id = $familia_id;
+                                $usuario = new User;
 
-                            $usuario->save();
+                                $usuario->academia_id = Auth::user()->academia_id;
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $item['celular'];
+                                $usuario->sexo = $item['sexo'];
+                                $usuario->email = $correo;
+                                $usuario->como_nos_conociste_id = 1;
+                                $usuario->direccion = $direccion;
+                                // $usuario->confirmation_token = str_random(40);
+                                $usuario->password = bcrypt(str_random(8));
+                                $usuario->usuario_id = $alumno->id;
+                                $usuario->usuario_tipo = 2;
+                                $usuario->familia_id = $familia_id;
+
+                                $usuario->save();
+
+                            }
 
                             //     $contrasena =  $usuario->password;
                             //     $subj = $usuario->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
@@ -343,7 +350,7 @@ class FamiliaController extends BaseController {
         'apellido_participante' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento_participante' => 'required',
         'sexo_participante' => 'required',
-        'correo_participante' => 'required|email|max:255|unique:users,email, '.$request->id.'',
+        'correo_participante' => 'email|max:255|unique:users,email, '.$request->id.'',
     ];
 
     $messages = [
@@ -358,7 +365,6 @@ class FamiliaController extends BaseController {
         'apellido_participante.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo_participante.required' => 'Ups! El Sexo  es requerido ',
         'fecha_nacimiento_participante.required' => 'Ups! La fecha de nacimiento es requerida',
-        'correo_participante.required' => 'Ups! El correo  es requerido ',
         'correo_participante.email' => 'Ups! El correo tiene una dirección inválida',
         'correo_participante.max' => 'El máximo de caracteres permitidos son 255',
         'correo_participante.unique' => 'Ups! Ya este correo ha sido registrado',
@@ -451,12 +457,18 @@ class FamiliaController extends BaseController {
 
         foreach($alumnos as $alumno){
 
-
+            $representante = User::where('usuario_id', $alumno->id)->where('usuario_tipo', 4)->first();
+            if($representante){
+                $es_representante = 1;
+            }else{
+                $es_representante = 0;
+            }
             $total = ItemsFacturaProforma::where('alumno_id', '=' ,  $alumno->id)->sum('importe_neto');
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             
             $alumno_array['total']=$total;
+            $alumno_array['es_representante']=$es_representante;
             $array[$i] = $alumno_array;
 
             $i = $i + 1;

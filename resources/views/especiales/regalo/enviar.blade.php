@@ -21,6 +21,59 @@
 @stop
 @section('content')
 
+    <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title">Verificación de datos<button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div class="modal-body">
+                        <div class="row p-l-10 p-r-10">
+
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-2"><i class="icon_a-tarjeta-de-regalo f-75"></i> </div>
+                        <div class="col-sm-5"></div>
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="text-center">
+                            <span class="f-25 c-morado text-center">Verifica tu regalo</span>  
+                            <br></br>   
+                            <span class="f-16 c-morado">Revisa detalladamente la tarjeta de regalo antes de pagar</span>  
+                        </div>
+
+                        <hr></hr>
+
+                        <p><span class="f-20 f-700 opaco-0-8">Ítem o experiencia :</span> <span class="f-15 f-700 opaco-0-8" id="span_item" name="span_item"></span></p>
+
+                        <hr></hr>
+                        
+                        <p><span class="f-20 f-700 opaco-0-8">Precio del regalo :</span> <span class="f-15 f-700 opaco-0-8" id="span_precio" name="span_precio"></span></p>
+
+                        <hr></hr>
+                        
+                        <p><span class="f-20 f-700 opaco-0-8">Dirigido a :</span> <span class="f-15 f-700 opaco-0-8" id="span_dirigido" name="span_dirigido"></span></p>
+
+                        <hr></hr>
+
+                        <p><span class="f-20 f-700 opaco-0-8">Correo Electrónico :</span> <span class="f-15 f-700 opaco-0-8" id="span_correo" name="span_correo"></span></p>
+
+                        <div class="clearfix p-b-15"></div>
+
+                        <div class="text-center">
+
+                          <button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Listo <i class="zmdi zmdi-check"></i></button>
+
+                        </div>
+
+                        <div class="clearfix p-b-15"></div>
+                           
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
 
@@ -37,57 +90,43 @@
                         <div class="card-body p-b-20">
                           <form name="agregar_regalo" id="agregar_regalo"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="id" value="{{ $regalo->id }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-                                <div class="col-sm-12">
-                                 
-                                    <label for="nombre" id="id-nombre"> Ítem o experiencia </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe el tipo de regalo de que deseas obsequiar relacionado a los servicios que ofrece tu academia" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a icon_a-tarjeta-de-regalo f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Inscripcion y Mensualidad">
-                                      </div>
-                                    </div>
-                                 <div class="has-error" id="error-nombre">
-                                      <span >
-                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-                               <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
                                     
-                                      <label for="fecha_inicio" id="id-costo"> Precio del regalo </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor en moneda que deseas obsequiar" title="" data-original-title="Ayuda"></i>
+                                      <label for="fecha_inicio" id="id-dirigido_a"> Dirigido a </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la persona a quien va dirigido el regalo" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                      <span class="input-group-addon"><i class="zmdi zmdi-long-arrow-right zmdi-hc-fw f-22"></i></span>
                                       <div class="dtp-container fg-line">
-                                              <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" placeholder="Ej. 2500">
+                                              <input name="dirigido_a" id="dirigido_a" class="form-control" placeholder="Ej. Valeria Sanchez" type="text">
                                           </div>
 
                                     </div>
-                                    <div class="has-error" id="error-costo">
+                                    <div class="has-error" id="error-dirigido_a">
                                         <span >
-                                            <small class="help-block error-span" id="error-costo_mensaje" ></small>                                           
+                                            <small class="help-block error-span" id="error-dirigido_a_mensaje" ></small>                                           
                                         </span>
                                     </div>
                                 </div>
+
                                 <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="nombre" id="id-descripcion"> Descripción </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Diseña algún mensaje especial que deseas incluir en tu tarjeta de regalo" title="" data-original-title="Ayuda"></i>
+                                <div class="col-sm-12">
 
-                                    <br></br>
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico de la persona a la que le emitirás el regalo" title="" data-original-title="Ayuda"></i>
 
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="500 Caracteres"></textarea>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
+                                      </div>
                                     </div>
-                                 <div class="has-error" id="error-descripcion">
+                                 <div class="has-error" id="error-correo">
                                       <span >
-                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -110,7 +149,7 @@
                             
                             <div class="col-sm-12 text-left">    
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar">Dar Regalo</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 verificar" id="verificar">Dar Regalo</button>
 
                           <!--     <button type="button" class="btn btn-blanco m-r-10 f-18" data-toggle="modal" href="#modalAgregar">Dar Regalo</button> -->
 
@@ -146,8 +185,8 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/especiales/regalos/agregar";
-  route_principal="{{url('/')}}/especiales/regalos";
+  route_agregar="{{url('/')}}/especiales/regalos/enviar";
+  route_verificar="{{url('/')}}/especiales/regalos/verificar";
   
   $(document).ready(function(){
         document.getElementById("nombre").focus();
@@ -171,7 +210,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["nombre", "costo", "descripcion"];
+    var campo = ["dirigido_a", "correo"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -256,10 +295,9 @@
             };
 
 
-  $("#guardar").click(function(){
+  $("#verificar").click(function(){
 
-                procesando();
-                var route = route_agregar;
+                var route = route_verificar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_regalo" ).serialize(); 
                 $("#guardar").attr("disabled","disabled");
@@ -270,6 +308,7 @@
                 $(".procesando").removeClass('hidden');
                 $(".procesando").addClass('show');         
                 limpiarMensaje();
+                procesando();
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -284,11 +323,12 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          $("#agregar_regalo")[0].reset();
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-                          window.location = route_principal;
+                          // var nType = 'success';
+                          // $("#agregar_regalo")[0].reset();
+                          // var nTitle="Ups! ";
+                          // var nMensaje=respuesta.mensaje;
+                          // window.location = "{{url('/')}}/participante/alumno/deuda/" + respuesta.id;
+                          $('#modalAgregar').modal('show');
 
                         }else{
                           var nTitle="Ups! ";
@@ -297,14 +337,14 @@
                         }                       
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
+                        finprocesado();
                         $("#guardar").removeAttr("disabled");
-                        // finprocesado();
                         $("#guardar").css({
                           "opacity": ("1")
                         });
                         $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                       }, 1000);
                     },
                     error:function(msj){
@@ -341,8 +381,93 @@
                 });
             });
 
+  $("#guardar").click(function(){
+
+                procesando();
+                var route = route_agregar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#agregar_regalo" ).serialize(); 
+                $("#guardar").attr("disabled","disabled");
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nType = 'success';
+                          $("#agregar_regalo")[0].reset();
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          window.location = "{{url('/')}}/administrativo";
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        // finprocesado();
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
       function limpiarMensaje(){
-        var campo = ["nombre", "costo", "descripcion"];
+        var campo = ["dirigido_a", "correo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -350,7 +475,7 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "costo", "descripcion"];
+      var campo = ["dirigido_a", "correo"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -375,11 +500,20 @@
         $("#agregar_regalo")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-nombre").offset().top-90,
+        scrollTop: $("#id-dirigido_a").offset().top-90,
         }, 800);
-        document.getElementById("nombre").focus();
+        document.getElementById("dirigido_a").focus();
       });
 
+    $('#modalAgregar').on('show.bs.modal', function (event) {
+
+      nombre = "{{$regalo->nombre}}";
+      costo = "{{$regalo->costo}}";
+      $("#span_item").text(nombre); 
+      $("#span_precio").text(costo);
+      $("#span_dirigido").text($("#dirigido_a").val());
+      $("#span_correo").text($("#correo").val());   
+    })
 </script> 
 @stop
 

@@ -924,7 +924,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($campana->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Imagen </span>
+                               <span class="f-14"> Imagen principal de la campaña </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="campana-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>

@@ -11,6 +11,7 @@ use App\Academia;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DB;
+use Mail;
 
 class SucursalController extends Controller
 {
@@ -64,7 +65,8 @@ class SucursalController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
-
+        $request->merge(array('email' => trim($request->email)));
+        $request->merge(array('email_confirmation' => trim($request->email_confirmation)));
 
         $rules = [
 
@@ -123,12 +125,29 @@ class SucursalController extends Controller
             $usuario->nombre = $nombre;
             $usuario->email = strtolower($request->email);
             $usuario->como_nos_conociste_id = 1;
-            // $usuario->confirmation_token = str_random(40);
+            $usuario->confirmation_token = str_random(40);
             $usuario->password = bcrypt($request->password);
             $usuario->usuario_tipo = 5;
 
             if($usuario->save())
             {
+
+                // $link = Autologin::user($usuario);
+                //$link = Autologin::to($usuario, '/inicio');
+                $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
+
+                $array = [
+                   'nombre' => $usuario->nombre,
+                   'email' => $usuario->email,
+                   'link' => $link,
+                   'contrasena' => $request->password
+                ];
+
+                Mail::send('correo.sucursal', $array, function($msj) use ($array){
+                        $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
+                        $msj->to($array['email']);
+                    });
+
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);   
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

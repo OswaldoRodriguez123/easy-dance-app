@@ -65,6 +65,38 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
                                 </li>
+
+                                @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5))
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('/')}}/agendar"><i class="zmdi zmdi-calendar-check"></i> Calendario</a>
+                                    </li>
+
+                                     {{-- <li class="hidden-xs">
+                                        <a href=""><i class="zmdi zmdi-help"></i> Ayuda</a>
+                                    </li> --}}
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
+                                    </li>
+                                    <li class="hidden-xs">
+                                        <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
+                                    </li>
+                                    {{-- <li class="hidden-xs">
+                                        <a href="{{url('configuracion/coreografias')}}"><i class="icon_d-coreografia f-16"></i>&nbsp;&nbsp;&nbsp;&nbsp; Coreografías</a>
+                                    </li> --}}
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-16"></i> Productos</a>
+                                    </li>
+                                @endif 
+
+                                @if(Auth::user()->usuario_tipo == 1)
+        
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/sucursales')}}"><i class="zmdi zmdi-city zmdi-hc-fw p-r-5 f-16"></i> Sucursales</a>
+                                    </li>
+                                @endif
+
                                 <li>
                                     <a href="{{url('/')}}/logout"><i class="zmdi zmdi-time-restore"></i> Cerrar Sesión</a>
                                 </li>
@@ -100,15 +132,15 @@
                                 </li>
 
                         @endif -->
+<!-- 
+                        @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)) -->
 
-                        @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5))
-
-                        <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
+                        <!-- <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                             <a href="{{url('/')}}/agendar">
                                 <i class="tm-icon zmdi zmdi-calendar-check f-18 f-18"></i>
                             </a>
-                        </li>
-
+                        </li> -->
+<!-- 
                         <li class="dropdown" data-original-title="" data-content="Configuración" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600">
                             <a data-toggle="dropdown" href="#" id="menuTopConfig">
                                 <i class="tm-icon zmdi zmdi-settings f-18"></i>
@@ -140,7 +172,7 @@
                                 
                             </ul>
 
-                        </li> 
+                        </li>  -->
 
 
                             <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >

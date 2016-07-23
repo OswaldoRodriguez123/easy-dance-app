@@ -646,7 +646,7 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos del Administrador</p>
+                              <p class="text-center opaco-0-8 f-22">Datos del Usuario</p>
                           </div>
 
                           <div class="col-sm-12">

@@ -133,7 +133,7 @@
                                   
                         <ul id="sti-menu3" class="sti-menu roww">
                     
-                                <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/regalos/agregar"><h2 data-type="mText" class="sti-item">Tarjeta de Regalo </h2><span data-type="icon" class="sti-icon sti-icon-tjregalo sti-item"></span></a></li>
+                                <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/regalos"><h2 data-type="mText" class="sti-item">Tarjeta de Regalo </h2><span data-type="icon" class="sti-icon sti-icon-tjregalo sti-item"></span></a></li>
           
                                 <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/campañas"><h2 data-type="mText" class="sti-item">Campaña</h2><span data-type="icon" class="sti-icon sti-icon-campana sti-item"></span></a></li>
                     

@@ -21,6 +21,7 @@ use App\Campana;
 use App\InscripcionClaseGrupal;
 use App\ItemsFacturaProforma;
 use App\Paises;
+use App\Regalo;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -64,10 +65,16 @@ class AcademiaConfiguracionController extends BaseController {
             ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
-             return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); ; 
+             return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->count() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->count()]); 
         }
                            
 	}
+
+    public function menu(){
+
+        return view('menu.index');
+        
+    }
 
     public function principal()
     {
@@ -1120,7 +1127,7 @@ class AcademiaConfiguracionController extends BaseController {
                                     ->where('clases_grupales.deleted_at', '=', null)
                                 ->get();
 
-                                    return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); 
+                                    return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->count() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->count()]);
        
                                 }
     }

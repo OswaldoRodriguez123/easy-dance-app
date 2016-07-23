@@ -61,7 +61,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="factura" data-order="asc">#</th>
+                                    <th class="text-center" data-column-id="factura" data-order="asc">&nbsp;&nbsp;#&nbsp;&nbsp;</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="fecha" id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="total">Total</th>
@@ -226,7 +226,7 @@
             $.each(factura, function (index, array) {
 
                 var rowNode=t.row.add( [
-                ''+array.factura+'',
+                ''+pad(array.factura, 10)+'',
                 ''+array.concepto+'',
                 ''+array.fecha+'',
                 ''+formatmoney(array.total)+''
@@ -342,6 +342,11 @@
                                 }
                 });
       }
+
+      function pad (str, max) {
+      str = str.toString();
+      return str.length < max ? pad("0" + str, max) : str;
+    }
 
         </script>
 

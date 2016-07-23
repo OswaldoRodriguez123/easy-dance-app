@@ -18,6 +18,11 @@
 <script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 @stop
 
+<meta content='{{$campana->nombre}}' property='og:title'/>
+@if($campana->imagen)
+<meta content="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" property='og:image'/>
+@endif
+
 @section('content')
 
 
@@ -251,6 +256,7 @@
             <ul class="tab-nav tn-justified" role="tablist">
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Campaña</a></li>
                 <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Patrocinadores</a></li>
+                <li class="waves-effect"><a href="#datos" aria-controls="datos" role="tab" data-toggle="tab">Datos Bancarios</a></li>
                 <li class="waves-effect"><a href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">Sobre Easy Dance</a></li>
 
             </ul>
@@ -402,6 +408,60 @@
 
                     </div>
                     
+                </div>
+
+                <div role="tabpanel" class="tab-pane animated fadeInUp in" id="datos">
+
+                 <div class="pmb-block m-t-0 p-t-0">
+
+                        <p class="text-left f-30 opaco-0-8 f-700" >Datos Bancarios</p>
+
+                          <hr class='linea-morada'>
+
+                        <div class="col-sm-12">
+                                 
+                                    <label for="nombre">Nombre del banco</label> <br>
+                                    <span class="f-15">{{$campana->nombre_banco}}</span>
+
+                               </div>
+
+                              <div class="clearfix p-b-35"></div>
+                                    <div class="col-sm-12">
+                                    
+                                    <label for="nombre">Tipo de Cuenta</label> <br>
+                                    <span class="f-15">{{$campana->tipo_cuenta}}</span>
+
+                                 
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+
+                                    <label for="nombre">Número de Cuenta</label> <br>
+                                    <span class="f-15">{{$campana->numero_cuenta}}</span>
+
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+
+                                    <label for="nombre">Rif - Cédula</label> <br>
+                                    <span class="f-15">{{$campana->rif}}</span>
+
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+
+                                    <label for="nombre">Correo Electrónico</label> <br>
+                                    <span class="f-15">{{$campana->correo}}</span>
+
+                               </div>
+
+                    </div>
+
                 </div>
 
 

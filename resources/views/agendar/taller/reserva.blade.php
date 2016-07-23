@@ -18,6 +18,11 @@
 <script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 @stop
 
+<meta content='{{$taller->taller_nombre}}' property='og:title'/>
+@if($taller->imagen)
+<meta content="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" property='og:image'/>
+@endif
+
 @section('content')
 
 <div class="container">
@@ -73,7 +78,29 @@
                               <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
                                 <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentaje}}%;"></div>
                               </div>
-                              <p class="text-center f-700" >{{$porcentaje}} % Inscritos</p>                            
+                              <p class="text-center f-700" >{{$porcentaje}} % Inscritos</p>
+
+                              <style type="text/css">
+                                @import url(http://fonts.googleapis.com/css?family=Comfortaa);
+                                #my-soon-watch-red {background-color:#030303;}
+                                #my-soon-watch-red .soon-reflection {background-color:#030303;background-image:linear-gradient(#030303 25%,rgba(3,3,3,0));}
+                                #my-soon-watch-red {color:#ffffff;}
+                                #my-soon-watch-red .soon-label {color:#ffffff;color:rgba(255,255,255,0.75);}
+                                #my-soon-watch-red {font-family:"Comfortaa",sans-serif;}
+                                #my-soon-watch-red .soon-ring-progress {background-color:#410918;}
+                                #my-soon-watch-red .soon-ring-progress {border-top-width:14px;}
+                                #my-soon-watch-red .soon-ring-progress {border-bottom-width:13px;}
+                            </style>
+                            <div class="soon" id="my-soon-watch-red"
+                                 data-layout="group tight label-uppercase label-small"
+                                 data-format="d,h,m,s"
+                                 data-face="slot"
+                                 data-padding="false"
+                                 data-visual="ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0">
+                            </div>     
+
+                            <div class="clearfix p-b-15"></div>
+
                       <div style="border: 1px solid;">
                         <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Datos Generales</div>
                           <div class="col-sm-12">
@@ -320,14 +347,15 @@
             $(document).ready(function() {
 
 
-              // create a more advanced counter
-              // $(".your-advanced-counter").soon({
-              //     due:"2015-11-25",
-              //     layout:"group tight",
-              //     face:"flip color-light corners-sharp shadow-soft",
-              //     separateChars:false,
-              //     eventComplete:function(){ alert("done!"); }
-              // });
+              $(".soon").soon({
+                  due:"{{$taller->fecha_inicio}}",
+                  //layout:"group"
+                  layout:"group tight label-uppercase label-small",
+                  format:"d,h,m,s",
+                  face:"slot",
+                  padding:"false",
+                  visual:"ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0"
+              });
 
               if("{{$porcentaje}}" >= 100){
                 $("#barra-progreso").removeClass('progress-bar-morado');

@@ -423,15 +423,18 @@ class AdministrativoController extends BaseController {
 
             if($factura){
 
-                $numero_factura = $factura->numero_factura + 1;
+                $tmp = $factura->numero_factura + 1;
+                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
             else{
 
                 if($academia->numero_factura){
-                    $numero_factura = $academia->numero_factura;
+                    $tmp = $academia->numero_factura;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 else{
-                    $numero_factura = 1;
+                    $tmp = 1;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 
             }
@@ -445,7 +448,7 @@ class AdministrativoController extends BaseController {
             $acuerdos_pendientes = DB::table('items_factura_proforma')
             ->select('items_factura_proforma.*')
             ->where('alumno_id', '=', $alumno_id )
-            ->where('tipo' , '=', 'Acuerdo')
+            ->where('tipo' , '=', 6)
             ->get();
 
             if($acuerdos_pendientes){
@@ -499,15 +502,18 @@ class AdministrativoController extends BaseController {
 
             if($factura){
 
-                $numero_factura = $factura->numero_factura + 1;
+                $tmp = $factura->numero_factura + 1;
+                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
             else{
 
                 if($academia->numero_factura){
-                    $numero_factura = $academia->numero_factura;
+                    $tmp = $academia->numero_factura;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 else{
-                    $numero_factura = 1;
+                    $tmp = 1;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 
             }
@@ -630,17 +636,20 @@ class AdministrativoController extends BaseController {
         ->first();
 
         if($numerofactura){
-           $numero_factura = $numerofactura->numero_factura + 1;
+           $tmp = $numerofactura->numero_factura + 1;
+           $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
         }
         else
         {
             $academia = Academia::find(Auth::user()->academia_id);
                 
                 if($academia->numero_factura){
-                    $numero_factura = $academia->numero_factura;
+                    $tmp = $academia->numero_factura;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 else{
-                    $numero_factura = 1;
+                    $tmp = 1;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
         }
 
@@ -922,7 +931,7 @@ class AdministrativoController extends BaseController {
             $acuerdos_pendientes = DB::table('items_factura_proforma')
             ->select('items_factura_proforma.*')
             ->where('alumno_id', '=', $id)
-            ->where('tipo' , '=', 'Acuerdo')
+            ->where('tipo' , '=', 6)
             ->get();
 
             if($acuerdos_pendientes){
@@ -1796,6 +1805,20 @@ class AdministrativoController extends BaseController {
 
     }
 
+    public function eliminaracuerdo($id)
+    {
+        $items_acuerdo = ItemsFacturaProforma::where('item_id',$id)->where('tipo', 6)->delete();
+
+        $acuerdo = Acuerdo::find($id);
+        
+        if($acuerdo->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno");
+    }
+
         public function getFactura($id){
         //DATOS DE ENCABEZADO
         
@@ -1926,6 +1949,73 @@ class AdministrativoController extends BaseController {
                 ]);
     }
 
+    public function detalleacuerdo($id){
+        //DATOS DE ENCABEZADO
+        
+        $acuerdo = Acuerdo::find($id);
+        $alumno = DB::table('acuerdos')->join('alumnos', 'acuerdos.alumno_id','=','alumnos.id')
+                            ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido', 'alumnos.identificacion AS dni', 'alumnos.direccion AS direccion', 'alumnos.telefono AS telefono', 'alumnos.correo AS email')
+                            ->where('acuerdos.id','=',$id)
+                            ->first();
+
+        $academia = DB::table('acuerdos')
+                            ->join('academias', 'acuerdos.academia_id','=','academias.id')
+                            ->join('paises', 'academias.pais_id','=','paises.id')
+                            ->select('academias.nombre AS academia_nombre', 'academias.direccion AS academia_direccion', 'academias.telefono AS academia_telefono', 'academias.correo AS academia_email', 'paises.nombre as academia_pais', 'academias.imagen as imagen_academia', 'academias.porcentaje_impuesto')
+                            ->where('acuerdos.id','=',$id)
+                            ->first();
+
+        $PerctIVA = 0;
+                            
+
+        // $subtotales = DB::table('facturas')->join('items_factura','facturas.id','=','items_factura.factura_id')
+        //             ->select('items_factura.precio_neto AS subtotal')
+        //             ->where('facturas.id','=',$id)
+        //             ->sum('items_factura.importe_neto');
+
+        // $IvaBs = ($subtotales * $PerctIVA)/100;
+        // $subtotales = $subtotales - $IvaBs;
+        // $total = $subtotales + $IvaBs;
+
+        // $IvaBs = ($subtotales * $PerctIVA)/100;
+
+        // $total = $subtotales + $IvaBs;
+
+        $subtotal = 0;
+        $impuesto = 0;
+
+        //DATOS DE DETALLE
+        $detalle = ItemsFacturaProforma::select('id', 'item_id', 'nombre', 'tipo', 
+                                        'cantidad', 'precio_neto', 'impuesto', 'importe_neto')
+                                ->where('tipo','=', 6)
+                                ->where('item_id','=',$id)
+                                ->get();
+
+        foreach($detalle as $tmp){
+
+            $subtotal = $subtotal + $tmp->importe_neto;
+            if($tmp->impuesto != 0){
+                $impuesto = $impuesto + ($tmp->importe_neto * ($tmp->impuesto / 100));
+                $subtotal = $subtotal - $impuesto;
+                $PerctIVA = $academia->porcentaje_impuesto;
+                
+            }
+        }
+
+        $total = $subtotal + $impuesto;
+
+        return view('administrativo.acuerdo.planilla')->with([
+                'facturas'          => $acuerdo, 
+                'alumno'            => $alumno, 
+                'academia'          => $academia, 
+                'subtotal'          => $subtotal, 
+                'iva'               => $impuesto, 
+                'total'             => $total, 
+                'porcentajeIVA'     => $PerctIVA,
+                'detalleFactura'    => $detalle 
+                ]);
+    }
+
 
 	/**
 	 * Display the specified resource.
@@ -1999,7 +2089,7 @@ class AdministrativoController extends BaseController {
             $acuerdos_pendientes = DB::table('items_factura_proforma')
             ->select('items_factura_proforma.*')
             ->where('alumno_id', '=', $id)
-            ->where('tipo' , '=', 'Acuerdo')
+            ->where('tipo' , '=', 6)
             ->get();
 
             if($acuerdos_pendientes){
@@ -2063,15 +2153,18 @@ class AdministrativoController extends BaseController {
 
             if($factura){
 
-                $numero_factura = $factura->numero_factura + 1;
+                $tmp = $factura->numero_factura + 1;
+                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
             else{
 
                 if($academia->numero_factura){
-                    $numero_factura = $academia->numero_factura;
+                    $tmp = $academia->numero_factura;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 else{
-                    $numero_factura = 1;
+                    $tmp = 1;
+                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
                 }
                 
             }

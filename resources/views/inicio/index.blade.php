@@ -232,7 +232,7 @@
               <text Style="margin-left:23%; auto;">Despega</text>
               <text Style="margin-left:24%; auto;">Difúndelo</text> -->
               <div style="margin-top: -40px;">
-              <img style="display:block; height:70px; width:800px; margin:60px auto 0; background-repeat:no-repeat;"  src="{{url('/')}}/assets/img/menu-/d36.png"  />
+              <img style="display:block; height:70px; width:800px; margin:60px auto 0; background-repeat:no-repeat;"  class="img-responsive" src="{{url('/')}}/assets/img/menu-/d36.png"  />
               </div>
                 <div class="i-stage-dream-header" Style="margin-top:100px;">
                   

@@ -29,7 +29,7 @@
                 <div class="container invoice">
 
                     <div class="block-header">
-                        <h2>Factura <!--<small>Print ready simple and sleek invoice template. Please use Google Chrome or any other Webkit browsers for better printing.</small>--></h2>
+                        <h2>Acuerdo <!--<small>Print ready simple and sleek invoice template. Please use Google Chrome or any other Webkit browsers for better printing.</small>--></h2>
                 
                         <!-- <ul class="actions">
                             <li>
@@ -59,8 +59,10 @@
                     </div>
                     
                     <div class="card">
-                        <div class="card-header ch-alt text-center">
+                        <div class="card-header text-center header-invoice">
                             @if ($academia->imagen_academia)
+                            <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+                            @else
                             <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
                             @endif
                         </div>
@@ -69,7 +71,7 @@
                             <div class="row m-b-25">
                                 <div class="col-xs-6">
                                     <div class="text-right">
-                                        <p class="c-gray">Factura de</p>
+                                        <p class="c-gray">Acuerdo de</p>
                                         
                                         <h4>{{ $academia->academia_nombre }}</h4>
                                         
@@ -87,7 +89,7 @@
                                 
                                 <div class="col-xs-6">
                                     <div class="i-to">
-                                        <p class="c-gray">Factura para</p>
+                                        <p class="c-gray">Acuerdo para</p>
                                         
                                         <h4>{{ $alumno->alumno_nombre }} {{ $alumno->alumno_apellido }}</h4>
                                         
@@ -109,8 +111,8 @@
                             <div class="row m-t-25 p-0 m-b-25">
                                 <div class="col-xs-3">
                                     <div class="bgm-amber brd-2 p-15">
-                                        <div class="c-white m-b-5">Número de Factura</div>
-                                        <h4 class="m-0 c-white f-300">{!! str_pad($facturas->numero_factura, 10, "0", STR_PAD_LEFT) !!}</h4>
+                                        <div class="c-white m-b-5">Número de Acuerdo</div>
+                                        <h4 class="m-0 c-white f-300">{!! $facturas->id !!}</h4>
                                     </div>
                                 </div>
                                 
@@ -156,12 +158,12 @@
                                         
                                       <?php $id = $detalle->item_id ?>
                                         <tr id="row_{{$id}}" class="seleccion" >
-                                            <td class="text-center disabled">{{ $detalle->item_id }}</td>
-                                            <td class="disabled">{!! $detalle->nombre !!}</td>
-                                            <td class="disabled">{{ $detalle->cantidad }}</td>
-                                            <td class="disabled">Bs {{ number_format($detalle->importe_neto,2,",",".") }}</td>
-                                            <td class="disabled">% {{$detalle->impuesto}} </td>
-                                            <td class="highlight disabled">Bs {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
+                                            <td class="text-center previa">{{ $detalle->id }}</td>
+                                            <td class="">{!! $detalle->nombre !!}</td>
+                                            <td class="">{{ $detalle->cantidad }}</td>
+                                            <td class="">Bs {{ number_format($detalle->importe_neto,2,",",".") }}</td>
+                                            <td class="">% {{$detalle->impuesto}} </td>
+                                            <td class="highlight">Bs {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
                                             <!--<td class="text-center previa"><label class="label label-success f-13">Activo</label></td>
                                             <td class="text-center previa"><label class="label label-success f-13">Bien</label></td>-->
                                             <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-wrench f-20 p-r-10 operacionModal"></i></td>-->
@@ -170,7 +172,7 @@
                                     @endforeach 
                                         <tr>
                                             <td colspan="4"></td>
-                                            <td> TOTAL FACTURA </td>
+                                            <td> TOTAL ACUERDO </td>
                                             <td class="highlight">Bs {{ number_format($total,2,",",".") }}</td>
                                         </tr>
                                     </thead>

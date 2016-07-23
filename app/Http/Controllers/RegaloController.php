@@ -25,7 +25,7 @@ class RegaloController extends BaseController {
     public function index()
     {
 
-        return view('especiales.regalo.index')->with('regalo', Regalo::all());
+        return view('especiales.regalo.principal')->with('regalos', Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
     }
 
     /**
@@ -36,7 +36,7 @@ class RegaloController extends BaseController {
 
     public function create()
     {
-        return view('especiales.regalo.create')->with('alumnos' , Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        return view('especiales.regalo.create');
     }
 
     /**
@@ -55,25 +55,25 @@ class RegaloController extends BaseController {
         'nombre' => 'required|min:3|max:50',
         'costo' => 'required',
         'descripcion' => 'required|min:3|max:500',
-        'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'alumno_id' => 'required',
-        'correo' => 'required|email',
+        // 'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        // 'alumno_id' => 'required',
+        // 'correo' => 'required|email',
     ];
 
     $messages = [
 
         'nombre.required' => 'Ups! El Nombre es requerido ',
-        'correo.required' => 'Ups! El Correo es requerido ',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
         'nombre.max' => 'El máximo de caracteres permitidos son 50',
         'descripcion.required' => 'Ups! La Descripcion es requerida',
         'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
         'descripcion.max' => 'El máximo de caracteres permitidos son 500',
         'costo.required' => 'Ups! El Costo es requerido',
-        'alumno_id.required' => 'Ups! El campo “de parte de” es requerido',
-        'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
-        'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
+        // 'correo.required' => 'Ups! El Correo es requerido ',
+        // 'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        // 'alumno_id.required' => 'Ups! El campo “de parte de” es requerido',
+        // 'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
+        // 'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -88,56 +88,55 @@ class RegaloController extends BaseController {
 
         $regalo = new Regalo;
 
-        $costo = str_replace(".", "", $request->costo);
-        $correo = strtolower($request->correo);
+        // $correo = strtolower($request->correo);
 
         $regalo->academia_id = Auth::user()->academia_id;
         $regalo->nombre = $request->nombre;
         $regalo->descripcion = $request->descripcion;
-        $regalo->costo = $costo;
-        $regalo->dirigido_a = $request->dirigido_a;
-        $regalo->de_parte_de = $request->alumno_id;
-        $regalo->correo = $correo;
+        $regalo->costo = $request->costo;
+        // $regalo->dirigido_a = $request->dirigido_a;
+        // $regalo->de_parte_de = $request->alumno_id;
+        // $regalo->correo = $correo;
 
         if($regalo->save()){
 
-            $academia = Academia::find(Auth::user()->academia_id);
+            // $academia = Academia::find(Auth::user()->academia_id);
 
-            $subj = 'FELICIDADES, HAS RECIBIDO UNA TARJETA DE REGALO';
+            // $subj = 'FELICIDADES, HAS RECIBIDO UNA TARJETA DE REGALO';
 
-            $alumno = Alumno::find($request->alumno_id);
+            // $alumno = Alumno::find($request->alumno_id);
 
-            $array = [
+            // $array = [
 
-               'correo' => $request->correo,
-               'academia' => $academia->nombre,
-               'dirigido_a' => $request->dirigido_a,
-               'de_parte_de' => $alumno->nombre . " " . $alumno->apellido,
-               'subj' => $subj
-            ];
+            //    'correo' => $request->correo,
+            //    'academia' => $academia->nombre,
+            //    'dirigido_a' => $request->dirigido_a,
+            //    'de_parte_de' => $alumno->nombre . " " . $alumno->apellido,
+            //    'subj' => $subj
+            // ];
 
-            Mail::send('correo.regalo', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-                });
+            // Mail::send('correo.regalo', $array, function($msj) use ($array){
+            //         $msj->subject($array['subj']);
+            //         $msj->to($array['correo']);
+            //     });
 
-            $item_factura = new ItemsFacturaProforma;
+            // $item_factura = new ItemsFacturaProforma;
                     
-                $item_factura->alumno_id = $request->alumno_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $regalo->id;
-                $item_factura->nombre = 'Regalo para ' . $regalo->dirigido_a;
-                $item_factura->tipo = 10;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $regalo->costo;
-                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+            //     $item_factura->alumno_id = $request->alumno_id;
+            //     $item_factura->academia_id = Auth::user()->academia_id;
+            //     $item_factura->fecha = Carbon::now()->toDateString();
+            //     $item_factura->item_id = $regalo->id;
+            //     $item_factura->nombre = 'Regalo para ' . $regalo->dirigido_a;
+            //     $item_factura->tipo = 10;
+            //     $item_factura->cantidad = 1;
+            //     $item_factura->precio_neto = 0;
+            //     $item_factura->impuesto = 0;
+            //     $item_factura->importe_neto = $regalo->costo;
+            //     $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
                     
-                $item_factura->save();
+            //     $item_factura->save();
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -153,26 +152,15 @@ class RegaloController extends BaseController {
 
 
     $rules = [
-        'nombre' => 'required|min:3|max:50',
-        'costo' => 'required',
-        'descripcion' => 'required|min:3|max:500',
+        
         'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'alumno_id' => 'required',
         'correo' => 'required|email',
     ];
 
     $messages = [
 
-        'nombre.required' => 'Ups! El Nombre es requerido ',
         'correo.required' => 'Ups! El Correo es requerido ',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 50',
-        'descripcion.required' => 'Ups! La Descripcion es requerida',
-        'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
-        'descripcion.max' => 'El máximo de caracteres permitidos son 500',
-        'costo.required' => 'Ups! El Costo es requerido',
-        'alumno_id.required' => 'Ups! El campo “de parte de” es requerido',
         'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
         'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
     ];
@@ -191,6 +179,117 @@ class RegaloController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
 
     }
+    }
+
+    public function updateNombre(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:3|max:40',
+        ];
+
+        $messages = [
+
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 40',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+
+        else{
+
+            $regalo = Regalo::find($request->id);
+
+            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+
+            $regalo->nombre = $nombre;
+
+            if($regalo->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+            // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
+    public function updateDescripcion(Request $request){
+
+        $rules = [
+            'descripcion' => 'required|min:3|max:1000',
+        ];
+
+        $messages = [
+
+            'descripcion.required' => 'Ups! La Descripción es requerida',
+            'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
+            'descripcion.max' => 'El máximo de caracteres permitidos son 1000',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $regalo = Regalo::find($request->id);
+
+            $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        
+            $regalo->descripcion = $request->descripcion;
+
+            if($regalo->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+            // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
+    public function updateCosto(Request $request){
+
+        $rules = [
+            'costo' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'costo.required' => 'Ups! El costo es requerido',
+            'costo.numeric' => 'Ups! El costo es inválido, debe contener sólo números',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $regalo = Regalo::find($request->id);
+            $regalo->costo = $request->costo;
+
+            if($regalo->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+        // return redirect("alumno/edit/{$request->id}");
     }
 
     /**
@@ -212,8 +311,107 @@ class RegaloController extends BaseController {
      */
     public function edit($id)
     {
-        $instructor = Instructor::find($id);
-        return view('instructor.editar')->with('instructor', $instructor);
+        // $visitante_presencial_join = DB::table('visitantes_presenciales')
+        //     ->join('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+        //     ->select('config_especialidades.nombre as especialidad_nombre')
+        //     ->get();
+
+        $regalo = Regalo::find($id);
+
+        if($regalo){
+           return view('especiales.regalo.planilla')->with(['regalo' => $regalo]);
+        }else{
+           return redirect("especiales/regalos"); 
+        }
+    }
+
+    public function CrearRegaloUsuario($id)
+    {
+        $regalo = Regalo::find($id);
+
+        if($regalo){
+           return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);
+        }else{
+           return redirect("especiales/regalos"); 
+        }
+    }
+
+    public function EnviarRegaloUsuario(Request $request)
+    {
+        //dd($request->all());
+
+        $request->merge(array('correo' => trim($request->correo)));
+
+
+    $rules = [
+
+        'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'correo' => 'required|email',
+    ];
+
+    $messages = [
+
+        'correo.required' => 'Ups! El Correo es requerido ',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
+        'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $regalo = Regalo::find($request->id);
+
+        $item_factura = new ItemsFacturaProforma;
+                    
+        $item_factura->alumno_id = Auth::user()->usuario_id;
+        $item_factura->academia_id = Auth::user()->academia_id;
+        $item_factura->fecha = Carbon::now()->toDateString();
+        $item_factura->item_id = $regalo->id;
+        $item_factura->nombre = 'Regalo para ' . $request->dirigido_a;
+        $item_factura->tipo = 10;
+        $item_factura->cantidad = 1;
+        $item_factura->precio_neto = 0;
+        $item_factura->impuesto = 0;
+        $item_factura->importe_neto = $regalo->costo;
+        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                    
+
+        if($item_factura->save()){
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            $subj = 'FELICIDADES, HAS RECIBIDO UNA TARJETA DE REGALO';
+
+            $array = [
+
+               'correo' => $request->correo,
+               'academia' => $academia->nombre,
+               'dirigido_a' => $request->dirigido_a,
+               'de_parte_de' => Auth::user()->nombre . " " . Auth::user()->apellido,
+               'subj' => $subj
+            ];
+
+            Mail::send('correo.regalo', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
+
+            
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
     }
 
     /**
@@ -235,9 +433,15 @@ class RegaloController extends BaseController {
      */
     public function destroy($id)
     {
+
         $regalo = Regalo::find($id);
-        $regalo->delete();
-        return view('especiales.regalo.index');
+            
+        if($regalo->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El Regalo se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+       
     }
 
 }

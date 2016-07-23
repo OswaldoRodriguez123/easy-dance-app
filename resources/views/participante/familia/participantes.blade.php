@@ -31,8 +31,8 @@
                                <div class="col-sm-6">
                                 <div class="form-group">
                                     <div class="form-group fg-line">
-                                        <label for="id" id="id-identificacion">Id - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
-                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" placeholder="Ej. 16234987">
+                                        <label for="id" id="id-identificacion">Id - Pasaporte</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
+                                        <input type="text" class="form-control input-sm" data-mask="0000000000" name="identificacion" id="identificacion" placeholder="Ej. 16234987">
                                     </div>
                                     <div class="has-error" id="error-identificacion">
                                       <span >
@@ -43,7 +43,7 @@
                                </div>
                                <div class="col-sm-6">
                                  <div class="form-group fg-line">
-                                    <label for="nombre" id="id-nombre">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante" title="" data-original-title="Ayuda"></i>
                                     <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Valeria">
                                  </div>
                                  <div class="has-error" id="error-nombre">
@@ -58,7 +58,7 @@
 
                                <div class="col-sm-6">
                                  <div class="form-group fg-line">
-                                    <label for="id-apellido" id="id-apellido">Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el apellido del participante" title="" data-original-title="Ayuda"></i> 
+                                    <label for="id-apellido" id="id-apellido">Apellido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el apellido del participante" title="" data-original-title="Ayuda"></i> 
                                     <input type="text" class="form-control input-sm" name="apellido" id="apellido" placeholder="Ej. Sánchez">
                                  </div>
                                  <div class="has-error" id="error-apellido">
@@ -70,7 +70,7 @@
 
                                <div class="col-sm-6">
                                     <div class="form-group fg-line">
-                                    <label for="apellido" id="id-fecha_nacimiento">Fecha de Nacimiento</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="apellido" id="id-fecha_nacimiento">Fecha de Nacimiento</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
                                             <div class="dtp-container fg-line">
                                             <input name="fecha_nacimiento" id="fecha_nacimiento" class="form-control date-picker" placeholder="Seleciona" type="text">
                                         </div>
@@ -87,7 +87,7 @@
                                                                
                                <div class="col-sm-6">
                                  <div class="form-group fg-line ">
-                                    <label for="sexo p-t-10" id="id-sexo">Sexo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="sexo p-t-10" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del participante" title="" data-original-title="Ayuda"></i>
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
                                         <input name="sexo" id="sexo" value="F" type="radio">
@@ -111,7 +111,7 @@
 
                                <div class="col-sm-6">
 
-                               <label for="apellido" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
 
                                     <div class="form-group fg-line ">
                                       <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
@@ -358,7 +358,7 @@
                                     <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
                                     <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar pointer f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -391,6 +391,20 @@
 
         $(document).ready(function(){
 
+        $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-z]/}
+        }
+
+      });
+
+      $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-z]/}
+        }
+
+      });
+
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
@@ -407,6 +421,7 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -861,6 +876,20 @@
     
         // $(".test").text(selectedText);
     });
+
+    function collapse_minus(collaps){
+       $('#'+collaps).collapse('hide');
+      }
+
+      $('#collapseTwo').on('show.bs.collapse', function () {
+        $("#add").attr("disabled","disabled");
+        $("#add").css({"opacity": ("0.2")});
+      })
+
+      $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#add").removeAttr("disabled");
+        $("#add").css({"opacity": ("1")});
+      })
 
 
     </script>
