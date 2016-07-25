@@ -14,86 +14,62 @@
 @stop
 
 @section('content')
-  <!-- ENHORABUENA -->
-
-  
+  <!-- PAGO RECOMPENSA MERCADOPAGO -->
     
     <div class="container">
 
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                    <h4 class="modal-title">Verificación de datos<button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row p-l-10 p-r-10">
-
+        <div class="card">
+            <div class="card-header text-center">
+                <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos </span>                 
+            </div>
+            <div class="card-body">
+                <div class="row">
                     <div class="col-sm-5"></div>
-                    <div class="col-sm-2"><i class="icon_a-acuerdo-de-pago f-75"></i> </div>
+                    <div class="col-sm-2 text-center"><i class="icon_a-acuerdo-de-pago f-75"></i></div>
                     <div class="col-sm-5"></div>
-
                     <div class="clearfix p-b-15"></div>
                     <div class="text-center">
-                        <span class="f-25 c-morado text-center">Gracias por tu colaboración para {{$recompensas->nombre}}</span>  
-                        <br></br>   
+                        <span class="f-25 c-morado text-center">Gracias por su Colaboración para "{{$recompensas->nombre}}"</span>
+                        <div class="clearfix p-b-15"></div>
                         <span class="f-16 c-morado">Selecciona el patrocinador</span>
-
                     </div>
-                    <hr></hr>
-                
-                <div class="clearfix p-b-15"></div>
-                <div class="col-sm-12">
-                    <div class="fg-line">
-                        <div class="select">
-                            <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
-                                @foreach ( $alumnos as $alumno )
-                                  <option value = "{{ $alumno->id }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                @endforeach
-                            </select>
+                </div><!-- END ROW -->
+                <hr>
+                <div class="row">
+                     
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <div class="fg-line">
+                            <div class="select">
+                                <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
+                                    @foreach ( $alumnos as $alumno )
+                                      <option value = "{{ $alumno->id }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="has-error" id="error-alumno_id">
-                        <span >
-                            <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
-                        </span>
-                    </div>
-                </div>
+                        <div class="has-error" id="error-alumno_id">
+                            <span >
+                                <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                            </span>
+                        </div>                        
+                    </div><!-- END COL-SM-4 -->
+                    <div class="col-sm-3"></div>    
+                    
+                </div><!-- END ROW -->
+                <hr>
                 <div class="clearfix p-b-15"></div>
-
-                <hr></hr>
-              
-
-                <div class="clearfix p-b-15"></div>
-
                 <div class="text-center">
-
-                    <!--<button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Contribuir</button>-->
-
-                    <a href="{{ $datos['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>
-
-
-
-
+                    <a href="{{ $datos['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>                    
                 </div>
-
-                <div class="clearfix p-b-15"></div>
-                   
-
-                </div>
-                </div>
-            
-            </div>
-        
-
-        </div>
-
-
-
-    </div>
-
+                <div class="clearfix p-b-20"></div>
+                <div class="clearfix p-b-20"></div>
+                
+            </div><!-- END CARD BODY -->
+        </div><!-- END CARD -->
+    </div><!-- END CONTAINER -->
 
 @stop
-
 
 @section('js') 
             
@@ -169,7 +145,6 @@
             setTimeout(function(){ window.location = "{{url('/')}}/especiales/campañas/progreso/"+{{$campana->id}}; },3000);
 
         }
-
 
 	</script>
 @stop

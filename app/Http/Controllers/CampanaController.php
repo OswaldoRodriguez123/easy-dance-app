@@ -927,7 +927,13 @@ class CampanaController extends BaseController {
                 "quantity" => 1,
                 "unit_price" =>  intval($recompensa->cantidad)
                 )
-            )
+            )/*,
+            "payer" => array(
+              "name" => $alumno->nombre,
+              "surname" => $alumno->apellido,
+              "email" => $alumno->correo,
+              //"date_created" => "2014-07-28T09:50:37.521-04:00"
+            )*/
         );
         $preference = MP::create_preference($preference_data);
 
