@@ -28,9 +28,9 @@ class AlterRegalosTable extends Migration
     public function down()
     {
         Schema::table('regalos', function (Blueprint $table) {
-            $table->string('dirigido_a')->after('descripcion');
-            $table->string('de_parte_de')->after('dirigido_a');
-            $table->string('correo')->after('de_parte_de');
+            $table->string('dirigido_a');
+            $table->string('de_parte_de');
+            $table->string('correo');
         });        //
     }
 }
