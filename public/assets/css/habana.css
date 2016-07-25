@@ -1574,7 +1574,7 @@ text-shadow: 0 2px 20px rgba(38, 61, 178, 1) !important;
 }
 
 .tab-nav li > a:hover{
-    color: #2196f3 !important;
+    /*color: #2196f3 !important;*/
     font-weight: bold;
 }
 
