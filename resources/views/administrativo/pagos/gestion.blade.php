@@ -826,7 +826,7 @@
                           }                       
                           
                         }, 1000);*/
-                      },
+                      // },
                       /*error:function(msj){
                         /*setTimeout(function(){ 
                         //   if (typeof msj.responseJSON === "undefined") {
