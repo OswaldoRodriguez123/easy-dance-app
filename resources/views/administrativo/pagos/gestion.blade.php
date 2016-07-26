@@ -213,7 +213,7 @@
 
                             <div class="col-sm-6 text-right">  
                               
-                              <!--<a href="{{ $datos['response']['init_point'] }}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>-->
+                              <!--<a href="{{-- $datos['response']['init_point'] --}}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>-->
                               <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "guardar" id="guardar" >Pagar Ya <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
                               <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
