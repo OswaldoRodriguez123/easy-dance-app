@@ -21,7 +21,7 @@ use App\ConfigServicios;
 use App\MercadopagoMovs;
 use App\User;
 use App\Familia;
-use MP;
+//use MP;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -458,7 +458,7 @@ class AdministrativoController extends BaseController {
             }
 
         //MERCADO PAGO
-        $preference_data = array(
+        /*$preference_data = array(
         "items" => array(
             array(
             //"id" => $array['mov_id'],
@@ -479,9 +479,9 @@ class AdministrativoController extends BaseController {
               //"date_created" => "2014-07-28T09:50:37.521-04:00"
             )
         );
-        $preference = MP::create_preference($preference_data);
+        $preference = MP::create_preference($preference_data);*/
 
-        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo, 'datos' => $preference]);
+        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo/*, 'datos' => $preference*/]);
 
     }
 

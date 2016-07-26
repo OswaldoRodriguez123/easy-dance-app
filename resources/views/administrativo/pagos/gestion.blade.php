@@ -18,7 +18,7 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 <!--MERCADO PAGO MODAL -->
-<script type="text/javascript" src="http://resources.mlstatic.com/mptools/render.js"></script>
+<!--<script type="text/javascript" src="http://resources.mlstatic.com/mptools/render.js"></script>-->
 @stop
 @section('content')
 
@@ -213,7 +213,7 @@
 
                             <div class="col-sm-6 text-right">  
                               
-                              <a href="{{ $datos['response']['init_point'] }}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>                                                    
+                              <!--<a href="{{ $datos['response']['init_point'] }}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>-->
                               <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "guardar" id="guardar" >Pagar Ya <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
                               <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
@@ -242,7 +242,7 @@
   route_eliminar="{{url('/')}}/administrativo/pagos/eliminarpago";
   route_cancelar = "{{url('/')}}/administrativo/pagos/cancelargestion";
   route_imprimir="{{url('/')}}/administrativo/factura/";
-  route_mercadopago="{{url('/')}}/administrativo/pagos/facturamercadopago/";
+  //route_mercadopago="{{url('/')}}/administrativo/pagos/facturamercadopago/";
 
   $( document ).ready(function() {
 
@@ -726,7 +726,7 @@
       });
 
       //RETURN DE MERCADOPAGO
-      function respuesta_mercadopago(json) {
+      /*function respuesta_mercadopago(json) {
 
           var nFrom = $(this).attr('data-from');
           var nAlign = $(this).attr('data-align');
@@ -768,20 +768,20 @@
           }
           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
           procesar_mercadopago(json);
-      }
+      }*/
 
-      function procesar_mercadopago(response){
+      /*function procesar_mercadopago(response){
 
-                  var id = "{{$alumno->id}}";
-                  var numero_factura = "{{$numero_factura}}";
+                  var id = "{{--$alumno->id--}}";
+                  var numero_factura = "{{--$numero_factura--}}";
                   var route = route_mercadopago;
                   var token = $('input:hidden[name=_token]').val();
                   //var datos = $( "#gestionar_pago" ).serialize(); 
                   //$("#guardar").attr("disabled","disabled");
                   //procesando();
-                  /*$("#guardar").css({
-                    "opacity": ("0.2")
-                  });*/
+                  //$("#guardar").css({
+                  //  "opacity": ("0.2")
+                  //});
                   //$(".cancelar").attr("disabled","disabled");
                   //$(".procesando").removeClass('hidden');
                   //$(".procesando").addClass('show');         
@@ -827,10 +827,10 @@
                           
                         }, 1000);*/
                       },
-                      error:function(msj){
+                      /*error:function(msj){
                         /*setTimeout(function(){ 
                         //   if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
+                        //   window.location = "{{--url('/')--}}/error";
                         // }
                           if(msj.responseJSON.status=="ERROR"){
                             console.log(msj.responseJSON.errores);
@@ -857,14 +857,11 @@
                           var nAnimOut = "animated flipOutY";                       
                           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
                         }, 1000);*/
-                      }
+                      /*}
                   });
 
 
-      }
-
-
-
+      }*/
 
 </script> 
 @stop
