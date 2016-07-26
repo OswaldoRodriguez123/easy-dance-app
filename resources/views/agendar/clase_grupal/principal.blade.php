@@ -99,6 +99,7 @@
         route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
         route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones";
         route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
+        route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
 
         $(document).ready(function(){
 
@@ -176,7 +177,13 @@
         var row = $(t).closest('tr').attr('id');
         if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
         {
-            var route =route_detalle+"/"+row;
+            id_alumno = "{{Session::get('id_alumno')}}";
+            if(!id_alumno){
+                var route =route_detalle+"/"+row;
+            }
+            else{
+                var route =route_participantes+"/"+row;
+            }
         }else{
             var route =route_progreso+"/"+row;
         }

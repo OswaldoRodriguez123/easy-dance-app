@@ -33,7 +33,7 @@
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
                         <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Agendar</div>
 
-                          <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-14" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-14"></i> {{count($clases_grupales)}} 
+                          <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> {{count($clases_grupales)}} 
                           @if(count($clases_grupales) != 1)
                             Clases Grupales
                           @else
@@ -41,7 +41,11 @@
                           @endif
                             </a> <br>
 
-                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-14" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-14"></i> {{count($talleres)}} 
+                            <a href="{{url('/')}}/agendar" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> &nbsp; Clases Personalizadas
+
+                            </a> <br>
+
+                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> {{count($talleres)}} 
                           @if(count($talleres) != 1)
                             Talleres
                           @else
@@ -66,7 +70,7 @@
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
                         <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Especiales</div>
 
-                          <a href="{{url('/')}}/especiales/regalos" class="opaco-0-8 f-14" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-14"></i> {{$regalos}} 
+                          <a href="{{url('/')}}/especiales/regalos" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> {{$regalos}} 
                           @if($regalos != 1)
                             Regalos
                           @else
@@ -74,7 +78,7 @@
                           @endif
                             </a> <br>
 
-                            <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-14" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-14"></i> {{$campanas}} 
+                            <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> {{$campanas}} 
                           @if($campanas != 1)
                             Campañas
                           @else

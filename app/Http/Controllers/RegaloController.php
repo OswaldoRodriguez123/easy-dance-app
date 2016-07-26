@@ -148,7 +148,7 @@ class RegaloController extends BaseController {
     {
         //dd($request->all());
 
-        $request->merge(array('correo' => trim($request->correo)));
+    $request->merge(array('correo' => trim($request->correo)));
 
 
     $rules = [
@@ -159,6 +159,46 @@ class RegaloController extends BaseController {
 
     $messages = [
 
+        'correo.required' => 'Ups! El Correo es requerido ',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
+        'dirigido_a.regex' => 'Ups! El campo “dirigido a” es inválido, debe contener sólo letras',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+       
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+
+    }
+    }
+
+    public function verificarconalumno(Request $request)
+    {
+        //dd($request->all());
+
+    $request->merge(array('correo' => trim($request->correo)));
+
+
+    $rules = [
+        
+        'alumno_id' => 'required',
+        'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'correo' => 'required|email',
+        
+    ];
+
+    $messages = [
+
+        'alumno_id.required' => 'Ups! El campo “de parte de” es requerido',
         'correo.required' => 'Ups! El Correo es requerido ',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'dirigido_a.required' => 'Ups! El campo “dirigido a” es requerido',
@@ -330,7 +370,12 @@ class RegaloController extends BaseController {
         $regalo = Regalo::find($id);
 
         if($regalo){
-           return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);
+
+            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
+               return view('especiales.regalo.vender')->with(['regalo' => $regalo]);
+            }else{
+               return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);
+            }
         }else{
            return redirect("especiales/regalos"); 
         }
@@ -340,8 +385,7 @@ class RegaloController extends BaseController {
     {
         //dd($request->all());
 
-        $request->merge(array('correo' => trim($request->correo)));
-
+    $request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
 
@@ -367,11 +411,17 @@ class RegaloController extends BaseController {
 
     else{
 
+        if($request->alumno_id){
+            $alumno_id = $request->alumno_id;
+        }else{
+            $alumno_id = Auth::user()->usuario_id;
+        }
+
         $regalo = Regalo::find($request->id);
 
         $item_factura = new ItemsFacturaProforma;
                     
-        $item_factura->alumno_id = Auth::user()->usuario_id;
+        $item_factura->alumno_id = $alumno_id;
         $item_factura->academia_id = Auth::user()->academia_id;
         $item_factura->fecha = Carbon::now()->toDateString();
         $item_factura->item_id = $regalo->id;
@@ -383,7 +433,6 @@ class RegaloController extends BaseController {
         $item_factura->importe_neto = $regalo->costo;
         $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
                     
-
         if($item_factura->save()){
 
             $academia = Academia::find(Auth::user()->academia_id);
@@ -404,9 +453,7 @@ class RegaloController extends BaseController {
                     $msj->to($array['correo']);
                 });
 
-            
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $alumno_id, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

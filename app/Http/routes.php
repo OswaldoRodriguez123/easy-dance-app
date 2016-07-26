@@ -220,6 +220,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('agendar/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');
 	Route::get('agendar/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
 	Route::delete('agendar/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
+	Route::post('agendar/clases-personalizadas/cancelar/{id}', 'ClasePersonalizadaController@cancelar');
+	Route::post('agendar/clases-personalizadas/cancelarpermitir/{id}', 'ClasePersonalizadaController@cancelarpermitir');
+	Route::post('agendar/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
+	Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
 
 	Route::put('agendar/clases-personalizadas/update/nombre', 'ClasePersonalizadaController@updateNombre');
 	Route::put('agendar/clases-personalizadas/update/fecha', 'ClasePersonalizadaController@updateFecha');
@@ -356,6 +360,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('especiales/regalos/update/costo', 'RegaloController@updateCosto');
 	Route::put('especiales/regalos/update/descripcion', 'RegaloController@updateDescripcion');
 	Route::post('especiales/regalos/verificar', 'RegaloController@verify');
+	Route::post('especiales/regalos/verificar/{id}', 'RegaloController@verificarconalumno');
 	Route::get('especiales/regalos/enviar/{id}', 'RegaloController@CrearRegaloUsuario');
 	Route::post('especiales/regalos/enviar', 'RegaloController@EnviarRegaloUsuario');
 

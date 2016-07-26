@@ -547,7 +547,8 @@
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-                                  
+
+                                  <i class="zmdi zmdi-close-circle-o f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="cancelar" data-original-title="Cancelar clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 

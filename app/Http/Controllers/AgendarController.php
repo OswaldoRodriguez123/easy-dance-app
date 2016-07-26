@@ -22,147 +22,158 @@ class AgendarController extends BaseController
     
     public function index()
     {
+        $arrayTalleres=array();
+        $arrayClases=array();
+        $arrayClasespersonalizadas=array();
+        $arrayFiestas=array();
 
-    	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-		$arrayTalleres=array();
-    	foreach ($talleres as $taller) {
-    		$fecha_start=explode('-',$taller['fecha_inicio']);
-    		$fecha_end=explode('-',$taller['fecha_final']);
-    		$id=$taller['id'];
-    		$nombre=$taller['nombre'];
-    		$descripcion=$taller['descripcion'];
-    		$hora_inicio=$taller['hora_inicio'];
-    		$hora_final=$taller['hora_final'];
-    		$etiqueta=$taller['color_etiqueta'];
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+        {
 
-    		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        	foreach ($talleres as $taller) {
+        		$fecha_start=explode('-',$taller['fecha_inicio']);
+        		$fecha_end=explode('-',$taller['fecha_final']);
+        		$id=$taller['id'];
+        		$nombre=$taller['nombre'];
+        		$descripcion=$taller['descripcion'];
+        		$hora_inicio=$taller['hora_inicio'];
+        		$hora_final=$taller['hora_final'];
+        		$etiqueta=$taller['color_etiqueta'];
 
-    		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
-    		$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
+        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-			$c=0;
+        		$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
 
-			
-			while($dt->timestamp<$df->timestamp){
-				$fecha="";
-				$fecha=$dt->addWeek()->toDateString();
-				$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
-				$c++;
-			}
+    			$c=0;
 
-		}
+    			
+    			while($dt->timestamp<$df->timestamp){
+    				$fecha="";
+    				$fecha=$dt->addWeek()->toDateString();
+    				$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
+    				$c++;
+    			}
 
-		// $clases_grupales=ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+    		}
+
+    		// $clases_grupales=ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
 
-		$clasegrupal = DB::table('config_clases_grupales')
-                ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion')
-                ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-                ->where('clases_grupales.deleted_at', '=', null)
-        ->get();
+    		$clasegrupal = DB::table('config_clases_grupales')
+                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion')
+                    ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
+            ->get();
 
-		$arrayClases=array();
-    	foreach ($clasegrupal as $clase) {
-    		$fecha_start=explode('-',$clase->fecha_inicio);
-    		$fecha_end=explode('-',$clase->fecha_final);
-    		$id=$clase->id;
-    		$nombre=$clase->nombre;
-    		$descripcion=$clase->descripcion;
-    		$hora_inicio=$clase->hora_inicio;
-    		$hora_final=$clase->hora_final;
-    		$etiqueta=$clase->color_etiqueta;
+        	foreach ($clasegrupal as $clase) {
+        		$fecha_start=explode('-',$clase->fecha_inicio);
+        		$fecha_end=explode('-',$clase->fecha_final);
+        		$id=$clase->id;
+        		$nombre=$clase->nombre;
+        		$descripcion=$clase->descripcion;
+        		$hora_inicio=$clase->hora_inicio;
+        		$hora_final=$clase->hora_final;
+        		$etiqueta=$clase->color_etiqueta;
 
-    		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
-    		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
+        		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
 
-			$c=0;
+    			$c=0;
 
-			
-			while($dt->timestamp<$df->timestamp){
-				$fecha="";
-				$fecha=$dt->addWeek()->toDateString();
-				$arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
-				$c++;
-			}
+    			
+    			while($dt->timestamp<$df->timestamp){
+    				$fecha="";
+    				$fecha=$dt->addWeek()->toDateString();
+    				$arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
+    				$c++;
+    			}
 
-		}
+    		}
 
-        // dd($arrayClases);
+            // dd($arrayClases);
 
-		$clasespersonalizadas = DB::table('clases_personalizadas')
-				->join('alumnos', 'alumnos.id', '=', 'clases_personalizadas.alumno_id')
-                ->select('clases_personalizadas.*' , 'alumnos.nombre', 'alumnos.apellido')
-                ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-                ->where('clases_personalizadas.deleted_at', '=', null)
-        ->get();
+    		$clasespersonalizadas = DB::table('clases_personalizadas')
+    				->join('alumnos', 'alumnos.id', '=', 'clases_personalizadas.alumno_id')
+                    ->select('clases_personalizadas.*' , 'alumnos.nombre', 'alumnos.apellido')
+                    ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_personalizadas.deleted_at', '=', null)
+            ->get();
 
-		$arrayClasespersonalizadas=array();
-    	foreach ($clasespersonalizadas as $clasepersonalizada) {
-    		$fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
-    		$fecha_end=explode('-',$clasepersonalizada->fecha_final);
-    		$id=$clasepersonalizada->id;
-    		$nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
-    		$descripcion=$clasepersonalizada->descripcion;
-    		$hora_inicio=$clasepersonalizada->hora_inicio;
-    		$hora_final=$clasepersonalizada->hora_final;
-    		$etiqueta=$clasepersonalizada->color_etiqueta;
+        	foreach ($clasespersonalizadas as $clasepersonalizada) {
+        		$fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
+        		$fecha_end=explode('-',$clasepersonalizada->fecha_final);
+        		$id=$clasepersonalizada->id;
+        		$nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
+        		$descripcion=$clasepersonalizada->descripcion;
+        		$hora_inicio=$clasepersonalizada->hora_inicio;
+        		$hora_final=$clasepersonalizada->hora_final;
+        		$etiqueta=$clasepersonalizada->color_etiqueta;
 
-    		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
-    		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-    		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
+        		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
 
-			$c=0;
-			
-			while($dt->timestamp<$df->timestamp){
-				$fecha="";
-				$fecha=$dt->addWeek()->toDateString();
-				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
-				$c++;
-			}
+    			$c=0;
+    			
+    			while($dt->timestamp<$df->timestamp){
+    				$fecha="";
+    				$fecha=$dt->addWeek()->toDateString();
+    				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
+    				$c++;
+    			}
 
-		}
+    		}
 
-		$fiestas = DB::table('fiestas')
-                ->select('fiestas.*')
-                ->where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
-                ->where('fiestas.deleted_at', '=', null)
-        ->get();
+    		$fiestas = DB::table('fiestas')
+                    ->select('fiestas.*')
+                    ->where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('fiestas.deleted_at', '=', null)
+            ->get();
 
-		$arrayFiestas=array();
-    	foreach ($fiestas as $fiesta) {
-    		$fecha_start=explode('-',$fiesta->fecha_inicio);
-    		$fecha_end=explode('-',$fiesta->fecha_final);
-    		$id=$fiesta->id;
-    		$nombre= $fiesta->nombre;
-    		$descripcion=$fiesta->descripcion;
-    		$hora_inicio=$fiesta->hora_inicio;
-    		$hora_final=$fiesta->hora_final;
-    		$etiqueta=$fiesta->color_etiqueta;
+        	foreach ($fiestas as $fiesta) {
+        		$fecha_start=explode('-',$fiesta->fecha_inicio);
+        		$fecha_end=explode('-',$fiesta->fecha_final);
+        		$id=$fiesta->id;
+        		$nombre= $fiesta->nombre;
+        		$descripcion=$fiesta->descripcion;
+        		$hora_inicio=$fiesta->hora_inicio;
+        		$hora_final=$fiesta->hora_final;
+        		$etiqueta=$fiesta->color_etiqueta;
 
-    		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
-    		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-    		$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/fiestas/operaciones/".$id);
+        		$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/fiestas/operaciones/".$id);
 
-			$c=0;
-			
-			while($dt->timestamp<$df->timestamp){
-				$fecha="";
-				$fecha=$dt->addWeek()->toDateString();
-				$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/fiestas/operaciones/".$id);
-				$c++;
-			}
+    			$c=0;
+    			
+    			while($dt->timestamp<$df->timestamp){
+    				$fecha="";
+    				$fecha=$dt->addWeek()->toDateString();
+    				$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/fiestas/operaciones/".$id);
+    				$c++;
+    			}
 
-		}
-    	return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas]);
+    		}
+
+            return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas]);
+
+        }
+        else{
+
+            return view('vista_alumno.agendar');
+        }
+    	
 
     }
 

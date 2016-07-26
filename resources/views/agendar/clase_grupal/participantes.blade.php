@@ -450,6 +450,15 @@
 
         $('#alumno_id > option[value="{{ Session::get('id_alumno') }}"]').attr('selected', 'selected');
 
+        id_alumno = "{{Session::get('id_alumno')}}";
+        
+        if(id_alumno){
+
+          setTimeout(function(){ 
+              $('#modalAgregar').modal('show');
+            }, 2000);
+        }
+
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    

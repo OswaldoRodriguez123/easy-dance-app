@@ -26,13 +26,13 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-clase-personalizada f-25"></i> Agregar clase personalizada </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-clase-personalizada f-25"></i> Agendar clase personalizada </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -41,49 +41,6 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-                                <div class="col-sm-12">
-                                 
-                                     <label for="alumno" id="id-alumno_id">Alumno</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual le asignarás la clase personalizada" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-alumno_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="0000000000" placeholder="Ej. 2500">
-                                      </div>
-                                    </div>
-                                 <div class="has-error" id="error-costo">
-                                      <span >
-                                          <small class="help-block error-span" id="error-costo_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
                                     
@@ -106,31 +63,6 @@
                                     </div>
                                 </div>
                                 <div class="clearfix p-b-35"></div>
-
-                                <div class="col-sm-12">
-                                    <div class="cp-container">
-                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la clase personalizada que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
-                                        <div class="input-group form-group">
-
-                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
-                                            <div class="fg-line dropdown">
-                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
-                                                    
-                                                <div class="dropdown-menu">
-                                                    <div class="color-picker" data-cp-default="#de87b4"></div>
-                                                </div>
-                                                
-                                                <i class="cp-value"></i>
-                                            </div>
-                                            <div class="has-error" id="error-color_etiqueta">
-                                                <span >
-                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix p-b-35"></div>
 
                                     <div class="col-sm-12">
                                  
@@ -159,7 +91,7 @@
                                <div class="clearfix p-b-35"></div>
                                     <div class="col-sm-12">
                                  
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor para la clase personalizada" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -182,32 +114,7 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
-                                
-                                    <div class="col-sm-12">
-                                 
-                                    <label for="estudio" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-estudio-salon f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="estudio_id" id="estudio_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $estudio as $estudios )
-                                          <option value = "{{ $estudios['id'] }}">{{ $estudios['nombre'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-estudio_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-estudio_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
+                                    
                                <div class="col-xs-6">
                                  
                                       <label for="fecha_inicio" id="id-hora_inicio">Horario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la hora de inicio y final de la clase personalizada" title="" data-original-title="Ayuda"></i>
@@ -242,228 +149,6 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="descripcion" id="id-descripcion">Descripcion</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo, dirígete a la sección de instructores y procede a registrarlo" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-descripcion">
-                                      <span >
-                                        <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="1500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                                        
-                                    <div class="form-group">
-
-                                    <div class="col-sm-12">
-                                        <label for="tiempo_expiracion" id="id-tiempo_expiracion">Cancelación temprana/ tardía</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-html="true" data-content=" * <span class='f-700 f-16'>Cancelación temprana:</span> sucede cuando el alumno ha cancelado o suspendido en un tiempo prudente la reserva de una clase personalizada, brindando la oportunidad a la academia de suspender la clase, sin que se genere dificultad alguna. En este caso el alumno, tendrá la oportunidad de reprograma su clase. <br> <br>
-                                        
-                                        * <span class='f-700 f-16'>Cancelación tardía:</span> sucede cuando el alumno ha cancelado o suspendido en un tiempo muy próximo o cercano a la  clase personalizada, dejando imposibilitada a la academia a suspender sin dificultad alguna dicha clase.  En este caso el alumno, no tendrá la oportunidad de reprograma su clase y deberá gestionar el pago de la misma." title="" data-original-title="Ayuda"></i>
-                                      </div>
-
-                                        <div class="clearfix p-b-35"></div>
-                                        
-                                        <div class="col-sm-4" style="width:35%">
-                                        <label for="tiempo_expiracion" id="id-tiempo_expiracion">Culmina el plazo de cancelación temprana en </label>
-                                        </div>
-                                        <div class="col-sm-1">
-                                        <input type="text" class="form-control input-sm input-mask" name="tiempo_expiracion" id="tiempo_expiracion" data-mask="00" placeholder="Ej. 24">
-                                        </div>
-
-                                        <div class="col-sm-5">
-                                        <label for="tiempo_expiracion"> horas antes del inicio de la clase personalizada</label>
-
-                                      </div>
-
-                                      <br><br>
-                                  <div class="col-sm-12">
-                                    <div class="has-error" id="error-tiempo_expiracion">
-                                      <span >
-                                          <small id="error-tiempo_expiracion_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-                               <div class="clearfix p-b-35"></div>
-
-                               <!-- <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Multihorarios</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-2 text-center">
-                                    
-                                    <span class="f-16 c-morado">Instructor</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Especialidad</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Día de la semana</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Hora Desde</span>
-
-                                   </div>
-
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Hora Hasta</span>
-
-                                   </div>
-
-
-                              <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-2">
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="instructor_acordeon_id" id="instructor_acordeon_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                              <div class="col-sm-2 text-center">
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="especialidad_acordeon_id" id="especialidad_acordeon_id" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $especialidad as $especialidades )
-                                          <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
-                                          @endforeach
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="dia_de_semana_id" id="dia_de_semana_id" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $dias_de_semana as $dias )
-                                          <option value = "{{ $dias['id'] }}">{{ $dias['nombre'] }}</option>
-                                          @endforeach
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_inicio_acordeon" id="hora_inicio_acordeon" class="form-control time-picker" placeholder="Desde" type="text">
-                                          </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_final_acordeon" id="hora_final_acordeon" class="form-control time-picker" placeholder="Hasta" type="text">
-                                          </div>
-                                    </div>
-                              </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-                              <div class="card-header text-left">
-                              <button type="button" class="btn btn-blanco m-r-10 f-12 guardar" id="add" >Agregar Linea</button>
-                              </div>
-                              <div class="clearfix p-b-35"></div>
-
-                          <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="id" data-type="numeric"></th>
-                                    <th class="text-center" data-column-id="sexo"></th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc"></th>
-                                    <th class="text-center" data-column-id="estatu_c" data-order="desc"></th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc"></th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                                           
-                            </tbody>
-                            </table>
-
-                            </div>
-                            </div>
-
-                            <div class="clearfix p-b-35"></div>
-                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
-
-                            <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
-
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div> -->
-
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -478,7 +163,7 @@
                             </div>
                             <div class="col-sm-12 text-left">                           
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >ENVIAR</button>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
 
@@ -512,11 +197,9 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/agendar/clases-personalizadas/agregar";
+  route_agregar="{{url('/')}}/agendar/clases-personalizadas/reservar";
+  route_completado="{{url('/')}}/agendar/clases-personalizadas/completado";
   route_principal="{{url('/')}}/agendar/clases-personalizadas";
-  route_horario="{{url('/')}}/agendar/clases-grupales/agregarhorario";
-  route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarhorario";
-  route_enhorabuena="{{url('/')}}/agendar/clases-personalizadas/enhorabuena/";
 
   $(document).ready(function(){
 
@@ -542,7 +225,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["alumno_id", "fecha_inicio", "color_etiqueta", "especialidad_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "condiciones", "tiempo_expiracion"];
+    var campo = ["fecha_inicio", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -696,7 +379,7 @@
                           // $("#agregar_alumno")[0].reset();
                           // var nTitle="Ups! ";
                           // var nMensaje=respuesta.mensaje;
-                          window.location = route_enhorabuena + id;
+                          window.location = route_completado;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -718,9 +401,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -808,9 +491,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -870,7 +553,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["alumno_id", "fecha_inicio", "color_etiqueta", "especialidad_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "condiciones", "tiempo_expiracion"];
+        var campo = ["fecha_inicio", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -878,7 +561,7 @@
       }
 
     function errores(merror){
-      var campo = ["alumno_id", "fecha_inicio", "color_etiqueta", "especialidad_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "condiciones", "tiempo_expiracion"];
+      var campo = ["fecha_inicio", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -925,51 +608,6 @@
         }, 1000);
       });
 
-                 $('#pop-instructor').popover({
-                    html: true,
-                    trigger: 'manual'
-                }).click(function(e) {
-
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
-                    $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-instructor f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/participante/instructor/agregar";
-                    });
-                    e.preventDefault();
-          });
-
-          $('#pop-salon').popover({
-                    html: true,
-                    trigger: 'manual'
-                }).click(function(e) {
-
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
-                    $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-estudio-salon f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/configuracion/academia";
-                    });
-                    e.preventDefault();
-          });
-
-          $('body').on('click', function (e) {
-            $('[data-toggle="popover"]').each(function () {
-                //the 'is' for buttons that trigger popups
-                //the 'has' for icons within a button that triggers a popup
-                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                    $(this).popover('hide');
-                }
-            });
-        });
 </script> 
 @stop
 
