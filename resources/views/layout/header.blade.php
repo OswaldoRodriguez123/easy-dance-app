@@ -14,7 +14,10 @@
                     <a href="index-2.html">Habana Maracaibo</a>
                 </li>-->
                 <li class="logo hidden-xs" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
-                    <a data-ui-sref="home" href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}"data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="{{url('/')}}/assets/img/logo.png" class="img-opaco" width="90"></a>
+                    <a data-ui-sref="home" href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}"data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="{{url('/')}}/assets/img/logo.png" class="img-opaco p-b-0 m-b-0" width="90">
+                    <p class="p-t-0 p-b-0 m-b-0 m-t-0 text-capitalize f-12 text-right">beta</p>
+                    </a>
+
                 </li>
 
 
