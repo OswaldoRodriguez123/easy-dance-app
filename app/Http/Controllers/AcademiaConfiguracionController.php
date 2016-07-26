@@ -78,12 +78,106 @@ class AcademiaConfiguracionController extends BaseController {
 
     public function principal()
     {
-        return view('configuracion.index');                  
+        $academia= Academia::where('id',Auth::user()->academia_id)
+                   ->select('nombre', 'imagen', 'descripcion', 'telefono', 'celular', 'correo', 'direccion', 'normativa' , 'manual', 'programacion','link_video')
+                   ->get();
+
+        $academiaRedes= Academia::where('id',Auth::user()->academia_id)
+                   ->select('facebook','twitter','linkedin','instagram','pagina_web','youtube')
+                   ->get();
+
+        $academiaEstudios= ConfigEstudios::where('academia_id',Auth::user()->academia_id)
+                   ->get();
+
+        $academiaNiveles= ConfigNiveles::where('academia_id',Auth::user()->academia_id)
+                   ->get();
+
+        $academiaGrupales= ConfigClasesGrupales::where('academia_id',Auth::user()->academia_id)
+                   ->get();
+        
+        $academiaServicios= ConfigServicios::where('academia_id',Auth::user()->academia_id)
+                   ->get();
+
+
+        $collection = collect($academia[0]);
+        $keys = $collection->keys();
+        $arrayCampos=$keys->all();
+
+        $collectionRedes = collect($academiaRedes[0]);
+        $keysRedes = $collection->keys();
+        $arrayCamposRedes=$keysRedes->all();
+
+        $cantCampos=count($arrayCampos)+4;
+
+        $lleno=1;
+        $vacio=0;
+        $redes=1;
+
+        if(!collect($academiaEstudios)->isEmpty()){
+            $lleno=$lleno+1;
+        }else{
+            $vacio=$vacio+1;
+        } 
+
+        if(!collect($academiaNiveles)->isEmpty()){
+            $lleno=$lleno+1;
+        }else{
+            $vacio=$vacio+1;
+        }    
+
+        foreach ($arrayCampos as $campo) {
+            if($academia[0]->$campo!=""){
+                $lleno=$lleno+1;
+            }else{
+                $vacio=$vacio+1;
+            }
+        }
+
+        foreach ($arrayCamposRedes as $campo) {
+            if($academiaRedes[0]->$campo!=""){
+                $lleno=$lleno+1;
+                $redes=0;
+                breack;
+            }
+        }
+
+        if($redes!=0){
+            $vacio=$vacio+$redes;
+        }        
+        
+
+        $porcentajeAcademia=($lleno/$cantCampos)*100;
+
+        $porcentajeAcademia=round($porcentajeAcademia,2);
+
+
+        if(!collect($academiaGrupales)->isEmpty()){
+            $porcentajeGrupales=100;
+        }else{
+            $porcentajeGrupales=0;
+        } 
+
+
+        if(!collect($academiaServicios)->isEmpty()){
+            $porcentajeServicios=100;
+        }else{
+            $porcentajeServicios=0;
+        } 
+
+
+        $porcentajeTotal=(($porcentajeAcademia+$porcentajeGrupales+$porcentajeServicios)/300)*100;
+
+        $porcentajeTotal=round($porcentajeTotal,2);
+
+        //dd(round($porcentaje,2));
+
+        //dd($vacio);
+        
+        return view('configuracion.index',compact('porcentajeAcademia','porcentajeGrupales','porcentajeServicios','porcentajeTotal'));                  
     }
 
     public function listo()
-    {
-
+    {       
         return view('flujo_registro.listo');                    
     }
 
@@ -753,6 +847,8 @@ class AcademiaConfiguracionController extends BaseController {
 
     public function updateImagen(Request $request)
     {       
+            
+            //dd($request->all());
             if($request->imageBase64){
                     $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                     $path = storage_path();
@@ -824,6 +920,8 @@ class AcademiaConfiguracionController extends BaseController {
     }
 
         public function updateEspeciales(Request $request){
+
+        //dd($request->all());
 
         $academia = Academia::find(Auth::user()->academia_id);
         $academia->normativa = $request->normativa;

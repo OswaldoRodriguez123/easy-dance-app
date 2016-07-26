@@ -69,7 +69,25 @@
                                 <h2 class="ca-main-j">Personaliza tu academia </h2>
                                 <h3 class="ca-sub-j">Paso 1  </h3>
                             </div>
+
+                            
                         </a>
+
+                        
+
+                        <div class="col-md-12">
+                            <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
+                            <div class="col-xs-11">
+                              <div class="clearfix p-b-20"></div>
+                              <div class="progress-fino progress-striped m-b-10">
+                                <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                              </div>
+                            </div>
+                        </div>
+
+
+
+
                     </li>
 
                     <!-- <ul class="ca-menu-planilla"> -->
@@ -137,6 +155,60 @@
         window.location="/";
 
     });
+
+
+    function pocentajecompletado(){
+
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion"];
+        fLen = campo.length;
+        var porcetaje=0;
+        var cantidad =0;
+
+    }
+
+    function porcentaje(){
+    var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion"];
+    fLen = campo.length;
+    var porcetaje=0;
+    var cantidad =0;
+    var porciento= fLen / fLen;
+    for (i = 0; i < fLen; i++) {
+      var valor="";
+      valor=$("#"+campo[i]).val();
+      valor=valor.trim();
+      if(campo[i]=="color_etiqueta"){
+        if ( valor.length > 6 ){        
+          cantidad=cantidad+1;
+        }else if (valor.length == 0){
+          $("#"+campo[i]).val('#');
+        }
+      }else{
+        if ( valor.length > 0 ){        
+          cantidad=cantidad+1;
+        }
+      }
+      
+    }
+
+    porcetaje=(cantidad/fLen)*100;
+    porcetaje=porcetaje.toFixed(2);
+    //console.log(porcetaje);
+    $("#text-progreso").text(porcetaje+"%");
+    $("#barra-progreso").css({
+      "width": (porcetaje + "%")
+   });
+    
+
+    if(porcetaje=="100" || porcetaje=="100.00"){
+      $("#barra-progreso").removeClass('progress-bar-morado');
+      $("#barra-progreso").addClass('progress-bar-success');
+    }else{
+      $("#barra-progreso").removeClass('progress-bar-success');
+      $("#barra-progreso").addClass('progress-bar-morado');
+    }
+    //$("#barra-progreso").s
+
+  }
 
 </script>
 @stop

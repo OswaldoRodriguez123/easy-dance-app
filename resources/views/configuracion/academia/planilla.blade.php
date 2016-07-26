@@ -1152,21 +1152,21 @@
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
-        // if(form != 'edit_especiales_academia'){
+        if(form != 'edit_especiales_academia'){
           var datos = $( "#"+form ).serialize();
           tipo = 'PUT';
-        //   contenido = null;
-        // }
-        // else{
-        //   tipo = 'POST';
-        //   var data = new FormData();
-        //   var programacion = document.getElementById('programacion');
-        //   data.append('programacion', programacion.files[0]);
-        //   data.append('normativa', $('#normativa').val());
-        //   data.append('manual', $('#manual').val());
-        //   var datos = data;
-        //   contenido = false;
-        // }
+          contenido = null;
+        }
+        else{
+          tipo = 'PUT';
+          var data = new FormData();
+          var programacion = document.getElementById('programacion');
+          data.append('programacion', programacion.files[0]);
+          data.append('normativa', $('#normativa').val());
+          data.append('manual', $('#manual').val());
+          var datos = data;
+          contenido = false;
+        }
         
         var datos_array=  $( "#"+form ).serializeArray();
         
@@ -1178,7 +1178,7 @@
             dataType: 'json',
             data: datos,
             cache: false,
-            // contentType: contenido,
+            //contentType: '',
             processData: false,                
             success: function (respuesta) {
               setTimeout(function() {
@@ -1209,7 +1209,7 @@
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
                 if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
+                          //window.location = "{{url('/')}}/error";
                         }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){

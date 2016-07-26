@@ -76,17 +76,17 @@
                                             <li class="active" >
                       
                       
-                      <a href="#participantes" aria-controls="participantes" role="tab" data-toggle="tab"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;  " ></div><p style=" margin-bottom: -2px ; color:#2196f3;">Participantes</p></a></li>
+                      <a href="#participantes" class="azul" aria-controls="participantes" role="tab" data-toggle="tab"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;  " ></div><p style=" margin-bottom: -2px ; color:#2196f3;">Participantes</p></a></li>
                                             
-                                            <li role="presentation" name="agendar"><a href="#agendar" aria-controls="agendar" role="tab" data-toggle="tab"><div class="icon_a icon_a-agendar f-30" style="color:#FFD700;  " ></div><p style=" margin-bottom: -2px; color:#FFD700;">Agendar</p></a></li>
+                                            <li role="presentation" name="agendar"><a class="amarillo" href="#agendar" aria-controls="agendar" role="tab" data-toggle="tab"><div class="icon_a icon_a-agendar f-30" style="color:#FFD700;  " ></div><p style=" margin-bottom: -2px; color:#FFD700;">Agendar</p></a></li>
                                             
-                                            <li role="presentation"><a href="#especiales" aria-controls="especiales" role="tab" data-toggle="tab"><div class="icon_a icon_a-especiales f-30" style="color:#e91e63;  " ></div><p style=" margin-bottom: -2px; color:#e91e63;">Especiales</p></a></li>
+                                            <li role="presentation"><a href="#especiales" class="rosa" aria-controls="especiales" role="tab" data-toggle="tab"><div class="icon_a icon_a-especiales f-30" style="color:#e91e63;  " ></div><p style=" margin-bottom: -2px; color:#e91e63;">Especiales</p></a></li>
                                            
-                                            <li role="presentation"><a href="{{url('/')}}/invitar" aria-controls="invitar" ><div class="icon_d-invitar f-30" style="color:#b4a9a4; " ></div><p style=" margin-bottom: -2px; color:#b4a9a4;">Invitar</p></a></li>
+                                            <li role="presentation"><a class="gris" href="{{url('/')}}/invitar" aria-controls="invitar" ><div class="icon_d-invitar f-30" style="color:#b4a9a4; " ></div><p style=" margin-bottom: -2px; color:#b4a9a4;">Invitar</p></a></li>
                                             
-                                            <li role="presentation"><a href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;  "></div><p style=" margin-bottom: -2px; color:#4caf50;">Punto de Venta</p></a></li>
+                                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;  "></div><p style=" margin-bottom: -2px; color:#4caf50;">Punto de Venta</p></a></li>
                                            
-                                            <li role="presentation"><a href="#reportes" aria-controls="reportes" role="tab" data-toggle="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>
+                                            <li role="presentation"><a class="rojo" href="#reportes" aria-controls="reportes" role="tab" data-toggle="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>
                                         </ul>
                                       </div>
                                         <div class="tab-content ">

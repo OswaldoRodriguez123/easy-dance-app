@@ -147,6 +147,38 @@
                     </div>
 
 
+        <div class="modal fade" id="modalFechaPasada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div class="text-center">
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div align="center"><i class="zmdi zmdi-calendar-close zmdi-hc-fw f-60 c-morado"></i></div>
+
+                        <div class="clearfix p-b-15"></div>
+                        
+                        <div class="col-md-12">
+                         <span class="f-20 opaco-0-8">¡ Ups lo sentimos, no puedes agendar en una fecha vencida. !</span>
+                         </div>
+
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
+
     </div>
 </section>
 @stop
@@ -340,10 +372,25 @@
                      
                     //On Day Select
                     select: function(start, end, allDay) {
-                        $('#addNew-event').modal('show');   
-                        $('#addNew-event input:text').val('');
-                        $('#getStart').val(start);
-                        $('#getEnd').val(end);
+                        //console.log(start + ' --- ' + end);
+
+                        var d = new Date();
+                        var timestamp = d.getTime(); 
+
+                        if(end>timestamp){
+                           $('#addNew-event').modal('show');   
+                           $('#addNew-event input:text').val('');
+                           $('#getStart').val(start);
+                           $('#getEnd').val(end);
+                           //console.log('bien');
+                        }else{
+                           //console.log('error');
+                           $('#modalFechaPasada').modal('show');                            
+                        }
+
+                        console.log(n);
+
+                        
                     },
                     eventClick: function(calEvent, jsEvent, view) {
 
