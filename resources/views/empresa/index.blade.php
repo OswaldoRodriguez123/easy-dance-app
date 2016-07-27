@@ -235,7 +235,7 @@
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
                                         <a href="" class="tvh-user pull-left">
-                                            <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                                            <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/foto-david.jpg" alt="">
                                         </a>
                                         <div class="media-body p-t-5">
                                             <strong class="d-block">David Acurero</strong>

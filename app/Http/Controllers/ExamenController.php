@@ -28,11 +28,11 @@ class ExamenController extends BaseController {
 		return view('academia.editar')->with('academia', Academia::all());                      
 	}
 
-        public function principal()
+    public function principal()
     {
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('examenes.id as id' , 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->select('examenes.id as id' , 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id')
             ->where('examenes.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -263,7 +263,7 @@ class ExamenController extends BaseController {
         //dd($alumnos);
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta')
+            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id')
             ->where('examenes.id', '=', $id)
         ->first();
   

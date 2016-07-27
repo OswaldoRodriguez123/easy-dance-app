@@ -322,6 +322,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
 	Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
 
+	//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
+
+	Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');
+
 	//CAMPAÑAS
 
 	Route::get('especiales/campañas', 'CampanaController@index');

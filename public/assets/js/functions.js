@@ -457,7 +457,7 @@ $(document).ready(function(){
      * Input Slider
      */
     //Basic
-    if($('.input-slider')[0]) {
+    /*if($('.input-slider')[0]) {
         $('.input-slider').each(function(){
             var isStart = $(this).data('is-start');
 
@@ -498,7 +498,7 @@ $(document).ready(function(){
 
 	$('.input-slider-values').Link('lower').to($('#value-lower'));
         $('.input-slider-values').Link('upper').to($('#value-upper'), 'html');
-    }
+    }*/
 
     /*
      * Input Mask

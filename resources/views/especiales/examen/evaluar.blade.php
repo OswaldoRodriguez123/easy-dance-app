@@ -33,109 +33,118 @@
 	            </div>
 		
 				<div class="card-body card-padding">
+					<form name="agregar_evaluacion" id="agregar_evaluacion">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	                    <div class="row m-b-25">
+	                        <div class="col-xs-6">
+	                            <div class="text-left m-l-25">
+	                                <!--<p class="c-gray">Invoice from</p>-->
+	                                
+	                                <h4>Evaluación: "{{ $examen->nombre }}"</h4>
+	                                <div class="clearfix"></div>
+									<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
+									<div class="clearfix"></div>
+									<h5 id="id-alumno_id">Seleccione un Alumno: </h5>
+									<div class="clearfix"></div>
+				                    <div class="select">
+				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
+				                        <option value="">Seleccione</option>
+				                        @foreach ( $alumno as $alumnos )
+				                        <option value = "{!! $alumnos->id !!}">{!! $alumnos->nombre !!} {!! $alumnos->apellido !!}</option>
+				                        @endforeach 
+				                        </select>
 
-                            <div class="row m-b-25">
-                                <div class="col-xs-6">
-                                    <div class="text-left m-l-25">
-                                        <!--<p class="c-gray">Invoice from</p>-->
-                                        
-                                        <h4>Evaluación: "{{ $examen->nombre }}"</h4>
-                                        <div class="clearfix"></div>
-										<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
-										<div class="clearfix"></div>
-										<h5>Seleccione un Alumno: 
-					                    <div class="select">
-					                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
-					                        @foreach ( $alumno as $alumnos )
-					                        <option value = "{!! $alumnos->id !!}">{!! $alumnos->nombre !!} {!! $alumnos->apellido !!}</option>
-					                        @endforeach 
-					                        </select>
+				                    </div>
 
-					                    </div>
-					                    </h5>
-		
-                                    </div>
-                                </div>
-                                
-                                <div class="col-xs-6">
-                                    <div class="i-to">
-                                        <h5>Fecha: {{ $fecha }}</h5>
-										 <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">
-                                    </div>
-                                </div>
-                                
-                            </div>
+	                                 <div class="has-error" id="error-alumno_id">
+	                                      <span >
+	                                          <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                
+	                                      </span>
+	                                  </div>				                    
 
-                    <!-- SECCION ITEMS A EVALUAR --> 
-					<div class="row">
-						
+	                            </div>
+	                        </div>
+	                        
+	                        <div class="col-xs-6">
+	                            <div class="i-to">
+	                                <h5>Fecha: {{ $fecha }}</h5>
+									 <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">
+	                            </div>
+	                        </div>
+	                    </div>
+
+	                    <!-- SECCION ITEMS A EVALUAR --> 
+						<div class="row">
+							
+							<hr>
+							@foreach( $itemsExamenes as $items)
+							<?php $id = $items->id ?>
+							<div class="clearfix"></div>
+							<div class="col-md-4">
+
+								<div class="m-b-20 m-l-25">{{ $items->nombre }}</div>
+								<div class="clearfix">
+									<div class="input-slider m-b-25 m-l-25 slider-mov" id="slider{{$id}}"></div>
+									<strong class="pull-right text-muted slider-value" id="value-lower{{$id}}"></strong>
+				                </div>    
+							</div>
+							@endforeach
+							
+						</div><!-- END ROW ITEMS -->
+
 						<hr>
-						@foreach( $itemsExamenes as $items)
-						<?php $id = $items->id ?>
-						<div class="clearfix"></div>
-						<div class="col-md-4">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="text-right m-r-25 f-20 f-500">Total: 
+									<span class="f-30" id="eval_total">50</span>
+									<div class="text-right" id="id-total"></div>
+									<input type="hidden" name="total_nota" id="total_nota">
+								</div>
 
-							<div class="m-b-20 m-l-25">{{ $items->nombre }}</div>
-							<div class="clearfix">
-								<div class="input-slider m-b-25 m-l-25" id="slider{{$id}}"></div>
-								<strong class="pull-right text-muted" id="value-lower{{$id}}"></strong>
-			                </div>    
-						</div>
-						@endforeach
-						
-					</div><!-- END ROW ITEMS -->
+                                 <div class="has-error" id="error-total_nota">
+                                      <span >
+                                          <small class="help-block error-span" id="error-total_nota_mensaje" ></small>                                
+                                      </span>
+                                  </div>
 
-					<hr>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="text-right m-r-25 f-20 f-500">Total: 
-								<span class="f-30" id="eval_total">50</span>
 							</div>
 						</div>
-					</div>
 
-					<hr>
-					<!-- SECCION BOTONES --> 
-					<div class="row">
-		                <div class="col-sm-12 text-right">                           
-		                  <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
-		                  <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
-		                </div>
-					</div>
-
-					<div class="row">
-                        <div class="col-sm-12 text-center">
-                         
-                          <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
-                          <a href="{{url('/')}}/especiales/examenes"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
-
-                          <br>
-
-                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
-                          
-                           
-                        </div>						
-					</div>
-
-
-
-					<div class="clearfix"></div>
-					<div class="clearfix"></div>
-					<br><br>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="f-20 f-500 text-right">Evaluado Por</div>
+						<hr>
+						<!-- SECCION BOTONES --> 
+						<div class="row">
+			                <div class="col-sm-12 text-right">                           
+			                  <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
+			                  <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+			                </div>
 						</div>
-						<div class="col-md-6">
-							<div class="f-20 f-500 text-left">Supervisado Por</div>
+
+						<div class="row">
+	                        <div class="col-sm-12 text-center">
+	                         
+	                          <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+	                          <a href="{{url('/')}}/especiales/examenes"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+	                          <br>
+	                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
+		                    </div>						
 						</div>
-					</div>
 
 
+
+						<div class="clearfix"></div>
+						<div class="clearfix"></div>
+						<br><br>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="f-20 f-500 text-right">Evaluado Por</div>
+							</div>
+							<div class="col-md-6">
+								<div class="f-20 f-500 text-left">Supervisado Por</div>
+							</div>
+						</div>
+					</form>	
 				</div><!-- END CARD BODY -->
-	            
-
-
+	
 	        </div>
 		</div>
 	</section>
@@ -146,41 +155,181 @@
 @section('js') 
 
 <script>
+
+route_agregar="{{url('/')}}/especiales/evaluaciones/agregar";
+route_principal="{{url('/')}}/especiales/examenes";
 	
 $(document).ready(function() {
-	loadId({{$id}});
+	@foreach( $itemsExamenes as $items)
+		loadId({{$items->id}});
+	@endforeach
+
+	var notas = new Array();
+	$('.slider-mov').change(function() {
+		notas = $('.slider-value').text();
+		//Divido la cadena usando el separador
+		//punto (.) de las notas		
+		var arrayNotas = notas.split(".");
+		//Aqui extraigo solo los elementos del array
+		//que necesito		
+		var suma = arrayNotas.slice(0,5); 
+		/*console.log(notas.split("."));
+		console.log(arrayNotas.slice(0,5));
+		console.log(eval(suma.join("+")));*/
+		$("#eval_total").html(eval(suma.join("+")));
+		$("#total_nota").val(eval(suma.join("+")));
+	});
+
 });
+	//Aqui cargo las barra de Slide	
+	function loadId(id){
 
-
-		function loadId(id){
-			//alert(id);
-		
-		//var slider = document.getElementById('slider');
-
-		//var slider = $(".input-slider").attr('id');
-		//alert(slider);
-		//function prueba(id){
-
-			$('#slider{{$id}}').noUiSlider ({
-				start: [ 1 ],
-			    //connect: true,
-			    //direction: 'rtl',
-			    behaviour: 'tap-drag',
-			    step: 1,
-				range: {
-					'min': 1,
-					'max': 10
-				}
-			});
-	
-		    $('#slider{{$id}}').Link('lower').to($('#value-lower{{$id}}'));
-
-		}
-
-
-		$("#alumno_id").on('change',function(){
-			alert($("#alumno_id").val());
+		$('#slider'+id).noUiSlider ({
+			start: [ 1 ],
+		    //connect: true,
+		    //direction: 'rtl',
+		    behaviour: 'tap-drag',
+		    step: 1,
+			range: {
+				'min': 1,
+				'max': 10
+			}
 		});
+	    $('#slider'+id).Link('lower').to($('#value-lower'+id));
+	}
+
+
+		/*$("#alumno_id").on('change',function(){
+			console.log($("#alumno_id").val());
+			console.log($(".sexo-alumno").html());
+
+		});*/
+
+	//GUARDAR EXAMEN
+  		$("#guardar").click(function(){
+  				//alert(items);
+                var route = route_agregar;
+                var instructor = {{$examen->instructor_id}}
+                //var total = $("#eval_total").text();
+                //var alumno = $("#alumno_id").val();
+                var academia = {{$examen->academia_id}}
+                var examen = {{$examen->id}}
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen; 
+                $("#guardar").attr("disabled","disabled");
+                procesando();
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');
+                //limpiarMensaje();
+                $.ajax({
+
+						url: route,
+						headers: {'X-CSRF-TOKEN': token},
+						type: 'POST',
+						dataType: 'json',
+						data: datos,
+						/*data: {
+							datos: datos,
+                        	instructor : instructor,
+                        	academia : academia,
+                        	examen : examen
+						},*/
+
+
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          	finprocesado();
+                          	var nType = 'success';
+                          	$("#agregar_evaluacion")[0].reset();
+                          	var nTitle="Ups! ";
+                          	var nMensaje=respuesta.mensaje;
+							notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                          	setTimeout(function(){ 
+                          		window.location = route_principal 
+                          	},1500);
+                          	
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          finprocesado();
+                          $("#guardar").css({
+                            "opacity": ("1")
+                          });
+                          $(".cancelar").removeAttr("disabled");
+
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
+
+			function errores(merror){
+				var campo = ["alumno_id","total_nota"];
+				var elemento="";
+				var contador=0;
+				$.each(merror, function (n, c) {
+					if(contador==0){
+					elemento=n;
+					}
+					contador++;
+
+					$.each(this, function (name, value) {              
+					  var error=value;
+					  $("#error-"+n+"_mensaje").html(error);             
+					});
+				});
+
+				$('html,body').animate({
+				    scrollTop: $("#id-"+elemento).offset().top-90,
+				}, 800);
+
+			}
 
 
 </script>

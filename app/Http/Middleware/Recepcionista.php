@@ -15,12 +15,12 @@ class Recepcionista
      */
     public function handle($request, Closure $next)
     {
-        /*if($request->user()->isType()=='recepcionista' || $request->user()->isType()=='admin' || $request->user()->isType()=='alumno'){
+        if($request->user()->isType()=='recepcionista' || $request->user()->isType()=='admin' || $request->user()->isType()=='alumno'){
             return $next($request);
         }
-        ;*/
+        ;
 
-        switch ($request->user()->isType()) {
+        /*switch ($request->user()->isType()) {
             case 'admin':
                 return $next($request);
                 //abort(403);
@@ -35,7 +35,7 @@ class Recepcionista
                 return $next($request);
                 break;
 
-        }
+        }*/
 
     }
 }
