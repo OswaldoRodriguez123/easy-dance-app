@@ -973,4 +973,19 @@ class CorreoController extends BaseController {
 	 	// 		}
 	 	// 	}
  		}
+
+ 		public function correoAyuda(Request $request)
+ 		{
+ 	        $array = [
+ 	            'msj_html' => $request->mensaje_ayuda,
+ 	            'email' => 'siriusdla@gmail.com',
+ 	            'subj' => 'Soporte / Ayuda'
+ 	             ];
+			Mail::send('correo.ayuda', $array, function($msj) use ($array){
+		      $msj->subject($array['subj']);
+		      $msj->to($array['email']);
+		    });
+
+		    return 'Enviado';
+ 		}
  }

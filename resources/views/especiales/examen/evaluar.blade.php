@@ -77,6 +77,7 @@
 						<div class="row">
 							
 							<hr>
+							{{--$itemsExamenes--}}
 							@foreach( $itemsExamenes as $items)
 							<?php $id = $items->id ?>
 							<div class="clearfix"></div>
@@ -123,7 +124,7 @@
 	                        <div class="col-sm-12 text-center">
 	                         
 	                          <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
-	                          <a href="{{url('/')}}/especiales/examenes"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+	                          <a href="{{url('/')}}/especiales/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
 	                          <br>
 	                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
 		                    </div>						

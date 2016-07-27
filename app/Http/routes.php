@@ -10,6 +10,10 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+	Route::get('/correo/help',function(){
+		return view('correo.ayuda');
+	});
+
 
 Route::auth();
 
@@ -323,7 +327,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
 
 	//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
-
+	Route::get('especiales/evaluaciones', 'EvaluacionController@index');
 	Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');
 
 	//CAMPAÑAS
@@ -588,6 +592,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('/correo/cobro', 'CorreoController@correoCobro');
 	Route::post('/correo/suspension', 'CorreoController@correoSuspension');
 	Route::post('/correo/adelanto', 'CorreoController@correoAdelanto');
+	Route::post('/correo/ayuda', 'CorreoController@correoAyuda');
+
+
+
 
 
 	// ASISTENCIA

@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 use App\Http\Requests;
 use App\Evaluacion;
 use Validator;
+use DB;
+use Illuminate\Support\Facades\Auth;
 
 class EvaluacionController extends Controller
 {
+
+    function __construct(Route $route)
+    {
+        $this->route = $route;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +25,15 @@ class EvaluacionController extends Controller
      */
     public function index()
     {
-        //
+        $evaluacion_join = DB::table('evaluaciones')
+            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+            ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+            ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+            ->select('examenes.id as id' , 'examenes.nombre as nombreExamen', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total')
+            ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();        //
+
+        return view('especiales.evaluaciones.principal')->with('evaluacion', $evaluacion_join);
     }
 
     /**
@@ -38,10 +54,9 @@ class EvaluacionController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+
 
         $rules = [
-            //'alumno_id' => 'required|unique:evaluaciones,alumno_id,examen_id',
             'alumno_id' => 'required',
             'total_nota' => 'required',
         ];
@@ -49,7 +64,8 @@ class EvaluacionController extends Controller
         $messages = [
 
             'alumno_id.required' => 'Ups! Debe seleccionar un Alumno ',
-            'alumno_id.unique' => 'Ups! Este alumno ya ha sido evaluado ',
+            //'alumno_id.unique' => 'Ups! Este alumno ya ha sido evaluado ',
+            //'alumno_id.in' => 'Error, usuario seleccionado no existe!',
             'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
         ];
 
