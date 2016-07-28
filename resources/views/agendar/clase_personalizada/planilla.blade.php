@@ -4,12 +4,14 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 @stop
 
 @section('content')
@@ -452,26 +454,38 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalCondiciones-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+            <div class="modal fade" id="modalEtiqueta-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_condiciones_clasepersonalizada" id="edit_condiciones_clasepersonalizada"  >
+                        <form name="edit_etiqueta_clasepersonalizada" id="edit_etiqueta_clasepersonalizada"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="edad">Condiciones y Normativas</label>
-                                    <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="250 Caracteres"></textarea>
-                                 </div>
-                                 <div class="has-error" id="error-condiciones">
-                                      <span >
-                                          <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                
-                                      </span>
-                                  </div>
+                                 <div class="cp-container">
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label>
+                                        <div class="input-group form-group">
+
+                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$clasepersonalizada->color_etiqueta}}" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="{{$clasepersonalizada->color_etiqueta}}"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                </div>
 
                                <div class="clearfix"></div> 
@@ -496,13 +510,164 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_condiciones_clasepersonalizada" data-update="condiciones" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_clasepersonalizada" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
                     </div>
                 </div>
             </div>
+
+             <div class="modal fade" id="modalExpiracion-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" style="width:67%">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_expiracion_clasepersonalizada" id="edit_expiracion_clasepersonalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="form-group">
+
+                                    <div class="col-sm-12">
+                                        <label for="tiempo_expiracion" id="id-tiempo_expiracion">Cancelación temprana/ tardía</label>
+                                      </div>
+
+                                        <div class="clearfix p-b-35"></div>
+                                        
+                                        <div class="col-sm-12" style="width:43%">
+                                        <label for="tiempo_expiracion" id="id-tiempo_expiracion">Culmina el plazo de cancelación temprana en </label>
+                                        </div>
+                                        <div class="col-sm-12 text-center" style="width:10%">
+                                        <input type="text" class="form-control input-sm input-mask" name="tiempo_expiracion" id="tiempo_expiracion" data-mask="00" placeholder="Ej. 24">
+                                        </div>
+
+                                        <div class="col-sm-12" style="width:45%">
+                                        <label for="tiempo_expiracion"> horas antes del inicio de la clase personalizada</label>
+
+                                      </div>
+
+                                      <br><br>
+                                  <div class="col-sm-12">
+                                    <div class="has-error" id="error-tiempo_expiracion">
+                                      <span >
+                                          <small id="error-tiempo_expiracion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_expiracion_clasepersonalizada" data-update="tiempo_expiracion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Cancelar una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_clase" id="cancelar_clase"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>  
+                                       <div class="modal-body">                           
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="p-l-10 f-16 f-700"> {{$clasepersonalizada->instructor_nombre}} {{$clasepersonalizada->instructor_apellido}} </span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-9">
+                                             
+                                            <p class="f-16"> <span class="f-700">Hora:</span> {{$clasepersonalizada->hora_inicio}} - {{$clasepersonalizada->hora_final}}</p>
+
+                                            <p class="f-16"> <span class="f-700">Fecha:</span> {{$clasepersonalizada->fecha_inicio}} </p> 
+
+                                            <p class="f-16"> <span class="f-700">Especialidad:</span> {{$clasepersonalizada->especialidad_nombre}} </p>
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                       <hr style="margin-top:5px">
+
+                                       <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelar la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                                          </div>
+                                        <div class="has-error" id="error-razon_cancelacion">
+                                          <span >
+                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-6 text-left">
+                                          <div class="procesando hidden">
+                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                          <div class="preloader pls-purple">
+                                              <svg class="pl-circular" viewBox="25 25 50 50">
+                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                              </svg>
+                                          </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_clase" id="cancelar_clase" name="cancelar_clase" > Completar la cancelación</button>
+                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                                        </div>
+                                    </div></form>
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -548,7 +713,7 @@
 
                                   <hr></hr>
 
-                                  <i class="zmdi zmdi-close-circle-o f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="cancelar" data-original-title="Cancelar clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <a data-toggle="modal" href="#modalCancelar" class="cancelar"><i class="zmdi zmdi-close-circle-o f-20 m-r-5 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="cancelar" data-original-title="Cancelar clase" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
@@ -596,14 +761,14 @@
                              </td>
                              <td class="f-14 m-l-15" id="clasepersonalizada-fecha_inicio"><span id="clasepersonalizada-fecha_inicio">{{\Carbon\Carbon::createFromFormat('Y-m-d',$clasepersonalizada->fecha_inicio)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalColor-ClasePersonalizada">
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClasePersonalizada">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($clasepersonalizada->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
-                               <td  class="f-14 m-l-15" id="clasepersonalizada-color_etiqueta" >
-
+                               <td  class="f-14 m-l-15">
+                                <span id="clasepersonalizada-color_etiqueta">{{$clasepersonalizada->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr>
@@ -639,13 +804,22 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-estudio_id"><span>{{$clasepersonalizada->estudio_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCondiciones-ClasePersonalizada">
+                            <tr class="detalle" data-toggle="modal" href="#modalExpiracion-ClasePersonalizada">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($clasepersonalizada->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
-                               <span class="f-14"> Condiciones y Normativas </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tiempo_expiracion" class="zmdi {{ empty($clasepersonalizada->tiempo_expiracion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-hourglass-alt zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Cancelación temprana/ tardía </span>
                              </td>
-                             <td id="clasepersonalizada-condiciones" class="f-14 m-l-15" data-valor="{{$clasepersonalizada->condiciones}}" ><span id="clasepersonalizada-condiciones"><span>{{ str_limit($clasepersonalizada->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-tiempo_expiracion"><span>{{$clasepersonalizada->tiempo_expiracion}} Horas</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
+                            <tr class="disabled">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cancelacion" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-hourglass-alt zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Cancelación temprana/ tardía </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-cancelacion"><span>{{$cancelacion}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 
 
@@ -671,6 +845,8 @@
     route_update="{{url('/')}}/agendar/clases-personalizadas/update";
     route_eliminar="{{url('/')}}/agendar/clases-personalizadas/eliminar/";
     route_principal="{{url('/')}}/agendar/clases-personalizadas";
+    route_cancelar="{{url('/')}}/agendar/clases-personalizadas/cancelar/";
+    route_cancelarpermitir="{{url('/')}}/agendar/clases-personalizadas/cancelarpermitir/";
 
     $(document).ready(function(){
 
@@ -697,11 +873,6 @@
       limpiarMensaje();
       var descripcion=$("#clasepersonalizada-descripcion").data('valor');
        $("#descripcion").val(descripcion);
-    })
-    $('#modalCondiciones-ClasePersonalizada').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      var condiciones=$("#clasepersonalizada-condiciones").data('valor');
-       $("#condiciones").val(condiciones);
     })
     $('#modalFecha-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
@@ -731,6 +902,17 @@
     $('#modalEstudio-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#estudio option:selected").val($("#clasepersonalizada-estudio_id").text()); 
+    })
+
+    $('#modalEtiqueta-ClasePersonalizada').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#color_etiqueta").val($("#clasepersonalizada-color_etiqueta").text()); 
+    })
+
+
+    $('#modalExpiracion-ClasePersonalizada').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#tiempo_expiracion").val("{{$clasepersonalizada->tiempo_expiracion}}"); 
     })
 
     function limpiarMensaje(){
@@ -770,10 +952,6 @@
              $("#clasepersonalizada-"+c.name).data('valor',c.value);
              $("#clasepersonalizada-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if(c.name=='condiciones'){
-             $("#clasepersonalizada-"+c.name).data('valor',c.value);
-             $("#clasepersonalizada-"+c.name).html(c.value.substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name=='especialidad_id' || c.name=='estudio_id' || c.name=='instructor_id' || c.name=='alumno_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
@@ -781,6 +959,8 @@
             
             $("#clasepersonalizada-"+c.name).text(texto);
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='tiempo_expiracion'){
+             $("#clasepersonalizada-"+c.name).text(c.value + " Horas");
           }else{
             $("#clasepersonalizada-"+c.name).text(c.value);
           }
@@ -897,9 +1077,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                // if (typeof msj.responseJSON === "undefined") {
+                //           window.location = "{{url('/')}}/error";
+                //         }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -978,6 +1158,84 @@
                                 }
                 });
       }
+
+       $(".cancelar_clase").click(function(){
+    
+         swal({   
+                    title: "Desea cancelar la clase personalizada",   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
+         var route = route_cancelar + "{{$clasepersonalizada->id}}";
+         var token = '{{ csrf_token() }}';
+         var datos = $( "#cancelar_clase" ).serialize(); 
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
+
+                        window.location=route_principal; 
+
+                    },
+                    error:function(msj){
+                                if (typeof msj.responseJSON === "undefined") {
+                                  window.location = "{{url('/')}}/error";
+                                }
+                    $(".modal").modal('hide');
+                    finprocesado();
+                    swal({ 
+                    title: 'El estatus de esta clase es de "cancelación tardía", al cancelarla de igual manera será debitada económicamente al participante. ¿ Desea proceder ?',   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true,
+                    html: true
+                }, function(isConfirm){   
+                  if (isConfirm) {
+                    procesando();
+                    var route = route_cancelarpermitir + "{{$clasepersonalizada->id}}";
+
+                    $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
+
+                        window.location=route_principal; 
+
+                    },
+                    error:function(msj){
+
+                            if (typeof msj.responseJSON === "undefined") {
+                                window.location = "{{url('/')}}/error";
+                             }
+
+
+    
+                            }
+                        });
+                    }
+                });
+             }
+         });
+        }
+      });
+    });
     
    </script> 
 

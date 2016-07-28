@@ -93,8 +93,45 @@
                                                 </table>
                                               </div>
 
-                                               <div class="clearfix"></div> 
+                                               <!-- <div class="clearfix"></div> 
                                                <div class="clearfix p-b-15"></div>
+
+
+                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
+                                               <div class="fg-line">
+                                                  <div class="select">
+                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
+
+                                                      <option value="">Selecciona</option>
+                                                      
+                                                    
+                                                    </select>
+                                                  </div>
+                                                </div>
+ -->
+
+                                           </div>
+
+                                           <div class="col-sm-4">
+
+                                             <div class="form-group fg-line">
+                                                <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
+                                                <div class="clearfix p-b-15"></div>
+                                                <span class="text-center" id="asistencia-estado_ausencia"> --</span>
+                                             </div>
+
+                                              <!--  <div class="clearfix"></div> 
+
+                                              <div class="form-group fg-line">
+                                                <label for="asistencia-horario" class="f-16">Horario</label>
+                                                <div class="clearfix p-b-15"></div>
+                                                <span class="text-center" id="asistencia-horario"> --</span>
+                                             </div> -->
+                                             
+                                           </div>
+                                           
+
+                                           <div class="col-sm-9">
 
 
                                                <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
@@ -111,25 +148,6 @@
 
 
                                            </div>
-
-                                           <div class="col-sm-4">
-
-                                             <div class="form-group fg-line">
-                                                <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-estado_ausencia"> --</span>
-                                             </div>
-
-                                               <div class="clearfix"></div> 
-
-                                              <div class="form-group fg-line">
-                                                <label for="asistencia-horario" class="f-16">Horario</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-horario"> --</span>
-                                             </div>
-                                             
-                                           </div>
-                                           
 
                                            <div class="clearfix"></div> 
 
@@ -181,7 +199,7 @@
                                                   
                                            </div>
 
-                                           <div class="col-sm-5">
+                                           <div class="col-sm-9">
                                                <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
                                                <div class="fg-line">
                                                   <div class="select">
@@ -197,7 +215,7 @@
 
                                            </div>
 
-                                           <div class="col-sm-4">
+                                           <!-- <div class="col-sm-4">
 
                                             <div class="form-group fg-line">
                                                 <label for="asistencia-horario" class="f-16">Horario</label>
@@ -205,7 +223,7 @@
                                                 <span class="text-center" id="asistencia-horario-instructor"> --</span>
                                              </div>
                                              
-                                           </div>
+                                           </div> -->
                                            
 
                                            <div class="clearfix"></div> 
@@ -305,7 +323,7 @@
                                                   </div>
                                                   <div class="media-body">
                                                       <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
-                                                      <small class="lv-small">{{$instructor['identificacion']}}</small>
+                                                      <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
                                                   </div>
                                               </div>
                                       </a>
@@ -692,9 +710,9 @@
 
               $('#modalAsistenciaInstructor').modal('hide');
               swal("Permitido!", respuesta.mensaje, "success");
-              // $("#content").toggleClass("opacity-content");
+              $("#content").toggleClass("opacity-content");
               $("header").toggleClass("abierto");
-              // $("footer").toggleClass("opacity-content");
+              $("footer").toggleClass("opacity-content"); 
             }else{
               var nType = 'danger';
               var nTitle="Ups! ";
@@ -743,9 +761,9 @@
                           if(respuesta.status=="OK"){
                             $('#modalAsistenciaInstructor').modal('hide');
                             swal("Permitido!", respuesta.mensaje, "success");
-                            // $("#content").toggleClass("opacity-content");
+                            $("#content").toggleClass("opacity-content");
                             $("header").toggleClass("abierto");
-                            // $("footer").toggleClass("opacity-content");                                              
+                            $("footer").toggleClass("opacity-content");                                              
                           }else{
                             var nType = 'danger';
                             var nTitle="Ups! ";
@@ -854,8 +872,9 @@
             $('#asistencia-clase_grupal_id_instructor').empty();        
             $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) { 
-              console.log(array.nombre);                      
-              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+              // console.log(array);                      
+              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+
             });
 
             finprocesado();
@@ -903,7 +922,7 @@
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) { 
               console.log(array.nombre);                      
-              $('#asistencia-clase_grupal_id').append( new Option(array.nombre,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+              $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
             });
 
             $('#asistencia-estado_economico').text(respuesta.deuda);
@@ -994,6 +1013,15 @@
       }
 
       $('#modalAsistencia').on('hidden.bs.modal', function (e) {
+        $("#content").removeClass("opacity-content");
+        $("header").removeClass("abierto");
+        $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
+      })
+
+      $('#modalAsistenciaInstructor').on('hidden.bs.modal', function (e) {
         $("#content").removeClass("opacity-content");
         $("header").removeClass("abierto");
         $("footer").removeClass("opacity-content");

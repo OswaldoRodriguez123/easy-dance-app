@@ -20,7 +20,7 @@
 
 @section('content')
 
-
+<a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn"><i class="zmdi zmdi-calendar"></i></a>
 <div class="container">
     <div class="card">
     <div class="card-body p-b-20">
@@ -32,26 +32,36 @@
                   
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
                         <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Agendar</div>
-
-                          <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> {{count($clases_grupales)}} 
+                        
+                        <div class ="detalle">
                           @if(count($clases_grupales) != 1)
-                            Clases Grupales
-                          @else
-                            Clase Grupal
-                          @endif
-                            </a> <br>
+                            <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($clases_grupales)}}</span>
+                              
+                            @else
+                              <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clases_grupales[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clase Grupal <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($clases_grupales)}}</span>
+                            @endif
+                            </a> 
+                          </div>
+                          
+                          <div class ="detalle">
+                            <a href="{{url('/')}}/agendar/clases-personalizadas/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Clases Personalizadas
 
-                            <a href="{{url('/')}}/agendar" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> &nbsp; Clases Personalizadas
+                            </a>
+                            </div>
 
-                            </a> <br>
+                          <div class ="detalle">
+                            @if(count($talleres) != 1)
+                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($talleres)}}</span>
+                              
+                            @else
+                              <a href="{{url('/')}}/agendar/talleres/progreso/{{$talleres[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Taller <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($talleres)}}</span>
+                            @endif
 
-                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> {{count($talleres)}} 
-                          @if(count($talleres) != 1)
-                            Talleres
-                          @else
-                            Taller
-                          @endif
-                            </a> <br>
+
+                            </a>
+                            </div>
+
+
 
                           <div class="clearfix p-b-15"></div>
 
@@ -70,21 +80,26 @@
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
                         <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Especiales</div>
 
-                          <a href="{{url('/')}}/especiales/regalos" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> {{$regalos}} 
-                          @if($regalos != 1)
-                            Regalos
+                        <div class ="detalle">
+                          
+                          @if(count($regalos) != 1)
+                          <a href="{{url('/')}}/especiales/regalos" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalos <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
+                            
                           @else
-                            Regalo
+                            <a href="{{url('/')}}/especiales/regalos/enviar/{{$regalos[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalo <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
                           @endif
-                            </a> <br>
+                            </a> </div>
 
-                            <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> {{$campanas}} 
-                          @if($campanas != 1)
-                            Campañas
+                          <div class ="detalle">
+
+                           @if(count($campanas) != 1)
+                          <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($campanas)}}</span>
+                            
                           @else
-                            Campaña
+                            <a href="{{url('/')}}/especiales/campañas/progreso/{{$campanas[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campaña <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($campanas)}}</span>
                           @endif
-                            </a>
+
+                            </a> </div>
 
                           <div class="clearfix p-b-15"></div>
 
@@ -117,25 +132,31 @@
 
            <div class="clearfix p-b-20"></div>
 
-            @foreach($clases_grupales as $clase_grupal)
+           <span class="f-16 f-700 opaco-0-8"><i class="zmdi zmdi-arrow-split zmdi-hc-fw"></i> Actividades Recientes</span>
+
+           <hr class="linea-morada">
+
+           <div class ="enlaces">
+
+            @foreach(array_slice($enlaces, 0, 4) as $enlace)
               
               <div class="text-left pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-              <div class= "clase_grupal" id="{{$clase_grupal->id}}"  onclick="procesando()">
+              <div class= "enlace" id="enlace" name="enlace" data-url="{{$enlace['url']}}">
 
                 <div style="padding: 10px">
 
-                <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal->nombre}}</p>
+                <p class="f-25 f-700" style="color:#5e5e5e">{{$enlace['nombre']}}</p>
               
 
-                @if($clase_grupal->descripcion)
+                @if($enlace['descripcion'])
 
-                  <p class="f-15 f-700">{{ str_limit($clase_grupal->descripcion, $limit = 150, $end = '...') }}</p>
+                  <p class="f-15 f-700">{{ str_limit($enlace['descripcion'], $limit = 150, $end = '...') }}</p>
 
                 @endif
                             
-                @if($clase_grupal->imagen)
-                  <img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" class="img-responsive" alt="">
+                @if($enlace['imagen'])
+                  <img src="{{url('/')}}{{$enlace['imagen']}}" class="img-responsive" alt="">
 
                   <br>
                 @endif
@@ -153,14 +174,14 @@
 
                         <li class="rrssb-facebook">
                           <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
-                          <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}/agendar/clases-grupales/progreso/{{$clase_grupal->id}}" class="popup">
+                          <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}{{$enlace['facebook']}}" class="popup">
                             <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
                             <span class="rrssb-text">facebook</span>
                           </a>
                         </li>
                         <li class="rrssb-twitter">
                           <!-- Replace href with your Meta and URL information  -->
-                          <a href="https://twitter.com/intent/tweet?text=Participa en la clase grupal {{$clase_grupal->nombre}} te invita @EasyDanceLatino {{url('/')}}/agendar/clases-grupales/progreso/{{$clase_grupal->id}}"
+                          <a href="https://twitter.com/intent/tweet?text={{$enlace['twitter']}} {{url('/')}}{{$enlace['twitter_url']}}"
                           class="popup">
                             <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span>
                             <span class="rrssb-text">twitter</span>
@@ -173,126 +194,17 @@
                   </div>
 
 
-
             @endforeach
 
-             @foreach($talleres as $taller)
-              
-              <div class="text-left pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+            <div class="text-center">
 
-              <div class= "taller" id="{{$taller->id}}"  onclick="procesando()">
+            <br><br>
 
-                <div style="padding: 10px">
+            <span class="mostrar f-16 c-morado f-700 pointer">Mostrar mas</span>
 
-                <p class="f-25 f-700" style="color:#5e5e5e">{{$taller->nombre}}</p>
-              
+            </div>
 
-                @if($taller->descripcion)
-
-                  <p class="f-15 f-700">{{ str_limit($taller->descripcion, $limit = 150, $end = '...') }}</p>
-
-                @endif
-                            
-                @if($taller->imagen)
-                  <img src="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" class="img-responsive" alt="">
-
-                  <br>
-                @endif
-                
-                </div>
-
-              </div>
-
-              <hr style="margin-bottom:5px">
-
-
-              <div class="col-sm-3">
-              <span class="f-13 f-700">Comparte</span>
-                  <ul class="rrssb-buttons clearfix">
-
-                        <li class="rrssb-facebook">
-                          <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
-                          <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}/agendar/talleres/progreso/{{$taller->id}}" class="popup">
-                            <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
-                            <span class="rrssb-text">facebook</span>
-                          </a>
-                        </li>
-                        <li class="rrssb-twitter">
-                          <!-- Replace href with your Meta and URL information  -->
-                          <a href="https://twitter.com/intent/tweet?text=Participa en el taller {{$taller->nombre}} te invita @EasyDanceLatino {{url('/')}}/agendar/talleres/progreso/{{$taller->id}}"
-                          class="popup">
-                            <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span>
-                            <span class="rrssb-text">twitter</span>
-                          </a>
-                        </li>
-                      </ul>
-
-                    </div>
-                    <br><br><br>
-                  </div>
-
-
-
-            @endforeach
-
-             @foreach($fiestas as $fiesta)
-              
-              <div class="text-left pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-
-              <div class= "fiesta" id="{{$fiesta->id}}">
-
-                <div style="padding: 10px">
-
-                <p class="f-25 f-700" style="color:#5e5e5e">{{$fiesta->nombre}}</p>
-              
-
-                @if($fiesta->descripcion)
-
-                  <p class="f-15 f-700">{{ str_limit($fiesta->descripcion, $limit = 150, $end = '...') }}</p>
-
-                @endif
-                            
-                @if($fiesta->imagen)
-                  <img src="{{url('/')}}/assets/uploads/fiesta/{{$fiesta->imagen}}" class="img-responsive" alt="">
-
-                  <br>
-                @endif
-                
-                </div>
-
-              </div>
-
-              <hr style="margin-bottom:5px">
-
-
-              <div class="col-sm-3">
-              <span class="f-13 f-700">Comparte</span>
-                  <ul class="rrssb-buttons clearfix">
-
-                        <li class="rrssb-facebook">
-                          <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
-                          <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}/agendar/fiestas/progreso/{{$fiesta->id}}" class="popup">
-                            <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
-                            <span class="rrssb-text">facebook</span>
-                          </a>
-                        </li>
-                        <li class="rrssb-twitter">
-                          <!-- Replace href with your Meta and URL information  -->
-                          <a href="https://twitter.com/intent/tweet?text=Participa en la fiesta {{$fiesta->nombre}} te invita @EasyDanceLatino {{url('/')}}/agendar/fiestas/progreso/{{$fiesta->id}}"
-                          class="popup">
-                            <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span>
-                            <span class="rrssb-text">twitter</span>
-                          </a>
-                        </li>
-                      </ul>
-
-                    </div>
-                    <br><br><br>
-                  </div>
-
-
-
-            @endforeach
+            </div>
                         
            
           </div>
@@ -303,31 +215,69 @@
               <div style="padding-top:10px;">
                 <div class="pmo-block pmo-contact hidden-xs">
 
-                 <!-- div class="p-relative"> -->
-                      <a href="">
-                          @if($academia->imagen)
-                            <img class="img-responsive" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
-                          @else
-                            <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
-                          @endif
-                      </a>
-                  <!-- </div> -->
-              
-                <h2>Contacto</h2>
+                 <div class="p-relative">
+                    <a href="">
+                        @if($academia->imagen)
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+                        @else
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+                        @endif
+                    </a>
+
+                </div>
+
+
+                    <div class="clearfix p-b-15"></div>
+                    <div class="clearfix p-b-15"></div>
+
+                    <div class="pmo-block pmo-contact hidden-xs">
+
+                    <h2 style="font-size: 16px; margin: 0 0 15px">Contacto</h2>
 
                     <ul>
-                        <li><i class="zmdi zmdi-email"></i> info@easydancelatino.com</li>
-                        <li><i class="zmdi zmdi-facebook-box"></i> Easydancelatino</li>
-                        <li><i class="zmdi zmdi-twitter"></i> EasyDanceLatino</li>
+                        <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
+                        @if($academia->facebook)
+                        <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">Facebook</a></li>
+                        @endif
+
+                        @if($academia->twitter)
+                        <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">Twitter</a></li>
+                        @endif
+
+                        @if($academia->instagram)
+                        <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">Instagram</a></li>
+                        @endif
+
+                        @if($academia->linkedin)
+                        <li><i class="zmdi zmdi-linkedin-box"></i> <a class ="enlace_gris" href="{{$academia->linkedin}}">Linkedin</a></li>
+                        @endif
+
+                        @if($academia->youtube)
+                        <li><i class="zmdi zmdi-collection-video"></i> <a class ="enlace_gris" href="{{$academia->youtube}}">Youtube</a></li>
+                        @endif
+
+                        @if($academia->pagina_web)
+                        <li><i class="zmdi zmdi-google-earth"></i> <a class ="enlace_gris" href="{{$academia->pagina_web}}">Pagina Web</a></li>
+                        @endif
+
+                        @if($academia->direccion)
                         <li>
                             <i class="zmdi zmdi-pin"></i>
                             <address class="m-b-0 ng-binding">
-                                Centro Comercial Salto Ángel, <br>
-                                en la avenida 3 Y – entre la <br> calle 78 y 79 <br>
-                                Maracaibo, Venezuela <br>
+                                {{$academia->direccion}}
                             </address>
                         </li>
+                        @endif
+
+                        @if($academia->celular)
+                        <li>
+                            <i class="icon_b-telefono"></i>
+                                {{$academia->celular}} - {{$academia->telefono}}
+                        </li>
+                        @endif
                     </ul>
+
+                    </div>
 
                     <div class="clearfix p-b-15"></div>
                   </div>
@@ -358,39 +308,23 @@
 
         var recompensa = 0;
 
-              // create a simple soon counter on the supplied element
-          $(document).ready(function() {
-      
+        $(document).on( 'click', '.enlace', function () {
+          url = $(this).data('url');
+          window.location = "{{url('/')}}/"+url;
+        });
+
+
+        $(".mostrar").click(function(){
+
+          $(".enlaces").empty();
+
+          var enlaces = <?php echo json_encode($enlaces);?>;
+
+          $.each(enlaces, function (index, array) {
+
+            $(".enlaces").append('<div class="text-left pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)"><div class="enlace" name="enlace" id="enlace" data-url="'+array.url+'"><div style="padding: 10px"><p class="f-25 f-700" style="color:#5e5e5e">'+array.nombre+'</p><p class="f-15 f-700">'+array.descripcion.substr(0, 150) + "..."+ '</p><img src="{{url('/')}}'+array.imagen+'" class="img-responsive" alt=""> <br</div></div><hr style="margin-bottom:5px"><div class="col-sm-3"><span class="f-13 f-700">Comparte</span><ul class="rrssb-buttons clearfix"><li class="rrssb-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}'+array.facebook+'" class="popup"><span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span><span class="rrssb-text"></span></a></li><li class="rrssb-twitter"><a href="https://twitter.com/intent/tweet?text='+array.twitter+' {{url('/')}}'+array.twitter_url+'"class="popup"><span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span><span class="rrssb-text"></span></a></li></ul></div><br><br><br></div>')
 
           });
-
-
-        $(".clase_grupal").click(function(){
-
-          id = this.id;
-          window.location= "{{url('/')}}/agendar/clases-grupales/progreso/"+id;
-
-        });
-
-        $(".taller").click(function(){
-
-          id = this.id;
-          window.location= "{{url('/')}}/agendar/talleres/progreso/"+id;
-
-        });
-
-          $(".recompensa").click(function(){
-
-          id = this.id;
-          window.location= "{{url('/')}}/especiales/campañas/progreso/"+id;
-
-        });
-
-        $(".regalo").click(function(){
-
-          id = this.id;
-          window.location= "{{url('/')}}/especiales/regalos";
-
         });
 
         </script>

@@ -11,6 +11,7 @@ use Mail;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class InstructorController extends BaseController {
 
@@ -34,20 +35,8 @@ class InstructorController extends BaseController {
      */
     public function create()
     {
-        //Simple Marker
-        $config['center'] = '10.6913156,-71.6800493';
-        $config['zoom'] = 14;
-        \Gmaps::initialize($config);
 
-        $marker = array();
-        $marker['position'] = '10.6913156,-71.6800493';
-        $marker['draggable'] = true;
-        $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-        \Gmaps::add_marker($marker);
-
-        $map = \Gmaps::create_map();
-
-        return view('participante.instructor.create' , compact('map'));
+        return view('participante.instructor.create');
     }
 
     /**
@@ -111,6 +100,42 @@ class InstructorController extends BaseController {
 
     else{
 
+        if($request->video_promocional){
+
+            $parts = parse_url($request->video_promocional);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['video_promocional' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['video_promocional' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
+            if($request->video_testimonial){
+
+            $parts = parse_url($request->video_testimonial);
+
+            if(isset($parts['host']))
+            {
+                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                
+                }else{
+                    return response()->json(['errores' => ['video_testimonial' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                    return response()->json(['errores' => ['video_testimonial' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+            
+            }
+
         $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
 
@@ -146,8 +171,41 @@ class InstructorController extends BaseController {
         $instructor->cefalea = $request->cefalea;
         $instructor->hipertension = $request->hipertension;
         $instructor->lesiones = $request->lesiones;
+        $instructor->descripcion = $request->descripcion;
+        $instructor->video_promocional = $request->video_promocional;
+        $instructor->resumen_artistico = $request->resumen_artistico;
+        $instructor->video_testimonial = $request->video_testimonial;
+        $instructor->boolean_promocionar = $request->boolean_promocionar;
 
         if($instructor->save()){
+
+            if($request->imageBase64){
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "instructor-". $instructor->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(1440, 500);
+                $img->save('assets/uploads/instructor/'.$nombre_img);
+
+                $instructor->imagen_artistica = $nombre_img;
+                $instructor->save();
+
+            }
 
             $usuario = new User;
 
@@ -417,6 +475,66 @@ class InstructorController extends BaseController {
     public function updateEstatus(Request $request){
         $instructor = Instructor::find($request->id);
         $instructor->estatus = $request->estatus;
+
+        if($instructor->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateRedes(Request $request){
+
+        $instructor = Instructor::find($request->id);
+        $instructor->facebook = $request->facebook;
+        $instructor->twitter = $request->twitter;
+        $instructor->instagram = $request->instagram;
+        $instructor->pagina_web = $request->pagina_web;
+        $instructor->linkedin = $request->linkedin;
+        $instructor->youtube = $request->youtube;
+        
+        if($instructor->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateAvanzado(Request $request){
+        $instructor = Instructor::find($request->id);
+
+        $instructor->descripcion = $request->descripcion;
+        $instructor->video_promocional = $request->video_promocional;
+        $instructor->resumen_artistico = $request->resumen_artistico;
+        $instructor->video_testimonial = $request->video_testimonial;
+        $instructor->boolean_promocionar = $request->boolean_promocionar;
+
+        if($request->imageBase64){
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "instructor-". $instructor->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(1440, 500);
+                $img->save('assets/uploads/instructor/'.$nombre_img);
+
+                $instructor->imagen_artistica = $nombre_img;
+
+        }
 
         if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

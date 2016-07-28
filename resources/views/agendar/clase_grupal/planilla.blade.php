@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 
@@ -20,6 +21,7 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 <script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/moment.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 @stop
 
 @section('content')
@@ -105,7 +107,7 @@
                                         <div class="clearfix p-b-15"></div>
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
                                           @if($clasegrupal->imagen)
                                           <img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clasegrupal->imagen}}" style="line-height: 150px;">
                                           @endif
@@ -946,6 +948,70 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalEtiqueta-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_etiqueta_clasegrupal" id="edit_etiqueta_clasegrupal"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="cp-container">
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label>
+                                        <div class="input-group form-group">
+
+                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$clasegrupal->color_etiqueta}}" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="{{$clasegrupal->color_etiqueta}}"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_clasegrupal" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -1072,14 +1138,14 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_reservacion">{{$clasegrupal->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalColor-ClaseGrupal">
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClaseGrupal">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($clasegrupal->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
-                               <td  class="f-14 m-l-15" id="clasegrupal-color_etiqueta" >
-
+                               <td  class="f-14 m-l-15">
+                                <span id="clasegrupal-color_etiqueta">{{$clasegrupal->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr>

@@ -146,6 +146,37 @@
                         </div>
                     </div>
 
+                    <div class="modal fade" id="modalFechaPasada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div class="text-center">
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div align="center"><i class="zmdi zmdi-calendar-close zmdi-hc-fw f-60 c-morado"></i></div>
+
+                        <div class="clearfix p-b-15"></div>
+                        
+                        <div class="col-md-12">
+                         <span class="f-20 opaco-0-8">¡ Ups lo sentimos, no puedes agendar en una fecha vencida. !</span>
+                         </div>
+
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
 
     </div>
 </section>
@@ -261,19 +292,107 @@
                         },
                     ],*/
                     events: [
-                        
+                        @foreach ($talleres as $taller)
+                        {
+                            <?php
+                            $fecha_start=explode('-',$taller['fecha_inicio']);
+                            $fecha_end=explode('-',$taller['fecha_final']);
+                            $hora_start=explode(':',$taller['hora_inicio']);
+                            $hora_end=explode(':',$taller['hora_final']);
+                            ?>
+                            id: 'taller-{{$taller['id']}}',
+                            title: '{{$taller['nombre']}}',
+                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                            allDay: false,
+                            backgroundColor:'{{$taller['etiqueta']}}',
+                            className: 'actividad',
+                            url: '{{url('/')}}{{$taller['url']}}'
+                            },
+                        @endforeach
+
+                        @foreach ($clases_grupales as $clase)
+                            {
+                            <?php
+                            $fecha_start=explode('-',$clase['fecha_inicio']);
+                            $fecha_end=explode('-',$clase['fecha_final']);
+                            $hora_start=explode(':',$clase['hora_inicio']);
+                            $hora_end=explode(':',$clase['hora_final']);
+                            ?>
+                            id: 'clase-{{$clase['id']}}',
+                            title: '{{$clase['nombre']}}',
+                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                            allDay: false,
+                            backgroundColor:'{{$clase['etiqueta']}}',
+                            className: 'actividad',
+                            url: '{{url('/')}}{{$clase['url']}}'
+                            },
+                        @endforeach
+
+                        @foreach ($clases_personalizadas as $clasepersonalizada)
+                            {
+                            <?php
+                            $fecha_start=explode('-',$clasepersonalizada['fecha_inicio']);
+                            $fecha_end=explode('-',$clasepersonalizada['fecha_final']);
+                            $hora_start=explode(':',$clasepersonalizada['hora_inicio']);
+                            $hora_end=explode(':',$clasepersonalizada['hora_final']);
+                            ?>
+                            id: 'clasepersonalizada-{{$clasepersonalizada['id']}}',
+                            title: '{{$clasepersonalizada['nombre']}}',
+                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                            allDay: false,
+                            backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
+                            className: 'actividad',
+                            url: '{{url('/')}}{{$clasepersonalizada['url']}}'
+                            },
+                        @endforeach
+
+                         @foreach ($fiestas as $fiesta)
+                            {
+                            <?php
+                            $fecha_start=explode('-',$fiesta['fecha_inicio']);
+                            $fecha_end=explode('-',$fiesta['fecha_final']);
+                            $hora_start=explode(':',$fiesta['hora_inicio']);
+                            $hora_end=explode(':',$fiesta['hora_final']);
+                            ?>
+                            id: 'fiesta-{{$fiesta['id']}}',
+                            title: '{{$fiesta['nombre']}}',
+                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                            allDay: false,
+                            backgroundColor:'{{$fiesta['etiqueta']}}',
+                            className: 'actividad',
+                            url: '{{url('/')}}{{$fiesta['url']}}'
+                            },
+                        @endforeach
                     ],
-                     
+                                         
                     //On Day Select
-                    select: function(start, end, allDay) {  
-                        $('#addNew-event input:text').val('');
-                        $('#getStart').val(start);
-                        $('#getEnd').val(end);
-                        var agendar = 'clases-personalizadas';
+                    select: function(start, end, allDay) {
+                        //console.log(start + ' --- ' + end);
 
-                        $('#agendar').val(agendar);
+                        var d = new Date();
+                        var timestamp = d.getTime(); 
 
-                        $("#frm_agendar").submit();
+                        if(end>timestamp){
+                           $('#addNew-event input:text').val('');
+                            $('#getStart').val(start);
+                            $('#getEnd').val(end);
+                            var agendar = 'clases-personalizadas';
+
+                            $('#agendar').val(agendar);
+
+                            $("#frm_agendar").submit();
+                        }else{
+                           //console.log('error');
+                           $('#modalFechaPasada').modal('show');                            
+                        }
+
+                        console.log(n);
+
+                        
                     },
                     eventClick: function(calEvent, jsEvent, view) {
 

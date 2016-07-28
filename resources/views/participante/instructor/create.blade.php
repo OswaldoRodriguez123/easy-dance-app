@@ -353,6 +353,176 @@
                                </div>
                           <div class="clearfix p-b-35"></div>
 
+                              <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Opciones Avanzadas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAvanzado" aria-expanded="false" aria-controls="collapseAvanzado">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseAvanzado" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-12">
+                                    <label for="apellido" id="id-imagen">Imagen artística</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <div class="clearfix p-b-15"></div>
+                                      
+                                      <input type="hidden" name="imageBase64" id="imageBase64">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen" id="imagen" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                      <div class="has-error" id="error-imagen">
+                                      <span >
+                                          <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-descripcion">Perfil del instructor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe tu perfil como instructor, habla de tu personalidad en el baile, ¿cómo iniciaste? en que te has especializado?   Porqué te gusta enseñar o bailar, cuéntales a tus clientes y público en general cuáles son tus fortalezas  al momento de enseñar o bailar" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="1000 Caracteres" onkeyup="countChar2(this)"></textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                  <label for="id" id="id-video_promocional">Ingresa url del video promocional</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un video promocional de tus clases de baile como instructor o bailarín, esmérate en hacer una buena producción visual, de esa forma te ayudaremos a impulsar tu marca personal de mejor manera" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="video_promocional" id="video_promocional" placeholder="Ingresa la url">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-video_promocional">
+                                    <span >
+                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-resumen_artistico">Resumen artístico</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe tu perfil como instructor, habla de tu personalidad en el baile, ¿cómo iniciaste? en que te has especializado?   Porqué te gusta enseñar o bailar, cuéntales a tus clientes y público en general cuáles son tus fortalezas  al momento de enseñar o bailar" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="resumen_artistico" name="resumen_artistico" rows="2" placeholder="1000 Caracteres" onkeyup="countChar3(this)"></textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-resumen_artistico">
+                                      <span >
+                                          <small class="help-block error-span" id="error-resumen_artistico_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                  <label for="id" id="id-video_testimonial">Ingresa url del video testimonial</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional de tus alumnos , maestros , directores de academias ,personas influyentes , seguidores  entre otros , no mayor a 4  minutos , en el que ellos inviten  a seguir  tu trabajo. No olvides que la mejor publicidad proviene de las recomendaciones de terceros" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="video_testimonial" id="video_testimonial" placeholder="Ingresa la url">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-video_testimonial">
+                                    <span >
+                                     <small id="error-video_testimonial_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_promocionar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                               
+
+                                        
+                                  
+
+
+                            <div class="clearfix p-b-35"></div>
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseAvanzado')" ></i></div>
+                            
+                            <div class="clearfix p-b-35"></div>
+                               <hr></hr>
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
@@ -406,16 +576,39 @@
 
   $(document).ready(function(){
 
+    $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagena img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
+
+
+        $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+        $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
+
+        $("#promocionar").on('change', function(){
+          if ($("#promocionar").is(":checked")){
+            $("#boolean_promocionar").val('1');
+          }else{
+            $("#boolean_promocionar").val('0');
+          }    
+        });
+
     $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
@@ -732,6 +925,24 @@
           val.value = val.value.substring(0, 180);
         } else {
           $('#charNum').text(180 - len);
+        }
+      };
+
+      function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum2').text(1000 - len);
+        }
+      };
+
+      function countChar3(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum3').text(1000 - len);
         }
       };
 </script> 

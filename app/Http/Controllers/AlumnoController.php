@@ -42,32 +42,27 @@ class AlumnoController extends BaseController
             ->where('alumnos.deleted_at', '=', null)
         ->get();
 
-        $collection=collect($alumnod);
+        $alumnoc = DB::table('alumnos')
+            ->join('users', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+            ->where('users.usuario_tipo', '=', 2)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
 
+        $collection=collect($alumnod);
         $grouped = $collection->groupBy('id');     
-        
         $deuda = $grouped->toArray();
 
-        $alumno = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
 
+        $alumno = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
         $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        // dd($alumno);
-
-        // $proforma = DB::table('items_factura_proforma')
-        //     ->groupBy('alumno_id')
-
-        // ->get();
-
-        // $total = ItemsFacturaProforma::groupBy('alumno_id')
-        //    ->selectRaw('sum(importe_neto) as sum, *');
-        //    // ->lists('sum','alumno_id');
-        // dd($total);
-
-        
-
-
-		return view('participante.alumno.principal')->with(['alumnos' => $alumno, 'instructor' => $instructor,'deuda' => $deuda]);
+		return view('participante.alumno.principal')->with(['alumnos' => $alumno, 'instructor' => $instructor,'deuda' => $deuda, 'activacion' => $activacion]);
 	}
 
 
@@ -232,26 +227,6 @@ class AlumnoController extends BaseController
             $usuario->password = bcrypt(str_random(8));
             $usuario->usuario_id = $alumno->id;
             $usuario->usuario_tipo = 2;
-
-            if($request->familia_id){
-
-                $familia = Familia::find($request->familia_id);
-                $representante = User::find($familia->representante_id);
-                $usuario->familia_id = $request->familia_id;
-
-                if(!$request->telefono){
-                    $usuario->telefono = $representante->telefono;
-                    $alumno->telefono = $representante->telefono;
-                }
-                if(!$request->direccion){
-                    $usuario->direccion = $representante->direccion;
-                    $alumno->direccion = $representante->direccion;
-                }
-
-                if(!$request->telefono || !$request->direccion){
-                    $alumno->save();
-                }
-            }
 
             if($usuario->save()){
             
@@ -541,22 +516,25 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
-            $es_representante = Familia::where('representante_id', $tmp->id);
+            if($tmp){
 
-            if(!$es_representante){
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
-            }
-            else{
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
-            }
+                $es_representante = Familia::where('representante_id', $tmp->id);
 
-            $usuario->sexo = $request->sexo;
+                if(!$es_representante){
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+                }
+                else{
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+                }
 
-            if($usuario->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
+                $usuario->sexo = $request->sexo;
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+         }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -597,21 +575,23 @@ class AlumnoController extends BaseController
 
         if($alumno->save()){
             $tmp = User::where('usuario_id', $request->id)->first();
-            $es_representante = Familia::where('representante_id', $tmp->id);
+            if($tmp){
+                $es_representante = Familia::where('representante_id', $tmp->id);
 
-            if(!$es_representante){
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
-            }
-            else{
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
-            }
+                if(!$es_representante){
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+                }
+                else{
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+                }
 
-            $usuario->email = $correo;
+                $usuario->email = $correo;
 
-            if($usuario->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -628,22 +608,24 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
-            $es_representante = Familia::where('representante_id', $tmp->id);
+            if($tmp){
+                $es_representante = Familia::where('representante_id', $tmp->id);
 
-            if(!$es_representante){
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
-            }
-            else{
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
-            }
+                if(!$es_representante){
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+                }
+                else{
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+                }
 
-            $usuario->telefono = $request->telefono;
-            $usuario->celular = $request->celular;
+                $usuario->telefono = $request->telefono;
+                $usuario->celular = $request->celular;
 
-            if($usuario->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -660,21 +642,23 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
-            $es_representante = Familia::where('representante_id', $tmp->id);
+            if($tmp){
+                $es_representante = Familia::where('representante_id', $tmp->id);
 
-            if(!$es_representante){
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
-            }
-            else{
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
-            }
+                if(!$es_representante){
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+                }
+                else{
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+                }
 
-            $usuario->direccion = $direccion;
+                $usuario->direccion = $direccion;
 
-            if($usuario->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

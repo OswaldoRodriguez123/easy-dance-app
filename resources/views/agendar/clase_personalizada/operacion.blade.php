@@ -261,8 +261,20 @@
                 });
       }
 
-      $("#guardar").click(function(){route_cancelarpermitir
-        procesando();
+      $("#guardar").click(function(){
+    
+         swal({   
+                    title: "Desea cancelar la clase personalizada",   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
          var route = route_cancelar + "{{$id}}";
          var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_clase" ).serialize(); 
@@ -291,10 +303,11 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Confirmar cancelación!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false,
+                    closeOnConfirm: true,
                     html: true
                 }, function(isConfirm){   
                   if (isConfirm) {
+                    procesando();
                     var route = route_cancelarpermitir + "{{$id}}";
 
                     $.ajax({
@@ -321,8 +334,10 @@
                     }
                 });
              }
-        });
+         });
+        }
       });
+    });
   
   setAnimation('fadeInUp', 'content');
 	</script>

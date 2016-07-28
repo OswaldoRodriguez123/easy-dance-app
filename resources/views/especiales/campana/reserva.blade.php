@@ -110,9 +110,9 @@
                 <div class="p-relative">
                     <a href="">
                         @if($academia->imagen)
-                          <img class="img-responsive" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
                         @else
-                          <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                         @endif
                     </a>
 
@@ -257,7 +257,7 @@
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Campaña</a></li>
                 <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Patrocinadores</a></li>
                 <li class="waves-effect"><a href="#datos" aria-controls="datos" role="tab" data-toggle="tab">Datos Bancarios</a></li>
-                <li class="waves-effect"><a href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">Sobre Easy Dance</a></li>
+                <!-- <li class="waves-effect"><a href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">Sobre Easy Dance</a></li> -->
 
             </ul>
             
@@ -269,8 +269,8 @@
 
 <!--                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg"> -->
 
-                        <p class="text-center f-30 f-700 opaco-0-8">{{$campana->nombre}}</p>
-                        <p class="text-center f-20 f-700 opaco-0-8">{{$campana->eslogan}}</p>
+                        <p class="text-center f-30 f-700 opaco-0-8">{!! nl2br($campana->nombre) !!}</p>
+                        <p class="text-center f-20 f-700 opaco-0-8">{!! nl2br($campana->eslogan) !!}</p>
 
 
                         <div class="clearfix p-b-20"></div>
@@ -283,7 +283,7 @@
 
                         <div class="f-700 f-30">Historia</div>
                         <br>
-                        <p class="f-14">{{$campana->historia}}.</p>
+                        <p class="f-14">{!! nl2br($campana->historia) !!}.</p>
 
                         <!-- <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
 
@@ -305,37 +305,12 @@
 
                       <div class="f-700 f-30">Presentación general de la campaña</div>
                         <br>
-                        <p class="f-14">{{$campana->presentacion}}.</p>
+                        <p class="f-14">{!! nl2br($campana->presentacion) !!}.</p>
 
                         @if($campana->imagen_presentacion)
                         <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen_presentacion}}" class="img-responsive opaco-0-8" alt="">
                         @endif
                         
-                        <footer id="footer" style="position:relative">
-
-                          <div class=" p-10 footer-text">
-                          <p> <b><a href="http://easydancelatino.com/" target="_blank" > www.easydancelatino.com </a></b></p> 
-
-
-                          <p class="f-35" >
-                              <a href="https://www.facebook.com/Easydancelatino/" target="_blank" title="Facebook">
-                                  <i class="zmdi zmdi-facebook"></i>
-                              </a>
-                              <a href="https://www.instagram.com/easydancelatino/" target="_blank" title="Instagram">
-                                  <i class="zmdi zmdi-instagram"></i>
-                              </a>
-                              <a href="https://twitter.com/EasyDanceLatino" target="_blank" title="Twitter" >
-                                  <i class="zmdi zmdi-twitter" ></i>
-                              </a> 
-                              <a href="https://plus.google.com/u/0/104687135628887176910" target="_blank" title="Google+" >
-                                  <i class="zmdi zmdi-google-plus"></i>
-                              </a>
-                          </p>
-
-                          </div>
-
-                      </footer>
-
 
                     </div>
 
@@ -504,6 +479,32 @@
                         <li class="next"><a class="a-prevent" href="" onclick="irArriba('tabs')" ><i class="zmdi zmdi-arrow-forward"></i></a></li>
                         <!--<li class="next last"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
                     </ul>
+
+                    <footer id="footer" style="position:relative">
+
+                          <div class=" p-10 footer-text">
+                          <p> <b><a href="http://easydancelatino.com/" target="_blank" > www.easydancelatino.com </a></b></p> 
+
+
+                          <p class="f-35" >
+                              <a href="https://www.facebook.com/Easydancelatino/" target="_blank" title="Facebook">
+                                  <i class="zmdi zmdi-facebook"></i>
+                              </a>
+                              <a href="https://www.instagram.com/easydancelatino/" target="_blank" title="Instagram">
+                                  <i class="zmdi zmdi-instagram"></i>
+                              </a>
+                              <a href="https://twitter.com/EasyDanceLatino" target="_blank" title="Twitter" >
+                                  <i class="zmdi zmdi-twitter" ></i>
+                              </a> 
+                              <a href="https://plus.google.com/u/0/104687135628887176910" target="_blank" title="Google+" >
+                                  <i class="zmdi zmdi-google-plus"></i>
+                              </a>
+                          </p>
+
+                          </div>
+
+                      </footer><br><br>
+
 
             </div> <!-- Tab Content -->
             </div>

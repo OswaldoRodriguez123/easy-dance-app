@@ -112,7 +112,7 @@
                                  <div class="form-group fg-line">
                                     <label for="descripcion" id="id-descripcion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las caracteristicas del servicio que ofreces a tus clientes" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"  maxlength="250" onkeyup="countChar(this)"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"  maxlength="250" onkeyup="countChar(this)"></textarea>
                                     </div>
                                     <div class="opaco-0-8 text-right">Resta <span id="charNum">250</span> Caracteres</div>
                                  </div>

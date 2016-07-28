@@ -526,7 +526,7 @@ class FiestaController extends BaseController {
 
     public function updateEtiqueta(Request $request){
         $fiesta = Fiesta::find($request->id);
-        $fiesta->etiqueta = $request->etiqueta;
+        $fiesta->color_etiqueta = $request->color_etiqueta;
 
         if($fiesta->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

@@ -103,7 +103,7 @@ class AsistenciaController extends BaseController
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();
@@ -127,6 +127,7 @@ class AsistenciaController extends BaseController
         $hora_inicio=$grupal->hora_inicio;
         $hora_final=$grupal->hora_final;
         $etiqueta=$grupal->color_etiqueta;
+        $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
         $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
@@ -134,7 +135,7 @@ class AsistenciaController extends BaseController
 
         if($fechaActual->toDateString()==$dt->toDateString()){      
 
-          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta);
+          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);
 
           }
 
@@ -144,7 +145,7 @@ class AsistenciaController extends BaseController
         $fecha="";    
         $fecha=$dt->addWeek()->toDateString();
         if($fechaActual->toDateString()==$fecha){
-        $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta);  
+        $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);  
         } 
           $c++;
       }
@@ -161,37 +162,38 @@ class AsistenciaController extends BaseController
     public function consulta_clase_grupales_alumno($id_alumno)
     {
     	
-     	$talleres=ClaseGrupal::all();
-
-        $talleres= DB::table('clases_grupales')
+        $clases_grupales= DB::table('clases_grupales')
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
      	$alumno=Alumno::all();
   
-	    $arrayTalleres=array();
+	    $arrayClases=array();
 
 	    $fechaActual = Carbon::now();
  		  $fechaActual->tz = 'America/Caracas';
         //$actual = $fechaActual->toDateString();
 
-        $collection = collect($talleres);
+        $collection = collect($clases_grupales);
 
         //$lista=get_object_vars($talleres);
 
-     	foreach ($talleres as $taller) {
-     		$fecha_start=explode('-',$taller->fecha_inicio);
-     		$fecha_end=explode('-',$taller->fecha_final);
-     		$id=$taller->id;
-     		$nombre=$taller->nombre;
-     		$descripcion=$taller->descripcion;
-     		$hora_inicio=$taller->hora_inicio;
-     		$hora_final=$taller->hora_final;
-     		$etiqueta=$taller->color_etiqueta;
+     	foreach ($clases_grupales as $grupal) {
+     		$fecha_start=explode('-',$grupal->fecha_inicio);
+     		$fecha_end=explode('-',$grupal->fecha_final);
+     		$id=$grupal->id;
+     		$nombre=$grupal->nombre;
+     		$descripcion=$grupal->descripcion;
+     		$hora_inicio=$grupal->hora_inicio;
+     		$hora_final=$grupal->hora_final;
+     		$etiqueta=$grupal->color_etiqueta;
+        $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
      		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
@@ -199,7 +201,7 @@ class AsistenciaController extends BaseController
 
      		if($fechaActual->toDateString()==$dt->toDateString()){   		
 
-     			$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta);
+     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);
 
      	    }
 
@@ -209,7 +211,7 @@ class AsistenciaController extends BaseController
 		 		$fecha="";		
 		 		$fecha=$dt->addWeek()->toDateString();
 		 		if($fechaActual->toDateString()==$fecha){
-		 		$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta);	
+		 		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);	
 		 		}	
 	     		$c++;
 		 	}
@@ -220,9 +222,9 @@ class AsistenciaController extends BaseController
         //dd($fechaActual->toDateString());
 		//dd($arrayTalleres);
 
-        $deuda=$this->deuda($id_alumno);
+    $deuda=$this->deuda($id_alumno);
 
-		return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayTalleres, 'deuda'=>$deuda, 200]);
+		return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 200]);
 
 
 

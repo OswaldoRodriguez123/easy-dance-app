@@ -191,7 +191,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="correo">Descripción</label>
-                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"></textarea>
                                  </div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
@@ -225,6 +225,59 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalCondiciones-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_condiciones_clase_grupal" id="edit_condiciones_clase_grupal"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="edad">Condiciones y Normativas</label>
+                                    <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="250 Caracteres"></textarea>
+                                 </div>
+                                 <div class="has-error" id="error-condiciones">
+                                      <span >
+                                          <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_condiciones_clase_grupal" data-update="condiciones" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="modal fade" id="modalImpuesto-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog ">
@@ -377,6 +430,14 @@
                              </td>
                              <td id="clasegrupal-descripcion" class="f-14 m-l-15" data-valor="{{$clasegrupal->descripcion}}" ><span ><span>{{ str_limit($clasegrupal->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCondiciones-ClaseGrupal">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($clasegrupal->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Condiciones y Normativas </span>
+                             </td>
+                             <td id="clasegrupal-condiciones" class="f-14 m-l-15" data-valor="{{$clasegrupal->condiciones}}" ><span id="clasegrupal-condiciones"><span>{{ str_limit($clasegrupal->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImpuesto-ClaseGrupal">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-impuesto" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
@@ -464,6 +525,12 @@
       //$("#direccion").val($("#alumno-direccion").text());
     })
 
+    $('#modalCondiciones-ClaseGrupal').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var condiciones=$("#clasegrupal-condiciones").data('valor');
+       $("#condiciones").val(condiciones);
+    })
+
 
     function limpiarMensaje(){
         var campo = ["nombre", "costo_inscripcion", "costo_mensualidad" , "descripcion"];
@@ -499,6 +566,10 @@
             }else{
               $("#clasegrupal-"+nombre).text('No');
             }
+          }else if(nombre=='condiciones'){
+             $("#clasegrupal-"+nombre).data('valor',valor);
+             $("#clasegrupal-"+nombre).html(valor.substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(nombre=='costo_inscripcion' || nombre=='costo_mensualidad'){
              $("#clasegrupal-"+nombre).text(formatmoney(parseFloat(valor)));
           }else{

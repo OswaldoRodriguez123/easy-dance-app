@@ -17,6 +17,165 @@
 @stop
 
 @section('content')
+
+<div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Configuracion Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="configuracion_clase_personalizada" id="configuracion_clase_personalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                                <div class="col-sm-12">
+                                    <label for="apellido" id="id-imagen_principal">Diseño principal</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <div class="clearfix p-b-15"></div>
+                                      
+                                      <input type="hidden" name="imageBase64" id="imageBase64">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
+                                        @if($config_clase_personalizada->imagen_principal)
+                                          <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$config_clase_personalizada->imagen_principal}}" style="line-height: 150px;">
+                                        @endif</div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen_principal" id="imagen_principal" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                      <div class="has-error" id="error-imagen_principal">
+                                      <span >
+                                          <small class="help-block error-span" id="error-imagen_principal_mensaje"  ></small>
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-descripcion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de las clases personalizadas e infórmales del método que usan para lograr el objetivo" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="descripcion" name="descripcion" rows="8" placeholder="1000 Caracteres" onkeyup="countChar2(this)">{{$config_clase_personalizada->descripcion}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                  <label for="id" id="id-video_promocional">Ingresa url del video promocional</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un video promocional de tus clases de baile como instructor o bailarín, esmérate en hacer una buena producción visual, de esa forma te ayudaremos a impulsar tu marca personal de mejor manera" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="video_promocional" id="video_promocional" placeholder="Ingresa la url" value="{{$config_clase_personalizada->video_promocional}}">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-video_promocional">
+                                    <span >
+                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-ventajas">Programación ventajas y beneficios </label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación, ventajas y beneficios que ofrece tu plan de clases personalizadas" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="ventajas" name="ventajas" rows="8" placeholder="1000 Caracteres" onkeyup="countChar3(this)">{{$config_clase_personalizada->ventajas}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-ventajas">
+                                      <span >
+                                          <small class="help-block error-span" id="error-ventajas_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1000 Caracteres" onkeyup="countChar4(this)">{{$config_clase_personalizada->condiciones}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum4">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-condiciones">
+                                      <span >
+                                          <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                            
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-4 text-left"> 
+                          
+                            </div>
+
+                            <div class="col-sm-4 text-center">
+                             
+                              <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+                              <a href="{{url('/')}}/agendar/clases-personalizadas/progreso/{{Auth::user()->academia_id}}"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+
+                              <br>
+
+                              <span class="f-700 opaco-0-8 f-16">Ver Progreso</span>
+                              
+                               
+                            </div>
+
+                            <div class="col-sm-4">                            
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="guardar" >Guardar</button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
      
             <a href="{{url('/')}}/agendar/clases-personalizadas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
@@ -27,9 +186,25 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar una Clase Personalizada <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
 
+
+                        <div class="card-header">
+
+
+                          <div class ="col-md-6 text-left"> 
+                                                      
+                               <a data-toggle="modal" href="#modalConfiguracion"><i class="tm-icon zmdi zmdi-calendar-check f-25 pointer detalle" data-html="true" data-original-title="" data-content=" <br> Levantar Promoción" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"></i></a>
+
+                            </div>
+
+
+                            <div class ="col-md-6 text-right">  
+                                                      
+                               <span class="f-16 p-t-0 text-success">Agregar una Clase Personalizada <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
+
+                            </div>
+
+                        
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clase-personalizada f-25"></i> Sección de Clases Personalizadas</p>
                             <hr class="linea-morada">                                                        
                         </div>
@@ -99,10 +274,22 @@
             
         route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle"
         route_operacion="{{url('/')}}/agendar/clases-personalizadas/operaciones"
+        route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
 
         tipo = 'activas';
             
         $(document).ready(function(){
+
+         $("#imagen_principal").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagena img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
 
         $("#activas").prop("checked", true);
 
@@ -253,6 +440,188 @@
                     .addClass('text-center');
             });
         }
+
+        function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum2').text(1000 - len);
+        }
+      };
+
+      function countChar3(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum3').text(1000 - len);
+        }
+      };
+
+      function countChar4(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum4').text(1000 - len);
+        }
+      };
+
+      $("#guardar").click(function(){
+
+                var route = route_configuracion;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#configuracion_clase_personalizada" ).serialize(); 
+                $("#guardar").attr("disabled","disabled");
+                procesando();
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          finprocesado();
+                          var nType = 'success';
+                          // $("#agregar_alumno")[0].reset();
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        } 
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          finprocesado();
+                          $("#guardar").css({
+                            "opacity": ("1")
+                          });
+                          $(".cancelar").removeAttr("disabled");
+                          $('.modal').modal('hide');
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                                              
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
+        function limpiarMensaje(){
+        var campo = ["imagen", "descripcion", "video_promocional", "ventajas", "imagen1", "imagen2", "imagen3"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
+      }
+
+    function errores(merror){
+      var campo = ["imagen", "descripcion", "video_promocional", "ventajas", "imagen1", "imagen2", "imagen3"];
+      var elemento="";
+      var contador=0;
+      $.each(merror, function (n, c) {
+      if(contador==0){
+      elemento=n;
+      }
+      contador++;
+
+       $.each(this, function (name, value) {              
+          var error=value;
+          $("#error-"+n+"_mensaje").html(error);             
+       });
+    });   
+
+  }
+
+  function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+                $.growl({
+                    icon: icon,
+                    title: titulo,
+                    message: mensaje,
+                    url: ''
+                },{
+                        element: 'body',
+                        type: type,
+                        allow_dismiss: true,
+                        placement: {
+                                from: from,
+                                align: align
+                        },
+                        offset: {
+                            x: 20,
+                            y: 85
+                        },
+                        spacing: 10,
+                        z_index: 1070,
+                        delay: 2500,
+                        timer: 2000,
+                        url_target: '_blank',
+                        mouse_over: false,
+                        animate: {
+                                enter: animIn,
+                                exit: animOut
+                        },
+                        icon_type: 'class',
+                        template: '<div data-growl="container" class="alert f-700" role="alert">' +
+                                        '<button type="button" class="close" data-growl="dismiss">' +
+                                            '<span aria-hidden="true">&times;</span>' +
+                                            '<span class="sr-only">Close</span>' +
+                                        '</button>' +
+                                        '<span data-growl="icon"></span>' +
+                                        '<span data-growl="title"></span>' +
+                                        '<span data-growl="message"></span>' +
+                                        '<a href="#" data-growl="url"></a>' +
+                                    '</div>'
+                });
+    };
 
 
 		</script>

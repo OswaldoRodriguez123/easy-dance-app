@@ -640,6 +640,332 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalRedes-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_redes_instructor" id="edit_redes_instructor"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-6">
+                                             <label for="id">Facebook  </label>
+                                             <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-facebook-box f-20 c-facebook"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                               <input type="text" class="form-control caja input-sm" name="facebook" id="facebook" placeholder="Ingresa la url" value="{{$instructor->facebook}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-facebook">
+                                                <span >
+                                                    <small id="error-facebook_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+                                         <div class="col-sm-6">
+                                              <label for="id">Twitter</label>
+                                              <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-twitter-box f-20 c-twitter"></i>
+                                              </span>
+                                              <div class="fg-line">
+                                                  
+                                                  <input type="text" class="form-control caja input-sm" name="twitter" id="twitter" placeholder="Ingresa la url" value="{{$instructor->twitter}}">
+                                              </div>
+                                              </div>
+                                              <div class="has-error" id="error-twitter">
+                                                <span >
+                                                    <small id="error-twitter_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+
+                                         <div class="clearfix p-b-35"></div>
+
+                                         <div class="col-sm-6">
+                                          <label for="id">Instagram</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-instagram f-20 c-instagram"></i>
+                                              </span>
+                                              <div class=" fg-line">
+                                                  
+                                                  <input type="text" class="form-control caja input-sm" name="instagram" id="instagram" placeholder="Ingresa la url" value="{{$instructor->instagram}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-instagram">
+                                                <span >
+                                                    <small id="error-instagram_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+                                         <div class="col-sm-6">
+                                            <label for="id">Página web</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-link f-20 c-morado"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                                  <input type="text" class="form-control caja input-sm" name="web" id="web" placeholder="Ej: www.easydancelatino.com" value="{{$instructor->pagina_web}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-web">
+                                                <span >
+                                                    <small id="error-web_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+
+                                         <div class="clearfix p-b-35"></div>
+
+                                         <div class="col-sm-6">
+                                            <label for="id">Linkedin</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-linkedin-box f-20 c-linkedin"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                                  <input type="text" class="form-control caja input-sm" name="linkedin" id="linkedin" placeholder="Ingresa la url" value="{{$instructor->linkedin}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-linkedin">
+                                                <span >
+                                                    <small id="error-linkedin_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+                                         <div class="col-sm-6">
+                                              
+                                            <label for="id">Youtube</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-collection-video f-20 c-youtube"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                                  <input type="text" class="form-control caja input-sm" name="youtube" id="youtube" placeholder="Ingresa la url" value="{{$instructor->youtube}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-youtube">
+                                                <span >
+                                                    <small id="error-youtube_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                         </div>
+
+
+                                        <input type="hidden" name="id" value="{{$instructor->id}}"></input>
+
+
+                               <div class="clearfix"></div> 
+                              
+                               
+                           </div>
+                           
+                        </div>
+                       <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_redes_instructor" data-update="redes" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalAvanzado-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_avanzado_instructor" id="edit_avanzado_instructor"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                                <div class="col-sm-12">
+                                    <label for="apellido" id="id-imagen">Imagen artística</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <div class="clearfix p-b-15"></div>
+                                      
+                                      <input type="hidden" name="imageBase64" id="imageBase64">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
+                                        @if($instructor->imagen_artistica)
+                                          <img src="{{url('/')}}/assets/uploads/instructor/{{$instructor->imagen_artistica}}" style="line-height: 150px;">
+                                        @endif</div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen" id="imagen" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                      <div class="has-error" id="error-imagen">
+                                      <span >
+                                          <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-descripcion">Perfil del instructor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe tu perfil como instructor, habla de tu personalidad en el baile, ¿cómo iniciaste? en que te has especializado?   Porqué te gusta enseñar o bailar, cuéntales a tus clientes y público en general cuáles son tus fortalezas  al momento de enseñar o bailar" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" id="descripcion" name="descripcion" rows="8" placeholder="1000 Caracteres" style="height:100%" onkeyup="countChar2(this)">{{$instructor->descripcion}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                  <label for="id" id="id-video_promocional">Ingresa url del video promocional</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un video promocional de tus clases de baile como instructor o bailarín, esmérate en hacer una buena producción visual, de esa forma te ayudaremos a impulsar tu marca personal de mejor manera" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="video_promocional" id="video_promocional" placeholder="Ingresa la url" value="{{$instructor->video_promocional}}">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-video_promocional">
+                                    <span >
+                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-resumen_artistico">Resumen artístico</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe tu perfil como instructor, habla de tu personalidad en el baile, ¿cómo iniciaste? en que te has especializado?   Porqué te gusta enseñar o bailar, cuéntales a tus clientes y público en general cuáles son tus fortalezas  al momento de enseñar o bailar" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" id="resumen_artistico" name="resumen_artistico" rows="8" style="height:100%" placeholder="1000 Caracteres" onkeyup="countChar3(this)">{{$instructor->resumen_artistico}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">1000</span> Caracteres</div>
+                                 <div class="has-error" id="error-resumen_artistico">
+                                      <span >
+                                          <small class="help-block error-span" id="error-resumen_artistico_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                  <label for="id" id="id-video_testimonial">Ingresa url del video testimonial</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional de tus alumnos , maestros , directores de academias ,personas influyentes , seguidores  entre otros , no mayor a 4  minutos , en el que ellos inviten  a seguir  tu trabajo. No olvides que la mejor publicidad proviene de las recomendaciones de terceros" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="video_testimonial" id="video_testimonial" placeholder="Ingresa la url" value="{{$instructor->video_testimonial}}">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-video_testimonial">
+                                    <span >
+                                     <small id="error-video_testimonial_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_promocionar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+
+                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_avanzado_instructor" data-update="avanzado" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -796,6 +1122,23 @@
                                @endif
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalRedes-Instructor">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-facebook" class="zmdi {{ empty($instructor->facebook) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-share zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Redes Sociales </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="instructor-facebook"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalAvanzado-Instructor">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-ficha" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_d-ficha-medica f-22"></i> </span>
+                               <span class="f-14"> Opciones Avanzadas </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
 
                            </table>
 
@@ -827,6 +1170,30 @@
    route_email="{{url('/')}}/correo/sesion/";
 
    $(document).ready(function(){
+
+    $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagena img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
+
+    if("{{$instructor->boolean_promocionar}}" == 1){
+          $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+          $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
+        }
+
+      $("#promocionar").on('change', function(){
+          if ($("#promocionar").is(":checked")){
+            $("#boolean_promocionar").val('1');
+          }else{
+            $("#boolean_promocionar").val('0');
+          }    
+        });
 
     if("{{$instructor->alergia}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
@@ -908,14 +1275,14 @@
 
     $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
@@ -1269,6 +1636,24 @@
           val.value = val.value.substring(0, 180);
         } else {
           $('#charNum').text(180 - len);
+        }
+      };
+      
+      function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum2').text(1000 - len);
+        }
+      };
+
+      function countChar3(val) {
+        var len = val.value.length;
+        if (len >= 1000) {
+          val.value = val.value.substring(0, 1000);
+        } else {
+          $('#charNum3').text(1000 - len);
         }
       };
     

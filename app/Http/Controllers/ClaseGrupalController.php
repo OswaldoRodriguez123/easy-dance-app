@@ -749,6 +749,70 @@ class ClaseGrupalController extends BaseController {
         }
     }
 
+    public function storeInscripcionVistaAlumno(Request $request)
+    {
+
+        $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', Auth::user()->usuario_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+
+        if(!$alumnosclasegrupal){ 
+
+            $clasegrupal = DB::table('config_clases_grupales')
+                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_inicio_preferencial', 'config_clases_grupales.costo_mensualidad', 'config_clases_grupales.costo_inscripcion')
+                    ->where('clases_grupales.id', '=', $request->clase_grupal_id)
+                ->first();
+
+                $inscripcion = new InscripcionClaseGrupal;
+
+                $inscripcion->clase_grupal_id = $request->clase_grupal_id;
+                $inscripcion->alumno_id = Auth::user()->usuario_id;
+                $inscripcion->fecha_pago = $clasegrupal->fecha_inicio_preferencial;
+                $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
+                $inscripcion->costo_mensualidad = $clasegrupal->costo_mensualidad;
+
+                $inscripcion->save();
+
+                $item_factura = new ItemsFacturaProforma;
+                    
+                $item_factura->alumno_id = Auth::user()->usuario_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $request->clase_grupal_id;
+                $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
+                $item_factura->tipo = 3;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $clasegrupal->costo_inscripcion;
+                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                    
+                $item_factura->save();
+
+                $item_factura = new ItemsFacturaProforma;
+                    
+                $item_factura->alumno_id = Auth::user()->usuario_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $request->clase_grupal_id;
+                $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                $item_factura->tipo = 4;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $clasegrupal->costo_mensualidad;
+                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                    
+                $item_factura->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 200]);
+
+
+            }else{
+
+                return response()->json(['error_mensaje' => 'Ups! Ya te encuentras inscrito en esta clase grupal', 'status' => 'ERROR'],422);
+            }
+        }
+
      public function updateNombre(Request $request){
 
         $clasegrupal = ClaseGrupal::find($request->id);
@@ -1208,7 +1272,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta')
                 ->where('clases_grupales.id', '=', $id)
                 ->first();
 

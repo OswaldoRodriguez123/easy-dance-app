@@ -9,6 +9,7 @@ use App\Alumno;
 use App\Academia;
 use App\ConfigEstudios;
 use App\ConfigEspecialidades;
+use App\ConfigServicios;
 use App\ConfigNiveles;
 use App\Instructor;
 use App\DiasDeSemana;
@@ -175,7 +176,9 @@ class TallerController extends BaseController {
 
         $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        // $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $descripcion = $request->descripcion;
 
 
         $taller->academia_id = Auth::user()->academia_id;
@@ -198,6 +201,17 @@ class TallerController extends BaseController {
 
         // return redirect("/home");
         if($taller->save()){
+
+            $servicio = new ConfigServicios;
+
+            $servicio->academia_id = Auth::user()->academia_id;
+            $servicio->nombre = 'Inscripción ' . $nombre;
+            $servicio->costo = $request->costo;
+            $servicio->imagen = '';
+            $servicio->descripcion = $descripcion;
+            $servicio->incluye_iva = 1;
+
+            $servicio->save();
 
             if($request->imageBase64){
 
@@ -279,7 +293,6 @@ class TallerController extends BaseController {
         }
 
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateCosto(Request $request){
@@ -323,7 +336,6 @@ class TallerController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
 
@@ -359,7 +371,9 @@ class TallerController extends BaseController {
 
         $taller = Taller::find($request->id);
 
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        // $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $descripcion = $request->descripcion;
 
         $taller->descripcion = $descripcion;
 
@@ -369,7 +383,6 @@ class TallerController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
 
@@ -429,7 +442,6 @@ class TallerController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateHorario(Request $request){
@@ -612,7 +624,7 @@ class TallerController extends BaseController {
 
     public function updateEtiqueta(Request $request){
         $taller = Taller::find($request->id);
-        $taller->etiqueta = $request->etiqueta;
+        $taller->color_etiqueta = $request->color_etiqueta;
 
         if($taller->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -711,6 +723,17 @@ class TallerController extends BaseController {
                 $taller->save();
 
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function updateCondiciones(Request $request){
+        $taller = Taller::find($request->id);
+        $taller->condiciones = $request->condiciones;
+
+        if($taller->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function participantes($id)
@@ -820,6 +843,47 @@ class TallerController extends BaseController {
         }
     }
 
+    public function storeInscripcionVistaAlumno(Request $request)
+    {
+
+        $alumnostaller = InscripcionTaller::where('alumno_id', Auth::user()->usuario_id)->where('taller_id', $request->taller_id)->first();
+
+        if(!$alumnostaller){ 
+
+            $taller = Taller::find($request->taller_id);
+
+                $inscripcion = new InscripcionTaller;
+
+                $inscripcion->taller_id = $request->taller_id;
+                $inscripcion->alumno_id = Auth::user()->usuario_id;
+
+                $inscripcion->save();
+
+                $item_factura = new ItemsFacturaProforma;
+                    
+                $item_factura->alumno_id = Auth::user()->usuario_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $request->taller_id;
+                $item_factura->nombre = 'Inscripcion ' . $taller->nombre;
+                $item_factura->tipo = 5;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $taller->costo;
+                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                    
+                $item_factura->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 200]);
+
+
+            }else{
+
+                return response()->json(['error_mensaje' => 'Ups! Ya te encuentras inscrito en este taller', 'status' => 'ERROR'],422);
+            }
+        }
+
     public function eliminarinscripcion(Request $request)
     {
         // $inscripcion = InscripcionClaseGrupal::find($id);
@@ -918,7 +982,7 @@ class TallerController extends BaseController {
                 ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
                 ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones')
                 ->where('talleres.id', '=', $id)
                 ->first();
 

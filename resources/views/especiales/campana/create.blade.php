@@ -172,13 +172,13 @@
                                <div class="clearfix p-b-35"></div>
 
                             <div class="col-sm-12">
-                            <label for="apellido" id="id-imagen">Imagen principal de la campaña</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
+                            <label for="apellido" id="id-imagen">Imagen principal de la campaña</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
                             
                             <div class="clearfix p-b-15"></div>
                               
                               <input type="hidden" name="imageBase64" id="imageBase64">
                               <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
                                 <div>
                                     <span class="btn btn-info btn-file">
                                         <span class="fileinput-new">Seleccionar Imagen</span>
@@ -215,7 +215,7 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="historia" name="historia" rows="2" placeholder="500 Caracteres"></textarea>
+                                      <textarea class="form-control" id="historia" name="historia" rows="8" placeholder="500 Caracteres"></textarea>
                                     </div>
                                  <div class="has-error" id="error-historia">
                                       <span >
@@ -296,7 +296,7 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="presentacion" name="presentacion" rows="2" placeholder="500 Caracteres"></textarea>
+                                      <textarea class="form-control" id="presentacion" name="presentacion" rows="8" placeholder="500 Caracteres"></textarea>
                                     </div>
                                  <div class="has-error" id="error-presentacion">
                                       <span >
@@ -308,13 +308,13 @@
                             <div class="clearfix p-b-35"></div>
 
                             <div class="col-sm-12">
-                            <label for="apellido" id="id-imagen_presentacion">Imagen de la presentación general</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
+                            <label for="apellido" id="id-imagen_presentacion">Imagen de la presentación general</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
                             
                             <div class="clearfix p-b-15"></div>
                               
                               <input type="hidden" name="imagePresentacionBase64" id="imagePresentacionBase64">
                               <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
                                 <div>
                                     <span class="btn btn-info btn-file">
                                         <span class="fileinput-new">Seleccionar Imagen</span>
@@ -460,7 +460,7 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="1500 Caracteres"></textarea>
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres"></textarea>
                                       </div>
                                     <div class="has-error" id="error-condiciones">
                                       <span >

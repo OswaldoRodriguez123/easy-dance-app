@@ -248,7 +248,7 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"></textarea>
                                       </div>
                                     <div class="has-error" id="error-descripcion">
                                       <span >
@@ -258,23 +258,6 @@
                                   </div>
                                </div>
 
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="1500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
 
                                <div class="clearfix p-b-35"></div>
 
