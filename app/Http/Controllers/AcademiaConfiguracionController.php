@@ -1261,15 +1261,56 @@ class AcademiaConfiguracionController extends BaseController {
                                 }
                                 else{
 
-                                    $clase_grupal_join = DB::table('clases_grupales')
-                                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                                    ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen')
-                                    ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-                                    ->where('clases_grupales.deleted_at', '=', null)
-                                ->get();
+                                    $array=array();
 
-                                    return view('vista_alumno.index')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'talleres' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get() , 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->count() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->count()]);
-       
+                                    $clase_grupal_join = DB::table('clases_grupales')
+                                        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                                        ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at')
+                                        ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                                        ->where('clases_grupales.deleted_at', '=', null)
+                                    ->get();
+
+
+                                    foreach($clase_grupal_join as $clase){
+
+                                        $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => "/assets/uploads/clase_grupal/{$clase->imagen}" , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at);
+
+                                    }
+
+                                    $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+                                    foreach($talleres as $taller){
+
+                                        $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => "/assets/uploads/taller/{$taller->imagen}" , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at);
+
+                                    }
+
+                                    $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+                                    foreach($fiestas as $fiesta){
+
+                                        $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => "/assets/uploads/fiesta/{$fiesta->imagen}" , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at);
+
+                                    }
+
+                                    $collection = collect($array);
+
+                                    $sorted = $collection->sortByDesc('creacion');
+
+                                    $i = 0;
+
+                                    $arreglo=array();
+
+                                    foreach($sorted as $tmp){
+
+                                        $arreglo[$i] = $tmp;
+                                        $i = $i + 1;
+
+                                    }
+
+
+                                         return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); 
+                                   
                                 }
     }
 
