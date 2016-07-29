@@ -89,14 +89,18 @@
                                     </li> --}}
 
                                     <li class="hidden-xs">
-                                        <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-16"></i> Productos</a>
+                                        <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text f-16"></i> Productos</a>
+                                    </li>
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
                                     </li>
                                 @endif 
 
                                 @if(Auth::user()->usuario_tipo == 1)
         
                                     <li class="hidden-xs">
-                                        <a href="{{url('configuracion/sucursales')}}"><i class="zmdi zmdi-city zmdi-hc-fw p-r-5 f-16"></i> Sucursales</a>
+                                        <a href="{{url('configuracion/sucursales')}}"><i class="zmdi zmdi-city f-16"></i> Sucursales</a>
                                     </li>
                                 @endif
 

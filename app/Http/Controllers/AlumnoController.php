@@ -212,6 +212,8 @@ class AlumnoController extends BaseController
 
         if($alumno->save()){
 
+            $password = str_random(8);
+
             $usuario = new User;
 
             $usuario->academia_id = Auth::user()->academia_id;
@@ -223,32 +225,34 @@ class AlumnoController extends BaseController
             $usuario->email = $correo;
             $usuario->como_nos_conociste_id = 1;
             $usuario->direccion = $direccion;
-            // $usuario->confirmation_token = str_random(40);
-            $usuario->password = bcrypt(str_random(8));
+            $usuario->confirmation_token = str_random(40);
+            $usuario->password = bcrypt($password);
             $usuario->usuario_id = $alumno->id;
             $usuario->usuario_tipo = 2;
 
             if($usuario->save()){
             
-                // if($request->correo){
+                if($request->correo){
 
-                //     $academia = Academia::find(Auth::user()->academia_id);
-                //     $contrasena =  $usuario->password;
-                //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                    $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
 
-                //     $array = [
-                //        'nombre' => $request->nombre,
-                //        'academia' => $academia->nombre,
-                //        'usuario' => $request->correo,
-                //        'contrasena' => $contrasena,
-                //        'subj' => $subj
-                //     ];
+                    $array = [
+                       'nombre' => $request->nombre,
+                       'academia' => $academia->nombre,
+                       'usuario' => $request->correo,
+                       'contrasena' => $password,
+                       'subj' => $subj,
+                       'link' => $link
+                    ];
 
-                //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-                //             $msj->subject($array['subj']);
-                //             $msj->to($array['usuario']);
-                //         });
-                // }
+
+                    Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['usuario']);
+                        });
+                }
 
                 //Envio de Sms
                 

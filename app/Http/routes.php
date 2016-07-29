@@ -34,6 +34,14 @@ Route::get('/registro/completado', function () {
     return view('flujo_registro.registro_completado');
 });
 
+// ACTIVAR CUENTA
+
+Route::get('/activar','RegistroController@activar');
+Route::post('/activar', 'CorreoController@correoActivacion');
+Route::get('/activar/completado', function () {
+    return view('login.contrasena.salvavidas');
+});
+
 // RESTABLECIMIENTO DE CONTRASEÑA
 
 Route::get('/restablecer', function () {
@@ -553,6 +561,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('reportes/presenciales', 'ReporteController@Presenciales');
 	Route::get('reportes/contactos', 'ReporteController@Contactos');
 
+	// VALIDAR
+
+	Route::get('validar', 'ValidacionController@principal');
+	Route::post('validar', 'ValidacionController@validar');
+	Route::get('validar/exitoso', 'ValidacionController@exitoso');
+	Route::get('validar/invalido', 'ValidacionController@invalido');
+
 	/*
 	|------------------
 	|GUIA
@@ -575,15 +590,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::get('guia/pay', function () {
 	    return view('guia.index3');
-	});
-	Route::get('validar', function () {
-	    return view('guia.validar');
-	});
-	Route::get('guia/codigo-validado', function () {
-	    return view('guia.codigo_validado');
-	});
-	Route::get('guia/codigo-invalido', function () {
-	    return view('guia.codigo_invalido');
 	});
 
 	// FOOTER

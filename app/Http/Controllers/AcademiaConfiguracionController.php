@@ -102,6 +102,7 @@ class AcademiaConfiguracionController extends BaseController {
 
         foreach($sorted as $tmp){
 
+            $tmp['contador'] = $i;
             $arreglo[$i] = $tmp;
             $i = $i + 1;
 

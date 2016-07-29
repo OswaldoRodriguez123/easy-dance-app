@@ -480,7 +480,15 @@
 
                                   <div class="text-center">
 
+                                  
+
                                   <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span>
+
+                                  <br>
+
+                                  @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <span class="f-18 p-t-0 c-azul pointer confirmacion">Enviar confirmación</span> @endif
+
+                                  
 
 
                                 </div> 
@@ -1298,6 +1306,52 @@
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
         }
+      }
+
+
+      $(".confirmacion").click(function(){
+                swal({   
+                    title: "Desea enviar el correo de confirmación",   
+                    text: "Confirmar envio!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Enviar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+
+               procesando();
+
+               var route = "{{url('/')}}/activar";
+               var token = $('input:hidden[name=_token]').val();
+                
+                $.ajax({
+                    url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:"&email={{$usuario->correo}}",
+                    success:function(respuesta){
+
+                        swal("Listo!","Correo enviado exitósamente!","success");
+
+                    },
+                    error:function(msj){
+
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                        }
+
+                    });
+                
+                    finprocesado();
+                  }
+                });
+            });
+      function eliminar(id){
+         
       }
 
             

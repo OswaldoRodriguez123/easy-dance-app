@@ -196,13 +196,13 @@
 
             @endforeach
 
-            <div class="text-center">
+            <div class="text-center mostrar_mas"> <!-- MOSTRAR MAS -->
 
-            <br><br>
+              <br><br>
 
-            <span class="mostrar f-16 c-morado f-700 pointer">Mostrar mas</span>
+              <span class="mostrar f-16 c-morado f-700 pointer">Mostrar mas</span>
 
-            </div>
+              </div>
 
             </div>
                         
@@ -302,11 +302,14 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-
+        var enlaces = <?php echo json_encode($enlaces);?>;
+        console.log(enlaces);
 
         route_agregar="{{url('/')}}/especiales/campañas/contribuir";
 
         var recompensa = 0;
+        var inicio = 4;
+        var final = 7;
 
         $(document).on( 'click', '.enlace', function () {
           url = $(this).data('url');
@@ -314,17 +317,30 @@
         });
 
 
-        $(".mostrar").click(function(){
+        $(document).on( 'click', '.mostrar', function () {
 
-          $(".enlaces").empty();
+          $(".mostrar_mas").remove();
 
-          var enlaces = <?php echo json_encode($enlaces);?>;
+          var enlace = $.grep(enlaces, function(e){ return (e.contador >= inicio && e.contador <= final) });
 
-          $.each(enlaces, function (index, array) {
+          console.log(enlace);
+
+          $.each(enlace, function (index, array) {
 
             $(".enlaces").append('<div class="text-left pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)"><div class="enlace" name="enlace" id="enlace" data-url="'+array.url+'"><div style="padding: 10px"><p class="f-25 f-700" style="color:#5e5e5e">'+array.nombre+'</p><p class="f-15 f-700">'+array.descripcion.substr(0, 150) + "..."+ '</p><img src="{{url('/')}}'+array.imagen+'" class="img-responsive" alt=""> <br</div></div><hr style="margin-bottom:5px"><div class="col-sm-3"><span class="f-13 f-700">Comparte</span><ul class="rrssb-buttons clearfix"><li class="rrssb-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}'+array.facebook+'" class="popup"><span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span><span class="rrssb-text"></span></a></li><li class="rrssb-twitter"><a href="https://twitter.com/intent/tweet?text='+array.twitter+' {{url('/')}}'+array.twitter_url+'"class="popup"><span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span><span class="rrssb-text"></span></a></li></ul></div><br><br><br></div>')
 
+
           });
+
+          inicio = final;
+          final = final + 4;
+
+          if(inicio <= enlaces.length){
+
+            $(".enlaces").append('<div class="text-center mostrar_mas"> <br><br> <span class="mostrar f-16 c-morado f-700 pointer">Mostrar mas</span> </div>');
+
+          }
+
         });
 
         </script>

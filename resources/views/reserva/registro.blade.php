@@ -10,7 +10,7 @@
 
 @section('css')
 
-<link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
+<!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet"> -->
 
 @stop
 
@@ -50,9 +50,9 @@
                     </div>
                     <div class="c-morado text-center">
                       
-                        <p class="f-30">Hola, mi nombre es Peggy</p> 
-                        <p class="f-25">De la aplicación web <b>Easy Dance</b></p> 
-                        <p class="f-22">Quiero saber más de ti</p>
+                        <p class="f-25">Hola, mi nombre es Peggy de la aplicación web <b>Easy Dance</b></p> 
+                        <p class="f-20">Represento a la academia de baile <b>{{$academia->nombre}}</b></p> 
+                        <p class="f-15">Quiero saber más de ti</p>
 
                         <div class="clearfix m-20 m-b-25"></div>
 
@@ -201,7 +201,24 @@
                         <div class="roww row">
                            <div class="col-sm-6">
                                  <div class="form-group">
-                                    <label for="correo">Número telefónico</label>
+                                    <label for="correo">Número móvil</label>
+                                    <span class="input-group">
+                                    <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
+                                    <div class="fg-line">
+                                    <input type="text" class="form-control input-sm input-mask" name="celular" id="celular" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894">
+                                    </div>
+                                    </span>
+                                 </div>
+                                 <div class="has-error" id="error-celular">
+                                    <span >
+                                     <small id="error-celular_mensaje" class="help-block error-span" ></small>
+                                    </span>
+                                    </div>
+                               </div>
+
+                               <div class="col-sm-6">
+                                 <div class="form-group">
+                                    <label for="correo">Número local</label>
                                     <span class="input-group">
                                     <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
                                     <div class="fg-line">
@@ -215,6 +232,11 @@
                                     </span>
                                     </div>
                                </div>
+                              </div>
+
+                               <br>
+
+                                <div class="roww row">
 
                                  <div class="col-sm-6">
                                            <label>Sexo</label>
@@ -242,6 +264,7 @@
                                     </div>
                                  </div>
                                </div>
+                               
                                <br><br><br><br>        
                     <div class="text-center">
                        <!-- <a class="btn-blanco2 m-r-6 f-22 guardar" id="guardar"  style=" margin-top: 60px; " >  Llévame </a> -->
@@ -285,6 +308,14 @@
     route_completado="{{url('/')}}/reservacion/completado";
 
     $(document).ready(function(){
+
+      $('#email').bind("cut copy paste",function(e) {
+          e.preventDefault();
+      });
+
+      $('#email_confirmation').bind("cut copy paste",function(e) {
+          e.preventDefault();
+      });
 
         $(".tercero").attr("disabled","disabled");
         $(".tercero").css({
@@ -423,29 +454,35 @@
                       }, 1000);
                     },
                     error:function(msj){
-                      console.log(msj.responseJSON);
-                      setTimeout(function(){ 
-                        
-                        errores(msj.responseJSON.errores);
-                        
-                        var nTitle="   Ups! "; 
-                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";                     
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
+                      if(msj.responseJSON.error_mensaje){
+
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                      }else{
+
+                        setTimeout(function(){ 
+                          
+                          errores(msj.responseJSON.errores);
+                          
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";       
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nType = 'danger';
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY";                       
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                        }, 1000);
+                      }
+                      $("#guardar").removeAttr("disabled");
+                      finprocesado();
+                      $("#guardar").css({
+                        "opacity": ("1")
+                      });
+                      $(".cancelar").removeAttr("disabled");
+                      $(".procesando").removeClass('show');
+                      $(".procesando").addClass('hidden');
                     }
                 });
             });

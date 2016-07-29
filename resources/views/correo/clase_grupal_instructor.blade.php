@@ -51,7 +51,7 @@
                               </tr>
                                  
                               <tr>
-                                <td align="center" valign="top"> <img class="CToWUd" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120">
+                                <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120">
                                 </td>
                               </tr>
                               <tr>

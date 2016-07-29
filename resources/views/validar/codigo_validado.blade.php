@@ -29,17 +29,17 @@
             <div class="text-center f-30 c-verde">Siii, el codigo ingresado es valido, A Bailar.  </div>
             <div class="clearfix"></div><br><br>
 
+            <div class="block-header text-center">
+                <!--<input type="text" class="caja"></input>-->
+                <a class="btn-blanco m-r-10 f-20" href="{{url('/')}}/validar"> Validar otro Codigo <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i> </a>
+                <a class="btn-morado m-r-10 f-20" href="{{url('/')}}/"> Volver a Menú</a>
+              </div> 
+
 
         </div>
         <div class="form-control card-body">
 
-            <div>
-              <div class="block-header text-center">
-                <!--<input type="text" class="caja"></input>-->
-                <a class="btn-blanco m-r-10 f-20" > Validar otro Codigo <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i> </a>
-                <a class="btn-morado m-r-10 f-20" > Volver a Menú</a>
-              </div> 
-            </div>
+              
           
         </div>
 

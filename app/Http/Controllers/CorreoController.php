@@ -11,6 +11,7 @@ use App\Proveedor;
 use App\Visitante;
 use App\ClaseGrupal;
 use App\Academia;
+use App\User;
 use Validator;
 use DB;
 use Mail;
@@ -44,28 +45,29 @@ class CorreoController extends BaseController {
 
 			if($tipo == 1)
 			{
-				$alumno = Alumno::find($id);
-				return view('correo.indexsinselector')->with(['usuario' => $alumno, 'id' => $id]);
+				$usuario = Alumno::find($id);
+				$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 2)->where('confirmation_token', null)->count();
 			}
 
 			if($tipo == 2)
 			{
 				$usuario = Instructor::find($id);
-				return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id]);
+				$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 3)->where('confirmation_token', null)->count();
 			}
 
 			if($tipo == 3)
 			{
 				$usuario = Visitante::find($id);
-				return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id]);
+				$tiene_cuenta = 0;
 			}
 
 			if($tipo == 4)
 			{
 				$usuario = Proveedor::find($id);
-				return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id]);
+				$tiene_cuenta = 0;
 			}
 
+			return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id, 'tiene_cuenta' => $tiene_cuenta, 'tipo' => $tipo]);
 
 		}
 		else{
@@ -973,6 +975,74 @@ class CorreoController extends BaseController {
 	 	// 		}
 	 	// 	}
  		}
+
+ 		public function correoActivacion(Request $request){
+
+	 		$request->merge(array('email' => trim($request->email)));
+
+		 	$rules = [
+		        'email' => 'required|email',
+		    ];
+
+		    $messages = [
+
+		        'email.required' => 'Ups! El correo  es requerido ',
+		        'email.email' => 'Ups! El correo tiene una dirección inválida',
+		    ];
+
+		    $validator = Validator::make($request->all(), $rules, $messages);
+
+		    if ($validator->fails()){
+
+		        // return redirect("/home")
+
+		        // ->withErrors($validator)
+		        // ->withInput();
+
+		        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+		        //dd($validator);
+
+		    }
+
+		    else{
+
+	 			$usuario = User::where('email', $request->email)->first();
+
+	 			if($usuario){
+
+	 				if($usuario->confirmation_token != null)
+	 				{
+
+			 			$academia = Academia::find($usuario->academia_id);
+
+			            $subj = 'Activa tu cuenta en Easy Dance';
+			            $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
+
+			        	$array = [
+			            	'nombre' => $usuario->nombre,
+			                'academia' => $academia->nombre,
+			                'usuario' => $request->email,
+			                'subj' => $subj,
+			                'link' => $link
+			            ];
+
+
+			            Mail::send('correo.activacion', $array, function($msj) use ($array){
+			                $msj->subject($array['subj']);
+			                $msj->to($array['usuario']);
+			            });
+
+			            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+		            }
+		            else{
+	            		return response()->json(['error_mensaje' => 'Ups! Esta cuenta ya esta activada'], 422);
+	           	 	}	
+	            }else{
+	            	return response()->json(['error_mensaje' => 'Ups! No Hemos encontrado la siguiente información del correo  asociada a tu cuenta'], 422);
+	            }
+	        }
+	 	}
 
  		public function correoAyuda(Request $request)
  		{

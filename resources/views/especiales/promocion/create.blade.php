@@ -192,6 +192,11 @@
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
                                                 <div class="p-t-10">
+                                                <label class="radio radio-inline m-r-20">
+                                                  <input name="sexo" id="ambos" value="A" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Ambos <i class="zmdi zmdi-male-female p-l-5 f-20"></i>
+                                              </label>
                                               <label class="radio radio-inline m-r-20">
                                                   <input name="sexo" id="mujer" value="F" type="radio">
                                                   <i class="input-helper"></i>  
@@ -308,6 +313,8 @@
   route_principal="{{url('/')}}/especiales/promociones";
   
   $(document).ready(function(){
+
+      $("#ambos").prop('checked', true);
 
         $('#fecha').daterangepicker({
             "autoApply" : false,

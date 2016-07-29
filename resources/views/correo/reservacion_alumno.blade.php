@@ -58,15 +58,24 @@
                                 <td style="font-size:2px" height="30">
                                 </td>
                               </tr>
-			<tr>
+      <tr>
                                 <td valign="top" style="text-align:center;">
-                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> ASIGNACIÓN DE CLASE PERSONALIZADA <br><br>
+                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> HAS REALIZADO UNA RESERVACIÓN <br><br>
                                   </font>
                               </td></tr><tr>
-			</tr><tr>
+      </tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b> {{$nombre_instructor}} </b> La academia <b>{{$academia}}</b> ha asignado una Clase personalizada de parte de <b>{{$nombre_alumno}} {{$apellido_alumno}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Por favor confirma tu asistencia en la administración de la academia.
+                                    Hola <b>{{$nombre}}</b>, has reservado <b>{{$actividad}}</b> con el numero de código <b>{{$codigo}}</b> valido por 48 horas, te invitamos a ponerte en contacto con la academia <b>{{$academia}}</b> en los siguientes contactos:
+
+                                    <br><br>
+
+                                    Correo electronico: {{$correo_academia}} <br>
+
+                                    Número local: {{$telefono}} <br>
+
+                                    Número móvil: {{$celular}} <br>
+
 
                                     </font>
                                 </td>
@@ -79,25 +88,19 @@
                                 <td style="font-size:2px" height="20">
                                 </td>
                               </tr>
-
-                              <tr>
-                                <td valign="top" style="text-align:center;">
-                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> ¡Suerte! <br><br>
-                                  </font>
-                              </td></tr>
                               
                               <tr>
                                 <td style="font-size:2px" height="20">
                                 </td>
                               </tr>
                               
-<!--                               <tr>
+                              <tr>
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-              <a href="http://email.getpocket.com/wf/click?upn=LXCONJs6iIV8-2BJ131IqBsAjDZr9HuzqDsPfcbnydb7OHh47wu5LPkq6sEpgrsM0qe1woIvVLAzd8SpkUHH0r5RytJvT0mhUNjlXvY9qMYK2Rgsp-2BLuY5DEX3-2B5tvjMEAkoDuIgxk-2FIItFjIPli2mgWanqQdfQMD986wr4Lg9wRWUCVgv9IiKGdYOl29y5bINYB1vvpxrNAagZMYL-2BgCqvjnel-2B6K4btqORKuFRhmHwgTi7nrAFC8apuic3H-2BRcmC_epSKwdSimeNxuLFQaHUGgEofcy3PFWs3MvgwDmSlUyUKyRdk6G9sJZgSYEzPAxU56lxqthoL5CQuAc-2BlekM7teJh8pMDCPhFakyV1bd4ycpobLKk9UhYipy4D1JkoBBggtVcctQQLxbmqhG-2Fy6-2BEg77eh4wfqNJsbt-2FWe5DSfJGxShmhMpRvdbqgbrT8Lm2cbxJwyobKnumzuvjI8ZL1qo7pp2TFY-2FkhtWXg-2F2cKYxcbU2EsT-2FpGXKOpKzd3EY2WYQ9bPHiPzrOg9M70iB1YfiD-2FW89LphUnIxRUsX5lXAr3nYWK7NCHcrCae9SSFoxv4OdwPFqiaUBIYEhUQRt7B-2BMHEfvviiDRALRWgNLDrw0P7nu5bjdShJdsMOiVKYVBy0w3iOTre5gynCkRFmyz-2Fg-3D-3D" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Confirmar Asistencia</a>
+
             </td>
-                              </tr> -->
+                              </tr>
 
                               <tr>
                                 <td style="font-size:2px" height="20">
@@ -113,7 +116,7 @@
                               <tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Si no perteneces a ninguna academia de baile, simplemente ignora este mensaje. Si tienes alguna duda o pregunta, ponte en contacto con nosotros en <a href="mailto:info@easydancelatino.com" target="_blank">info@easydancelatino.com</a>. </font>
+                                    Si has recibido este mensaje por error, simplemente ignora este mensaje. Si tienes alguna duda o pregunta, ponte en contacto con nosotros en <a href="mailto:info@easydancelatino.com" target="_blank">info@easydancelatino.com</a>. </font>
                                 </td>
                               </tr>
                               
