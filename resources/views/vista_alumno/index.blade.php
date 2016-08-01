@@ -83,10 +83,10 @@
                         <div class ="detalle">
                           
                           @if(count($regalos) != 1)
-                          <a href="{{url('/')}}/especiales/regalos" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalos <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
+                          <a href="{{url('/')}}/especiales/regalos/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalos <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
                             
                           @else
-                            <a href="{{url('/')}}/especiales/regalos/enviar/{{$regalos[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalo <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
+                            <a href="{{url('/')}}/especiales/regalos/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalo <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
                           @endif
                             </a> </div>
 

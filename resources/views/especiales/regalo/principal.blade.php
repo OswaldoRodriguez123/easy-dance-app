@@ -63,7 +63,7 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$regalo['nombre']}}</td>
                                     <td class="text-center previa">{{ number_format($regalo['costo'], 2, '.' , '.') }}</td>
-                                    <td class="text-center previa">{{$regalo['descripcion']}}</td>
+                                    <td class="text-center previa">{{ str_limit($regalo['descripcion'], $limit = 50, $end = '...') }}</td>
                                     @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
                                     @endif

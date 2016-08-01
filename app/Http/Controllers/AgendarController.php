@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Taller;
+use App\ConfigClasesPersonalizadas;
 
 use DB;
 
@@ -97,13 +98,15 @@ class AgendarController extends BaseController
 
     		}
 
-            // dd($arrayClases);
+            $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
 
     		$clasespersonalizadas = DB::table('clases_personalizadas')
-    				->join('alumnos', 'alumnos.id', '=', 'clases_personalizadas.alumno_id')
-                    ->select('clases_personalizadas.*' , 'alumnos.nombre', 'alumnos.apellido')
+                    ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+    				->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
+                    ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.*')
                     ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
+                    ->where('inscripcion_clase_personalizada.estatus', '=', 1)
             ->get();
 
         	foreach ($clasespersonalizadas as $clasepersonalizada) {
@@ -111,7 +114,7 @@ class AgendarController extends BaseController
         		$fecha_end=explode('-',$clasepersonalizada->fecha_final);
         		$id=$clasepersonalizada->id;
         		$nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
-        		$descripcion=$clasepersonalizada->descripcion;
+        		$descripcion=$config_clases_personalizadas->descripcion;
         		$hora_inicio=$clasepersonalizada->hora_inicio;
         		$hora_final=$clasepersonalizada->hora_final;
         		$etiqueta=$clasepersonalizada->color_etiqueta;
@@ -247,21 +250,23 @@ class AgendarController extends BaseController
 
             }
 
-            // dd($arrayClases);
+            $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
 
             $clasespersonalizadas = DB::table('clases_personalizadas')
-                    ->join('alumnos', 'alumnos.id', '=', 'clases_personalizadas.alumno_id')
-                    ->select('clases_personalizadas.*' , 'alumnos.nombre', 'alumnos.apellido')
+                    ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+                    ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
+                    ->select('clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'inscripcion_clase_personalizada.*')
                     ->where('clases_personalizadas.alumno_id', '=' ,  Auth::user()->usuario_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
+                    ->where('inscripcion_clase_personalizada.estatus', '=', 1)
             ->get();
 
             foreach ($clasespersonalizadas as $clasepersonalizada) {
                 $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
                 $fecha_end=explode('-',$clasepersonalizada->fecha_final);
                 $id=$clasepersonalizada->id;
-                $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
-                $descripcion=$clasepersonalizada->descripcion;
+                $nombre= 'Clase Personalizada ' . $clasepersonalizada->nombre;
+                $descripcion=$config_clases_personalizadas->descripcion;
                 $hora_inicio=$clasepersonalizada->hora_inicio;
                 $hora_final=$clasepersonalizada->hora_final;
                 $etiqueta=$clasepersonalizada->color_etiqueta;

@@ -256,6 +256,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
 
 	Route::put('agendar/clases-personalizadas/update/nombre', 'ClasePersonalizadaController@updateNombre');
+	Route::put('agendar/clases-personalizadas/update/costo', 'ClasePersonalizadaController@updateCosto');
+	Route::put('agendar/clases-personalizadas/update/imagen', 'ClasePersonalizadaController@updateImagen');
 	Route::put('agendar/clases-personalizadas/update/fecha', 'ClasePersonalizadaController@updateFecha');
 	Route::put('agendar/clases-personalizadas/update/especialidad', 'ClasePersonalizadaController@updateEspecialidad');
 	Route::put('agendar/clases-personalizadas/update/instructor', 'ClasePersonalizadaController@updateInstructor');
@@ -268,6 +270,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::put('agendar/clases-personalizadas/update/tiempo_expiracion', 'ClasePersonalizadaController@updateExpiracion');
 
 	Route::post('agendar/clases-personalizadas/configurar', 'ClasePersonalizadaController@configuracion');
+	Route::get('agendar/clases-personalizadas/participantes/{id}', 'ClasePersonalizadaController@participantes');
+	Route::post('agendar/clases-personalizadas/inscribir', 'ClasePersonalizadaController@storeInscripcion');
 
 	//TALLERES
 
@@ -394,6 +398,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
     Route::get('especiales/regalos', 'RegaloController@index');
     Route::get('especiales/regalos/detalle/{id}', 'RegaloController@edit');
+    Route::get('especiales/regalos/progreso/{id}', 'RegaloController@progreso');
 	Route::get('especiales/regalos/operaciones/{id}', 'RegaloController@operar');
 	Route::delete('especiales/regalos/eliminar/{id}', 'RegaloController@destroy');
 	Route::get('especiales/regalos/agregar', 'RegaloController@create');

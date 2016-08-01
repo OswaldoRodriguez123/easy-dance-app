@@ -13,6 +13,7 @@ use DB;
 use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class RegaloController extends BaseController {
 
@@ -25,7 +26,17 @@ class RegaloController extends BaseController {
     public function index()
     {
 
-        return view('especiales.regalo.principal')->with('regalos', Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if(Auth::user()->usuario_tipo == 2){
+
+            return view('especiales.regalo.principal_alumno')->with(['regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'academia' => $academia]);
+
+        }else{
+
+            return view('especiales.regalo.principal_alumno')->with(['regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'academia' => $academia]);
+
+        }
     }
 
     /**
@@ -54,7 +65,7 @@ class RegaloController extends BaseController {
     $rules = [
         'nombre' => 'required|min:3|max:50',
         'costo' => 'required',
-        'descripcion' => 'required|min:3|max:500',
+        'descripcion' => 'required|min:3|max:250',
         // 'dirigido_a' => 'required|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         // 'alumno_id' => 'required',
         // 'correo' => 'required|email',
@@ -67,7 +78,7 @@ class RegaloController extends BaseController {
         'nombre.max' => 'El máximo de caracteres permitidos son 50',
         'descripcion.required' => 'Ups! La Descripcion es requerida',
         'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
-        'descripcion.max' => 'El máximo de caracteres permitidos son 500',
+        'descripcion.max' => 'El máximo de caracteres permitidos son 250',
         'costo.required' => 'Ups! El Costo es requerido',
         // 'correo.required' => 'Ups! El Correo es requerido ',
         // 'correo.email' => 'Ups! El correo tiene una dirección inválida',
@@ -99,6 +110,34 @@ class RegaloController extends BaseController {
         // $regalo->correo = $correo;
 
         if($regalo->save()){
+
+            if($request->imageBase64){
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "regalo-". $regalo->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('taller')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(640, 480);
+                $img->save('assets/uploads/regalo/'.$nombre_img);
+
+                $regalo->imagen = $nombre_img;
+                $regalo->save();
+
+            }
 
             // $academia = Academia::find(Auth::user()->academia_id);
 
@@ -467,9 +506,18 @@ class RegaloController extends BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function progreso($id)
     {
 
+        $academia = Academia::find($id);
+
+        if($academia){
+
+            return view('especiales.regalo.promocionar')->with(['academia' => $academia, 'id' => $id]);
+
+        }else{
+            return redirect("especiales/regalos");
+        }
     }
 
     /**

@@ -209,7 +209,7 @@
                             <hr class="linea-morada">                                                        
                         </div>
 
-                        <div class="col-sm-5">
+  <!--                       <div class="col-sm-5">
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
@@ -227,7 +227,7 @@
                                  </div>
                                 </div> 
 
-                                <div class="clearfix"></div>
+                                <div class="clearfix"></div> -->
 
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -236,10 +236,8 @@
                                 <tr>
                                     <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
-                                    <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>                                 
-                                    <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Fin]</th>
-                                    <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>                                 
+                                    <th class="text-center" data-column-id="costo" data-order="desc">Costo</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                 </tr>
                             </thead>
@@ -412,32 +410,13 @@
             $.each(activas, function (index, array) {
 
                 var rowNode=t.row.add( [
-                ''+array.fecha_inicio+'',
-                ''+array.alumno_nombre+ ' '+array.alumno_apellido+'',
-                ''+array.hora_inicio+ ' - '+array.hora_final+'',
-                ''+array.instructor_nombre+ ' '+array.instructor_apellido+'',
+                ''+array.nombre+'',
+                ''+array.costo+'',
                 '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
                     .addClass('seleccion');
-            });
-        }
-
-        function rechargeCanceladas(){
-            var canceladas = <?php echo json_encode($canceladas);?>;
-
-            $.each(canceladas, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+array.fecha_inicio+'',
-                ''+array.alumno_nombre+ ' '+array.alumno_apellido+'',
-                ''+array.hora_inicio+ ' - '+array.hora_final+'',
-                ''+array.instructor_nombre+ ' '+array.instructor_apellido+'',
-                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('text-center');
             });
         }
 

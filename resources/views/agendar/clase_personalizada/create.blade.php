@@ -41,27 +41,21 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-                                <div class="col-sm-12">
-                                 
-                                     <label for="alumno" id="id-alumno_id">Alumno</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual le asignarás la clase personalizada" title="" data-original-title="Ayuda"></i>
 
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
+                            <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-clase-personalizada f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Salsa Casino">
                                       </div>
                                     </div>
-                                    <div class="has-error" id="error-alumno_id">
+                                 <div class="has-error" id="error-nombre">
                                       <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
                                       </span>
-                                    </div>
                                   </div>
                                </div>
                                <div class="clearfix p-b-35"></div>
@@ -86,26 +80,30 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                    
-                                      <label for="fecha_inicio" id="id-fecha_inicio">Fecha de la Clase</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de inicio de la clase personalizada" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha_inicio" id="fecha_inicio" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text"
-                                                @if (session('fecha_inicio'))
-                                                  value="{{session('fecha_inicio')}} - {{session('fecha_inicio')}}"
-                                                @endif
-                                              >
-                                          </div>
-
-                                    </div>
-                                    <div class="has-error" id="error-fecha_inicio">
-                                        <span >
-                                            <small class="help-block error-span" id="error-fecha_inicio_mensaje" ></small>                                           
+                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                
+                                <div class="clearfix p-b-15"></div>
+                                  
+                                  <input type="hidden" name="imageBase64" id="imageBase64">
+                                  <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                    <div>
+                                        <span class="btn btn-info btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imagen" id="imagen" >
                                         </span>
+                                        <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                     </div>
                                 </div>
-                                <div class="clearfix p-b-35"></div>
+                                  <div class="has-error" id="error-imagen">
+                                  <span >
+                                      <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12">
                                     <div class="cp-container">
@@ -130,137 +128,8 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-12">
-                                 
-                                    <label for="especialidad" id="id-especialidad_id">Especialidad</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de diversas especialidades" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="especialidad_id" id="especialidad_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $especialidad as $especialidades )
-                                          <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-especialidad_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-especialidad_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-                                    <div class="col-sm-12">
-                                 
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-instructor_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-                                
-                                    <div class="col-sm-12">
-                                 
-                                    <label for="estudio" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-estudio-salon f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="estudio_id" id="estudio_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $estudio as $estudios )
-                                          <option value = "{{ $estudios['id'] }}">{{ $estudios['nombre'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-estudio_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-estudio_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-                               <div class="col-xs-6">
-                                 
-                                      <label for="fecha_inicio" id="id-hora_inicio">Horario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la hora de inicio y final de la clase personalizada" title="" data-original-title="Ayuda"></i>
-
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_inicio" id="hora_inicio" class="form-control time-picker pointer" placeholder="Desde" type="text">
-                                          </div>
-                                    </div>
-                                 <div class="has-error" id="error-hora_inicio">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="col-xs-6">
-                                      <label for="fecha_inicio" id="id-hora_final">&nbsp;</label>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_final" id="hora_final" class="form-control time-picker pointer" placeholder="Hasta" type="text">
-                                          </div>
-                                    </div>
-                                 <div class="has-error" id="error-hora_final">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="descripcion" id="id-descripcion">Descripcion</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo, dirígete a la sección de instructores y procede a registrarlo" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-descripcion">
-                                      <span >
-                                        <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-
-                               <div class="clearfix p-b-35"></div>
-
                                         
                                     <div class="form-group">
 
@@ -503,6 +372,18 @@
 
   $(document).ready(function(){
 
+
+        $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagena img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
+
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
         //var cardImg = $(this).closest('#content').find('h1');
@@ -525,7 +406,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["alumno_id", "fecha_inicio", "color_etiqueta", "especialidad_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "condiciones", "tiempo_expiracion"];
+    var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -647,7 +528,6 @@
 
   $("#guardar").click(function(){
 
-                var id = $("#alumno_id").val();
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_clasepersonalizada" ).serialize(); 
@@ -679,7 +559,7 @@
                           // $("#agregar_alumno")[0].reset();
                           // var nTitle="Ups! ";
                           // var nMensaje=respuesta.mensaje;
-                          window.location = route_enhorabuena + id;
+                          window.location = route_principal;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -853,7 +733,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["alumno_id", "fecha_inicio", "color_etiqueta", "especialidad_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "condiciones", "tiempo_expiracion"];
+        var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -861,7 +741,7 @@
       }
 
     function errores(merror){
-      var campo = ["alumno_id", "fecha_inicio", "color_etiqueta", "especialidad_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "condiciones", "tiempo_expiracion"];
+      var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

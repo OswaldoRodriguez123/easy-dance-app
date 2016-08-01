@@ -176,6 +176,77 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalImagen-Regalo" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Regalo<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_imagen_regalo" id="edit_imagen_regalo"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Cargar Imagen</label>
+                                        <div class="clearfix p-b-15"></div>
+                                        <input type="hidden" name="imageBase64" id="imageBase64">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($regalo->imagen)
+                                          <img src="{{url('/')}}/assets/uploads/regalo/{{$regalo->imagen}}" style="line-height: 150px;">
+                                          @endif
+                                        </div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen" id="imagen" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="has-error" id="error-imagen">
+                                      <span >
+                                          <small id="error-imagen_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$regalo->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-morado m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_regalo" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
             
             <section id="content">
                 <div class="container">
@@ -266,6 +337,14 @@
                                <span class="f-14"> Costo </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="regalo-costo"><span>{{ number_format($regalo->costo, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Regalo">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($regalo->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Imagen </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="regalo-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <!-- <tr class="detalle" data-toggle="modal" href="#modalImagen-Campana">
                              <td>

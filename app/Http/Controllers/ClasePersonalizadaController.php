@@ -15,6 +15,7 @@ use App\Alumno;
 use App\Academia;
 use App\CitaClasePersonalizada;
 use App\ItemsFacturaProforma;
+use App\InscripcionClasePersonalizada;
 use Mail;
 use Validator;
 use DB;
@@ -34,27 +35,7 @@ class ClasePersonalizadaController extends BaseController {
     public function index()
     {
 
-        $activas = DB::table('clases_personalizadas')
-            ->join('config_especialidades', 'clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'clases_personalizadas.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
-            ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'clases_personalizadas.id', 'clases_personalizadas.fecha_inicio')
-            ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('clases_personalizadas.deleted_at', '=', null)
-            ->where('clases_personalizadas.estatus', '=', 1)
-            ->get();
-
-        $canceladas = DB::table('clases_personalizadas')
-            ->join('config_especialidades', 'clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'clases_personalizadas.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
-            ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'clases_personalizadas.id', 'clases_personalizadas.fecha_inicio')
-            ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('clases_personalizadas.deleted_at', '=', null)
-            ->where('clases_personalizadas.estatus', '=', 0)
-            ->get();
+        $clases_personalizadas = ClasePersonalizada::where('academia_id', Auth::user()->academia_id)->get();
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', Auth::user()->academia_id)->first();
 
@@ -76,7 +57,7 @@ class ClasePersonalizadaController extends BaseController {
             
         }
 
-        return view('agendar.clase_personalizada.index')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'activas' => $activas, 'canceladas' => $canceladas, 'config_clase_personalizada' => $config_clase_personalizada]);
+        return view('agendar.clase_personalizada.index')->with(['activas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
     }
 
     /**
@@ -112,22 +93,17 @@ class ClasePersonalizadaController extends BaseController {
 
     public function operar($id)
     {   
-        $alumno = DB::table('clases_personalizadas')
-            ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido')
-            ->where('clases_personalizadas.id', '=', $id)
-        ->first();
 
-        $clase_personalizada = DB::table('clases_personalizadas')
-            ->join('config_especialidades', 'clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'clases_personalizadas.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
-            ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'clases_personalizadas.id', 'clases_personalizadas.fecha_inicio')
-            ->where('clases_personalizadas.id', '=' ,  $id)
-        ->first();
+        $clase_personalizada = ClasePersonalizada::find($id);
 
-        return view('agendar.clase_personalizada.operacion')->with(['id' => $id, 'alumno' => $alumno, 'clase_personalizada' => $clase_personalizada]);        
+        if($clase_personalizada)
+        {
+
+            return view('agendar.clase_personalizada.operacion')->with(['id' => $id, 'clase_personalizada' => $clase_personalizada]); 
+
+        }else{
+            return redirect("agendar/clases-personalizadas"); 
+        }    
     }
 
     /**
@@ -143,29 +119,20 @@ class ClasePersonalizadaController extends BaseController {
 
     $rules = [
 
-        'alumno_id' => 'required',
+        'nombre' => 'required',
         'costo' => 'required|numeric',
-        'fecha_inicio' => 'required',
         'color_etiqueta' => 'required',
-        'especialidad_id' => 'required',
-        'instructor_id' => 'required',
-        'estudio_id' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
+        'tiempo_expiracion' => 'numeric',
+
     ];
 
     $messages = [
 
+        'nombre.required' => 'Ups! El Nombre  es requerido',
         'costo.numeric' => 'Ups! El costo es inválido, debe contener sólo  números',
         'costo.required' => 'Ups! El costo es requerido',
-        'fecha_inicio.required' => 'Ups! La fecha es requerida',
         'color_etiqueta.required' => 'Ups! La etiqueta es requerida',
-        'instructor_id.required' => 'Ups! El instructor es requerido',
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-        'alumno_id.required' => 'Ups! El Alumno es requerido',
-        'especialidad_id.required' => 'Ups! La especialidad es requerida ',
-        'estudio_id.required' => 'Ups! El estudio o salón es requerido',
+        'tiempo_expiracion.numeric' => 'Ups! El Tiempo de expiración es inválido, debe contener sólo  números',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -178,100 +145,48 @@ class ClasePersonalizadaController extends BaseController {
 
     else{
 
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-        }
-
-        if($request->fecha_inicio < Carbon::now()){
-
-            return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
-        }
-
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
         $clasepersonalizada = new ClasePersonalizada;
-        
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
 
-        // $clasepersonalizada->costo = $request->costo;
         $clasepersonalizada->academia_id = Auth::user()->academia_id;
-        $clasepersonalizada->fecha_inicio = $fecha_inicio;
-        $clasepersonalizada->fecha_final = $fecha_inicio;
-        $clasepersonalizada->instructor_id = $request->instructor_id;
+        $clasepersonalizada->nombre = $nombre;
+        $clasepersonalizada->costo = $request->costo;;
         $clasepersonalizada->color_etiqueta = $request->color_etiqueta;
-        $clasepersonalizada->hora_inicio = $request->hora_inicio;
-        $clasepersonalizada->hora_final = $request->hora_final;
-        $clasepersonalizada->alumno_id = $request->alumno_id;
-        $clasepersonalizada->especialidad_id = $request->especialidad_id;
-        $clasepersonalizada->estudio_id = $request->estudio_id;
-        $clasepersonalizada->descripcion = $descripcion;
         $clasepersonalizada->tiempo_expiracion = $request->tiempo_expiracion;
 
         // return redirect("/home");
         if($clasepersonalizada->save()){
 
-            $item_factura = new ItemsFacturaProforma;
-                    
-            $item_factura->alumno_id = $request->alumno_id;
-            $item_factura->academia_id = Auth::user()->academia_id;
-            $item_factura->fecha = Carbon::now()->toDateString();
-            $item_factura->item_id = $clasepersonalizada->id;
-            $item_factura->nombre = 'Costo Clase Personalizada ' . $clasepersonalizada->id;
-            $item_factura->tipo = 9;
-            $item_factura->cantidad = 1;
-            $item_factura->precio_neto = 0;
-            $item_factura->impuesto = 0;
-            $item_factura->importe_neto = $request->costo;
-            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+            if($request->imageBase64){
 
-            $item_factura->save();
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
 
-            $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::find($request->alumno_id);
-            $instructor = Instructor::find($request->instructor_id);
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
 
-            $subj = 'Te han asignado una Clase Personalizada';
-            $subj2 = 'Has confirmado una Clase Personalizada';
+                $nombre_img = "clasepersonalizada2-". $clasepersonalizada->id . $extension;
+                $image = base64_decode($base64_string);
 
-            $array = [
-               'nombre_instructor' => $instructor->nombre,
-               'correo' => $instructor->correo,
-               'academia' => $academia->nombre,
-               'nombre_alumno' => $alumno->nombre,
-               'apellido_alumno' => $alumno->apellido,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj
-            ];
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/clase_personalizada/'.$nombre_img);
 
-            $array2 = [
-               'nombre_instructor' => $instructor->nombre,
-               'apellido_instructor' => $instructor->apellido,
-               'correo' => $alumno->correo,
-               'academia' => $academia->nombre,
-               'nombre_alumno' => $alumno->nombre,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj2
-            ];
+                $clasepersonalizada->imagen = $nombre_img;
+                $clasepersonalizada->save();
 
-            Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-                });
+            }
 
-            Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
-                    $msj->subject($array2['subj']);
-                    $msj->to($array2['correo']);
-                });
-
+           
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -403,7 +318,7 @@ class ClasePersonalizadaController extends BaseController {
      public function updateNombre(Request $request){
 
         $clasepersonalizada = ClasePersonalizada::find($request->id);
-        $clasepersonalizada->clase_personalizada_id = $request->clase_personalizada_id;
+        $clasepersonalizada->nombre = $request->nombre;
 
         if($clasepersonalizada->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -411,6 +326,80 @@ class ClasePersonalizadaController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function updateCosto(Request $request){
+
+    $rules = [
+
+        'costo' => 'required|numeric',
+
+    ];
+
+    $messages = [
+
+        'costo.numeric' => 'Ups! El costo es inválido, debe contener sólo  números',
+        'costo.required' => 'Ups! El costo es requerido',
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $clasepersonalizada = ClasePersonalizada::find($request->id);
+            $clasepersonalizada->costo = $request->costo;
+
+            if($clasepersonalizada->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'nombre', 'valor' => $nombre, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateImagen(Request $request)
+    {
+                $clasepersonalizada = ClasePersonalizada::find($request->id);
+                
+                if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "clasepersonalizada2-". $clasepersonalizada->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/clase_personalizada/'.$nombre_img);
+                }
+                else{
+                    $nombre_img = "";
+                }
+
+                $clasepersonalizada->imagen = $nombre_img;
+                $clasepersonalizada->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     public function updateFecha(Request $request){
@@ -567,30 +556,38 @@ class ClasePersonalizadaController extends BaseController {
         }
     }
 
-    public function updateDescripcion(Request $request){
-
-        $clasepersonalizada = ClasePersonalizada::find($request->id);
-
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
-
-        $clasepersonalizada->descripcion = $descripcion;
-
-        if($clasepersonalizada->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-    }
 
     public function updateExpiracion(Request $request){
 
-        $clasepersonalizada = ClasePersonalizada::find($request->id);
-        $clasepersonalizada->tiempo_expiracion = $request->tiempo_expiracion;
+    $rules = [
 
-        if($clasepersonalizada->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        'tiempo_expiracion' => 'numeric',
+
+    ];
+
+    $messages = [
+
+        'tiempo_expiracion.numeric' => 'Ups! El Tiempo de expiración es inválido, debe contener sólo  números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $clasepersonalizada = ClasePersonalizada::find($request->id);
+            $clasepersonalizada->tiempo_expiracion = $request->tiempo_expiracion;
+
+            if($clasepersonalizada->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 
@@ -698,28 +695,28 @@ class ClasePersonalizadaController extends BaseController {
         $find = ClasePersonalizada::find($id);
 
         if ($find) {
-            $clase_personalizada_join = DB::table('clases_personalizadas')
-            ->join('config_especialidades', 'clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'clases_personalizadas.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
-            ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre' , 'clases_personalizadas.fecha_inicio as fecha_inicio', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.id', 'clases_personalizadas.descripcion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.tiempo_expiracion')
-            ->where('clases_personalizadas.id', '=', $id)
-            ->first();
+            // $clase_personalizada_join = DB::table('clases_personalizadas')
+            // ->join('config_especialidades', 'clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
+            // ->join('config_estudios', 'clases_personalizadas.estudio_id', '=', 'config_estudios.id')
+            // ->join('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
+            // ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
+            // ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre' , 'clases_personalizadas.fecha_inicio as fecha_inicio', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.id', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.tiempo_expiracion')
+            // ->where('clases_personalizadas.id', '=', $id)
+            // ->first();
 
-            $hora_string = $find->fecha_inicio . ' ' . $find->hora_inicio;
+            // $hora_string = $find->fecha_inicio . ' ' . $find->hora_inicio;
         
-            $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
-            $hora_limite = $hora->subHours($find->tiempo_expiracion);
+            // $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
+            // $hora_limite = $hora->subHours($find->tiempo_expiracion);
 
-            if(Carbon::now() > $hora_limite)
-            {
-                $cancelacion = 'Cancelación Tardia';
-            }else{
-                $cancelacion = 'Cancelación Temprana';
-            }
+            // if(Carbon::now() > $hora_limite)
+            // {
+            //     $cancelacion = 'Cancelación Tardia';
+            // }else{
+            //     $cancelacion = 'Cancelación Temprana';
+            // }
 
-            return view('agendar.clase_personalizada.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $clase_personalizada_join, 'cancelacion' => $cancelacion]);
+            return view('agendar.clase_personalizada.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $find]);
 
         }else{
            return redirect("agendar/clases-personalizadas"); 
@@ -733,9 +730,166 @@ class ClasePersonalizadaController extends BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function participantes($id)
     {
 
+        $clasepersonalizada = ClasePersonalizada::find($id);
+
+        $activas = DB::table('inscripcion_clase_personalizada')
+                ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_clase_personalizada.id as clase_personalizada_id')
+                ->where('inscripcion_clase_personalizada.clase_personalizada_id', '=', $id)
+                ->where('inscripcion_clase_personalizada.estatus', 1)
+        ->get();
+
+
+        $canceladas = DB::table('inscripcion_clase_personalizada')
+                ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_clase_personalizada.id as clase_personalizada_id')
+                ->where('inscripcion_clase_personalizada.clase_personalizada_id', '=', $id)
+                ->where('inscripcion_clase_personalizada.estatus', 0)
+        ->get();
+
+
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        return view('agendar.clase_personalizada.participantes')->with(['activas' => $activas, 'canceladas' => $canceladas, 'id' => $id, 'clasepersonalizada' => $clasepersonalizada, 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+    }
+
+    public function storeInscripcion(Request $request)
+    {
+
+    Session::forget('id_alumno');
+
+    $rules = [
+
+        'alumno_id' => 'required',
+        'fecha_inicio' => 'required',
+        'hora_inicio' => 'required',
+        'hora_final' => 'required',
+        'especialidad_id' => 'required',
+        'instructor_id' => 'required',
+        'estudio_id' => 'required',
+        
+    ];
+
+    $messages = [
+
+        'alumno_id.required' => 'Ups! El Alumno es requerido',
+        'fecha_inicio.required' => 'Ups! La fecha es requerida',
+        'instructor_id.required' => 'Ups! El instructor es requerido',
+        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+        'hora_final.required' => 'Ups! La hora final es requerida',
+        'especialidad_id.required' => 'Ups! La especialidad es requerida ',
+        'estudio_id.required' => 'Ups! El estudio o salón es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio);
+
+        if($hora_inicio > $hora_final)
+        {
+
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+        }
+
+        if($fecha_inicio < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+        }
+
+        $clasepersonalizada = new InscripcionClasePersonalizada;
+        
+        $fecha_inicio = $fecha_inicio->toDateString();
+
+        $clasepersonalizada->clase_personalizada_id =  $request->clase_personalizada_id;
+        $clasepersonalizada->fecha_inicio = $fecha_inicio;
+        $clasepersonalizada->fecha_final = $fecha_inicio;
+        $clasepersonalizada->instructor_id = $request->instructor_id;
+        $clasepersonalizada->hora_inicio = $request->hora_inicio;
+        $clasepersonalizada->hora_final = $request->hora_final;
+        $clasepersonalizada->alumno_id = $request->alumno_id;
+        $clasepersonalizada->especialidad_id = $request->especialidad_id;
+        $clasepersonalizada->estudio_id = $request->estudio_id;
+
+        // return redirect("/home");
+        if($clasepersonalizada->save()){
+
+            $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
+
+            $item_factura = new ItemsFacturaProforma;
+                    
+            $item_factura->alumno_id = $request->alumno_id;
+            $item_factura->academia_id = Auth::user()->academia_id;
+            $item_factura->fecha = Carbon::now()->toDateString();
+            $item_factura->item_id = $clasepersonalizada->id;
+            $item_factura->nombre = 'Costo Clase Personalizada ' . $clasepersonalizada->id;
+            $item_factura->tipo = 9;
+            $item_factura->cantidad = 1;
+            $item_factura->precio_neto = 0;
+            $item_factura->impuesto = 0;
+            $item_factura->importe_neto = $clase_personalizada->costo;
+            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+            $item_factura->save();
+
+            $academia = Academia::find(Auth::user()->academia_id);
+            $alumno = Alumno::find($request->alumno_id);
+            $instructor = Instructor::find($request->instructor_id);
+
+            $subj = 'Te han asignado una Clase Personalizada';
+            $subj2 = 'Has confirmado una Clase Personalizada';
+
+            $array = [
+               'nombre_instructor' => $instructor->nombre,
+               'correo' => $instructor->correo,
+               'academia' => $academia->nombre,
+               'nombre_alumno' => $alumno->nombre,
+               'apellido_alumno' => $alumno->apellido,
+               'hora_inicio' => $request->hora_inicio,
+               'hora_final' => $request->hora_final,
+               'fecha' => $fecha_inicio,
+               'subj' => $subj
+            ];
+
+            $array2 = [
+               'nombre_instructor' => $instructor->nombre,
+               'apellido_instructor' => $instructor->apellido,
+               'correo' => $alumno->correo,
+               'academia' => $academia->nombre,
+               'nombre_alumno' => $alumno->nombre,
+               'hora_inicio' => $request->hora_inicio,
+               'hora_final' => $request->hora_final,
+               'fecha' => $fecha_inicio,
+               'subj' => $subj2
+            ];
+
+            Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
+
+            Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
+                    $msj->subject($array2['subj']);
+                    $msj->to($array2['correo']);
+                });
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
     }
 
     /**
@@ -747,34 +901,36 @@ class ClasePersonalizadaController extends BaseController {
 
     public function cancelar(Request $request)
     {
-        $clasepersonalizada = ClasePersonalizada::find($request->id);
+        $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($request->clasepersonalizada_id);
 
-        $hora_string = $clasepersonalizada->fecha_inicio . ' ' . $clasepersonalizada->hora_inicio;
+        $clasepersonalizada = ClasePersonalizada::find($inscripcion_clase_personalizada->clase_personalizada_id);
+
+        $hora_string = $inscripcion_clase_personalizada->fecha_inicio . ' ' . $inscripcion_clase_personalizada->hora_inicio;
         
         $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
         $hora_limite = $hora->subHours($clasepersonalizada->tiempo_expiracion);
 
-        if(Carbon::now() > $hora_limite)
+        if(Carbon::now() < $hora_limite)
         {
             $item_proforma = ItemsFacturaProforma::where('tipo', 9)->where('item_id', $request->id)->first();
 
             if($item_proforma){
                 if($item_proforma->delete()){
 
-                    $clasepersonalizada->estatus = 0;
-                    $clasepersonalizada->razon_cancelacion = $request->razon_cancelacion;
+                    $inscripcion_clase_personalizada->estatus = 0;
+                    $inscripcion_clase_personalizada->razon_cancelacion = $request->razon_cancelacion;
                     
-                    if($clasepersonalizada->save()){
+                    if($inscripcion_clase_personalizada->save()){
                         return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 200]);
                     }else{
                         return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                     }
                 }
             }else{
-                    $clasepersonalizada->estatus = 0;
-                    $clasepersonalizada->razon_cancelacion = $request->razon_cancelacion;
+                    $inscripcion_clase_personalizada->estatus = 0;
+                    $inscripcion_clase_personalizada->razon_cancelacion = $request->razon_cancelacion;
                     
-                    if($clasepersonalizada->save()){
+                    if($inscripcion_clase_personalizada->save()){
                         return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 200]);
                     }else{
                         return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -787,12 +943,12 @@ class ClasePersonalizadaController extends BaseController {
 
     public function cancelarpermitir(Request $request)
     {
-        $clasepersonalizada = ClasePersonalizada::find($request->id);
+        $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($request->id);
 
-        $clasepersonalizada->estatus = 0;
-        $clasepersonalizada->razon_cancelacion = $request->razon_cancelacion;
+        $inscripcion_clase_personalizada->estatus = 0;
+        $inscripcion_clase_personalizada->razon_cancelacion = $request->razon_cancelacion;
             
-        if($clasepersonalizada->save()){
+        if($inscripcion_clase_personalizada->save()){
             return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

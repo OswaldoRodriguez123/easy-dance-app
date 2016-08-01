@@ -83,7 +83,7 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="500 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="250 Caracteres"></textarea>
                                     </div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
@@ -93,6 +93,32 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                            <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                            
+                            <div class="clearfix p-b-15"></div>
+                              
+                              <input type="hidden" name="imageBase64" id="imageBase64">
+                              <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                <div>
+                                    <span class="btn btn-info btn-file">
+                                        <span class="fileinput-new">Seleccionar Imagen</span>
+                                        <span class="fileinput-exists">Cambiar</span>
+                                        <input type="file" name="imagen" id="imagen" >
+                                    </span>
+                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                </div>
+                            </div>
+                              <div class="has-error" id="error-imagen">
+                              <span >
+                                  <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -150,6 +176,20 @@
   route_principal="{{url('/')}}/especiales/regalos";
   
   $(document).ready(function(){
+
+
+        $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var fileinput = $("#imagena img").attr('src');
+              //alert(fileinput);
+              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+            },500);
+
+        });
+
+
         document.getElementById("nombre").focus();
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
