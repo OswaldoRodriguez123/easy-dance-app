@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterClasesPersonalizadasTable extends Migration
+class AlterNewClasesPersonalizadasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AlterClasesPersonalizadasTable extends Migration
     public function up()
     {
        Schema::table('clases_personalizadas', function (Blueprint $table) {
-            $table->boolean('estatus')->after('estudio_id')->default(1);
-            $table->string('razon_cancelacion')->after('estatus')->nullable()->default(null);
-            $table->integer('tiempo_expiracion')->after('razon_cancelacion');
+            $table->boolean('estatus')->default(1);
+            $table->string('razon_cancelacion')->nullable()->default(null);
+            $table->integer('tiempo_expiracion');
         });
     }
 

@@ -35,9 +35,9 @@ class AlterConfigClasesPersonalizadasTable extends Migration
     public function down()
     {
         Schema::table('config_clases_personalizadas', function (Blueprint $table) {
-            $table->string('nombre',15)->after('academia_id');
-            $table->integer('costo')->after('nombre');
-            $table->tinyinteger('impuesto', 4)->after('costo');
+            $table->string('nombre',15);
+            $table->integer('costo');
+            $table->tinyinteger('impuesto');
             $table->dropColumn('imagen_principal');
             $table->string('descripcion',300)->change();
             $table->dropColumn('video_promocional');

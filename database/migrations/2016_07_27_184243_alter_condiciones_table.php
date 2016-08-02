@@ -14,32 +14,32 @@ class AlterCondicionesTable extends Migration
     {
         Schema::table('config_clases_grupales', function (Blueprint $table) {
 
-            $table->string('condiciones', 15000)->change();
+            $table->string('condiciones', 10000)->change();
             
         });
 
         Schema::table('talleres', function (Blueprint $table) {
 
-            $table->string('condiciones', 15000)->change();
+            $table->string('condiciones', 10000)->change();
             
         });
 
         Schema::table('fiestas', function (Blueprint $table) {
 
-            $table->string('condiciones', 15000)->change();
+            $table->string('condiciones', 10000)->change();
             
         });
 
         Schema::table('campanas', function (Blueprint $table) {
 
-            $table->string('condiciones', 15000)->change();
+            $table->string('condiciones', 10000)->change();
             
         });
 
         Schema::table('academias', function (Blueprint $table) {
 
-            $table->string('normativa', 10000)->change();
-            $table->string('manual', 10000)->change();
+            $table->string('normativa', 5000)->change();
+            $table->string('manual', 5000)->change();
             
         });
 

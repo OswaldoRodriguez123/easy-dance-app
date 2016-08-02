@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterClasesPersonalizadasTable extends Migration
+class AlterCambiosClasesPersonalizadasTable extends Migration
 {
     /**
      * Run the migrations.
