@@ -411,14 +411,14 @@
 
       $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });

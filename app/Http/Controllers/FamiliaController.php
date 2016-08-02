@@ -31,7 +31,7 @@ class FamiliaController extends BaseController {
         $alumnod = DB::table('alumnos')
             ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->join('users', 'alumnos.id', '=', 'users.usuario_id')
-            ->join('familias', 'familias.id', '=', 'users.familia_id')
+            ->join('familias', 'familias.id', '=', 'alumnos.familia_id')
             ->select('familias.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
@@ -48,7 +48,7 @@ class FamiliaController extends BaseController {
 
         foreach($familias as $familia){
 
-            $total = User::where('familia_id', '=' ,  $familia->id)->count();
+            $total = Alumno::where('familia_id', '=' ,  $familia->id)->count();
             $collection=collect($familia);     
             $familia_array = $collection->toArray();
             
@@ -139,7 +139,7 @@ class FamiliaController extends BaseController {
 
             foreach($participantes as $participante){
                 foreach($participante as $item){
-                    if($item['identificacion'] == $request->identificacion){
+                    if($item['identificacion'] == $request->identificacion && $item['identificacion'] != ''){
                         return response()->json(['errores' => ['identificacion' => [0, 'Ups! Ya este identificador ha sido registrado']], 'status' => 'ERROR'],422);
                     }
                 }
@@ -148,7 +148,7 @@ class FamiliaController extends BaseController {
 
             foreach($participantes as $participante){
                 foreach($participante as $item){
-                    if($item['correo'] == $request->correo){
+                    if($item['correo'] == $request->correo && $item['correo'] != ''){
                         return response()->json(['errores' => ['correo' => [0, 'Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
                     }
                 }
@@ -191,10 +191,6 @@ class FamiliaController extends BaseController {
 
             if($familia->save()){
 
-                $usuario->familia_id = $familia->id;
-                $usuario->save();
-
-
                 //     $academia = Academia::find(Auth::user()->academia_id);
                 //     $contrasena =  $usuario->password;
                 //     $subj = $usuario->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
@@ -234,6 +230,7 @@ class FamiliaController extends BaseController {
                 $alumno->cefalea = 0;
                 $alumno->hipertension = 0;
                 $alumno->lesiones = 0;
+                $alumno->familia_id = $familia->id;
 
                 $alumno->save();
 
@@ -286,6 +283,7 @@ class FamiliaController extends BaseController {
                             $alumno->cefalea = $item['cefalea'];
                             $alumno->hipertension = $item['hipertension'];
                             $alumno->lesiones = $item['lesiones'];
+                            $alumno->familia_id = $familia_id;
 
                             $alumno->save();
 
@@ -306,8 +304,7 @@ class FamiliaController extends BaseController {
                                 $usuario->password = bcrypt(str_random(8));
                                 $usuario->usuario_id = $alumno->id;
                                 $usuario->usuario_tipo = 2;
-                                $usuario->familia_id = $familia_id;
-
+                                
                                 $usuario->save();
 
                             }
@@ -403,7 +400,7 @@ class FamiliaController extends BaseController {
             if($request->identificacion_participante){
                 foreach($participantes as $participante){
                     foreach($participante as $item){
-                        if($item['identificacion'] == $request->identificacion_participante){
+                        if($item['identificacion'] == $request->identificacion_participante && $item['identificacion'] != ''){
                             return response()->json(['errores' => ['identificacion_participante' => [0, 'Ups! Ya este identificador ha sido registrado']], 'status' => 'ERROR'],422);
                         }
                     }
@@ -412,7 +409,7 @@ class FamiliaController extends BaseController {
 
             foreach($participantes as $participante){
                 foreach($participante as $item){
-                    if($item['correo'] == $request->correo_participante){
+                    if($item['correo'] == $request->correo_participante && $item['correo'] != ''){
                         return response()->json(['errores' => ['correo_participante' => [0, 'Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
                     }
                 }
@@ -444,14 +441,193 @@ class FamiliaController extends BaseController {
 
     }
 
+    public function agregarparticipantefijo(Request $request)
+    {
+
+    $request->merge(array('correo' => trim($request->correo)));
+
+    $rules = [
+        'identificacion' => 'min:7|numeric|unique:alumnos,identificacion',
+        'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'fecha_nacimiento' => 'required',
+        'sexo' => 'required',
+        'correo' => 'email|max:255|unique:users,email, '.$request->id.'',
+    ];
+
+    $messages = [
+
+        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
+        'identificacion.max' => 'El maximo de numeros permitidos son 20',
+        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
+        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
+        'nombre.required' => 'Ups! El Nombre  es requerido ',
+        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+        'nombre.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+        'apellido.required' => 'Ups! El Apellido  es requerido ',
+        'apellido.min' => 'El mínimo de caracteres permitidos son 3',
+        'apellido.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
+        'sexo.required' => 'Ups! El Sexo  es requerido ',
+        'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'correo.max' => 'El máximo de caracteres permitidos son 255',
+        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+        $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+
+        if($edad < 1){
+            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+        }
+
+        $alumno = new Alumno;
+
+        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+
+        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+
+        $correo = strtolower($request->correo);
+
+        $familia = Familia::find($request->familia_id);     
+        $representante_usuario = User::find($familia->representante_id);
+        $representante = Alumno::find($representante_usuario->usuario_id);
+        
+        if($request->telefono)
+        {
+            $telefono = $request->telefono;
+
+        }else{
+            $telefono = $representante->telefono;
+        }
+
+        if($request->direccion)
+        {
+            $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+
+        }else{
+
+            $direccion = $representante->direccion;
+        }
+
+        if($request->identificacion)
+        {
+            $identificacion = $request->identificacion;
+
+        }else{
+
+            $identificacion = $representante->identificacion;
+        }
+
+        $alumno->academia_id = Auth::user()->academia_id;
+        $alumno->identificacion = $identificacion;
+        $alumno->nombre = $nombre;
+        $alumno->apellido = $apellido;
+        $alumno->sexo = $request->sexo;
+        $alumno->fecha_nacimiento = $fecha_nacimiento;
+        $alumno->correo = $correo;
+        $alumno->telefono = $telefono;
+        $alumno->celular = $request->celular;
+        $alumno->direccion = $direccion;
+        $alumno->alergia = $request->alergia;
+        $alumno->asma = $request->asma;
+        $alumno->convulsiones = $request->convulsiones;
+        $alumno->cefalea = $request->cefalea;
+        $alumno->hipertension = $request->hipertension;
+        $alumno->lesiones = $request->lesiones;
+        $alumno->familia_id = $request->familia_id;
+
+        if($alumno->save()){
+
+            if($request->correo){
+
+                $usuario = new User;
+
+                $usuario->academia_id = Auth::user()->academia_id;
+                $usuario->nombre = $nombre;
+                $usuario->apellido = $apellido;
+                $usuario->telefono = $request->telefono;
+                $usuario->celular = $request->celular;
+                $usuario->sexo = $request->sexo;
+                $usuario->email = $correo;
+                $usuario->como_nos_conociste_id = 1;
+                $usuario->direccion = $direccion;
+                // $usuario->confirmation_token = str_random(40);
+                $usuario->password = bcrypt(str_random(8));
+                $usuario->usuario_id = $alumno->id;
+                $usuario->usuario_tipo = 2;
+                
+                if($usuario->save()){
+                
+                    // if($request->correo){
+
+                    //     $academia = Academia::find(Auth::user()->academia_id);
+                    //     $contrasena =  $usuario->password;
+                    //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+
+                    //     $array = [
+                    //        'nombre' => $request->nombre,
+                    //        'academia' => $academia->nombre,
+                    //        'usuario' => $request->correo,
+                    //        'contrasena' => $contrasena,
+                    //        'subj' => $subj
+                    //     ];
+
+                    //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                    //             $msj->subject($array['subj']);
+                    //             $msj->to($array['usuario']);
+                    //         });
+                    // }
+
+                    //Envio de Sms
+                    
+                    // $data = collect([
+                    //     'nombre' => $request->nombre,
+                    //     'apellido' => $request->apellido,
+                    //     'celular' => $request->celular
+                    // ]);
+                    
+                    // $academia = Academia::find($alumno->academia_id);
+                    // $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
+                    // $sms = $this->sendAlumno($data, $msg);
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
+                }
+            }
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+        // return redirect("/home");
+        //return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    }
+
     public function edit($id)
     {   
 
-        $alumnos = DB::table('alumnos')
-            ->join('users', 'users.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.*')
-            ->where('users.familia_id' , '=' ,$id)
-        ->get();
+        $alumnos = Alumno::where('familia_id', $id)->get();
 
         $i = 0;
 
@@ -494,12 +670,8 @@ class FamiliaController extends BaseController {
 
     public function participantes($id)
     {
-   
-        $participantes = DB::table('users')
-            ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.*')
-            ->where('users.familia_id' , '=' , $id)
-        ->get();
+
+        $participantes = Alumno::where('familia_id', $id)->get();
 
         $familia = Familia::find($id);
 

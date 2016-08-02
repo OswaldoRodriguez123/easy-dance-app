@@ -101,7 +101,7 @@
                                         </select>
  -->
                                         <!-- <select class="selectpicker bs-select-hidden" id="alumno_id" name="alumno_id" multiple="" data-max-options="5" title="Selecciona"> -->
-                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
+                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
 
                                          @foreach ( $alumnos as $alumno )
                                           <option class = "{{ empty($alumno->inscrito) ? '' : 'inscrito' }}" value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>

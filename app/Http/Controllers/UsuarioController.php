@@ -9,6 +9,8 @@ use App\ConfigEspecialidades;
 use App\Paises;
 use App\Alumno;
 use App\ComoNosConociste;
+use App\Academia;
+use App\ConfigClasesPersonalizadas;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -365,16 +367,24 @@ class UsuarioController extends BaseController {
 
     public function documentos(){
 
-        $alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->get();
-        // $clasegrupal = ClaseGrupal::where('academia_id', '=', Auth::user()->academia_id)->get();
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        $clasegrupal = DB::table('config_clases_grupales')
-                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                    ->select('config_clases_grupales.nombre', 'clases_grupales.id')
-                    ->where('clases_grupales.academia_id', '=', Auth::user()->academia_id)
-                ->get();
-    
-        return view('vista_alumno.normativas')->with(['alumnos' => $alumnos, 'clasegrupal' => $clasegrupal]);
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->select('config_clases_grupales.nombre','config_clases_grupales.condiciones', 'config_clases_grupales.id')
+            ->where('inscripcion_clase_grupal.alumno_id','=', Auth::user()->usuario_id)
+        ->get();
+
+        $taller_join = DB::table('talleres')
+            ->join('inscripcion_taller', 'inscripcion_taller.taller_id', '=', 'talleres.id')
+            ->select('talleres.nombre','talleres.condiciones', 'talleres.id')
+            ->where('inscripcion_taller.alumno_id','=', Auth::user()->usuario_id)
+        ->get();
+
+        $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', Auth::user()->academia_id)->first();
+        
+        return view('vista_alumno.normativas')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'config_clase_personalizada' => $config_clase_personalizada, 'talleres' => $taller_join]);
 
     }
 

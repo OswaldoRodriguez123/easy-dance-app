@@ -622,35 +622,35 @@
 
     $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#nombre_participante').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido_participante').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido_familia').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
@@ -817,9 +817,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -932,9 +932,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\ConfigClasesGrupales;
+use App\ConfigServicios;
 use App\Academia;
 use Validator;
 use Session;
@@ -92,6 +93,28 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->tiempo_tolerancia = $request->tiempo_tolerancia;
 
         if($clasegrupal->save()){
+
+            $servicio = new ConfigServicios;
+            
+            $servicio->academia_id = Auth::user()->academia_id;
+            $servicio->nombre = 'Inscripción ' . $nombre;
+            $servicio->costo = $costo_inscripcion;
+            $servicio->imagen = '';
+            $servicio->descripcion = $request->descripcion;
+            $servicio->incluye_iva = $request->incluye_iva;
+
+            $servicio->save();
+
+            $servicio = new ConfigServicios;
+            
+            $servicio->academia_id = Auth::user()->academia_id;
+            $servicio->nombre = 'Mensualidad ' . $nombre;
+            $servicio->costo = $costo_mensualidad;
+            $servicio->imagen = '';
+            $servicio->descripcion = $request->descripcion;
+            $servicio->incluye_iva = $request->incluye_iva;
+
+            $servicio->save();
             
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -217,7 +240,9 @@ class ConfigClasesGrupalesController extends BaseController {
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
 
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        // $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+
+        $descripcion = $request->descripcion;
 
         $clasegrupal->descripcion = $descripcion;
 
@@ -240,6 +265,17 @@ class ConfigClasesGrupalesController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         // return redirect("alumno/edit/{$request->id}");
+    }
+
+    public function updateCondiciones(Request $request){
+        $clasegrupal = ConfigClasesGrupales::find($request->id);
+        $clasegrupal->condiciones = $request->condiciones;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function destroy($id)

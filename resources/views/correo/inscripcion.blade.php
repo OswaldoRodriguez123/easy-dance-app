@@ -51,7 +51,7 @@
                               </tr>
                                  
                               <tr>
-                                <td align="center" valign="top"> <a href="{{url('/')}}/inicio" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120"></a>
+                                <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120">
                                 </td>
                               </tr>
                               <tr>
@@ -97,8 +97,9 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-              <a href="http://app.easydancelatino.com/inicio" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Ingresar a Easy Dance</a>
-            </td>
+                                  <a href="{{$link}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:200px" target="_blank">Ingresar a Easy Dance</a>
+                                </td>
+                                
                               </tr>
 
                               <tr>

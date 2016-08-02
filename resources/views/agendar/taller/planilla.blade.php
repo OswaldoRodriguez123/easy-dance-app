@@ -5,6 +5,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
@@ -14,6 +15,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 @stop
 
 @section('content')
@@ -153,7 +155,7 @@
                                  <div class="form-group fg-line">
                                     <label for="nombre">Descripción</label>
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"></textarea>
                                     </div>
                                  </div>
                                     <div class="has-error" id="error-descripcion">
@@ -717,7 +719,7 @@
                                         <div class="clearfix p-b-15"></div>
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
                                         @if($taller->imagen)
                                           <img src="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" style="line-height: 150px;">
                                         @endif
@@ -764,6 +766,122 @@
                             <div class="col-sm-12">                            
 
                               <a class="btn-morado m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_imagen_taller" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalEtiqueta-Taller" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Taller<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_etiqueta_taller" id="edit_etiqueta_taller"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="cp-container">
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label>
+                                        <div class="input-group form-group">
+
+                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$taller->color_etiqueta}}" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="{{$taller->color_etiqueta}}"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$taller->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_taller" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalCondiciones-Taller" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Taller<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_condiciones_taller" id="edit_condiciones_taller"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="edad">Condiciones y Normativas</label>
+                                    <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="250 Caracteres"></textarea>
+                                 </div>
+                                 <div class="has-error" id="error-condiciones">
+                                      <span >
+                                          <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$taller->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_condiciones_taller" data-update="condiciones" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -930,6 +1048,17 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="taller-cupo_reservacion">{{$taller->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Taller">
+                               <td>
+                                 <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($taller->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                 <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
+                                 <span class="f-14"> Color de Etiqueta  </span>
+                               </td>
+                               <td  class="f-14 m-l-15">
+                                <span id="taller-color_etiqueta">{{$taller->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                               
+                                </td>
+                              </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalLink-Taller">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($taller->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -938,6 +1067,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="taller-link_video"><span>{{$taller->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Taller">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($taller->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Condiciones y Normativas </span>
+                             </td>
+                             <td id="taller-condiciones" class="f-14 m-l-15" data-valor="{{$taller->condiciones}}" ><span id="clasegrupal-condiciones"><span>{{ str_limit($taller->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
 
                            </table>
 
@@ -1083,6 +1221,12 @@
       $("#cupo_reservacion").val($("#taller-cupo_reservacion").text());
     })
 
+    $('#modalCondiciones-Taller').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var condiciones=$("#taller-condiciones").data('valor');
+       $("#condiciones").val(condiciones);
+    })
+
     function limpiarMensaje(){
         var campo = ["nombre", "costo", "descripcion", "fecha_inicio", "especialidades", "instructor", "hora_inicio", "hora_final", "link_video"];
         fLen = campo.length;
@@ -1125,6 +1269,10 @@
           }else if(c.name=='descripcion'){
              $("#taller-"+c.name).data('valor',c.value);
              $("#taller-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='condiciones'){
+             $("#taller-"+c.name).data('valor',c.value);
+             $("#taller-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name==='costo'){
              $("#taller-"+c.name).text(formatmoney(parseFloat(c.value)));

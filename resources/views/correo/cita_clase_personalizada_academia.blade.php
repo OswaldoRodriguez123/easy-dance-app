@@ -51,7 +51,7 @@
                               </tr>
                                  
                               <tr>
-                                <td align="center" valign="top"> <a href="{{url('/')}}/inicio" target="_blank"><img class="CToWUd" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120"></a>
+                                <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120">
                                 </td>
                               </tr>
                               <tr>
@@ -66,7 +66,7 @@
       </tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b>{{$academia}}</b>, El alumno <b> {{$nombre_alumno}} </b> con la identificacion <b> {{$cedula}} </b> ha reservado una Clase personalizada dirigida por <b>{{$nombre_instructor}} {{$apellido_instructor}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Comunicate con el para confirmar su reservacion.
+                                    El alumno <b> {{$nombre_alumno}} {{$apellido_alumno}} </b> con la identificacion <b> {{$cedula}} </b> ha reservado una Clase personalizada, solicitando al instructor <b>{{$nombre_instructor}} {{$apellido_instructor}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Comunicate con el para confirmar su reservacion.
 
                                     </font>
                                 </td>

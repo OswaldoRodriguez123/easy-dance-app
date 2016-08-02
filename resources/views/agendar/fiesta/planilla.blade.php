@@ -4,12 +4,14 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 @stop
 
 @section('content')
@@ -82,7 +84,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"></textarea>
                                     </div>
                                     <div class="has-error" id="error-descripcion">
                                       <span >
@@ -370,7 +372,7 @@
 
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
                                           @if($fiesta->imagen)
                                           <img src="{{url('/')}}/assets/uploads/fiesta/{{$fiesta->imagen}}" style="line-height: 150px;">
                                           @endif
@@ -437,7 +439,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="edad">Condiciones y Normativas</label>
-                                    <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="250 Caracteres"></textarea>
+                                    <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="250 Caracteres"></textarea>
                                  </div>
                                  <div class="has-error" id="error-condiciones">
                                       <span >
@@ -469,6 +471,70 @@
                             <div class="col-sm-12">                            
 
                               <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_condiciones_fiesta" data-update="condiciones" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalEtiqueta-Fiesta" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Fiesta o Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_etiqueta_fiesta" id="edit_etiqueta_fiesta"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="cp-container">
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label>
+                                        <div class="input-group form-group">
+
+                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$fiesta->color_etiqueta}}" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="{{$fiesta->color_etiqueta}}"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$fiesta->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_fiesta" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -590,14 +656,14 @@
                              </td>
                              <td class="f-14 m-l-15" id="fiesta-boletos" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr> -->
-                            <tr class="detalle" data-toggle="modal" href="#modalColor-Fiesta">
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Fiesta">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($fiesta->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
-                               <td  class="f-14 m-l-15" id="fiesta-color_etiqueta" >
-
+                               <td  class="f-14 m-l-15">
+                                <span id="fiesta-color_etiqueta">{{$fiesta->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr>

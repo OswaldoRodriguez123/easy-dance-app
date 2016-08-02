@@ -1637,6 +1637,13 @@ a > .agregar{
 
 /*** TABS COLOR HOVER ***/
 
+a.enlace_gris {
+    color: #5e5e5e;
+}
+
+a.enlace_gris:hover {
+    color: #2196f3;
+}
 
 
 

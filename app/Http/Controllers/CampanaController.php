@@ -247,9 +247,12 @@ class CampanaController extends BaseController {
 
             $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
-            $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
+            // $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
 
-            $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
+            // $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
+
+            $historia = $request->historia;
+            $eslogan = $request->eslogan;
 
             $campana = new Campana;
 
@@ -527,7 +530,10 @@ class CampanaController extends BaseController {
         else{
 
             $campana = Campana::find($request->id);
-            $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
+            // $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
+
+            $eslogan = $request->eslogan;
+            
             $campana->eslogan = $eslogan;
 
             if($campana->save()){
@@ -564,7 +570,9 @@ class CampanaController extends BaseController {
 
             $campana = Campana::find($request->id);
 
-            $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
+            // $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
+
+            $historia = $request->historia;
         
             $campana->historia = $request->historia;
 
@@ -803,6 +811,18 @@ class CampanaController extends BaseController {
 
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
+
+    public function updateCondiciones(Request $request){
+        $campana = Campana::find($request->id);
+        $campana->condiciones = $request->condiciones;
+
+        if($campana->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
 
     /**
      * Display the specified resource.

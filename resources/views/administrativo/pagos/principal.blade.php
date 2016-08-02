@@ -228,11 +228,11 @@
             document.getElementById('fecha').innerHTML = 'Fecha'; 
 
             $.each(factura, function (index, array) {
-
+                concepto = array.concepto;
                 var rowNode=t.row.add( [
                 ''+pad(array.factura, 10)+'',
                 ''+array.nombre+ ' '+array.apellido+'',
-                ''+array.concepto+'',
+                ''+concepto+'',
                 ''+array.fecha+'',
                 ''+formatmoney(array.total)+'',
                 '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
@@ -251,13 +251,14 @@
             document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento'; 
 
             $.each(proforma, function (index, array) {
+                concepto = array.concepto;
                 var rowNode=t.row.add( [
                 ''+array.id+'',
                 ''+array.nombre+ ' '+array.apellido+'',
-                ''+array.cantidad+ ' ' +array.concepto+'',
+                ''+array.cantidad+ ' ' +concepto+'',
                 ''+array.fecha_vencimiento+'',
                 ''+formatmoney(array.total)+'',
-                '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)

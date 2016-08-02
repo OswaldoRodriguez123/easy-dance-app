@@ -31,7 +31,7 @@
                                <div class="col-sm-6">
                                 <div class="form-group">
                                     <div class="form-group fg-line">
-                                        <label for="id" id="id-identificacion">Id - Pasaporte</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
+                                        <label for="id" id="id-identificacion">Id - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
                                         <input type="text" class="form-control input-sm" data-mask="0000000000" name="identificacion" id="identificacion" placeholder="Ej. 16234987">
                                     </div>
                                     <div class="has-error" id="error-identificacion">
@@ -111,7 +111,7 @@
 
                                <div class="col-sm-6">
 
-                               <label for="apellido" id="id-correo">Correo Electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
 
                                     <div class="form-group fg-line ">
                                       <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
@@ -386,21 +386,21 @@
             
         <script type="text/javascript">
 
-        route_agregar="{{url('/')}}/participante/alumno/agregar";
+        route_agregar="{{url('/')}}/participante/familia/agregarparticipantefijo";
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
 
         $(document).ready(function(){
 
         $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
 
       $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-z]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
         }
 
       });
@@ -597,9 +597,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

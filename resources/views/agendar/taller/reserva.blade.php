@@ -25,6 +25,63 @@
 
 @section('content')
 
+<div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Condiciones y Normativas<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="configuracion_clase_personalizada" id="configuracion_clase_personalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                                <div class="col-sm-12">
+                                    
+                                <div style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc">
+
+                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones"></p>
+
+                                  </div>
+
+                                </div>
+
+                                <div class="col-sm-3" style="margin-left: 39%">
+
+                                <input type="checkbox" id="condiciones" name="condiciones">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
+
+                                <div class="text-center">
+
+                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="{{$taller->id}}" name ="{{$taller->id}}"  >{{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</button>
+
+                                </div>
+
+                              </div>
+                            
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 <div class="container">
 
 @if(Auth::check())
@@ -39,9 +96,9 @@
                 <div class="p-relative">
                     <a href="">
                         @if($academia->imagen)
-                          <img class="img-responsive" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
                         @else
-                          <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                         @endif
                     </a>
 
@@ -160,7 +217,7 @@
                         </div>
 
                             <span class="text-center">
-                                 <button id="{{$taller->id}}" name ="{{$taller->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Reservar </button>
+                                 <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i> {{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }} </button>
                             </span>
 
                           </div>
@@ -179,7 +236,7 @@
             <ul class="tab-nav tn-justified" role="tablist">
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Taller</a></li>
                 <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Reglamentos</a></li>
-                <li class="waves-effect"><a href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">Sobre Easy Dance</a></li>
+                <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">{{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</a></li>
 
             </ul>
             
@@ -207,7 +264,7 @@
 
                         <div class="f-700 f-30">Descripción</div>
                         <br>
-                        <p class="f-14">{{$taller->descripcion}}.</p>
+                        <p class="f-14">{!! nl2br($taller->descripcion) !!}</p>
 
                         <!-- <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
 
@@ -225,6 +282,21 @@
                         @endif
 
                           <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+
+
+                            <div class="col-sm-3" style="margin-left: 39%">
+
+                                        <div class="text-center">
+
+                                          <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> {{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</button>
+
+                                        </div>
+
+                                      </div>
+
+                                      <div class="clearfix"></div>
 
                         
 
@@ -237,7 +309,25 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        
+                        <div class="f-700 f-30">Reglamentos</div>
+                        <br>
+                        <p class="f-14">{!! nl2br($taller->condiciones) !!}</p>
+
+                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+
+                            <div class="col-sm-3" style="margin-left: 39%">
+
+                                        <div class="text-center">
+
+                                          <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> {{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</button>
+
+                                        </div>
+
+                                      </div>
+
+                                      <div class="clearfix"></div>
 
                         </div>
                     
@@ -284,6 +374,32 @@
                         <!--<li class="next last"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
                     </ul>
 
+                    <footer id="footer" style="position:relative">
+
+                          <div class=" p-10 footer-text">
+                          <p> <b><a href="http://easydancelatino.com/" target="_blank" > www.easydancelatino.com </a></b></p> 
+
+
+                          <p class="f-35" >
+                              <a href="https://www.facebook.com/Easydancelatino/" target="_blank" title="Facebook">
+                                  <i class="zmdi zmdi-facebook"></i>
+                              </a>
+                              <a href="https://www.instagram.com/easydancelatino/" target="_blank" title="Instagram">
+                                  <i class="zmdi zmdi-instagram"></i>
+                              </a>
+                              <a href="https://twitter.com/EasyDanceLatino" target="_blank" title="Twitter" >
+                                  <i class="zmdi zmdi-twitter" ></i>
+                              </a> 
+                              <a href="https://plus.google.com/u/0/104687135628887176910" target="_blank" title="Google+" >
+                                  <i class="zmdi zmdi-google-plus"></i>
+                              </a>
+                          </p>
+
+                          </div>
+
+                      </footer><br><br>
+
+
             </div> <!-- Tab Content -->
             </div>
             </div><!-- Tab Nav end -->
@@ -307,45 +423,21 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-        route_agregar="{{url('/')}}/especiales/campañas/contribuir";
+        route_reserva="{{url('/')}}/reservacion/";
+        route_inscripcion= "{{url('/')}}/agendar/talleres/inscribirse"
 
         var recompensa = 0;
+        var condiciones = <?php echo json_encode($taller->condiciones);?>;
 
-          // (function(){
-
-          //     var i=0,soons = document.querySelectorAll('.auto-due .soon'),l=soons.length;
-          //     for (;i<l;i++) {
-          //         soons[i].setAttribute('data-due','2016-01-30T14:10:09');
-          //         soons[i].setAttribute('data-now','2016-01-01T00:00:00');
-          //     }
-
-          // }());
-
-          // if ('addEventListener' in document) {
-          //   var showDemo = function(e){
-          //       var btn = e.target;
-          //       btn.style.display = 'none';
-          //       var wrapper = e.target.parentNode;
-          //       var panel = wrapper.querySelector('.el-sample');
-          //       panel.style.display = 'block';
-          //       var nodes = e.target.parentNode.querySelectorAll('.soon');
-          //       for(var i=0;i<nodes.length;i++){
-          //           Soon.create(nodes[i]);
-          //       }
-          //   };
-          //   var buttons = document.querySelectorAll('.demo-button');
-          //   for(var i=0;i<buttons.length;i++) {
-          //       buttons[i].addEventListener('click',showDemo);
-          //   }
-          // }
-          // var soons = document.querySelectorAll('.auto-due .soon');
-          // for(var i=0;i<soons.length;i++) {
-          //     Soon.create(soons[i]);
-          // }
-
-              // create a simple soon counter on the supplied element
             $(document).ready(function() {
 
+              $("#pre_condiciones").html(nl2br(condiciones));
+
+              $(".guardar").attr("disabled","disabled");
+
+              $(".guardar").css({
+                  "opacity": ("0.2")
+              });
 
               $(".soon").soon({
                   due:"{{$taller->fecha_inicio}}",
@@ -387,28 +479,101 @@
 
         });
 
-      
-            /*$(document).ready(function(){
+      $("#condiciones").on('change', function(){
+          if ($("#condiciones").is(":checked")){
+             $(".guardar").removeAttr("disabled");
+                           
+             $(".guardar").css({
+                "opacity": ("1")
+             });
+          }else{
+            $(".guardar").attr("disabled","disabled");
+            $(".guardar").css({
+                "opacity": ("0.2")
+            });
+          }    
+        });
 
-                $('li').hover(function(){
-                    //alert('prueba');
-                    var animation = "bounceIn";
-                    var cardImg = $(this).closest('.tab-nav').find('li');
-                    if (animation === "hinge") {
-                        animationDuration = 2100;
-                    }
-                    else {
-                        animationDuration = 1200;
-                    }
-                    
-                    cardImg.removeAttr('class');
-                    cardImg.addClass('animated '+animation);
-                    
-                    setTimeout(function(){
-                        cardImg.removeClass(animation);
-                    }, animationDuration);
+      $(".reservar").click(function(){
+
+          if(condiciones){
+
+            $('#modalConfiguracion').modal('show');
+
+          }else{
+             $(".guardar").click();
+          }
+
+        });
+
+      $(".guardar").click(function(){
+
+        procesando();
+        id = this.id;
+        var token = $('input:hidden[name=_token]').val();
+        
+
+        if("{{Auth::check()}}")
+        {
+              var route = route_inscripcion;
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:"&taller_id="+id,
+                    success:function(respuesta){
+
+                        swal("Exito!","Te has inscrito exitosamente","success");
+
+                    },
+                    error:function(msj){
+   
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                      }
                 });
-            });*/
+                finprocesado();
+                $('.modal').modal('hide');
+        }
+        else{
+
+           var route = route_reserva + 2;
+                  
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      data:"&tipo_reservacion=2",
+                      success:function(respuesta){
+
+                          window.location=route_reserva+id; 
+
+                      },
+                      error:function(msj){
+                                  // $("#msj-danger").fadeIn(); 
+                                  // var text="";
+                                  // console.log(msj);
+                                  // var merror=msj.responseJSON;
+                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                  // $("#msj-error").html(text);
+                                  // setTimeout(function(){
+                                  //          $("#msj-danger").fadeOut();
+                                  //         }, 3000);
+                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                  }
+
+
+                  });
+                }
+            });
+
+
+        function nl2br (str, is_xhtml) {   
+          var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+          return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+      }
 
             
 

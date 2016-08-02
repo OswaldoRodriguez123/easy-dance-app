@@ -80,7 +80,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[0, 'desc']],
+        order: [[0, 'desc'], [3, 'desc']],
         fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();

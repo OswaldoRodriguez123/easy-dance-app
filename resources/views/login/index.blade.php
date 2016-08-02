@@ -69,17 +69,28 @@
                     </div>
                 </div> -->
 
+
                 <div class="col-sm-6 ">
+
                     <label class="m-b-30 p-t-5 f-14">
                         <a href="{{url('/')}}/restablecer" data-block="#l-forget-password">Olvidaste tu contraseña?</a> 
                     </label>
+
+                </div>
+
+                <div class="col-sm-6 ">
+
+                    <label class="m-b-30 p-t-5 f-14">
+                        <a href="{{url('/')}}/activar">Deseas activar tu cuenta?</a> 
+                    </label>
+
+                </div>
 
                     <!--<ul class="login-navigation">
                         <li data-block="#l-forget-password" ><a href="">Olvidaste tu contraseña?</a></li>
                         <li data-block="#l-forget-password" class="bgm-orange">Forgot Password?</li>
                     </ul>-->
 
-                </div>
 
                 <button type= "submit" class="btn btn-login bgm-blue btn-float opaco-0-8"><i class="zmdi zmdi-arrow-forward"></i></button>
                 @if (count($errors) > 0)
@@ -89,6 +100,8 @@
                         @endforeach
                     </ul>
                 @endif 
+
+                <br>
 
                 @if(session('alert_confirmacion'))
                     <ul>

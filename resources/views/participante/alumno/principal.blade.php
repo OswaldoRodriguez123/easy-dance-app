@@ -51,6 +51,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="confirmacion" data-type="numeric"></th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -63,6 +64,7 @@
                             @foreach ($alumnos as $alumno)
                                 <?php $id = $alumno->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
                                     @if($alumno->sexo=='F')
@@ -104,15 +106,16 @@
 @section('js') 
             
         <script type="text/javascript">
-            route_detalle="{{url('/')}}/participante/alumno/detalle";
-            route_operacion="{{url('/')}}/participante/alumno/operaciones";
+
+        route_detalle="{{url('/')}}/participante/alumno/detalle";
+        route_operacion="{{url('/')}}/participante/alumno/operaciones";
 
         $(document).ready(function(){
 
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[2, 'asc']],
+        order: [[3, 'asc']],
         fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
@@ -122,7 +125,7 @@
         paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

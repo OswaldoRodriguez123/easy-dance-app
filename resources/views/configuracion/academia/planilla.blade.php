@@ -401,8 +401,8 @@
                                               <span class="fileinput-filename"></span>
                                               <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
                                           </div> -->
-                                          <textarea class="form-control" id="normativa" name="normativa" rows="5" placeholder="Ingresa las normativas de la academia"></textarea>
-                                          <div class="has-error" id="error-normativa_movil">
+                                          <textarea class="form-control" id="normativa" name="normativa" rows="5" placeholder="Ingresa las normativas de la academia">{{$academia->normativa}}</textarea>
+                                          <div class="has-error" id="error-normativa">
                                             <span >
                                               <small id="error-normativa_mensaje" class="help-block error-span" ></small>                      
                                             </span>
@@ -425,10 +425,10 @@
                                                   <span class="fileinput-filename"></span>
                                                   <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
                                               </div> -->
-                                               <textarea class="form-control" id="manual" name="manual" rows="5" placeholder="Ingresa los manuales de procedimientos de la academia"></textarea>
-                                              <div class="has-error" id="error-manual_movil">
+                                               <textarea class="form-control" id="manual" name="manual" rows="5" placeholder="Ingresa los manuales de procedimientos de la academia">{{$academia->manual}}</textarea>
+                                              <div class="has-error" id="error-manual">
                                                 <span >
-                                                    <small id="error-telefono_manual_mensaje" class="help-block error-span" ></small>                                           
+                                                    <small id="error-manual_mensaje" class="help-block error-span" ></small>                                           
                                                 </span>
                                               </div>
                                           </div>
@@ -1152,21 +1152,21 @@
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
-        if(form != 'edit_especiales_academia'){
+        // if(form != 'edit_especiales_academia'){
           var datos = $( "#"+form ).serialize();
           tipo = 'PUT';
-          contenido = null;
-        }
-        else{
-          tipo = 'PUT';
-          var data = new FormData();
-          var programacion = document.getElementById('programacion');
-          data.append('programacion', programacion.files[0]);
-          data.append('normativa', $('#normativa').val());
-          data.append('manual', $('#manual').val());
-          var datos = data;
-          contenido = false;
-        }
+        //   contenido = null;
+        // }
+        // else{
+        //   tipo = 'PUT';
+        //   var data = new FormData();
+        //   var programacion = document.getElementById('programacion');
+        //   data.append('programacion', programacion.files[0]);
+        //   data.append('normativa', $('#normativa').val());
+        //   data.append('manual', $('#manual').val());
+        //   var datos = data;
+        //   contenido = false;
+        // }
         
         var datos_array=  $( "#"+form ).serializeArray();
         

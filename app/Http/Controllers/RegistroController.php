@@ -245,6 +245,10 @@ class RegistroController extends Controller {
         return view('flujo_registro.registro')->with('como_nos_conociste' ,ComoNosConociste::all());
     }
 
+    public function activar(){
+        return view('login.activar.index');
+    }
+
 
     public function confirmacion($token,$email){
         

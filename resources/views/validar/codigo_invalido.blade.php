@@ -29,17 +29,21 @@
             <div class="text-center f-22 text-danger">Posiblemente has ingresado el dígito de manera incorrecta o el  código ha expirado </div>
             <div class="clearfix"></div><br><br>
 
+            <div class="block-header text-center">
+                <!--<input type="text" class="caja"></input>-->
+                <a class="btn-blanco m-r-10 f-20" href="{{url('/')}}/validar" > Inténtalo de nuevo <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i> </a>
+                <a class="btn-morado m-r-10 f-20" href="{{url('/')}}/"> Volver a Menú</a>
+
+              </div> 
+
 
         </div>
         <div class="form-control card-body">
 
-            <div>
-              <div class="block-header text-center">
-                <!--<input type="text" class="caja"></input>-->
-                <a class="btn-blanco m-r-10 f-20" > Inténtalo de nuevo <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i> </a>
-                <a class="btn-morado m-r-10 f-20" > Volver a Menú</a>
-              </div> 
-            </div>
+              
+
+              <div class="clearfix m-20 m-b-25"></div>
+
           
         </div>
 
