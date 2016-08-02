@@ -563,8 +563,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	// });
 
 	Route::get('reportes/inscritos', 'ReporteController@Inscritos');
+	Route::post('reportes/inscritos', 'ReporteController@InscritosFiltros');
 	Route::get('reportes/presenciales', 'ReporteController@Presenciales');
+	Route::post('reportes/presenciales', 'ReporteController@PresencialesFiltros');
 	Route::get('reportes/contactos', 'ReporteController@Contactos');
+	Route::get('reportes/asistencias', 'ReporteController@asistencias');
+	Route::get('reportes/chart', 'ReporteController@charts');
 
 	// VALIDAR
 

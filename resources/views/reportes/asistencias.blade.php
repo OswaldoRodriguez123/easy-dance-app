@@ -28,7 +28,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Informes de Guia de Contactos</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Informes de Asistencias</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -38,20 +38,27 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="correo" data-order="desc">Correo Electronico</th>
+                                    <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
+                                    <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
                                     <th class="text-center" data-column-id="telefono">Contacto Local</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
+                                    <th class="text-center" data-column-id="sexo">Sexo</th>
+                                    <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="hora">Hora</th>                                                                                                            
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($alumnoscontacto as $alumno)
-                                <?php $id = $alumno->id; ?>
+                            @foreach ($asistencias as $asistencia)
+                                <?php $id = $asistencia->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
-                                    <td class="text-center previa">{{$alumno->correo}} </td>
-                                    <td class="text-center previa">{{$alumno->telefono}} </td>
-                                    <td class="text-center previa">{{$alumno->celular}} </td>
+                                    <td class="text-center previa">{{$asistencia->alumno_nombre}} {{$asistencia->alumno_apellido}} </td>
+                                    <td class="text-center previa">{{$asistencia->cedula}} </td>
+                                    <td class="text-center previa">{{ Carbon\Carbon::createFromFormat('Y-m-d', $asistencia->fecha_nacimiento)->format('d-m-Y')}} </td>                                    
+                                    <td class="text-center previa">{{$asistencia->telefono}} </td>
+                                    <td class="text-center previa">{{$asistencia->celular}} </td>
+                                    <td class="text-center previa">{{$asistencia->sexo}} </td><td class="text-center previa">{{ Carbon\Carbon::createFromFormat('Y-m-d', $asistencia->fecha)->format('d-m-Y')}} </td>
+                                    <td class="text-center previa">{{$asistencia->hora}} </td>
                                 </tr>
                             @endforeach 
                                                            

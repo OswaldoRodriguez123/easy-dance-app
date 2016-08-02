@@ -35,33 +35,26 @@
 @stop
 
 @section('content')
+  
 
-   
-        
         <section id="content">
-
             <div class="container">
-
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="f-20 f-500">Solo me fio de las estadisticas que he manipulado. (Winston Churchill)</div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="col-md-8">
+                            <div class="f-20 f-500">Solo me fio de las estadisticas que he manipulado. (Winston Churchill)</div>                            
+                            <div>
+                                <div class="f-16 text-justify">Te mantendremos informado durante tu periodo en Easy Dance y nos aseguraremos de brindarte la información que necesitas para el crecimiento de tu academia.</div>
+                            </div>
                         </div>
-                        <div class="card-body card-padding">
-                            <div class="f-16 text-justify">Te mantendremos informado durante tu periodo en Easy Dance y nos aseguraremos de brindarte la información que necesitas para el crecimiento de tu academia.</div>
-                        </div>
-                    </div>    
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body card-padding">
-
+                        <div class="col-md-4">
+                            
                             <div class="checkbox m-b-15">
                                 <label>
                                     Mes Actual
                                     <input type="checkbox" value="">
-                                    <i class="input-helper"></i>                                    
+                                    <i class="input-helper"></i>                             
                                 </label>
                             </div>
 
@@ -87,165 +80,149 @@
                                         <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
                                 </div>
                             </div>
-
                             <!--<a class="btn-blanco m-r-10 f-25" id="personalizar"> Personalizar <i class="zmdi zmdi-calendar"></i></a>-->
-
                         </div>
-                    </div>                        
-                </div>
-    
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
+                    </div><!-- END CARD HEADER -->
+
+                    <div class="card-body">
+                        <div class="col-md-12">
                             <div class="f-22 f-300 text-center">Informes de Procesos de Inscripcion</div>
-                        </div>
-                    </div>    
-                </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Procesos de Inscripcion</h2>
-                                <hr>
-                                <ul class="actions">
-                                    <li class="dropdown action-show">
-                                        <a href="#" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-                        
-                                        <div class="dropdown-menu pull-right">
-                                            <p class="p-20">
-                                                You can put anything here
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="card-body card-padding">
-                                <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                                <div class="flc-pie hidden-xs"></div>
-                            </div>
-                        </div>
-                    </div>
+                        </div>              
 
 
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Información</h2>
-                                <hr>
+                        <div class="col-md-6">
+                            <h2>Procesos de Inscripcion</h2>
+                            <hr>
+                            <ul class="actions">
+                                <li class="dropdown action-show">
+                                    <a href="#" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+                    
+                                    <div class="dropdown-menu pull-right">
+                                        <p class="p-20">
+                                            You can put anything here
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
+                            <div class="flc-pie hidden-xs"></div>
 
-                                
-                                <div class="col-md-3">    
-                                    <i class="zmdi zmdi-male zmdi-hc-5x c-azul"></i>
-                                </div>
-                                <div class="col-md-3"></div>
-                                <div class="col-md-3"></div>
-                                <div class="col-md-3">    
-                                    <i class="m-l-25 zmdi zmdi-female zmdi-hc-5x c-rosado"></i>
-                                </div>
-                                <div class="clearfix"></div>    
+                        </div><!-- COL-MD-6 -->
 
-                                <div class="mini-charts-item bgm-lightgreen"">
-                                    <div class="clearfix">
-                                        <div class="chart chart-pie stats-pie"></div>
-                                        <div class="count">
-                                            <small>Percentage</small>
-                                            <h2>99.87%</h2>
+
+                        <div class="col-md-6">
+                                    <h2>Información</h2>
+                                    <hr>
+
+                                    
+                                    <div class="col-md-3">    
+                                        <i class="zmdi zmdi-male zmdi-hc-5x c-azul"></i>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3">    
+                                        <i class="m-l-25 zmdi zmdi-female zmdi-hc-5x c-rosado"></i>
+                                    </div>
+                                    <div class="clearfix"></div>    
+
+                                    <div class="mini-charts-item bgm-lightgreen"">
+                                        <div class="clearfix">
+                                            <div class="chart chart-pie stats-pie"></div>
+                                            <div class="count">
+                                                <small>Percentage</small>
+                                                <h2>99.87%</h2>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <ul class="actions">
-                                    <li class="dropdown action-show">
-                                        <a href="#" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-                        
-                                        <div class="dropdown-menu pull-right">
-                                            <p class="p-20">
-                                                You can put anything here
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    <ul class="actions">
+                                        <li class="dropdown action-show">
+                                            <a href="#" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
                             
+                                            <div class="dropdown-menu pull-right">
+                                                <p class="p-20">
+                                                    You can put anything here
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+ 
+                        </div><!-- COL-MD-6 -->
+
+
+                        <div class="col-md-12">
+                            <h2>Procesos de Inscripcion</h2>
+                            <ul class="actions">
+                                <li class="dropdown action-show">
+                                    <a href="#" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+                    
+                                    <div class="dropdown-menu pull-right">
+                                        <p class="p-20">
+                                            You can put anything here
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div><!-- 12 -->
+
+
+                        <div class="col-md-12">
+
+                                    <h2>Procesos de Inscripcion</h2>
+                                    <ul class="actions">
+                                        <li class="dropdown action-show">
+                                            <a href="#" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+                            
+                                            <div class="dropdown-menu pull-right">
+                                                <p class="p-20">
+                                                    You can put anything here
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                
+
+                                <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                                <thead>
+                                    <tr>
+                                        <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
+                                        <th class="text-center" data-column-id="sexo">Sexo</th>-->
+                                        <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>                                 
+                                        <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
+                                        <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
+                                        <th class="text-center" data-column-id="ContactoMovil" data-order="desc">Contacto Movil</th>
+                                        <th class="text-center" data-column-id="especialidad" data-order="desc" >Especialidad</th>
+                                        <th class="text-center" data-column-id="curso" data-order="desc" >Curso</th>                                    
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" >
+                                </tbody>
+                                </table>
+
 
                         </div>
-                    </div>
 
 
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Procesos de Inscripcion</h2>
-                                <ul class="actions">
-                                    <li class="dropdown action-show">
-                                        <a href="#" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-                        
-                                        <div class="dropdown-menu pull-right">
-                                            <p class="p-20">
-                                                You can put anything here
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>        
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Procesos de Inscripcion</h2>
-                                <ul class="actions">
-                                    <li class="dropdown action-show">
-                                        <a href="#" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-                        
-                                        <div class="dropdown-menu pull-right">
-                                            <p class="p-20">
-                                                You can put anything here
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="card-body card-padding">
 
 
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>-->
-                                    <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>                                 
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                    <th class="text-center" data-column-id="ContactoMovil" data-order="desc">Contacto Movil</th>
-                                    <th class="text-center" data-column-id="especialidad" data-order="desc" >Especialidad</th>
-                                    <th class="text-center" data-column-id="curso" data-order="desc" >Curso</th>                                    
-                                </tr>
-                            </thead>
-                            <tbody class="text-center" >
-                            </tbody>
-                            </table>
 
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                
+                    </div><!-- END CARD BODY -->
+                </div><!-- END CARD -->
             </div>
 
         </section>
+
+        
 
 
 @stop
