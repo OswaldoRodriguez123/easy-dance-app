@@ -22,9 +22,19 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-3"></div>
+            <div class = "col-sm-1"></div>
 
-			<ul class="ca-menu-c col-sm-5" style="width: 720px;">
+			<ul class="ca-menu-c col-sm-8" style="width: 920px;">
+
+                <li data-ripplecator class ="dark-ripples">
+                        <a class="multihorario">
+                            <span class="ca-icon-c"><i class="zmdi zmdi-calendar-note f-35 boton blue sa-warning" data-original-title="Ver Multihorario" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c f-20">Multihorario</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                </li>
         		<li data-ripplecator class ="dark-ripples">
                         <a class="participantes">
                             <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
@@ -71,7 +81,7 @@
                     
                 </ul>
 
-                <div class = "col-sm-2"></div>
+                <div class = "col-sm-1"></div>
                 
                 </div>
             </div>
@@ -120,6 +130,12 @@
               $('#'+target).removeClass(animation);
             }, 500); 
   }
+
+  $(".multihorario").click(function(){
+               
+    window.location = "{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}";
+
+  });
 
   $(".participantes").click(function(){
                

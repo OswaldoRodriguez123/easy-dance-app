@@ -668,4 +668,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('sms', 'SmsController@send');
 	Route::get('mercadopago', 'MercadopagoController@mercadopago');
 
+
+	/* Multihorario */
+
+	Route::get('agendar/clases-grupales/multihorario/{id}', 'MultihorarioController@principal');
+	Route::post('agendar/clases-grupales/multihorario/agregarhorario', 'MultihorarioController@agregar');
+	Route::post('agendar/clases-grupales/multihorario/eliminarhorario/{id}', 'MultihorarioController@eliminar');
+
+
+
 });
