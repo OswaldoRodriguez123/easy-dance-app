@@ -11,6 +11,7 @@ use App\ConfigEspecialidades;
 use App\ConfigEstudios;
 use App\Instructor;
 use App\ClaseGrupal;
+use App\HorarioClaseGrupal;
 use Validator;
 use Session;
 use Carbon\Carbon;
@@ -128,14 +129,73 @@ class MultihorarioController extends Controller
             $dia_curso = $fecha_curso->format('L');
 
 
-            //Carbon::setTestNow($fecha_curso); 
+            Carbon::setTestNow($fecha_curso); 
 
-            //$fd=new Carbon('this '.$dia_n); 
+            $fd=new Carbon('this '.$dia_n); 
+
+            Carbon::setTestNow();
 
             if(count($cart)>0){
                 foreach ($cart as $multH) {
 
+                    $fecha_new=explode('-',$fd->toDateString());
+
+                    $hora_fist_new=explode(':',$new_hora_i);
+
+                    $hora_second_new=explode(':',$new_hora_f);
+
+                    //---------------------------------------------
+
+                    $fecha_fist=explode('-',$multH['fecha']);
+
+                    $hora_fist=explode(':',$multH['new_hora_inicio']);
+
+                    $hora_second=explode(':',$multH['new_hora_final']);
+
+                    $first = Carbon::create($fecha_fist[0], $fecha_fist[1], $fecha_fist[2],$hora_fist[0],$hora_fist[1],$hora_fist[2]);
+                    //dd('a');
+                    $second = Carbon::create($fecha_fist[0], $fecha_fist[1], $fecha_fist[2],$hora_second[0],$hora_second[1],$hora_second[2]);
+
+                    
+                    $first_inv = Carbon::create($fecha_new[0], $fecha_new[1], $fecha_new[2],$hora_fist_new[0],$hora_fist_new[1],$hora_fist_new[2]);
+                    //dd('aa');
+                    $second_inv = Carbon::create($fecha_new[0], $fecha_new[1], $fecha_new[2],$hora_second_new[0],$hora_second_new[1],$hora_second_new[2]);
+                    
+
+                    $comparacion_inicio=Carbon::create($fecha_new[0], $fecha_new[1], $fecha_new[2],$hora_fist_new[0],$hora_fist_new[1],$hora_fist_new[2])->between($first, $second);
+
+                    $comparacion_final=Carbon::create($fecha_new[0], $fecha_new[1], $fecha_new[2],$hora_second_new[0],$hora_second_new[1],$hora_second_new[2])->between($first, $second);
+                    
+                    $comparacion_inicio_inv=Carbon::create($fecha_fist[0], $fecha_fist[1], $fecha_fist[2],$hora_fist[0],$hora_fist[1],$hora_fist[2])->between($first_inv, $second_inv);
+
+                    $comparacion_final_inv=Carbon::create($fecha_fist[0], $fecha_fist[1], $fecha_fist[2],$hora_second[0],$hora_second[1],$hora_second[2])->between($first_inv, $second_inv);
+
+                    if($comparacion_inicio){
+                        return response()->json(['mensaje' => '¡choque hora inicio', 'status' => 'DUPLICADO', 'h'=>Session::get('horario'), 'cart'=>$cart, 'id' => $stringKey, 200]);
+                        //dd("choque hora inicio");
+                    }elseif($comparacion_final){
+                        return response()->json(['mensaje' => '¡choque hora final', 'status' => 'DUPLICADO', 'h'=>Session::get('horario'), 'cart'=>$cart, 'id' => $stringKey, 200]);
+                        //dd("choque hora final");
+                    }elseif($comparacion_inicio_inv){
+                        return response()->json(['mensaje' => '¡choque hora inicio_inv', 'status' => 'DUPLICADO', 'h'=>Session::get('horario'), 'cart'=>$cart, 'id' => $stringKey, 200]);
+                        //dd("choque hora inicio_inv");
+                    }elseif($comparacion_final_inv){
+                        return response()->json(['mensaje' => '¡choque hora final_inv', 'status' => 'DUPLICADO', 'h'=>Session::get('horario'), 'cart'=>$cart, 'id' => $stringKey, 200]);
+                        //dd("choque hora final_inv");
+                    }
+                
+
                 }
+
+                $horario_clase_grupal = new HorarioClaseGrupal();
+                $horario_clase_grupal->fecha=$fd->toDateString();
+                $horario_clase_grupal->hora_inicio=$new_hora_i;
+                $horario_clase_grupal->hora_final=$new_hora_f;
+                $horario_clase_grupal->instructor_id=$request->instructor_acordeon_id;
+                $horario_clase_grupal->especialidad_id=$request->especialidad_acordeon_id;
+                $horario_clase_grupal->clase_grupal_id=$request->id;
+
+                $horario_clase_grupal->save();
 
                 $array=array(
                     'instructor' => $instructor , 
@@ -145,7 +205,9 @@ class MultihorarioController extends Controller
                     'hora_inicio' => $request->hora_inicio_acordeon,
                     'new_hora_inicio' => $new_hora_i,
                     'hora_final' => $request->hora_final_acordeon,
-                    'new_hora_final' => $new_hora_f
+                    'new_hora_final' => $new_hora_f,
+                    'fecha'=> $fd->toDateString(),
+                    'id'=>$horario_clase_grupal->id
                 );
 
                 $cart[$stringKey] = array(
@@ -156,7 +218,10 @@ class MultihorarioController extends Controller
                     'hora_inicio' => $request->hora_inicio_acordeon,
                     'new_hora_inicio' => $new_hora_i,
                     'hora_final' => $request->hora_final_acordeon,
-                    'new_hora_final' => $new_hora_f
+                    'new_hora_final' => $new_hora_f,
+                    'fecha'=> $fd->toDateString(),
+                    'id'=>$horario_clase_grupal->id
+
                 );
 
                 Session::put('horario', $cart);
@@ -164,6 +229,16 @@ class MultihorarioController extends Controller
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'h'=>Session::get('horario'), 'cart'=>$cart, 'id' => $stringKey, 200]);
             }else{
 
+                $horario_clase_grupal = new HorarioClaseGrupal();
+                $horario_clase_grupal->fecha=$fd->toDateString();
+                $horario_clase_grupal->hora_inicio=$new_hora_i;
+                $horario_clase_grupal->hora_final=$new_hora_f;
+                $horario_clase_grupal->instructor_id=$request->instructor_acordeon_id;
+                $horario_clase_grupal->especialidad_id=$request->especialidad_acordeon_id;
+                $horario_clase_grupal->clase_grupal_id=$request->id;
+
+                $horario_clase_grupal->save();
+
                 $array=array(
                     'instructor' => $instructor , 
                     'dia_de_semana' => $dia_de_semana,
@@ -173,7 +248,8 @@ class MultihorarioController extends Controller
                     'new_hora_inicio' => $new_hora_i,
                     'hora_final' => $request->hora_final_acordeon,
                     'new_hora_final' => $new_hora_f,
-                    //'fecha'=> $fd->toDateString()
+                    'fecha'=> $fd->toDateString(),
+                    'id'=>$horario_clase_grupal->id
                 );
 
                 $cart[$stringKey] = array(
@@ -185,7 +261,8 @@ class MultihorarioController extends Controller
                     'new_hora_inicio' => $new_hora_i,
                     'hora_final' => $request->hora_final_acordeon,
                     'new_hora_final' => $new_hora_f,
-                    //'fecha'=> $fd->toDateString()
+                    'fecha'=> $fd->toDateString(),
+                    'id'=>$horario_clase_grupal->id
                 );
 
                 Session::put('horario', $cart);
@@ -519,6 +596,9 @@ class MultihorarioController extends Controller
         if (Session::has('horario')) {
             $arreglo = Session::get('horario');
         }
+        $id_table=$arreglo[$id]['id'];
+        $horario=HorarioClaseGrupal::find($id_table);
+        $horario->delete();
         unset($arreglo[$id]);
 
         //Session::forget('horario');
