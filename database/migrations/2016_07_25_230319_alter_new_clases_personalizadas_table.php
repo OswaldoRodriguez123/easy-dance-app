@@ -13,9 +13,9 @@ class AlterNewClasesPersonalizadasTable extends Migration
     public function up()
     {
        Schema::table('clases_personalizadas', function (Blueprint $table) {
-            $table->boolean('estatus')->default(1);
+            /*$table->boolean('estatus')->default(1);
             $table->string('razon_cancelacion')->nullable()->default(null);
-            $table->integer('tiempo_expiracion');
+            $table->integer('tiempo_expiracion');*/
         });
     }
 
@@ -27,9 +27,9 @@ class AlterNewClasesPersonalizadasTable extends Migration
     public function down()
     {
         Schema::table('clases_personalizadas', function (Blueprint $table) {
-            $table->dropColumn('estatus');
+            /*$table->dropColumn('estatus');
             $table->dropColumn('razon_cancelacion');
-            $table->dropColumn('tiempo_expiracion');
+            $table->dropColumn('tiempo_expiracion');*/
         });
     }
 }
