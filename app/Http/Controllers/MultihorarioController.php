@@ -19,13 +19,21 @@ use Illuminate\Support\Facades\Auth;
 
 class MultihorarioController extends Controller
 {
+
+
     public function principal($id){
     	// $clasegrupal = ClaseGrupal::find($id);
     	Session::forget('horario');
 
         $clasegrupal = DB::table('config_clases_grupales')
-                ->join('clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio')
+                ->join('clases_grupales', 
+                    'clases_grupales.clase_grupal_id', 
+                    '=', 
+                    'config_clases_grupales.id')
+                ->select('config_clases_grupales.*',
+                 'clases_grupales.fecha_inicio_preferencial',
+                 'clases_grupales.fecha_inicio as fecha_inicio',
+                 'clases_grupales.fecha_final as fecha_final')
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
@@ -34,13 +42,111 @@ class MultihorarioController extends Controller
         $config_estudios = ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();        
         $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
+        $horario_clase_grupal=HorarioClaseGrupal::where('clase_grupal_id',$id)
+            ->join('config_especialidades', 
+                'horario_clase_grupales.especialidad_id',
+                '=', 
+                'config_especialidades.id'
+                )
+            ->join('instructores', 
+                'horario_clase_grupales.instructor_id',
+                '=',
+                'instructores.id'
+                 )
+            ->select('horario_clase_grupales.*', 
+                'instructores.nombre as instructor_nombre',
+                'instructores.apellido as instructor_apellido',
+                'config_especialidades.nombre as especialidad_nombre'
+                 )
+            ->get();
+        //dd($horario_clase_grupal);
+
+        $arrayHorario= array();
+
+        foreach ($horario_clase_grupal as $horario) {
+            $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
+            $especialidad=$horario->especialidad_nombre;
+            $fecha=$horario->fecha;
+            $hora_inicio=$horario->hora_inicio;
+            $hora_final=$horario->hora_final;
+            $id_horario=$horario->id;
+
+            //dd($instructor);
+
+            $fc=explode('-',$fecha);
+            $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
+            //$dia_curso = $fecha_curso->format('L');
+            $dia_curso = $fecha_curso->format('l');
+
+            $dia_de_semana="";
+
+            $dia_curso=strtoupper($dia_curso);
+
+            if($dia_curso=="SUNDAY")
+            {
+                $dia="6";
+                $dia_de_semana="Domingo";
+            }
+            elseif($dia_curso=="MONDAY")
+            {
+                $dia="0";
+                $dia_de_semana="Lunes";
+            }
+            elseif($dia_curso=="TUESDAY")
+            {
+                $dia="1";
+                $dia_de_semana="Martes";
+
+            }
+            elseif($dia_curso=="WEDNESDAY")
+            {
+                $dia="2";
+                $dia_de_semana="Míercoles";                
+            }
+            elseif($dia_curso=="THURSDAY")
+            {
+                $dia="3";
+                $dia_de_semana="Jueves";                
+            }
+            elseif($dia_curso=="FRIDAY")
+            {
+                $dia="4";
+                $dia_de_semana="Viernes";
+            }
+            elseif($dia_curso=="SATURDAY")
+            {
+                $dia="5";
+                $dia_de_semana="Sábado";
+            }
+
+            $stringKey = str_random(20);
+
+            $arrayHorario[$stringKey] = array(
+                    'instructor' => $instructor,
+                    'dia_de_semana' => $dia_de_semana,
+                    'new_dia_de_semama'=>$dia_curso,
+                    'especialidad' => $especialidad,
+                    'hora_inicio' => $hora_inicio,
+                    'new_hora_inicio' => $hora_inicio,
+                    'hora_final' => $hora_final,
+                    'new_hora_final' => $hora_final,
+                    'fecha'=> $fecha,
+                    'id'=>$id_horario
+            );
+        }
+
+        if(count($arrayHorario)>0){
+            Session::put('horario', $arrayHorario);
+        }        
+
         return view(
         	'agendar.clase_grupal.multihorario', 
         	compact('id','clasegrupal',
         		    'dias_de_semana',
         		    'config_especialidades',
         		    'config_estudios',
-        		    'instructores'
+        		    'instructores',
+                    'arrayHorario'
         		   )
         	);
     }
@@ -82,6 +188,7 @@ class MultihorarioController extends Controller
             $especialidad = $find->nombre;
 
             $fecha_clasegrupal=ClaseGrupal::find($request->id);
+            //dd($request->id);
             $fecha_clasegrupal_inicio=$fecha_clasegrupal->fecha_inicio;
             $fecha_clasegrupal_final=$fecha_clasegrupal->fecha_final;
 
@@ -221,7 +328,6 @@ class MultihorarioController extends Controller
                     'new_hora_final' => $new_hora_f,
                     'fecha'=> $fd->toDateString(),
                     'id'=>$horario_clase_grupal->id
-
                 );
 
                 Session::put('horario', $cart);

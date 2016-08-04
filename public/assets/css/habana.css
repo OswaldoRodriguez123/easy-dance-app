@@ -1645,6 +1645,11 @@ a.enlace_gris:hover {
     color: #2196f3;
 }
 
+sub.beta {
+    bottom: -1.38em;
+    font-weight: bold;
+}
+
 
 
 

@@ -37,6 +37,7 @@
                             <!--<a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>-->
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
+                            <p class="text-center"><span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span> <span class="f-14">Fecha Desde / Hasta: </span> {{\Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y')}} - {{\Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_final)->format('d/m/Y')}}</p>
                             <hr class="linea-morada">
 
                             </div>                                                        
@@ -154,16 +155,39 @@
 		                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
 		                            <thead>
 		                                <tr>
-		                                    <th class="text-center" data-column-id="id" data-type="numeric"></th>
-		                                    <th class="text-center" data-column-id="sexo"></th>
-		                                    <th class="text-center" data-column-id="nombre" data-order="desc"></th>
-		                                    <th class="text-center" data-column-id="estatu_c" data-order="desc"></th>
-		                                    <th class="text-center" data-column-id="estatu_e" data-order="desc"></th>
-		                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+		                                    <th class="text-center" data-column-id="id" data-type="numeric">Instructor</th>
+		                                    <th class="text-center" data-column-id="sexo">Especialidad</th>
+		                                    <th class="text-center" data-column-id="nombre" data-order="desc">Día</th>
+		                                    <th class="text-center" data-column-id="estatu_c" data-order="desc">Hora Inicio</th>
+		                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Hora Final</th>
+		                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acción</th>
 		                                </tr>
 		                            </thead>
-		                            <tbody>
-		                                                           
+		                            <tbody class="text-center">
+		                                @foreach($arrayHorario as $key => $horario)
+                                    
+                                    <tr id="{{$key}}" class="odd seleccion text-center" role="row">
+                                      <td onclick="previa(this)" class="text-center">
+                                        {{$horario['instructor']}}
+                                      </td>
+                                      <td onclick="previa(this)" class="text-center">
+                                        {{$horario['especialidad']}}
+                                      </td>
+                                      <td onclick="previa(this)" class="text-center">
+                                        {{$horario['dia_de_semana']}}
+                                      </td>
+                                      <td onclick="previa(this)" class="text-center">
+                                        {{$horario['hora_inicio']}}
+                                      </td>
+                                      <td onclick="previa(this)" class="text-center">
+                                        {{$horario['hora_final']}}
+                                      </td>
+                                      <td class="text-center" width="50">
+                                      <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                      </td>
+                                    </tr>
+
+                                    @endforeach                          
 		                            </tbody>
 		                            </table>
                             	</div>
@@ -233,11 +257,12 @@
         bPaginate: false, 
         bFilter:false, 
         bSort:false, 
-        bInfo:false,
+        bInfo:true,
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(5)', nRow).attr( "width","50" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -304,7 +329,7 @@
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
-                          .addClass('seleccion');
+                          .addClass('seleccion text-center');
 
                         }else{
                           var nTitle="Ups! ";
