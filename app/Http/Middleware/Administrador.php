@@ -15,29 +15,10 @@ class Administrador
      */
     public function handle($request, Closure $next)
     {
-        /*if($request->user()->isType()=='admin' || $request->user()->isType()=='recepcionista' || $request->user()->isType()=='alumno'){
+        if($request->user()->isType()=='admin'){
             return $next($request);
         }
-
-        */
-
-        switch ($request->user()->isType()) {
-            case 'admin':
-                return $next($request);
-                break;
-
-            case 'alumno':
-                return $next($request);
-                //abort(403);
-                break;
-
-            case 'recepcionista':
-                return $next($request);
-                //abort(403);
-                break;
-
-        }
-        
+        abort(403);
 
     }
 }

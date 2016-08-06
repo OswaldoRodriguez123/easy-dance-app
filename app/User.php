@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -25,12 +26,12 @@ class User extends Authenticatable
     ];
 
     public function roles(){
-        return $this->belongsToMany('App\Role');
+        return $this->hasOne('App\Role','id','usuario_tipo');
     }
 
     public function isType()
     {
-        $rol = $this->roles()->select('role_id','name')->first();
+        $rol = $this->roles()->select('roles.id','roles.name')->first();
         return $rol->name;
     }    
 }
