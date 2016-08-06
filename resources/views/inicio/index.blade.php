@@ -258,7 +258,6 @@
 <script>
 
     $(document).ready(function(){
-    // $('.materialboxed').materialbox();
     
     if(!"{{$academia->nombre}}")
 

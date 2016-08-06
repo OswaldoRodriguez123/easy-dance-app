@@ -152,6 +152,7 @@ class AdministrativoController extends BaseController {
             ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
             ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+            ->where('alumnos.deleted_at' , '=' , null)
             ->OrderBy('facturas.created_at')
         ->get();
 
@@ -171,11 +172,14 @@ class AdministrativoController extends BaseController {
             ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
             ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
+            ->where('alumnos.deleted_at' , '=' , null)
         ->get();
 
         $total = DB::table('items_factura_proforma')
-        ->where('academia_id', Auth::user()->academia_id)
-        ->sum('importe_neto');
+        ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+        ->where('items_factura_proforma.academia_id', Auth::user()->academia_id)
+        ->where('alumnos.deleted_at' , '=' , null)
+        ->sum('.items_factura_proforma.importe_neto');
 
         return view('administrativo.pagos.principal')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total]);
     }
@@ -828,10 +832,10 @@ class AdministrativoController extends BaseController {
                    'subj' => $subj
                 ];
 
-                Mail::send('correo.factura', $array, function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['correo_destino']);
-                });
+                // Mail::send('correo.factura', $array, function($msj) use ($array){
+                //         $msj->subject($array['subj']);
+                //         $msj->to($array['correo_destino']);
+                // });
             }else{
 
                 return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error con la factura']], 'status' => 'ERRORFACTURA'],422);

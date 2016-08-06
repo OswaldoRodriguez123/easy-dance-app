@@ -17,29 +17,20 @@
 @stop
 @section('content')
 
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-
-    <a href="{{url('/')}}/especiales/regalos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
-@endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
-                    @else
+
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-                    @endif
+
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                            <span class="f-16 p-t-0 text-success">Agregar un regalo <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
-                        @endif
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-tarjeta-de-regalo f-25"></i> Sección de Regalos</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clase-personalizada f-25"></i> Sección de Clases Personalizadas</p>
                             <hr class="linea-morada">                                                         
                         </div>
 
@@ -52,14 +43,14 @@
                               <div class="container">
 
 
-                              @if(count($regalos) > 0)
+                              @if(count($clases_personalizadas) > 0)
 
-                                  @foreach($regalos as $regalo)
+                                  @foreach($clases_personalizadas as $clase_personalizada)
                   
                                       <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-                                        @if($regalo->imagen)
-                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/regalo/{{$regalo->imagen}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                        @if($clase_personalizada->imagen)
+                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$clase_personalizada->imagen}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
                                         @else
 
                                         <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
@@ -68,18 +59,18 @@
 
                                         <div class="col-sm-8">
 
-                                        <p class="f-25 f-700" style="color:#5e5e5e">{{$regalo['nombre']}}</p>
+                                        <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_personalizada['nombre']}}</p>
                                     
-                                        <p class="f-15 f-700">{{ str_limit($regalo['descripcion'], $limit = 250, $end = '...') }}</p>
+                                        <p class="f-15 f-700">{{ str_limit($clase_personalizada['descripcion'], $limit = 250, $end = '...') }}</p>
 
-                                        <p class="f-15 f-700">{{ number_format($regalo['costo'], 2, '.' , '.') }}</p>
+                                        <p class="f-15 f-700">{{ number_format($clase_personalizada['costo'], 2, '.' , '.') }}</p>
 
                                         </div>
 
                                         <div class="col-sm-2">
 
                                         <div style="padding-top: 50px">
-                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$regalo->id}}">Dar Regalo</button>
+                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$academia->id}}">Reservar</button>
                                         </div>
 
                                         </div>
@@ -100,7 +91,7 @@
 
 
                                   <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
-                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado regalos. </div>
+                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado clases personalizadas. </div>
 
 
                              </div>
@@ -124,8 +115,8 @@
             
     <script type="text/javascript">
 
-    route_detalle="{{url('/')}}/especiales/regalos/detalle";
-    route_enviar="{{url('/')}}/especiales/regalos/enviar";
+    route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle";
+    route_enviar="{{url('/')}}/agendar/clases-personalizadas/agregar";
   
     $(document).on( 'click', '.previa', function () {
         var row = this.id;

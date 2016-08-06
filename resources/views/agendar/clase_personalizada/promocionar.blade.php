@@ -538,14 +538,8 @@
 
           procesando();
 
-          if("{{Auth::check()}}")
+          window.location = "{{url('/')}}/agendar/clases-personalizadas"
 
-          {
-            window.location = "{{url('/')}}/agendar"
-          }
-          else{
-            window.location = "{{url('/')}}/agendar/clases-personalizadas/agregar/{{$academia->id}}"
-          }
 
         });
 

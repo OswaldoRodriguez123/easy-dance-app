@@ -36,7 +36,7 @@
             <div class="clearfix"></div><br>
             <div class="col-md-2"></div>
             <div class="col-md-8">
-              <div align="center"><i class="zmdi zmdi-thumb-up zmdi-hc-5x text-success"></i></div>
+              <div align="center"><i class="zmdi zmdi-thumb-up zmdi-hc-5x text-success mousedefault"></i></div>
               <div class="c-morado f-40 text-center"> ¡Felicitaciones ya empieza  tu nuevo rumbo al éxito! </div>
               <div class="clearfix m-20 m-b-25"></div>
               <div class="text-center f-20">Te recomendamos antes de iniciar que revises la sección  de <a href="{{url('/')}}/configuracion"> configuración general </a></div>
@@ -79,12 +79,10 @@
 		<script type="text/javascript">
       
       function configuracion(){
-      procesando();
       window.location = "{{url('/')}}/configuracion";
       }
      
      function atras(){
-      procesando();
       window.location = "{{url('/')}}/inicio";
      }
             

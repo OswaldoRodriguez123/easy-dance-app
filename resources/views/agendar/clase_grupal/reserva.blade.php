@@ -51,7 +51,23 @@
 
                                 <div class="text-center">
 
-                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="{{$clase_grupal->id}}" name ="{{$clase_grupal->id}}"  >{{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</button>
+                                  @if(Auth::check())
+
+                                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribir</button>
+
+                                            @else
+
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribirse</button>
+
+                                            @endif
+
+                                          @else
+
+                                            <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Reservar</button>
+
+                                        @endif
 
                                 </div>
 
@@ -224,7 +240,26 @@
 
 
                             <span class="text-center">
-                                 <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i> {{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }} </button>
+                            @if(Auth::check())
+
+                              @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+
+                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribir</button>
+
+                              @else
+
+                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribirse</button>
+
+                              @endif
+
+                            @else
+
+                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Reservar</button>
+
+                            @endif
+
+
+                                 
                             </span>
 
                           </div>
@@ -239,7 +274,24 @@
             <ul class="tab-nav tn-justified" role="tablist">
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Clase Grupal</a></li>
                 <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Reglamentos</a></li>
-                <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">{{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</a></li>
+
+                @if(Auth::check())
+
+                  @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+
+                    <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribir</a></li>
+
+                  @else
+
+                    <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribirse</a></li>
+
+                  @endif
+
+                @else
+
+                  <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Reservar</a></li>
+
+                @endif
 
             </ul>
             
@@ -293,7 +345,23 @@
 
                                         <div class="text-center">
 
-                                          <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> {{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</button>
+                                        @if(Auth::check())
+
+                                          @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+
+                                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
+
+                                            @else
+
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribirse</button>
+
+                                          @endif
+
+                                          @else
+
+                                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
+
+                                        @endif
 
                                         </div>
 
@@ -325,7 +393,23 @@
 
                                         <div class="text-center">
 
-                                          <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> {{ empty(Auth::check()) ? 'Reservar' : 'Inscribirse' }}</button>
+                                          @if(Auth::check())
+
+                                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
+
+                                            @else
+
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribirse</button>
+
+                                            @endif
+
+                                          @else
+
+                                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
+
+                                        @endif
 
                                         </div>
 
@@ -431,6 +515,7 @@
 
         route_reserva="{{url('/')}}/reservacion/";
         route_inscripcion= "{{url('/')}}/agendar/clases-grupales/inscribirse"
+        route_inscribir= "{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}"
 
         var recompensa = 0;
 
@@ -503,7 +588,7 @@
 
         $(".reservar").click(function(){
 
-          if(condiciones){
+          if(condiciones && ("{{Auth::user()->usuario_tipo}}" != 1 || "{{Auth::user()->usuario_tipo}}" != 5)){
 
             $('#modalConfiguracion').modal('show');
 
@@ -515,36 +600,62 @@
 
         $(".guardar").click(function(){
 
-        procesando();
-        id = this.id;
+        id = "{{$id}}";
         var token = $('input:hidden[name=_token]').val();
         
 
         if("{{Auth::check()}}")
         {
-              var route = route_inscripcion;
+          if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5){
 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:"&clase_grupal_id="+id,
-                    success:function(respuesta){
+            procesando();
 
-                        swal("Exito!","Te has inscrito exitosamente","success");
+            window.location = route_inscribir;
 
-                    },
-                    error:function(msj){
-   
-                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                      }
-                });
-                finprocesado();
-                $('.modal').modal('hide');
+            }else{
+
+              swal({   
+                    title: "Desea inscribirse en esta clase grupal?",   
+                    text: "Confirmar inscripción!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Inscribirse!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+
+                if (isConfirm) {
+
+                procesando();
+
+                var route = route_inscripcion;
+
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      data:"&clase_grupal_id="+id,
+                      success:function(respuesta){
+
+                          swal("Exito!","Te has inscrito exitosamente","success");
+
+                      },
+                      error:function(msj){
+     
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+                  });
+                  finprocesado();
+                  $('.modal').modal('hide');
+              }
+            });
+          }
         }
         else{
 
+           procesando();
            var route = route_reserva + 1;
                   
                   $.ajax({

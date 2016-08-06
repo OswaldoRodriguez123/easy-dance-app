@@ -22,6 +22,7 @@ use App\InscripcionClaseGrupal;
 use App\ItemsFacturaProforma;
 use App\Paises;
 use App\Regalo;
+use App\PerfilEvaluativo;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -72,7 +73,13 @@ class AcademiaConfiguracionController extends BaseController {
 
         foreach($clase_grupal_join as $clase){
 
-            $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => "/assets/uploads/clase_grupal/{$clase->imagen}" , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at);
+            if($clase->imagen){
+                $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
+            }else{
+                $imagen = '';
+            }
+
+            $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at);
 
         }
 
@@ -80,7 +87,13 @@ class AcademiaConfiguracionController extends BaseController {
 
         foreach($talleres as $taller){
 
-            $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => "/assets/uploads/taller/{$taller->imagen}" , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at);
+            if($clase->imagen){
+                $imagen = "/assets/uploads/taller/{$taller->imagen}";
+            }else{
+                $imagen = '';
+            }
+
+            $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at);
 
         }
 
@@ -88,7 +101,13 @@ class AcademiaConfiguracionController extends BaseController {
 
         foreach($fiestas as $fiesta){
 
-            $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => "/assets/uploads/fiesta/{$fiesta->imagen}" , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at);
+            if($clase->imagen){
+                $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
+            }else{
+                $imagen = '';
+            }
+
+            $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at);
 
         }
 
@@ -108,8 +127,10 @@ class AcademiaConfiguracionController extends BaseController {
 
         }
 
+        $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
 
-             return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); 
+
+             return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $perfil]); 
         }
                            
 	}
@@ -1037,9 +1058,9 @@ class AcademiaConfiguracionController extends BaseController {
                 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final',
                 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.id as clase_grupal_id')
                 ->join('clases_grupales', 'clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
-                ->where('config_clases_grupales.academia_id','=', Auth::user()->academia_id)
+                ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                 ->where('clases_grupales.deleted_at', '=', null)
-                ->where('clases_grupales.fecha_final', '<', Carbon::now()->toDateString())
+                ->where('clases_grupales.fecha_final', '>', Carbon::now()->format("Y-m-d"))
                 ->get();
 
         $InscripcionClaseGrupal = InscripcionClaseGrupal::select('inscripcion_clase_grupal.clase_grupal_id AS ClaseGrupalID', 
@@ -1056,7 +1077,6 @@ class AcademiaConfiguracionController extends BaseController {
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
                 ->get();
         
-        
             //Desgloso la Fecha Preferencial
                 foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
 
@@ -1064,9 +1084,9 @@ class AcademiaConfiguracionController extends BaseController {
 
                             foreach ($ConfigClasesGrupales as $configClases) {
 
-                                if ($configClases->fecha_inicio_preferencial <= Carbon::now()->format('Y-m-d')){
+                                $fecha_inicio_preferencial = Carbon::createFromFormat('Y-m-d', $configClases->fecha_inicio_preferencial);
 
-                                    $fecha_inicio_preferencial = Carbon::createFromFormat('Y-m-d', $configClases->fecha_inicio_preferencial);
+                                if ($fecha_inicio_preferencial <= Carbon::now()){
 
                                     $fecha_inicio_preferencial = $fecha_inicio_preferencial->addMonth()->toDateString();
 
@@ -1074,11 +1094,11 @@ class AcademiaConfiguracionController extends BaseController {
                                     $clase_grupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
                                     $clase_grupal->save();
 
-                                    $id = $clase_grupal->id;
-
                                 }
 
-                                if ($InscripcionClase->fecha_pago <= Carbon::now()->format('Y-m-d')){
+                                $fecha_pago = Carbon::createFromFormat('Y-m-d', $InscripcionClase->fecha_pago);
+
+                                if ($fecha_pago <= Carbon::now()){
 
                                     if($configClases->id == $InscripcionClase->ClaseGrupalID){
 
@@ -1108,19 +1128,17 @@ class AcademiaConfiguracionController extends BaseController {
                                                 $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
 
                                                 $clasegrupal->fecha_pago = $fecha_cuota;
-                                                // $clasegrupal->save();
+                                                $clasegrupal->save();
 
                                                 $item_factura = new ItemsFacturaProforma;
                                                 
                                                 $item_factura->alumno_id = $InscripcionClase->AlumnoId;
                                                 $item_factura->academia_id = Auth::user()->academia_id;
                                                 $item_factura->fecha = Carbon::now()->toDateString();
-                                                $item_factura->item_id = $id;
+                                                $item_factura->item_id = $configClases->id;
                                                 $item_factura->nombre = 'Cuota ' . $configClases->nombre;
                                                 $item_factura->tipo = $tipo;
                                                 $item_factura->cantidad = $cantidad;
-                                                // $item_factura->precio_neto = $configClases->costo_mensualidad;
-                                                //$item_factura->impuesto = $impuesto;
                                                 $item_factura->importe_neto = $InscripcionClase->Costo;
                                                 $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
@@ -1163,7 +1181,6 @@ class AcademiaConfiguracionController extends BaseController {
             // }
             // $result;
         }
-        // return response()->json($result);
 
         return $this->tiempotolerancia();
         

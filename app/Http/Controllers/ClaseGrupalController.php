@@ -591,37 +591,47 @@ class ClaseGrupalController extends BaseController {
 
                 $inscripcion->save();
 
-                $item_factura = new ItemsFacturaProforma;
-                    
-                $item_factura->alumno_id = $request->alumno_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $request->clase_grupal_id;
-                $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
-                $item_factura->tipo = 3;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $request->costo_inscripcion;
-                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                    
-                $item_factura->save();
+                if($request->costo_inscripcion != 0)
+                {
 
-                $item_factura = new ItemsFacturaProforma;
-                    
-                $item_factura->alumno_id = $request->alumno_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $request->clase_grupal_id;
-                $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
-                $item_factura->tipo = 4;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $request->costo_mensualidad;
-                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                    
-                $item_factura->save();
+                    $item_factura = new ItemsFacturaProforma;
+                        
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $request->clase_grupal_id;
+                    $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
+                    $item_factura->tipo = 3;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $request->costo_inscripcion;
+                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                        
+                    $item_factura->save();
+
+                }
+
+                if($request->costo_mensualidad != 0)
+                {
+
+                    $item_factura = new ItemsFacturaProforma;
+                        
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $request->clase_grupal_id;
+                    $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                    $item_factura->tipo = 4;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $request->costo_mensualidad;
+                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                        
+                    $item_factura->save();
+
+                }
 
                 $alumno = Alumno::find($request->alumno_id);
 

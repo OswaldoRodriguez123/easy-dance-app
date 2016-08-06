@@ -57,7 +57,17 @@ class ClasePersonalizadaController extends BaseController {
             
         }
 
-        return view('agendar.clase_personalizada.index')->with(['activas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
+
+        if(Auth::user()->usuario_tipo != 2){
+
+            return view('agendar.clase_personalizada.index')->with(['activas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
+        }else{
+
+             $academia = Academia::find(Auth::user()->academia_id);
+
+            return view('agendar.clase_personalizada.principal_alumno')->with(['clases_personalizadas' => $clases_personalizadas, 'academia' => $academia]);
+
+        }
     }
 
     /**
@@ -87,7 +97,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $id)->get(), 'condiciones' => $config_clase_personalizada->condiciones]);
+        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $id)->get()]);
         
     }
 
@@ -202,6 +212,7 @@ class ClasePersonalizadaController extends BaseController {
 
     $rules = [
 
+        'clase_personalizada_id' => 'required',
         'fecha_inicio' => 'required',
         'especialidad_id' => 'required',
         'instructor_id' => 'required',
@@ -211,6 +222,7 @@ class ClasePersonalizadaController extends BaseController {
 
     $messages = [
 
+        'clase_personalizada_id.required' => 'Ups! El nombre es requerido',
         'fecha_inicio.required' => 'Ups! La fecha es requerida',
         'instructor_id.required' => 'Ups! El instructor es requerido',
         'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
@@ -230,6 +242,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
 
         if($hora_inicio > $hora_final)
         {
@@ -237,18 +250,18 @@ class ClasePersonalizadaController extends BaseController {
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
-        if($request->fecha_inicio < Carbon::now()){
+        if($fecha_inicio < Carbon::now()){
 
             return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
 
         $clasepersonalizada = new CitaClasePersonalizada;
         
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
 
         // $clasepersonalizada->costo = $request->costo;
         $clasepersonalizada->academia_id = Auth::user()->academia_id;
         $clasepersonalizada->usuario_id = Auth::user()->usuario_id;
+        $clasepersonalizada->clase_personalizada_id = $request->clase_personalizada_id;
         $clasepersonalizada->fecha_inicio = $fecha_inicio;
         $clasepersonalizada->instructor_id = $request->instructor_id;
         $clasepersonalizada->hora_inicio = $request->hora_inicio;
@@ -961,6 +974,8 @@ class ClasePersonalizadaController extends BaseController {
         $academia = Academia::find($id);
         $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
+
+
         if($config_clase_personalizada->video_promocional){
 
             $parts = parse_url($config_clase_personalizada->video_promocional);

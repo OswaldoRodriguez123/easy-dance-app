@@ -98,6 +98,41 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
+                            <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-clase_personalizada_id">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" aria-describedby="popoverclase" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase a la que deseas asistir" title="" data-original-title="Ayuda"></i>
+
+   
+                                  <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
+                                    Top
+                                </button> -->
+                          <!--       <button class="btn btn-primary waves-effect" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
+                                    Top
+                                </button> -->
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="clase_personalizada_id" id="clase_personalizada_id" data-live-search="true" onchange="porcentaje" >
+
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $clases_personalizadas as $clase_personalizada )
+                                          <option value = "{{ $clase_personalizada['id'] }}">{{ $clase_personalizada['nombre'] }}</option>
+                                          @endforeach
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-clase_personalizada_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-clase_personalizada_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
                                <div class="col-sm-12">
                                     
                                       <label for="fecha_inicio" id="id-fecha_inicio">Fecha de la Clase</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de inicio de la clase personalizada" title="" data-original-title="Ayuda"></i>
@@ -111,11 +146,11 @@
                                               >
                                           </div>
 
-                                    </div>
                                     <div class="has-error" id="error-fecha_inicio">
                                         <span >
                                             <small class="help-block error-span" id="error-fecha_inicio_mensaje" ></small>                                           
                                         </span>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="clearfix p-b-35"></div>
@@ -180,12 +215,12 @@
                                       <div class="dtp-container fg-line">
                                               <input name="hora_inicio" id="hora_inicio" class="form-control time-picker pointer" placeholder="Desde" type="text">
                                           </div>
-                                    </div>
                                  <div class="has-error" id="error-hora_inicio">
                                       <span >
                                           <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
                                       </span>
                                   </div>
+                                </div>
                                </div>
 
                                <div class="col-xs-6">
@@ -195,11 +230,11 @@
                                       <div class="dtp-container fg-line">
                                               <input name="hora_final" id="hora_final" class="form-control time-picker pointer" placeholder="Hasta" type="text">
                                           </div>
-                                    </div>
                                  <div class="has-error" id="error-hora_final">
                                       <span >
                                           <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
                                       </span>
+                                     </div>
                                   </div>
                                </div>
 
@@ -221,7 +256,7 @@
 
                   <!--             <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >ENVIAR</button>
  -->
-                            <a class="btn btn-blanco m-r-10 f-18" data-toggle="modal" href="#modalConfiguracion">Enviar</a>
+                            <a class="btn btn-blanco m-r-10 f-18 reservar">Enviar</a>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
 
@@ -259,13 +294,11 @@
   route_completado="{{url('/')}}/agendar/clases-personalizadas/completado";
   route_principal="{{url('/')}}/agendar/clases-personalizadas";
 
+  var condiciones = <?php echo json_encode($condiciones);?>;
+
   $(document).ready(function(){
 
-      var condiciones = <?php echo json_encode($condiciones);?>;
-
       $("#pre_condiciones").html(nl2br(condiciones));
-
-
 
       $(".guardar").attr("disabled","disabled");
 
@@ -380,6 +413,18 @@
                 });
             };
 
+        $(".reservar").click(function(){
+
+          if(condiciones){
+
+            $('#modalConfiguracion').modal('show');
+
+          }else{
+             $(".guardar").click();
+          }
+
+        });
+
   $("#guardar").click(function(){
 
                 var id = $("#alumno_id").val();
@@ -436,9 +481,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           $(".modal").modal('hide');
                           console.log(msj.responseJSON.errores);

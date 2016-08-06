@@ -28,9 +28,9 @@ class RegaloController extends BaseController {
 
         $academia = Academia::find(Auth::user()->academia_id);
 
-        if(Auth::user()->usuario_tipo == 2){
+        if(Auth::user()->usuario_tipo != 2){
 
-            return view('especiales.regalo.principal_alumno')->with(['regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'academia' => $academia]);
+            return view('especiales.regalo.principal')->with(['regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'academia' => $academia]);
 
         }else{
 
@@ -181,6 +181,17 @@ class RegaloController extends BaseController {
         }
 
     }
+    }
+
+    public function operar($id)
+    {   
+        $regalo = Regalo::find($id);
+        if($regalo){
+
+            return view('especiales.regalo.operaciones')->with(['id' => $id, 'regalo' => $regalo]);    
+        }else{
+            return redirect("especiales/regalos"); 
+        }
     }
 
     public function verify(Request $request)

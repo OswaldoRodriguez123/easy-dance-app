@@ -70,7 +70,7 @@ class SucursalController extends Controller
 
         $rules = [
 
-            'email' => 'required|email|max:255|confirmed|unique:users',
+            'email' => 'required|email|max:255|confirmed|unique:users,email',
             'email_confirmation' => 'required',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required',

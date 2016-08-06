@@ -679,6 +679,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	// USUARIO
 
 	Route::get('perfil', 'UsuarioController@perfil');
+	Route::get('perfil-evaluativo', 'UsuarioController@perfil_evaluativo');
+	Route::post('perfil-evaluativo', 'UsuarioController@store');
 	Route::put('perfil/update/imagen', 'UsuarioController@updateImagen');
 	Route::put('perfil/update/nombre','UsuarioController@updateNombre');
 	Route::put('perfil/update/sexo','UsuarioController@updateSexo');

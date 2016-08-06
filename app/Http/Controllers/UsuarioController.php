@@ -10,6 +10,7 @@ use App\Paises;
 use App\Alumno;
 use App\ComoNosConociste;
 use App\Academia;
+use App\PerfilEvaluativo;
 use App\ConfigClasesPersonalizadas;
 use Validator;
 use Mail;
@@ -23,20 +24,52 @@ class UsuarioController extends BaseController {
 
     public function perfil()
     {
-        $config['center'] = '10.6913156,-71.6800493';
-        $config['zoom'] = 14;
-        \Gmaps::initialize($config);
-
-        $marker = array();
-        $marker['position'] = '10.6913156,-71.6800493';
-        $marker['draggable'] = true;
-        $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-        \Gmaps::add_marker($marker);
-
-        $map = \Gmaps::create_map();
-
-        return view('usuario.planilla' , compact('map'));
+        return view('usuario.planilla');
     }
+
+    public function perfil_evaluativo()
+    {
+        $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
+
+        if(!$perfil){
+            $perfil = new PerfilEvaluativo;
+            $perfil->usuario_id = Auth::user()->id;
+            $perfil->save();
+        }
+
+        return view('usuario.planilla_evaluacion')->with('perfil', $perfil);
+    }
+
+    public function store(Request $request)
+    {
+
+        $alumno = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
+
+        if(!$alumno){
+            
+            $alumno = new PerfilEvaluativo;
+        }
+
+        $alumno->usuario_id = Auth::user()->id;
+        $alumno->aprendizaje = $request->aprendizaje;
+        $alumno->actividad = $request->actividad;
+        $alumno->beneficio = $request->beneficio;
+        $alumno->motivado = $request->motivado;
+        $alumno->dedicacion = $request->dedicacion;
+        $alumno->velocidad = $request->velocidad;
+        $alumno->seguridad = $request->seguridad;
+        $alumno->participacion = $request->participacion;
+
+        if($alumno->save()){
+
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+
+    }
+
 
     /**
      * Store a newly created resource in storage.

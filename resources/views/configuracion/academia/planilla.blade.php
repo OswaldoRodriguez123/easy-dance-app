@@ -401,7 +401,7 @@
                                               <span class="fileinput-filename"></span>
                                               <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
                                           </div> -->
-                                          <textarea class="form-control" id="normativa" name="normativa" rows="5" placeholder="Ingresa las normativas de la academia">{{$academia->normativa}}</textarea>
+                                          <textarea class="form-control caja" style="height: 100%" id="normativa" name="normativa" rows="5" placeholder="Ingresa las normativas de la academia">{{$academia->normativa}}</textarea>
                                           <div class="has-error" id="error-normativa">
                                             <span >
                                               <small id="error-normativa_mensaje" class="help-block error-span" ></small>                      
@@ -425,7 +425,7 @@
                                                   <span class="fileinput-filename"></span>
                                                   <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
                                               </div> -->
-                                               <textarea class="form-control" id="manual" name="manual" rows="5" placeholder="Ingresa los manuales de procedimientos de la academia">{{$academia->manual}}</textarea>
+                                               <textarea class="form-control caja" style="height: 100%" id="manual" name="manual" rows="5" placeholder="Ingresa los manuales de procedimientos de la academia">{{$academia->manual}}</textarea>
                                               <div class="has-error" id="error-manual">
                                                 <span >
                                                     <small id="error-manual_mensaje" class="help-block error-span" ></small>                                           

@@ -7,6 +7,7 @@
 <!--     <link href="{{url('/')}}/assets/css/styles.min.css" rel="stylesheet"> -->
     <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
+    <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 
 
 @stop
@@ -19,6 +20,51 @@
 @stop
 
 @section('content')
+
+
+<div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"> <h4>
+          <!-- <div class="iconox-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+              <title>Confirma tu academia</title>
+              <circle fill="#692A5A" cx="16" cy="16" r="16"/>
+<img src="{{url('/')}}/assets/img/icono_easydance2.png"  height="26" width="28" style="margin-top: -30px; margin-left: 3px;"/></svg>
+</div> -->Bienvenid@ </h4> <!-- <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> --></h4>
+                        </div>
+                                  
+<div class="modal-body">                           
+<div class="row p-t-20 p-b-0">
+<input type="hidden" name="_token" value="{{ csrf_token() }}">
+<div class="col-md-offset-5">
+                    <div class="text-center"><img src="{{url('/')}}/assets/img/PEGGY.png" style="max-height: 150px; max-width: 150px;" class="img-responsive opaco-0-8" alt=""></div>
+                    </div>
+
+                    <div class="clearfix m-20 m-b-25"></div>
+
+<div class="col-sm-11"><br>
+<p align="left" style="font-size: 20px;">Bienvenid@, <b> {{Auth::user()->nombre}} </b><br>
+<text style="font-size: 16px;">Dedica un momento para ayudarnos a configurar tu perfil evaluativo.</text></p>
+</div>
+
+<div class="clearfix m-20 m-b-25"></div>
+
+                
+                               <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
+                              <!-- <a class="btn-blanco2 btn-blanco1._largesubmit  m-r-5 f-16 " type="submit"   data-formulario="edit_cupo_taller" data-update="cupo" style=" margin-top: 20px; " >Enviar </a> -->
+
+                              <button type="submit" class="butp button5" onclick="configuracion()">Llévame</button>
+                              <button type="submit" class="but2 button55" onclick="atras()"><span>Más Tarde</span></button><br><br><br>
+
+                            <br><br><br><br>
+                            </div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
 
 <a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn"><i class="zmdi zmdi-calendar"></i></a>
 <div class="container">
@@ -159,6 +205,13 @@
                   <img src="{{url('/')}}{{$enlace['imagen']}}" class="img-responsive" alt="">
 
                   <br>
+
+                @else
+
+                  <img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="height:150px; width:350px" class="img-responsive" alt="">
+
+                  <br>
+
                 @endif
                 
                 </div>
@@ -302,8 +355,37 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
+        function configuracion(){
+          window.location = "{{url('/')}}/perfil-evaluativo";
+          }
+         
+         function atras(){
+          $("#modalConfiguracion").modal('hide');
+         }
+         
+        $(document).ready(function(){
+        
+        if(!"{{$perfil}}")
+
+        {
+          setTimeout(function(){ 
+
+            // $("#modalConfiguracion").modal({
+
+            //       backdrop: 'static',
+
+            //       keyboard: false
+
+            //   });
+
+            $('#modalConfiguracion').modal('show'); 
+
+            }, 3000);
+        }
+
+        });
+
         var enlaces = <?php echo json_encode($enlaces);?>;
-        console.log(enlaces);
 
         route_agregar="{{url('/')}}/especiales/campañas/contribuir";
 

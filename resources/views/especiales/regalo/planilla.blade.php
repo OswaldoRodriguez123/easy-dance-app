@@ -74,7 +74,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Campaña<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Regalo<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_descripcion_regalo" id="edit_descripcion_regalo"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -346,14 +346,6 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="regalo-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <!-- <tr class="detalle" data-toggle="modal" href="#modalImagen-Campana">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($campana->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Imagen principal de la campaña </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="campana-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr> -->
 
 
                            </table>
@@ -644,7 +636,7 @@
     $("i[name=eliminar]").click(function(){
                 id = this.id;
                 swal({   
-                    title: "Desea eliminar la campaña",   
+                    title: "Desea eliminar el regalo",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   

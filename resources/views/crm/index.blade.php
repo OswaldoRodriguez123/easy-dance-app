@@ -15,58 +15,45 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
+
 @section('content')
 
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-
-    <a href="{{url('/')}}/especiales/regalos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
-@endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
-                    @else
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-                    @endif
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        <h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Administrativo <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Academias </span></h4>
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                            <span class="f-16 p-t-0 text-success">Agregar un regalo <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
-                        @endif
-
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-tarjeta-de-regalo f-25"></i> Sección de Regalos</p>
-                            <hr class="linea-morada">                                                         
+                        <div class="card-header">
+                            
+                            
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
+                                    <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="costo" data-order="desc">Costo</th>
-                                    <th class="text-center" data-column-id="descripcion" data-order="desc">Descripcion</th>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                                        <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
-                                    @endif
+                                    <th class="text-center" data-column-id="pais" data-order="desc">Pais</th>
+                                    <th class="text-center" data-column-id="estado" data-order="desc">Estado/Provincia</th>
+                                    <th class="text-center" data-column-id="estatus" data-order="desc">Estatus</th>
+<!--                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Estatus E</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th> -->
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($regalos as $regalo)
-
-                                <?php $id = $regalo['id']; ?>
-                                <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$regalo['nombre']}}</td>
-                                    <td class="text-center previa">{{ number_format($regalo['costo'], 2, '.' , '.') }}</td>
-                                    <td class="text-center previa">{{ str_limit($regalo['descripcion'], $limit = 50, $end = '...') }}</td>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                                    <td class="text-center"> <i id="{{$id}}" class="zmdi zmdi-wrench operacion f-20 p-r-10"></i></td>
-                                    @endif
+                            @foreach ($academia as $academias)
+                                <?php $id = $academias->id; ?>
+                                <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$academias->nombre}}</td>
+                                    <td class="text-center previa">{{$academias->pais}}</td>
+                                    <td class="text-center previa">{{$academias->estado}}</td>
+                                    <td class="text-center previa"><label class="label label-success f-13">Bien</label></td>
                                   </tr>
                             @endforeach 
                                                            
@@ -90,37 +77,26 @@
             </section>
 @stop
 
+
 @section('js') 
             
-        <script type="text/javascript">
+		<script type="text/javascript">
+            route_principal="{{url('/')}}/administrar/crm";
+            route_detalle="{{url('/')}}/administrar/crm/detalle";
 
-        route_detalle="{{url('/')}}/especiales/regalos/detalle";
-        route_enviar="{{url('/')}}/especiales/regalos/enviar";
-        route_operacion="{{url('/')}}/especiales/regalos/operaciones";
-        route_eliminar="{{url('/')}}/especiales/regalos/eliminar/";
-
-        $(document).ready(function(){
+    $(document).ready(function(){
 
         t=$('#tablelistar').DataTable({
         processing: true,
-        serverSide: false,
-        bPaginate: false,    
+        serverSide: false,    
         order: [[0, 'asc']],
-        fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-        },
-        pageLength: 25,
-        paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
+                        search:         "Buscar:",
                         lengthMenu:     "Mostrar _MENU_ Registros",
                         info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
                         infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
@@ -168,28 +144,58 @@
                         iconRefresh: 'zmdi-refresh',
                         iconUp: 'zmdi-expand-less'
                     }
+                });     
+			       }); 
+			function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+                $.growl({
+                    icon: icon,
+                    title: titulo,
+                    message: mensaje,
+                    url: ''
+                },{
+                        element: 'body',
+                        type: type,
+                        allow_dismiss: true,
+                        placement: {
+                                from: from,
+                                align: align
+                        },
+                        offset: {
+                            x: 20,
+                            y: 85
+                        },
+                        spacing: 10,
+                        z_index: 1070,
+                        delay: 2500,
+                        timer: 2000,
+                        url_target: '_blank',
+                        mouse_over: false,
+                        animate: {
+                                enter: animIn,
+                                exit: animOut
+                        },
+                        icon_type: 'class',
+                        template: '<div data-growl="container" class="alert" role="alert">' +
+                                        '<button type="button" class="close" data-growl="dismiss">' +
+                                            '<span aria-hidden="true">&times;</span>' +
+                                            '<span class="sr-only">Close</span>' +
+                                        '</button>' +
+                                        '<span data-growl="icon"></span>' +
+                                        '<span data-growl="title"></span>' +
+                                        '<span data-growl="message"></span>' +
+                                        '<a href="#" data-growl="url"></a>' +
+                                    '</div>'
                 });
+            };  
 
-            });
-
-    function previa(t){
+      function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
-        {
-            var route =route_detalle+"/"+row;
-        }else{
-            var route =route_enviar+"/"+row;
-        }
+        var id_academia = row.split('_');
+        var route =route_detalle+"/"+id_academia[1];
         window.location=route;
       }
 
-      $(".operacion").click(function(){
-            var id = this.id;
-            var route =route_operacion+"/"+id;
-            window.location=route;
-         });
-
-    
-
-        </script>
+		</script>
 @stop
+
+     

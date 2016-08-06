@@ -234,7 +234,7 @@
                 ''+array.nombre+ ' '+array.apellido+'',
                 ''+concepto+'',
                 ''+array.fecha+'',
-                ''+formatmoney(array.total)+'',
+                ''+formatmoney(parseFloat(array.total))+'',
                 '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
@@ -257,7 +257,7 @@
                 ''+array.nombre+ ' '+array.apellido+'',
                 ''+array.cantidad+ ' ' +concepto+'',
                 ''+array.fecha_vencimiento+'',
-                ''+formatmoney(array.total)+'',
+                ''+formatmoney(parseFloat(array.total))+'',
                 '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                 ] ).draw(false).node();
                 $( rowNode )

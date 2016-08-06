@@ -256,7 +256,7 @@ class AgendarController extends BaseController
                     ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
                     ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
                     ->select('clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'inscripcion_clase_personalizada.*')
-                    ->where('clases_personalizadas.alumno_id', '=' ,  Auth::user()->usuario_id)
+                    ->where('inscripcion_clase_personalizada.alumno_id', '=' ,  Auth::user()->usuario_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
             ->get();
