@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterCitasClasesPersonalizadasTable extends Migration
+class AlterAddCitasClasesPersonalizadasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -29,9 +29,8 @@ class AlterCitasClasesPersonalizadasTable extends Migration
     {
 
         Schema::table('citas_clases_personalizadas', function (Blueprint $table) {
-            
-            $table->dropColumn('clase_personalizada_id');
-            
+            $table->dropForeign('citas_clases_personalizadas_clase_personalizada_id_foreign');
+            $table->dropColumn('clase_personalizada_id');            
         });
 
     }

@@ -335,6 +335,10 @@ class MultihorarioController extends Controller
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'h'=>Session::get('horario'), 'cart'=>$cart, 'id' => $stringKey, 200]);
             }else{
 
+                //$date_from=$fd->toDateString()." ".$new_hora_i;
+                //$date_to=$fd->toDateString()." ".$new_hora_f;
+                //$choque=HorarioClaseGrupal::whereBetween('created_at', [ new Carbon($date_from), new Carbon($date_to) ])
+
                 $horario_clase_grupal = new HorarioClaseGrupal();
                 $horario_clase_grupal->fecha=$fd->toDateString();
                 $horario_clase_grupal->hora_inicio=$new_hora_i;
