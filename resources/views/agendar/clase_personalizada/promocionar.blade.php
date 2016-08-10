@@ -78,14 +78,24 @@
 <div class="container">
 
 @if(Auth::check())
-@if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
-  
-<div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
-                    </div> 
 
-                    @endif
-                    @endif
+  <div class="block-header">
+
+    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+    
+
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
+                      
+
+    @else
+
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
+    @endif
+
+  </div> 
+  
+@endif
 
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
@@ -301,8 +311,11 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        @if($instructores_academia[0]->imagen_artistica)
-                        <img name="imagen_artistica" id="imagen_artistica" src="{{url('/')}}/assets/uploads/instructor/{{$instructores_academia[0]->imagen_artistica}}" class="img-responsive opaco-0-8" alt="">
+                        @if(count($instructores_academia) > 0)
+
+                          @if($instructores_academia[0]->imagen_artistica)
+                          <img name="imagen_artistica" id="imagen_artistica" src="{{url('/')}}/assets/uploads/instructor/{{$instructores_academia[0]->imagen_artistica}}" class="img-responsive opaco-0-8" alt="">
+                          @endif
                         @endif
                         
                         <div class="clearfix p-b-20"></div>
@@ -311,9 +324,15 @@
                         <hr class="linea-morada">
                         <p class="f-14" name="descripcion_instructor" id="descripcion_instructor">
 
-                        {!! nl2br($instructores_academia[0]->descripcion) !!}
+                        @if(count($instructores_academia) > 0)
+
+                          {!! nl2br($instructores_academia[0]->descripcion) !!}
+
+                        @endif
 
                         </p>
+
+                        @if(count($instructores_academia) > 0)
 
                         <p class="text-center">
                                
@@ -332,20 +351,23 @@
                                 
                               </p>
 
+                          @endif
+
                           <div class="clearfix p-b-20"></div>
 
-  
-                        @if($instructores_academia[0]->video_promocional)
+                        @if(count($instructores_academia) > 0)
+                          @if($instructores_academia[0]->video_promocional)
 
-                        <?php $parts = parse_url($instructores_academia[0]->video_promocional);
-                              $partes = explode( '=', $parts['query'] );
-                              $video_promocional = $partes[1]; ?>
+                          <?php $parts = parse_url($instructores_academia[0]->video_promocional);
+                                $partes = explode( '=', $parts['query'] );
+                                $video_promocional = $partes[1]; ?>
 
-                          <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                            <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
-                              <iframe name="video_promocional" id="video_promocional" class="embed-responsive-item" src="http://www.youtube.com/embed/{{$video_promocional}}"></iframe>
+                            <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
+                              <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
+                                <iframe name="video_promocional" id="video_promocional" class="embed-responsive-item" src="http://www.youtube.com/embed/{{$video_promocional}}"></iframe>
+                              </div>
                             </div>
-                          </div>
+                          @endif
                         @endif
 
                         <div class="clearfix p-b-20"></div>
@@ -354,21 +376,30 @@
                         <hr class="linea-morada">
                         <p class="f-14" name="resumen_artistico" id="resumen_artistico">
 
-                        {!! nl2br($instructores_academia[0]->resumen_artistico) !!}
+                        @if(count($instructores_academia) > 0)
+
+                          {!! nl2br($instructores_academia[0]->resumen_artistico) !!}
+
+                        @endif
 
                         </p>
-  
-                        @if($instructores_academia[0]->video_testimonial)
 
-                        <?php $parts = parse_url($instructores_academia[0]->video_testimonial);
-                              $partes = explode( '=', $parts['query'] );
-                              $video_testimonial = $partes[1]; ?>
+                        @if(count($instructores_academia) > 0)
+    
+                          @if($instructores_academia[0]->video_testimonial)
 
-                          <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                            <div class="embed-responsive embed-responsive-4by3" name="video_testimonial_frame" id="video_testimonial_frame">
-                              <iframe name="video_testimonial" id="video_testimonial" class="embed-responsive-item" src="http://www.youtube.com/embed/{{$video_testimonial}}"></iframe>
+                          <?php $parts = parse_url($instructores_academia[0]->video_testimonial);
+                                $partes = explode( '=', $parts['query'] );
+                                $video_testimonial = $partes[1]; ?>
+
+                            <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
+                              <div class="embed-responsive embed-responsive-4by3" name="video_testimonial_frame" id="video_testimonial_frame">
+                                <iframe name="video_testimonial" id="video_testimonial" class="embed-responsive-item" src="http://www.youtube.com/embed/{{$video_testimonial}}"></iframe>
+                              </div>
                             </div>
-                          </div>
+
+                          @endif
+
                         @endif
 
                         <div class="clearfix p-b-20"></div>
@@ -538,7 +569,7 @@
 
           procesando();
 
-          window.location = "{{url('/')}}/agendar/clases-personalizadas"
+          window.location = "{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$academia->id}}"
 
 
         });

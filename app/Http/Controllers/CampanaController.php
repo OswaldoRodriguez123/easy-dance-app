@@ -56,6 +56,35 @@ class CampanaController extends BaseController {
         return view('especiales.campana.principal')->with('campanas', $array);
     }
 
+    public function indexconacademia($id)
+    {
+
+        $campanas = DB::table('campanas')
+            ->select('campanas.*')
+            ->where('campanas.academia_id' , '=' , $id)
+            ->OrderBy('campanas.created_at')
+        ->get();
+
+        $array=array();
+        $i = 0;
+        $cantidad = 0;
+        $total = 0;
+
+        foreach($campanas as $campana){
+            
+            $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+            $collection=collect($campana);     
+            $campana_array = $collection->toArray();
+            
+            $campana_array['total']=$recaudado;
+            $array[$campana->id] = $campana_array;
+    
+        }
+
+        return view('especiales.campana.principal')->with('campanas', $array);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -927,12 +956,51 @@ class CampanaController extends BaseController {
         return view('especiales.campana.contribuir')->with(['id' => $id, 'campana' => $campana, 'academia' => $academia]);        
     }
 
+    //VISTA PARA PAGOS DE CONTRIBUCION / DONACION PARTICIPANTES EXTERNOS
+    public function contribuirExterno(Request $request){
+        $preference_data = array(
+            "items" => array(
+                array(
+                //"id" => $array['mov_id'],
+                "currency_id" => "VEF",
+                "title" => "Contribucion Campaña ".$request->campana_nombre,
+                "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
+                "description" => 'Contribucion para la campaña '. $request->campana_nombre,
+                "quantity" => 1,
+                "unit_price" =>  intval($request->monto)
+                )
+            ),
+            "payer" => array(
+              "name" => $request->nombre
+              /*"surname" => $alumno->apellido,
+              "email" => $alumno->correo,*/
+              //"date_created" => "2014-07-28T09:50:37.521-04:00"
+            )
+        );
+
+        $preference = MP::create_preference($preference_data);
+        Session::put('data_pago', $preference);
+        Session::put('data_user', $request);
+
+        if(isset($request,$preference)){
+            return response()->json(['mensaje' => '¡Preferencia de pago creada', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+    //RETORNO A VISTA PARA PAGAR
+    public function procesarExterno()
+    {
+        return view('especiales.campana.contribuir_participante')->with(['pago' => Session::get('data_pago'), 'usuario_ext' => Session::get('data_user')]);
+    }
+
     public function contribuirPagar($id)
     {   
         $recompensa = Recompensa::find($id);
         $academia = Academia::find($recompensa->academia_id);
 
-        $campana = Campana::find($academia->id);
+        $campana = Campana::find($recompensa->campana_id);
         $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->get();
         //dd($alumnos->all());
         //MERCADO PAGO

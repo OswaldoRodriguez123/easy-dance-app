@@ -15,6 +15,8 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<!--MERCADO PAGO MODAL -->
+<script type="text/javascript" src="http://resources.mlstatic.com/mptools/render.js"></script>
 @stop
 
 @section('content')
@@ -126,8 +128,8 @@
 
                     <div class="clearfix m-20 m-b-25"></div>
 
-                     <button type="button" class="btn-blanco m-r-10 f-25 guardar cuarto" id="cuarto" name="cuarto" href="#cuarto" aria-controls="cuarto" role="tab" data-toggle="tab">Ok <i class="zmdi zmdi-check"></i></button>
-                     <span class="f-700">Pulsa Aqui</span>
+                     <button type="button" class="btn-blanco m-r-10 f-25 guardar cuarto" href="#cuarto" aria-controls="cuarto" role="tab" data-toggle="tab" name="cuarto" id="cuarto">Ok <i class="zmdi zmdi-check"></i></button>
+                    <span class="f-700">Pulsa Aqui</span>
 
 
                     </div> 
@@ -302,6 +304,7 @@
 
     route_agregar="{{url('/')}}/registro";
     route_completado="{{url('/')}}/registro/completado";
+    route_pagar_participante="{{url('/')}}/especiales/campañas/partcipante_externo";
 
     $(document).ready(function(){
 
@@ -337,6 +340,37 @@
             }
 
         });
+
+        //PAGAR CAMPAÑA
+        $("#cuarto").on("click",function(){
+
+            var token = $('input:hidden[name=_token]').val();
+            var nombre = $("input[name=nombre]").val();
+            var monto = $("input[name=monto]").val();
+            var campana_id = "{{$campana->id}}";
+            var campana_nombre = "{{$campana->nombre}}";
+
+                $.ajax({
+                    url: route_pagar_participante,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:{
+                            nombre : nombre,
+                            monto: monto,
+                            campana_id : campana_id,
+                            campana_nombre : campana_nombre
+                        },
+                    success:function(respuesta){
+                        window.location = route_pagar_participante;
+                    },
+                    error:function(msj){
+                      
+                    }
+                });
+
+        });
+
     });
 
     $('button[name="tercero"]').click(function(){       

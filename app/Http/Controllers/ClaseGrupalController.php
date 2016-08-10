@@ -186,9 +186,18 @@ class ClaseGrupalController extends BaseController {
             $cupos_restantes = 0;
          }
 
-         $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+        $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-        return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes]);
+        if(Auth::check()){
+
+            $usuario_tipo = Auth::user()->usuario_tipo;
+
+        }else{
+            $usuario_tipo = 0;
+        
+        }
+
+        return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function create()

@@ -39,6 +39,16 @@ class RegaloController extends BaseController {
         }
     }
 
+    public function indexconacademia($id)
+    {
+
+        $academia = Academia::find($id);
+
+        return view('especiales.regalo.principal_alumno')->with(['regalos' => Regalo::where('academia_id', '=' ,  $id)->get(), 'academia' => $academia]);
+
+    }
+    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -421,10 +431,17 @@ class RegaloController extends BaseController {
 
         if($regalo){
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
-               return view('especiales.regalo.vender')->with(['regalo' => $regalo]);
+            if(Auth::check())
+            {
+
+                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
+                   return view('especiales.regalo.vender')->with(['regalo' => $regalo]);
+                }else{
+                   return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);
+                }
+
             }else{
-               return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);
+                return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);
             }
         }else{
            return redirect("especiales/regalos"); 

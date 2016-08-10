@@ -102,12 +102,26 @@
 
 
 @if(Auth::check())
-  
-<div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
-                    </div> 
 
-                    @endif
+  <div class="block-header">
+
+    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+    
+
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
+                      
+
+    @else
+
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
+    @endif
+
+  </div> 
+  
+@endif
+
+
 
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
@@ -588,13 +602,22 @@
 
         $(".reservar").click(function(){
 
-          if(condiciones && ("{{Auth::user()->usuario_tipo}}" != 1 || "{{Auth::user()->usuario_tipo}}" != 5)){
+          if("{{Auth::check()}}"){
 
-            $('#modalConfiguracion').modal('show');
+            if(condiciones){
 
+              if("{{$usuario_tipo}}" != 1 || "{{$usuario_tipo}}" != 5){
+
+                $('#modalConfiguracion').modal('show');
+              }else{
+             $(".guardar").click();
+              }
+            }else{
+             $(".guardar").click();
+           }
           }else{
              $(".guardar").click();
-          }
+        }
 
         });
 
@@ -606,7 +629,7 @@
 
         if("{{Auth::check()}}")
         {
-          if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5){
+          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5){
 
             procesando();
 

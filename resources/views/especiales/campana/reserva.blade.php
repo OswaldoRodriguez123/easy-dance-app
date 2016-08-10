@@ -99,11 +99,27 @@
             </div>
 
 <div class="container">
+
 @if(Auth::check())
-<div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Campaña</a>
-                    </div> 
+
+  <div class="block-header">
+
+    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+    
+
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Campaña</a>
+                      
+
+    @else
+
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
+    @endif
+
+  </div> 
+  
 @endif
+
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
             <div class="pmo-pic">
@@ -213,39 +229,48 @@
                
                           <div class="clearfix p-b-15"></div>
 
-                          @foreach ($recompensas as $recompensa)
+                          <!--  
+                        Aqui Validamos que muestre las recompensas para contribuir
+                        si el la sesion existe, de lo contrario solamente habra un
+                        boton de contribucion para personas externas a la Aplicacion
+                  -->
+                  @if(Auth::check())
+                      @foreach ($recompensas as $recompensa)
 
-                          <div style="border: 1px solid;">
-                          <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Recompensa</div>
+                      <div style="border: 1px solid;">
+                      <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Recompensa</div>
 
-                          
-                        <div class="col-sm-12">
-                            <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2, '.' , '.') }} </span> 
-                            <br>
-                            <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
-                            <br>
-                            <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
+                      
+                    <div class="col-sm-12">
+                        <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2, '.' , '.') }} </span> 
+                        <br>
+                        <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
+                        <br>
+                        <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
 
-                            <div class="clearfix p-b-15"></div>
-                            <div class="clearfix p-b-15"></div>
-                            <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
 
-                        </div>
+                    </div>
 
-                            <span class="text-center">
-                                 <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
+                        <span class="text-center">
+                             <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
 
-                                <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
-                            </span>
+                            <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
+                        </span>
 
-                          </div>
+                      </div>
 
-                          <div class="clearfix p-b-15"></div>
+                      <div class="clearfix p-b-15"></div>
 
-                          @endforeach 
-                              
-                              
-                             
+                      @endforeach 
+                  
+                  @else
+                      <button id="{{$campana->id}}" name ="{{$campana->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button> 
+                  @endif
+                  <!-- FIN CONDICION -->
+    
             </div>
 
         </div>
@@ -284,13 +309,6 @@
                         <div class="f-700 f-30">Historia</div>
                         <br>
                         <p class="f-14">{!! nl2br($campana->historia) !!}.</p>
-
-                        <!-- <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
-
-                        <p class="f-14">Easy dance se encuentra en un proceso de periodo de prueba (Fase Beta) completamente abierta para cualquier academia de baile que desee integrarse, haciendo uso y prueba de nuestro proyecto piloto. Por tal motivo invitamos a toda la comunidad de baile a participar generando invitaciones a todas aquellas academias que aún no conocen la herramienta.</p>
-
-                        <p class="f-14">Así que los invitamos a estar muy atentos de todos nuestros avances, semanalmente estaremos haciendo nuevos anuncios de todas las características que se estarán actualizando dentro de la plataforma para el disfrute y organización en el ambiente del baile.</p> -->
-
 
                         @if($link_video)
                           <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
@@ -532,6 +550,7 @@
 
         //route_agregar="{{url('/')}}/especiales/campañas/contribuir";
         route_agregar="{{url('/')}}/especiales/campañas/contribuir_pagar";
+        route_agregar_unsign="{{url('/')}}/especiales/campañas/contribuir";
 
         var recompensa = 0;
 
@@ -639,7 +658,7 @@
                 });
             });*/
 
-              $("#guardar").click(function(){
+              /* $("#guardar").click(function(){
 
                 procesando();
                 var route = route_agregar;
@@ -721,14 +740,21 @@
                       }, 1000);
                     }
                 });
-            });
+            }); */
 
-        $(".recompensa").click(function(){
-
-          recompensa = this.id;
-          var route=route_agregar+"/"+recompensa;
-          window.location=route;
-        });
+        $(".recompensa").click(function(){            
+      
+            recompensa = this.id;            
+            if("{{Auth::check()}}"){            
+              var route=route_agregar+"/"+recompensa;             
+              window.location=route;    
+            }else{    
+              campana = "{{$campana->id}}"    
+              var route=route_agregar_unsign+"/"+campana;   
+              window.location=route;    
+            }   
+      
+          });
 
         $(".a-prevent").click(function(){
 

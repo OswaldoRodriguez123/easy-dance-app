@@ -943,7 +943,16 @@ class TallerController extends BaseController {
 
          $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-        return view('agendar.taller.reserva')->with(['taller' => $taller_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes]);
+         if(Auth::check()){
+
+            $usuario_tipo = Auth::user()->usuario_tipo;
+
+        }else{
+            $usuario_tipo = 0;
+        
+        }
+
+        return view('agendar.taller.reserva')->with(['taller' => $taller_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes, 'usuario_tipo' => $usuario_tipo]);
     }
 
 
