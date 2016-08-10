@@ -103,7 +103,9 @@ Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir
 Route::get('especiales/campañas/contribuir_pagar/{id}', 'CampanaController@contribuirPagar');
 //PAGO CON MERCADOPAGO
 Route::post('especiales/campañas/contribuir_mercadopago', 'CampanaController@storeMercadopago');
-
+//PAGO PARA CONTRIBUCION DE CAMPAÑA PERSONAS EXTERNAS
+Route::post('especiales/campañas/partcipante_externo', 'CampanaController@contribuirExterno');
+Route::get('especiales/campañas/partcipante_externo', 'CampanaController@procesarExterno');
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 

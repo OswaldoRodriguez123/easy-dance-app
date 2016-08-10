@@ -958,8 +958,6 @@ class CampanaController extends BaseController {
 
     //VISTA PARA PAGOS DE CONTRIBUCION / DONACION PARTICIPANTES EXTERNOS
     public function contribuirExterno(Request $request){
-        //dd($request->all());
-
         $preference_data = array(
             "items" => array(
                 array(
@@ -991,10 +989,9 @@ class CampanaController extends BaseController {
         }
 
     }
-
+    //RETORNO A VISTA PARA PAGAR
     public function procesarExterno()
     {
-        //dd(Session::get('data_user'));
         return view('especiales.campana.contribuir_participante')->with(['pago' => Session::get('data_pago'), 'usuario_ext' => Session::get('data_user')]);
     }
 
