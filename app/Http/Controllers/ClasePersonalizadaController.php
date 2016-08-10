@@ -60,7 +60,7 @@ class ClasePersonalizadaController extends BaseController {
 
         if(Auth::user()->usuario_tipo != 2){
 
-            return view('agendar.clase_personalizada.index')->with(['activas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
+            return view('agendar.clase_personalizada.index')->with(['clases_personalizadas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
         }else{
 
              $academia = Academia::find(Auth::user()->academia_id);
@@ -68,6 +68,38 @@ class ClasePersonalizadaController extends BaseController {
             return view('agendar.clase_personalizada.principal_alumno')->with(['clases_personalizadas' => $clases_personalizadas, 'academia' => $academia]);
 
         }
+    }
+
+    public function indexconacademia($id)
+    {
+
+        $clases_personalizadas = ClasePersonalizada::where('academia_id', $id)->get();
+
+        $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
+
+        if(!$config_clase_personalizada)
+        {
+            $config_clase_personalizada = new ConfigClasesPersonalizadas;
+
+            $config_clase_personalizada->academia_id = $id;
+            $config_clase_personalizada->imagen_principal = '';
+            $config_clase_personalizada->descripcion = '';
+            $config_clase_personalizada->video_promocional = '';
+            $config_clase_personalizada->imagen1 = '';
+            $config_clase_personalizada->imagen2 = '';
+            $config_clase_personalizada->imagen3 = '';
+            $config_clase_personalizada->ventajas = '';
+            $config_clase_personalizada->condiciones = '';
+
+            $config_clase_personalizada->save();
+            
+        }
+
+        $academia = Academia::find($id);
+
+        return view('agendar.clase_personalizada.principal_alumno')->with(['clases_personalizadas' => $clases_personalizadas, 'academia' => $academia]);
+
+        
     }
 
     /**
@@ -88,7 +120,7 @@ class ClasePersonalizadaController extends BaseController {
 
             $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', Auth::user()->academia_id)->first();
 
-            return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones]);
+            return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
         }
     }
 
@@ -974,6 +1006,24 @@ class ClasePersonalizadaController extends BaseController {
         $academia = Academia::find($id);
         $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
+
+        if(!$config_clase_personalizada)
+        {
+            $config_clase_personalizada = new ConfigClasesPersonalizadas;
+
+            $config_clase_personalizada->academia_id = Auth::user()->academia_id;
+            $config_clase_personalizada->imagen_principal = '';
+            $config_clase_personalizada->descripcion = '';
+            $config_clase_personalizada->video_promocional = '';
+            $config_clase_personalizada->imagen1 = '';
+            $config_clase_personalizada->imagen2 = '';
+            $config_clase_personalizada->imagen3 = '';
+            $config_clase_personalizada->ventajas = '';
+            $config_clase_personalizada->condiciones = '';
+
+            $config_clase_personalizada->save();
+            
+        }
 
 
         if($config_clase_personalizada->video_promocional){

@@ -15,29 +15,29 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
+
 @section('content')
 
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
 
-    <a href="{{url('/')}}/especiales/regalos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
-@endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
-                    @else
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-                    @endif
+                        @if(Auth::check())
+
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
+                        @else
+
+                            <a class="btn-blanco m-r-10 f-16" href="{{$_SERVER['HTTP_REFERER'] }}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+                        @endif
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
-                            <span class="f-16 p-t-0 text-success">Agregar un regalo <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
-                        @endif
+
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-tarjeta-de-regalo f-25"></i> Sección de Regalos</p>
                             <hr class="linea-morada">                                                         
@@ -130,12 +130,10 @@
     $(document).on( 'click', '.previa', function () {
         var row = this.id;
         procesando();
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
-        {
-            var route =route_detalle+"/"+row;
-        }else{
-            var route =route_enviar+"/"+row;
-        }
+
+
+        var route =route_enviar+"/"+row;
+
         window.location=route;
       });
 

@@ -185,6 +185,8 @@ class AsistenciaController extends BaseController
         //$lista=get_object_vars($talleres);
 
      	foreach ($clases_grupales as $grupal) {
+
+        
      		$fecha_start=explode('-',$grupal->fecha_inicio);
      		$fecha_end=explode('-',$grupal->fecha_final);
      		$id=$grupal->id;
@@ -199,6 +201,8 @@ class AsistenciaController extends BaseController
 
      		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0); 
 
+
+
      		if($fechaActual->toDateString()==$dt->toDateString()){   		
 
      			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);
@@ -206,11 +210,13 @@ class AsistenciaController extends BaseController
      	    }
 
 		 	$c=0;
-			
+
 		 	while($dt->timestamp<$df->timestamp){
+
 		 		$fecha="";		
-		 		$fecha=$dt->addWeek()->toDateString();
-		 		if($fechaActual->toDateString()==$fecha){
+		 		$fecha=$dt->addWeek();
+
+		 		if($fechaActual->toDateString()==$fecha->toDateString()){
 		 		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);	
 		 		}	
 	     		$c++;

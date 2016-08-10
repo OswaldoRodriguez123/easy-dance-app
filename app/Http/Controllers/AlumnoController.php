@@ -232,27 +232,27 @@ class AlumnoController extends BaseController
 
             if($usuario->save()){
             
-                // if($request->correo){
+                if($request->correo){
 
-                //     $academia = Academia::find(Auth::user()->academia_id);
-                //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-                //     $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                    $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
 
-                //     $array = [
-                //        'nombre' => $request->nombre,
-                //        'academia' => $academia->nombre,
-                //        'usuario' => $request->correo,
-                //        'contrasena' => $password,
-                //        'subj' => $subj,
-                //        'link' => $link
-                //     ];
+                    $array = [
+                       'nombre' => $request->nombre,
+                       'academia' => $academia->nombre,
+                       'usuario' => $request->correo,
+                       'contrasena' => $password,
+                       'subj' => $subj,
+                       'link' => $link
+                    ];
 
 
-                //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-                //             $msj->subject($array['subj']);
-                //             $msj->to($array['usuario']);
-                //         });
-                // }
+                    Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['usuario']);
+                        });
+                }
 
                 //Envio de Sms
                 

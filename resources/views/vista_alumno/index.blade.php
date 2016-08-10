@@ -7,7 +7,7 @@
 <!--     <link href="{{url('/')}}/assets/css/styles.min.css" rel="stylesheet"> -->
     <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
-    <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
+    <!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet"> -->
 
 
 @stop

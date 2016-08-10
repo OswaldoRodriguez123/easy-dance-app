@@ -209,25 +209,6 @@
                             <hr class="linea-morada">                                                        
                         </div>
 
-  <!--                       <div class="col-sm-5">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="activas" value="activas" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Activas <i id="activas2" name="activas2" class="zmdi zmdi-money-box zmdi-hc-fw c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="canceladas" value="canceladas" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Canceladas <i id="canceladas2" name="canceladas2" class="zmdi zmdi-forward zmdi-hc-fw f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div> 
-
-                                <div class="clearfix"></div> -->
 
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -244,6 +225,19 @@
                             <tbody class="text-center" >
 
 
+                            @foreach ($clases_personalizadas as $clase_personalizada)
+
+                              <?php $id = $clase_personalizada->id; ?>
+
+                              <tr id="{{$id}}" class="seleccion" >
+                                <td class="text-center previa">{{$clase_personalizada->nombre}}</td>
+                                <td class="text-center previa">{{ number_format($clase_personalizada->costo, 2, '.' , '.') }}</td>
+
+                                <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+
+                                </tr>
+
+                              @endforeach
                                                            
                             </tbody>
                         </table>
@@ -375,50 +369,6 @@
             window.location=route;
          });
 
-       function clear(){
-
-            t.clear().draw();
-            // t.destroy();
-         }
-
-         $('input[name="tipo"]').on('change', function(){
-            clear();
-            if ($(this).val()=='activas') {
-                  tipo = 'activas';
-                  rechargeActivas();
-            } else  {
-                  tipo= 'canceladas';
-                  rechargeCanceladas();
-            }
-         });
-
-
-       $("#activas").click(function(){
-            $( "#canceladas2" ).removeClass( "c-verde" );
-            $( "#activas2" ).addClass( "c-verde" );
-        });
-
-        $("#canceladas").click(function(){
-            $( "#activas2" ).removeClass( "c-verde" );
-            $( "#canceladas2" ).addClass( "c-verde" );
-        });
-
-
-        function rechargeActivas(){
-            var activas = <?php echo json_encode($activas);?>;
-
-            $.each(activas, function (index, array) {
-
-                var rowNode=t.row.add( [
-                ''+array.nombre+'',
-                ''+array.costo+'',
-                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-        }
 
         function countChar2(val) {
         var len = val.value.length;

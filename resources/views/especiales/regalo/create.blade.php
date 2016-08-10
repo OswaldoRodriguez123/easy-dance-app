@@ -136,7 +136,7 @@
                             
                             <div class="col-sm-12 text-left">    
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar">Dar Regalo</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar">Guardar</button>
 
                           <!--     <button type="button" class="btn btn-blanco m-r-10 f-18" data-toggle="modal" href="#modalAgregar">Dar Regalo</button> -->
 

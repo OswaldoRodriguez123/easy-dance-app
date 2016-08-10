@@ -9,6 +9,7 @@ use App\ComoNosConociste;
 use App\Reservacion;
 use App\ClaseGrupal;
 use App\Taller;
+use App\ClasePersonalizada;
 use App\Academia;
 use Session;
 use Validator;
@@ -22,12 +23,16 @@ class ReservaController extends BaseController
 	{
         $tipo_reservacion = Session::get('tipo');
 
-        if($tipo_reservacion = 1){
+        if($tipo_reservacion == 1){
             $clasegrupal = ClaseGrupal::find($id);
             $academia = Academia::find($clasegrupal->academia_id);
-        }else{
+        }else if($tipo_reservacion == 2){
             $taller = Taller::find($id);
             $academia = Academia::find($taller->academia_id);
+        }
+        else{
+            $clase_personalizada = ClasePersonalizada::find($id);
+            $academia = Academia::find($clase_personalizada->academia_id);
         }
 
 		return view('reserva.registro')->with(['id' => $id, 'como_nos_conociste' => ComoNosConociste::all(), 'academia' => $academia]);
@@ -50,7 +55,6 @@ class ReservaController extends BaseController
 
         $rules = [
             'nombre' => 'required|min:3|max:30|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-            'telefono' => 'required',
             'celular' => 'required',
             'email' => 'required|email|max:255|confirmed',
             'email_confirmation' => 'required',
@@ -61,7 +65,6 @@ class ReservaController extends BaseController
         $messages = [
 
             'nombre.required' => 'Ups! El Nombre  es requerido',
-            'telefono.required' => 'Ups! El Número local es requerido',
             'celular.required' => 'Ups! El Número móvil es requerido',
             'email.required' => 'Ups! El Correo es requerido',
             'email.email' => 'Ups! El Correo tiene una dirección inválida',
@@ -110,8 +113,28 @@ class ReservaController extends BaseController
 
                 }while ($find);
 
+                if($tipo_reservacion == 1){
+                    $actividad = 'una Clase Grupal';
+                    $actividad2 = 'la Clase Grupal';
+                    $actividad_nombre = ClaseGrupal::find($request->tipo_id);
+
+                    $academia = Academia::find($actividad_nombre->academia_id);
+                }else if($tipo_reservacion == 2){
+
+                    $actividad = 'un Taller';
+                    $actividad2 = 'el Taller';
+                    $actividad_nombre = Taller::find($request->tipo_id);
+                    $academia = Academia::find($actividad_nombre->academia_id);
+                }else{
+                    $actividad = 'una Clase Personalizada';
+                    $actividad2 = 'la Clase Personalizada';
+                    $actividad_nombre = ClasePersonalizada::find($request->tipo_id);
+                    $academia = Academia::find($actividad_nombre->academia_id);
+                }
+
                 $reservacion = New Reservacion;
 
+                $reservacion->academia_id = $academia->id;
                 $reservacion->nombre = $request->nombre;
                 $reservacion->correo = $request->email;
                 $reservacion->sexo = $request->sexo;
@@ -123,17 +146,8 @@ class ReservaController extends BaseController
 
                 if($reservacion->save()){
 
-                    if($tipo_reservacion = 1){
-                        $actividad = 'una Clase Grupal';
-                        $clasegrupal = ClaseGrupal::find($request->tipo_id);
-                        $academia = Academia::find($clasegrupal->academia_id);
-                    }else{
-                        $actividad = 'un Taller';
-                        $taller = Taller::find($request->tipo_id);
-                        $academia = Academia::find($taller->academia_id);
-                    }
-
                     $subj = 'Has realizado una reservación';
+                    $subj2 = 'Han realizado una reservación';
 
                     $array = [
                         'correo' => $request->email,
@@ -147,9 +161,26 @@ class ReservaController extends BaseController
                         'subj' => $subj
                     ];
 
+                    $array2 = [
+                        'correo' => $request->email,
+                        'nombre' => $request->nombre,
+                        'actividad' => $actividad2,
+                        'actividad_nombre' => $actividad_nombre->nombre,
+                        'correo_academia' => $academia->correo,
+                        'telefono' => $request->telefono,
+                        'celular' => $request->celular,
+                        'subj' => $subj2
+                    ];
+
                     Mail::send('correo.reservacion_alumno', $array, function($msj) use ($array){
                             $msj->subject($array['subj']);
                             $msj->to($array['correo']);
+                        });
+
+
+                    Mail::send('correo.reservacion_academia', $array2, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['correo_academia']);
                         });
 
                      return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);

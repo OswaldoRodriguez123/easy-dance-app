@@ -48,13 +48,12 @@
                           <p style="font-size: 12px" name="pre_general" id="pre_general"></p>
 
                           </div>
-
-
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
-
                           
                           </div>
+
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+
 
                         </div>
                        

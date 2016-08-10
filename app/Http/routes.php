@@ -75,11 +75,27 @@ Route::get('/reservacion/completado', function () {
 
 Route::get('reservacion/{id}','ReservaController@reserva');
 
-// PROGRESO
 
-Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
+// REGALO USUARIO
+
+Route::get('especiales/regalos/disponibles/{id}', 'RegaloController@indexconacademia');
+Route::get('especiales/regalos', 'RegaloController@index');
+Route::get('especiales/regalos/progreso/{id}', 'RegaloController@progreso');
+Route::get('especiales/regalos/enviar/{id}', 'RegaloController@CrearRegaloUsuario');
+Route::post('especiales/regalos/enviar', 'RegaloController@EnviarRegaloUsuario');
+
+// CLASES PERSONALIZADAS USUARIO
+
+Route::get('agendar/clases-personalizadas/disponibles/{id}', 'ClasePersonalizadaController@indexconacademia');
+Route::get('agendar/clases-personalizadas', 'ClasePersonalizadaController@index');
 Route::get('agendar/clases-personalizadas/progreso/{id}', 'ClasePersonalizadaController@progreso');
 Route::get('agendar/clases-personalizadas/agregar/{id}', 'ClasePersonalizadaController@reservacion');
+
+// PROGRESO
+
+Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeInscripcionVistaAlumno');
+Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
+Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
 Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');
@@ -211,9 +227,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('configuracion/coreografias/participantes/{id}', 'CoreografiaController@participantes');
 			Route::post('configuracion/coreografias/inscribir', 'CoreografiaController@storeInscripcion');
 
-			// --- ADMINISTRATIVO --- 
-
-			Route::get('administrativo', 'AdministrativoController@index');
+			
 
 			//PAGOS
 
@@ -264,7 +278,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//FACTURA
 
-			Route::get('administrativo/factura/{id}', 'AdministrativoController@getFactura');
 			Route::post('administrativo/factura/enviar/{id}', 'AdministrativoController@enviarfactura');
 
 			// REPORTES
@@ -384,10 +397,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/proveedor/update/direccion','ProveedorController@updateDireccion');
 			Route::put('participante/proveedor/update/empresa','ProveedorController@updateEmpresa');
 
-			//AGENDAR
-
-			Route::get('agendar','AgendarController@index');
-			Route::post('agendar','AgendarController@store');
 
 			//CLASES GRUPALES
 
@@ -398,7 +407,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			Route::delete('agendar/clases-grupales/eliminar/{id}', 'ClaseGrupalController@destroy');
 			Route::post('agendar/clases-grupales/inscribir', 'ClaseGrupalController@storeInscripcion');
-			Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeInscripcionVistaAlumno');
 			Route::post('agendar/clases-grupales/alumnos', 'ClaseGrupalController@getAlumnos');
 			Route::post('agendar/clases-grupales/alumnos/eliminar', 'ClaseGrupalController@eliminarAlumnos');
 			Route::post('agendar/clases-grupales/agregarhorario', 'ClaseGrupalController@agregarhorario');
@@ -428,16 +436,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//CLASES PERSONALIZADAS
 
-			Route::get('agendar/clases-personalizadas', 'ClasePersonalizadaController@index');
-			Route::get('agendar/clases-personalizadas/agregar', 'ClasePersonalizadaController@create');
+			
 			Route::post('agendar/clases-personalizadas/agregar', 'ClasePersonalizadaController@store');
 			Route::get('agendar/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');
 			Route::get('agendar/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
 			Route::delete('agendar/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
 			Route::post('agendar/clases-personalizadas/cancelar/{id}', 'ClasePersonalizadaController@cancelar');
 			Route::post('agendar/clases-personalizadas/cancelarpermitir/{id}', 'ClasePersonalizadaController@cancelarpermitir');
-			Route::post('agendar/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
-			Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
 
 			Route::put('agendar/clases-personalizadas/update/nombre', 'ClasePersonalizadaController@updateNombre');
 			Route::put('agendar/clases-personalizadas/update/costo', 'ClasePersonalizadaController@updateCosto');
@@ -469,7 +474,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/talleres/eliminarinscripcion/{id}', 'TallerController@eliminarinscripcion');
 			Route::post('agendar/talleres/inscribir', 'TallerController@storeInscripcion')
 			;
-			Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
 
 			Route::put('agendar/talleres/update/nombre', 'TallerController@updateNombre');
 			Route::put('agendar/talleres/update/costo', 'TallerController@updateCosto');
@@ -562,9 +566,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//REGALOS
 
-		    Route::get('especiales/regalos', 'RegaloController@index');
 		    Route::get('especiales/regalos/detalle/{id}', 'RegaloController@edit');
-		    Route::get('especiales/regalos/progreso/{id}', 'RegaloController@progreso');
 			Route::get('especiales/regalos/operaciones/{id}', 'RegaloController@operar');
 			Route::delete('especiales/regalos/eliminar/{id}', 'RegaloController@destroy');
 			Route::get('especiales/regalos/agregar', 'RegaloController@create');
@@ -573,10 +575,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/regalos/update/nombre', 'RegaloController@updateNombre');
 			Route::put('especiales/regalos/update/costo', 'RegaloController@updateCosto');
 			Route::put('especiales/regalos/update/descripcion', 'RegaloController@updateDescripcion');
-			Route::post('especiales/regalos/verificar', 'RegaloController@verify');
-			Route::post('especiales/regalos/verificar/{id}', 'RegaloController@verificarconalumno');
-			Route::get('especiales/regalos/enviar/{id}', 'RegaloController@CrearRegaloUsuario');
-			Route::post('especiales/regalos/enviar', 'RegaloController@EnviarRegaloUsuario');
 
 			// ---- CONFIGURACION ----
 
@@ -657,7 +655,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('asistencia/agregar/instructor', 'AsistenciaController@storeInstructor');
 			Route::post('asistencia/agregar/instructor/permitir', 'AsistenciaController@storeInstructorPermitir');
 
-			Route::get('/asistencia', 'AsistenciaController@principal');
 
 		    //PRIVILEGIOS
 		    //Roles
@@ -680,9 +677,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('/', 'AcademiaConfiguracionController@menu');
 
-			// USUARIO
-
-			Route::get('/documentos', 'UsuarioController@documentos');
 
 			//SMS
 
@@ -704,6 +698,31 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::group(['middleware' => ['alumno']], function() {
 		    //
 			
+
+			//AGENDAR
+
+			Route::get('agendar','AgendarController@index');
+			Route::post('agendar','AgendarController@store');
+
+			//CLASES PERSONALIZADAS
+
+			Route::get('agendar/clases-personalizadas/agregar', 'ClasePersonalizadaController@create');
+			Route::post('agendar/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
+			Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
+
+			//REGALO
+
+			Route::post('especiales/regalos/verificar', 'RegaloController@verify');
+			Route::post('especiales/regalos/verificar/{id}', 'RegaloController@verificarconalumno');
+
+
+			// --- ADMINISTRATIVO --- 
+
+			Route::get('administrativo', 'AdministrativoController@index');
+			Route::get('/asistencia', 'AsistenciaController@principal');
+			Route::get('/documentos', 'UsuarioController@documentos');
+			Route::get('administrativo/factura/{id}', 'AdministrativoController@getFactura');
+
 			Route::get('/inicio', 'AcademiaConfiguracionController@index');
 		
 			Route::get('perfil', 'UsuarioController@perfil');

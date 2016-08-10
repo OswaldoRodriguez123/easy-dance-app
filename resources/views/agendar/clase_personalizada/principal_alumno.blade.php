@@ -22,7 +22,15 @@
                 
                     <div class="block-header">
 
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        @if(Auth::check())
+
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
+                        @else
+
+                            <a class="btn-blanco m-r-10 f-16" href="{{$_SERVER['HTTP_REFERER'] }}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+                        @endif
 
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
@@ -70,7 +78,7 @@
                                         <div class="col-sm-2">
 
                                         <div style="padding-top: 50px">
-                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$academia->id}}">Reservar</button>
+                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_personalizada['id']}}">Reservar</button>
                                         </div>
 
                                         </div>
@@ -117,17 +125,51 @@
 
     route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle";
     route_enviar="{{url('/')}}/agendar/clases-personalizadas/agregar";
+    route_reserva="{{url('/')}}/reservacion/";
   
     $(document).on( 'click', '.previa', function () {
-        var row = this.id;
+        var id = this.id;
         procesando();
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
+
+        if("{{Auth::check()}}")
         {
-            var route =route_detalle+"/"+row;
-        }else{
-            var route =route_enviar+"/"+row;
+            window.location=route_enviar+"/"+id;
         }
-        window.location=route;
+
+        else{
+             var route = route_reserva + 3;
+             var token = $('input:hidden[name=_token]').val();
+                  
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      data:"&tipo_reservacion=3",
+                      success:function(respuesta){
+
+                          window.location=route_reserva+id; 
+
+                      },
+                      error:function(msj){
+                                  // $("#msj-danger").fadeIn(); 
+                                  // var text="";
+                                  // console.log(msj);
+                                  // var merror=msj.responseJSON;
+                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                  // $("#msj-error").html(text);
+                                  // setTimeout(function(){
+                                  //          $("#msj-danger").fadeOut();
+                                  //         }, 3000);
+                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                  }
+
+
+                 });
+          
+        }
+
+        
       });
 
     

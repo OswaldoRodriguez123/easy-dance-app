@@ -56,6 +56,35 @@ class CampanaController extends BaseController {
         return view('especiales.campana.principal')->with('campanas', $array);
     }
 
+    public function indexconacademia($id)
+    {
+
+        $campanas = DB::table('campanas')
+            ->select('campanas.*')
+            ->where('campanas.academia_id' , '=' , $id)
+            ->OrderBy('campanas.created_at')
+        ->get();
+
+        $array=array();
+        $i = 0;
+        $cantidad = 0;
+        $total = 0;
+
+        foreach($campanas as $campana){
+            
+            $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+            $collection=collect($campana);     
+            $campana_array = $collection->toArray();
+            
+            $campana_array['total']=$recaudado;
+            $array[$campana->id] = $campana_array;
+    
+        }
+
+        return view('especiales.campana.principal')->with('campanas', $array);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *

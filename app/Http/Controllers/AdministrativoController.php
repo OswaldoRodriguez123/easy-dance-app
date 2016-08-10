@@ -147,6 +147,9 @@ class AdministrativoController extends BaseController {
         //     ->groupBy('factura_id')
         // // ->lists('nombre')
         // ->get();
+        // 
+        
+        $array = array();
 
         $factura_join = DB::table('facturas')
             ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
