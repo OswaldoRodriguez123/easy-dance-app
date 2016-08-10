@@ -1072,7 +1072,7 @@
 
       var route_consultar_notificacion="{{url('/')}}/notificacion";
 
-      setInterval(notificacion,120000);      
+      //setInterval(notificacion,120000);      
 
       function notificacion (){        
         

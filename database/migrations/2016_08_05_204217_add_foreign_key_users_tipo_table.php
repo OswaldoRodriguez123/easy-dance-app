@@ -12,10 +12,10 @@ class AddForeignKeyUsersTipoTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        /*Schema::table('users', function (Blueprint $table) {
             $table->foreign('usuario_tipo')->references('id')->on('roles');
 
-        });
+        });*/
     }
 
     /**
@@ -25,8 +25,8 @@ class AddForeignKeyUsersTipoTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        /*Schema::table('users', function (Blueprint $table) {
             $table->dropForeign('users_usuario_tipo_foreign');
-        });
+        });*/
     }
 }
