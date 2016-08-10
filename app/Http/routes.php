@@ -91,6 +91,7 @@ Route::post('especiales/campañas/contribuir_mercadopago', 'CampanaController@st
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
+		Route::get('notificacion', 'NotificacionController@consulta');
 
 		Route::get('/logout', 'Auth\AuthController@getLogout');
 

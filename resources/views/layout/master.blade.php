@@ -1065,7 +1065,39 @@
 
        
     </script>
-		
+
+    <script>
+
+      //setInterval(notificacion, 240000);
+
+      var route_consultar_notificacion="{{url('/')}}/notificacion";
+
+      setInterval(notificacion,120000);      
+
+      function notificacion (){        
+        
+        //alert('hola');
+        console.log('Hola Mundo');
+        var route = route_consultar_notificacion;
+        console.log(route_consultar_notificacion);
+        var token = $('input:hidden[name=_token]').val();
+        console.log(token);
+         
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'GET',
+            dataType: 'json',
+            success:function(respuesta){  
+                console.log(respuesta);             
+            },
+            error:function(msj){
+                console.log(msj);              
+            }
+        });
+      }
+
+    </script>		
 		
 		@yield('js')
 		
