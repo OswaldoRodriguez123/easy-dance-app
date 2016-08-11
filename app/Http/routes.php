@@ -97,8 +97,12 @@ Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeI
 Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
 Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
+
+// CAMPAÑAS
+
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
 Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');
+Route::post('especiales/campañas/contribuir', 'CampanaController@storePatrocinador');
 //NUEVA
 Route::get('especiales/campañas/contribuir_pagar/{id}', 'CampanaController@contribuirPagar');
 //PAGO CON MERCADOPAGO
@@ -341,6 +345,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('participante/instructor/agregar', 'InstructorController@create');
 			Route::delete('participante/instructor/eliminar/{id}', 'InstructorController@destroy');
 			Route::get('participante/instructor/detalle/{id}', 'InstructorController@edit');
+			Route::get('participante/instructor/experiencia/{id}', 'InstructorController@perfil_evaluativo');
+			Route::post('participante/instructor/experiencia', 'InstructorController@storeExperiencia');
 			Route::get('participante/instructor/operaciones/{id}', 'InstructorController@operar');
 			Route::put('participante/instructor/update/identificacion','InstructorController@updateID');
 			Route::put('participante/instructor/update/nombre','InstructorController@updateNombre');
@@ -563,7 +569,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/campañas/update/datos', 'CampanaController@updateDatosBancarios');
 			Route::post('especiales/campañas/agregarrecompensa', 'CampanaController@agregarrecompensa');
 			Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');
-		    Route::post('especiales/campañas/contribuir', 'CampanaController@storePatrocinador');
 		    Route::post('especiales/campañas/agregarrecompensafija', 'CampanaController@agregarrecompensafija');
 		    Route::post('especiales/campañas/eliminarrecompensafija/{id}', 'CampanaController@eliminarrecompensafija');
 

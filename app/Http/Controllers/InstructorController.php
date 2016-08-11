@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Instructor;
 use App\Academia;
 use App\User;
+use App\PerfilInstructor;
 use Mail;
 use Validator;
 use Carbon\Carbon;
@@ -269,13 +270,7 @@ class InstructorController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
 
@@ -289,7 +284,6 @@ class InstructorController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -316,13 +310,7 @@ class InstructorController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
         $instructor = Instructor::find($request->id);
@@ -354,14 +342,12 @@ class InstructorController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateSexo(Request $request){
         $instructor = Instructor::find($request->id);
         $instructor->sexo = $request->sexo;
 
-        // return redirect("alumno/edit/{$request->id}");
         if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -386,14 +372,7 @@ class InstructorController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
-
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
 
@@ -583,6 +562,102 @@ class InstructorController extends BaseController {
         }else{
            return redirect("participante/instructor"); 
         }
+    }
+
+    public function perfil_evaluativo($id)
+    {
+        $perfil = PerfilInstructor::where('instructor_id', $id)->first();
+
+        if(!$perfil){
+            $perfil = new PerfilInstructor;
+            $perfil->instructor_id = $id;
+            $perfil->save();
+        }
+
+        return view('participante.instructor.planilla_evaluacion')->with(['id' => $id, 'perfil' => $perfil]);
+    }
+
+    public function storeExperiencia(Request $request)
+    {
+        
+    $rules = [
+        'tiempo_experiencia_instructor' => 'numeric',
+        'genero_instructor' => 'numeric',
+        'cantidad_horas' => 'numeric',
+        'titulos_instructor' => 'numeric',
+        'invitacion_evento' => 'numeric',
+        'organizador' => 'numeric',
+        'tiempo_experiencia_bailador' => 'numeric',
+        'genero_bailador' => 'numeric',
+        'participacion_coreografia' => 'numeric',
+        'montajes' => 'numeric',
+        'titulos_bailador' => 'numeric',
+        'participacion_escenario' => 'numeric',
+        
+    ];
+
+    $messages = [
+
+        'tiempo_experiencia_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'genero_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'cantidad_horas.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'titulos_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'invitacion_evento.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'organizador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'tiempo_experiencia_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'genero_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'participacion_coreografia.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'montajes.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'titulos_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+        'participacion_escenario.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+
+ 
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+        $instructor = PerfilInstructor::where('instructor_id' , $request->id)->first();
+
+        if(!$instructor){
+
+            $instructor = new PerfilInstructor;
+        }
+
+        $instructor->instructor_id = $request->id;
+        $instructor->tiempo_experiencia_instructor = $request->tiempo_experiencia_instructor;
+        $instructor->genero_instructor = $request->genero_instructor;
+        $instructor->cantidad_horas = $request->cantidad_horas;
+        $instructor->titulos_instructor = $request->titulos_instructor;
+        $instructor->invitacion_evento = $request->invitacion_evento;
+        $instructor->organizador = $request->organizador;
+        $instructor->tiempo_experiencia_bailador = $request->tiempo_experiencia_bailador;
+        $instructor->genero_bailador = $request->genero_bailador;
+        $instructor->participacion_coreografia = $request->participacion_coreografia;
+        $instructor->montajes = $request->montajes;
+        $instructor->titulos_bailador = $request->titulos_bailador;
+        $instructor->participacion_escenario = $request->participacion_escenario;
+
+        if($instructor->save()){
+            return response()->json(['mensaje' => '¡Excelente! El instructor se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
     }
 
     public function operar($id)

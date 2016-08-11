@@ -975,6 +975,16 @@
                     
                     <div class="card">
                       <div class="card-header">
+
+                      <div class="col-xs-12 text-left">
+                          <ul class="tab-nav tn-justified" role="tablist">
+                                    <li class="waves-effect active"><a href="{{url('/')}}/participante/instructor/detalle/{{$instructor->id}}" aria-controls="home11" onclick="procesando()"><div class="zmdi zmdi-account f-30"></div><p style="margin-top:10px">Perfil</p></a></li>
+                                    <li class="waves-effect"><a href="{{url('/')}}/participante/instructor/experiencia/{{$instructor->id}}" aria-controls="home11" onclick="procesando()"><div class="icon_a-instructor f-30"></div><p style=" margin-bottom: -2px;">Experiencia como Instructor</p></a></li>
+                                    
+                            </ul>
+                            </div>
+
+                            <div class="clearfix p-b-15"></div>
                             
                         <a href="" class="pull-right">
                            @if($instructor->sexo=='F')
@@ -1518,9 +1528,9 @@
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
                 
-                if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                // if (typeof msj.responseJSON === "undefined") {
+                //           window.location = "{{url('/')}}/error";
+                //         }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);

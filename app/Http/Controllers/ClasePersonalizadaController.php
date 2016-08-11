@@ -1004,7 +1004,15 @@ class ClasePersonalizadaController extends BaseController {
     {
 
         $academia = Academia::find($id);
-        $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
+        // $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
+
+        $instructores = DB::table('instructores')
+            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
+            ->select('instructores.*' , 'perfil_instructor.*')
+            ->where('academia_id', $id)
+            ->where('boolean_promocionar', 1)
+        ->get();
+
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
 
         if(!$config_clase_personalizada)

@@ -684,6 +684,28 @@
         });
       });
 
+      $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var imagen = $("#imagena img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+            },500);
+
+        });
+
   var t=$('#tableniveles').DataTable({
         processing: true,
         serverSide: false, 

@@ -255,7 +255,7 @@
             
             <div class="tab-content">
                 
-                <div role="tabpanel" class="tab-pane active animated fadeInUp in" id="empresa">
+                <div role="tabpanel" class="tab-pane  animated fadeInUp in" id="empresa">
 
                     <div class="pmb-block m-t-0 p-t-0">
 
@@ -307,7 +307,7 @@
 
                 </div>
 
-                <div role="tabpanel" class="tab-pane animated fadeInUp in" id="nuestro-equipo">
+                <div role="tabpanel" class="tab-pane active animated fadeInUp in" id="nuestro-equipo">
 
                     <div class="pmb-block m-t-0 p-t-0">
 
@@ -317,6 +317,47 @@
                           <img name="imagen_artistica" id="imagen_artistica" src="{{url('/')}}/assets/uploads/instructor/{{$instructores_academia[0]->imagen_artistica}}" class="img-responsive opaco-0-8" alt="">
                           @endif
                         @endif
+
+                        <div class="clearfix p-b-20"></div>
+
+                        <div class="f-700 f-30">Experiencia laboral como instructor </div>
+                        <hr class="linea-morada">
+
+                        @if(count($instructores_academia) > 0)
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_instructor" id ="tiempo_experiencia_instructor"> {{$instructores_academia[0]->tiempo_experiencia_instructor}}</div>
+                            <span class="span_circulo"> Años de experiencia</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="genero_instructor" id ="genero_instructor"> {{$instructores_academia[0]->genero_instructor}}</div>
+                            <span class="span_circulo"> Géneros que domina</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="cantidad_horas" id ="cantidad_horas"> {{$instructores_academia[0]->cantidad_horas}}</div>
+                            <span class="span_circulo"> Horas impartidas</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="titulos_instructor" id ="titulos_instructor"> {{$instructores_academia[0]->titulos_instructor}}</div>
+                            <span class="span_circulo"> Títulos y reconocimientos </span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="organizador" id ="organizador"> {{$instructores_academia[0]->organizador}}</div>
+                            <span class="span_circulo"> Organizador de eventos</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="invitacion_evento" id ="invitacion_evento"> {{$instructores_academia[0]->invitacion_evento}}</div>
+                            <span class="span_circulo"> Invitaciones a eventos</span>
+                          </div>
+                          
+
+                        @endif
+                        <hr class="linea-morada">
                         
                         <div class="clearfix p-b-20"></div>
 
@@ -370,6 +411,47 @@
                           @endif
                         @endif
 
+                        <div class="clearfix p-b-20"></div>
+
+                        <div class="f-700 f-30">Experiencia como bailarín </div>
+                        <hr class="linea-morada">
+
+                        @if(count($instructores_academia) > 0)
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_bailador" id ="tiempo_experiencia_bailador"> {{$instructores_academia[0]->tiempo_experiencia_bailador}}</div>
+                            <span class="span_circulo"> Años de experiencia</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="genero_bailador" id ="genero_bailador"> {{$instructores_academia[0]->genero_bailador}}</div>
+                            <span class="span_circulo"> Géneros que domina</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="participacion_coreografia" id ="participacion_coreografia"> {{$instructores_academia[0]->participacion_coreografia}}</div>
+                            <span class="span_circulo"> Participación en coreografías</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="montajes" id ="montajes"> {{$instructores_academia[0]->montajes}}</div>
+                            <span class="span_circulo"> Montajes coreográficos </span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="titulos_bailador" id ="titulos_bailador"> {{$instructores_academia[0]->titulos_bailador}}</div>
+                            <span class="span_circulo"> Títulos y reconocimientos</span>
+                          </div>
+
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="participacion_escenario" id ="participacion_escenario"> {{$instructores_academia[0]->participacion_escenario}}</div>
+                            <span class="span_circulo"> Participación en escenarios y shows</span>
+                          </div>
+                          
+
+                        @endif
+                        <hr class="linea-morada">
+                        
                         <div class="clearfix p-b-20"></div>
 
                         <div class="f-700 f-30">Resumen artístico</div>
@@ -589,6 +671,21 @@
 
             $("#descripcion_instructor").html(nl2br(array.descripcion));
             $("#resumen_artistico").html(nl2br(array.resumen_artistico));
+
+            $("#tiempo_experiencia_instructor").html(array.tiempo_experiencia_instructor);
+            $("#genero_instructor").html(array.genero_instructor);
+            $("#cantidad_horas").html(array.cantidad_horas);
+            $("#titulos_instructor").html(array.titulos_instructor);
+            $("#invitacion_evento").html(array.invitacion_evento);
+            $("#organizador").html(array.organizador);
+
+            $("#tiempo_experiencia_bailador").html(array.tiempo_experiencia_bailador);
+            $("#genero_bailador").html(array.genero_bailador);
+            $("#participacion_coreografia").html(array.participacion_coreografia);
+            $("#montajes").html(array.montajes);
+            $("#titulos_bailador").html(array.titulos_bailador);
+            $("#participacion_escenario").html(array.participacion_escenario);
+
 
             if(array.imagen_artistica){
               $("#imagen_artistica").attr('src', "{{url('/')}}/assets/uploads/instructor/"+array.imagen_artistica);

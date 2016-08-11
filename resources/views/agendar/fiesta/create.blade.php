@@ -573,9 +573,20 @@
             //alert('algo cambio');
             
             setTimeout(function(){
-              var fileinput = $("#imagena img").attr('src');
-              //alert(fileinput);
-              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+              var imagen = $("#imagena img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
             },500);
 
         });

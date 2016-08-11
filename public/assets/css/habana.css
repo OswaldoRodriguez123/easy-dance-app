@@ -1650,6 +1650,31 @@ sub.beta {
     font-weight: bold;
 }
 
+.container_circulo
+{
+width: 120px;
+display: inline-flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+}
+
+.circulo_instructor
+{
+  height: 60px;
+  width: 60px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%; /* may require vendor prefixes */
+  border: 4px solid black;
+}
+
+.span_circulo
+{
+  font-size: 10px !important;
+
 
 
 
