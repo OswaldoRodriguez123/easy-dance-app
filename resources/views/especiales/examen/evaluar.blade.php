@@ -171,14 +171,12 @@ $(document).ready(function() {
 		//Divido la cadena usando el separador
 		//punto (.) de las notas		
 		var arrayNotas = notas.split(".");
-		//Aqui extraigo solo los elementos del array
-		//que necesito		
-		var suma = arrayNotas.slice(0,5); 
-		/*console.log(notas.split("."));
-		console.log(arrayNotas.slice(0,5));
-		console.log(eval(suma.join("+")));*/
-		$("#eval_total").html(eval(suma.join("+")));
-		$("#total_nota").val(eval(suma.join("+")));
+		var total = 0;
+		for (var i = 0; i < arrayNotas.length-1; i++) {
+		    total += arrayNotas[i] << 0;
+		}
+		$("#eval_total").html(total);
+		$("#total_nota").val(total);
 	});
 
 });
