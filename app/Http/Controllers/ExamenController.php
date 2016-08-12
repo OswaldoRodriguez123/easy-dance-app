@@ -51,58 +51,81 @@ class ExamenController extends BaseController {
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        /*$items = json_decode($request->items);
+        //dd($items);
+        $i=0;
+        foreach ($items as $itemsEx) {
+            echo $itemsEx->id.'-'.$i;
+            $i++;
+        }*/
 
 
-    $rules = [
-        'nombre' => 'required|min:3|max:80',
-        'instructor_id' => 'required',
-        'fecha' => 'required',
-        'color_etiqueta' => 'required',
-        'descripcion' => 'min:3|max:500',
+        $rules = [
+            'nombre' => 'required|min:3|max:80',
+            'instructor_id' => 'required',
+            'fecha' => 'required',
+            'color_etiqueta' => 'required',
+            'descripcion' => 'min:3|max:500',
 
-    ];
+        ];
 
-    $messages = [
+        $messages = [
 
-        'nombre.required' => 'Ups! El Nombre es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 80',
-        'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
-        'descripcion.max' => 'El máximo de caracteres permitidos son 500',
-        'fecha.required' => 'Ups! La fecha es requerida',
-        'color_etiqueta.required' => 'Ups! La etiqueta es  requerida',
-        'instructor_id.required' => 'Ups! El instructor es  requerido',
-    ];
+            'nombre.required' => 'Ups! El Nombre es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 80',
+            'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
+            'descripcion.max' => 'El máximo de caracteres permitidos son 500',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            'color_etiqueta.required' => 'Ups! La etiqueta es  requerida',
+            'instructor_id.required' => 'Ups! El instructor es  requerido',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $examen = new Examen;
-
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $examen->academia_id = Auth::user()->academia_id;
-        $examen->nombre = $nombre;
-        $examen->descripcion = $request->descripcion;
-        $examen->fecha= $request->fecha;
-        $examen->color_etiqueta = $request->color_etiqueta;
-        $examen->instructor_id = $request->instructor_id;
-        $examen->condiciones = $request->condiciones;
-
-        if($examen->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
+
+        else{
+
+
+            $items = json_decode($request->items);
+
+
+            $examen = new Examen;
+
+            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+
+            $examen->academia_id = Auth::user()->academia_id;
+            $examen->nombre = $nombre;
+            $examen->descripcion = $request->descripcion;
+            $examen->fecha= $request->fecha;
+            $examen->color_etiqueta = $request->color_etiqueta;
+            $examen->instructor_id = $request->instructor_id;
+            $examen->condiciones = $request->condiciones;
+
+            if($examen->save()){
+                
+                //RECORREMOS LOS CHECKBOX QUE ENVIAMOS Y GUARDAMOS
+                //LOS ITEMS DE LOS EXAMENES
+                $i=0;
+                foreach ($items as $itemsEx) {
+                    $ItemsExamenes = new ItemsExamenes;
+                    $ItemsExamenes->academia_id = Auth::user()->academia_id;
+                    $ItemsExamenes->examen_id = $examen->id;
+                    $ItemsExamenes->nombre = $itemsEx->id;
+                    $ItemsExamenes->save();    
+                    $i++;
+                }
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
     }
 
 	/**

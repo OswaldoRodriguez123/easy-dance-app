@@ -157,7 +157,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="tiempos-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="tiempos-switch" data-name="Tiempos musicales" type="checkbox" hidden="hidden">
                                           <label for="tiempos-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -172,7 +172,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="compromiso-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="compromiso-switch" data-name="Compromiso" type="checkbox" hidden="hidden">
                                           <label for="compromiso-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -189,7 +189,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="condiciones-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="condiciones-switch" data-name="Condiciones" type="checkbox" hidden="hidden">
                                           <label for="condiciones-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -204,7 +204,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="habilidades-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="habilidades-switch" data-name="Habilidades" type="checkbox" hidden="hidden">
                                           <label for="habilidades-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -221,7 +221,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="disciplina-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="disciplina-switch" data-name="Disciplina" type="checkbox" hidden="hidden">
                                           <label for="disciplina-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -236,7 +236,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="expresion-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="expresion-switch" data-name="Expresión corporal" type="checkbox" hidden="hidden">
                                           <label for="expresion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -253,7 +253,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="facial-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="facial-switch" data-name="Expresión facial" type="checkbox" hidden="hidden">
                                           <label for="facial-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -268,7 +268,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="destreza-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="destreza-switch" data-name="Destreza" type="checkbox" hidden="hidden">
                                           <label for="destreza-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -285,7 +285,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="dedicacion-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="dedicacion-switch" data-name="Dedicación" type="checkbox" hidden="hidden">
                                           <label for="dedicacion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -300,7 +300,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="oido-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="oido-switch" data-name="Oído musical" type="checkbox" hidden="hidden">
                                           <label for="oido-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -317,7 +317,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="postura-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="postura-switch" data-name="Postura" type="checkbox" hidden="hidden">
                                           <label for="postura-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -332,7 +332,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="respeto-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="respeto-switch" data-name="Respeto" type="checkbox" hidden="hidden">
                                           <label for="respeto-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -349,7 +349,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="elasticidad-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="elasticidad-switch" data-name="Elasticidad" type="checkbox" hidden="hidden">
                                           <label for="elasticidad-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -364,7 +364,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="complejidad-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="complejidad-switch" data-name="Complejidad de movimientos" type="checkbox" hidden="hidden">
                                           <label for="complejidad-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -381,7 +381,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="asistencia-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="asistencia-switch" data-name="Asistencia" type="checkbox" hidden="hidden">
                                           <label for="asistencia-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -396,7 +396,7 @@
                                       <div class="col-sm-3 text-left">
 
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" data-name="Estilo" type="checkbox" hidden="hidden">
                                           <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </div>
@@ -500,7 +500,7 @@
                     </div>
                 </div>
             </section>
-
+            <input type="text" id="dataItems">
             <nav class="navbar navbar-default navbar-fixed-bottom">
               <div class="container">
                 
@@ -539,7 +539,113 @@
                 $(".card-body").removeClass(animation);
             }, animationDuration);
 
-      });
+
+
+ 
+   $("#guardar").click(function(){
+
+        //RECORRIDO DE LOS CHECKBOX
+        //-------------------------
+          var inputs = document.getElementById("agregar_examen").getElementsByTagName("input");
+          var dataItems = '';
+          for(var i = 0 ; i < inputs.length ; i++){
+              if (inputs[i].type=='checkbox'){
+                  if(inputs[i].checked){
+                      dataItems += '{"id" : "'+inputs[i].dataset.name+'"},';
+                  }
+              }
+          }
+          dataItems = dataItems.substring(0, dataItems.length -1);
+          dataItems = '['+dataItems+']';
+        //--------------------------  
+                var route = route_agregar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#agregar_examen" ).serialize()+'&items='+dataItems; 
+                $("#guardar").attr("disabled","disabled");
+                procesando();
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          // var nType = 'success';
+                          // $("#agregar_alumno")[0].reset();
+                          // var nTitle="Ups! ";
+                          // var nMensaje=respuesta.mensaje;
+                          window.location = route_principal;
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          finprocesado();
+                          $("#guardar").css({
+                            "opacity": ("1")
+                          });
+                          $(".cancelar").removeAttr("disabled");
+
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
+
+
+
+
+
+  });
 
   setInterval(porcentaje, 1000);
 
@@ -628,89 +734,7 @@
                 });
             };
 
-  $("#guardar").click(function(){
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_examen" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-                          window.location = route_principal;
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
-
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
 
 
       function limpiarMensaje(){
@@ -747,7 +771,7 @@
        $('#'+collaps).collapse('hide');
       }
 
-      $('#collapseTwo').on('show.bs.collapse', function () {
+      /*$('#collapseTwo').on('show.bs.collapse', function () {
         $("#guardar").attr("disabled","disabled");
         $("#guardar").css({"opacity": ("0.2")});
       })
@@ -755,7 +779,7 @@
       $('#collapseTwo').on('hide.bs.collapse', function () {
         $("#guardar").removeAttr("disabled");
         $("#guardar").css({"opacity": ("1")});
-      })
+      })*/
 
        $( "#cancelar" ).click(function() {
         $("#agregar_examen")[0].reset();
