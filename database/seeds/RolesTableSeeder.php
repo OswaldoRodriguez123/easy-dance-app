@@ -33,9 +33,27 @@ class RolesTableSeeder extends Seeder
 	    ));	    
 
    	    Role::create(array(
+	      'name' => 'representante',
+	      'display_name' => 'Representante',
+	      'description' => 'Rol Representante'
+	    ));
+
+   	    Role::create(array(
+	      'name' => 'sucursal',
+	      'display_name' => 'Sucursal',
+	      'description' => 'Rol Sucursal'
+	    ));
+
+   	    Role::create(array(
 	      'name' => 'recepcionista',
 	      'display_name' => 'Recepcionista',
 	      'description' => 'Rol Recepcionista'
+	    ));
+
+   	    Role::create(array(
+	      'name' => 'programadores',
+	      'display_name' => 'Programadores',
+	      'description' => 'Rol Programadores'
 	    ));
 
     }
