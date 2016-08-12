@@ -51,14 +51,6 @@ class ExamenController extends BaseController {
 
     public function store(Request $request)
     {
-        /*$items = json_decode($request->items);
-        //dd($items);
-        $i=0;
-        foreach ($items as $itemsEx) {
-            echo $itemsEx->id.'-'.$i;
-            $i++;
-        }*/
-
 
         $rules = [
             'nombre' => 'required|min:3|max:80',
