@@ -583,6 +583,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/regalos/update/nombre', 'RegaloController@updateNombre');
 			Route::put('especiales/regalos/update/costo', 'RegaloController@updateCosto');
 			Route::put('especiales/regalos/update/descripcion', 'RegaloController@updateDescripcion');
+			Route::put('especiales/regalos/update/imagen', 'RegaloController@updateImagen');
 
 			// ---- CONFIGURACION ----
 

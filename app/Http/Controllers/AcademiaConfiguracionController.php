@@ -131,6 +131,12 @@ class AcademiaConfiguracionController extends BaseController {
 
             $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
 
+            if($perfil){
+                $tiene_perfil = 1;
+            }else{
+                $tiene_perfil = 0;
+            }
+
             if (Session::has('fecha_sesion')) {                
                
             }else{
@@ -139,7 +145,7 @@ class AcademiaConfiguracionController extends BaseController {
             }
             
 
-            return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $perfil]); 
+            return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil]); 
         }
                            
 	}

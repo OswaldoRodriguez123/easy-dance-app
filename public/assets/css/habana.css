@@ -1674,7 +1674,74 @@ align-items: center;
 .span_circulo
 {
   font-size: 10px !important;
+}
 
+.butp {
+    background-color: #4E1E43;
+    border: none;
+    color: white; 
+    padding: 5px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    right: 0;
+    border: 1px solid #4E1E43
+ 
+}
+
+.butp:hover {
+    background-color: #692A5A;
+    color: white;
+}
+
+.but2 {
+    background-color: #fff; 
+    border: none;
+    color: #000; 
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    left: -4;
+    right: 0;
+    transition: all 0.5s;
+    cursor: pointer;
+    border: 1px solid #000;
+
+}
+
+.but2:hover {
+  /*  background-color: #692A5A; */
+    color: #000;
+}
+
+.but2 span {
+  transition: 0.5s;
+}
+
+.but2 span:after {
+  content: ' »';
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.but2:hover span {
+  padding-right: 10px;
+}
+
+.but2:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 
 
 

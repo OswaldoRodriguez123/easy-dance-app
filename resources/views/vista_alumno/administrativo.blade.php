@@ -51,8 +51,11 @@
                                  </div>
                                 </div> 
 
-                                <div class="clearfix"></div>
+                                 <div class="clearfix"></div>
                                 
+                                <div class="col-md-12">
+                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por pagar : {{ number_format($total, 2) }}</span>
+                                </div>
                                 <br><br>
                                 <!-- <div class="clearfix"></div> -->
 
@@ -240,6 +243,7 @@
 
         function rechargeProforma(){
             var proforma = <?php echo json_encode($proforma);?>;
+            $('#monto').css('opacity', '1');
 
             document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento'; 
 

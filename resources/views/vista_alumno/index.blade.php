@@ -365,7 +365,7 @@
          
         $(document).ready(function(){
         
-        if(!"{{$perfil}}")
+        if("{{$perfil}}" == 0)
 
         {
           setTimeout(function(){ 

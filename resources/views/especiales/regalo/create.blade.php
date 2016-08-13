@@ -222,7 +222,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["nombre", "costo", "descripcion"];
+    var campo = ["nombre", "costo", "descripcion", "imagen"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -360,9 +360,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -393,7 +393,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["nombre", "costo", "descripcion"];
+        var campo = ["nombre", "costo", "descripcion", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -401,7 +401,7 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "costo", "descripcion"];
+      var campo = ["nombre", "costo", "descripcion", "imagen"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

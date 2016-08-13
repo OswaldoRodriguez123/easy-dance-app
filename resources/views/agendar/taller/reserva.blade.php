@@ -199,6 +199,11 @@
 
                                <hr class="linea-morada opaco-0-8">
 
+                               <label class="text-left opaco-0-8"><i class="icon_b icon_b-costo f-22"></i>  Costo:</label>
+                              <p class="text-left opaco-0-8 f-16">{{ number_format($taller->costo, 2, '.' , '.') }}</p>
+
+                              <hr class="linea-morada opaco-0-8">
+
                               <label class="text-left opaco-0-8"><i class="zmdi zmdi-calendar f-22"></i>  Fecha de inicio:</label>
                               <p class="text-left opaco-0-8 f-16">{{$taller->fecha_inicio}}</p>
 

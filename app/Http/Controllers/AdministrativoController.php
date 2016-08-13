@@ -72,7 +72,13 @@ class AdministrativoController extends BaseController {
                 ->where('items_factura_proforma.alumno_id' , '=' , Auth::user()->usuario_id)
             ->get();
 
-            return view('vista_alumno.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join]); 
+            $total = DB::table('items_factura_proforma')
+            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->where('items_factura_proforma.alumno_id', Auth::user()->usuario_id)
+            ->where('alumnos.deleted_at' , '=' , null)
+            ->sum('.items_factura_proforma.importe_neto');
+
+            return view('vista_alumno.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total]); 
         }
         else{
             return redirect("/"); 
