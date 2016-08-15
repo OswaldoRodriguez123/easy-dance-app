@@ -12,7 +12,9 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->delete();
+    	DB::statement("SET FOREIGN_KEY_CHECKS = 0;");
+
+        DB::table('roles')->truncate();
 
    	    Role::create(array(
 	      'name' => 'admin',
@@ -55,6 +57,8 @@ class RolesTableSeeder extends Seeder
 	      'display_name' => 'Programadores',
 	      'description' => 'Rol Programadores'
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }
