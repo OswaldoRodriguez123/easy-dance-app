@@ -52,6 +52,7 @@ class Kernel extends HttpKernel
         'verified' => \App\Http\Middleware\IsVerified::class,
         'admin' => \App\Http\Middleware\Administrador::class,
         'recepcionista' => \App\Http\Middleware\Recepcionista::class,
-        'alumno' => \App\Http\Middleware\Alumno::class,        
+        'alumno' => \App\Http\Middleware\Alumno::class,
+        'sucursal' => \App\Http\Middleware\Sucursal::class,
     ];
 }

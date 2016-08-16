@@ -15,7 +15,7 @@ class Administrador
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->isType()=='admin'){
+        if($request->user()->isType()=='admin' || $request->user()->isType()=='sucursal'){
             return $next($request);
         }
         abort(403);

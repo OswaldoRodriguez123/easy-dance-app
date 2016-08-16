@@ -549,7 +549,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//CAMPAÑAS
 
-			Route::get('especiales/campañas', 'CampanaController@index');
+			//Route::get('especiales/campañas', 'CampanaController@index');
 			Route::get('especiales/campañas/agregar', 'CampanaController@create');
 			Route::post('especiales/campañas/agregar', 'CampanaController@store');
 			Route::get('especiales/campañas/detalle/{id}', 'CampanaController@edit');
@@ -734,6 +734,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('/inicio', 'AcademiaConfiguracionController@index');
 		
+			//PERFIL USUARIO
 			Route::get('perfil', 'UsuarioController@perfil');
 			Route::get('perfil-evaluativo', 'UsuarioController@perfil_evaluativo');
 			Route::post('perfil-evaluativo', 'UsuarioController@store');			
@@ -745,6 +746,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('perfil/update/direccion','UsuarioController@updateDireccion');
 			Route::put('perfil/update/redes','UsuarioController@updateRedes');
 			Route::put('perfil/update/password','UsuarioController@updatePassword');
+
+			//CAMPAÑAS
+			Route::get('especiales/campañas', 'CampanaController@index');
 
 		});//END MIDDLEWARE ALUMNO
 
