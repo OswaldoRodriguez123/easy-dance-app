@@ -53,6 +53,7 @@
                             </div>
                         </a>
                     </li>
+                    
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar" id = "{{$id}}">
                             <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
@@ -145,6 +146,7 @@
     });
 
   $(".eliminar").click(function(){
+    @can('delete-alumnos', $alumno)
                 id = this.id;
                 swal({   
                     title: "Desea eliminar al alumno?",   
@@ -168,8 +170,18 @@
                         eliminar(id);
           }
                 });
-            });
-  
+    @else
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'danger';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out');
+        var nMensaje = 'No tiene permisos para ejecutar esta acción';
+        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut, nMensaje);
+    @endcan  
+   });
+
 
     $(".email").click(function(){
          var route = route_email + 1;

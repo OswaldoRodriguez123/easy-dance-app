@@ -63,6 +63,7 @@
 
                             @foreach ($alumnos as $alumno)
                                 <?php $id = $alumno->id; ?>
+                                @can('view-alumnos', $alumno)
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
@@ -81,6 +82,7 @@
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
+                                @endcan
                             @endforeach 
                                                            
                             </tbody>

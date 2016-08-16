@@ -20,7 +20,7 @@
 
         <div class="card">
             <div class="card-header text-center">
-                <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos {{--$campana->id--}}</span>
+                <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos</span>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -110,10 +110,14 @@
 
         function procesar_mercadopago(response){
 
-            var id = $("#alumno_id").val();
-            var recompensa_nombre = "{{--$recompensas->nombre--}}";
-            var campana_id = "{{--$campana->id--}}";
-            var monto = "{{--$recompensas->cantidad--}}"
+            //var id = $("#alumno_id").val();
+            //var recompensa_nombre = "{{--$recompensas->nombre--}}";
+            var campana_id = "{{ $usuario_ext['campana_id'] }}";
+            var campana_nombre = "{{ $usuario_ext['campana_nombre'] }}";
+            var monto = "{{ $usuario_ext['monto'] }}";
+            var academia_id = "{{ $usuario_ext['academia_id'] }}";
+            var nombre = "{{ $usuario_ext['nombre'] }}";
+            var email = "{{ $usuario_ext['email_externo'] }}";
             var route = route_mercadopago;
             var token = $('input:hidden[name=_token]').val();
 
@@ -124,10 +128,12 @@
                   dataType: 'json',
                   data: {
                       json: response,
-                      alumno: id,
-                      recompensa : recompensa_nombre,
+                      nombre: nombre,
+                      academia_id : academia_id,
                       campana_id : campana_id,
-                      monto : monto
+                      campana_nombre : campana_nombre,
+                      monto : monto,
+                      email : email
                   },
               success:function(respuesta){
 
@@ -137,7 +143,7 @@
               }
             });
 
-            //setTimeout(function(){ window.location = "{{url('/')}}/especiales/campañas/progreso/"+{{--$campana->id--}}; },3000);
+            setTimeout(function(){ window.location = "{{url('/')}}/especiales/campañas/progreso/"+{{ $usuario_ext['campana_id'] }}; },3000);
 
         }
 

@@ -26,6 +26,27 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        //
+        //VER ALUMNOS
+        $gate->define('view-alumnos', function($user , $alumno){
+            if($user->isType()=='admin' || $user->isType()=='recepcionista' || $user->isType()=='sucursal'){
+                return $user->academia_id === $alumno->academia_id;
+            }
+        });
+
+        //ELIMINAR ALUMNO
+        $gate->define('delete-alumnos', function($user, $alumno){
+            if($user->isType()=='admin'){
+                return $user->academia_id === $alumno->academia_id;   
+            }
+        });
+
+        //MOSTRAR BOTON MERCADO PAGO SOLO A ALUMNOS
+        //EN MODULO DE CAMPAÑAS -> CONTRIBUCIONES
+        $gate->define('view-mercadopago-button', function($user){
+            if($user->isType()=='alumno'){
+                return $user->id;
+            }
+        });        
+
     }
 }

@@ -69,8 +69,14 @@
                 <hr>
                 <div class="clearfix p-b-15"></div>
                 <div class="text-center">
+                  <!--  
+                    Aqui se esta usando una regla de acceso llamada
+                    "view-mercadopago-button" usando reglas de Acceso ACL o
+                    Policies, usando el metodo can()
+                  -->
+                  @can('view-mercadopago-button')
                     <a href="{{ $datos['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>
-
+                  @endcan
                     <button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Contribuir</button>
 
                 </div>

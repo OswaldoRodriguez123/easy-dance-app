@@ -12,6 +12,7 @@ use App\Patrocinador;
 use App\ItemsFacturaProforma;
 use App\Factura;
 use App\MercadopagoMovs;
+use App\UsuarioExterno;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -932,13 +933,19 @@ class CampanaController extends BaseController {
 
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
+//915435750
+//uu316a
+//->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+
          $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
          $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
          $patrocinadores = DB::table('patrocinadores')
              ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
-             ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+             ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+             //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, alumnos.id')
              ->where('patrocinadores.campana_id', '=', $id)
              ->orderBy('patrocinadores.monto', 'desc')
          ->get();
@@ -971,19 +978,19 @@ class CampanaController extends BaseController {
                 )
             ),
             "payer" => array(
-              "name" => $request->nombre
-              /*"surname" => $alumno->apellido,
-              "email" => $alumno->correo,*/
+              "name" => $request->nombre,
+              /*"surname" => $alumno->apellido,*/
+              "email" => $request->email_externo,
               //"date_created" => "2014-07-28T09:50:37.521-04:00"
             )
         );
 
         $preference = MP::create_preference($preference_data);
         Session::put('data_pago', $preference);
-        Session::put('data_user', $request);
+        Session::put('data_user', $request->all());
 
         if(isset($request,$preference)){
-            return response()->json(['mensaje' => '¡Preferencia de pago creada', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => 'Preferencia de pago creada', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -1031,62 +1038,138 @@ class CampanaController extends BaseController {
     //FUNCTION MERADOPAGO
     public function storeMercadopago(Request $request)
     {
+        //SI EL USUARIO ESTA LOGEADO (SI LA SESION EXISTE)
+        if(Auth::check() && Auth::user()->isType()=='alumno'){
 
-        //dd($request->all());
-        $numerofactura = DB::table('facturas')
-            ->select('facturas.*')
-            ->orderBy('created_at', 'desc')
-            ->where('facturas.academia_id', '=', Auth::user()->academia_id)
-        ->first();
+            $numerofactura = DB::table('facturas')
+                ->select('facturas.*')
+                ->orderBy('created_at', 'desc')
+                ->where('facturas.academia_id', '=', Auth::user()->academia_id)
+            ->first();
 
-        if($numerofactura){
-           $numero_factura = $numerofactura->numero_factura + 1;
-        }else{
-            $academia = Academia::find(Auth::user()->academia_id);
-                
-                if($academia->numero_factura){
-                    $numero_factura = $academia->numero_factura;
-                }
-                else{
-                    $numero_factura = 1;
-                }
-        }
+            if($numerofactura){
+               $numero_factura = $numerofactura->numero_factura + 1;
+            }else{
+                $academia = Academia::find(Auth::user()->academia_id);
+                    
+                    if($academia->numero_factura){
+                        $numero_factura = $academia->numero_factura;
+                    }
+                    else{
+                        $numero_factura = 1;
+                    }
+            }
 
-        $mercadopago = new MercadopagoMovs;
-        $factura = new Factura;
-        $patrocinador = new Patrocinador;
+            $mercadopago = new MercadopagoMovs;
+            $factura = new Factura;
+            $patrocinador = new Patrocinador;
 
-        if($request->json['collection_status']!=null){
 
-            $factura->alumno_id = $request->alumno;
-            $factura->academia_id = Auth::user()->academia_id;
-            $factura->fecha = Carbon::now()->toDateString();
-            $factura->hora = Carbon::now()->toTimeString();
-            $factura->numero_factura = $numero_factura;
-            $factura->concepto = $request->recompensa;
+            if($request->json['collection_status']!=null){
 
-            $factura->save();
+                //$factura->alumno_id = $request->alumno;
+                $factura->alumno_id = Auth::user()->id;
+                $factura->academia_id = Auth::user()->academia_id;
+                $factura->fecha = Carbon::now()->toDateString();
+                $factura->hora = Carbon::now()->toTimeString();
+                $factura->numero_factura = $numero_factura;
+                $factura->concepto = $request->recompensa;
 
-            $mercadopago->academia_id = Auth::user()->academia_id;
-            $mercadopago->alumno_id = $request->alumno;
-            $mercadopago->numero_factura = $numero_factura;
-            $mercadopago->status_pago = $request->json['collection_status'];
-            $mercadopago->pago_id = $request->json['collection_id'];
-            $mercadopago->preference_id = $request->json['preference_id'];
-            $mercadopago->tipo_pago = $request->json['payment_type'];
+                $factura->save();
 
-            $mercadopago->save();
+                $mercadopago->academia_id = Auth::user()->academia_id;
+                //$mercadopago->alumno_id = $request->alumno;
+                $mercadopago->alumno_id = Auth::user()->id;
+                $mercadopago->numero_factura = $numero_factura;
+                $mercadopago->status_pago = $request->json['collection_status'];
+                $mercadopago->pago_id = $request->json['collection_id'];
+                $mercadopago->preference_id = $request->json['preference_id'];
+                $mercadopago->tipo_pago = $request->json['payment_type'];
 
-            $patrocinador->academia_id = Auth::user()->academia_id;
-            $patrocinador->campana_id = $request->campana_id;
-            $patrocinador->usuario_id = $request->alumno;
-            $patrocinador->tipo_id = 1;
-            $patrocinador->monto = $request->monto;
+                $mercadopago->save();
 
-            $patrocinador->save();
+                $patrocinador->academia_id = Auth::user()->academia_id;
+                $patrocinador->campana_id = $request->campana_id;
+                //$patrocinador->usuario_id = $request->alumno;
+                $patrocinador->usuario_id = Auth::user()->id;
+                $patrocinador->tipo_id = 1;
+                $patrocinador->monto = $request->monto;
 
-            return 'Movimiento Generado en Base de Datos';
-        }
+                $patrocinador->save();
+
+                return 'Movimiento Generado en Base de Datos';
+            }
+            return 'No se genero ningun Registro en Base de Datos';
+        
+        }else{//USUARIOS EXTERNOS (CUANDO NO HAY SESION)
+
+            $numerofactura = DB::table('facturas')
+                ->select('facturas.*')
+                ->orderBy('created_at', 'desc')
+                ->where('facturas.academia_id', '=', $request->academia_id)
+            ->first();
+
+            if($numerofactura){
+               $numero_factura = $numerofactura->numero_factura + 1;
+            }else{
+                $academia = Academia::find($request->academia_id);
+                    
+                    if($academia->numero_factura){
+                        $numero_factura = $academia->numero_factura;
+                    }
+                    else{
+                        $numero_factura = 1;
+                    }
+            }
+            //INSTANCIAMOS LOS OBJETOS
+            $UsuarioExterno = new UsuarioExterno;
+            $mercadopago = new MercadopagoMovs;
+            $factura = new Factura;
+            $patrocinador = new Patrocinador;
+
+            if($request->json['collection_status']!=null){
+
+                $UsuarioExterno->nombre = $request->nombre;
+                $UsuarioExterno->campana_id = $request->campana_id;
+                $UsuarioExterno->monto = $request->monto;
+                $UsuarioExterno->correo = $request->email;
+
+                $UsuarioExterno->save();
+
+                $factura->externo_id = $UsuarioExterno->id;
+                $factura->academia_id = $request->academia_id;
+                $factura->fecha = Carbon::now()->toDateString();
+                $factura->hora = Carbon::now()->toTimeString();
+                $factura->numero_factura = $numero_factura;
+                $factura->concepto = 'Contribucion para la campaña '. $request->campana_nombre;
+
+                $factura->save();
+
+                $mercadopago->academia_id = $request->academia_id;
+                $mercadopago->externo_id = $UsuarioExterno->id;
+                $mercadopago->numero_factura = $numero_factura;
+                $mercadopago->status_pago = $request->json['collection_status'];
+                $mercadopago->pago_id = $request->json['collection_id'];
+                $mercadopago->preference_id = $request->json['preference_id'];
+                $mercadopago->tipo_pago = $request->json['payment_type'];
+
+                $mercadopago->save();
+
+                $patrocinador->academia_id = $request->academia_id;
+                $patrocinador->campana_id = $request->campana_id;
+                $patrocinador->externo_id = $UsuarioExterno->id;
+                $patrocinador->tipo_id = 1;
+                $patrocinador->monto = $request->monto;
+
+                $patrocinador->save();
+
+                return 'Movimiento Generado en Base de Datos';
+            }
+
+            Session::forget('data_user');
+            Session::forget('data_pago');
+            
+        }    
         return 'No se genero ningun Registro en Base de Datos';
 
     }

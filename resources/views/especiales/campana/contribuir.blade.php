@@ -112,23 +112,31 @@
                     <div class="text-center">
                       
                     <p class="f-30">Muy bien <span class="f-700" id="mostrar">Nombre</span></p> 
-                    <p class="f-25">Te estaré re direccionado para la página de mercadopago, en el que puedes a través de tu tarjeta de crédito <br> pagar de forma rápida y segura </p>
+                    <p class="f-25">Te estaré re direccionado para la página de mercadopago, en el que puedes a través de tu tarjeta de crédito <br> pagar de forma rápida y segura, ademas necesitamos tu correo electrónico </p>
 
                     <div class="text-center c-morado f-30">Dime, ¿por cuanto será tu contribución? </div>
-                    <br>
                     <div class="clearfix m-20 m-b-25"></div>
-                    <div class="clearfix m-20 m-b-25"></div>
+                   
                     <input type="text" class="form-control caja" id="monto" name="monto" data-mask="0000000000"></input>
                     <div class="has-error" id="error-monto">
                         <span >
                             <small id="error-monto_mensaje" class="help-block error-span" ></small>
                         </span>
                      </div>
-                    <hr>
+                    
+                    <div class="text-center c-morado f-30">Dime tu Correo Electronico</div>
+                    <div class="clearfix m-20 m-b-25"></div>
+                    <input type="text" class="form-control caja" id="email_externo" name="email_externo"></input>
+                    <div class="has-error" id="error-email_externo">
+                        <span >
+                            <small id="error-email_externo_mensaje" class="help-block error-span" ></small>
+                        </span>
+                     </div>
 
+                    <hr>
                     <div class="clearfix m-20 m-b-25"></div>
 
-                     <button type="button" class="btn-blanco m-r-10 f-25 guardar cuarto" href="#cuarto" aria-controls="cuarto" role="tab" data-toggle="tab" name="cuarto" id="cuarto">Ok <i class="zmdi zmdi-check"></i></button>
+                     <button type="button" class="btn-blanco m-r-10 f-25 guardar cuarto" href="#cuarto" aria-controls="cuarto" role="tab" data-toggle="tab" name="cuarto" id="cuarto">Ok <i class="zmdi zmdi-check"></i><i class="zmdi zmdi-replay zmdi-hc-spin-reverse"></i></button>
                     <span class="f-700">Pulsa Aqui</span>
 
 
@@ -308,6 +316,8 @@
 
     $(document).ready(function(){
 
+        $(".zmdi-hc-spin-reverse").css('visibility','hidden');
+
     $('#email').bind("cut copy paste",function(e) {
         e.preventDefault();
     });
@@ -347,8 +357,13 @@
             var token = $('input:hidden[name=_token]').val();
             var nombre = $("input[name=nombre]").val();
             var monto = $("input[name=monto]").val();
+            var email_externo = $("input[name=email_externo]").val();
             var campana_id = "{{$campana->id}}";
             var campana_nombre = "{{$campana->nombre}}";
+            var academia_id = "{{$academia->id}}";
+
+            $(".zmdi-check").css('visibility','hidden');
+            $(".zmdi-hc-spin-reverse").css('visibility','visible');
 
                 $.ajax({
                     url: route_pagar_participante,
@@ -359,10 +374,14 @@
                             nombre : nombre,
                             monto: monto,
                             campana_id : campana_id,
-                            campana_nombre : campana_nombre
+                            campana_nombre : campana_nombre,
+                            academia_id : academia_id,
+                            email_externo : email_externo
                         },
                     success:function(respuesta){
-                        window.location = route_pagar_participante;
+                        if(respuesta.status == 'OK'){
+                            window.location = route_pagar_participante;
+                        }    
                     },
                     error:function(msj){
                       
@@ -401,23 +420,28 @@
       }
     });
 
-    $("#monto").keyup(function(){
 
-        if($("#monto").val() != ""){
+    //$("#monto").keyup(function(){
+    $("#email_externo").keyup(function(){
 
-        $(".cuarto").removeAttr("disabled");
-        $(".cuarto").css({
-          "opacity": ("1")
-         });
-          
-      }
-      else{
 
-        $(".cuarto").attr("disabled","disabled");
-        $(".cuarto").css({
-          "opacity": ("0.2")
-        });
-      }
+
+            if($("#monto").val() != "" && $("#email_externo").val()!=""){
+
+                $(".cuarto").removeAttr("disabled");
+                $(".cuarto").css({
+                  "opacity": ("1")
+                 });
+                  
+            }else{
+
+                $(".cuarto").attr("disabled","disabled");
+                $(".cuarto").css({
+                  "opacity": ("0.2")
+                });
+            }
+
+        
     });
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){

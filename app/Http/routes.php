@@ -117,7 +117,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('/logout', 'Auth\AuthController@getLogout');
 
-
 		// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
 		Route::get('error', function () {
