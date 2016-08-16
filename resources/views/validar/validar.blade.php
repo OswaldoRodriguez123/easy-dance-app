@@ -80,7 +80,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&codigo_reservacion="+codigo,
+                        data:"&codigo_validacion="+codigo,
                     success:function(respuesta){
                       setTimeout(function(){ 
 

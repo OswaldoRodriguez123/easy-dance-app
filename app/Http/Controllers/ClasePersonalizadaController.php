@@ -126,10 +126,30 @@ class ClasePersonalizadaController extends BaseController {
 
     public function reservacion($id)
     {
+        $clase_personalizada = ClasePersonalizada::find($id);
+        $academia_id = $clase_personalizada->academia_id;
+        $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $academia_id)->first();
+        
+        if(!$config_clase_personalizada)
+        {
 
-        $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
+            $config_clase_personalizada = new ConfigClasesPersonalizadas;
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $id)->get()]);
+            $config_clase_personalizada->academia_id = $academia_id;
+            $config_clase_personalizada->imagen_principal = '';
+            $config_clase_personalizada->descripcion = '';
+            $config_clase_personalizada->video_promocional = '';
+            $config_clase_personalizada->imagen1 = '';
+            $config_clase_personalizada->imagen2 = '';
+            $config_clase_personalizada->imagen3 = '';
+            $config_clase_personalizada->ventajas = '';
+            $config_clase_personalizada->condiciones = '';
+
+            $config_clase_personalizada->save();
+            
+        }
+
+        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get()]);
         
     }
 

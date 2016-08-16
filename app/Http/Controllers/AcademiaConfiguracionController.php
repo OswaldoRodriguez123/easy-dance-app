@@ -1341,8 +1341,16 @@ class AcademiaConfiguracionController extends BaseController {
 
                                     }
 
+                                    $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
 
-                                         return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]); 
+                                    if($perfil){
+                                        $tiene_perfil = 1;
+                                    }else{
+                                        $tiene_perfil = 0;
+                                    }
+
+
+                                         return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $clase_grupal_join, 'talleres' => $talleres , 'fiestas' =>  $fiestas ,'campanas' => Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get() ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil]); 
                                    
                                 }
     }

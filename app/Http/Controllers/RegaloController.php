@@ -8,6 +8,7 @@ use App\Regalo;
 use App\Academia;
 use App\ItemsFacturaProforma;
 use App\Alumno;
+use App\Codigo;
 use Validator;
 use DB;
 use Mail;
@@ -541,23 +542,47 @@ class RegaloController extends BaseController {
 
             $academia = Academia::find(Auth::user()->academia_id);
 
-            $subj = 'FELICIDADES, HAS RECIBIDO UNA TARJETA DE REGALO';
+            do{
 
-            $array = [
+                $codigo_validacion = str_random(8);
+                $find = Codigo::where('codigo_validacion', $codigo_validacion)->first();
 
-               'correo' => $request->correo,
-               'academia' => $academia->nombre,
-               'dirigido_a' => $request->dirigido_a,
-               'de_parte_de' => Auth::user()->nombre . " " . Auth::user()->apellido,
-               'subj' => $subj
-            ];
+            }while ($find);
 
-            Mail::send('correo.regalo', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-                });
+            $codigo = New Codigo;
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $alumno_id, 200]);
+            $codigo->academia_id = $regalo->academia_id;
+            $codigo->item_id = $regalo->id;
+            $codigo->tipo = 2;
+            $codigo->codigo_validacion = $codigo_validacion;
+            $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
+
+            if($codigo->save()){
+
+                $subj = 'FELICIDADES, HAS RECIBIDO UNA TARJETA DE REGALO';
+
+                $array = [
+
+                   'correo' => $request->correo,
+                   'academia' => $academia->nombre,
+                   'dirigido_a' => $request->dirigido_a,
+                   'de_parte_de' => Auth::user()->nombre . " " . Auth::user()->apellido,
+                   'subj' => $subj,
+                   'costo' => $regalo->costo,
+                   'regalo_nombre' => $regalo->nombre,
+                   'imagen' => $regalo->imagen,
+                   'codigo_validacion' => $codigo->codigo_validacion
+                ];
+
+                Mail::send('correo.regalo', $array, function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo']);
+                    });
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $alumno_id, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

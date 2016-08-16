@@ -11,6 +11,7 @@ use App\ClaseGrupal;
 use App\Taller;
 use App\ClasePersonalizada;
 use App\Academia;
+use App\Codigo;
 use Session;
 use Validator;
 use Mail;
@@ -85,6 +86,7 @@ class ReservaController extends BaseController
 
         else{
 
+
             $tipo_reservacion = Session::get('tipo');
 
             $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)->where('tipo_id', $request->tipo_id)->where('correo', $request->email)->orderBy('created_at', 'desc')->first();
@@ -108,8 +110,8 @@ class ReservaController extends BaseController
 
                 do{
 
-                    $codigo_reservacion = str_random(8);
-                    $find = Reservacion::where('codigo_reservacion', $codigo_reservacion)->first();
+                    $codigo_validacion = str_random(8);
+                    $find = Codigo::where('codigo_validacion', $codigo_validacion)->first();
 
                 }while ($find);
 
@@ -142,48 +144,61 @@ class ReservaController extends BaseController
                 $reservacion->celular = $request->celular;
                 $reservacion->tipo_reservacion = $tipo_reservacion;
                 $reservacion->tipo_id = $request->tipo_id;
-                $reservacion->codigo_reservacion = $codigo_reservacion;
 
                 if($reservacion->save()){
 
-                    $subj = 'Has realizado una reservación';
-                    $subj2 = 'Han realizado una reservación';
+                    $codigo = New Codigo;
 
-                    $array = [
-                        'correo' => $request->email,
-                        'nombre' => $request->nombre,
-                        'actividad' => $actividad,
-                        'academia' => $academia->nombre,
-                        'codigo' => $codigo_reservacion,
-                        'correo_academia' => $academia->correo,
-                        'telefono' => $academia->telefono,
-                        'celular' => $academia->celular,
-                        'subj' => $subj
-                    ];
+                    $codigo->academia_id = $reservacion->academia_id;
+                    $codigo->item_id = $reservacion->id;
+                    $codigo->tipo = 1;
+                    $codigo->codigo_validacion = $codigo_validacion;
+                    $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
 
-                    $array2 = [
-                        'correo' => $request->email,
-                        'nombre' => $request->nombre,
-                        'actividad' => $actividad2,
-                        'actividad_nombre' => $actividad_nombre->nombre,
-                        'correo_academia' => $academia->correo,
-                        'telefono' => $request->telefono,
-                        'celular' => $request->celular,
-                        'subj' => $subj2
-                    ];
+                    if($codigo->save()){
 
-                    Mail::send('correo.reservacion_alumno', $array, function($msj) use ($array){
-                            $msj->subject($array['subj']);
-                            $msj->to($array['correo']);
-                        });
+                        $subj = 'Has realizado una reservación';
+                        $subj2 = 'Han realizado una reservación';
+
+                        $array = [
+                            'correo' => $request->email,
+                            'nombre' => $request->nombre,
+                            'actividad' => $actividad,
+                            'academia' => $academia->nombre,
+                            'codigo' => $codigo_validacion,
+                            'correo_academia' => $academia->correo,
+                            'telefono' => $academia->telefono,
+                            'celular' => $academia->celular,
+                            'subj' => $subj
+                        ];
+
+                        $array2 = [
+                            'correo' => $request->email,
+                            'nombre' => $request->nombre,
+                            'actividad' => $actividad2,
+                            'actividad_nombre' => $actividad_nombre->nombre,
+                            'correo_academia' => $academia->correo,
+                            'telefono' => $request->telefono,
+                            'celular' => $request->celular,
+                            'subj' => $subj2
+                        ];
+
+                        Mail::send('correo.reservacion_alumno', $array, function($msj) use ($array){
+                                $msj->subject($array['subj']);
+                                $msj->to($array['correo']);
+                            });
 
 
-                    Mail::send('correo.reservacion_academia', $array2, function($msj) use ($array){
-                            $msj->subject($array['subj']);
-                            $msj->to($array['correo_academia']);
-                        });
+                        Mail::send('correo.reservacion_academia', $array2, function($msj) use ($array){
+                                $msj->subject($array['subj']);
+                                $msj->to($array['correo_academia']);
+                            });
 
-                     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+                         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+                        }else{
+                            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                        }
 
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

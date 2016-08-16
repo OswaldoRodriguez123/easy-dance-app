@@ -8,7 +8,7 @@ use Validator;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
-use App\Reservacion;
+use App\Codigo;
 
 class ValidacionController extends BaseController {
 
@@ -39,7 +39,7 @@ class ValidacionController extends BaseController {
     public function validar(Request $request)
     {
 
-        $tmp = Reservacion::where('codigo_reservacion', $request->codigo_reservacion)->first();
+        $tmp = Codigo::where('codigo_validacion', $request->codigo_validacion)->first();
 
             if($tmp){
 

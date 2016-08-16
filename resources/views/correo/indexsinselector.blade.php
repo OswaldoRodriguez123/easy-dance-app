@@ -484,9 +484,11 @@
 
                                   <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span>
 
-                                  <br>
+                                  <br><br>
 
-                                  @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <span class="f-18 p-t-0 c-azul pointer confirmacion">Enviar confirmación</span> @endif
+                                  @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  @endif
+
+                                  
 
                                   
 

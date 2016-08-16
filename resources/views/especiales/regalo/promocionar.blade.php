@@ -15,6 +15,8 @@
 <script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 @stop
 
+<meta content='Descubre porqué es importante dar un regalo' property='og:title'/>
+<meta content="{{url('/')}}/assets/img/regalo.jpg" property='og:image'/>
 
 @section('content')
 

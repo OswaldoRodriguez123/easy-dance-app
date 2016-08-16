@@ -395,7 +395,7 @@
 
         $(document).on( 'click', '.enlace', function () {
           url = $(this).data('url');
-          window.location = "{{url('/')}}/"+url;
+          window.location = "{{url('/')}}"+url;
         });
 
 
