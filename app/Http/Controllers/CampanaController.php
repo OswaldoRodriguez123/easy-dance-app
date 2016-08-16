@@ -933,10 +933,6 @@ class CampanaController extends BaseController {
 
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-//915435750
-//uu316a
-//->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-
          $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
          $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
