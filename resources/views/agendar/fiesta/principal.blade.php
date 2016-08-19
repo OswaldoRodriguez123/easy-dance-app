@@ -91,12 +91,12 @@
         serverSide: false,    
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+        if ("{{count($fiesta)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
         },
         pageLength: 25,
-        paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );

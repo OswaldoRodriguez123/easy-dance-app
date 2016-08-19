@@ -43,14 +43,14 @@ class UsuarioController extends BaseController {
     public function store(Request $request)
     {
 
-        $alumno = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
+        $alumno = PerfilEvaluativo::where('usuario_id', $request->usuario_id)->first();
 
         if(!$alumno){
             
             $alumno = new PerfilEvaluativo;
         }
 
-        $alumno->usuario_id = Auth::user()->id;
+        $alumno->usuario_id = $request->usuario_id;
         $alumno->aprendizaje = $request->aprendizaje;
         $alumno->actividad = $request->actividad;
         $alumno->beneficio = $request->beneficio;

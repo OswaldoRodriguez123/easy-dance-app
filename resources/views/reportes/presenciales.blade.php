@@ -86,7 +86,7 @@
                         <div class="col-md-6">
                             <h2>Procesos de Inscripcion</h2>
                             <hr>
-                            <ul class="actions">
+                            <!-- <ul class="actions">
                                 <li class="dropdown action-show">
                                     <a href="#" data-toggle="dropdown">
                                         <i class="zmdi zmdi-more-vert"></i>
@@ -98,7 +98,7 @@
                                         </p>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul> -->
                             <div id="pie-chart-procesos" class="flot-chart-pie"></div>
                             <div class="flc-pie hidden-xs"></div>
 
@@ -110,7 +110,7 @@
                             <hr>
 
 
-                            <ul class="actions">
+                            <!-- <ul class="actions">
                                 <li class="dropdown action-show">
                                     <a href="#" data-toggle="dropdown">
                                         <i class="zmdi zmdi-more-vert"></i>
@@ -122,7 +122,7 @@
                                         </p>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul> -->
                             
                             <div class="col-md-3">    
                                 <i class="zmdi zmdi-male zmdi-hc-5x c-azul"></i>

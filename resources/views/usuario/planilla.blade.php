@@ -582,19 +582,23 @@
                     <div class="card">
                       <div class="card-header">
 
-                      <div class="card-header text-center">
+                      @if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
 
-                        <div class="col-xs-12 text-left">
-                          <ul class="tab-nav tn-justified" role="tablist">
-                                    <li class="waves-effect active"><a href="{{url('/')}}/perfil" aria-controls="home11" onclick="procesando()"><div class="zmdi zmdi-account f-30" style="margin-top:10px"></div><p>Perfil</p></a></li>
-                                    <li class="waves-effect"><a href="{{url('/')}}/perfil-evaluativo" aria-controls="home11" onclick="procesando()"><div class="icon_a-alumnos f-30"></div><p style=" margin-bottom: -2px;">Perfil Evaluativo</p></a></li>
-                                    
-                            </ul>
-                            </div>
+                        <div class="card-header text-center">
 
-                            <div class="clearfix p-b-15"></div>
-                                                                                     
-                        </div>
+                          <div class="col-xs-12 text-left">
+                            <ul class="tab-nav tn-justified" role="tablist">
+                                      <li class="waves-effect active"><a href="{{url('/')}}/perfil" aria-controls="home11" onclick="procesando()"><div class="zmdi zmdi-account f-30" style="margin-top:10px"></div><p>Perfil</p></a></li>
+                                      <li class="waves-effect"><a href="{{url('/')}}/perfil-evaluativo" aria-controls="home11" onclick="procesando()"><div class="icon_a-alumnos f-30"></div><p style=" margin-bottom: -2px;">Perfil Evaluativo</p></a></li>
+                                      
+                              </ul>
+                              </div>
+
+                              <div class="clearfix p-b-15"></div>
+                                                                                       
+                          </div>
+
+                        @endif
                             
                             
                       </div>
@@ -946,9 +950,15 @@
               context.drawImage(img, 0, 0);
        
               var newimage = canvas.toDataURL("image/jpeg", 0.8);
+
+              // if(newimage != 'data:,')
+              // {
               var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+              // }else{
+              //   var image64 = $("input:hidden[name=imageBase64]").val(imagen);
+              // }
                 
-            },500);
+            },2500);
 
             setTimeout(function(){
   

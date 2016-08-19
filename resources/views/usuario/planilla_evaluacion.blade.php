@@ -29,9 +29,21 @@
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Alumno</a>
                         <h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>
                     </div>  -->
+
+
+                    @if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4)
+
+                      <div class="block-header">
+                         <?php $url = "/participante/alumno/detalle/$perfil->alumno_id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                      </div> 
+
+                    @endif
                     
                     <div class="card">
                         <div class="card-header text-center">
+
+                        @if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
 
                         <div class="col-xs-12 text-left">
                           <ul class="tab-nav tn-justified" role="tablist">
@@ -44,12 +56,15 @@
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
 
+                          @endif
+
                             <span class="f-25 c-morado"><i class="icon_a-alumnos f-25"></i> Perfil Evaluativo </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
                           <form name="perfil_evaluativo" id="perfil_evaluativo"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="usuario_id" value="{{ $perfil->usuario_id }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>

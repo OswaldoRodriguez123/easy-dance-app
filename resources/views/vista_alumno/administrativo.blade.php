@@ -118,12 +118,11 @@
         // paging:false, 
         order: [[0, 'desc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 50) {
+        if ("{{count($facturas)}}" < 50) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
-          else{
-             $('.dataTables_paginate').show();
-          }
+
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );

@@ -16,6 +16,7 @@ use App\ItemsFacturaProforma;
 use App\Academia;
 use App\Familia;
 use App\User;
+use App\PerfilEvaluativo;
 use Mail;
 use DB;
 use Validator;
@@ -289,6 +290,17 @@ class AlumnoController extends BaseController
 
         if($alumno){
 
+            // $clases_grupales = InscripcionClaseGrupal::where('alumno_id', $id)->get();
+
+            $clases_grupales = DB::table('alumnos')
+                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago')
+                ->where('inscripcion_clase_grupal.alumno_id', $id)
+            ->get();
+
             $subtotal = 0;
             $impuesto = 0;
 
@@ -304,7 +316,7 @@ class AlumnoController extends BaseController
                     
             }
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal]);
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -721,15 +733,6 @@ class AlumnoController extends BaseController
             $mensaje = $mensaje . ' clase grupal';
         }
 
-        $exist = ClasePersonalizada::where('alumno_id',$id)->first();
-        
-        if($exist)
-        {
-            $total = 1;
-
-            $mensaje = $mensaje . ', clase personalizada';
-        }
-
         $exist = InscripcionTaller::where('alumno_id',$id)->first();
         
         if($exist)
@@ -781,5 +784,27 @@ class AlumnoController extends BaseController
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
 
+    }
+
+    public function perfil_evaluativo($id)
+    {
+
+        $usuario = User::where('usuario_id', $id)->first();
+        // $perfil = PerfilEvaluativo::where('usuario_id', $usuario->id)->first();
+
+        $perfil = DB::table('perfil_evaluativo')
+            ->join('users', 'perfil_evaluativo.usuario_id', '=', 'users.id')
+            ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
+            ->where('perfil_evaluativo.usuario_id', $usuario->id)
+        ->first();
+
+        if(!$perfil){
+            $perfil = new PerfilEvaluativo;
+            $perfil->usuario_id = $usuario->id;
+            $perfil->save();
+        }
+
+        return view('usuario.planilla_evaluacion')->with('perfil', $perfil);
     }
 }

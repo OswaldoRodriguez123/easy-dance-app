@@ -104,7 +104,7 @@ class ClaseGrupalController extends BaseController {
 
         $alumnos_inscritos = DB::table('inscripcion_clase_grupal')
                 ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
@@ -128,10 +128,10 @@ class ClaseGrupalController extends BaseController {
         return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos]);
     }
 
-    public function eliminarinscripcion(Request $request)
+    public function eliminarinscripcion($id)
     {
         // $inscripcion = InscripcionClaseGrupal::find($id);
-        $inscripcion = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+        $inscripcion = InscripcionClaseGrupal::find($id);
         
         if($inscripcion->delete()){
             return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
@@ -832,6 +832,58 @@ class ClaseGrupalController extends BaseController {
             }
         }
 
+    public function editarinscripcion(Request $request)
+    {
+
+    $rules = [
+        'costo_mensualidad_edicion' => 'required|numeric',
+        'fecha_pago_edicion' => 'required',
+    ];
+
+    $messages = [
+
+        'costo_mensualidad_edicion.required' => 'Ups! El costo de la mensualidad es requerida',
+        'costo_mensualidad_edicion.numeric' => 'Ups! El campo del costo de la mensualidad en inválido , debe contener sólo números',        
+        'fecha_pago_edicion.required' => 'Ups! La fecha de pago es requerida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $fecha_pago = trim($request->fecha_pago_edicion);
+            
+            $rest = substr($fecha_pago, -3, 1);
+            if($rest != "-")
+            {
+                $fecha_pago = Carbon::createFromFormat('d/m/Y', $fecha_pago);
+            }else{
+                $fecha_pago = Carbon::createFromFormat('Y-m-d', $fecha_pago);
+            }
+
+            $inscripcion = InscripcionClaseGrupal::find($request->id_edicion);
+
+            $inscripcion->fecha_pago = $fecha_pago;
+            $inscripcion->costo_mensualidad = $request->costo_mensualidad_edicion;
+
+            
+            if($inscripcion->save())
+            {
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'inscripcion' => $request->all(), 200]);
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
+        }
+    }
+
      public function updateNombre(Request $request){
 
         $clasegrupal = ClaseGrupal::find($request->id);
@@ -1207,16 +1259,44 @@ class ClaseGrupalController extends BaseController {
 
     public function updateFechaCobro(Request $request){
 
-        $clasegrupal = ClaseGrupal::find($request->id);
+    $rules = [
+        'fecha_inicio_preferencial' => 'required',
+    ];
 
-        if($request->fecha_inicio_preferencial){
+    $messages = [
 
-            $fecha_inicio_preferencial = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio_preferencial)->toDateString();
-            $clasegrupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
+        'fecha_inicio_preferencial.required' => 'Ups! La fecha es requerida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $fecha_inicio_preferencial = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio_preferencial);
+
+        if($fecha_inicio_preferencial < Carbon::now()){
+
+            return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! ha ocurrido un error. La fecha de próximo pago no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
-        else{
 
-            $clasegrupal->fecha_inicio_preferencial = null;
+        $fecha_inicio_preferencial = $fecha_inicio_preferencial->toDateString();
+
+        $clasegrupal = ClaseGrupal::find($request->id);
+        $clasegrupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
+
+        $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id', $clasegrupal->id)->get();
+
+        foreach ($inscripcion_clase_grupal as $inscripcion) {
+
+            $inscripcion->fecha_pago = $fecha_inicio_preferencial;
+            $inscripcion->save();
+
         }
 
         if($clasegrupal->save()){
@@ -1224,6 +1304,7 @@ class ClaseGrupalController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
     }
 
     public function updateFechaPago(Request $request){

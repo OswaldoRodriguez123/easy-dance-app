@@ -89,8 +89,9 @@
         serverSide: false,    
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+        if ("{{count($servicios)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
         },
         pageLength: 25,

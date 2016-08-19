@@ -58,7 +58,7 @@ class ClasePersonalizadaController extends BaseController {
         }
 
 
-        if(Auth::user()->usuario_tipo != 2){
+        if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
 
             return view('agendar.clase_personalizada.index')->with(['clases_personalizadas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
         }else{

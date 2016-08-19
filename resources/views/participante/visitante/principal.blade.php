@@ -35,7 +35,7 @@
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" name="tablelistar">
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
@@ -92,19 +92,21 @@
             route_detalle="{{url('/')}}/participante/visitante/detalle";
             route_email="{{url('/')}}/correo/sesion/";
             
-            $(document).ready(function(){
+        $(document).ready(function(){
 
-            t=$('#tablelistar').DataTable({
+        console.log($('#tablelistar tr').length);
+
+        t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
         order: [[1, 'desc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+        if ("{{count($visitante)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
         },
         pageLength: 25,
-        paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );

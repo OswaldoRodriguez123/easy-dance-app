@@ -13,6 +13,7 @@ use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use DB;
 
 class InstructorController extends BaseController {
 
@@ -26,7 +27,19 @@ class InstructorController extends BaseController {
     public function index()
     {
 
-        return view('participante.instructor.principal')->with('instructor', Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
+
+            return view('participante.instructor.principal')->with('instructor', Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        }else{
+
+             $academia = Academia::find(Auth::user()->academia_id);
+             $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
+
+            return view('participante.instructor.principal_alumno')->with(['instructor' => $instructor]);
+
+        }
+
+        
     }
 
     /**
@@ -667,15 +680,19 @@ class InstructorController extends BaseController {
         return view('participante.instructor.operacion')->with(['id' => $id, 'instructor' => $instructor]);       
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id)
+    public function progreso($id)
     {
 
+        $instructores = DB::table('instructores')
+            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
+            ->select('instructores.*' , 'perfil_instructor.*')
+            ->where('instructores.id', $id)
+        ->first();
+
+        $academia = Academia::find($instructores->academia_id);
+
+  
+        return view('participante.instructor.promocionar')->with(['academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id]);
     }
 
     /**

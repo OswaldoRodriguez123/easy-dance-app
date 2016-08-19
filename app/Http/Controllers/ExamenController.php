@@ -83,10 +83,16 @@ class ExamenController extends BaseController {
 
         else{
 
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+
+            if($fecha < Carbon::now()){
+
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
 
             $items = json_decode($request->items);
-
-
+            $fecha = $fecha->toDateString();
+            
             $examen = new Examen;
 
             $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
@@ -94,7 +100,7 @@ class ExamenController extends BaseController {
             $examen->academia_id = Auth::user()->academia_id;
             $examen->nombre = $nombre;
             $examen->descripcion = $request->descripcion;
-            $examen->fecha= $request->fecha;
+            $examen->fecha = $fecha;
             $examen->color_etiqueta = $request->color_etiqueta;
             $examen->instructor_id = $request->instructor_id;
             $examen->condiciones = $request->condiciones;

@@ -114,17 +114,19 @@
 
         $(document).ready(function(){
 
+        console.log("{{count($alumnos)}}")
+
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
         order: [[3, 'asc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+        if ("{{count($alumnos)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
         },
         pageLength: 25,
-        paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );

@@ -68,6 +68,7 @@ Route::post('/login', 'LoginController@postLogin');
 
 Route::post('reservacion/{id}', 'ReservaController@GuardarTipo');
 Route::post('reservar', 'ReservaController@store');
+Route::post('reservarconusuario', 'ReservaController@storeconusuario');
 
 Route::get('/reservacion/completado', function () {
 	return view('reserva.reserva_completado');
@@ -323,6 +324,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::delete('participante/alumno/eliminar/{id}', 'AlumnoController@destroy');
 			Route::post('participante/alumno/restablecer/{id}', 'AlumnoController@restore');
 			Route::get('participante/alumno/detalle/{id}', 'AlumnoController@edit');
+			Route::get('participante/alumno/perfil-evaluativo/{id}', 'AlumnoController@perfil_evaluativo');
 			Route::get('participante/alumno/operaciones/{id}', 'AlumnoController@operar');
 			Route::get('participante/alumno/deuda/{id}', 'AlumnoController@deuda');
 			Route::get('participante/alumno/historial/{id}', 'AlumnoController@historial');
@@ -441,6 +443,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/inscribir/{id}', 'ClaseGrupalController@inscribir');
 			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 			Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
+			Route::post('agendar/clases-grupales/editarinscripcion', 'ClaseGrupalController@editarinscripcion');
 
 			//CLASES PERSONALIZADAS
 
@@ -748,6 +751,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//CAMPAÑAS
 			Route::get('especiales/campañas', 'CampanaController@index');
+
+
+			//INSTRUCTORES
+			
+			Route::get('instructores', 'InstructorController@index');
+			Route::get('instructores/detalle/{id}', 'InstructorController@progreso');
 
 		});//END MIDDLEWARE ALUMNO
 

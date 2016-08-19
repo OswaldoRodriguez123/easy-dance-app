@@ -56,7 +56,7 @@
 
                         <div class="clearfix m-20 m-b-25"></div>
 
-                     <button type="button" class="btn-blanco m-r-10 f-25 guardar" href="#segundo" aria-controls="segundo" role="tab" data-toggle="tab">Hablemos</button>
+                     <button type="button" class="btn-blanco m-r-10 f-25 guardar" href="#segundo" aria-controls="segundo" role="tab" data-toggle="tab">Hablemos</button> <a class="f-700" href="#quinto" aria-controls="quinto" role="tab" data-toggle="tab" name="quinto">Ya posees una cuenta?</a>
 
                     </div> 
                   </div>
@@ -141,6 +141,54 @@
                   </div>
                  </div>
 
+                   <div role="tabpanel" class="tab-pane  animated fadeInRight in" id="quinto">
+
+                    <div class="block-header">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+
+                    <form name="consultar_usuario" id="consultar_usuario"  >
+
+                    <input type="hidden" name="tipo_id" value= {{$id}} >
+                      
+                    <div class="c-morado f-25">Correo Electrónico </div>
+                    <div class="clearfix m-20 m-b-25"></div>
+                    <input type="text" class="form-control caja" id="correo_registro" name="correo_registro"></input>
+                    <div class="has-error" id="error-correo_registro">
+                        <span >
+                            <small id="error-correo_registro_mensaje" class="help-block error-span" ></small>
+                        </span>
+                     </div>
+
+                     <div class="clearfix m-20 m-b-25"></div>
+
+                     <div class="c-morado f-25">Contraseña </div>
+                    <div class="clearfix m-20 m-b-25"></div>
+                    <input type="password" class="form-control caja" id="password_registro" name="password_registro"></input>
+                    <div class="has-error" id="error-password_registro">
+                        <span >
+                            <small id="error-password_registro_mensaje" class="help-block error-span" ></small>
+                        </span>
+                     </div>
+                                                             
+
+                    <div class="clearfix m-20 m-b-25"></div>
+                    <div class="text-center">
+                      <button type="button" class="btn-blanco m-r-10 f-22 guardar_registro" id="guardar_registro" name ="guardar_registro" onclick="procesando()">Reservar</button>
+                     </div>
+
+
+                     <div class="clearfix m-20 m-b-25"></div>
+                     <div class="clearfix m-20 m-b-25"></div>
+
+                    </form>
+                  </div>
+
+                  <div class="col-md-1"></div>
+
+                  </div>
+                 </div>
+
                  <div role="tabpanel" class="tab-pane  animated fadeInRight in" id="cuarto">
 
                     <div class="iconox-icon">
@@ -196,6 +244,43 @@
                                </div>
 
                                <br>
+
+                               <div class="roww row">
+                             <div class="col-sm-6 ">
+                                 <div class="form-group">
+                                    <label for="correo">Contraseña</label>
+                                    <span class="input-group">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-lock f-22"></i></span>
+                                    <div class="fg-line">
+                                    <input type="password" class="form-control input-sm" name="password" id="password" placeholder="Mínimo de 6 caracteres">
+                                    </div>
+                                    </span>
+                                 </div>
+                                 <div class="has-error" id="error-password">
+                                    <span >
+                                     <small id="error-password_mensaje" class="help-block error-span" ></small>
+                                    </span>
+                                    </div>
+                               </div>
+                                <div class="col-sm-6">
+                                 <div class="form-group">
+                                    <label for="direccion">Confirmar tu contraseña</label>
+                                    <span class="input-group">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-lock f-22"></i></span>
+                                    <div class="fg-line">
+                                    <input type="password" class="form-control input-sm" name="password_confirmation" id="password_confirmation" placeholder="Repite tu contraseña">
+                                    </div>
+                                    </span>
+                                 </div>
+                                 <div class="has-error" id="error-password_confirmation">
+                                    <span >
+                                     <small id="error-password_confirmation_mensaje" class="help-block error-span" ></small>
+                                    </span>
+                                    </div>
+                               </div>
+                            </div>
+
+                            <br>
 
                         
                         <div class="roww row">
@@ -269,7 +354,7 @@
                     <div class="text-center">
                        <!-- <a class="btn-blanco2 m-r-6 f-22 guardar" id="guardar"  style=" margin-top: 60px; " >  Llévame </a> -->
 
-                       <button type="button" class="btn-blanco m-r-10 f-22 guardar" id="guardar" name ="guardar" onclick="procesando()">Reservar</button>
+                       <button type="button" class="btn-blanco m-r-10 f-22 guardar" id="guardar" name ="guardar" onclick="procesando()">Reservar</button> <a class="f-700" href="#quinto" aria-controls="quinto" role="tab" data-toggle="tab" name="quinto">Ya posees una cuenta?</a>
 
                     </div>
                      <br><br><br> 
@@ -283,6 +368,7 @@
               </div> <!-- FINAL -->
 
             </div>
+
             <div class="col-md-2"></div>
             
         </div>
@@ -305,6 +391,7 @@
 		<script type="text/javascript">
 
     route_agregar="{{url('/')}}/reservar";
+    route_agregarconusuario="{{url('/')}}/reservarconusuario";
     route_completado="{{url('/')}}/reservacion/completado";
 
     $(document).ready(function(){
@@ -487,8 +574,95 @@
                 });
             });
 
+      $("#guardar_registro").click(function(){
+
+                var route = route_agregarconusuario;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#consultar_usuario" ).serialize(); 
+                $("#guardar").attr("disabled","disabled");
+                procesando();
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          // var nType = 'success';
+                          // $("#agregar_alumno")[0].reset();
+                          // var nTitle="Ups! ";
+                          // var nMensaje=respuesta.mensaje;
+                          window.location = route_completado;
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          finprocesado();
+                          $("#guardar").css({
+                            "opacity": ("1")
+                          });
+                          $(".cancelar").removeAttr("disabled");
+
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      if(msj.responseJSON.error_mensaje){
+
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                      }else{
+
+                        setTimeout(function(){ 
+                          
+                          errores(msj.responseJSON.errores);
+                          
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";       
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nType = 'danger';
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY";                       
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                        }, 1000);
+                      }
+                      $("#guardar").removeAttr("disabled");
+                      finprocesado();
+                      $("#guardar").css({
+                        "opacity": ("1")
+                      });
+                      $(".cancelar").removeAttr("disabled");
+                      $(".procesando").removeClass('show');
+                      $(".procesando").addClass('hidden');
+                    }
+                });
+            });
+
     function limpiarMensaje(){
-      var campo = ["email", "email_confirmation", "nombre", "password", "password_confirmation", "telefono", "como_nos_conociste_id"];
+      var campo = ["email", "email_confirmation", "nombre", "password", "password_confirmation", "telefono", "como_nos_conociste_id", "correo_registro", "password_registro"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

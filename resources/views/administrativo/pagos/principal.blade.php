@@ -116,14 +116,11 @@
         processing: true,
         serverSide: false,
         pageLength: 50, 
-        // paging:false, 
         order: [[0, 'desc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 50) {
+        if ("{{count($proforma)}}" < 50) {
               $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
+              $('#tablelistar_length').hide();
           }
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {

@@ -1132,7 +1132,7 @@ class AcademiaConfiguracionController extends BaseController {
                                         /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
                                         $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
                                         
-                                        if($FacturaProforma == 0 ){
+                                        if($FacturaProforma == 0 AND $InscripcionClase->Costo > 0){
 
                                             $fecha_final = Carbon::createFromFormat('Y-m-d', $configClases->fecha_final);
 

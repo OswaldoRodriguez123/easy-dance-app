@@ -500,7 +500,7 @@
                     </div>
                 </div>
             </section>
-            <input type="text" id="dataItems">
+            <!-- <input type="text" id="dataItems"> -->
             <nav class="navbar navbar-default navbar-fixed-bottom">
               <div class="container">
                 

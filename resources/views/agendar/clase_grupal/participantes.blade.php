@@ -360,6 +360,73 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalEdicion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno: <span id="span_alumno" name="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edicion_alumno" id="edicion_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+
+                             <div class="col-sm-12">
+                                   <div class="form-group fg-line">
+                                      <label for="costo">Costo Mensualidad</label>
+                                      <input type="text" class="form-control input-sm" name="costo_mensualidad_edicion" id="costo_mensualidad_edicion" data-mask="0000000000" placeholder="Ej. 5000">
+                                   </div>
+                                   <div class="has-error" id="error-costo_mensualidad_edicion">
+                                        <span >
+                                            <small class="help-block error-span" id="error-costo_mensualidad_edicion_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                                 </div>
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                    <label for="fecha_pago_edicion">Fecha de primer cobro automático</label>
+                                    <input type="text" class="form-control date-picker input-sm" name="fecha_pago_edicion" id="fecha_pago_edicion" placeholder="Ej. 00/00/0000">
+                                 </div>
+                                    <div class="has-error" id="error-fecha_pago_edicion">
+                                      <span >
+                                          <small id="error-fecha_pago_edicion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id_edicion" id="id_edicion" value=""></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <button type="button" class="btn-blanco m-r-5 f-12 guardar_edicion" id="guardar_edicion" name="guardar_edicion">Guardar<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -398,8 +465,8 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                                <?php $id = $alumno->inscripcion_id; ?>
+                                <tr id="{{$id}}" class="seleccion" data-fecha="{{$alumno->fecha_pago}}" data-mensualidad="{{$alumno->costo_mensualidad}}" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}">
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
                                     @if($alumno->sexo=='F')
@@ -445,6 +512,7 @@
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarinscripcion/";
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
+        route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
 
         $(document).ready(function(){
 
@@ -992,13 +1060,98 @@
             });
         });
 
-        // function previa(t){
+        $("#guardar_edicion").click(function(){
 
-        //     var row = $(t).closest('tr').attr('id');
-        //     var id_alumno = row.split('_');
-        //     var route =route_detalle+"/"+id_alumno[1];
-        //     window.location=route;
-        // }
+                procesando();
+                var route = route_editar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#edicion_alumno" ).serialize();         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          var tr_edicion = $("#"+respuesta.inscripcion.id_edicion);
+
+                          $(tr_edicion).data('mensualidad', respuesta.inscripcion.costo_mensualidad_edicion)
+                          $(tr_edicion).data('fecha', respuesta.inscripcion.fecha_pago_edicion)
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $('#modalEdicion').modal('hide');
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+            });
+
+        function previa(t){
+
+            var id = $(t).closest('tr').attr('id');
+            var fecha_pago = $(t).closest('tr').data('fecha');
+            var costo_mensualidad = $(t).closest('tr').data('mensualidad');
+            var nombre = $(t).closest('tr').data('nombre');
+
+
+            $('#id_edicion').val(id);
+            $('#costo_mensualidad_edicion').val(costo_mensualidad);
+            $('#fecha_pago_edicion').val(fecha_pago);
+            $('#span_alumno').text(nombre);
+            
+            $('#modalEdicion').modal('show');
+        }
 
         $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
@@ -1034,14 +1187,13 @@
         function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
-         var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
                 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                     dataType: 'json',
-                    data: "&alumno_id=" + id + "&clase_grupal_id=" + clase_grupal_id,
+                    data: id,
                     success:function(respuesta){
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');

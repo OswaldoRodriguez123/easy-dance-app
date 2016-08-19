@@ -577,6 +577,61 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalClaseGrupal-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Clases Grupales <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div>
+                        <div class="clearfix p-b-15"></div>
+
+                        <div class="row p-t-20 p-b-0" style="padding-left: 2%">
+
+                        @if(!$clases_grupales)
+
+                        <div class="col-sm-10 col-sm-offset-1 error_clase_grupal">
+
+
+                          <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                          <div class="c-morado f-30 text-center"> No se encontraron resultados </div>
+
+
+                         </div>
+
+                         @else
+            
+
+                        
+                        <div class="show_clase_grupal">
+                        
+                        @foreach($clases_grupales as $clase_grupal)
+
+                        <div class="col-sm-12">
+
+                        <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->id}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: {{$clase_grupal->fecha_pago}}</span>
+
+                        </div>
+
+
+                        @endforeach
+
+                        </div>
+
+                        @endif
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+
+                        </div>
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -659,6 +714,7 @@
                                   <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a href="{{url('/')}}/participante/alumno/perfil-evaluativo/{{$id}}"><i class="icon_a-alumnos f-20 m-r-5 boton blue sa-warning" data-original-title="Perfil Evaluativo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -748,6 +804,14 @@
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class=icon_d-ficha-medica f-22"></i> </span>
                                <span class="f-14"> Ficha Médica </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Alumno">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class=icon_a-clases-grupales f-22"></i> </span>
+                               <span class="f-14"> Clases Grupales</span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -1190,7 +1254,14 @@
                         eliminar(id);
           }
                 });
-            });
+      });
+
+    $(".clase_grupal").click(function(){
+        id = this.id;
+        window.location = "{{url('/')}}/agendar/clases-grupales/participantes/"+id;
+               
+      });
+    
       function eliminar(id){
          var route = route_eliminar + id;
          var token = '{{ csrf_token() }}';

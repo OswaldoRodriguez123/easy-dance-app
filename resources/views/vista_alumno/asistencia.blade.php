@@ -48,6 +48,19 @@
                             </thead>
                             <tbody>
 
+                            @foreach ($alumnos_asistencia as $asistencia)
+                                <?php $id = $asistencia->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$asistencia->fecha}}</td>
+                                    <td class="text-center previa">{{$asistencia->clase}}</td>
+                                    <td class="text-center previa">{{$asistencia->nombre_instructor}} {{$asistencia->apellido_instructor}}</td>
+                                    <td class="text-center previa">{{$asistencia->hora}}</td>
+                                </tr>
+
+
+
+                            @endforeach
+
                                                            
                             </tbody>
                         </table>
@@ -82,12 +95,13 @@
         serverSide: false,    
         order: [[0, 'desc'], [3, 'desc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+        if ("{{count($alumnos_asistencia)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
+
         },
         pageLength: 25,
-        paging: false,
         language: {
               searchPlaceholder: "Buscar"
         },
@@ -148,26 +162,8 @@
                         iconUp: 'zmdi-expand-less'
                     }
                 });
-
-                rechargeAlumno();
             });
 
-        function rechargeAlumno(){
-            var alumno = <?php echo json_encode($alumnos_asistencia);?>;
-
-            $.each(alumno, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+array.fecha+'',
-                ''+array.clase+'',
-                ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
-                ''+array.hora+'',
-                '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-        }
 
         </script>
 

@@ -238,7 +238,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group fg-line">
-                                    <label for="fecha_inicio_preferencial">Fecha de primer cobro automático</label>
+                                    <label for="fecha_inicio_preferencial">Fecha de próximo pago</label>
                                     <input type="text" class="form-control date-picker input-sm" name="fecha_inicio_preferencial" id="fecha_inicio_preferencial" placeholder="Ej. 00/00/0000" value="{{$clasegrupal->fecha_inicio_preferencial}}">
                                  </div>
                                     <div class="has-error" id="error-fecha_inicio_preferencial">

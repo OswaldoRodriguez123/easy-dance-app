@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\ConfigClasesGrupales;
+use App\ClaseGrupal;
+use App\InscripcionClaseGrupal;
 use App\ConfigServicios;
 use App\Academia;
 use Validator;
@@ -219,6 +221,8 @@ class ConfigClasesGrupalesController extends BaseController {
     else{
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
+        $clasegrupal2 = ClaseGrupal::where('clase_grupal_id', $request->id)->first();
+        $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id', $clasegrupal2->id)->get();
 
         $costo_mensualidad = $request->costo_mensualidad;
 
@@ -226,6 +230,13 @@ class ConfigClasesGrupalesController extends BaseController {
             $costo_mensualidad = 0;
         }
         $clasegrupal->costo_mensualidad = $costo_mensualidad;
+
+        foreach ($inscripcion_clase_grupal as $inscripcion) {
+
+            $inscripcion->costo_mensualidad = $costo_mensualidad;
+            $inscripcion->save();
+
+        }
 
         if($clasegrupal->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_mensualidad', 'valor' => $costo_mensualidad, 200]);
