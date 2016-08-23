@@ -154,6 +154,14 @@ class ClaseGrupalController extends BaseController {
             ->where('clases_grupales.id','=', $id)
         ->first();
 
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal_join->fecha_inicio);
+
+        if(Carbon::now() > $fecha_inicio){
+            $inicio = 1;
+        }else{
+            $inicio = 0;
+        }
+
         $academia = Academia::find($clase_grupal_join->academia_id);
 
         if($clase_grupal_join->link_video){
@@ -197,7 +205,7 @@ class ClaseGrupalController extends BaseController {
         
         }
 
-        return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes, 'usuario_tipo' => $usuario_tipo]);
+        return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio]);
     }
 
     public function create()

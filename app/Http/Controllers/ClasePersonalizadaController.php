@@ -213,7 +213,8 @@ class ClasePersonalizadaController extends BaseController {
 
         $clasepersonalizada->academia_id = Auth::user()->academia_id;
         $clasepersonalizada->nombre = $nombre;
-        $clasepersonalizada->costo = $request->costo;;
+        $clasepersonalizada->costo = $request->costo;
+        $clasepersonalizada->descripcion = $request->descripcion;
         $clasepersonalizada->color_etiqueta = $request->color_etiqueta;
         $clasepersonalizada->tiempo_expiracion = $request->tiempo_expiracion;
 
@@ -653,6 +654,19 @@ class ClasePersonalizadaController extends BaseController {
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
+        }
+    }
+
+    public function updateDescripcion(Request $request){
+
+        $clasepersonalizada = ClasePersonalizada::find($request->id);
+        $clasepersonalizada->descripcion = $request->descripcion;
+
+        if($clasepersonalizada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'nombre', 'valor' => $nombre, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 

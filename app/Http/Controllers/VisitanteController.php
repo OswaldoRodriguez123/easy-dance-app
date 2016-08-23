@@ -13,6 +13,7 @@ use Validator;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class VisitanteController extends BaseController {
 
@@ -388,7 +389,8 @@ class VisitanteController extends BaseController {
 
     public function impresion($id)
     {
-        $visitante = EncuestaVisitante::find($id);
+        $visitante = EncuestaVisitante::where('visitante_id', $id)->first();
+
 
         if(!$visitante){
             $visitante = new EncuestaVisitante;
@@ -396,7 +398,9 @@ class VisitanteController extends BaseController {
             $visitante->save();
         }
 
-        return view('participante.visitante.planilla_encuesta')->with('visitante', $visitante);
+        $visitante_presencial = Visitante::find($id);
+
+        return view('participante.visitante.planilla_encuesta')->with(['visitante' => $visitante, 'visitante_presencial' => $visitante_presencial]);
     }
 
     public function storeImpresion(Request $request)
@@ -425,16 +429,50 @@ class VisitanteController extends BaseController {
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id)
-    {
+    public function enviar(Request $request){
 
-    }
+        $visitante = Visitante::find($request->id);
+
+        if(!$visitante->correo){
+            return response()->json(['error_mensaje'=> 'Ups! Este visitante no posee correo electrónico asignado' , 'status' => 'ERROR-CORREO'],422);
+        }
+
+        $subj = 'Información';
+
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.fecha_inicio', 'clases_grupales.id')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+        ->get();
+
+        $array_clase = array();
+        $i = 0;
+
+        foreach($clase_grupal_join as $clase_grupal){
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            if($fecha < Carbon::now()){
+                $array_clase[$i] = $clase_grupal;
+                $i = $i + 1;
+            }
+        }
+
+
+        $array = [
+            'nombre' => $visitante->nombre,
+            'email' => $visitante->correo,
+            'subj' => $subj,
+            'clases_grupales' => $clase_grupal_join
+        ];
+
+        Mail::send('correo.clases_grupales', $array, function($msj) use ($array){
+            $msj->subject($array['subj']);
+            $msj->to($array['email']);
+        });
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+        }
 
     /**
      * Remove the specified resource from storage.

@@ -291,17 +291,17 @@
 
                   @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
 
-                    <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribir</a></li>
+                    <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribir</a></li>
 
                   @else
 
-                    <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribirse</a></li>
+                    <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribirse</a></li>
 
                   @endif
 
                 @else
 
-                  <li class="waves-effect"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Reservar</a></li>
+                  <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Reservar</a></li>
 
                 @endif
 
@@ -530,6 +530,11 @@
         var condiciones = <?php echo json_encode($taller->condiciones);?>;
 
             $(document).ready(function() {
+
+              if("{{$inicio}}" == 1){
+                $('.reservar').hide();
+              }
+
 
               $("#pre_condiciones").html(nl2br(condiciones));
 

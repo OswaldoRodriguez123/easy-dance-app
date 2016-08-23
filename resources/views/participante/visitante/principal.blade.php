@@ -38,7 +38,6 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" name="tablelistar">
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="fecha">Fecha de Registro</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -50,7 +49,6 @@
                             @foreach ($visitante as $visitantes)
                                 <?php $id = $visitantes['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$visitantes['identificacion']}}</td>
                                     <td class="text-center previa">{{$visitantes['fecha_registro']}}</td>
                                     <td class="text-center previa">
                                     @if($visitantes['sexo']=='F')
@@ -61,7 +59,8 @@
                                     </td>
                                     <td class="text-center previa">{{$visitantes['nombre']}} {{$visitantes['apellido']}} </td>
                                     <td class="text-center disabled">
-                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones email"></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"></i></td>
+                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones email"></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"></i> <i class="zmdi zmdi-account-box f-20 m-r-10 boton blue sa-warning" id="{{$id}}" name="informacion" data-original-title="Enviar Informacion" data-toggle="tooltip" data-placement="bottom" title=""></i></td>
+                                    
                                 </tr>
                             @endforeach 
                                                            
@@ -92,6 +91,7 @@
         route_detalle="{{url('/')}}/participante/visitante/detalle";
         route_email="{{url('/')}}/correo/sesion/";
         route_impresion="{{url('/')}}/participante/visitante/impresion/";
+        route_enviar="{{url('/')}}/participante/visitante/enviar";
             
         $(document).ready(function(){
 
@@ -110,7 +110,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -209,6 +209,61 @@
         procesando();
         id = this.id;
         window.location = route_impresion + id;
+      });
+
+      $("i[name=informacion]").click(function(){
+                id = this.id;
+                swal({   
+                    title: "Desea enviar la informacion al visitante?",   
+                    text: "Confirmar envio!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Enviar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            $(".sweet-alert").hide();
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+            procesando();
+            var route = route_enviar;
+            var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data: "&id="+id,
+                    success:function(respuesta){
+                        
+                        finprocesado();
+                        swal("Listo!","La información fue enviada con exito!","success");
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                finprocesado();
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+                
+                }
+            });
       });
 
 

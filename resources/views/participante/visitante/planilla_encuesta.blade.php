@@ -43,7 +43,7 @@
                         <div class="card-header text-center">
                         
 
-                            <span class="f-25 c-morado"> PLANILLA DE IMPRESIÓN DEL CLIENTE </span> <br> <br>
+                            <span class="f-25 c-morado"> {{$visitante_presencial->nombre}} </span> <br> <br>
 
                             <span class="f-25 c-morado"> Ayúdenos a mejorar, tu opinión Vale </span>
 
@@ -231,8 +231,6 @@
                               <!-- <a class="btn-blanco m-r-10 f-18 guardar" href="#" id="guardar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
-
-                              <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
 
                             </div>
                         </div></form>

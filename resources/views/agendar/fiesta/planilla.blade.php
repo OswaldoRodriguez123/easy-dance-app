@@ -84,8 +84,9 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)">{{$fiesta->descripcion}}</textarea>
                                     </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">2000</span> Caracteres</div>
                                     <div class="has-error" id="error-descripcion">
                                       <span >
                                           <small id="error-descripcion_mensaje" class="help-block error-span" ></small>                                           
@@ -1029,6 +1030,24 @@
                                 }
                 });
       }
+
+      function countChar(val) {
+        var len = val.value.length;
+        if (len >= 2000) {
+          val.value = val.value.substring(0, 2000);
+        } else {
+          $('#charNum').text(2000 - len);
+        }
+      };
+
+      function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 10000) {
+          val.value = val.value.substring(0, 10000);
+        } else {
+          $('#charNum2').text(10000 - len);
+        }
+      };
     
    </script> 
 

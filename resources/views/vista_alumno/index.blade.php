@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-<a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn"><i class="zmdi zmdi-calendar"></i></a>
+<a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn" data-trigger="hover" data-toggle="popover" data-placement="left" data-content="" title="" data-original-title="Agendar clase personalizada"><i class="zmdi zmdi-calendar"></i></a>
 <div class="container">
     <div class="card">
     <div class="card-body p-b-20">
@@ -108,7 +108,7 @@
                             </div>
 
                             <div class ="detalle">
-                            <a href="{{url('/')}}/instructores" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores
+                            <a href="{{url('/')}}/instructores" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$instructor_contador}}</span>
 
                             </a>
                             </div>

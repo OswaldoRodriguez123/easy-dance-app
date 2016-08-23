@@ -430,9 +430,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="1000 Caracteres" onkeyup="countChar2(this)"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="2000 Caracteres" onkeyup="countChar2(this)"></textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1000</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">2000</span> Caracteres</div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
                                           <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
@@ -470,9 +470,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="resumen_artistico" name="resumen_artistico" rows="2" placeholder="1000 Caracteres" onkeyup="countChar3(this)"></textarea>
+                                      <textarea class="form-control" id="resumen_artistico" name="resumen_artistico" rows="2" placeholder="2000 Caracteres" onkeyup="countChar3(this)"></textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">1000</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">2000</span> Caracteres</div>
                                  <div class="has-error" id="error-resumen_artistico">
                                       <span >
                                           <small class="help-block error-span" id="error-resumen_artistico_mensaje" ></small>                                
@@ -989,19 +989,19 @@
 
       function countChar2(val) {
         var len = val.value.length;
-        if (len >= 1000) {
-          val.value = val.value.substring(0, 1000);
+        if (len >= 2000) {
+          val.value = val.value.substring(0, 2000);
         } else {
-          $('#charNum2').text(1000 - len);
+          $('#charNum2').text(2000 - len);
         }
       };
 
       function countChar3(val) {
         var len = val.value.length;
-        if (len >= 1000) {
-          val.value = val.value.substring(0, 1000);
+        if (len >= 2000) {
+          val.value = val.value.substring(0, 2000);
         } else {
-          $('#charNum3').text(1000 - len);
+          $('#charNum3').text(2000 - len);
         }
       };
 </script> 

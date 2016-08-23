@@ -337,7 +337,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/direccion','AlumnoController@updateDireccion');
 			Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
-			Route::post('participante/alumno/enviar', 'AlumnoController@enviar');
 
 			//INSTRUCTOR
 
@@ -381,6 +380,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 			Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
+			Route::post('participante/visitante/enviar', 'VisitanteController@enviar');
 
 			//FAMILIA
 

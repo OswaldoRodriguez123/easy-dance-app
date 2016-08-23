@@ -78,6 +78,24 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
+                               <div class="col-sm-12">
+                                 
+                                    <label for="empresa" id="id-empresa">Empresa</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la empresa del proveedor" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-city-alt f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="empresa" id="empresa" placeholder="Ej. Empresa">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-empresa">
+                                      <span >
+                                          <small class="help-block error-span" id="error-empresa_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
                                 <div class="col-sm-12">
                                  
                                     <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del proveedor" title="" data-original-title="Ayuda"></i>
@@ -296,7 +314,7 @@
 
 
   function porcentaje(){
-    var campo = ["nombre", "apellido", "telefono", "celular", "correo", "direccion"];
+    var campo = ["nombre", "apellido", "telefono", "celular", "correo", "direccion", "empresa"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -470,7 +488,7 @@
 
 
       function limpiarMensaje(){
-      var campo = ["nombre", "apellido", "telefono", "celular", "correo", "direccion"];
+      var campo = ["nombre", "apellido", "telefono", "celular", "correo", "direccion", "empresa"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -478,7 +496,7 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "apellido", "telefono", "celular", "correo", "direccion"];
+      var campo = ["nombre", "apellido", "telefono", "celular", "correo", "direccion", "empresa"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

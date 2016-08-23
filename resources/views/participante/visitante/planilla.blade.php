@@ -59,6 +59,7 @@
                                   
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="impresion"><i class="icon_a-examen f-20 m-r-5 boton blue sa-warning" data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <i class="zmdi zmdi-account-box f-20 m-r-10 boton blue sa-warning" name="informacion" data-original-title="Enviar Informacion" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
@@ -178,6 +179,7 @@
     route_update="{{url('/')}}/participante/visitante/update";
     route_email="{{url('/')}}/correo/sesion/";
     route_impresion="{{url('/')}}/participante/visitante/impresion/";
+    route_enviar="{{url('/')}}/participante/visitante/enviar";
 
     $(document).ready(function(){
 
@@ -511,6 +513,61 @@
         $(".impresion").click(function(){
         procesando();
         window.location = route_impresion + "{{$visitante->id}}";
+      });
+
+        $("i[name=informacion]").click(function(){
+                id = "{{$visitante->id}}";
+                swal({   
+                    title: "Desea enviar la informacion al visitante?",   
+                    text: "Confirmar envio!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Enviar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            $(".sweet-alert").hide();
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+            procesando();
+            var route = route_enviar;
+            var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data: "&id="+id,
+                    success:function(respuesta){
+                        
+                        finprocesado();
+                        swal("Listo!","La información fue enviada con exito!","success");
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                finprocesado();
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+                
+                }
+            });
       });
     
    </script> 

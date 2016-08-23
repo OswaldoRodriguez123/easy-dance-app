@@ -84,12 +84,12 @@
     @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
     
 
-      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/instructor" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección instructores</a>
                       
 
     @else
 
-      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/instructores" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección instructores</a>
 
     @endif
 

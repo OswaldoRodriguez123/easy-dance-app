@@ -122,6 +122,7 @@ class ProveedorController extends BaseController {
         $proveedor->academia_id = Auth::user()->academia_id;
         $proveedor->nombre = $nombre;
         $proveedor->apellido = $apellido;
+        $proveedor->empresa = $request->empresa;
         $proveedor->correo = $correo;
         $proveedor->telefono = $request->telefono;
         $proveedor->celular = $request->celular;

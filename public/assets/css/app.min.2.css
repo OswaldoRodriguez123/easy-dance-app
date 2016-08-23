@@ -3291,6 +3291,7 @@ select.chosen {
 
 .mCS-minimal-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
   background: rgba(0, 0, 0, 0.4);
+  width: 15px
 }
 
 .mCS-minimal-dark.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_bar {

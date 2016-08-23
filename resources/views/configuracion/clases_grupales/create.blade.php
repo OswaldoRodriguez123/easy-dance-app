@@ -107,9 +107,9 @@
                                  <div class="form-group fg-line">
                                     <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="1000 Caracteres" maxlength="1000" onkeyup="countChar(this)"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">1000</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">2000</span> Caracteres</div>
                                  </div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
@@ -567,10 +567,10 @@
 
       function countChar(val) {
         var len = val.value.length;
-        if (len >= 1000) {
-          val.value = val.value.substring(0, 1000);
+        if (len >= 2000) {
+          val.value = val.value.substring(0, 2000);
         } else {
-          $('#charNum').text(1000 - len);
+          $('#charNum').text(2000 - len);
         }
       };
 
