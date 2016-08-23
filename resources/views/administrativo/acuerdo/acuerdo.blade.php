@@ -254,6 +254,82 @@
 
                                     <div class="col-sm-12">
 
+                                    <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Opciones Avanzadas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección de opción avanzada podrás generar una mora por retraso de pago e incluir el porcentaje que consideres pertinente" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-12">
+                                          <label for="id" id="id-porcentaje_retraso">Porcentaje de retraso de pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un porcentaje de mora por retraso de pago correspondiente al servicio que ofreces" title="" data-original-title="Ayuda"></i>
+                                              <div class="input-group">
+                                                <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                                 <div class="fg-line"> 
+                                                  
+                                                  <input type="text" class="form-control input-sm input-mask" name="porcentaje_retraso" id="porcentaje_retraso" data-mask="00" placeholder="Ej. 20">
+
+                                                  </div>
+                                                </div>
+                                              <div class="has-error" id="error-porcentaje_retraso">
+                                                <span >
+                                                    <small id="error-porcentaje_retraso_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                      </div>
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                      <div class="col-sm-12">
+                                          <label for="id" id="id-tiempo_tolerancia">Tiempo de Tolerancia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los días de tolerancia que ofreces a tus clientes para la gestión del pago del servicio, al vencerse dicha fecha el sistema generará una mora por retraso de pago, según el porcentaje que hayas indicado" title="" data-original-title="Ayuda"></i>
+                                              <div class="input-group">
+                                                <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                                 <div class="fg-line"> 
+                                                  <input type="text" class="form-control input-sm input-mask" name="tiempo_tolerancia" id="tiempo_tolerancia" data-mask="00" placeholder="Ej. 20">
+                                                  </div>
+                                                </div>
+                                              <div class="has-error" id="error-tiempo_tolerancia">
+                                                <span >
+                                                    <small id="error-tiempo_tolerancia_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                      </div>
+
+                                      <div class="clearfix p-b-20"></div>
+
+
+                            <div class="clearfix p-b-35"></div>
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+                            
+                            <div class="clearfix p-b-35"></div>
+                               <hr></hr>
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+
                                  
                                     <!-- <span class="f-30 text-center c-morado">Totales</span>
                                     
@@ -621,6 +697,8 @@
   $("#guardar").click(function(){
 
                 id = $("#alumno_id").val()
+                porcentaje_retraso = $("#porcentaje_retraso").val()
+                tiempo_tolerancia = $("#tiempo_tolerancia").val()
 
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
@@ -636,7 +714,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&alumno_id="+id,
+                        data:"&alumno_id="+id+"&porcentaje_retraso="+porcentaje_retraso+"&tiempo_tolerancia="+tiempo_tolerancia,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -894,6 +972,20 @@
      }
    });
   });
+
+  function collapse_minus(collaps){
+       $('#'+collaps).collapse('hide');
+      }
+
+      $('#collapseTwo').on('show.bs.collapse', function () {
+        $("#guardar").attr("disabled","disabled");
+        $("#guardar").css({"opacity": ("0.2")});
+      })
+
+      // $('#collapseTwo').on('hide.bs.collapse', function () {
+      //   $("#guardar").removeAttr("disabled");
+      //   $("#guardar").css({"opacity": ("1")});
+      // })
 
 </script> 
 @stop

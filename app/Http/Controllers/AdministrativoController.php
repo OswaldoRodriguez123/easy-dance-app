@@ -743,6 +743,32 @@ class AdministrativoController extends BaseController {
 
                     if($item_proforma){
 
+                        if($item_proforma->tipo == 6){
+
+                            $acuerdo = Acuerdo::find($item_proforma->item_id);
+                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
+                            $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+
+                            if($fecha_limite < Carbon::now())
+                            {
+                                $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
+
+                                $item_factura = new ItemsFacturaProforma;
+                                                                            
+                                $item_factura->alumno_id = $request->id;
+                                $item_factura->academia_id = Auth::user()->academia_id;
+                                $item_factura->fecha = Carbon::now()->toDateString();
+                                $item_factura->item_id = $item_proforma->item_id;
+                                $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
+                                $item_factura->tipo = 8;
+                                $item_factura->cantidad = 1;
+                                $item_factura->importe_neto = $mora;
+                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                $item_factura->save();
+                            }
+                        }
+
                         $item_factura = new ItemsFactura;
 
                         $item_factura->factura_id = $factura_id;
@@ -768,7 +794,35 @@ class AdministrativoController extends BaseController {
                     {
                         $id = $id_proforma[$i];
 
-                        $item_proforma = ItemsFacturaProforma::find($id)->delete();
+                        $item_proforma = ItemsFacturaProforma::find($id);
+
+                        if($item_proforma->tipo == 6){
+
+                            $acuerdo = Acuerdo::find($item_proforma->item_id);
+                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
+                            $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+
+                            if($fecha_limite < Carbon::now())
+                            {
+                                $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
+
+                                $item_factura = new ItemsFacturaProforma;
+                                                                            
+                                $item_factura->alumno_id = $request->id;
+                                $item_factura->academia_id = Auth::user()->academia_id;
+                                $item_factura->fecha = Carbon::now()->toDateString();
+                                $item_factura->item_id = $item_proforma->item_id;
+                                $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
+                                $item_factura->tipo = 8;
+                                $item_factura->cantidad = 1;
+                                $item_factura->importe_neto = $mora;
+                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                $item_factura->save();
+                            }
+                        }
+
+                        $item_proforma->delete();
                     
                     }
 
@@ -1715,12 +1769,16 @@ class AdministrativoController extends BaseController {
     $rules = [
 
         'alumno_id' => 'required',
+        'porcentaje_retraso' => 'numeric',
+        'tiempo_tolerancia' => 'numeric',
 
     ];
 
     $messages = [
 
         'alumno_id.required' => 'Ups! El Cliente es requerido',
+        'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
+        'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',  
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -1768,6 +1826,8 @@ class AdministrativoController extends BaseController {
                 $acuerdo->fecha_inicio = Carbon::createFromFormat('d-m-Y', $arreglo['fechas_acuerdo'][0]['fecha_frecuencia'])->toDateString();
                 $acuerdo->frecuencia = $arreglo['frecuencia'];
                 $acuerdo->cuotas = $arreglo['partes'];
+                $acuerdo->porcentaje_retraso = $request->porcentaje_retraso;
+                $acuerdo->tiempo_tolerancia = $request->tiempo_tolerancia;
                 $acuerdo->save();
 
                 foreach($fechas_acuerdo as $fechas){

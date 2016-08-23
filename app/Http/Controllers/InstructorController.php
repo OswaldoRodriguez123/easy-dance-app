@@ -221,6 +221,34 @@ class InstructorController extends BaseController {
 
             }
 
+            if($request->imagePerfilBase64){
+
+                $base64_string = substr($request->imagePerfilBase64, strpos($request->imagePerfilBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imagePerfilBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "instructorp-". $instructor->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/instructor/'.$nombre_img);
+
+                $instructor->imagen = $nombre_img;
+                $instructor->save();
+
+            }
+
             $usuario = new User;
 
             $usuario->academia_id = Auth::user()->academia_id;
@@ -533,6 +561,43 @@ class InstructorController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function updateImagen(Request $request)
+    {
+                $instructor = Instructor::find($request->id);
+                
+                if($request->imagePerfilBase64){
+                    $base64_string = substr($request->imagePerfilBase64, strpos($request->imagePerfilBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imagePerfilBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "instructorp-". $instructor->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('taller')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/instructor/'.$nombre_img);
+
+                }else{
+                    $nombre_img = "";
+                }
+
+                $instructor->imagen = $nombre_img;
+                $instructor->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     /**

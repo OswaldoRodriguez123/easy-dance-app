@@ -43,23 +43,6 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                    <label for="identificacion" id="id-identificacion">Id - Pasaporte</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del visitante" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="0000000000" placeholder="Ej: 16133223">
-                                      </div>
-                                    </div>
-                                 <div class="has-error" id="error-identificacion">
-                                      <span >
-                                          <small class="help-block error-span" id="error-identificacion_mensaje" ></small>                        
-                                      </span>
-                                  </div>
-                               </div>
-                               <div class="clearfix p-b-35"></div>
-                              <div class="col-sm-12">
-                                 
                                     <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del visitante" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">

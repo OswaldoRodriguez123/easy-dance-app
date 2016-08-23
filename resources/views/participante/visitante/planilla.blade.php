@@ -58,6 +58,7 @@
                                   <hr></hr>
                                   
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="impresion"><i class="icon_a-examen f-20 m-r-5 boton blue sa-warning" data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
                                   <br></br>
                                     
@@ -79,14 +80,6 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                            <tr class="disabled" data-toggle="modal" >
-                             <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($visitante->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                             
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-account-box f-22"></i> </span>
-                              <span class="f-14">Id / pasaporte </span>
-                             </td>
-                             <td class="f-14 m-l-15" id="visitante-identificacion">{{$visitante->identificacion}}</td>
-                            </tr>
                             <tr class="disabled" data-toggle="modal" href="#modalNombre-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($visitante->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -184,6 +177,7 @@
    <script type="text/javascript">
     route_update="{{url('/')}}/participante/visitante/update";
     route_email="{{url('/')}}/correo/sesion/";
+    route_impresion="{{url('/')}}/participante/visitante/impresion/";
 
     $(document).ready(function(){
 
@@ -512,6 +506,11 @@
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
+      });
+
+        $(".impresion").click(function(){
+        procesando();
+        window.location = route_impresion + "{{$visitante->id}}";
       });
     
    </script> 

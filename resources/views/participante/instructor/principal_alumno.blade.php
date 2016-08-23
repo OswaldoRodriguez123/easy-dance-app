@@ -57,15 +57,15 @@
                   
                                       <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-                                        @if($instructor->imagen_artistica)
-                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/instructor/{{$instructor->imagen_artistica}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                        @if($instructor->imagen)
+                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/instructor/{{$instructor->imagen}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
                                         @else
 
                                         <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
 
                                         @endif
 
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-7">
 
                                         <p class="f-25 f-700" style="color:#5e5e5e">{{$instructor['nombre']}} {{$instructor['apellido']}}</p>
                                     
@@ -74,10 +74,10 @@
 
                                         </div>
 
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-2 col-sm-offset-1">
 
                                         <div style="padding-top: 50px">
-                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$instructor['id']}}">Reservar</button>
+                                            <button type="button" class="btn btn-blanco m-r-20 f-16 previa" id="{{$instructor['id']}}">Conocer más<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
                                         </div>
 
                                         </div>

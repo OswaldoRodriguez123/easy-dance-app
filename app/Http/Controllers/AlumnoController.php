@@ -786,6 +786,37 @@ class AlumnoController extends BaseController
 
     }
 
+    public function enviar(Request $request){
+
+        $alumno = Alumno::find($request->id);
+
+        $subj = 'Información';
+
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.fecha_inicio', 'clases_grupales.id')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+        ->get();
+
+
+        $array = [
+            'nombre' => $alumno->nombre,
+            'email' => $alumno->correo,
+            'subj' => $subj,
+            'clases_grupales' => $clase_grupal_join
+        ];
+
+        Mail::send('correo.clases_grupales', $array, function($msj) use ($array){
+            $msj->subject($array['subj']);
+            $msj->to($array['email']);
+        });
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+        }
+
+
     public function perfil_evaluativo($id)
     {
 

@@ -108,7 +108,7 @@
                             </div>
 
                             <div class ="detalle">
-                            <a href="{{url('/')}}/instructores" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-20"></i> Instructores
+                            <a href="{{url('/')}}/instructores" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores
 
                             </a>
                             </div>

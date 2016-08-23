@@ -8,6 +8,7 @@ use App\Visitante;
 use App\ComoNosConociste;
 use App\ConfigEspecialidades;
 use App\DiasDeInteres;
+use App\EncuestaVisitante;
 use Validator;
 use Carbon\Carbon;
 use DB;
@@ -34,21 +35,8 @@ class VisitanteController extends BaseController {
      */
     public function create()
     {
-        $config['center'] = '10.6913156,-71.6800493';
-        $config['zoom'] = 14;
-        \Gmaps::initialize($config);
 
-        $marker = array();
-        $marker['position'] = '10.6913156,-71.6800493';
-        $marker['draggable'] = true;
-        $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-        \Gmaps::add_marker($marker);
-
-
-        $map = \Gmaps::create_map();
- 
-        //Devolver vista con datos del mapa
-        return view('participante.visitante.create' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all()]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all()]);;
     }
 
     /**
@@ -126,7 +114,6 @@ class VisitanteController extends BaseController {
         $correo = strtolower($request->correo);
 
         $visitante->academia_id = Auth::user()->academia_id;
-        $visitante->identificacion = $request->identificacion;
         $visitante->nombre = $nombre;
         $visitante->apellido = $apellido;
         $visitante->sexo = $request->sexo;
@@ -375,7 +362,7 @@ class VisitanteController extends BaseController {
         $visitante_join = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.identificacion as identificacion', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 
@@ -397,6 +384,45 @@ class VisitanteController extends BaseController {
         }else{
            return redirect("participante/visitante"); 
         }
+    }
+
+    public function impresion($id)
+    {
+        $visitante = EncuestaVisitante::find($id);
+
+        if(!$visitante){
+            $visitante = new EncuestaVisitante;
+            $visitante->visitante_id = $id;
+            $visitante->save();
+        }
+
+        return view('participante.visitante.planilla_encuesta')->with('visitante', $visitante);
+    }
+
+    public function storeImpresion(Request $request)
+    {
+
+        $visitante = EncuestaVisitante::where('visitante_id', $request->visitante_id)->first();
+
+        if(!$visitante){
+            
+            $visitante = new EncuestaVisitante;
+        }
+
+        $visitante->visitante_id = $request->visitante_id;
+        $visitante->rapidez = $request->rapidez;
+        $visitante->calidad = $request->calidad;
+        $visitante->satisfaccion = $request->satisfaccion;
+        $visitante->disponibilidad = $request->disponibilidad;
+
+        if($visitante->save()){
+
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+
     }
 
     /**

@@ -1304,24 +1304,29 @@
             if(respuesta.status=="OK"){
 
               console.log(respuesta.items);
-              if(respuesta.items.length > 0){
-                window.location = route_alumno + alumno_id;
-              }
-              else{
-                finprocesado();
-                $('html,body').animate({
-                  scrollTop: $("#id-producto-servicio").offset().top-90,
-                }, 1000);
-              }
+              // if(respuesta.items.length > 0){
+              //   window.location = route_alumno + alumno_id;
+              // }
+              // else{
+              //   finprocesado();
+              //   $('html,body').animate({
+              //     scrollTop: $("#id-producto-servicio").offset().top-90,
+              //   }, 1000);
+              // }
+              // 
+              finprocesado();
+              $('html,body').animate({
+                scrollTop: $("#id-producto-servicio").offset().top-90,
+              }, 1000);
 
 
 
 
-              // $.each(respuesta.items, function (index, array) {
+              $.each(respuesta.items, function (index, array) {
 
-              //     $("#tablelistar").bootgrid().bootgrid("append", array);
+                  $("#tablelistar").bootgrid().bootgrid("append", array);
                  
-              // });
+              });
 
               // var checkboxes = $(this).closest('form').find(':checkbox');
               // checkboxes.prop('checked', true);

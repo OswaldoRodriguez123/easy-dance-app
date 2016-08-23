@@ -214,6 +214,32 @@
 
                                <div class="clearfix p-b-35"></div>
 
+                               <div class="col-sm-12">
+                                    <label for="apellido" id="id-imagen_perfil">Imagen de Perfil</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen de perfil para el instructor" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <div class="clearfix p-b-15"></div>
+                                      
+                                      <input type="hidden" name="imagePerfilBase64" id="imagePerfilBase64">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen_perfil" id="imagen_perfil" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                      <div class="has-error" id="error-imagen_perfil">
+                                      <span >
+                                          <small class="help-block error-span" id="error-imagen_perfil_mensaje"  ></small>
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="nombre" id="id-ficha">Ficha Médica</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los datos o estado de salud del instructor" title="" data-original-title="Ayuda"></i>
@@ -580,9 +606,42 @@
             //alert('algo cambio');
             
             setTimeout(function(){
-              var fileinput = $("#imagena img").attr('src');
-              //alert(fileinput);
-              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+              var imagen = $("#imagena img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+            },500);
+
+        });
+
+      $("#imagen_perfil").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var imagen = $("#imagenb img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imagePerfilBase64]").val(newimage);
             },500);
 
         });

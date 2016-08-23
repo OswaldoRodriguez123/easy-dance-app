@@ -61,7 +61,7 @@
                                     </td>
                                     <td class="text-center previa">{{$visitantes['nombre']}} {{$visitantes['apellido']}} </td>
                                     <td class="text-center disabled">
-                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones email"></i></td>
+                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones email"></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -89,8 +89,9 @@
             
     <script type="text/javascript">
 
-            route_detalle="{{url('/')}}/participante/visitante/detalle";
-            route_email="{{url('/')}}/correo/sesion/";
+        route_detalle="{{url('/')}}/participante/visitante/detalle";
+        route_email="{{url('/')}}/correo/sesion/";
+        route_impresion="{{url('/')}}/participante/visitante/impresion/";
             
         $(document).ready(function(){
 
@@ -202,6 +203,12 @@
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
+      });
+
+      $(".impresion").click(function(){
+        procesando();
+        id = this.id;
+        window.location = route_impresion + id;
       });
 
 

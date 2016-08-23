@@ -76,7 +76,6 @@ Route::get('/reservacion/completado', function () {
 
 Route::get('reservacion/{id}','ReservaController@reserva');
 
-
 // REGALO USUARIO
 
 Route::get('especiales/regalos/disponibles/{id}', 'RegaloController@indexconacademia');
@@ -338,6 +337,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/direccion','AlumnoController@updateDireccion');
 			Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
+			Route::post('participante/alumno/enviar', 'AlumnoController@enviar');
 
 			//INSTRUCTOR
 
@@ -360,6 +360,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/instructor/update/estatus','InstructorController@updateEstatus');
 			Route::put('participante/instructor/update/redes', 'InstructorController@updateRedes');
 			Route::put('participante/instructor/update/avanzado','InstructorController@updateAvanzado');
+			Route::put('participante/instructor/update/imagen','InstructorController@updateImagen');
 
 			//VISITANTE
 
@@ -377,6 +378,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/visitante/update/direccion','VisitanteController@updateDireccion');
 			Route::put('participante/visitante/update/como_se_entero','VisitanteController@updateComoSeEntero');
 			Route::put('participante/visitante/update/especialidad','VisitanteController@updateEspecialidad');
+
+			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
+			Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
 
 			//FAMILIA
 
@@ -410,7 +414,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//CLASES GRUPALES
 
-			Route::get('agendar/clases-grupales', 'ClaseGrupalController@principal');
 			Route::post('agendar/clases-grupales/agregar', 'ClaseGrupalController@store');
 			Route::get('agendar/clases-grupales/agregar', 'ClaseGrupalController@create');
 			Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
@@ -475,7 +478,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//TALLERES
 
-			Route::get('agendar/talleres', 'TallerController@index');
 			Route::post('agendar/talleres/agregar', 'TallerController@store');
 			Route::get('agendar/talleres/agregar', 'TallerController@create');
 			Route::get('agendar/talleres/detalle/{id}', 'TallerController@edit');
@@ -686,7 +688,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//Route::get('/inicio', 'AcademiaConfiguracionController@index');
 
-			Route::get('/', 'AcademiaConfiguracionController@menu');
+			
 
 
 			//SMS
@@ -735,6 +737,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('administrativo/factura/{id}', 'AdministrativoController@getFactura');
 
 			Route::get('/inicio', 'AcademiaConfiguracionController@index');
+
+			Route::get('/', 'AcademiaConfiguracionController@menu');
 		
 			//PERFIL USUARIO
 			Route::get('perfil', 'UsuarioController@perfil');
@@ -757,6 +761,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			
 			Route::get('instructores', 'InstructorController@index');
 			Route::get('instructores/detalle/{id}', 'InstructorController@progreso');
+
+			//CLASES GRUPALES 
+			
+			Route::get('agendar/clases-grupales', 'ClaseGrupalController@principal');
+
+			//TALLERES
+			
+			Route::get('agendar/talleres', 'TallerController@index');
+			
 
 		});//END MIDDLEWARE ALUMNO
 

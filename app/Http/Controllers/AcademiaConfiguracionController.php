@@ -152,7 +152,12 @@ class AcademiaConfiguracionController extends BaseController {
 
     public function menu(){
 
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
+
         return view('menu.index');
+        }else{
+            return redirect("/inicio"); 
+        }
         
     }
 

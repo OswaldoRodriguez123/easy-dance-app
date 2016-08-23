@@ -716,6 +716,7 @@
                                   <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/perfil-evaluativo/{{$id}}"><i class="icon_a-alumnos f-20 m-r-5 boton blue sa-warning" data-original-title="Perfil Evaluativo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-account-box f-20 m-r-10 boton blue sa-warning" id="{{$alumno->id}}" name="informacion" data-original-title="Enviar Informacion" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
@@ -845,6 +846,7 @@
     route_sesion="{{url('/')}}/participante/alumno/sesion";
     route_historial = "{{url('/')}}/participante/alumno/historial/";
     route_email="{{url('/')}}/correo/sesion/";
+    route_enviar="{{url('/')}}/participante/alumno/enviar";
 
     total = "{{$total}}";
 
@@ -1308,6 +1310,58 @@
           $('#charNum').text(180 - len);
         }
       };
+
+      $("i[name=informacion]").click(function(){
+                id = this.id;
+                swal({   
+                    title: "Desea enviar la informacion al alumno?",   
+                    text: "Confirmar envio!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Enviar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+            procesando();
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+            var route = route_enviar;
+            var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data: "&id="+id,
+                    success:function(respuesta){
+                        finprocesado();
+                        swal("Listo!","La información fue enviada con exito!","success");
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+          }
+                });
+      });
 
       // $("a[name=generar]").click(function(){
 

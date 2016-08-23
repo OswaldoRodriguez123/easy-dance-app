@@ -235,32 +235,32 @@
                         <hr class="linea-morada">
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_instructor" id ="tiempo_experiencia_instructor"> {{$instructores_academia->tiempo_experiencia_instructor}}</div>
+                            <div class="circulo_instructor f-700" name ="tiempo_experiencia_instructor" id ="tiempo_experiencia_instructor"> {{$instructores_academia->tiempo_experiencia_instructor}}</div>
                             <span class="span_circulo"> Años de experiencia</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="genero_instructor" id ="genero_instructor"> {{$instructores_academia->genero_instructor}}</div>
+                            <div class="circulo_instructor f-700" name ="genero_instructor" id ="genero_instructor"> {{$instructores_academia->genero_instructor}}</div>
                             <span class="span_circulo"> Géneros que domina</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="cantidad_horas" id ="cantidad_horas"> {{$instructores_academia->cantidad_horas}}</div>
+                            <div class="circulo_instructor f-700" name ="cantidad_horas" id ="cantidad_horas"> {{$instructores_academia->cantidad_horas}}</div>
                             <span class="span_circulo"> Horas impartidas</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="titulos_instructor" id ="titulos_instructor"> {{$instructores_academia->titulos_instructor}}</div>
+                            <div class="circulo_instructor f-700" name ="titulos_instructor" id ="titulos_instructor"> {{$instructores_academia->titulos_instructor}}</div>
                             <span class="span_circulo"> Títulos y reconocimientos </span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="organizador" id ="organizador"> {{$instructores_academia->organizador}}</div>
+                            <div class="circulo_instructor f-700" name ="organizador" id ="organizador"> {{$instructores_academia->organizador}}</div>
                             <span class="span_circulo"> Organizador de eventos</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="invitacion_evento" id ="invitacion_evento"> {{$instructores_academia->invitacion_evento}}</div>
+                            <div class="circulo_instructor f-700" name ="invitacion_evento" id ="invitacion_evento"> {{$instructores_academia->invitacion_evento}}</div>
                             <span class="span_circulo"> Invitaciones a eventos</span>
                           </div>
                           
@@ -318,33 +318,33 @@
 
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_bailador" id ="tiempo_experiencia_bailador"> {{$instructores_academia->tiempo_experiencia_bailador}}</div>
+                            <div class="circulo_instructor f-700" name ="tiempo_experiencia_bailador" id ="tiempo_experiencia_bailador"> {{$instructores_academia->tiempo_experiencia_bailador}}</div>
                             <span class="span_circulo"> Años de experiencia</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="genero_bailador" id ="genero_bailador"> {{$instructores_academia->genero_bailador}}</div>
+                            <div class="circulo_instructor f-700" name ="genero_bailador" id ="genero_bailador"> {{$instructores_academia->genero_bailador}}</div>
                             <span class="span_circulo"> Géneros que domina</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="participacion_coreografia" id ="participacion_coreografia"> {{$instructores_academia->participacion_coreografia}}</div>
-                            <span class="span_circulo"> Participación en coreografías</span>
+                            <div class="circulo_instructor f-700" name ="participacion_coreografia" id ="participacion_coreografia"> {{$instructores_academia->participacion_coreografia}}</div>
+                            <span class="span_circulo text-center"> Participación en coreografías</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="montajes" id ="montajes"> {{$instructores_academia->montajes}}</div>
+                            <div class="circulo_instructor f-700" name ="montajes" id ="montajes"> {{$instructores_academia->montajes}}</div>
                             <span class="span_circulo"> Montajes coreográficos </span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="titulos_bailador" id ="titulos_bailador"> {{$instructores_academia->titulos_bailador}}</div>
+                            <div class="circulo_instructor f-700" name ="titulos_bailador" id ="titulos_bailador"> {{$instructores_academia->titulos_bailador}}</div>
                             <span class="span_circulo"> Títulos y reconocimientos</span>
                           </div>
 
                           <div class="container_circulo">
-                            <div class="circulo_instructor f-25 f-700" name ="participacion_escenario" id ="participacion_escenario"> {{$instructores_academia->participacion_escenario}}</div>
-                            <span class="span_circulo"> Participación en escenarios y shows</span>
+                            <div class="circulo_instructor f-700" name ="participacion_escenario" id ="participacion_escenario"> {{$instructores_academia->participacion_escenario}}</div>
+                            <span class="span_circulo text-center"> Participación en escenarios y shows</span>
                           </div>
                           
                         <hr class="linea-morada">
