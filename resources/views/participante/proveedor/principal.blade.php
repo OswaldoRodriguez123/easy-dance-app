@@ -40,6 +40,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="empresa" data-order="desc">Empresa</th>
                                     <th class="text-center" data-column-id="celular" data-order="desc">Telefono Movil</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -55,6 +56,7 @@
                                     <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                     @endif</td>
                                     <td class="text-center previa">{{$proveedores['nombre']}} {{$proveedores['apellido']}} </td>
+                                    <td class="text-center previa">{{$proveedores['empresa']}}</td>
                                     <td class="text-center previa">{{$proveedores['celular']}}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>

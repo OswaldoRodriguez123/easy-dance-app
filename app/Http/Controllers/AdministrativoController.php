@@ -986,12 +986,28 @@ class AdministrativoController extends BaseController {
             {
                 Session::forget('acuerdos'); 
             }
+
+            $id_proforma = Session::get('id_proforma');
+
+            if($id_proforma){
+
+                foreach($id_proforma as $proforma_id){
+
+                    $items_factura = ItemsFacturaProforma::find($proforma_id);
+
+                    $total = $total + $items_factura['importe_neto'];
+
+                }
+
+            }else{
             
-            $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+                $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
 
-            foreach($items_factura as $item_factura){
+                foreach($items_factura as $item_factura){
 
-                $total = $total + $item_factura['importe_neto'];
+                    $total = $total + $item_factura['importe_neto'];
+
+                }
 
             }
 
@@ -1799,15 +1815,31 @@ class AdministrativoController extends BaseController {
                     return response()->json(['errores' => ['linea' => [0, 'Debes generar un acuerdo primero']], 'status' => 'ERROR'],422);
                 }
 
-                $item_proforma = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->get();
-
-                $delete = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->delete();
-
+                $id_proforma = Session::get('id_proforma');
                 $array_descripcion = array();
 
-                foreach($item_proforma as $items_proforma){
+                if($id_proforma){
 
-                    array_push($array_descripcion, $items_proforma->cantidad . ' ' . $items_proforma->nombre);
+                    foreach($id_proforma as $proforma_id)
+                    {
+
+                        $item_proforma = ItemsFacturaProforma::find($proforma_id);
+                        $delete = ItemsFacturaProforma::find($proforma_id)->delete();
+
+                        array_push($array_descripcion, $item_proforma->cantidad . ' ' . $item_proforma->nombre);
+
+                    }
+
+                }else{
+
+                    $item_proforma = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->get();
+                    $delete = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->delete();
+
+                    foreach($item_proforma as $items_proforma){
+
+                        array_push($array_descripcion, $items_proforma->cantidad . ' ' . $items_proforma->nombre);
+
+                    }
 
                 }
 

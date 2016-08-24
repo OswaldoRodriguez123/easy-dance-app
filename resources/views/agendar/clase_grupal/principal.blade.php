@@ -41,6 +41,8 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Clases Grupales</p>
                             <hr class="linea-morada">                                                        
                         </div>
+
+                        @if($clase_grupal_join)
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -76,6 +78,22 @@
                         </table>
                          </div>
                         </div>
+
+                        @else
+
+                               <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
+
+
+                                  <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado clases grupales. </div>
+
+
+                             </div>
+
+
+
+
+                            @endif
                         <div class="card-body p-b-20">
                             <div class="row">
                               <div class="container">

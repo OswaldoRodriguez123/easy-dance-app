@@ -90,7 +90,8 @@
                           </div>
                           
                           <div class ="detalle">
-                            <a href="{{url('/')}}/agendar/clases-personalizadas/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Clases Personalizadas
+                            <a href="{{url('/')}}/agendar/clases-personalizadas/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Clases Personalizadas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clase_personalizada_contador}}</span>
+
 
                             </a>
                             </div>
@@ -177,7 +178,7 @@
                           <ul class="tab-nav tn-justified" role="tablist">
                                     <li class="waves-effect"><a href="{{url('/')}}/administrativo" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Administrativo</p></a></li>
                                     <li class="waves-effect"><a href="{{url('/')}}/asistencia" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Asistencia</p></a></li>
-                                    <li class="waves-effect"><a href="{{url('/')}}/documentos" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Normativas</p></a></li>
+                                    <li class="waves-effect"><a href="{{url('/')}}/normativas" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Normativas</p></a></li>
                                     
                             </ul>
               </div>

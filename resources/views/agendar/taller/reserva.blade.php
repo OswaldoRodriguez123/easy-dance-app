@@ -329,9 +329,13 @@
                         
                         <div class="clearfix p-b-20"></div>
 
+                        @if($taller->descripcion)
+
                         <div class="f-700 f-30">Descripción</div>
                         <br>
                         <p class="f-14">{!! nl2br($taller->descripcion) !!}</p>
+
+                        @endif
 
                         <!-- <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
 
@@ -341,6 +345,9 @@
 
 
                         @if($link_video)
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+
                           <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
                             <div class="embed-responsive embed-responsive-4by3">
                               <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/{{$link_video}}"></iframe>
@@ -392,9 +399,12 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
+                    @if($taller->condiciones)
+
                         <div class="f-700 f-30">Reglamentos</div>
                         <br>
                         <p class="f-14">{!! nl2br($taller->condiciones) !!}</p>
+                    @endif
 
                         <div class="clearfix p-b-20"></div>
                           <div class="clearfix p-b-20"></div>

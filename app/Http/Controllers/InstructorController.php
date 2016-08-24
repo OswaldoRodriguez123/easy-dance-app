@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Image;
 use DB;
+use Illuminate\Support\Facades\Session;
 
 class InstructorController extends BaseController {
 
@@ -35,7 +36,7 @@ class InstructorController extends BaseController {
              $academia = Academia::find(Auth::user()->academia_id);
              $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
 
-            return view('participante.instructor.principal_alumno')->with(['instructor' => $instructor]);
+            return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructor]);
 
         }
 
@@ -750,7 +751,7 @@ class InstructorController extends BaseController {
 
         $instructores = DB::table('instructores')
             ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
-            ->select('instructores.*' , 'perfil_instructor.*')
+            ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
             ->where('instructores.id', $id)
         ->first();
 
@@ -758,6 +759,15 @@ class InstructorController extends BaseController {
 
   
         return view('participante.instructor.promocionar')->with(['academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id]);
+    }
+
+    public function sesion(Request $request)
+    {
+
+        Session::put('instructor_id', $request->instructor_id);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
     }
 
     /**

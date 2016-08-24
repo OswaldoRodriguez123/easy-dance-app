@@ -53,7 +53,6 @@ class VisitanteController extends BaseController {
 
 
     $rules = [
-        'identificacion' => 'required|min:7|numeric|unique:visitantes_presenciales,identificacion',
         'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
@@ -65,11 +64,6 @@ class VisitanteController extends BaseController {
 
     $messages = [
 
-        'identificacion.required' => 'Ups! El identificador es requerido',
-        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
-        'identificacion.max' => 'El maximo de numeros permitidos son 20',
-        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
-        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
         'nombre.required' => 'Ups! El Nombre  es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
         'nombre.max' => 'El máximo de caracteres permitidos son 16',

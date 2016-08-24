@@ -64,9 +64,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="descripcion" name="descripcion" rows="8" placeholder="1000 Caracteres" onkeyup="countChar2(this)">{{$config_clase_personalizada->descripcion}}</textarea>
+                                      <textarea class="form-control caja" style="height: 100%" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" onkeyup="countChar2(this)">{{$config_clase_personalizada->descripcion}}</textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1000</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">2000</span> Caracteres</div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
                                           <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
@@ -104,9 +104,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="ventajas" name="ventajas" rows="8" placeholder="1000 Caracteres" onkeyup="countChar3(this)">{{$config_clase_personalizada->ventajas}}</textarea>
+                                      <textarea class="form-control caja" style="height: 100%" id="ventajas" name="ventajas" rows="8" placeholder="2000 Caracteres" onkeyup="countChar3(this)">{{$config_clase_personalizada->ventajas}}</textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">1000</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">2000</span> Caracteres</div>
                                  <div class="has-error" id="error-ventajas">
                                       <span >
                                           <small class="help-block error-span" id="error-ventajas_mensaje" ></small>                                
@@ -121,9 +121,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1000 Caracteres" onkeyup="countChar4(this)">{{$config_clase_personalizada->condiciones}}</textarea>
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="10000 Caracteres" onkeyup="countChar4(this)">{{$config_clase_personalizada->condiciones}}</textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum4">1000</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum4">10000</span> Caracteres</div>
                                  <div class="has-error" id="error-condiciones">
                                       <span >
                                           <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                
@@ -372,28 +372,28 @@
 
         function countChar2(val) {
         var len = val.value.length;
-        if (len >= 1000) {
-          val.value = val.value.substring(0, 1000);
+        if (len >= 2000) {
+          val.value = val.value.substring(0, 2000);
         } else {
-          $('#charNum2').text(1000 - len);
+          $('#charNum2').text(2000 - len);
         }
       };
 
       function countChar3(val) {
         var len = val.value.length;
-        if (len >= 1000) {
-          val.value = val.value.substring(0, 1000);
+        if (len >= 2000) {
+          val.value = val.value.substring(0, 2000);
         } else {
-          $('#charNum3').text(1000 - len);
+          $('#charNum3').text(2000 - len);
         }
       };
 
       function countChar4(val) {
         var len = val.value.length;
-        if (len >= 1000) {
-          val.value = val.value.substring(0, 1000);
+        if (len >= 10000) {
+          val.value = val.value.substring(0, 10000);
         } else {
-          $('#charNum4').text(1000 - len);
+          $('#charNum4').text(10000 - len);
         }
       };
 

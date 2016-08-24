@@ -82,7 +82,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
 
                     </div> 
                     
@@ -297,6 +297,25 @@
   var condiciones = <?php echo json_encode($condiciones);?>;
 
   $(document).ready(function(){
+
+      instructor_id = "{{{ $instructor_id or 'Default' }}}";
+      clase_personalizada_id = "{{{ $clase_personalizada_id or 'Default' }}}";
+
+      if(instructor_id != 'Default')
+      {
+        console.log(instructor_id);
+        $("#instructor_id").val(instructor_id);
+        $('#instructor_id').selectpicker('refresh');
+
+      }
+
+      if(clase_personalizada_id != 'Default')
+      {
+
+        $("#clase_personalizada_id").val(clase_personalizada_id);
+        $('#clase_personalizada_id').selectpicker('refresh');
+
+      }
 
       $("#pre_condiciones").html(nl2br(condiciones));
 

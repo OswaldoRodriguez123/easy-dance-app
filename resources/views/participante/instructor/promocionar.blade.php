@@ -102,8 +102,8 @@
             <div class="pmo-pic">
                 <div class="p-relative">
                     <a href="">
-                        @if($academia->imagen)
-                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+                        @if($instructores_academia->imagen)
+                          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/instructor/{{$instructores_academia->imagen}}" alt="">
                         @else
                           <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                         @endif
@@ -118,7 +118,7 @@
 
                       <li class="rrssb-facebook">
                         <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}/agendar/clases-personalizadas/progreso/{{$id}}}" class="popup">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}/agendar/clases-personalizadas/progreso/{{$id}}" class="popup">
                           <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
                           <span class="rrssb-text">facebook</span>
                         </a>
@@ -140,8 +140,14 @@
                     <h2>Contacto</h2>
 
                     <ul>
-                        <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
-                        @if($academia->facebook)
+                        <li>
+                            <i class="icon_a-instructor"></i>
+                                {{$instructores_academia->nombre}} {{$instructores_academia->apellido}}
+                        </li>
+
+                        <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$instructores_academia->correo}}" target="_blank">{{$instructores_academia->correo}}</a></li>
+
+                        <!-- @if($academia->facebook)
                         <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">Facebook</a></li>
                         @endif
 
@@ -163,21 +169,51 @@
 
                         @if($academia->pagina_web)
                         <li><i class="zmdi zmdi-google-earth"></i> <a class ="enlace_gris" href="{{$academia->pagina_web}}">Pagina Web</a></li>
+                        @endif -->
+
+                        @if($instructores_academia->facebook)
+                        <li><a name="facebook" id="facebook" class ="enlace_gris" href="{{ empty($instructores_academia->facebook) ? '' : $instructores_academia->facebook}}" target="_blank"><i class="zmdi zmdi-facebook-box"></i> Facebook</a></li>
                         @endif
 
-                        @if($academia->direccion)
+                        @if($instructores_academia->twitter)
+                          <li><a name="twitter" id="twitter" class ="enlace_gris" href="{{ empty($instructores_academia->twitter) ? '' : $instructores_academia->twitter}}" target="_blank"><i class="zmdi zmdi-twitter"></i> Twitter</a></li>
+                        @endif
+
+
+                        @if($instructores_academia->instagram)
+                          <li><a name="instagram" id="instagram" class ="enlace_gris" href="{{ empty($instructores_academia->instagram) ? '' : $instructores_academia->instagram}}" target="_blank"><i class="zmdi zmdi-instagram"></i> Instagram</a></li>
+                        @endif
+
+                        @if($instructores_academia->linkedin)
+                          <li><a name="linkedin" id="linkedin" class ="enlace_gris" href="{{ empty($instructores_academia->linkedin) ? '' : $instructores_academia->linkedin}}" target="_blank"><i class="zmdi zmdi-linkedin-box"></i> Linkedin</a></li>
+                        @endif
+
+                        @if($instructores_academia->youtube)
+
+                          <li><a name="youtube" id="youtube" class ="enlace_gris" href="{{ empty($instructores_academia->youtube) ? '' : $instructores_academia->youtube}}" target="_blank"><i class="zmdi zmdi-collection-video"></i> Youtube</a></li>
+
+
+                        @endif
+
+                        @if($instructores_academia->pagina_web)
+
+                          <li><i class="zmdi zmdi-google-earth"></i> <a class="enlace_gris" name="pagina_web" id="pagina_web" href="{{ empty($instructores_academia->pagina_web) ? '' : $instructores_academia->pagina_web}}" target="_blank"><i class="zmdi zmdi-google-earth"></i> Pagina Web</a></li>
+
+                        @endif
+
+                        @if($instructores_academia->direccion)
                         <li>
                             <i class="zmdi zmdi-pin"></i>
                             <address class="m-b-0 ng-binding">
-                                {{$academia->direccion}}
+                                {{$instructores_academia->direccion}}
                             </address>
                         </li>
                         @endif
 
-                        @if($academia->celular)
+                        @if($instructores_academia->celular)
                         <li>
                             <i class="icon_b-telefono"></i>
-                                {{$academia->celular}} - {{$academia->telefono}}
+                                {{$instructores_academia->celular}} - {{$instructores_academia->telefono}}
                         </li>
                         @endif
                     </ul>
@@ -231,6 +267,8 @@
 
                         <div class="clearfix p-b-20"></div>
 
+                        @if($instructores_academia->tiempo_experiencia_instructor != '')
+
                         <div class="f-700 f-30">Experiencia laboral como instructor </div>
                         <hr class="linea-morada">
 
@@ -266,8 +304,11 @@
                           
 
                         <hr class="linea-morada">
+                        @endif
                         
                         <div class="clearfix p-b-20"></div>
+
+                        @if($instructores_academia->descripcion)
 
                         <div class="f-700 f-30">Perfil del instructor</div>
                         <hr class="linea-morada">
@@ -278,7 +319,9 @@
 
                         </p>
 
-                        <p class="text-center">
+                        @endif
+
+                        <!-- <p class="text-center">
                                
                                 <a name="facebook" id="facebook" href="{{ empty($instructores_academia->facebook) ? '' : $instructores_academia->facebook}}" target="_blank"><i class="{{ empty($instructores_academia->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
 
@@ -293,16 +336,19 @@
                                 <a name="pagina_web" id="pagina_web" href="{{ empty($instructores_academia->pagina_web) ? '' : $instructores_academia->pagina_web}}" target="_blank"><i class="{{ empty($instructores_academia->pagina_web) ? '' : 'zmdi zmdi zmdi-google-earth zmdi-hc-fw f-25 c-verde m-l-5'}}"></i></a>
                               
                                 
-                              </p>
+                              </p> -->
 
 
-                          <div class="clearfix p-b-20"></div>
+                          <!-- <div class="clearfix p-b-20"></div> -->
 
                           @if($instructores_academia->video_promocional)
 
                           <?php $parts = parse_url($instructores_academia->video_promocional);
                                 $partes = explode( '=', $parts['query'] );
                                 $video_promocional = $partes[1]; ?>
+
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
                             <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
                               <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
@@ -312,6 +358,9 @@
                           @endif
 
                         <div class="clearfix p-b-20"></div>
+
+                        @if($instructores_academia->tiempo_experiencia_bailador != '')
+
 
                         <div class="f-700 f-30">Experiencia como bailarín </div>
                         <hr class="linea-morada">
@@ -348,20 +397,30 @@
                           </div>
                           
                         <hr class="linea-morada">
+
+                        @endif
                         
                         <div class="clearfix p-b-20"></div>
 
-                        <div class="f-700 f-30">Resumen artístico</div>
-                        <hr class="linea-morada">
-                        <p class="f-14" name="resumen_artistico" id="resumen_artistico">
+                        @if($instructores_academia->resumen_artistico)
+                        
+
+                          <div class="f-700 f-30">Resumen artístico</div>
+                          <hr class="linea-morada">
+                          <p class="f-14" name="resumen_artistico" id="resumen_artistico">
 
 
-                        {!! nl2br($instructores_academia->resumen_artistico) !!}
+                          {!! nl2br($instructores_academia->resumen_artistico) !!}
 
 
-                        </p>
+                          </p>
+                        
+                        @endif
     
                           @if($instructores_academia->video_testimonial)
+
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
                           <?php $parts = parse_url($instructores_academia->video_testimonial);
                                 $partes = explode( '=', $parts['query'] );
@@ -392,40 +451,8 @@
                         
 
                     </div>
-                    
                 </div>
 
-
-                <div role="tabpanel" class="tab-pane animated fadeInUp in" id="faqs">
-
-                 <div class="pmb-block m-t-0 p-t-0">
-
-                        <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg">
-
-                        <div class="f-700 f-30">Easy Dance</div>
-                        <br>
-
-                        <p class="f-14">Easy dance llega con el objetivo resolver los problemas organizativos, que surgen a través de las múltiples características específicas en el ecosistema del baile , tales como , clases grupales y privadas , show de las compañías de baile , eventos de exhibición y competencia , graduaciones, inscripción , reserva y compra en línea ,presupuesto de montajes coreográficos ,entre otras actividades, que impactan en gran medida a nuestros gremio , que se ve afectado por la falta de herramientas organizacional .</p>
-
-                        <div class="f-700 f-30">Misión</div>
-                        <br>
-                        <p class="f-14">Hacer del ecosistema del baile un mejor lugar, más organizado y transparente a nivel global, aprovechando el uso de la tecnología para brindar en gran medida valor a los usuarios, directores de academia, bailarines e instructores.</p>
-
-                        <div class="f-700 f-30">Visión</div>
-                        <br>
-                        <p class="f-14">Easy dance trazará una nueva forma y estilo a nivel internacional, todos conectados en una gran comunidad, vemos a cientos de miles de persona compartiendo a través de la aplicación.</p>
-                        <hr>
-                        <div class="f-200 f-30">Resumen</div>
-                        <br>
-                        <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
-
-                        <p class="f-14">Easy dance se encuentra en un proceso de periodo de prueba (Fase Beta) completamente abierta para cualquier academia de baile que desee integrarse, haciendo uso y prueba de nuestro proyecto piloto. Por tal motivo invitamos a toda la comunidad de baile a participar generando invitaciones a todas aquellas academias que aún no conocen la herramienta.</p>
-
-                        <p class="f-14">Así que los invitamos a estar muy atentos de todos nuestros avances, semanalmente estaremos haciendo nuevos anuncios de todas las características que se estarán actualizando dentro de la plataforma para el disfrute y organización en el ambiente del baile.</p>
-
-                    </div>
-
-                </div>
 
                 </div>
 
@@ -486,6 +513,7 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
+        console.log("{{$instructores_academia->id}}");
 
       function errores(merror){
         console.log(merror);
@@ -512,7 +540,35 @@
 
           procesando();
 
-          window.location = "{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$academia->id}}"
+           var route = "{{url('/')}}/instructores/sesion";
+           var token = "{{ csrf_token() }}";
+                  
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      data:"&instructor_id={{$instructores_academia->id}}",
+                      success:function(respuesta){
+
+                          window.location = "{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$academia->id}}" 
+
+                      },
+                      error:function(msj){
+                                  // $("#msj-danger").fadeIn(); 
+                                  // var text="";
+                                  // console.log(msj);
+                                  // var merror=msj.responseJSON;
+                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                  // $("#msj-error").html(text);
+                                  // setTimeout(function(){
+                                  //          $("#msj-danger").fadeOut();
+                                  //         }, 3000);
+                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                  }
+
+
+                  });
 
 
         });

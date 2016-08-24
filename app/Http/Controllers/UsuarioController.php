@@ -421,4 +421,16 @@ class UsuarioController extends BaseController {
 
     }
 
+    public function generales(){
+        
+        return view('normativas.generales');
+
+    }
+
+    public function clases_grupales(){
+        
+        return view('normativas.clases_grupales');
+
+    }
+
 }

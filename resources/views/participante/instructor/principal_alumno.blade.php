@@ -51,9 +51,9 @@
                               <div class="container">
 
 
-                              @if(count($instructores) > 0)
+                              @if(count($instructor_reserva) > 0)
 
-                                  @foreach($instructores as $instructor)
+                                  @foreach($instructor_reserva as $instructor)
                   
                                       <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 

@@ -393,7 +393,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <span data-toggle="modal" href="#modalGeneral" class="f-18 p-t-0 c-morado pointer"> Ver</span>
+                                            <a href="{{url('/')}}/normativas/generales" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</a>
                                         </div>
                                     </div>
                                 </div>
@@ -427,7 +427,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <span data-toggle="modal" href="#modalClaseGrupal" class="f-18 p-t-0 c-morado pointer"> Ver</span>
+                                            <a href="{{url('/')}}/normativas/clases-grupales" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</a>
                                         </div>
                                     </div>
                                 </div>
@@ -460,7 +460,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <span data-toggle="modal" href="#modalClasePersonalizada" class="f-18 p-t-0 c-morado pointer"> Ver</span>
+                                            <span data-toggle="modal" href="#modalClasePersonalizada" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
                                         </div>
                                     </div>
                                 </div>
@@ -495,7 +495,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <span data-toggle="modal" href="#modalFiesta" class="f-18 p-t-0 c-morado pointer"> Ver</span>
+                                            <span data-toggle="modal" href="#modalFiesta" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
                                         </div>
                                     </div>
                                 </div>
@@ -530,7 +530,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <span data-toggle="modal" href="#modalTaller" class="f-18 p-t-0 c-morado pointer"> Ver</span>
+                                            <span data-toggle="modal" href="#modalTaller" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
                                         </div>
                                     </div>
                                 </div>

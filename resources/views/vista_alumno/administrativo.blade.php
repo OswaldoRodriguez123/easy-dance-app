@@ -220,7 +220,6 @@
 
         function rechargeFactura(){
             var factura = <?php echo json_encode($facturas);?>;
-            console.log(factura);
             $('#monto').css('opacity', '0');
 
             document.getElementById('fecha').innerHTML = 'Fecha'; 
@@ -231,7 +230,7 @@
                 ''+pad(array.factura, 10)+'',
                 ''+array.concepto+'',
                 ''+array.fecha+'',
-                ''+formatmoney(array.total)+''
+                ''+formatmoney(parseFloat(array.total))+''
                 // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
@@ -251,7 +250,7 @@
                 ''+array.id+'',
                 ''+array.cantidad+ ' ' +array.concepto+'',
                 ''+array.fecha_vencimiento+'',
-                ''+formatmoney(array.total)+''
+                ''+formatmoney(parseFloat(array.total))+''
                 // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )

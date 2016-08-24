@@ -311,6 +311,8 @@
                         <p class="f-14">{!! nl2br($campana->historia) !!}.</p>
 
                         @if($link_video)
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
                           <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
                             <div class="embed-responsive embed-responsive-4by3">
                               <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/{{$link_video}}"></iframe>
@@ -320,10 +322,11 @@
 
                           <div class="clearfix p-b-20"></div>
 
-
+                      @if($campana->presentacion)
                       <div class="f-700 f-30">Presentación general de la campaña</div>
                         <br>
                         <p class="f-14">{!! nl2br($campana->presentacion) !!}.</p>
+                      @endif
 
                         @if($campana->imagen_presentacion)
                         <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen_presentacion}}" class="img-responsive opaco-0-8" alt="">
@@ -409,6 +412,8 @@
 
                  <div class="pmb-block m-t-0 p-t-0">
 
+                        @if($campana->nombre_banco)
+
                         <p class="text-left f-30 opaco-0-8 f-700" >Datos Bancarios</p>
 
                           <hr class='linea-morada'>
@@ -454,6 +459,7 @@
                                     <span class="f-15">{{$campana->correo}}</span>
 
                                </div>
+                            @endif
 
                     </div>
 

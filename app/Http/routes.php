@@ -733,7 +733,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('administrativo', 'AdministrativoController@index');
 			Route::get('/asistencia', 'AsistenciaController@principal');
-			Route::get('/documentos', 'UsuarioController@documentos');
+			Route::get('/normativas', 'UsuarioController@documentos');
+			Route::get('/normativas/generales', 'UsuarioController@generales');
+			Route::get('/normativas/clases-grupales', 'UsuarioController@clases_grupales');
 			Route::get('administrativo/factura/{id}', 'AdministrativoController@getFactura');
 
 			Route::get('/inicio', 'AcademiaConfiguracionController@index');
@@ -760,6 +762,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//INSTRUCTORES
 			
 			Route::get('instructores', 'InstructorController@index');
+			Route::post('instructores/sesion', 'InstructorController@sesion');
 			Route::get('instructores/detalle/{id}', 'InstructorController@progreso');
 
 			//CLASES GRUPALES 

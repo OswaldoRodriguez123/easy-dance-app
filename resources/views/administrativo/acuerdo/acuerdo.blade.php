@@ -444,7 +444,6 @@
       $("#alumno_id").val("{{{$id or 'Default' }}}");
       $('#alumno_id').selectpicker('refresh');
       $("#total2").text(formatmoney(totalglobal));
-      totalglobal = "{{{$total or 'Default' }}}";
 
       $('#fecha').prop('readonly', false);
       $('#frecuencia').removeAttr('disabled');
@@ -977,10 +976,10 @@
        $('#'+collaps).collapse('hide');
       }
 
-      $('#collapseTwo').on('show.bs.collapse', function () {
-        $("#guardar").attr("disabled","disabled");
-        $("#guardar").css({"opacity": ("0.2")});
-      })
+      // $('#collapseTwo').on('show.bs.collapse', function () {
+      //   $("#guardar").attr("disabled","disabled");
+      //   $("#guardar").css({"opacity": ("0.2")});
+      // })
 
       // $('#collapseTwo').on('hide.bs.collapse', function () {
       //   $("#guardar").removeAttr("disabled");
