@@ -68,7 +68,35 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
                                     <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
-                                    <td class="text-center previa">{{$clase_grupal['dia_de_semana']}}</td>
+                                    <td class="text-center previa"><span style="display: none;">{{$clase_grupal['dia_de_semana']}}</span> @if($clase_grupal['dia_de_semana'] == 1)
+
+                                    Lunes
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 2)
+
+                                    Martes
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 3)
+
+                                    Miercoles
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 4)
+
+                                    Jueves
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 5)
+
+                                    Viernes
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 6)
+
+                                    Sabado
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 7)
+
+                                    Domingo
+
+                                    @endif</td>
                                     <td class="text-center previa">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} </td>
                                     @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                                      <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>

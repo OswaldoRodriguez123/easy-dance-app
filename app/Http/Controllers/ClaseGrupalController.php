@@ -50,37 +50,37 @@ class ClaseGrupalController extends BaseController {
 
         foreach($clase_grupal_join as $clase_grupal){
             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-            $dia = $fecha->dayOfWeek;
+            $dia_de_semana = $fecha->dayOfWeek;
 
-            switch($dia){
-                case 1:
-                    $dia_de_semana = 'Lunes';
-                break;
+            // switch($dia){
+            //     case 1:
+            //         $dia_de_semana = 'Lunes';
+            //     break;
 
-                case 2:
-                    $dia_de_semana = 'Martes';
-                break;
+            //     case 2:
+            //         $dia_de_semana = 'Martes';
+            //     break;
 
-                case 3:
-                    $dia_de_semana = 'Miercoles';
-                break;
+            //     case 3:
+            //         $dia_de_semana = 'Miercoles';
+            //     break;
 
-                case 4:
-                    $dia_de_semana = 'Jueves';
-                break;
+            //     case 4:
+            //         $dia_de_semana = 'Jueves';
+            //     break;
 
-                case 5:
-                    $dia_de_semana = 'Viernes';
-                break;
+            //     case 5:
+            //         $dia_de_semana = 'Viernes';
+            //     break;
 
-                case 6:
-                    $dia_de_semana = 'Sabado';
-                break;
+            //     case 6:
+            //         $dia_de_semana = 'Sabado';
+            //     break;
 
-                case 7:
-                    $dia_de_semana = 'Domingo';
-                break;
-            }
+            //     case 7:
+            //         $dia_de_semana = 'Domingo';
+            //     break;
+            // }
 
             $collection=collect($clase_grupal);     
             $clase_grupal_array = $collection->toArray();
