@@ -258,7 +258,7 @@
 
                   <!--             <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >ENVIAR</button>
  -->
-                            <a class="btn btn-blanco m-r-10 f-18 reservar">¡ Quiero Reservar Ya !</a>
+                            <a class="btn btn-blanco m-r-10 f-18 reservar">Guardar</a>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
 
@@ -305,7 +305,6 @@
 
       if(instructor_id != 'Default')
       {
-        console.log(instructor_id);
         $("#instructor_id").val(instructor_id);
         $('#instructor_id').selectpicker('refresh');
 

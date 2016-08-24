@@ -297,7 +297,7 @@
             <div class="form-wizard-basic fw-container">
             <ul class="tab-nav tn-justified" role="tablist">
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Clase Grupal</a></li>
-                <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Reglamentos</a></li>
+                <li class="waves-effect"><a href="{{url('/')}}/normativas/clases-grupales" onclick="procesando()">Reglamentos</a></li>
 
                 @if(Auth::check())
 

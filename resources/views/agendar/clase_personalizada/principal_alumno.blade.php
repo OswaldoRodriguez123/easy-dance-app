@@ -22,8 +22,16 @@
                 
                     <div class="block-header">
 
-                        <?php $url = "/agendar/clases-personalizadas/progreso/$academia->id" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                    <?php $instructor_id = Session::get('instructor_id');
+                          if ($instructor_id){
+                            $url = "/instructores/detalle/$instructor_id";
+                          }else{
+                            $url = "/agendar/clases-personalizadas/progreso/$academia->id";
+                          }
+                        ?>
+
+
+                        <a class="btn-blanco m-r-10 f-16" href="{{$url}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
@@ -58,7 +66,7 @@
 
                                         @endif
 
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-7">
 
                                         <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_personalizada['nombre']}}</p>
                                     
@@ -68,10 +76,10 @@
 
                                         </div>
 
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-3">
 
                                         <div style="padding-top: 50px">
-                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_personalizada['id']}}">Reservar</button>
+                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_personalizada['id']}}">¡ Quiero Reservar Ya !</button>
                                         </div>
 
                                         </div>

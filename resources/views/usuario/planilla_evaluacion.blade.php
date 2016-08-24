@@ -401,8 +401,6 @@
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
-                              <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
-
                             </div>
                         </div></form>
                     </div>
@@ -422,6 +420,7 @@
 <script type="text/javascript">
 
   route_agregar="{{url('/')}}/perfil-evaluativo";
+  route_perfil="{{url('/')}}/perfil";
   
   $(document).ready(function(){
 
@@ -534,6 +533,7 @@
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
+                          window.location = route_perfil;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -544,13 +544,13 @@
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
                         $("#guardar").removeAttr("disabled");
-                        finprocesado();
+                        // finprocesado();
                         $("#guardar").css({
                           "opacity": ("1")
                         });
                         $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
                         
                       }, 1000);
                     },

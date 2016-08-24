@@ -57,10 +57,8 @@
 
                                   <hr></hr>
                                   
-                                  <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="informacion"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="impresion"><i class="icon_a-examen f-20 m-r-5 boton blue sa-warning" data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-account-box f-20 m-r-10 boton blue sa-warning" name="informacion" data-original-title="Enviar Informacion" data-toggle="tooltip" data-placement="bottom" title=""></i>
-
                                   <br></br>
                                     
                                    
@@ -515,7 +513,7 @@
         window.location = route_impresion + "{{$visitante->id}}";
       });
 
-        $("i[name=informacion]").click(function(){
+        $(".informacion").click(function(){
                 id = "{{$visitante->id}}";
                 swal({   
                     title: "Desea enviar la informacion al visitante?",   

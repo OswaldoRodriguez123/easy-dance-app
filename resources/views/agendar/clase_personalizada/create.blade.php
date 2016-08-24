@@ -806,13 +806,9 @@
 
        $( "#cancelar" ).click(function() {
         $("#agregar_clasepersonalizada")[0].reset();
-        $('#especialidad_id').selectpicker('render');
-        $('#estudio_id').selectpicker('render');
-        $('#alumno_id').selectpicker('render');
-        $('#instructor_id').selectpicker('render');
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-alumno_id").offset().top-90,
+        scrollTop: $("#id-nombre").offset().top-90,
         }, 1000);
       });
 

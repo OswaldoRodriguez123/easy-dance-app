@@ -189,6 +189,8 @@ class ProveedorController extends BaseController {
 
     public function updateCorreo(Request $request){
 
+        $request->merge(array('correo' => trim($request->correo)));
+
     $rules = [
         'correo' => 'email|max:255'.$request->id.'',
     ];

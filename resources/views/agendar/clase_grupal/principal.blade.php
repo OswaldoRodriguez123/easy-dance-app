@@ -68,7 +68,9 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
                                     <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
-                                    <td class="text-center previa"><span style="display: none;">{{$clase_grupal['dia_de_semana']}}</span> @if($clase_grupal['dia_de_semana'] == 1)
+                                    <td class="text-center previa"><span style="display: none;">{{$clase_grupal['dia_de_semana']}}</span> 
+
+                                    @if($clase_grupal['dia_de_semana'] == 1)
 
                                     Lunes
 
@@ -154,7 +156,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[0, 'asc']],
+        order: [[2, 'asc'], [3, 'asc']],
        fnDrawCallback: function() {
         if ("{{count($clase_grupal_join)}}" < 25) {
               $('.dataTables_paginate').hide();

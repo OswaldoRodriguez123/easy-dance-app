@@ -407,11 +407,49 @@ class VisitanteController extends BaseController {
             $visitante = new EncuestaVisitante;
         }
 
+        if($request->rapidez)
+        {
+
+            $rapidez =  $request->rapidez;
+
+        }else{
+            $rapidez =  '';
+        }
+
+        if($request->calidad)
+        {
+
+            $calidad =  $request->calidad;
+
+        }else{
+            $calidad =  '';
+        }
+
+        if($request->satisfaccion)
+        {
+
+            $satisfaccion =  $request->satisfaccion;
+
+        }else{
+            $satisfaccion =  '';
+        }
+
+        if($request->disponibilidad)
+        {
+
+            $disponibilidad =  $request->disponibilidad;
+
+        }else{
+            $disponibilidad =  '';
+        }
+
+
+
         $visitante->visitante_id = $request->visitante_id;
-        $visitante->rapidez = $request->rapidez;
-        $visitante->calidad = $request->calidad;
-        $visitante->satisfaccion = $request->satisfaccion;
-        $visitante->disponibilidad = $request->disponibilidad;
+        $visitante->rapidez = $rapidez;
+        $visitante->calidad = $calidad;
+        $visitante->satisfaccion = $satisfaccion;
+        $visitante->disponibilidad = $disponibilidad;
 
         if($visitante->save()){
 
@@ -446,7 +484,7 @@ class VisitanteController extends BaseController {
 
         foreach($clase_grupal_join as $clase_grupal){
             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-            if($fecha < Carbon::now()){
+            if($fecha > Carbon::now()){
                 $array_clase[$i] = $clase_grupal;
                 $i = $i + 1;
             }
@@ -457,7 +495,7 @@ class VisitanteController extends BaseController {
             'nombre' => $visitante->nombre,
             'email' => $visitante->correo,
             'subj' => $subj,
-            'clases_grupales' => $clase_grupal_join
+            'clases_grupales' => $array_clase
         ];
 
         Mail::send('correo.clases_grupales', $array, function($msj) use ($array){

@@ -49,8 +49,7 @@
                             <tbody>
 
                             @foreach ($alumnos_asistencia as $asistencia)
-                                <?php $id = $asistencia->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                                <tr class="seleccion" >
                                     <td class="text-center previa">{{$asistencia->fecha}}</td>
                                     <td class="text-center previa">{{$asistencia->clase}}</td>
                                     <td class="text-center previa">{{$asistencia->nombre_instructor}} {{$asistencia->apellido_instructor}}</td>

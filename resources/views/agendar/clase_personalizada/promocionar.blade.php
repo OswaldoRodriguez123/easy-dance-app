@@ -760,6 +760,8 @@
 
         $(".tab_instructor").click();
 
+        $('body,html').animate({scrollTop : 0}, 500);
+
           id = this.id;
 
           var instructores = <?php echo json_encode($instructores_academia);?>;

@@ -311,6 +311,7 @@
 <script type="text/javascript">
 
   route_agregar="{{url('/')}}/participante/instructor/experiencia";
+  route_detalle="{{url('/')}}/participante/instructor/detalle/{{$id}}";
   
   $(document).ready(function(){
 
@@ -424,6 +425,7 @@
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
+                          window.location = route_detalle;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -434,13 +436,13 @@
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
                         $("#guardar").removeAttr("disabled");
-                        finprocesado();
+                        // finprocesado();
                         $("#guardar").css({
                           "opacity": ("1")
                         });
                         $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
                         
                       }, 1000);
                     },

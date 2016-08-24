@@ -59,7 +59,7 @@
                                     </td>
                                     <td class="text-center previa">{{$visitantes['nombre']}} {{$visitantes['apellido']}} </td>
                                     <td class="text-center disabled">
-                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones email"></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"></i> <i class="zmdi zmdi-account-box f-20 m-r-10 boton blue sa-warning" id="{{$id}}" name="informacion" data-original-title="Enviar Informacion" data-toggle="tooltip" data-placement="bottom" title=""></i></td>
+                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones informacion" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"  data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></td>
                                     
                                 </tr>
                             @endforeach 
@@ -211,7 +211,7 @@
         window.location = route_impresion + id;
       });
 
-      $("i[name=informacion]").click(function(){
+      $(".informacion").click(function(){
                 id = this.id;
                 swal({   
                     title: "Desea enviar la informacion al visitante?",   

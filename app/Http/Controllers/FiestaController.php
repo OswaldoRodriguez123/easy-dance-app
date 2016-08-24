@@ -235,12 +235,14 @@ class FiestaController extends BaseController {
             
             }
 
-        if($request->fecha < Carbon::now()){
+        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha); 
+
+        if($fecha < Carbon::now()){
 
             return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la fiesta no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
 
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+        $fecha = $fecha->toDateString();
 
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
