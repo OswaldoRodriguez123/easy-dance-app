@@ -22,7 +22,7 @@
 
             <br>
             
-            <h4 class ="c-morado text-right">Clase Grupal: {{$clasegrupal->nombre}} <a href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}"><i class="zmdi zmdi-eye zmdi-hc-fw f-25 boton blue sa-warning"></i></a></h4> 
+            <h4 class ="c-morado text-right">Clase Grupal: {{$clasegrupal->nombre}}</h4> 
             <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
             <hr class="linea-morada">
             <br>

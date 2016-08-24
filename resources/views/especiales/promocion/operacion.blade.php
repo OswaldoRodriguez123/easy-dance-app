@@ -11,8 +11,16 @@
 <section id="content">
         <div class="container">
            <div class="block-header">
+           <div class="col-sm-6 text-left">
                 <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/promociones"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección promoción</a>
+            </div>
+
+                <div class="col-sm-6 text-right">
+                <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/especiales/promociones/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                </div>
             </div> 
+
+            <br>
             
             <h4 class ="c-morado text-right">Promoción: {{$promocion->nombre}}</h4>
             <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
