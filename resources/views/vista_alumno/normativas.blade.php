@@ -460,7 +460,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <span data-toggle="modal" href="#modalClasePersonalizada" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
+                                            <a href="{{url('/')}}/normativas/clases-personalizadas" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</a>
                                         </div>
                                     </div>
                                 </div>

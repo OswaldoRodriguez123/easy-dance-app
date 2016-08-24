@@ -82,7 +82,9 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
+
+                        <?php $url = "/agendar" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
                     </div> 
                     
@@ -256,7 +258,7 @@
 
                   <!--             <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >ENVIAR</button>
  -->
-                            <a class="btn btn-blanco m-r-10 f-18 reservar">Enviar</a>
+                            <a class="btn btn-blanco m-r-10 f-18 reservar">¡ Quiero Reservar Ya !</a>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
 

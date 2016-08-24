@@ -174,7 +174,7 @@
 
                     <div class="clearfix m-20 m-b-25"></div>
                     <div class="text-center">
-                      <button type="button" class="btn-blanco m-r-10 f-22 guardar_registro" id="guardar_registro" name ="guardar_registro" onclick="procesando()">Reservar</button>
+                      <button type="button" class="btn-blanco m-r-10 f-22 guardar_registro" id="guardar_registro" name ="guardar_registro" onclick="procesando()">¡ Quiero Reservar Ya !</button>
                      </div>
 
 
@@ -354,7 +354,7 @@
                     <div class="text-center">
                        <!-- <a class="btn-blanco2 m-r-6 f-22 guardar" id="guardar"  style=" margin-top: 60px; " >  Llévame </a> -->
 
-                       <button type="button" class="btn-blanco m-r-10 f-22 guardar" id="guardar" name ="guardar" onclick="procesando()">Reservar</button> <a class="f-700" href="#quinto" aria-controls="quinto" role="tab" data-toggle="tab" name="quinto">Ya posees una cuenta?</a>
+                       <button type="button" class="btn-blanco m-r-10 f-22 guardar" id="guardar" name ="guardar" onclick="procesando()">¡ Quiero Reservar Ya !</button> <a class="f-700" href="#quinto" aria-controls="quinto" role="tab" data-toggle="tab" name="quinto">Ya posees una cuenta?</a>
 
                     </div>
                      <br><br><br> 

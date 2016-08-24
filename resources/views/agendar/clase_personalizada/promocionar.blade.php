@@ -305,7 +305,7 @@
 
                                 <div class="text-center">
 
-                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar Ya ! </a>
+                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
 
                                 </div>
 
@@ -535,7 +535,7 @@
 
                                 <div class="text-center">
 
-                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar Ya ! </a>
+                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
 
                                 </div>
 
@@ -668,9 +668,9 @@
             }
 
 
-            var tmp = "{{$instructores_academia[0]->descripcion}}";
+            var tmp = "{{strlen($instructores_academia[0]->descripcion)}}";
 
-            if(tmp)
+            if(tmp > 0)
             {
               $(".div_descripcion").show();
 
@@ -678,9 +678,9 @@
               $(".div_descripcion").hide();
             }
 
-            var tmp = "{{$instructores_academia[0]->resumen_artistico}}";
+            var tmp = "{{strlen($instructores_academia[0]->resumen_artistico)}}";
 
-            if(tmp)
+            if(tmp > 0)
             {
               $(".div_resumen").show();
 

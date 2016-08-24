@@ -433,4 +433,10 @@ class UsuarioController extends BaseController {
 
     }
 
+    public function clases_personalizadas(){
+        
+        return view('normativas.clases_personalizadas');
+
+    }
+
 }

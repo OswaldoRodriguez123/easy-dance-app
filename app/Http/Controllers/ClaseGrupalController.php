@@ -41,12 +41,55 @@ class ClaseGrupalController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
         ->get();
+
+        $array = array();
+
+        foreach($clase_grupal_join as $clase_grupal){
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia = $fecha->dayOfWeek;
+
+            switch($dia){
+                case 1:
+                    $dia_de_semana = 'Lunes';
+                break;
+
+                case 2:
+                    $dia_de_semana = 'Martes';
+                break;
+
+                case 3:
+                    $dia_de_semana = 'Miercoles';
+                break;
+
+                case 4:
+                    $dia_de_semana = 'Jueves';
+                break;
+
+                case 5:
+                    $dia_de_semana = 'Viernes';
+                break;
+
+                case 6:
+                    $dia_de_semana = 'Sabado';
+                break;
+
+                case 7:
+                    $dia_de_semana = 'Domingo';
+                break;
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+            $array[$clase_grupal->id] = $clase_grupal_array;
+        }
         
-        return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $clase_grupal_join]);
+        return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array]);
     }
 
     public function index()

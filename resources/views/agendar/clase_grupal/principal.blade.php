@@ -52,6 +52,7 @@
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
+                                    <th class="text-center" data-column-id="dia" data-order="desc">Dia</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <!--<th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Estatus E</th>-->
@@ -63,11 +64,12 @@
                             <tbody class="text-center" >
 
                             @foreach ($clase_grupal_join as $clase_grupal)
-                                <?php $id = $clase_grupal->id; ?>
+                                <?php $id = $clase_grupal['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$clase_grupal->clase_grupal_nombre}}</td>
-                                    <td class="text-center previa">{{$clase_grupal->especialidad_nombre}}</td>
-                                    <td class="text-center previa">{{$clase_grupal->hora_inicio}} - {{$clase_grupal->hora_final}} </td>
+                                    <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
+                                    <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
+                                    <td class="text-center previa">{{$clase_grupal['dia_de_semana']}}</td>
+                                    <td class="text-center previa">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} </td>
                                     @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
                                      <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                     @endif

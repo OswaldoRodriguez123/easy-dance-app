@@ -709,9 +709,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		//SOLO RUTAS A LAS QUE TENDRA ACCESO EL PERFIL ALUMNO
 		--------------------------------------------------------*/
 		Route::group(['middleware' => ['alumno']], function() {
-		    //
-			
 
+		    // PRINCIPAL
+		    
+			Route::get('/inicio', 'AcademiaConfiguracionController@index');
+			Route::get('/', 'AcademiaConfiguracionController@menu');
+			
 			//AGENDAR
 
 			Route::get('agendar','AgendarController@index');
@@ -729,18 +732,21 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('especiales/regalos/verificar/{id}', 'RegaloController@verificarconalumno');
 
 
-			// --- ADMINISTRATIVO --- 
+			// NORMATIVAS
 
-			Route::get('administrativo', 'AdministrativoController@index');
-			Route::get('/asistencia', 'AsistenciaController@principal');
 			Route::get('/normativas', 'UsuarioController@documentos');
 			Route::get('/normativas/generales', 'UsuarioController@generales');
 			Route::get('/normativas/clases-grupales', 'UsuarioController@clases_grupales');
+			Route::get('/normativas/clases-personalizadas', 'UsuarioController@clases_personalizadas');
+
+			// --- ADMINISTRATIVO --- 
+
+			Route::get('administrativo', 'AdministrativoController@index');
 			Route::get('administrativo/factura/{id}', 'AdministrativoController@getFactura');
 
-			Route::get('/inicio', 'AcademiaConfiguracionController@index');
-
-			Route::get('/', 'AcademiaConfiguracionController@menu');
+			// ASISTENCIA
+			Route::get('/asistencia', 'AsistenciaController@principal');
+			
 		
 			//PERFIL USUARIO
 			Route::get('perfil', 'UsuarioController@perfil');
