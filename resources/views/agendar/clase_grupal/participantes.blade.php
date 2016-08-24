@@ -441,14 +441,26 @@
                     <div class="card">
                         <div class="card-header">
 
+
+
                             <div class="text-right">
                             <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
                             <hr class="linea-morada">
 
+                            <div class="col-sm-5 text-left">
+                                      <div class="p-t-10"> 
+                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" style="padding-left:5px"> {{$mujeres}}</span>
+                                        <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" style="padding-left:5px"> {{$hombres}} </span>
+                                    </div>
+                            </div> 
+
                             </div>                                                        
                         </div>
+
+                        <div class="clearfix p-b-35"></div>
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -472,7 +484,7 @@
                                     @if($alumno->sexo=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
-                                    <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
+                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
                                     <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>

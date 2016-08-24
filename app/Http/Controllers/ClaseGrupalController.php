@@ -82,11 +82,18 @@ class ClaseGrupalController extends BaseController {
             //         $dia_de_semana = 'Domingo';
             //     break;
             // }
+            // 
+            if($fecha > Carbon::now()){
+                $inicio = 0;
+            }else{
+                $inicio = 1;
+            }
 
             $collection=collect($clase_grupal);     
             $clase_grupal_array = $collection->toArray();
             
             $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+            $clase_grupal_array['inicio']=$inicio;
             $array[$clase_grupal->id] = $clase_grupal_array;
         }
         
@@ -153,6 +160,22 @@ class ClaseGrupalController extends BaseController {
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
 
+        $mujeres = DB::table('inscripcion_clase_grupal')
+                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id')
+                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+                ->where('alumnos.sexo', '=', 'F')
+        ->count();
+
+        $hombres = DB::table('inscripcion_clase_grupal')
+                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*')
+                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+                ->where('alumnos.sexo', '=', 'M')
+        ->count();
+
         // $alumnos = DB::table('alumnos')
         //         ->select('alumnos.*')
         // ->get();
@@ -169,7 +192,7 @@ class ClaseGrupalController extends BaseController {
         //     }
         // }
 
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos]);
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres]);
     }
 
     public function eliminarinscripcion($id)

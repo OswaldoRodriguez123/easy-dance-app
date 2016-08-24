@@ -50,6 +50,7 @@
                                 <tr>
                                     <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
+                                    <th class="text-center" data-column-id="inicio" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="dia" data-order="desc">Dia</th>
@@ -66,6 +67,7 @@
                             @foreach ($clase_grupal_join as $clase_grupal)
                                 <?php $id = $clase_grupal['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> @if($clase_grupal['inicio'] == 0) <i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
                                     <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
                                     <td class="text-center previa"><span style="display: none;">{{$clase_grupal['dia_de_semana']}}</span> 
@@ -156,7 +158,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[2, 'asc'], [3, 'asc']],
+        order: [[3, 'asc'], [4, 'asc']],
        fnDrawCallback: function() {
         if ("{{count($clase_grupal_join)}}" < 25) {
               $('.dataTables_paginate').hide();
