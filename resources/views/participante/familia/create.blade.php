@@ -620,28 +620,28 @@
 
     $("#editar").val('');
 
-    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#nombre_participante').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+      $('#nombre_participante').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido_participante').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+      $('#apellido_participante').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }

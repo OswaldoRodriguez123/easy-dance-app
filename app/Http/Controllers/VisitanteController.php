@@ -40,6 +40,12 @@ class VisitanteController extends BaseController {
         return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all()]);;
     }
 
+    public function operar($id)
+    {   
+        $visitante = Visitante::find($id);
+        return view('participante.visitante.operacion')->with(['id'=> $id , 'visitante' => $visitante]);         
+    }
+
     /**
      * Store a newly created resource in storage.
      *

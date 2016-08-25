@@ -1396,14 +1396,14 @@
           }     
         });
 
-    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }

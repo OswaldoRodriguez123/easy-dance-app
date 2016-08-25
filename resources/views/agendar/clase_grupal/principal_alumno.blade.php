@@ -17,28 +17,21 @@
 @stop
 @section('content')
 
-
-<a href="{{url('/')}}/agendar/clases-grupales/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+    
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar una Clase Grupal <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Clases Grupales</p>
                             <hr class="linea-morada"> 
-
-                            <div class="text-center"> 
-
-                               <button class="btn btn-blanco button_izquierda" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <span class="span_dia f-20 c-morado">LUNES</span> <button class="btn btn-blanco button_derecha" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
-
-                            </div>                                                   
+                                                 
                         </div>
 
                         @if($clase_grupal_join)
@@ -53,13 +46,19 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
-                                    <!--<th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Estatus E</th>-->
-                                    <th class="text-center operacion" data-column-id="operacion" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
+                            @foreach ($clase_grupal_join as $clase_grupal)
+                                <?php $id = $clase_grupal['id']; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> @if($clase_grupal['inicio'] == 0) <i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
+                                    <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
+                                    <td class="text-center previa">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} </td>
+                                  </tr>
+                            @endforeach 
                                                            
                             </tbody>
                         </table>
@@ -101,22 +100,9 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
-        route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones";
         route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
-        route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
-
-        var i = "{{$hoy}}";
 
         $(document).ready(function(){
-
-        if( i == 1){
-            $(".button_izquierda").attr("disabled","disabled");
-        }
-
-        if( i == 7){
-            $(".button_derecha").attr("disabled","disabled");
-        }
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -186,131 +172,14 @@
                     }
                 });
 
-                changeSpan();
-                rechargeClase();
-
             });
-
-        $(".button_izquierda").click(function(){
-
-            $(".button_derecha").removeAttr("disabled");
-
-            i = i - 1;
-
-            if( i <= 1){
-                $(".button_izquierda").attr("disabled","disabled");
-            }else{
-                $(".button_izquierda").removeAttr("disabled");
-            }
-            changeSpan();
-        });
-
-        $(".button_derecha").click(function(){
-
-            $(".button_izquierda").removeAttr("disabled");
-
-            i = i + 1;
-
-            if( i >= 7){
-                $(".button_derecha").attr("disabled","disabled");
-            }else{
-                $(".button_derecha").removeAttr("disabled");
-            }
-            changeSpan();
-        });
-
-        function changeSpan(){
-            
-            if(i == 1){
-
-                $('.span_dia').text('LUNES');
-
-            }else if(i == 2){
-
-                $('.span_dia').text('MARTES');
-
-            }else if(i == 3){
-
-                $('.span_dia').text('MIERCOLES');
-
-            }else if(i == 4){
-
-                $('.span_dia').text('JUEVES');
-
-            }else if(i == 5){
-
-                $('.span_dia').text('VIERNES');
-
-            }else if(i == 6){
-
-                $('.span_dia').text('SABADO');
-
-            }else if(i == 7){
-
-                $('.span_dia').text('DOMINGO');
-
-            }
-
-            rechargeClase();
-
-        }
-
-
-        function rechargeClase(){
-
-            t.clear().draw();
-
-            var clase_grupal = [];
-            var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
-
-             $.each(clases_grupales, function (index, array) {
-                if(i == array.dia_de_semana){
-                    clase_grupal.push(array);
-                }
-                
-            });
-
-            $.each(clase_grupal, function (index, array) {
-                    if(array.inicio == 0){
-                        inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
-                    }else{
-                        inicio = '';
-                    }
-
-                    operacion = '<i data-toggle="modal" name="operacion" id='+array.id+' class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
-       
-                    var rowNode=t.row.add( [
-                    ''+inicio+'',
-                    ''+array.clase_grupal_nombre+'',
-                    ''+array.especialidad_nombre+'',
-                    ''+array.hora_inicio+ ' '+array.hora_final+'',
-                    ''+operacion+''
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('seleccion');
-                });
-        }
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
+        var route =route_progreso+"/"+row;
 
-        id_alumno = "{{Session::get('id_alumno')}}";
-        if(!id_alumno){
-            var route =route_detalle+"/"+row;
-        }
-        else{
-            var route =route_participantes+"/"+row;
-        }
-        
         window.location=route;
       }
-
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
-
 
     </script>
 @stop

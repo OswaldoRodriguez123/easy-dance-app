@@ -67,8 +67,7 @@
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_visitante}} {{$apellido_visitante}} </td>
-                                    <td class="text-center disabled">
-                                    <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones informacion" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"  data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                     
                                 </tr>
                             @endforeach 
@@ -98,13 +97,9 @@
     <script type="text/javascript">
 
         route_detalle="{{url('/')}}/participante/visitante/detalle";
-        route_email="{{url('/')}}/correo/sesion/";
-        route_impresion="{{url('/')}}/participante/visitante/impresion/";
-        route_enviar="{{url('/')}}/participante/visitante/enviar";
+        route_operacion="{{url('/')}}/participante/visitante/operaciones";
             
         $(document).ready(function(){
-
-        console.log($('#tablelistar tr').length);
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -183,97 +178,10 @@
         window.location=route;
       }
 
-      $(".email").click(function(){
-         var route = route_email + 3;
-         var token = '{{ csrf_token() }}';
-         var id = this.id;
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    success:function(respuesta){
-
-                        procesando();
-                        window.location="{{url('/')}}/correo/" + id;  
-
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
-      });
-
-      $(".impresion").click(function(){
-        procesando();
-        id = this.id;
-        window.location = route_impresion + id;
-      });
-
-      $(".informacion").click(function(){
-                id = this.id;
-                swal({   
-                    title: "Desea enviar la informacion al visitante?",   
-                    text: "Confirmar envio!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Enviar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            $(".sweet-alert").hide();
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-            procesando();
-            var route = route_enviar;
-            var token = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data: "&id="+id,
-                    success:function(respuesta){
-                        
-                        finprocesado();
-                        swal("Listo!","La información fue enviada con exito!","success");
-
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                finprocesado();
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
-                
-                }
-            });
-      });
+      $("i[name=operacion").click(function(){
+            var route =route_operacion+"/"+this.id;
+            window.location=route;
+         });
 
 
     </script>
