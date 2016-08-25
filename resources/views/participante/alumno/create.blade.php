@@ -38,6 +38,7 @@
                         <div class="card-body p-b-20">
                           <form name="agregar_alumno" id="agregar_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="visitante_id" value="{{ empty($visitante->id) ? '' : $visitante->id }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
@@ -48,7 +49,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="0000000000" placeholder="Ej: 16133223">
+                                      <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="00000000000000000000" placeholder="Ej: 16133223">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-identificacion">
@@ -65,7 +66,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Valeria">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Valeria" value="{{ empty($visitante->nombre) ? '' : $visitante->nombre }}">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-nombre">
@@ -82,7 +83,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="apellido" id="apellido" placeholder="Ej. Zambrano">
+                                      <input type="text" class="form-control input-sm proceso" name="apellido" id="apellido" placeholder="Ej. Zambrano" value="{{ empty($visitante->apellido) ? '' : $visitante->apellido }}">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-apellido">
@@ -98,7 +99,7 @@
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
                                       <div class="dtp-container fg-line">
-                                              <input name="fecha_nacimiento" id="fecha_nacimiento" class="form-control date-picker proceso pointer" placeholder="Selecciona" type="text">
+                                              <input name="fecha_nacimiento" id="fecha_nacimiento" class="form-control date-picker proceso pointer" placeholder="Selecciona" type="text" value="{{ empty($visitante->fecha_nacimiento) ? '' : \Carbon\Carbon::createFromFormat('Y-m-d',$visitante->fecha_nacimiento)->format('d/m/Y') }}">
                                           </div>
 
                                     </div>
@@ -144,7 +145,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
+                                      <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com" value="{{ empty($visitante->correo) ? '' : $visitante->correo }}">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-correo">
@@ -163,7 +164,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm input-mask" name="celular" id="celular" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894">
+                                      <input type="text" class="form-control input-sm input-mask" name="celular" id="celular" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" value="{{ empty($visitante->celular) ? '' : $visitante->celular }}">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-celular">
@@ -181,7 +182,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm input-mask" name="telefono" id="telefono" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894">
+                                      <input type="text" class="form-control input-sm input-mask" name="telefono" id="telefono" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" value="{{ empty($visitante->telefono) ? '' : $visitante->telefono }}">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-telefono">
@@ -199,7 +200,7 @@
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="direccion" id="direccion" placeholder="Calle santa marta, Av 23" maxlength="180" onkeyup="countChar(this)">
+                                      <input type="text" class="form-control input-sm proceso" name="direccion" id="direccion" placeholder="Calle santa marta, Av 23" maxlength="180" onkeyup="countChar(this)" value="{{ empty($visitante->direccion) ? '' : $visitante->direccion }}">
                                       </div>
                                      <div class="opaco-0-8 text-right">Resta <span id="charNum">180</span> Caracteres</div>
                                     </div>
@@ -408,17 +409,29 @@
   
   $(document).ready(function(){
 
+    sexo = "{{{ $visitante->sexo or 'Default' }}}";
 
-      $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
+     if(sexo != 'Default'){
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+      if(sexo=="M"){
+        $("#hombre").prop("checked", true);
+      }else{
+        $("#mujer").prop("checked", true);
+      }
+        
+     }
+      
+
+      $('#nombre').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });

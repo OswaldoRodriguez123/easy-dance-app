@@ -37,7 +37,7 @@
                                 <div class="form-group">
                                     <div class="form-group fg-line">
                                         <label for="id" id="id-identificacion_participante">Id - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
-                                        <input type="text" class="form-control input-sm" name="identificacion_participante" id="identificacion_participante" data-mask="0000000000" placeholder="Ej. 16234987">
+                                        <input type="text" class="form-control input-sm" name="identificacion_participante" id="identificacion_participante" data-mask="00000000000000000000" placeholder="Ej. 16234987">
                                     </div>
                                     <div class="has-error" id="error-identificacion_participante">
                                       <span >
@@ -354,7 +354,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="0000000000" placeholder="Ej: 16133223">
+                                      <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="00000000000000000000" placeholder="Ej: 16133223">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-identificacion">
@@ -620,30 +620,30 @@
 
     $("#editar").val('');
 
-    $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
+    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#nombre_participante').mask('AAAAAAAAAAAAAA', {'translation': {
+      $('#nombre_participante').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido_participante').mask('AAAAAAAAAAAAAA', {'translation': {
+      $('#apellido_participante').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });

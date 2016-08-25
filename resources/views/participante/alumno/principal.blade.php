@@ -74,7 +74,16 @@
                                     <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
+
+                                    <?php $tmp = explode(" ", $alumno->nombre);
+                                    $nombre_alumno = $tmp[0];
+
+                                    $tmp = explode(" ", $alumno->apellido);
+                                    $apellido_alumno = $tmp[0];
+
+                                    ?>
+
+                                    <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center previa">
                                     <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
                                     </td>

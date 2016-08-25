@@ -19,7 +19,7 @@
 @section('content')
   <!-- ENHORABUENA -->
     
-    <div class="container">
+    <!-- <div class="container">
       <div class="card">
         <div class="card-header">
             <div class="clearfix"></div><br>
@@ -46,9 +46,56 @@
       <div class="clearfix m-20 m-b-25"></div>
       <div class="clearfix m-20 m-b-25"></div>
       </div>
-      
-      <!--<div class="clearfix"></div>-->
 
+    </div> -->
+
+    <div class="container">
+
+    <?php $url = "/" ?>
+
+        <div class="card">
+        <div class="card-header">
+              <div class="clearfix"></div><br>
+
+            <div align="center"><i class="zmdi zmdi-thumb-up zmdi-hc-5x c-morado"></i></div>
+            <div class="c-morado f-50 text-center"> Muy Bien Hecho! </div>
+            <div class="text-center f-25">Has ingresado al alumno de manera exitosa</div>
+            
+            <div class="clearfix"></div>
+            <br>
+
+            <div class="f-30 text-center">
+              Ahora cuéntanos ¿que deseas hacer?
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="clearfix"></div>
+
+            <div class="text-center guia">
+              <hr>
+              <div class="clearfix"></div><br>
+              <p class="m-t-5 m-b-5 f-22"><a href="{{url('/')}}/participante/alumno/deuda/{{$id}}" >Gestionar su pago <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
+                <i class="icon_a-pagar f-50 padding"></i> </a>
+                </p> 
+
+              <div class="clearfix"></div><br>
+              <hr>
+
+              <div class="clearfix"></div><br>
+              <p class="m-t-5 m-b-5 f-22"><a href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}" >Agregar otro participante <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>   <i class="zmdi zmdi-account-add f-50 padding-talleres"></i> </a></p>
+              <div class="clearfix"></div><br>
+              <hr>
+
+              <div class="clearfix"></div><br>
+              <p class="m-t-5 m-b-5 f-22"><a  href="{{url('/')}}/">Ir al menu <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i> <i class="zmdi f-50 zmdi-format-align-justify zmdi-hc-fw"></i> </a></p> 
+              <div class="clearfix p-b-15"></div>
+              <div class="clearfix p-b-15"></div>
+              <div class="clearfix p-b-15"></div>
+       
+
+            </div>
+        </div>
+      </div>
     </div>
 
 

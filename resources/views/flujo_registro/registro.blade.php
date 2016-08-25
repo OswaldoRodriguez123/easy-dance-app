@@ -334,9 +334,9 @@
           "opacity": ("0.2")
         });
 
-        $('#cambio').mask('AAAAAAAAAAAAAA', {'translation': {
+        $('#cambio').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-            A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+            A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
             }
 
         });

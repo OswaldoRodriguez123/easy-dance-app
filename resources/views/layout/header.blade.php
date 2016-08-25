@@ -61,7 +61,19 @@
 
                                     <br>
                                     
-                                    <span class="f-700 f-14"> {{Auth::user()->nombre}} {{Auth::user()->apellido}} </span>
+                                    <span class="f-700 f-14"> 
+
+                                    <?php $tmp = explode(" ", Auth::user()->nombre);
+                                    $nombre_usuario = $tmp[0];
+
+                                    $tmp = explode(" ", Auth::user()->apellido);
+                                    $apellido_usuario = $tmp[0];
+
+                                    ?>
+
+                                    {{$nombre_usuario}} {{$apellido_usuario}} 
+
+                                    </span>
 
                                 </a>
                             <ul class="dropdown-menu dm-icon pull-right">

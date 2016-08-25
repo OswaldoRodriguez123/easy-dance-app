@@ -50,12 +50,21 @@
                             @foreach ($proveedor as $proveedores)
                                 <?php $id = $proveedores['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">                  @if($proveedores['sexo']=='F')
+                                    <td class="text-center previa">                  
+                                    @if($proveedores['sexo']=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
                                     <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                     @endif</td>
-                                    <td class="text-center previa">{{$proveedores['nombre']}} {{$proveedores['apellido']}} </td>
+                                    <?php $tmp = explode(" ", $proveedores['nombre']);
+                                    $nombre_proveedor = $tmp[0];
+
+                                    $tmp = explode(" ", $proveedores['apellido']);
+                                    $apellido_proveedor= $tmp[0];
+
+                                    ?>
+
+                                    <td class="text-center previa">{{$nombre_proveedor}} {{$apellido_proveedor}} </td>
                                     <td class="text-center previa">{{$proveedores['empresa']}}</td>
                                     <td class="text-center previa">{{$proveedores['celular']}}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>

@@ -326,16 +326,16 @@
   
   $(document).ready(function(){
 
-    $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
+    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });

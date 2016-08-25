@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <div class="form-group fg-line">
                                         <label for="id" id="id-identificacion">Id - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
-                                        <input type="text" class="form-control input-sm" data-mask="0000000000" name="identificacion" id="identificacion" placeholder="Ej. 16234987">
+                                        <input type="text" class="form-control input-sm" data-mask="00000000000000000000" name="identificacion" id="identificacion" placeholder="Ej. 16234987">
                                     </div>
                                     <div class="has-error" id="error-identificacion">
                                       <span >

@@ -23,6 +23,7 @@ use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\Visitante;
 
 class AlumnoController extends BaseController
 {
@@ -115,8 +116,8 @@ class AlumnoController extends BaseController
 
     $rules = [
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
-        'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
         'correo' => 'required|email|max:255|unique:users,email, '.$request->id.'',
@@ -131,11 +132,11 @@ class AlumnoController extends BaseController
         'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
         'nombre.required' => 'Ups! El Nombre  es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre.max' => 'El máximo de caracteres permitidos son 20',
         'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
         'apellido.required' => 'Ups! El Apellido  es requerido ',
         'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido.max' => 'El máximo de caracteres permitidos son 20',
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo.required' => 'Ups! El Sexo  es requerido ',
         'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
@@ -167,6 +168,10 @@ class AlumnoController extends BaseController
 
         if($edad < 1){
             return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+        }
+
+        if($request->visitante_id){
+            $visitante = Visitante::find($request->visitante_id)->delete();
         }
 
         $alumno = new Alumno;
@@ -282,6 +287,14 @@ class AlumnoController extends BaseController
     {
  
         return view('participante.alumno.create');
+    }
+
+    public function agregarvisitante($id)
+    {
+
+        $visitante = Visitante::find($id);
+ 
+        return view('participante.alumno.create')->with('visitante',$visitante);
     }
 
     public function edit($id)
@@ -451,19 +464,19 @@ class AlumnoController extends BaseController
     public function updateNombre(Request $request){
 
         $rules = [
-            'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-            'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         ];
 
         $messages = [
 
             'nombre.required' => 'Ups! El Nombre  es requerido ',
             'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-            'nombre.max' => 'El máximo de caracteres permitidos son 16',
+            'nombre.max' => 'El máximo de caracteres permitidos son 20',
             'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
             'apellido.required' => 'Ups! El Apellido  es requerido ',
             'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-            'apellido.max' => 'El máximo de caracteres permitidos son 16',
+            'apellido.max' => 'El máximo de caracteres permitidos son 20',
             'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         ];
 
@@ -486,22 +499,33 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
-            $es_representante = Familia::where('representante_id', $tmp->id);
 
-            if(!$es_representante){
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
-            }
-            else{
-                $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
-            }
+            if($tmp){
+                $es_representante = Familia::where('representante_id', $tmp->id)->first();
 
-            $usuario->nombre = $nombre;
-            $usuario->apellido = $apellido;
+                if(!$es_representante){
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+                }
+                else{
+                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
+                }
 
-            if($usuario->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                if($usuario){
+
+                    $usuario->nombre = $nombre;
+                    $usuario->apellido = $apellido;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
+                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }
             }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }
 
         }else{
@@ -532,9 +556,9 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
-            if($tmp){
 
-                $es_representante = Familia::where('representante_id', $tmp->id);
+            if($tmp){
+                $es_representante = Familia::where('representante_id', $tmp->id)->first();
 
                 if(!$es_representante){
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
@@ -543,14 +567,23 @@ class AlumnoController extends BaseController
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
                 }
 
-                $usuario->sexo = $request->sexo;
+                if($usuario){
 
-                if($usuario->save()){
-                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    $usuario->sexo = $request->sexo;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
                 }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }
-         }
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
+
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -590,9 +623,11 @@ class AlumnoController extends BaseController
         $alumno->correo = $correo;
 
         if($alumno->save()){
+
             $tmp = User::where('usuario_id', $request->id)->first();
+
             if($tmp){
-                $es_representante = Familia::where('representante_id', $tmp->id);
+                $es_representante = Familia::where('representante_id', $tmp->id)->first();
 
                 if(!$es_representante){
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
@@ -601,14 +636,23 @@ class AlumnoController extends BaseController
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
                 }
 
-                $usuario->email = $correo;
+                if($usuario){
 
-                if($usuario->save()){
-                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    $usuario->email = $correo;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
                 }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }
+
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -624,8 +668,9 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
+
             if($tmp){
-                $es_representante = Familia::where('representante_id', $tmp->id);
+                $es_representante = Familia::where('representante_id', $tmp->id)->first();
 
                 if(!$es_representante){
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
@@ -634,15 +679,24 @@ class AlumnoController extends BaseController
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
                 }
 
-                $usuario->telefono = $request->telefono;
-                $usuario->celular = $request->celular;
+                if($usuario){
 
-                if($usuario->save()){
-                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    $usuario->telefono = $request->telefono;
+                    $usuario->celular = $request->celular;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
                 }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }
+
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -658,8 +712,9 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $tmp = User::where('usuario_id', $request->id)->first();
+
             if($tmp){
-                $es_representante = Familia::where('representante_id', $tmp->id);
+                $es_representante = Familia::where('representante_id', $tmp->id)->first();
 
                 if(!$es_representante){
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
@@ -668,14 +723,23 @@ class AlumnoController extends BaseController
                     $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
                 }
 
-                $usuario->direccion = $direccion;
+                if($usuario){
 
-                if($usuario->save()){
-                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    $usuario->direccion = $direccion;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
                 }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }
+
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

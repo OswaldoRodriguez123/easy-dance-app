@@ -28,7 +28,7 @@
                                 <div class="form-group">
                                     <div class="form-group fg-line">
                                         <label for="id">Id - Pasaporte</label>
-                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" placeholder="Ej. 16234987" value="{{$instructor->identificacion}}">
+                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" data-mask="00000000000000000000" placeholder="Ej. 16234987" value="{{$instructor->identificacion}}">
                                     </div>
                                     <div class="has-error" id="error-identificacion">
                                       <span >
@@ -1265,9 +1265,20 @@
             //alert('algo cambio');
             
             setTimeout(function(){
-              var fileinput = $("#imagena img").attr('src');
-              //alert(fileinput);
-              var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
+              var imagen = $("#imagena img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
             },500);
 
         });
@@ -1385,16 +1396,16 @@
           }     
         });
 
-    $('#nombre').mask('AAAAAAAAAAAAAA', {'translation': {
+    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });
 
-      $('#apellido').mask('AAAAAAAAAAAAAA', {'translation': {
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ]/}
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
 
       });

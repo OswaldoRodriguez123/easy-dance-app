@@ -57,7 +57,16 @@
                                     <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
-                                    <td class="text-center previa">{{$visitantes['nombre']}} {{$visitantes['apellido']}} </td>
+
+                                    <?php $tmp = explode(" ", $visitantes['nombre']);
+                                    $nombre_visitante = $tmp[0];
+
+                                    $tmp = explode(" ", $visitantes['apellido']);
+                                    $apellido_visitante= $tmp[0];
+
+                                    ?>
+
+                                    <td class="text-center previa">{{$nombre_visitante}} {{$apellido_visitante}} </td>
                                     <td class="text-center disabled">
                                     <i id = "{{$id}}" class="zmdi zmdi-email f-20 p-r-10 pointer acciones informacion" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i> <i id = "{{$id}}" class="icon_a-examen f-20 p-r-10 pointer acciones impresion"  data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></td>
                                     

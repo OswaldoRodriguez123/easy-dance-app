@@ -52,9 +52,16 @@
                                 
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$familia['apellido']}}</td>
-                                    <td class="text-center previa">
-                                        {{$familia['representante_nombre']}} {{$familia['representante_apellido']}} 
-                                    </td>
+
+                                    <?php $tmp = explode(" ", $familia['representante_nombre']);
+                                    $representante_nombre = $tmp[0];
+
+                                    $tmp = explode(" ", $familia['representante_apellido']);
+                                    $representante_apellido= $tmp[0];
+
+                                    ?>
+
+                                    <td class="text-center previa">{{$representante_nombre}} {{$representante_apellido}} </td>
                                     <td class="text-center previa">{{$familia['total']}}</td>
                                     <td class="text-center previa"><i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i></td>
                                     <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->

@@ -72,10 +72,10 @@ class FamiliaController extends BaseController {
         $request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
-        'apellido_familia' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido_familia' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
-        'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
         'correo' => 'required|email|max:255|unique:users,email, '.$request->id.'',
@@ -86,7 +86,7 @@ class FamiliaController extends BaseController {
 
         'apellido_familia.required' => 'Ups! El Apellido  es requerido ',
         'apellido_familia.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido_familia.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido_familia.max' => 'El máximo de caracteres permitidos son 20',
         'apellido_familia.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'identificacion.required' => 'Ups! El identificador es requerido',
         'identificacion.min' => 'El mínimo de numeros permitidos son 5',
@@ -95,11 +95,11 @@ class FamiliaController extends BaseController {
         'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
         'nombre.required' => 'Ups! El Nombre  es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre.max' => 'El máximo de caracteres permitidos son 20',
         'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
         'apellido.required' => 'Ups! El Apellido  es requerido ',
         'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido.max' => 'El máximo de caracteres permitidos son 20',
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo.required' => 'Ups! El Sexo  es requerido ',
         'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
@@ -343,8 +343,8 @@ class FamiliaController extends BaseController {
         
     $rules = [
 
-        'nombre_participante' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido_participante' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre_participante' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido_participante' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento_participante' => 'required',
         'sexo_participante' => 'required',
         'correo_participante' => 'email|max:255|unique:users,email, '.$request->id.'',
@@ -354,11 +354,11 @@ class FamiliaController extends BaseController {
 
         'nombre_participante.required' => 'Ups! El Nombre  es requerido ',
         'nombre_participante.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre_participante.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre_participante.max' => 'El máximo de caracteres permitidos son 20',
         'nombre_participante.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
         'apellido_participante.required' => 'Ups! El Apellido  es requerido ',
         'apellido_participante.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido_participante.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido_participante.max' => 'El máximo de caracteres permitidos son 20',
         'apellido_participante.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo_participante.required' => 'Ups! El Sexo  es requerido ',
         'fecha_nacimiento_participante.required' => 'Ups! La fecha de nacimiento es requerida',
@@ -448,8 +448,8 @@ class FamiliaController extends BaseController {
 
     $rules = [
         'identificacion' => 'min:7|numeric|unique:alumnos,identificacion',
-        'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
         'correo' => 'email|max:255|unique:users,email, '.$request->id.'',
@@ -463,11 +463,11 @@ class FamiliaController extends BaseController {
         'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
         'nombre.required' => 'Ups! El Nombre  es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre.max' => 'El máximo de caracteres permitidos son 20',
         'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
         'apellido.required' => 'Ups! El Apellido  es requerido ',
         'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido.max' => 'El máximo de caracteres permitidos son 20',
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo.required' => 'Ups! El Sexo  es requerido ',
         'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
@@ -627,7 +627,8 @@ class FamiliaController extends BaseController {
     public function edit($id)
     {   
 
-        $alumnos = Alumno::where('familia_id', $id)->get();
+        $alumnos = Alumno::withTrashed()->where('familia_id', $id)->get();
+        $array = array();
 
         $i = 0;
 

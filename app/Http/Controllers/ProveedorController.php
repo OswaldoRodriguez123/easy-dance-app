@@ -70,8 +70,8 @@ class ProveedorController extends BaseController {
         
 
     $rules = [
-        'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'sexo' => 'required',
         'celular' => 'required',
         'correo' => 'email',
@@ -81,11 +81,11 @@ class ProveedorController extends BaseController {
 
         'nombre.required' => 'Ups! El nombre es requerido',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre.max' => 'El máximo de caracteres permitidos son 20',
         'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
         'apellido.required' => 'Ups! El apellido es requerido',
         'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido.max' => 'El máximo de caracteres permitidos son 20',
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'celular.required' => 'Ups! El telefono móvil es requerido',
@@ -142,19 +142,19 @@ class ProveedorController extends BaseController {
     public function updateNombre(Request $request){
 
     $rules = [
-        'nombre' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:16|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
     ];
 
     $messages = [
 
         'nombre.required' => 'Ups! El Nombre  es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 16',
+        'nombre.max' => 'El máximo de caracteres permitidos son 20',
         'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
         'apellido.required' => 'Ups! El Apellido  es requerido ',
         'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 16',
+        'apellido.max' => 'El máximo de caracteres permitidos son 20',
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
     ];
 
