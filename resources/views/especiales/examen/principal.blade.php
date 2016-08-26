@@ -48,13 +48,15 @@
 
                             @foreach ($examen as $examenes)
                                 <?php $id = $examenes->id; ?>
+                                @can('view-examenes', $examenes)
                                 <tr id="row_{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$examenes->nombre}}</td>
                                     <td class="text-center previa">{{$examenes->fecha}}</td>
                                     <td class="text-center previa">{{$examenes->instructor_nombre}} {{$examenes->instructor_apellido}}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
-                            @endforeach  
+                                @endcan
+                            @endforeach
                                                            
                             </tbody>
                         </table>

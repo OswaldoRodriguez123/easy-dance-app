@@ -32,7 +32,7 @@ class ExamenController extends BaseController {
     {
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('examenes.id as id' , 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id')
+            ->select('examenes.id as id' , 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','examenes.academia_id')
             ->where('examenes.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
