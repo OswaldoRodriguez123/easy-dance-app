@@ -70,6 +70,7 @@ class ReporteController extends BaseController
     public function InscritosFiltros(Request $request)
     {
         # code...
+        //dd($request->all());
         if($request->mesActual){
             $start = Carbon::now()->startOfMonth()->toDateString();
             $end = Carbon::now()->endOfMonth()->toDateString();  
@@ -82,6 +83,11 @@ class ReporteController extends BaseController
         if($request->today){
             $start = Carbon::now()->toDateString();
             $end = Carbon::now()->toDateString();  
+        }
+        if($request->rango){
+            //$fechas = explode(' - ', $request->dateRange);
+            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
         }
 
         $inscritos = DB::table('inscripcion_clase_grupal')
@@ -185,6 +191,10 @@ public function PresencialesFiltros(Request $request)
             $start = Carbon::now()->toDateString();
             $end = Carbon::now()->toDateString();  
 
+        }
+        if($request->rango){
+            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
         }
 
         $presenciales = DB::table('visitantes_presenciales')
