@@ -113,7 +113,7 @@ class ClasePersonalizadaController extends BaseController {
             Session::forget('horario'); 
         }
 
-        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
             return view('agendar.clase_personalizada.create')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'dias_de_semana' => DiasDeSemana::all(), 'especialidad' => ConfigEspecialidades::all(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
         }else{

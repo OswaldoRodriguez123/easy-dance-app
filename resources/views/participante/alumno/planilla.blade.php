@@ -612,7 +612,12 @@
 
                         <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->id}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: {{$clase_grupal->fecha_pago}}</span>
 
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+
                         </div>
+
+
 
 
                         @endforeach
@@ -813,7 +818,7 @@
                                <span class="m-l-10 m-r-10"> <i class=icon_a-clases-grupales f-22"></i> </span>
                                <span class="f-14"> Clases Grupales</span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="alumno-clase_grupal" class="f-14 m-l-15 capitalize" >{{ str_limit($descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                            </table>
                           </div>

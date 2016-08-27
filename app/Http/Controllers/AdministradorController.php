@@ -13,7 +13,7 @@ use Validator;
 use DB;
 use Mail;
 
-class SucursalController extends Controller
+class AdministradorController extends Controller
 {
 
     public function __construct()
@@ -25,13 +25,14 @@ class SucursalController extends Controller
     {
 
         $academia = Academia::find(Auth::user()->academia_id);
+        $array = array(1, 5, 6);
 
         $usuarios = DB::table('users')
             ->join('academias', 'users.academia_id', '=', 'academias.id')
             ->join('sucursales', 'academias.sucursal_id', '=', 'sucursales.id')
-            ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id')
+            ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id', 'users.usuario_tipo')
             ->where('sucursales.id','=', $academia->sucursal_id)
-            ->where('users.usuario_tipo', 5)
+            ->whereIn('users.usuario_tipo', $array)
         ->get();
 
         return view('configuracion.sucursales.principal')->with('usuarios', $usuarios);
@@ -75,6 +76,7 @@ class SucursalController extends Controller
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required',
             'responsable' => 'required|min:3|max:40|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'usuario_tipo' => 'required',
 
         ];
 
@@ -94,6 +96,7 @@ class SucursalController extends Controller
             'responsable.min' => 'El mínimo de caracteres permitidos son 3',
             'responsable.max' => 'El máximo de caracteres permitidos son 40',
             'responsable.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'usuario_tipo.required' => 'Ups! El Tipo es requerido',
 
         ];
 
@@ -105,35 +108,38 @@ class SucursalController extends Controller
 
         }else{
 
-            $sucursal = Academia::select('academias.sucursal_id')
+            if($request->usuario_tipo == 5)
+            {
+                $sucursal = Academia::select('academias.sucursal_id')
                             ->where('academias.id','=',Auth::user()->academia_id)
                             ->first();
 
+                $academia = new Academia;
+                $academia->sucursal_id = $sucursal->sucursal_id;
+                $academia->save();
 
-            $academia = new Academia;
-            $academia->sucursal_id = $sucursal->sucursal_id;
-            $academia->save();
+                $id = $academia->id;
 
-            $request->email = trim($request->email);
+            }else{
+                $id = Auth::user()->academia_id;
+            }
 
-
+            $correo = strtolower($request->email);
             $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->responsable))));
 
             $usuario = new User;
 
-            $usuario->academia_id = $academia->id;
+            $usuario->academia_id = $id;
             $usuario->nombre = $nombre;
-            $usuario->email = strtolower($request->email);
+            $usuario->email = $correo;
             $usuario->como_nos_conociste_id = 1;
             $usuario->confirmation_token = str_random(40);
             $usuario->password = bcrypt($request->password);
-            $usuario->usuario_tipo = 5;
+            $usuario->usuario_tipo = $request->usuario_tipo;
 
             if($usuario->save())
             {
 
-                // $link = Autologin::user($usuario);
-                //$link = Autologin::to($usuario, '/inicio');
                 $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
 
                 $array = [

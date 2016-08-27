@@ -1,6 +1,6 @@
 <header id="header" class="clearfix" data-current-skin="orange">
             <ul class="header-inner">
-            @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5))
+            @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
                 <li id="menu-trigger" data-trigger="#sidebar">
                     <div class="line-wrap" data-original-title="" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="Menú">
                         <div class="line top"></div>
@@ -81,7 +81,7 @@
                                     <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
                                 </li>
 
-                                @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5))
+                                @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
                                     <li class="hidden-xs">
                                         <a href="{{url('/')}}/agendar"><i class="zmdi zmdi-calendar-check"></i> Calendario</a>
@@ -112,7 +112,7 @@
                                 @if(Auth::user()->usuario_tipo == 1)
         
                                     <li class="hidden-xs">
-                                        <a href="{{url('configuracion/sucursales')}}"><i class="zmdi zmdi-city f-16"></i> Sucursales</a>
+                                        <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-city f-16"></i> Administradores</a>
                                     </li>
                                 @endif
 
@@ -124,6 +124,10 @@
                         </li> 
 
                         @endif
+
+                        <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
+                                <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
+                        </li>  
 
                         <!-- @if(Auth::check() && Auth::user()->usuario_tipo == 2)
 
@@ -194,11 +198,6 @@
                         </li>  -->
 
 
-                            <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
-                                <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
-                            </li>  
-
-         
                         @endif
 
                            

@@ -40,6 +40,16 @@ class UsuarioController extends BaseController {
         return view('usuario.planilla_evaluacion')->with('perfil', $perfil);
     }
 
+    public function aceptar_condiciones()
+    {
+        $usuario = User::find(Auth::user()->id);
+        $usuario->boolean_condiciones = 1;
+
+        $usuario->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
     public function store(Request $request)
     {
 

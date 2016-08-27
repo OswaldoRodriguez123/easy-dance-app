@@ -40,11 +40,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>-->
-                                    <th class="text-center" data-column-id="inicio" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
+                                    <th class="text-center" data-column-id="dia" data-order="desc">Dia</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                 </tr>
                             </thead>
@@ -53,9 +51,39 @@
                             @foreach ($clase_grupal_join as $clase_grupal)
                                 <?php $id = $clase_grupal['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> @if($clase_grupal['inicio'] == 0) <i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
                                     <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
+                                    <td class="text-center previa"><span style="display: none;">{{$clase_grupal['dia_de_semana']}}</span> 
+
+                                    @if($clase_grupal['dia_de_semana'] == 1)
+
+                                    Lunes
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 2)
+
+                                    Martes
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 3)
+
+                                    Miercoles
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 4)
+
+                                    Jueves
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 5)
+
+                                    Viernes
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 6)
+
+                                    Sabado
+
+                                    @elseif($clase_grupal['dia_de_semana'] == 7)
+
+                                    Domingo
+
+                                    @endif</td>
                                     <td class="text-center previa">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} </td>
                                   </tr>
                             @endforeach 
@@ -107,7 +135,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[3, 'asc']],
+        order: [[2, 'asc'], [3, 'asc']],
        fnDrawCallback: function() {
         if ("{{count($clase_grupal_join)}}" < 25) {
               $('.dataTables_paginate').hide();

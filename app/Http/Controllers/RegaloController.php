@@ -472,7 +472,7 @@ class RegaloController extends BaseController {
             if(Auth::check())
             {
 
-                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5){
+                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
                    return view('especiales.regalo.vender')->with(['regalo' => $regalo]);
                 }else{
                    return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);

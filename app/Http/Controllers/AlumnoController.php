@@ -171,7 +171,10 @@ class AlumnoController extends BaseController
         }
 
         if($request->visitante_id){
-            $visitante = Visitante::find($request->visitante_id)->delete();
+            $visitante = Visitante::find($request->visitante_id);
+            $visitante->cliente = 1;
+
+            $visitante->save();
         }
 
         $alumno = new Alumno;
@@ -314,6 +317,16 @@ class AlumnoController extends BaseController
                 ->where('inscripcion_clase_grupal.alumno_id', $id)
             ->get();
 
+            $array_descripcion = array();
+
+            foreach($clases_grupales as $clase){
+
+                array_push($array_descripcion, $clase->nombre);
+               
+            }
+
+            $descripcion = implode(", ", $array_descripcion);
+
             $subtotal = 0;
             $impuesto = 0;
 
@@ -329,7 +342,7 @@ class AlumnoController extends BaseController
                     
             }
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales]);
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion]);
         }else{
            return redirect("participante/alumno"); 
         }

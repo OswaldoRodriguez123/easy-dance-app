@@ -29,8 +29,35 @@ class CampanaController extends BaseController {
      * @return Response
      */
     
-    public function index()
-    {
+    // public function index()
+    // {
+
+    //     $campanas = DB::table('campanas')
+    //         ->select('campanas.*')
+    //         ->where('campanas.academia_id' , '=' , Auth::user()->academia_id)
+    //         ->OrderBy('campanas.created_at')
+    //     ->get();
+
+    //     $array=array();
+    //     $i = 0;
+    //     $cantidad = 0;
+    //     $total = 0;
+
+    //     foreach($campanas as $campana){
+            
+    //         $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+    //         $collection=collect($campana);     
+    //         $campana_array = $collection->toArray();
+            
+    //         $campana_array['total']=$recaudado;
+    //         $array[$campana->id] = $campana_array;
+    
+    //     }
+
+    //     return view('especiales.campana.principal')->with('campanas', $array);
+    // }
+
+    public function index(){
 
         $campanas = DB::table('campanas')
             ->select('campanas.*')
@@ -43,18 +70,43 @@ class CampanaController extends BaseController {
         $cantidad = 0;
         $total = 0;
 
-        foreach($campanas as $campana){
-            
-            $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
-            $collection=collect($campana);     
-            $campana_array = $collection->toArray();
-            
-            $campana_array['total']=$recaudado;
-            $array[$campana->id] = $campana_array;
-    
-        }
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        return view('especiales.campana.principal')->with('campanas', $array);
+        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+
+            foreach($campanas as $campana){
+            
+                $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+                $collection=collect($campana);     
+                $campana_array = $collection->toArray();
+                
+                $campana_array['total']=$recaudado;
+                $array[$campana->id] = $campana_array;
+        
+            }
+
+            return view('especiales.campana.principal')->with(['campanas' => $array, 'academia' => $academia]);
+
+        }else{
+
+            foreach($campanas as $campana){
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
+
+                if($fecha > Carbon::now()){
+
+                    $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+                    $collection=collect($campana);     
+                    $campana_array = $collection->toArray();
+                    
+                    $campana_array['total']=$recaudado;
+                    $array[$campana->id] = $campana_array;
+                }
+            }
+
+             return view('especiales.campana.principal')->with(['campanas' => $array, 'academia' => $academia]);
+
+        }
     }
 
     public function indexconacademia($id)

@@ -30,18 +30,37 @@ class TallerController extends BaseController {
      * @return Response
      */
 
-    public function index()
-    {
-        // $taller_join = DB::table('talleres')
-        //     ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
-        //     ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
-        //     ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-        //     ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'talleres.hora_inicio','talleres.hora_final')
-        //     ->get();
 
-            //dd($clase_grupal_join);
+    public function index(){
 
-        return view('agendar.taller.principal')->with(['taller' => Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->where('talleres.deleted_at', '=', null)->OrderBy('talleres.hora_inicio')->get();
+
+        $array = array();
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+
+            return view('agendar.taller.principal')->with(['taller' => $talleres, 'academia' => $academia]);
+
+        }else{
+
+            foreach($talleres as $taller){
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+
+                if($fecha > Carbon::now()){
+
+                    $collection=collect($taller);     
+                    $taller_array = $collection->toArray();
+
+                    $array[$taller->id] = $taller_array;
+                }
+            }
+
+             return view('agendar.taller.principal')->with(['taller' => $array, 'academia' => $academia]);
+
+        }
     }
 
     /**

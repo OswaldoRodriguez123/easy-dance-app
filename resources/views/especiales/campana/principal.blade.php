@@ -16,14 +16,14 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 <a href="{{url('/')}}/especiales/campañas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
 @endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
                         @else
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
@@ -33,13 +33,14 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                             <span class="f-16 p-t-0 text-success">Agregar una Campaña <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
                         @endif
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-campana f-25"></i> Sección de Campañas</p>
                             <hr class="linea-morada">                                                         
                         </div>
+                        @if($campanas)
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -50,7 +51,7 @@
                                     <th class="text-center" data-column-id="fecha_final" data-order="desc">Fecha Final</th>
                                     <th class="text-center" data-column-id="meta" data-order="desc">Meta</th>
                                     <th class="text-center" data-column-id="actual" data-order="desc">Actual</th>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                     @endif
                                 </tr>
@@ -66,7 +67,7 @@
                                     <td class="text-center previa">{{$campana['fecha_final']}}</td>
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
                                     <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                                         <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
                                     @endif
                                   </tr>
@@ -76,6 +77,22 @@
                         </table>
                          </div>
                         </div>
+
+                        @else
+
+                               <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
+
+
+                                  <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado campañas. </div>
+
+
+                             </div>
+
+
+
+
+                            @endif
                         <div class="card-body p-b-20">
                             <div class="row">
                               <div class="container">
@@ -176,7 +193,7 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
+        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
         {
             var route =route_detalle+"/"+row;
         }else{

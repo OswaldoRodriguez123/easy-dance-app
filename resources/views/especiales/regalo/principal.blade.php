@@ -17,7 +17,7 @@
 @stop
 @section('content')
 
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
     <a href="{{url('/')}}/especiales/regalos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
 @endif
@@ -25,7 +25,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
                     @else
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
@@ -35,7 +35,7 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                             <span class="f-16 p-t-0 text-success">Agregar un regalo <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
                         @endif
 
@@ -50,7 +50,7 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="costo" data-order="desc">Costo</th>
                                     <th class="text-center" data-column-id="descripcion" data-order="desc">Descripcion</th>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                                         <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                     @endif
                                 </tr>
@@ -64,7 +64,7 @@
                                     <td class="text-center previa">{{$regalo['nombre']}}</td>
                                     <td class="text-center previa">{{ number_format($regalo['costo'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{ str_limit($regalo['descripcion'], $limit = 50, $end = '...') }}</td>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                                     <td class="text-center"> <i id="{{$id}}" class="zmdi zmdi-wrench operacion f-20 p-r-10"></i></td>
                                     @endif
                                   </tr>
@@ -175,7 +175,7 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5)
+        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
         {
             var route =route_detalle+"/"+row;
         }else{

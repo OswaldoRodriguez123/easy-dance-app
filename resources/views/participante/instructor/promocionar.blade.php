@@ -81,7 +81,7 @@
 
   <div class="block-header">
 
-    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5)
+    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
     
 
       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/instructor" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección instructores</a>

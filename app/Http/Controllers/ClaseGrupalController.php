@@ -49,34 +49,53 @@ class ClaseGrupalController extends BaseController {
 
         $array = array();
 
-        foreach($clase_grupal_join as $clase_grupal){
-            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-            $dia_de_semana = $fecha->dayOfWeek;
-
-            if($fecha > Carbon::now()){
-                $inicio = 0;
-            }else{
-                $inicio = 1;
-            }
-
-            $collection=collect($clase_grupal);     
-            $clase_grupal_array = $collection->toArray();
-            
-            $clase_grupal_array['dia_de_semana']=$dia_de_semana;
-            $clase_grupal_array['inicio']=$inicio;
-            $array[$clase_grupal->id] = $clase_grupal_array;
-        }
+        $academia = Academia::find(Auth::user()->academia_id);
 
         
-        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5){
+        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+
+            foreach($clase_grupal_join as $clase_grupal){
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($fecha > Carbon::now()){
+                    $inicio = 0;
+                }else{
+                    $inicio = 1;
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                
+                $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['inicio']=$inicio;
+                $array[$clase_grupal->id] = $clase_grupal_array;
+            }
 
             $hoy = Carbon::now()->dayOfWeek;
 
-            return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy]);
+            return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
 
         }else{
 
-             return view('agendar.clase_grupal.principal_alumno')->with(['clase_grupal_join' => $array]);
+            $i = 0;
+
+            foreach($clase_grupal_join as $clase_grupal){
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($fecha > Carbon::now()){
+
+                    $collection=collect($clase_grupal);     
+                    $clase_grupal_array = $collection->toArray();
+
+                    $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                    $array[$clase_grupal->id] = $clase_grupal_array;
+                }
+            }
+
+             return view('agendar.clase_grupal.principal_alumno')->with(['clase_grupal_join' => $array, 'academia' => $academia]);
 
         }
     }

@@ -28,7 +28,7 @@ class AgendarController extends BaseController
         $arrayClasespersonalizadas=array();
         $arrayFiestas=array();
 
-        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5)
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
         {
 
         	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -176,9 +176,9 @@ class AgendarController extends BaseController
 
 
             $talleres = DB::table('talleres')
-                ->join('inscripcion_taller', 'inscripcion_taller.taller_id', '=', 'talleres.id')
+                // ->join('inscripcion_taller', 'inscripcion_taller.taller_id', '=', 'talleres.id')
                 ->select('talleres.*')
-                ->where('inscripcion_taller.alumno_id', Auth::user()->usuario_id)
+                // ->where('inscripcion_taller.alumno_id', Auth::user()->usuario_id)
                 ->where('talleres.deleted_at', '=', null)
             ->get();
 
@@ -215,9 +215,9 @@ class AgendarController extends BaseController
 
             $clasegrupal = DB::table('config_clases_grupales')
                 ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                // ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion')
-                ->where('inscripcion_clase_grupal.alumno_id', Auth::user()->usuario_id)
+                // ->where('inscripcion_clase_grupal.alumno_id', Auth::user()->usuario_id)
                 ->where('clases_grupales.deleted_at', '=', null)
             ->get();
 

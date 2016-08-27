@@ -307,7 +307,6 @@
                             allDay: false,
                             backgroundColor:'{{$taller['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$taller['url']}}'
                             },
                         @endforeach
 
@@ -326,7 +325,6 @@
                             allDay: false,
                             backgroundColor:'{{$clase['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$clase['url']}}'
                             },
                         @endforeach
 
@@ -345,7 +343,6 @@
                             allDay: false,
                             backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$clasepersonalizada['url']}}'
                             },
                         @endforeach
 
@@ -364,7 +361,6 @@
                             allDay: false,
                             backgroundColor:'{{$fiesta['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$fiesta['url']}}'
                             },
                         @endforeach
                     ],

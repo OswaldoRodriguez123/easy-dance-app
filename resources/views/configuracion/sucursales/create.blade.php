@@ -117,7 +117,7 @@
                                     <br>
                                 
                                 <div class="row">
-                                   <div class="col-sm-12">
+                                   <div class="col-sm-6">
                                          <div class="form-group">
                                             <label for="correo" id="id-responsable">Coordinador o responsable</label>
                                             <span class="input-group">
@@ -133,6 +133,31 @@
                                             </span>
                                             </div>
                                        </div>
+
+                                       <div class="col-sm-6">
+                                           <label>Tipo</label>
+                                          <div class="form-group">
+                                              <span class="input-group">
+                                                <span class="input-group-addon"><i class="icon_b icon_b-como-se-entero f-22"></i></span>
+                                                <div class="fg-line">
+                                                  <div class="select">
+                                                      <select class="form-control" id="usuario_tipo" name="usuario_tipo" placeholder="Seleccione>>">
+                                                      <option value="">Selecciona</option>
+                                                      <option value="1">Administrador</option>
+                                                      <option value="5">Sucursal</option>
+                                                      <option value="6">Recepcionista</option>
+
+                                                      </select>
+                                                </div>
+                                                </div>
+                                           </span>
+                                        <div class="has-error" id="error-usuario_tipo">
+                                          <span >
+                                           <small id="error-usuario_tipo_mensaje" class="help-block error-span" ></small>
+                                          </span>
+                                          </div>
+                                    </div>
+                                 </div>
 
                                        </div>
                                        <br><br><br><br>        
@@ -170,8 +195,8 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/configuracion/sucursales/agregar";
-  route_principal="{{url('/')}}/configuracion/sucursales";
+  route_agregar="{{url('/')}}/configuracion/administradores/agregar";
+  route_principal="{{url('/')}}/configuracion/administradores";
   
   $(document).ready(function(){
 

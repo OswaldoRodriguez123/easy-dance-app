@@ -17,7 +17,7 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/sucursales/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/configuracion/administradores/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
@@ -27,9 +27,9 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar a una Sucursal <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
+                            <span class="f-16 p-t-0 text-success">Agregar un administrador <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Sucursales</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Administradores</p>
                             <hr class="linea-morada">                                                        
                         </div>
                         <div class="table-responsive row">
@@ -39,6 +39,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="academia" data-order="desc">Academia</th>
+                                    <th class="text-center" data-column-id="tipo" data-order="desc">Tipo</th>
                                     <th class="text-center" data-column-id="email" data-order="desc">Correo Electrónico</th>
                                     <th class="text-center" data-column-id="direccion" data-order="desc">Dirección</th>
                                 </tr>
@@ -50,6 +51,21 @@
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$usuario->nombre}} {{$usuario->apellido}}</td>
                                     <td class="text-center previa">{{$usuario->nombre_academia}}</td>
+                                    <td class="text-center previa">
+
+                                    @if($usuario->usuario_tipo == 1)
+
+                                    Administrador
+
+                                    @elseif($usuario->usuario_tipo == 5)
+
+                                    Sucursal
+
+                                    @elseif($usuario->usuario_tipo == 6)
+
+                                    Recepcionista
+
+                                    @endif</td>
                                     <td class="text-center previa">{{$usuario->email}}</td>
                                     <td class="text-center previa">{{$usuario->direccion}}</td>
                                   </tr>
@@ -79,8 +95,8 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/configuracion/sucursales/detalle";
-        route_operacion="{{url('/')}}/configuracion/sucursales/operaciones";
+        route_detalle="{{url('/')}}/configuracion/administradores/detalle";
+        route_operacion="{{url('/')}}/configuracion/administradores/operaciones";
 
         $(document).ready(function(){
 

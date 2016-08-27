@@ -38,6 +38,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" name="tablelistar">
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="cliente"></th>
                                     <th class="text-center" data-column-id="fecha">Fecha de Registro</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -49,6 +50,7 @@
                             @foreach ($visitante as $visitantes)
                                 <?php $id = $visitantes['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> @if($visitantes['cliente'])<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$visitantes['fecha_registro']}}</td>
                                     <td class="text-center previa">
                                     @if($visitantes['sexo']=='F')
@@ -114,7 +116,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

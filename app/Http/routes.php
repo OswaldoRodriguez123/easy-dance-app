@@ -154,9 +154,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			// SUCURSAL
 
-			Route::get('configuracion/sucursales','SucursalController@principal');
-			Route::get('configuracion/sucursales/agregar','SucursalController@create');
-			Route::post('configuracion/sucursales/agregar','SucursalController@store');
+			Route::get('configuracion/administradores','AdministradorController@principal');
+			Route::get('configuracion/administradores/agregar','AdministradorController@create');
+			Route::post('configuracion/administradores/agregar','AdministradorController@store');
 
 			// ACADEMIA
 
@@ -715,6 +715,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		    // PRINCIPAL
 		    
 			Route::get('/inicio', 'AcademiaConfiguracionController@index');
+			Route::post('/inicio/condiciones', 'UsuarioController@aceptar_condiciones');
 			Route::get('/', 'AcademiaConfiguracionController@menu');
 			
 			//AGENDAR

@@ -80,11 +80,11 @@
                         <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Agendar</div>
                         
                         <div class ="detalle">
-                          @if(count($clases_grupales) != 1)
-                            <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($clases_grupales)}}</span>
+                          @if($clases_grupales != 1)
+                            <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
                               
                             @else
-                              <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clases_grupales[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clase Grupal <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($clases_grupales)}}</span>
+                              <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clase Grupal <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
                             @endif
                             </a> 
                           </div>
@@ -97,11 +97,11 @@
                             </div>
 
                           <div class ="detalle">
-                            @if(count($talleres) != 1)
-                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($talleres)}}</span>
+                            @if($talleres != 1)
+                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span>
                               
                             @else
-                              <a href="{{url('/')}}/agendar/talleres/progreso/{{$talleres[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Taller <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($talleres)}}</span>
+                              <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Taller <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span>
                             @endif
 
 
@@ -145,14 +145,47 @@
 
                           <div class ="detalle">
 
-                           @if(count($campanas) != 1)
-                          <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($campanas)}}</span>
+                           @if($campanas != 1)
+                          <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span>
                             
                           @else
-                            <a href="{{url('/')}}/especiales/campañas/progreso/{{$campanas[0]->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campaña <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($campanas)}}</span>
+                            <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campaña <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span>
                           @endif
 
                             </a> </div>
+
+                          <div class="clearfix p-b-15"></div>
+
+
+
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+
+
+                    </div> <!-- ESPECIALES -->
+
+
+                    <div class="clearfix p-b-15"></div>
+
+                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Proximas fecha de pago</div>
+
+                       @foreach($proformas as $proforma)
+
+                        <div class ="detalle">
+
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$proforma['nombre']}} </a> 
+                        
+                        </div>
+
+                        <div class ="detalle">
+                         
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$proforma['fecha_vencimiento']}} - {{ number_format($proforma['monto'], 2, '.' , '.') }}</a>
+                        
+                        </div>
+
+                        @endforeach
 
                           <div class="clearfix p-b-15"></div>
 
@@ -256,13 +289,18 @@
 
             @endforeach
 
+            @if(count($enlaces) > 4)
+
             <div class="text-center mostrar_mas"> <!-- MOSTRAR MAS -->
 
               <br><br>
 
+
+
               <span class="mostrar f-16 c-morado f-700 pointer">Mostrar mas</span>
 
               </div>
+            @endif
 
             </div>
                         
