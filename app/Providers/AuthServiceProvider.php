@@ -33,6 +33,12 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
+        $gate->define('view-examenes', function($user , $examen){
+            if($user->isType()=='admin' || $user->isType()=='recepcionista' || $user->isType()=='sucursal'){
+                return $user->academia_id === $examen->academia_id;
+            }
+        });
+
         //ELIMINAR ALUMNO
         $gate->define('delete-alumnos', function($user, $alumno){
             if($user->isType()=='admin'){
