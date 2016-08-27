@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -84,7 +85,7 @@
                         </div><!-- CARD HEADER 1 -->
 
                         <div class="col-md-6">
-                            <h2>Procesos de Inscripcion</h2>
+                            <h2>Visitas Presenciales</h2>
                             <hr>
                             <!-- <ul class="actions">
                                 <li class="dropdown action-show">
@@ -135,7 +136,7 @@
 
                             <div class="mini-charts-item bgm-blue">
                                 <div class="clearfix">
-                                    <div class="chart chart-pie inscritos-stats-pie"></div>
+                                    <div class="chart chart-pie presenciales-stats-pie"></div>
                                     <div class="count">
                                         <small>Total Visitantes:</small>
                                         <h2 id="total">{{$total_visitantes}}</h2>
@@ -254,7 +255,7 @@
         });
     
 
-            if($('.chosen')[0]) {
+            /*if($('.chosen')[0]) {
                 $('.chosen').chosen({
                     width: '100%',
                     allow_single_deselect: true
@@ -268,7 +269,7 @@
                 $('.date-picker').datetimepicker({
                     format: 'DD/MM/YYYY'
                 });
-            }
+            }*/
 
                 //Basic Example
                 $("#data-table-basica").bootgrid({
@@ -318,6 +319,71 @@
                     }
                 });
 
+            $(".applyBtn").on("click", function(){
+                var token = $('input:hidden[name=_token]').val();
+                var fechaInicio = $("input[name=daterangepicker_start]").val();
+                var fechaFin = $("input[name=daterangepicker_end]").val();
+                $.ajax({
+                    url: route_filtrar,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
+                    success:function(respuesta){
+                        datos = JSON.parse(JSON.stringify(respuesta));
+
+                        $("#total").text(datos.total_visitantes);
+
+                        var data1 = ''
+                        data1 += '[';
+                        $.each( datos.edades, function( i, item ) {
+                            var edad = item.age_range;
+                            var cant = item.count
+                            data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                        });
+                        data1 = data1.substring(0, data1.length -1);
+                        data1 += ']';
+                            //GRAFICO FILTRO MES ACTUAL
+                            $("#pie-chart-procesos").html('');
+                            $(".flc-pie").html('');
+                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '.flc-pie',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                }
+                                
+                            });
+
+
+                    }
+                });
+                
+            }); //END CLICK FECHA RANGO
 
         });
 /*****************************************
@@ -546,14 +612,6 @@ FILTROS PARA GRAFCAS
                 }
             });
 
-            //FILTRO RANGO DE FECHAS
-            $(".applyBtn").on("click", function(){
-                //var ranges = $("#personalizar").val();
-                //console.log(ranges);
-                alert('options');
-            });
-
-
         //PLOTS
         var pieData1 = [
                 @foreach ($edades as $edad)
@@ -603,7 +661,7 @@ FILTROS PARA GRAFCAS
 
 
 
-        sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
+        sparklinePie('presenciales-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
 
         function sparklinePie(id, values, width, height, sliceColors) {
             $('.'+id).sparkline(values, {

@@ -212,121 +212,189 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+<script type="text/javascript">
 
-        route_filtrar = "{{url('/')}}/reportes/inscritos";
+    route_filtrar = "{{url('/')}}/reportes/inscritos";
 
-        $(document).ready(function(){
+    $(document).ready(function(){
 
-            t=$('#tablelistar').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 50, 
-            // paging:false, 
-            order: [[0, 'desc']],
-            fnDrawCallback: function() {
-            if ($('#tablelistar tr').length < 50) {
-                  $('.dataTables_paginate').hide();
-              }
-              else{
-                 $('.dataTables_paginate').show();
-              }
-            },
-            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-            },
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
+        t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 50, 
+        // paging:false, 
+        order: [[0, 'desc']],
+        fnDrawCallback: function() {
+        if ($('#tablelistar tr').length < 50) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                        searchPlaceholder: "BUSCAR",
+                        lengthMenu:     " ",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
                         }
-            });
-    
-
-            /*if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }*/
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
                     }
-                });
-                //DateRangePicker
-                $('#personalizar').daterangepicker({
-                    "autoApply" : false,
-                    "opens": "left",
-                    "applyClass": "bgm-morado waves-effect",
-                    locale : {
-                        format: 'DD/MM/YYYY',
-                        applyLabel : 'Aplicar',
-                        cancelLabel : 'Cancelar',
-                        daysOfWeek : [
-                            "Dom",
-                            "Lun",
-                            "Mar",
-                            "Mie",
-                            "Jue",
-                            "Vie",
-                            "Sab"
-                        ],
-
-                        monthNames: [
-                            "Enero",
-                            "Febrero",
-                            "Marzo",
-                            "Abril",
-                            "Mayo",
-                            "Junio",
-                            "Julio",
-                            "Agosto",
-                            "Septiembre",
-                            "Octubre",
-                            "Noviembre",
-                            "Diciembre"
-                        ],        
-                    }
-                });
-
-
-
         });
+
+
+        /*if($('.chosen')[0]) {
+            $('.chosen').chosen({
+                width: '100%',
+                allow_single_deselect: true
+            });
+        }
+        if ($('.date-time-picker')[0]) {
+           $('.date-time-picker').datetimepicker();
+        }
+
+        if ($('.date-picker')[0]) {
+            $('.date-picker').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+        }*/
+
+            //Basic Example
+            $("#data-table-basica").bootgrid({
+                css: {
+                    icon: 'zmdi icon',
+                    iconColumns: 'zmdi-view-module',
+                    iconDown: 'zmdi-expand-more',
+                    iconRefresh: 'zmdi-refresh',
+                    iconUp: 'zmdi-expand-less'
+                }
+            });
+            //DateRangePicker
+            $('#personalizar').daterangepicker({
+                "autoApply" : false,
+                "opens": "left",
+                "applyClass": "bgm-morado waves-effect",
+                locale : {
+                    format: 'DD/MM/YYYY',
+                    applyLabel : 'Aplicar',
+                    cancelLabel : 'Cancelar',
+                    daysOfWeek : [
+                        "Dom",
+                        "Lun",
+                        "Mar",
+                        "Mie",
+                        "Jue",
+                        "Vie",
+                        "Sab"
+                    ],
+
+                    monthNames: [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ],        
+                }
+            });
+
+            $(".applyBtn").on("click", function(){
+                var token = $('input:hidden[name=_token]').val();
+                var fechaInicio = $("input[name=daterangepicker_start]").val();
+                var fechaFin = $("input[name=daterangepicker_end]").val();
+                $.ajax({
+                    url: route_filtrar,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
+                    success:function(respuesta){
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
+                        //console.log(datos.edades);
+
+                        $("#total").text(datos.total_inscritos);
+
+                        var data1 = ''
+                        data1 += '[';
+                        $.each( datos.edades, function( i, item ) {
+                            var edad = item.age_range;
+                            var cant = item.count
+                            data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                        });
+                        data1 = data1.substring(0, data1.length -1);
+                        data1 += ']';
+                            //GRAFICO FILTRO MES ACTUAL
+                            $("#pie-chart-procesos").html('');
+                            $(".flc-pie").html('');
+                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '.flc-pie',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                }
+                                
+                            });
+
+
+                    }
+                });
+                
+            }); //END CLICK FECHA RANGO
+
+
+
+    });
 /*****************************************
 FILTROS PARA GRAFCAS
 *****************************************/
@@ -552,16 +620,6 @@ FILTROS PARA GRAFCAS
                     $("#past_month").removeAttr('disabled');
                 }
             });
-
-            //FILTRO RANGO DE FECHAS
-            $(".applyBtn").on("click", function(){
-                //var ranges = $("#personalizar").val();
-                //console.log(ranges);
-                alert('options');
-            });
-
-
-
 
 
         //PLOTS
