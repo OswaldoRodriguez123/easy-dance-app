@@ -24,6 +24,10 @@ use App\ItemsFacturaProforma;
 use App\Paises;
 use App\Regalo;
 use App\PerfilEvaluativo;
+use App\User;
+use App\Factura;
+use App\Pago;
+use App\ItemsFactura;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -44,6 +48,55 @@ class AcademiaConfiguracionController extends BaseController {
 	public function index()
 	{
         $academia = Academia::find(Auth::user()->academia_id);
+
+        $array = array(2, 4);
+
+
+        // $results = User::whereIn('id', function ( $query ) {
+        //     $query->select('id')->from('users')->groupBy('email')->havingRaw('count(*) > 1');
+        // })->get();
+
+        $alumnos = DB::table('alumnos')
+            ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.*')
+            ->where('users.id', null)
+            // ->whereIn('users.usuario_tipo', $array)
+        ->get();
+
+        foreach($alumnos as $alumno)
+        {
+            $usuario = User::whereIn('usuario_tipo', $array)->Where('usuario_id', $alumno->id)->first();
+
+            if(!$usuario)
+            {
+                if($alumno->correo)
+                {
+
+                    $password = str_random(8);
+
+                    $usuario = new User;
+
+                    $usuario->academia_id = $alumno->academia_id;
+                    $usuario->nombre = $alumno->nombre;
+                    $usuario->apellido = $alumno->apellido;
+                    $usuario->telefono = $alumno->telefono;
+                    $usuario->celular = $alumno->celular;
+                    $usuario->sexo = $alumno->sexo;
+                    $usuario->email = $alumno->correo;
+                    $usuario->como_nos_conociste_id = 1;
+                    $usuario->direccion = $alumno->id;
+                    // $usuario->confirmation_token = str_random(40);
+                    $usuario->password = bcrypt($password);
+                    $usuario->usuario_id = $alumno->id;
+                    $usuario->usuario_tipo = 2;
+
+                    $usuario->save();
+
+                }
+
+            }
+
+        }
         
 
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){

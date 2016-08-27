@@ -717,7 +717,7 @@
 
         if("{{Auth::check()}}")
         {
-          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5){
+          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
 
             procesando();
 

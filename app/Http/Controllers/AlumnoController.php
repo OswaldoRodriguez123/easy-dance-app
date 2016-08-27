@@ -120,7 +120,7 @@ class AlumnoController extends BaseController
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255|unique:users,email, '.$request->id.'',
+        'correo' => 'required|email|max:255|unique:users,email',
     ];
 
     $messages = [
@@ -315,6 +315,7 @@ class AlumnoController extends BaseController
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago')
                 ->where('inscripcion_clase_grupal.alumno_id', $id)
+                ->where('inscripcion_clase_grupal.deleted_at', null)
             ->get();
 
             $array_descripcion = array();
