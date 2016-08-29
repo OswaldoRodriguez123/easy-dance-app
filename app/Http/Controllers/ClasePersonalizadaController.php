@@ -60,7 +60,7 @@ class ClasePersonalizadaController extends BaseController {
 
         if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
 
-            return view('agendar.clase_personalizada.index')->with(['clases_personalizadas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada]);
+            return view('agendar.clase_personalizada.reservar')->with(['clases_personalizadas' => $clases_personalizadas, 'config_clase_personalizada' => $config_clase_personalizada, 'especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones]);
         }else{
 
              $academia = Academia::find(Auth::user()->academia_id);
@@ -266,7 +266,36 @@ class ClasePersonalizadaController extends BaseController {
     public function reservar(Request $request)
     {
 
-    // dd($request->all());
+    if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+    {
+
+        $rules = [
+
+            'alumno_id' => 'required',
+
+        ];
+
+        $messages = [
+
+            'alumno_id.required' => 'Ups! El Alumno es requerido',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        $usuario_id = $request->alumno_id;
+
+    }else{
+        $usuario_id = Auth::user()->usuario_id;
+    }
+
     
 
     $rules = [
@@ -317,9 +346,9 @@ class ClasePersonalizadaController extends BaseController {
         $clasepersonalizada = new CitaClasePersonalizada;
         
 
-        // $clasepersonalizada->costo = $request->costo;
+        
         $clasepersonalizada->academia_id = Auth::user()->academia_id;
-        $clasepersonalizada->usuario_id = Auth::user()->usuario_id;
+        $clasepersonalizada->usuario_id = $usuario_id;
         $clasepersonalizada->clase_personalizada_id = $request->clase_personalizada_id;
         $clasepersonalizada->fecha_inicio = $fecha_inicio;
         $clasepersonalizada->instructor_id = $request->instructor_id;
@@ -331,7 +360,7 @@ class ClasePersonalizadaController extends BaseController {
         if($clasepersonalizada->save()){
 
             $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::find(Auth::user()->usuario_id);
+            $alumno = Alumno::find($usuario_id);
             $instructor = Instructor::find($request->instructor_id);
 
             $subj = 'Han reservado una Clase Personalizada';
@@ -377,7 +406,15 @@ class ClasePersonalizadaController extends BaseController {
 
             Session::forget('instructor_id');
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+            {
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $usuario_id, 200]);
+            }else{
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

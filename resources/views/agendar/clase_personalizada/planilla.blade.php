@@ -391,7 +391,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
                     </div> 
                     
                     <div class="card">
@@ -525,11 +525,11 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/agendar/clases-personalizadas/update";
-    route_eliminar="{{url('/')}}/agendar/clases-personalizadas/eliminar/";
-    route_principal="{{url('/')}}/agendar/clases-personalizadas";
-    route_cancelar="{{url('/')}}/agendar/clases-personalizadas/cancelar/";
-    route_cancelarpermitir="{{url('/')}}/agendar/clases-personalizadas/cancelarpermitir/";
+    route_update="{{url('/')}}/configuracion/clases-personalizadas/update";
+    route_eliminar="{{url('/')}}/configuracion/clases-personalizadas/eliminar/";
+    route_principal="{{url('/')}}/configuracion/clases-personalizadas";
+    route_cancelar="{{url('/')}}/configuracion/clases-personalizadas/cancelar/";
+    route_cancelarpermitir="{{url('/')}}/configuracion/clases-personalizadas/cancelarpermitir/";
 
     $(document).ready(function(){
 

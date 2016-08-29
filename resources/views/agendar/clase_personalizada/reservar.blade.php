@@ -32,10 +32,50 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                 <div class="col-sm-12">
-                                    
-                                <div style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc">
 
-                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones"></p>
+                                <div style="margin-left: 25%">
+                                    
+                                <div class="col-sm-8" style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc; overflow-y: auto; height:400px">
+
+                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones">
+                                    
+                                            <div class="text-center f-25 f-700">Normativas de las clases personalizadas</div>
+                                        <hr>
+                                    <div class="table-responsive row">
+                                    <div class="col-md-1"></div>
+                                       <div class="col-md-10">
+                                      <div class="text-justify">
+
+                                      <div class="f-18 f-700"> 1. Principal   </div>
+                                      <br>
+
+                                      <p>Al momento de hacer la reserva, al alumno comprende que envía una solicitud a la academia  y no una confirmación de la  clase, la reserva  deberá ser verificada y constatada   por un representante  la academia, por medio de la  plataforma o través de una llamada telefónica.</p>
+
+
+                                      <div class="f-18 f-700">2.  Reservar  </div><br>
+
+                                      <p>Todas las clases personalizadas o paquetes de su elección, deberán ser  apartadas con el 50% del costo total, al momento de asistir deberá pagar  el resto de la  totalidad de la clase, dicha pago podrá ser ejecutado a través de la plataforma o enviando el Boucher del  pago generado  a través, de la cuenta de banco establecida por la academia. </p>
+
+                                      <div class="f-18 f-700"> 3. Asistencia  </div><br>
+
+                                      <p>El alumno deberá asistir en el horario establecido en la reservación, en caso de atraso de parte del alumno, la academia no se responsabiliza ni se obliga  a reponer el tiempo perdido. </p>
+
+
+                                      <div class="f-18 f-700"> 4. Inasistencia  </div><br>
+
+                                      <p>En caso de que el alumnos no pueda asistir a su clase programada  deberá notificarlo con 08 horas de antelación a través de la plataforma, o confirmar a través de una llamada telefónica su cancelación, de lo contrario, la clase obtendrá un estatus de <b>“cancelación tardía”</b>, lo que significa que esta será percibida como una  clase vista, por tal motivo, esta deberá ser pagada en su totalidad, sin derecho a reprogramar dicha clase, esta podrá ser reprogramada siempre y cuando la cancelación sea superior a las 08 horas de límite que estable la institución.  </p>
+
+                                      <div class="f-18 f-700"> 5. Dinámica </div><br>
+
+                                      <p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantesen una misma sección u hora de clases. </p>
+
+                                      </div>
+                                      </div>
+                                      </div>
+
+                                  </p>
+
+                                  </div>
 
                                   </div>
 
@@ -99,6 +139,39 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
+
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+
+                            <div class="col-sm-12">
+                                 
+
+                                    <label for="alumno_id" id="id-alumno_id">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" aria-describedby="popoverclase" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual deseas asignar a la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
+
+                                         @foreach ( $alumnos as $alumno )
+                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-alumno_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               @endif
+
 
                             <div class="col-sm-12">
                                  
@@ -294,9 +367,8 @@
 
   route_agregar="{{url('/')}}/agendar/clases-personalizadas/reservar";
   route_completado="{{url('/')}}/agendar/clases-personalizadas/completado";
+  route_enhorabuena="{{url('/')}}/configuracion/clases-personalizadas/enhorabuena/";
   route_principal="{{url('/')}}/agendar/clases-personalizadas";
-
-  var condiciones = <?php echo json_encode($condiciones);?>;
 
   $(document).ready(function(){
 
@@ -317,8 +389,6 @@
         $('#clase_personalizada_id').selectpicker('refresh');
 
       }
-
-      $("#pre_condiciones").html(nl2br(condiciones));
 
       $(".guardar").attr("disabled","disabled");
 
@@ -435,13 +505,13 @@
 
         $(".reservar").click(function(){
 
-          if(condiciones){
+          if("{{Auth::user()->usuario_tipo}}" != 1 || "{{Auth::user()->usuario_tipo}}" != 5 || "{{Auth::user()->usuario_tipo}}" != 6 ){
 
-            $('#modalConfiguracion').modal('show');
+                $('#modalConfiguracion').modal('show');
 
-          }else{
-             $(".guardar").click();
-          }
+              }else{
+                $(".guardar").click();
+              }
 
         });
 
@@ -479,7 +549,13 @@
                           // $("#agregar_alumno")[0].reset();
                           // var nTitle="Ups! ";
                           // var nMensaje=respuesta.mensaje;
-                          window.location = route_completado;
+                          if(respuesta.id){
+                            window.location = route_enhorabuena + respuesta.id;
+                          }
+                          else{
+                            window.location = route_completado;
+                          }
+                          
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";

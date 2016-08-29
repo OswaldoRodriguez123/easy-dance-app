@@ -478,7 +478,7 @@
 
                             @foreach ($alumnos_inscritos as $alumno)
                                 <?php $id = $alumno->inscripcion_id; ?>
-                                <tr id="{{$id}}" class="seleccion" data-fecha="{{$alumno->fecha_pago}}" data-mensualidad="{{$alumno->costo_mensualidad}}" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}">
+                                <tr id="{{$id}}" class="seleccion" data-id="{{$alumno->id}}" data-fecha="{{$alumno->fecha_pago}}" data-mensualidad="{{$alumno->costo_mensualidad}}" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}">
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
                                     @if($alumno->sexo=='F')
@@ -525,6 +525,7 @@
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
+        route_detalle="{{url('/')}}/participante/alumno/detalle";
 
         $(document).ready(function(){
 
@@ -1357,6 +1358,14 @@
     
         // $(".test").text(selectedText);
     });
+
+    function previa(t){
+
+            var id = $(t).closest('tr').data('id');
+            var route =route_detalle+"/"+id;
+            window.location=route;
+        }
+
 
 
     </script>

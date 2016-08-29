@@ -60,7 +60,7 @@
 				<div class="row">
 					<ul class="ca-menu-j">
 					
-				    <div class="col-sm-9 col-md-offset-2">
+				    <div class="col-sm-12" style="margin-left: 2%">
                     
                     <li>  
                         <a href="{{url('/')}}/configuracion/academia">
@@ -112,13 +112,23 @@
                                             </div>
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a href="{{url('/')}}/configuracion/clases-personalizadas" class="mousehand">
+                                            <span class="ca-icon-j"><i class="icon_a-clase-personalizada"></i></span>
+                                            <div class="ca-content">
+                                                <h2 class="ca-main-j">Crea tus clases personalizadas</h2>
+                                                <h3 class="ca-sub-j">Paso 3</h3>
+                                            </div>
+                                        </a>
+                                    </li>
                                   
 					   <li>
                         <a href="{{url('/')}}/configuracion/servicios">
                             <span class="ca-icon-j" style=""><i class="demo-icon-j">&#xe802;</i></span>
                             <div class="ca-content-j">
                                 <h2 class="ca-main-j">Incluye  servicios</h2>
-                                <h3 class="ca-sub-j">Paso 3</h3>
+                                <h3 class="ca-sub-j">Paso 4</h3>
                             </div>
                         </a>
                     </li>
@@ -131,7 +141,6 @@
                             </div>
                         </a>
                     </li> -->
-					   </div>
 					   </div>
 					 </ul>
                      <div class="clearfix p-b-35"></div>

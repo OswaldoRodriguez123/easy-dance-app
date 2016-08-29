@@ -182,7 +182,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Configuración</a>
                     </div> 
                     
                     <div class="card">
@@ -264,9 +264,9 @@
             
 		<script type="text/javascript">
             
-        route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle"
-        route_operacion="{{url('/')}}/agendar/clases-personalizadas/operaciones"
-        route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
+        route_detalle="{{url('/')}}/configuracion/clases-personalizadas/detalle"
+        route_operacion="{{url('/')}}/configuracion/clases-personalizadas/operaciones"
+        route_configuracion="{{url('/')}}/configuracion/clases-personalizadas/configurar"
 
         tipo = 'activas';
             

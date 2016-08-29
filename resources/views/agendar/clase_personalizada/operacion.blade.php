@@ -14,10 +14,10 @@
         <div class="container">
            <div class="block-header">
                 <div class="col-sm-6 text-left">
-                <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
+                <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/clases-personalizadas"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
                 </div>
                 <div class="col-sm-6 text-right">
-                <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/agendar/clases-personalizadas/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/configuracion/clases-personalizadas/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
                 </div>
             </div> 
 
@@ -36,7 +36,7 @@
 
 
                     <li data-ripplecator class ="dark-ripples">
-                        <a href="{{url('/')}}/agendar/clases-personalizadas/participantes/{{$id}}">
+                        <a href="{{url('/')}}/configuracion/clases-personalizadas/participantes/{{$id}}">
                             <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" 
                                    data-original-title="Ver Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">

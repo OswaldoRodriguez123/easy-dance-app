@@ -36,8 +36,10 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                 <div class="col-sm-12">
+
+                                <div style="margin-left: 25%">
                                     
-                                <div style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc">
+                                <div class="col-sm-8" style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc; overflow-y: auto; height:400px">
 
                                   <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones">
 
@@ -97,6 +99,7 @@
                                   
                                   </p>
 
+                                </div>
                                 </div>
 
                                 </div>
@@ -169,7 +172,8 @@
 
     @else
 
-      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+      <?php $url = "/agendar/clases-grupales" ?>
+      <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
     @endif
 
@@ -699,7 +703,7 @@
         
 
 
-            if("{{$usuario_tipo}}" != 1 || "{{$usuario_tipo}}" != 5){
+            if("{{$usuario_tipo}}" != 1 || "{{$usuario_tipo}}" != 5 || "{{$usuario_tipo}}" != 6 ){
 
                 $('#modalConfiguracion').modal('show');
 
