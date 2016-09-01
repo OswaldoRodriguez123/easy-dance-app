@@ -887,11 +887,11 @@
         incluye_iva = servicio[index][0]['incluye_iva'];
         console.log(incluye_iva);
 
-        if(incluye_iva){
-          $("#impuesto").val("{{$impuesto}}");
+        if(incluye_iva != 0){
+          $("#impuesto").val($('#impuesto option').first().val());
         }
         else{
-          $("#impuesto").val(0);
+          $("#impuesto").val($('#impuesto option').last().val());
         }
 
       }else{
@@ -900,11 +900,11 @@
         incluye_iva = producto[index][0]['incluye_iva'];
         console.log(incluye_iva);
 
-        if(incluye_iva){
-          $("#impuesto").val("{{$impuesto}}");
+        if(incluye_iva != 0){
+          $("#impuesto").val($('#impuesto option').first().val());
         }
         else{
-          $("#impuesto").val(0);
+          $("#impuesto").val($('#impuesto option').last().val());
         }
 
       }
