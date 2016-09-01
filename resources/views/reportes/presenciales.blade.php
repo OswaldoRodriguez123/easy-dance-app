@@ -211,6 +211,14 @@
         
         $(document).ready(function(){
 
+        $('input[type=checkbox]').change(function()
+        {
+            if (this.checked)
+            {
+                $('input[type=checkbox]').not(this).attr('checked',false);
+            }
+        });
+
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
@@ -394,8 +402,6 @@ FILTROS PARA GRAFCAS
             $("#actual_month").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#actual_month").is(":checked")){
-                    $("#past_month").attr('disabled','disabled');
-                    $("#today").attr('disabled','disabled');
                     $("#mes_actual").val('1');
                         $.ajax({
                             url: route_filtrar,
@@ -404,6 +410,21 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { mesActual: 'mes_actual' },
                             success:function(respuesta){
+
+                                t.clear().draw();
+
+                                $.each(respuesta.presenciales, function (index, array) {
+                                    var rowNode=t.row.add( [
+                                    ''+array.fecha+'',
+                                    ''+array.nombre+'',
+                                    ''+array.apellido+'',
+                                    ''+array.celular+'',
+                                    ''+array.especialidad+'',
+                                    ] ).draw(false).node();
+                                    $( rowNode )
+                                        .attr('id',array.id)
+                                        .addClass('seleccion');
+                                });
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
 
@@ -458,8 +479,6 @@ FILTROS PARA GRAFCAS
                         });
                 }else{
                     $("#mes_actual").val('0');
-                    $("#past_month").removeAttr('disabled');
-                    $("#today").removeAttr('disabled');
                 }
             });//END FILTRO MES ACTUAL
 
@@ -469,8 +488,6 @@ FILTROS PARA GRAFCAS
             $("#past_month").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#past_month").is(":checked")){
-                    $("#actual_month").attr('disabled','disabled');
-                    $("#today").attr('disabled','disabled');
                     //$("#mes_actual").val('1');
                         $.ajax({
                             url: route_filtrar,
@@ -479,6 +496,22 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { mesPasado: 'mes_pasado' },
                             success:function(respuesta){
+
+                                t.clear().draw();
+
+                                $.each(respuesta.presenciales, function (index, array) {
+                                    var rowNode=t.row.add( [
+                                    ''+array.fecha+'',
+                                    ''+array.nombre+'',
+                                    ''+array.apellido+'',
+                                    ''+array.celular+'',
+                                    ''+array.especialidad+'',
+                                    ] ).draw(false).node();
+                                    $( rowNode )
+                                        .attr('id',array.id)
+                                        .addClass('seleccion');
+                                });
+
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
                                 $("#total").text(datos.total_visitantes);
@@ -532,8 +565,6 @@ FILTROS PARA GRAFCAS
                         });
                 }else{
                     //$("#mes_actual").val('0');
-                    $("#actual_month").removeAttr('disabled');
-                    $("#today").removeAttr('disabled');
                 }
             });
 
@@ -544,8 +575,6 @@ FILTROS PARA GRAFCAS
             $("#today").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#today").is(":checked")){
-                    $("#actual_month").attr('disabled','disabled');
-                    $("#past_month").attr('disabled','disabled');
                     //$("#mes_actual").val('1');
                         $.ajax({
                             url: route_filtrar,
@@ -554,6 +583,22 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { today: 'today' },
                             success:function(respuesta){
+
+                                t.clear().draw();
+
+                                $.each(respuesta.presenciales, function (index, array) {
+                                    var rowNode=t.row.add( [
+                                    ''+array.fecha+'',
+                                    ''+array.nombre+'',
+                                    ''+array.apellido+'',
+                                    ''+array.celular+'',
+                                    ''+array.especialidad+'',
+                                    ] ).draw(false).node();
+                                    $( rowNode )
+                                        .attr('id',array.id)
+                                        .addClass('seleccion');
+                                });
+
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
                                 $("#total").text(datos.total_visitantes);
@@ -607,8 +652,6 @@ FILTROS PARA GRAFCAS
                         });
                 }else{
                     //$("#mes_actual").val('0');
-                    $("#actual_month").removeAttr('disabled');
-                    $("#past_month").removeAttr('disabled');
                 }
             });
 

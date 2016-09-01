@@ -100,7 +100,7 @@ class ReporteController extends BaseController
             ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
             
         ->get();
-        
+
         $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->selectRaw('sexo, count(sexo) as CantSex')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
