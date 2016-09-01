@@ -885,6 +885,7 @@
         var servicio = <?php echo json_encode($servicio);?>;
 
         incluye_iva = servicio[index][0]['incluye_iva'];
+        console.log(incluye_iva);
 
         if(incluye_iva){
           $("#impuesto").val("{{$impuesto}}");
@@ -897,6 +898,7 @@
 
         var producto = <?php echo json_encode($producto);?>;
         incluye_iva = producto[index][0]['incluye_iva'];
+        console.log(incluye_iva);
 
         if(incluye_iva){
           $("#impuesto").val("{{$impuesto}}");

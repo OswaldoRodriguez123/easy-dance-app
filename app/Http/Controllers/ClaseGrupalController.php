@@ -503,6 +503,7 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->cupo_maximo = $request->cupo_maximo;
         $clasegrupal->cupo_reservacion = $request->cupo_reservacion;
         $clasegrupal->link_video = $request->link_video;
+        $clasegrupal->boolean_promocionar = $request->boolean_promocionar;
         // $clasegrupal->cantidad_hombres = $request->cantidad_hombre;
         // $clasegrupal->cantidad_mujeres = $request->cantidad_mujer;
 
@@ -1406,6 +1407,18 @@ class ClaseGrupalController extends BaseController {
 
     }
 
+    public function updateMostrar(Request $request){
+
+        $clasegrupal = ClaseGrupal::find($request->id);
+        $clasegrupal->boolean_promocionar = $request->boolean_promocionar;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -1447,7 +1460,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar')
                 ->where('clases_grupales.id', '=', $id)
                 ->first();
 

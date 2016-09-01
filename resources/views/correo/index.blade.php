@@ -504,7 +504,7 @@
 
                                   <div class="text-center">
 
-                                  <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span>
+                                  <!-- <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span> -->
 
 
                                 </div> 
