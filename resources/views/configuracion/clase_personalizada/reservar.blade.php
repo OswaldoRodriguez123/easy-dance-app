@@ -279,40 +279,7 @@
                                   </div>
                                </div>
 
-
-
                                <div class="clearfix p-b-35"></div>
-
-                               @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-                                <div class="col-sm-12">
-                                 
-                                     <label for="nivel_baile" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-estudio-salon f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" id="estudio_id" name="estudio_id" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $config_estudios as $estudios )
-                                          <option value = "{{ $estudios['id'] }}">{{ $estudios['nombre'] }}</option>
-                                          @endforeach
-
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-estudio_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-estudio_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                                @endif
                                     
                                <div class="col-xs-6">
                                  
@@ -345,7 +312,6 @@
                                      </div>
                                   </div>
                                </div>
-                        
 
                                <div class="clearfix p-b-35"></div>
 
@@ -400,7 +366,6 @@
 <script type="text/javascript">
 
   route_agregar="{{url('/')}}/agendar/clases-personalizadas/reservar";
-  route_inscribir="{{url('/')}}/configuracion/clases-personalizadas/inscribir";
   route_completado="{{url('/')}}/agendar/clases-personalizadas/completado";
   route_enhorabuena="{{url('/')}}/configuracion/clases-personalizadas/enhorabuena/";
   route_principal="{{url('/')}}/agendar/clases-personalizadas";
@@ -540,15 +505,12 @@
 
         $(".reservar").click(function(){
 
-          console.log("{{Auth::user()->usuario_tipo}}");
+          if("{{Auth::user()->usuario_tipo}}" != 1 || "{{Auth::user()->usuario_tipo}}" != 5 || "{{Auth::user()->usuario_tipo}}" != 6 ){
 
-          if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6 ){
-
-                $(".guardar").click();
+                $('#modalConfiguracion').modal('show');
 
               }else{
-                
-                $('#modalConfiguracion').modal('show');
+                $(".guardar").click();
               }
 
         });
@@ -556,11 +518,7 @@
   $("#guardar").click(function(){
 
                 var id = $("#alumno_id").val();
-                if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6 ){
-                  var route = route_inscribir;
-                }else{
-                  var route = route_agregar;
-                }
+                var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_clasepersonalizada" ).serialize(); 
                 $("#guardar").attr("disabled","disabled");

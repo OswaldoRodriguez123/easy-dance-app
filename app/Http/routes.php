@@ -223,6 +223,28 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/impuesto', 'ConfigClasesGrupalesController@updateImpuesto');
 			Route::put('configuracion/clases-grupales/update/condiciones', 'ConfigClasesGrupalesController@updateCondiciones');
 
+			//CLASES PERSONALIZADAS
+
+			Route::get('configuracion/clases-personalizadas', 'ConfigClasePersonalizadaController@index');
+			Route::get('configuracion/clases-personalizadas/agregar', 'ConfigClasePersonalizadaController@create');
+			Route::post('configuracion/clases-personalizadas/agregar', 'ConfigClasePersonalizadaController@store');
+			Route::get('configuracion/clases-personalizadas/detalle/{id}', 'ConfigClasePersonalizadaController@edit');
+			Route::get('configuracion/clases-personalizadas/operaciones/{id}', 'ConfigClasePersonalizadaController@operar');
+			Route::delete('configuracion/clases-personalizadas/eliminar/{id}', 'ConfigClasePersonalizadaController@destroy');
+			Route::post('configuracion/clases-personalizadas/cancelar/{id}', 'ConfigClasePersonalizadaController@cancelar');
+			Route::post('configuracion/clases-personalizadas/cancelarpermitir/{id}', 'ConfigClasePersonalizadaController@cancelarpermitir');
+
+			Route::put('configuracion/clases-personalizadas/update/nombre', 'ConfigClasePersonalizadaController@updateNombre');
+			Route::put('configuracion/clases-personalizadas/update/costo', 'ConfigClasePersonalizadaController@updateCosto');
+			Route::put('configuracion/clases-personalizadas/update/imagen', 'ConfigClasePersonalizadaController@updateImagen');
+			Route::put('configuracion/clases-personalizadas/update/descripcion', 'ConfigClasePersonalizadaController@updateDescripcion');
+			Route::put('configuracion/clases-personalizadas/update/etiqueta', 'ConfigClasePersonalizadaController@updateEtiqueta');
+			Route::put('configuracion/clases-personalizadas/update/tiempo_expiracion', 'ConfigClasePersonalizadaController@updateExpiracion');
+
+			Route::post('configuracion/clases-personalizadas/configurar', 'ConfigClasePersonalizadaController@configuracion');
+			Route::get('configuracion/clases-personalizadas/participantes/{id}', 'ConfigClasePersonalizadaController@participantes');
+			Route::post('configuracion/clases-personalizadas/inscribir', 'ConfigClasePersonalizadaController@storeInscripcion');
+
 			// COREOGRAFIA
 
 			Route::get('configuracion/coreografias','CoreografiaController@principal');
@@ -452,35 +474,17 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//CLASES PERSONALIZADAS
 
-			Route::get('configuracion/clases-personalizadas', 'ClasePersonalizadaController@index');
-			Route::post('configuracion/clases-personalizadas/agregar', 'ClasePersonalizadaController@store');
-			Route::get('configuracion/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');
-			Route::get('configuracion/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
-			Route::delete('configuracion/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
-			Route::post('configuracion/clases-personalizadas/cancelar/{id}', 'ClasePersonalizadaController@cancelar');
-			Route::post('configuracion/clases-personalizadas/cancelarpermitir/{id}', 'ClasePersonalizadaController@cancelarpermitir');
+			Route::get('agendar/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');
+			Route::get('agendar/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
+			Route::delete('agendar/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
 
-			Route::put('configuracion/clases-personalizadas/update/nombre', 'ClasePersonalizadaController@updateNombre');
-			Route::put('configuracion/clases-personalizadas/update/costo', 'ClasePersonalizadaController@updateCosto');
-			Route::put('configuracion/clases-personalizadas/update/imagen', 'ClasePersonalizadaController@updateImagen');
-			Route::put('configuracion/clases-personalizadas/update/fecha', 'ClasePersonalizadaController@updateFecha');
-			Route::put('configuracion/clases-personalizadas/update/especialidad', 'ClasePersonalizadaController@updateEspecialidad');
-			Route::put('configuracion/clases-personalizadas/update/instructor', 'ClasePersonalizadaController@updateInstructor');
-			Route::put('configuracion/clases-personalizadas/update/alumno', 'ClasePersonalizadaController@updateAlumno');
-			Route::put('configuracion/clases-personalizadas/update/horario', 'ClasePersonalizadaController@updateHorario');
-			Route::put('configuracion/clases-personalizadas/update/estudio', 'ClasePersonalizadaController@updateEstudio');
-			;
-			Route::put('configuracion/clases-personalizadas/update/descripcion', 'ClasePersonalizadaController@updateDescripcion');
-			Route::put('configuracion/clases-personalizadas/update/etiqueta', 'ClasePersonalizadaController@updateEtiqueta');
-			Route::put('configuracion/clases-personalizadas/update/tiempo_expiracion', 'ClasePersonalizadaController@updateExpiracion');
+			Route::put('agendar/clases-personalizadas/update/alumno', 'ClasePersonalizadaController@updateAlumno');
+			Route::put('agendar/clases-personalizadas/update/nombre', 'ClasePersonalizadaController@updateNombre');
+			Route::put('agendar/clases-personalizadas/update/fecha', 'ClasePersonalizadaController@updateFecha');
+			Route::put('agendar/clases-personalizadas/update/especialidad', 'ClasePersonalizadaController@updateEspecialidad');
+			Route::put('agendar/clases-personalizadas/update/instructor', 'ClasePersonalizadaController@updateInstructor');
+			Route::put('agendar/clases-personalizadas/update/horario', 'ClasePersonalizadaController@updateHorario');
 
-			Route::post('configuracion/clases-personalizadas/configurar', 'ClasePersonalizadaController@configuracion');
-			Route::get('configuracion/clases-personalizadas/participantes/{id}', 'ClasePersonalizadaController@participantes');
-			Route::post('configuracion/clases-personalizadas/inscribir', 'ClasePersonalizadaController@storeInscripcion');
-
-			Route::get('configuracion/clases-personalizadas/agregar', 'ClasePersonalizadaController@create');
-			Route::post('configuracion/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
-			Route::get('configuracion/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
 
 			//TALLERES
 

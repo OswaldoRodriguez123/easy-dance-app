@@ -16,100 +16,37 @@
 
 @section('content')
 
-            <div class="modal fade" id="modalFecha-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalNombre-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_fecha_clasepersonalizada" id="edit_fecha_clasepersonalizada"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group fg-line">
-                                    <label for="fecha">Fecha</label>
-                                    <input type="text" class="form-control date-picker input-sm" name="fecha_inicio" id="fecha_inicio" placeholder="Ej. 00/00/0000" value="{{$clasepersonalizada->fecha_inicio}}">
-                                 </div>
-                                    <div class="has-error" id="error-fecha_inicio">
-                                      <span >
-                                          <small id="error-fecha_inicio_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_fecha_clasepersonalizada" data-update="fecha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-            <!--
-              BEGIN
-              MODAL EDITAR ESPECIALIDADES
-            -->     
-            <div class="modal fade" id="modalEspecialidades-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_especialidades_clasepersonalizada" id="edit_especialidades_clasepersonalizada"  >
+                        <form name="edit_nombre_clase_personalizada" id="edit_nombre_clase_personalizada"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Especialidades</label>
-
-                                      <div class="select">
-                                          <select class="form-control" id="especialidad_id" name="especialidad_id">
-                                          @foreach ( $config_especialidades as $especialidades )
-                                          <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
-                                          @endforeach 
-                                          </select>
-                                      </div> 
-
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Salsa Casino">
                                  </div>
-                                 <div class="has-error" id="error-especialidad_id">
+                                 <div class="has-error" id="error-nombre">
                                       <span >
-                                          <small class="help-block error-span" id="error-especialidad_id_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
 
 
                                <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
-                            
+                              
 
                                <div class="clearfix"></div> 
-                              
-                          </div>
+
+                               
+                               
+                           </div>
                            
                         </div>
                         <div class="modal-footer p-b-20 m-b-20">
@@ -125,49 +62,36 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_especialidades_clasepersonalizada" data-update="especialidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_nombre_clase_personalizada" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
                     </div>
                 </div>
             </div>
-            <!-- END -->
 
-            <!--
-              BEGIN
-              MODAL EDITAR INSTRUCTOR
-            -->                
-            <div class="modal fade" id="modalInstructor-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalCosto-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_instructor_clasepersonalizada" id="edit_instructor_clasepersonalizada"  >
+                        <form name="edit_costo_clase_personalizada" id="edit_costo_clase_personalizada"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                <div class="form-group fg-line">
-                                    <label for="apellido">Instructores</label>
-
-                                      <div class="select">
-                                        <select class="form-control" id="instructor_id" name="instructor_id">
-
-                                        @foreach ( $instructores as $instructor )
-                                        <option value = "{{$instructor['id'] }}">{{$instructor['nombre'] }} {{$instructor['apellido'] }}</option>
-                                        @endforeach 
-                                        
-                                        </select>
-                                      </div> 
-                                    </div>
-                                    <div class="has-error" id="error-instructor_id">
-                                      <span >
-                                          <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
-                                      </span>
+                                 <div class="form-group fg-line">
+                                    <label for="costo">Costo</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="00000000" placeholder="Ej. 5000" value="{{$clasepersonalizada->costo}}">
                                  </div>
+                                 <div class="has-error" id="error-costo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-costo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
                                </div>
+
 
                                <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
                               
@@ -192,59 +116,55 @@
                             </div>
                             <div class="col-sm-12">                            
 
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_instructor_clasepersonalizada" data-update="instructor" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_costo_clase_personalizada" data-update="costo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
                     </div>
                 </div>
             </div>
-            <!-- END -->            
 
-            <!--
-              BEGIN
-              MODAL EDITAR HORA INICIO
-            -->                
-            <div class="modal fade" id="modalHorario-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+
+            <div class="modal fade" id="modalEtiqueta-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_horario_clasepersonalizada" id="edit_horario_clasepersonalizada"  >
+                        <form name="edit_etiqueta_clasepersonalizada" id="edit_etiqueta_clasepersonalizada"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="telefono">Hora de Inicio</label>
-                                    <input type="text" class="form-control time-picker input-sm" name="hora_inicio" id="hora_inicio" placeholder="Ej. 00:00">
-                                 </div>
-                                  <div class="has-error" id="error-hora_inicio">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                                 <div class="form-group fg-line">
-                                    <label for="telefono">Hora Final</label>
-                                    <input type="text" class="form-control time-picker input-sm" name="hora_final" id="hora_final" placeholder="Ej. 00:00">
-                                 </div>                                 
-                                 <div class="has-error" id="error-hora_final">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
-                                      </span>
-                                  </div>
+                                 <div class="cp-container">
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label>
+                                        <div class="input-group form-group">
+
+                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$clasepersonalizada->color_etiqueta}}" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="{{$clasepersonalizada->color_etiqueta}}"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                </div>
 
                                <div class="clearfix"></div> 
 
-
                                <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
-                              
 
-                               <div class="clearfix"></div> 
-                              
+                               
+                               
                            </div>
                            
                         </div>
@@ -261,7 +181,203 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_horario_clasepersonalizada" data-update="horario" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_clasepersonalizada" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalImagen-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_imagen_clase_personalizada" id="edit_imagen_clase_personalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Cargar Imagen</label>
+                                        <div class="clearfix p-b-15"></div>
+                                        <input type="hidden" name="imageBase64" id="imageBase64">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($clasepersonalizada->imagen)
+                                          <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$clasepersonalizada->imagen}}" style="line-height: 150px;">
+                                          @endif
+                                        </div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen" id="imagen" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="has-error" id="error-imagen">
+                                      <span >
+                                          <small id="error-imagen_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-morado m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_imagen_clase_personalizada" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+             <div class="modal fade" id="modalExpiracion-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" style="width:70%">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_expiracion_clasepersonalizada" id="edit_expiracion_clasepersonalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="form-group">
+
+                                    <div class="col-sm-12">
+                                        <label for="tiempo_expiracion" id="id-tiempo_expiracion">Cancelación temprana/ tardía</label>
+                                      </div>
+
+                                        <div class="clearfix p-b-35"></div>
+                                        
+                                        <div class="col-sm-12" style="width:43%">
+                                        <label for="tiempo_expiracion" id="id-tiempo_expiracion">Culmina el plazo de cancelación temprana en </label>
+                                        </div>
+                                        <div class="col-sm-12 text-center" style="width:10%">
+                                        <input type="text" class="form-control input-sm input-mask" name="tiempo_expiracion" id="tiempo_expiracion" data-mask="00" placeholder="Ej. 24">
+                                        </div>
+
+                                        <div class="col-sm-12" style="width:45%">
+                                        <label for="tiempo_expiracion"> horas antes del inicio de la clase personalizada</label>
+
+                                      </div>
+
+                                      <br><br>
+                                  <div class="col-sm-12">
+                                    <div class="has-error" id="error-tiempo_expiracion">
+                                      <span >
+                                          <small id="error-tiempo_expiracion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_expiracion_clasepersonalizada" data-update="tiempo_expiracion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalDescripcion-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_descripcion_taller" id="edit_descripcion_clase_personalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Descripción</label>
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)">{{$clasepersonalizada->descripcion}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">2000</span> Caracteres</div>
+                                 </div>
+                                    <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small id="error-descripcion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_descripcion_clase_personalizada" data-update="descripcion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -269,98 +385,13 @@
                 </div>
             </div>
             <!-- END -->
-
-
-            <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Cancelar una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_clase" id="cancelar_clase"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <input type="hidden" name="clasepersonalizada_id" id="clasepersonalizada_id" value="{{$clasepersonalizada->id}}"></input>  
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor">{{$clasepersonalizada->instructor_nombre}} {{$clasepersonalizada->instructor_apellido}}  </span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-9">
-                                             
-                                            <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasepersonalizada->hora_inicio}} - {{$clasepersonalizada->hora_final}}</span></p>
-
-                                            <p class="f-16"> <span class="f-700 span_fecha">Fecha: {{$clasepersonalizada->fecha_inicio}}</span></p> 
-
-                                            <p class="f-16"> <span class="f-700 span_especialidad">Especialidad: {{$clasepersonalizada->especialidad_nombre}}</span></p>
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                       <hr style="margin-top:5px">
-
-                                       <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelar la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
-                                          </div>
-                                        <div class="has-error" id="error-razon_cancelacion">
-                                          <span >
-                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-6 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-6">                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_clase" id="cancelar_clase" name="cancelar_clase" > Completar la cancelación</button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
-
-           
 
 
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/clases-personalizadas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase personalizada</a>
                     </div> 
                     
                     <div class="card">
@@ -398,7 +429,7 @@
 
                                   <hr></hr>
 
-                                  '<i data-toggle="modal" href="#modalCancelar" name="operacion" class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <a href="{{url('/')}}/configuracion/clases-personalizadas/participantes/{{$clasepersonalizada->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -421,54 +452,58 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                           <tr class="disabled">
+                           <tr class="detalle" data-toggle="modal" href="#modalNombre-ClasePersonalizada">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($clasepersonalizada->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-clase-personalizada f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_d-servicios f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-nombre" class="capitalize">{{$clasepersonalizada->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="disabled">
+                            <tr class="detalle" data-toggle="modal" href="#modalCosto-ClasePersonalizada">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($clasepersonalizada->alumno_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-alumnos f-22"></i> </span>
-                               <span class="f-14"> Alumno </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo" class="zmdi {{ empty($clasepersonalizada->costo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
+                               <span class="f-14"> Costo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-nombre" class="capitalize">{{$clasepersonalizada->alumno_nombre}} {{$clasepersonalizada->alumno_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-costo"><span>{{ number_format($clasepersonalizada->costo, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                             <tr class="detalle" data-toggle="modal" href="#modalFecha-ClasePersonalizada">
-                             <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi  {{ empty($clasepersonalizada->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
-                              <span class="f-14">Fecha</span>
-                             </td>
-                             <td class="f-14 m-l-15" id="clasepersonalizada-fecha" ><span id="clasepersonalizada-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasepersonalizada->fecha_inicio)->format('d/m/Y')}}</span></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEspecialidades-ClasePersonalizada">
+                            <tr class="detalle" data-toggle="modal" href="#modalDescripcion-ClasePersonalizada">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidad_id" class="zmdi  {{ empty($clasepersonalizada->especialidad_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
-                               <span class="f-14"> Especialidad </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($clasepersonalizada->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Descripción </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-especialidad_id"><span>{{$clasepersonalizada->especialidad_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="clasepersonalizada-descripcion" class="f-14 m-l-15" data-valor="{{$clasepersonalizada->descripcion}}" ><span ><span>{{ str_limit($clasepersonalizada->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalInstructor-ClasePersonalizada">
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClasePersonalizada">
+                               <td>
+                                 <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($clasepersonalizada->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                 <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
+                                 <span class="f-14"> Color de Etiqueta  </span>
+                               </td>
+                               <td  class="f-14 m-l-15">
+                                <span id="clasepersonalizada-color_etiqueta">{{$clasepersonalizada->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                               
+                                </td>
+                              </tr> 
+                              <tr class="detalle" data-toggle="modal" href="#modalImagen-ClasePersonalizada">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi  {{ empty($clasepersonalizada->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
-                               <span class="f-14"> Instructor  </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($clasepersonalizada->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Imagen </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="clasepersonalizada-instructor_id" ><span id="clasepersonalizada-instructor_id">{{$clasepersonalizada->instructor_nombre}} {{$clasepersonalizada->instructor_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalHorario-ClasePersonalizada">
+                            <tr class="detalle" data-toggle="modal" href="#modalExpiracion-ClasePersonalizada">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi  {{ empty($clasepersonalizada->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw""></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
-                               <span class="f-14"> Horario </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tiempo_expiracion" class="zmdi {{ empty($clasepersonalizada->tiempo_expiracion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-hourglass-alt zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Cancelación temprana/ tardía </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-hora_inicio">{{$clasepersonalizada->hora_inicio}}</span> - <span id="clasepersonalizada-hora_final">{{$clasepersonalizada->hora_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-tiempo_expiracion"><span>{{$clasepersonalizada->tiempo_expiracion}} Horas</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+
 
                            </table>
 
@@ -489,13 +524,35 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/agendar/clases-personalizadas/update";
-    route_eliminar="{{url('/')}}/agendar/clases-personalizadas/eliminar/";
-    route_principal="{{url('/')}}/agendar/clases-personalizadas";
+    route_update="{{url('/')}}/configuracion/clases-personalizadas/update";
+    route_eliminar="{{url('/')}}/configuracion/clases-personalizadas/eliminar/";
+    route_principal="{{url('/')}}/configuracion/clases-personalizadas";
     route_cancelar="{{url('/')}}/configuracion/clases-personalizadas/cancelar/";
     route_cancelarpermitir="{{url('/')}}/configuracion/clases-personalizadas/cancelarpermitir/";
 
     $(document).ready(function(){
+
+      $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var imagen = $("#imagena img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+            },500);
+
+        });
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
@@ -515,18 +572,21 @@
 
       });
 
-    $('#modalHorario-ClasePersonalizada').on('show.bs.modal', function (event) {
+    $('#modalNombre-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#hora_inicio").val($("#clasepersonalizada-hora_inicio").text());
-      $("#hora_final").val($("#clasepersonalizada-hora_final").text());
+      $("#nombre").val($("#clasepersonalizada-nombre").text()); 
     })
 
-    $('#modalFecha-ClasePersonalizada').on('show.bs.modal', function (event) {
+    $('#modalEtiqueta-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha_inicio").val($("#clasepersonalizada-fecha_inicio").text()); 
+      $("#color_etiqueta").val($("#clasepersonalizada-color_etiqueta").text()); 
     })
 
 
+    $('#modalExpiracion-ClasePersonalizada').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#tiempo_expiracion").val("{{$clasepersonalizada->tiempo_expiracion}}"); 
+    })
 
     function limpiarMensaje(){
         var campo = ["nombre","fecha", "especialidades", "instructor", "alumno_id", "hora_inicio", "hora_final", "estudio"];
@@ -553,7 +613,15 @@
       function campoValor(form){
         $.each(form, function (n, c) {
           //alert(n +' '+ c.name);
-        if(c.name=='especialidad_id' || c.name=='estudio_id' || c.name=='instructor_id' || c.name=='alumno_id'){
+          if(c.name=='sexo'){
+            if(c.value=='M'){              
+              var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
+            }else if(c.value=='F'){
+              var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+            }
+            $("#clasepersonalizada-"+c.name).data('valor',c.value);
+            $("#clasepersonalizada-"+c.name).html(valor);
+          }else if(c.name=='especialidad_id' || c.name=='estudio_id' || c.name=='instructor_id' || c.name=='alumno_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
@@ -850,86 +918,6 @@
           $('#charNum').text(2000 - len);
         }
       };
-
-      $(".cancelar_clase").click(function(){
-
-        id = "{{$clasepersonalizada->id}}";
-    
-         swal({   
-                    title: "Desea cancelar la clase personalizada",   
-                    text: "Confirmar cancelación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Confirmar cancelación!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-          procesando();
-         var route = route_cancelar + id;
-         var token = '{{ csrf_token() }}';
-         var datos = $( "#cancelar_clase" ).serialize(); 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:datos,
-                    success:function(respuesta){
-
-                        window.location=route_principal; 
-
-                    },
-                    error:function(msj){
-                                // if (typeof msj.responseJSON === "undefined") {
-                                //   window.location = "{{url('/')}}/error";
-                                // }
-                    $(".modal").modal('hide');
-                    finprocesado();
-                    swal({ 
-                    title: 'El estatus de esta clase es de "cancelación tardía", al cancelarla de igual manera será debitada económicamente al participante. ¿ Desea proceder ?',   
-                    text: "Confirmar cancelación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Confirmar cancelación!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true,
-                    html: true
-                }, function(isConfirm){   
-                  if (isConfirm) {
-                    procesando();
-                    var route = route_cancelarpermitir + id;
-
-                    $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:datos,
-                    success:function(respuesta){
-
-                        window.location=route_principal; 
-
-                    },
-                    error:function(msj){
-
-                            if (typeof msj.responseJSON === "undefined") {
-                                window.location = "{{url('/')}}/error";
-                             }
-
-
-    
-                            }
-                        });
-                    }
-                });
-             }
-         });
-        }
-      });
-    });
     
    </script> 
 

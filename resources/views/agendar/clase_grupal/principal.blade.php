@@ -106,9 +106,15 @@
         route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
         route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
 
-        var i = "{{$hoy}}";
+        var i;
 
         $(document).ready(function(){
+
+        i = "{{$hoy}}";
+        
+
+        $(".button_izquierda").removeAttr("disabled");
+        $(".button_derecha").removeAttr("disabled");
 
         if( i == 1){
             $(".button_izquierda").attr("disabled","disabled");
@@ -192,6 +198,7 @@
             });
 
         $(".button_izquierda").click(function(){
+            console.log(i);
 
             $(".button_derecha").removeAttr("disabled");
 
@@ -206,6 +213,7 @@
         });
 
         $(".button_derecha").click(function(){
+            console.log(i);
 
             $(".button_izquierda").removeAttr("disabled");
 

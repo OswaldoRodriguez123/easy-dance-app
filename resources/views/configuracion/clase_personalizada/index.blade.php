@@ -18,12 +18,171 @@
 
 @section('content')
 
-            <a href="{{url('/')}}/agendar/clases-personalizadas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Configuracion Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="configuracion_clase_personalizada" id="configuracion_clase_personalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                                <div class="col-sm-12">
+                                    <label for="apellido" id="id-imagen_principal">Diseño principal</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <div class="clearfix p-b-15"></div>
+                                      
+                                      <input type="hidden" name="imageBase64" id="imageBase64">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
+                                        @if($config_clase_personalizada->imagen_principal)
+                                          <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$config_clase_personalizada->imagen_principal}}" style="line-height: 150px;">
+                                        @endif</div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen_principal" id="imagen_principal" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                      <div class="has-error" id="error-imagen_principal">
+                                      <span >
+                                          <small class="help-block error-span" id="error-imagen_principal_mensaje"  ></small>
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-descripcion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de las clases personalizadas e infórmales del método que usan para lograr el objetivo" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" onkeyup="countChar2(this)">{{$config_clase_personalizada->descripcion}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">2000</span> Caracteres</div>
+                                 <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                  <label for="id" id="id-video_promocional">Ingresa url del video promocional</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un video promocional de tus clases de baile como instructor o bailarín, esmérate en hacer una buena producción visual, de esa forma te ayudaremos a impulsar tu marca personal de mejor manera" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="video_promocional" id="video_promocional" placeholder="Ingresa la url" value="{{$config_clase_personalizada->video_promocional}}">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-video_promocional">
+                                    <span >
+                                     <small id="error-video_promocional_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-ventajas">Programación ventajas y beneficios </label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación, ventajas y beneficios que ofrece tu plan de clases personalizadas" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="ventajas" name="ventajas" rows="8" placeholder="2000 Caracteres" onkeyup="countChar3(this)">{{$config_clase_personalizada->ventajas}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum3">2000</span> Caracteres</div>
+                                 <div class="has-error" id="error-ventajas">
+                                      <span >
+                                          <small class="help-block error-span" id="error-ventajas_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="10000 Caracteres" onkeyup="countChar4(this)">{{$config_clase_personalizada->condiciones}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum4">10000</span> Caracteres</div>
+                                 <div class="has-error" id="error-condiciones">
+                                      <span >
+                                          <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                            
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-4 text-left"> 
+                          
+                            </div>
+
+                            <div class="col-sm-4 text-center">
+                             
+                              <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+                              <a href="{{url('/')}}/agendar/clases-personalizadas/progreso/{{Auth::user()->academia_id}}"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+
+                              <br>
+
+                              <span class="f-700 opaco-0-8 f-16">Ver Progreso</span>
+                              
+                               
+                            </div>
+
+                            <div class="col-sm-4">                            
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="guardar" >Guardar</button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+     
+            <a href="{{url('/')}}/configuracion/clases-personalizadas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Configuración</a>
                     </div> 
                     
                     <div class="card">
@@ -31,7 +190,15 @@
 
                         <div class="card-header">
 
-                            <div class ="col-md-12 text-right">  
+
+                          <div class ="col-md-6 text-left"> 
+                                                      
+                               <a data-toggle="modal" href="#modalConfiguracion"><i class="tm-icon zmdi zmdi-calendar-check f-25 pointer detalle" data-html="true" data-original-title="" data-content=" <br> Levantar Promoción" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"></i></a>
+
+                            </div>
+
+
+                            <div class ="col-md-6 text-right">  
                                                       
                                <span class="f-16 p-t-0 text-success">Agregar una Clase Personalizada <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
 
@@ -50,12 +217,9 @@
                                 <tr>
                                     <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
-                                    <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th> 
-                                    <th class="text-center" data-column-id="clase_personalizada" data-order="desc">Clase Personalizada</th>                           
-                                    <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
-                                    <th class="text-center" data-column-id="fecha" data-order="desc" >Fecha</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc" >Hora</th>
-                                    <th class="text-center" data-column-id="operaciones" data-order="desc" >Operaciones</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>                                 
+                                    <th class="text-center" data-column-id="costo" data-order="desc">Costo</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -66,11 +230,9 @@
                               <?php $id = $clase_personalizada->id; ?>
 
                               <tr id="{{$id}}" class="seleccion" >
-                                <td class="text-center previa">{{$clase_personalizada->alumno_nombre}} {{$clase_personalizada->alumno_apellido}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->clase_personalizada_nombre}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->instructor_nombre}} {{$clase_personalizada->instructor_apellido}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->fecha_inicio}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->hora_inicio}} - {{$clase_personalizada->hora_final}}</td>
+                                <td class="text-center previa">{{$clase_personalizada->nombre}}</td>
+                                <td class="text-center previa">{{ number_format($clase_personalizada->costo, 2, '.' , '.') }}</td>
+
                                 <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
 
                                 </tr>
@@ -102,9 +264,9 @@
             
 		<script type="text/javascript">
             
-        route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle"
-        route_operacion="{{url('/')}}/agendar/clases-personalizadas/operaciones"
-        route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
+        route_detalle="{{url('/')}}/configuracion/clases-personalizadas/detalle"
+        route_operacion="{{url('/')}}/configuracion/clases-personalizadas/operaciones"
+        route_configuracion="{{url('/')}}/configuracion/clases-personalizadas/configurar"
 
         tipo = 'activas';
             
@@ -126,7 +288,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[3, 'desc'], [4, 'desc']],
+        order: [[1, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($clases_personalizadas)}}" < 25) {
               $('.dataTables_paginate').hide();
