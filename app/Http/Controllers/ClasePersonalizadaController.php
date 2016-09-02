@@ -39,16 +39,42 @@ class ClasePersonalizadaController extends BaseController {
 
         if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
 
-            $clases_personalizadas = DB::table('inscripcion_clase_personalizada')
+        $activas = DB::table('inscripcion_clase_personalizada')
             ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
+            ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
+            ->where('inscripcion_clase_personalizada.estatus','=', 1)
         ->get();
 
-            return view('agendar.clase_personalizada.index')->with(['clases_personalizadas' => $clases_personalizadas, 'especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+
+        $finalizadas = DB::table('inscripcion_clase_personalizada')
+            ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
+            ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+            ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
+            ->where('inscripcion_clase_personalizada.fecha_inicio', '<', Carbon::now()->format('Y-m-d'))
+            ->where('inscripcion_clase_personalizada.estatus','=', 1)
+        ->get();
+
+        
+         $canceladas = DB::table('inscripcion_clase_personalizada')
+            ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
+            ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+            ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
+            ->where('inscripcion_clase_personalizada.estatus','=', 0)
+        ->get();
+
+
+            return view('agendar.clase_personalizada.index')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'canceladas' => $canceladas,]);
         }else{
 
             $clases_personalizadas = ClasePersonalizada::where('academia_id', Auth::user()->academia_id)->get();

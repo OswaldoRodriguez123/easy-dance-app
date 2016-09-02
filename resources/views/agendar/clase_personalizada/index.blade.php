@@ -39,7 +39,32 @@
 
                         
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clase-personalizada f-25"></i> Sección de Clases Personalizadas</p>
-                            <hr class="linea-morada">                                                        
+                            <hr class="linea-morada">  
+
+                            <div class="col-sm-7">
+                                 <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="activas" value="activas" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="finalizadas" value="finalizadas" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="canceladas" value="canceladas" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Canceladas <i id="canceladas2" name="canceladas2" class="zmdi zmdi-close zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                 </div>
+                                </div> 
+
+                                 <div class="clearfix"></div>                                                      
                         </div>
 
 
@@ -61,21 +86,6 @@
                             <tbody class="text-center" >
 
 
-                            @foreach ($clases_personalizadas as $clase_personalizada)
-
-                              <?php $id = $clase_personalizada->id; ?>
-
-                              <tr id="{{$id}}" class="seleccion" >
-                                <td class="text-center previa">{{$clase_personalizada->alumno_nombre}} {{$clase_personalizada->alumno_apellido}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->clase_personalizada_nombre}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->instructor_nombre}} {{$clase_personalizada->instructor_apellido}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->fecha_inicio}}</td>
-                                <td class="text-center previa">{{$clase_personalizada->hora_inicio}} - {{$clase_personalizada->hora_final}}</td>
-                                <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
-
-                                </tr>
-
-                              @endforeach
                                                            
                             </tbody>
                         </table>
@@ -110,6 +120,8 @@
             
         $(document).ready(function(){
 
+        $("#activas").prop("checked", true);
+
          $("#imagen_principal").bind("change", function() {
             //alert('algo cambio');
             
@@ -128,7 +140,7 @@
         serverSide: false,    
         order: [[3, 'desc'], [4, 'desc']],
         fnDrawCallback: function() {
-        if ("{{count($clases_personalizadas)}}" < 25) {
+        if ("{{count($activas)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
           }
@@ -389,6 +401,102 @@
                                     '</div>'
                 });
     };
+
+    $("#activas").click(function(){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#canceladas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).addClass( "c-verde" );
+        });
+
+        $("#finalizadas").click(function(){
+            $( "#finalizadas2" ).addClass( "c-verde" );
+            $( "#canceladas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
+        });
+
+        $("#canceladas").click(function(){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#canceladas2" ).addClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
+        });
+
+        function clear(){
+
+            t.clear().draw();
+            // t.destroy();
+         }
+
+         $('input[name="tipo"]').on('change', function(){
+            clear();
+            console.log($(this).val());
+            if ($(this).val()=='activas') {
+                  tipo = 'activas';
+                  rechargeActivas();
+            } else if($(this).val()=='finalizadas')  {
+                  tipo= 'finalizadas';
+                  rechargeFinalizadas();
+            }else{
+                  tipo= 'canceladas';
+                  rechargeCanceladas();
+            }
+         });
+
+         function rechargeActivas(){
+            var activas = <?php echo json_encode($activas);?>;
+
+            $.each(activas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+array.clase_personalizada_nombre+'',
+                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
+                ''+array.fecha_inicio+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+        }
+
+        function rechargeFinalizadas(){
+            var finalizadas = <?php echo json_encode($finalizadas);?>;
+
+            $.each(finalizadas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+array.clase_personalizada_nombre+'',
+                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
+                ''+array.fecha_inicio+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+        }
+
+        function rechargeCanceladas(){
+            var canceladas = <?php echo json_encode($canceladas);?>;
+
+            $.each(canceladas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+array.clase_personalizada_nombre+'',
+                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
+                ''+array.fecha_inicio+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+        }
 
 
 		</script>
