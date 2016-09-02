@@ -268,7 +268,7 @@
                 <div class="well p-b-35">
                   <!--Ver listado-->     
 
-                  <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:40%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>             
+                  <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:30%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>             
                 </div>
                 </div>
                 
