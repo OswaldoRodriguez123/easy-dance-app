@@ -49,6 +49,22 @@ class AcademiaConfiguracionController extends BaseController {
 	{
         $academia = Academia::find(Auth::user()->academia_id);
 
+        $array = array(2, 4);
+
+        $usuarios = User::whereIn('usuario_tipo', $array)->get();
+
+        foreach($usuarios as $usuario){
+
+            if($usuario->confirmation_token = null OR $usuario->confirmation_token == ''){
+
+                $usuario->confirmation_token = str_random(40);
+                $usuario->boolean_condiciones = 0;
+                $usuario->save();
+
+            }
+
+        }
+
         // $array = array(2, 4);
 
 

@@ -528,6 +528,38 @@
                                             <i class="icon_a-pagar f-30 m-r-5 boton blue sa-warning"></i>
                                         </a>
                                         <div class="media-body p-t-5">
+                                            <strong class="d-block f-20">INFORMACION </strong>
+
+                                        </div>
+                                    </div>
+                                    <div class="tv-body">
+
+
+<!--                                         <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
+
+                                        <br>
+                                    
+                                        <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                        </div> -->
+                                        
+                                        <br>
+
+                                        <div class="text-right">
+                                            <span data-toggle="modal" id="modalGe" href="#modalGeneral" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="t-view" data-tv-type="text">
+                                    <div class="tv-header media">
+                                        <a href="" class="tvh-user pull-left">
+                                            <i class="icon_a-pagar f-30 m-r-5 boton blue sa-warning"></i>
+                                        </a>
+                                        <div class="media-body p-t-5">
                                             <strong class="d-block f-20">AVISO DE COBRO </strong>
                                             <div class="pull-right f-16">Habilitar envio de SMS
 
@@ -743,6 +775,131 @@
         </div>
     </div>
 
+    <!-- MODAL DE CUMPLEAÑOS -->
+
+            <div class="modal fade" id="modalBirthday" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <form name="correo_cumpleaños" id="correo_cumpleaños"  >
+
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <!-- <div class="col-md-12">
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="zmdi zmdi-email f-22"></i></span>
+                                <div class="dtp-container fg-line">
+                                    <input name="email_para" id="email_para" class="form-control proceso" placeholder="Correo Electronico" type="text">
+                                </div>
+                            </div>
+
+                        </div> -->
+
+   <!--                      <div class="col-sm-6">
+                                 <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_cumpleaños" id="alumno_cumpleaños" value="alumno_cumpleaños" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Alumnos <i id="alumno_cumpleaños2" class="icon_a-alumnos c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_cumpleaños" id="clase_cumpleaños" value="clase_cumpleaños" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Clases Grupales <i id="clase_cumpleaños2" class="icon_a-clases-grupales f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                 </div>
+                                </div> 
+
+                                <div class="clearfix p-b-15"></div>
+ -->
+                        <div class="col-sm-12">
+                                 <input type="hidden" id="birthday_SMS" name="birthday_SMS">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Nombre</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="combo_cumpleaños" id="combo_cumpleaños" data-live-search="true">
+                                        <!-- <select class="selectpicker bs-select-hidden" id="combo_cumpleaños" name="combo_cumpleaños" multiple="" data-max-options="5" title="Selecciona"> -->
+                                        </select>
+                                      </div>
+                                    </div>
+                                 </div>
+                                 <div class="has-error" id="error-combo_cumpleaños">
+                                      <span >
+                                          <small class="help-block error-span" id="error-combo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               </form>
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>                        
+                        <div class="col-md-12">
+                            <div id="html-cumpleaños"></div>
+                        </div>
+
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarCumpleaños" >Enviar</button>
+                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalGeneral" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <form name="correo_informacion" id="correo_informacion"  >
+
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+
+         
+
+                        </form>
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>                        
+                        <div class="col-md-12">
+                            <div id="html-informacion"></div>
+                        </div>
+
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarInformacion" >Enviar</button>
+                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
 
 
 
@@ -758,6 +915,7 @@
             route_cobro="{{url('/')}}/correo/cobro";
             route_suspension="{{url('/')}}/correo/suspension";
             route_adelanto="{{url('/')}}/correo/adelanto";
+            route_informacion="{{url('/')}}/correo/informacion";
 
             function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -872,6 +1030,26 @@
 
              //EDICION DE TEXTO DE CUMPLEAÑOS
              //AGREGADO EL 15-06-2016
+             //
+             //
+             
+             $("#modalGe").on("click", function(){
+                $('#html-informacion').summernote({
+                        height: 150,
+                        toolbar: [
+                          // [groupName, [list of button]]
+                          ['style', ['bold', 'italic', 'underline']],
+                          ['fontsize', ['fontsize']],
+                          ['color', ['color']],
+                          ['para', ['ul', 'ol', 'paragraph']],
+                          ['height', ['height']],
+                          ['link', ['link']],
+                        ],
+                        lang: 'es-ES'
+
+                    });
+                $('#html-informacion').summernote('code', '');                
+            }); 
 
 
             $("#modalHappyBirth").on("click", function(){
@@ -963,6 +1141,89 @@
                     });
                 $('#html-adelanto').summernote('code', $('#Adelanto').text());                
             });  
+
+            $("#EnviarInformacion").on('click', function(){
+
+                procesando();
+
+                // Aqui se enviara el correo y el mensaje
+                // $html guardara toda la configuracion html y css que contenga
+                // el mensaje para poder ser enviada al correo y que mantenga
+                // el estilo
+                // var html = $("div.note-editable.panel-body").html();
+                var html = $('#html-informacion').summernote('code');
+                // var combo = $("#combo").val();
+                // var tipo = $("#tipo").val();
+                var token = $('input:hidden[name=_token]').val();
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': token},
+                    url: route_informacion,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: "&msj_html="+html,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalGeneral').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+                        
+            });
+
              
              $("#EnviarCumpleaños").on('click', function(){
                 var datos = $( "#correo_cumpleaños" ).serialize();

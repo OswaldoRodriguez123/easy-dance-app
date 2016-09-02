@@ -37,6 +37,34 @@ class CorreoController extends BaseController {
 
 	}
 
+	public function correoInformacion(Request $request){
+
+		$array = array(2, 4);
+		$alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
+
+		foreach($alumnos as $alumno)
+		{
+
+			$subj = 'Información';
+
+			$msj_html = $request->msj_html;
+
+			$array = [
+				'msj_html' => $request->msj_html,
+				'email' => $alumno->email,
+				'subj' => $subj
+			];
+
+				Mail::send('correo.informacion', $array, function($msj) use ($array){
+					$msj->subject($array['subj']);
+				    $msj->to($array['email']);
+				});
+		}
+
+		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+	 }
+	
+
 	public function indexsinselector($id){
 
 		$tipo = Session::get('tipo');
