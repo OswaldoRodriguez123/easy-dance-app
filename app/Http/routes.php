@@ -19,7 +19,7 @@ Route::auth();
 
 Route::get('autologin/{token}', ['as' => 'autologin', 'uses' => '\Watson\Autologin\AutologinController@autologin']);
 
-Route::get('confirmacion/{token}/{email}', [
+Route::get('/confirmacion/{token}/{email}', [
     'uses' => 'RegistroController@confirmacion',
     'as'   => 'confirmacion'
 ]);

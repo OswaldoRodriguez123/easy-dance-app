@@ -125,9 +125,13 @@
 
                         @endif
 
+                        @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
+
                         <li id="chat-trigger" data-trigger="#chat" data-content="Asistencia" data-toggle="popover" data-original-title="Asistencia" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
                                 <a  class="tm-config"  ><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
                         </li>  
+
+                        @endif
 
                         <!-- @if(Auth::check() && Auth::user()->usuario_tipo == 2)
 
