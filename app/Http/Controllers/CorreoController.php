@@ -1045,7 +1045,7 @@ class CorreoController extends BaseController {
 			 			$academia = Academia::find($usuario->academia_id);
 
 			            $subj = 'Activa tu cuenta en Easy Dance';
-			            $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
+			            $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 
 			        	$array = [
 			            	'nombre' => $usuario->nombre,

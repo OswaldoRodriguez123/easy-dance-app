@@ -170,7 +170,7 @@ class RegistroController extends Controller {
         $usuario = User::find($user->id);
         // $link = Autologin::user($usuario);
         //$link = Autologin::to($usuario, '/inicio');
-        $link = route('confirmacion', ['token' => $user->confirmation_token, 'email'=>$user->email]);
+        $link = route('confirmacion', ['token' => $user->confirmation_token]);
 
         $array = [
            'nombre' => $usuario->nombre,
@@ -250,10 +250,10 @@ class RegistroController extends Controller {
     }
 
 
-    public function confirmacion($token,$email){
+    public function confirmacion($token){
         
         $user = User::where('confirmation_token', $token)
-        ->where('email',$email)->firstOrFail();
+        ->firstOrFail();
         $user->confirmation_token = null;
         $user->save();
 

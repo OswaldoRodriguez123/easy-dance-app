@@ -14,7 +14,7 @@
 		return view('correo.ayuda');
 	});
 
-	Route::get('/confirmacion/{token}/{email}', [
+	Route::get('/confirmacion/{token}', [
 	    'uses' => 'RegistroController@confirmacion',
 	    'as'   => 'confirmacion'
 	]);

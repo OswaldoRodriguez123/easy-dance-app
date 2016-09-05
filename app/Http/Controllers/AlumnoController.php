@@ -245,7 +245,7 @@ class AlumnoController extends BaseController
 
                     $academia = Academia::find(Auth::user()->academia_id);
                     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-                    $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
+                    $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 
                     $array = [
                        'nombre' => $request->nombre,

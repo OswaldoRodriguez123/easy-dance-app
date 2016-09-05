@@ -140,7 +140,7 @@ class AdministradorController extends Controller
             if($usuario->save())
             {
 
-                $link = route('confirmacion', ['token' => $usuario->confirmation_token, 'email'=>$usuario->email]);
+                $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 
                 $array = [
                    'nombre' => $usuario->nombre,
