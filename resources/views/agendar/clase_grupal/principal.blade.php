@@ -111,8 +111,8 @@
         $(document).ready(function(){
 
         i = "{{$hoy}}";
+        i = parseInt(i);
         
-
         $(".button_izquierda").removeAttr("disabled");
         $(".button_derecha").removeAttr("disabled");
 

@@ -123,8 +123,6 @@
 
         $(document).ready(function(){
 
-        console.log("{{count($alumnos)}}")
-
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    

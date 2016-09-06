@@ -1309,23 +1309,12 @@
     route_principal="{{url('/')}}/agendar/clases-grupales";
     route_progreso="{{url('/')}}/agendar/clases-grupales/progreso/";
 
-    
-
-
     $(document).ready(function(){
 
       if("{{$clasegrupal->boolean_promocionar}}" == 1){
-          $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
-          $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
-        }
-
-      $("#promocionar").on('change', function(){
-          if ($("#promocionar").is(":checked")){
-            $("#boolean_promocionar").val('1');
-          }else{
-            $("#boolean_promocionar").val('0');
-          }    
-        });
+        $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+        $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
+      }
 
       $("#imagen").bind("change", function() {
             //alert('algo cambio');
@@ -1556,7 +1545,7 @@
                 break;
 
                 case 'boolean_promocionar':
-                if(n==1){              
+                if(c.value==1){              
                   var valor='<i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i>';                              
                 }else{
                   var valor='<i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i>';
@@ -1771,6 +1760,14 @@
       window.location = "{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}";
 
     });
+
+          $("#promocionar").on('change', function(){
+          if ($("#promocionar").is(":checked")){
+            $("#boolean_promocionar").val('1');
+          }else{
+            $("#boolean_promocionar").val('0');
+          }    
+        });
 
 
 

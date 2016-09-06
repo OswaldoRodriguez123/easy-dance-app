@@ -101,12 +101,12 @@
         serverSide: false,    
         order: [[0, 'desc'], [4, 'desc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+        if ("{{count($alumnos_asistencia)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
         },
         pageLength: 25,
-        paging: false,
         language: {
               searchPlaceholder: "Buscar"
         },

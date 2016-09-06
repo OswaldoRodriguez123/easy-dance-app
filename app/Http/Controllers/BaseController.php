@@ -6,6 +6,7 @@ use View;
 use App\Alumno;
 use App\Instructor;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 
 class BaseController extends Controller {
@@ -14,11 +15,19 @@ class BaseController extends Controller {
 
     if (Auth::check()) { 
 
-	       $alumno = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+	       $array = array(2, 4);
+
+           $alumnos = DB::table('alumnos')
+            ->join('users', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.*', 'users.imagen')
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+            ->whereIn('users.usuario_tipo', $array)
+        ->get();
 
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-	       View::share ( 'alumnos', $alumno  );
+	       View::share ( 'alumnosacademia', $alumnos  );
 	       View::share ( 'instructores', $instructor );
    		}
 

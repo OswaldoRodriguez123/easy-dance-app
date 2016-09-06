@@ -65,11 +65,15 @@
 
                                            <div class="col-sm-3">
   
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+                                                <img name = "alumno_imagen" id ="alumno_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
 
                                                 <div class="clearfix p-b-15"></div>
     
                                                 <p class="p-l-10" id="asistencia-nombre-alumno"> </p>
+
+                                                <p class="p-l-10">Participa en :  </p>
+
+                                                <p class="p-l-10" id = "clases_grupales_alumno"></p>
 
                                                 <span class="f-16 f-700" id="acciones" name="acciones">Acciones</span>
 
@@ -282,23 +286,35 @@
                             </thead>
                             <tbody>
                             
-                            @if(isset($alumnos))      
+                            @if(isset($alumnosacademia))      
                                                  
-                            @foreach ($alumnos as $alumno)
+                            @foreach ($alumnosacademia as $alumno)
                                 
-                                <?php $id = $alumno['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante="{{$alumno['identificacion']}}" data-tipo-participante="alumno" >
+                                <?php $id = $alumno->id ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
                                     <td class="p-10" >
                                       <div class="listview">
                                       <a class="lv-item" href="javascript:void(0)"  >
                                               <div class="media">
                                                   <div class="pull-left p-relative">
-                                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+
+                                                  @if($alumno->imagen)
+                                                  
+                                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
+  
+                                                  @else
+
+                                                      @if($alumno->sexo == 'M')
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                                      @else
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                                      @endif
+                                                  @endif
                                                       <i class="chat-status-busy"></i>
                                                   </div>
                                                   <div class="media-body">
-                                                      <div class="lv-title">{{$alumno['nombre']}} {{$alumno['apellido']}}</div>
-                                                      <small class="lv-small">{{$alumno['identificacion']}}</small>
+                                                      <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
+                                                      <small class="lv-small">{{$alumno->identificacion}}</small>
                                                   </div>
                                               </div>
                                       </a>
@@ -891,6 +907,7 @@
 
       function buscarAlumno(t){
         procesando();
+        $('#clases_grupales_alumno').empty();
 
         var row = $(t).closest('tr');
         //console.log(row.data());
@@ -898,6 +915,20 @@
 
         var id_alumno = $(row).data('id-participante');
         var nombre_alumno = $(row).data('nombre-participante');
+        var imagen = $(row).data('imagen');
+        var sexo = $(row).data('sexo');
+
+        if(imagen){
+          $('#alumno_imagen').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+        }else{
+          if(sexo == 'M'){
+            $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+          }else{
+            console.log(sexo);
+            $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+          }
+        }
+
         $('#asistencia_id_alumno').val(id_alumno);
         //$("#buscar").val("");
         $('#asistencia-nombre-alumno').text(nombre_alumno);
@@ -915,13 +946,15 @@
           type: 'GET',
           dataType: 'json',
           success:function(respuesta){
+            $.each(respuesta.inscripciones, function (index, array) { 
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br> Desde:' + array.hora_inicio + ' Hasta: ' + array.hora_final + ' <br> ' + array.dia + '</p>')
+            });
             
             console.log(respuesta.clases_grupales); 
             //$('#asistencia-clase_grupal_id').selectpicker('refresh');  
             $('#asistencia-clase_grupal_id').empty();        
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
-            $.each(respuesta.clases_grupales, function (index, array) { 
-              console.log(array.nombre);                      
+            $.each(respuesta.clases_grupales, function (index, array) {                   
               $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
             });
 

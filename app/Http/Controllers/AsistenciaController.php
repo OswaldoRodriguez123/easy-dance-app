@@ -108,6 +108,8 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();
 
+
+
      // dd($claseGrupal);
 
       $arrayClaseGrupal=array();
@@ -119,6 +121,9 @@ class AsistenciaController extends BaseController
 
 
       foreach ($claseGrupal as $grupal) {
+
+        
+
         $fecha_start=explode('-',$grupal->fecha_inicio);
         $fecha_end=explode('-',$grupal->fecha_final);
         $id=$grupal->id;
@@ -135,7 +140,7 @@ class AsistenciaController extends BaseController
 
         if($fechaActual->toDateString()==$dt->toDateString()){      
 
-          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);
+          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'dia' => $dia);
 
           }
 
@@ -145,7 +150,7 @@ class AsistenciaController extends BaseController
         $fecha="";    
         $fecha=$dt->addWeek()->toDateString();
         if($fechaActual->toDateString()==$fecha){
-        $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);  
+        $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'dia' => $dia);  
         } 
           $c++;
       }
@@ -171,6 +176,58 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
+
+         $inscripciones = DB::table('inscripcion_clase_grupal')
+                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id')
+                ->where('inscripcion_clase_grupal.alumno_id', '=', $id_alumno)
+                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+          ->get();
+
+      $array = array();
+
+      foreach($inscripciones as $inscripcion){
+
+      $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
+        $i = $fecha->dayOfWeek;
+
+        if($i == 1){
+
+          $dia = 'Lunes';
+
+        }else if($i == 2){
+
+          $dia = 'Martes';
+
+        }else if($i == 3){
+
+          $dia = 'Miercoles';
+
+        }else if($i == 4){
+
+          $dia = 'Jueves';
+
+        }else if($i == 5){
+
+          $dia = 'Viernes';
+
+        }else if($i == 6){
+
+          $dia = 'Sabado';
+
+        }else if($i == 7){
+
+          $dia = 'Domingo';
+
+        }
+
+        $collection=collect($inscripcion);     
+        $inscripcion_array = $collection->toArray();
+            
+        $inscripcion_array['dia']=$dia;
+        $array[$inscripcion->id] = $inscripcion_array;
+      }
 
      	$alumno=Alumno::all();
   
@@ -230,7 +287,7 @@ class AsistenciaController extends BaseController
 
     $deuda=$this->deuda($id_alumno);
 
-		return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 200]);
+		return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 'inscripciones' => $array, 200]);
 
 
 
