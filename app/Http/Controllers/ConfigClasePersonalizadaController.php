@@ -860,7 +860,7 @@ class ConfigClasePersonalizadaController extends BaseController {
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('configuracion.clase_personalizada.participantes')->with(['activas' => $activas, 'canceladas' => $canceladas, 'id' => $id, 'clasepersonalizada' => $clasepersonalizada, 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('configuracion.clase_personalizada.participantes')->with(['alumnos' => $alumnos, 'activas' => $activas, 'canceladas' => $canceladas, 'id' => $id, 'clasepersonalizada' => $clasepersonalizada, 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     public function storeInscripcion(Request $request)

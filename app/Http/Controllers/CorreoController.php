@@ -95,7 +95,9 @@ class CorreoController extends BaseController {
     else{
 
 		$array = array(2, 4);
-		$alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
+		// $alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
+
+		$alumnos User::where('id', 2)->get();
 
 		$correo_informacion = new CorreoInformacion;
 
@@ -133,6 +135,10 @@ class CorreoController extends BaseController {
 	                $correo_informacion->imagen = $nombre_img;
 	                $correo_informacion->save();
 
+	                $imagen = "{{url('/')}}/assets/uploads/correo/".$nombre_img;
+
+	        }else{
+	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
 	        }
 
 			foreach($alumnos as $alumno)
@@ -143,7 +149,7 @@ class CorreoController extends BaseController {
 				$msj_html = $request->msj_html;
 
 				$array = [
-					'imagen' => $correo_informacion->imagen,
+					'imagen' => $imagen,
 					'url' => $request->url,
 					'msj_html' => $request->msj_html,
 					'email' => $alumno->email,
