@@ -191,6 +191,7 @@ class InstructorController extends BaseController {
         $instructor->resumen_artistico = $request->resumen_artistico;
         $instructor->video_testimonial = $request->video_testimonial;
         $instructor->boolean_promocionar = $request->boolean_promocionar;
+        $instructor->boolean_disponibilidad = $request->boolean_disponibilidad;
 
         if($instructor->save()){
 
@@ -529,6 +530,7 @@ class InstructorController extends BaseController {
         $instructor->resumen_artistico = $request->resumen_artistico;
         $instructor->video_testimonial = $request->video_testimonial;
         $instructor->boolean_promocionar = $request->boolean_promocionar;
+        $instructor->boolean_disponibilidad = $request->boolean_disponibilidad;
 
         if($request->imageBase64){
 

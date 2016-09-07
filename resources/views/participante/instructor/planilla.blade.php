@@ -934,6 +934,30 @@
                                         </div>
                                      </div>
 
+                                     <div class="clearfix p-b-35"></div>
+
+                                     <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Permitir Reservar Clases Personalizadas</label id="id-boolean_disponibilidad"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="boolean_disponibilidad" name="boolean_disponibilidad" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="disponibilidad" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_disponibilidad">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_disponibilidad_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
 
                                <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
@@ -1315,6 +1339,19 @@
             $("#boolean_promocionar").val('1');
           }else{
             $("#boolean_promocionar").val('0');
+          }    
+        });
+
+      if("{{$instructor->boolean_disponibilidad}}" == 1){
+        $("#boolean_disponibilidad").val('1');  //VALOR POR DEFECTO
+        $("#disponibilidad").attr("checked", true); //VALOR POR DEFECTO
+      }
+
+        $("#disponibilidad").on('change', function(){
+          if ($("#disponibilidad").is(":checked")){
+            $("#boolean_disponibilidad").val('1');
+          }else{
+            $("#boolean_disponibilidad").val('0');
           }    
         });
 

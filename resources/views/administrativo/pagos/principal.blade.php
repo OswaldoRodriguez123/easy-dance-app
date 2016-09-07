@@ -226,6 +226,10 @@
 
             $.each(factura, function (index, array) {
                 concepto = array.concepto;
+                if(concepto.length > 50)
+                {
+                    concepto = concepto.substr(0, 50) + "...";
+                }
                 var rowNode=t.row.add( [
                 ''+pad(array.factura, 10)+'',
                 ''+array.nombre+ ' '+array.apellido+'',

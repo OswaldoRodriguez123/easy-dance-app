@@ -134,7 +134,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $id = Auth::user()->academia_id;
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
         
     }
 
@@ -167,7 +167,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $academia_id = Auth::user()->academia_id;
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id]);
+        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id]);
         
     }
 

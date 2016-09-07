@@ -284,7 +284,7 @@
                                     </div>
                                     
                                  </div>
-                                </div>                                 <!-- <div class="col-sm-12"> -->
+                                </div>                                
                             <div class="clearfix p-b-35"></div>
 
                                   <div class="col-sm-2 text-center">
@@ -394,6 +394,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th style="width:7%"><input style="margin-left:49%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="id" data-identifier="true" data-order="desc">#</th>
                                     <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
                                     <th class="text-center" data-column-id="cantidad">Cantidad</th>
@@ -455,7 +456,7 @@
 
                             <div class="col-sm-4 text-center">
                              
-                              <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+
                               <a href="{{url('/')}}/administrativo/pagos"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
 
                               <br>
@@ -510,6 +511,11 @@
 
   $( document ).ready(function() {
 
+    $("#agregar_item")[0].reset();
+    $('#alumno_id').val('');
+    alumno_id = '';
+    $('#alumno_id').selectpicker('render');
+
     id = "{{{ $id or 'Default' }}}";
 
     if(id != 'Default'){
@@ -536,8 +542,22 @@
 
               $.each(respuesta.items, function (index, array) {
 
-                  $("#tablelistar").bootgrid().bootgrid("append", array);
-                 
+                  var rowId=array[0].id;
+                          var rowNode=t.row.add( [
+                          ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
+                          ''+array[0].id+'',
+                          ''+array[0].nombre+'',
+                          ''+array[0].cantidad+'',
+                          ''+array[0].precio_neto+'',
+                          ''+array[0].impuesto+'',
+                          ''+array[0].importe_neto+'',
+                          ''+ ' ' +''
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          // .attr('data-precio',precio_neto)
+                          .addClass('seleccion');
+
               });
 
               var importe_neto = respuesta.total;
@@ -573,19 +593,6 @@
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
             }
 
-            // $('#fecha').prop('readonly', true);
-            // $("#frecuencia").attr("disabled","disabled");
-            // $('#frecuencia').selectpicker('refresh');
-            // $('#partes').prop('readonly', true);
-            // $("#generar").attr("disabled","disabled");
-            // $("#guardar").attr("disabled","disabled");
-            // $("#generar").css({
-            //   "opacity": ("0.2")
-            // });
-            // $("#guardar").css({
-            //   "opacity": ("0.2")
-            // }); 
-                                  
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
             var nIcons = $(this).attr('data-icon');
@@ -622,44 +629,61 @@
         }, 1000);
     }
 
-    $("#tablelistar").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    },
-                    selection: true,
-                    multiSelect: true,
-                    rowSelect: true,
-                    keepSelection: true,
-                    navigation: false,
+    t=$('#tablelistar').DataTable({
+      "columnDefs": [ {
+          "targets": [ 0 ],
+          "orderable": false
+        } ],
+        processing: true,
+        serverSide: false,   
+        order: [[1, 'desc']],
+        paging:false,
+        pageLength: 25,
+        language: {
+              searchPlaceholder: "Buscar"
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
+          $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled");
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                        searchPlaceholder: "BUSCAR",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
 
-                //     formatters: {
-                //     "operacion": function(column, row)
+        });
 
+    $('#example-select-all').on('click', function(){
+      // Check/uncheck all checkboxes in the table
+      var rows = t.rows({ 'search': 'applied' }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
 
-                //     // <i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                //     {
-                //         return "<i class=\"zmdi zmdi-delete f-20 pointer\" data-row-id=\"" + row.id + "\"></i>";
-                //     }
-                // }
-                }).on("selected.rs.jquery.bootgrid", function(e, rows)
-                {
-                   
-
-                }).on("deselected.rs.jquery.bootgrid", function(e, rows)
-                {
-           
-                });
+   });
 
     $("#agregar_item")[0].reset();
     rechargeServicio();
 
     $('body,html').animate({scrollTop : 0}, 2000);
         var animation = 'fadeInUpBig';
-        //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
         animationDuration = 3100;
         }
@@ -736,7 +760,6 @@
   $("#pagar").click(function(){
 
     var checked = getChecked();
-    console.log(checked);
 
                 var route = route_factura;
                 var token = $('input:hidden[name=_token]').val();
@@ -759,10 +782,6 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // var nType = 'success';
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-
                           window.location = "{{url('/')}}/administrativo/pagos/gestion";
 
                         }else{
@@ -842,7 +861,6 @@
     var producto = <?php echo json_encode($producto);?>;
 
     $('#combo').append( new Option("Selecciona",""));
-    // for (i in producto)
     $.each(producto, function (index, array) {
       $.each(array, function (index, arreglo) {
         $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo));
@@ -980,13 +998,14 @@
     });
 
     function getChecked(){
-
+      var checked = [];
       $('#tablelistar tr').each(function (i, row) {
           var actualrow = $(row);
           checkbox = actualrow.find('input:checked').val();
-          if(checkbox != undefined)
+          if(checkbox == 'on')
           {
-            checked[i] = checkbox;
+            var id = $(actualrow).attr('id');
+            checked[i] = id;
           }
       });
 
@@ -1027,39 +1046,21 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          $("#tablelistar").bootgrid().bootgrid("append", respuesta.array);
-
-                          // $.each(respuesta.proforma, function (index, array) {
-                            // $("#tablelistar tbody").each(function (i, row) {
-                            //     var actualrow = $(row);
-
-                            //     console.log(row.attributes);
-                                
-                                
-                              // });
-
-                            // var MyRows = $('#tablelistar');
-                            // console.log(MyRows.html());
-                            // for (var i = 0; i < MyRows.length; i++) {
-                            //   var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html();
-                            // }
-                           // });
-
-                          // $("#tablelistar").bootgrid().bootgrid("reload");
-
-                          // var rowId=respuesta.id;
-                          // var rowNode=t.row.add( [
-                          // ''+nombre+'',
-                          // ''+cantidad+'',
-                          // ''+precio_neto+'',
-                          // ''+impuesto+'',
-                          // ''+importe_neto+'',
-                          // '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                          // ] ).draw(false).node();
-                          // $( rowNode )
-                          // .attr('id',rowId)
-                          // // .attr('data-precio',precio_neto)
-                          // .addClass('seleccion');
+                          var rowId=respuesta.array[0].id;
+                          var rowNode=t.row.add( [
+                          ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',
+                          ''+respuesta.array[0].id+'',
+                          ''+respuesta.array[0].nombre+'',
+                          ''+respuesta.array[0].cantidad+'',
+                          ''+respuesta.array[0].precio_neto+'',
+                          ''+respuesta.array[0].impuesto+'',
+                          ''+respuesta.array[0].importe_neto+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          // .attr('data-precio',precio_neto)
+                          .addClass('seleccion');
                           
                           var importe_neto = respuesta.array[0].importe_neto;
                           var impuesto = respuesta.array[0].impuesto;
@@ -1139,8 +1140,7 @@
 
     $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
     
-      var id = $(this).closest('tr').find('td').eq(1).text();
-      var row = $('tr[data-row-id=' + id + ']');
+      var id = $(this).closest('tr').attr('id');
 
       var token = $('input:hidden[name=_token]').val();
             $.ajax({
@@ -1163,7 +1163,6 @@
                       $("#impuestototal").text(impuestoglobal.toFixed(2));
                       $("#total").text(totalfinal.toFixed(2));
 
-                      // $(row).remove();
                                        
                   }else{
                     swal(
@@ -1177,7 +1176,9 @@
                   swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
                 }
               })
-              $(row).remove();
+              t.row( $(this).parents('tr') )
+                            .remove()
+                            .draw();
            });
         
 
@@ -1229,6 +1230,8 @@
                   if(data.status=='OK'){
 
                     $("#agregar_item")[0].reset();
+                    $('#alumno_id').val('');
+                    alumno_id = '';
                     $('#alumno_id').selectpicker('render');
                     limpiarMensaje();
                     $('#combo').empty();
@@ -1264,6 +1267,10 @@
 
   $("#alumno_id").change(function(){
 
+    t
+      .clear()
+      .draw();
+
     procesando();
 
     alumno_id = $("#alumno_id").val();
@@ -1285,8 +1292,6 @@
         });
       }
 
-      $("#tablelistar").bootgrid().bootgrid("clear");
-
       id = $(this).val();
       limpiarMensaje();
       var route = route_pendientes + id;
@@ -1305,7 +1310,6 @@
             var nAnimOut = "animated flipOutY"; 
             if(respuesta.status=="OK"){
 
-              console.log(respuesta.items);
               // if(respuesta.items.length > 0){
               //   window.location = route_alumno + alumno_id;
               // }
@@ -1321,41 +1325,37 @@
                 scrollTop: $("#id-producto-servicio").offset().top-90,
               }, 1000);
 
-
-
+              total = 0;
 
               $.each(respuesta.items, function (index, array) {
 
-                  $("#tablelistar").bootgrid().bootgrid("append", array);
+
+                          var rowId=array[0].id;
+                          var rowNode=t.row.add( [
+                          ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
+                          ''+array[0].id+'',
+                          ''+array[0].nombre+'',
+                          ''+array[0].cantidad+'',
+                          ''+array[0].precio_neto+'',
+                          ''+array[0].impuesto+'',
+                          ''+array[0].importe_neto+'',
+                          ''+ ' ' +''
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          // .attr('data-precio',precio_neto)
+                          .addClass('seleccion');
+
+                          // total = total + array[0].importe_neto;
                  
-              });
+                    });
 
-              // var checkboxes = $(this).closest('form').find(':checkbox');
-              // checkboxes.prop('checked', true);
+              total = respuesta.total;
 
-              // t
-              //   .clear()
-              //   .draw();
-
-              //   $('#fecha').prop('readonly', false);
-              //   $('#frecuencia').removeAttr('disabled');
-              //   $('#frecuencia').selectpicker('refresh');
-              //   $('#partes').prop('readonly', false);;
-              //   $('#generar').removeAttr('disabled');
-              //   $('#guardar').removeAttr('disabled');
-              //   $("#generar").css({
-              //     "opacity": ("1")
-              //   });
-              //   $("#guardar").css({
-              //     "opacity": ("1")
-              //   });
-
-              //   $('html,body').animate({
-              //     scrollTop: $("#id-acuerdo").offset().top-90,
-              //   }, 1000);
-
-              $("#total").text(formatmoney(respuesta.total));
-              totalglobal = respuesta.total;
+              $("#subtotal").text(formatmoney(total));
+              $("#total").text(formatmoney(total));
+              subtotalglobal = total;
+              totalglobal = total;
 
             }else{
               var nTitle="Ups! ";
@@ -1378,19 +1378,6 @@
               var nTitle="   Ups! "; 
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
             }
-
-            // $('#fecha').prop('readonly', true);
-            // $("#frecuencia").attr("disabled","disabled");
-            // $('#frecuencia').selectpicker('refresh');
-            // $('#partes').prop('readonly', true);
-            // $("#generar").attr("disabled","disabled");
-            // $("#guardar").attr("disabled","disabled");
-            // $("#generar").css({
-            //   "opacity": ("0.2")
-            // });
-            // $("#guardar").css({
-            //   "opacity": ("0.2")
-            // }); 
                                   
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');

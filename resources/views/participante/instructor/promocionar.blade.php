@@ -75,6 +75,43 @@
                 </div>
             </div>
 
+
+            <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Ups! <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+
+                        <div class="row">
+
+                        <div class="col-sm-10 col-sm-offset-1">
+
+
+                          <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                          <div class="c-morado f-30 text-center"> Este instructor no se encuentra disponible en este momento. </div>
+
+
+                         </div>
+
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+
+
+                        </div>
+                       
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
+
 <div class="container">
 
 @if(Auth::check())
@@ -538,6 +575,11 @@
 
        $(".reservar").click(function(){
 
+        if("{{$instructores_academia->boolean_disponibilidad}}" == 1)
+        {
+
+
+
           procesando();
 
            var route = "{{url('/')}}/instructores/sesion";
@@ -569,6 +611,12 @@
 
 
                   });
+
+                }else{
+
+                  $('#modalError').modal('show');
+
+                }
 
 
         });
