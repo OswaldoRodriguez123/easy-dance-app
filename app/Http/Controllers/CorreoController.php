@@ -98,9 +98,8 @@ class CorreoController extends BaseController {
     else{
 
 		$array = array(2, 4);
-		// $alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
+		$alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
 
-		$alumnos = User::where('email', 'bfsraptor@gmail.com')->get();
 		$subj = $request->subj;
 		$msj_html = $request->msj_html;
 
