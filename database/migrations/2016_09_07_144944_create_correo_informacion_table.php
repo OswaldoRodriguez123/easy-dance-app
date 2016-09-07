@@ -16,7 +16,8 @@ class CreateCorreoInformacionTable extends Migration
         {
             $table->increments('id');  
             $table->integer('academia_id')->unsigned();
-            $table->foreign('academia_id')->references('id')->on('academias');         
+            $table->foreign('academia_id')->references('id')->on('academias');  
+            $table->string('titulo');       
             $table->string('url');
             $table->string('imagen');
             $table->string('msj_html', 1000);

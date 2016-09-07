@@ -18,6 +18,7 @@ use DB;
 use Mail;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use Image;
 
 class CorreoController extends BaseController {
 
@@ -68,13 +69,15 @@ class CorreoController extends BaseController {
 	 public function correoPersonalizado(Request $request){
 
 	 $rules = [
-        'url' => 'active_url',
+        'url' => 'required|active_url',
+        'subj' => 'required',
     ];
 
     $messages = [
 
+    	'url.required' => 'Ups! La URL es requerida',
         'url.active_url' => 'Ups! La URL no es valida',
-
+        'subj.required' => 'Ups! El titulo es requerido',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -97,13 +100,16 @@ class CorreoController extends BaseController {
 		$array = array(2, 4);
 		// $alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
 
-		$alumnos User::where('id', 2)->get();
+		$alumnos = User::where('email', 'bfsraptor@gmail.com')->get();
+		$subj = $request->subj;
+		$msj_html = $request->msj_html;
 
 		$correo_informacion = new CorreoInformacion;
 
 		$correo_informacion->academia_id = Auth::user()->academia_id;
         $correo_informacion->url = $request->url;
         $correo_informacion->msj_html = $request->msj_html;
+        $correo_informacion->titulo = $request->subj;
 
 
         if($correo_informacion->save())
@@ -144,10 +150,7 @@ class CorreoController extends BaseController {
 			foreach($alumnos as $alumno)
 			{
 
-				$subj = 'Información';
-
-				$msj_html = $request->msj_html;
-
+				
 				$array = [
 					'imagen' => $imagen,
 					'url' => $request->url,
@@ -156,7 +159,7 @@ class CorreoController extends BaseController {
 					'subj' => $subj
 				];
 
-					Mail::send('correo.informacion', $array, function($msj) use ($array){
+					Mail::send('correo.personalizado', $array, function($msj) use ($array){
 						$msj->subject($array['subj']);
 					    $msj->to($array['email']);
 					});

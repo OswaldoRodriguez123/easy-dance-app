@@ -945,7 +945,45 @@
 
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <div class="col-sm-12">
+                              <div class="col-sm-12">
+                                  <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                                  <br><br>
+                                  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
+                                    </div>
+                                   
+                                   <div class="has-error" id="error-url">
+                                    <span >
+                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+
+                                <br><br>
+                                 
+                                    <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
+                                      </div>
+                                 <div class="has-error" id="error-subj">
+                                      <span >
+                                          <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                          <div class="col-sm-12">
                             <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
                             
                             <div class="clearfix p-b-15"></div>
@@ -970,25 +1008,6 @@
                           </div>
 
                               <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
-                                  <label for="id" id="id-url">Ingresa url de la imagen</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-
-                                  <br><br>
-                                  
-
-                                    <div class="fg-line">                       
-                                      <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
-                                    </div>
-                                   
-                                   <div class="has-error" id="error-url">
-                                    <span >
-                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
-                                    </span>
-                                    </div>                                          
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
 
 
          
