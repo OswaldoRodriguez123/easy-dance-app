@@ -88,7 +88,7 @@ Route::post('especiales/regalos/enviar', 'RegaloController@EnviarRegaloUsuario')
 
 Route::get('agendar/clases-personalizadas/disponibles/{id}', 'ClasePersonalizadaController@indexconacademia');
 Route::get('agendar/clases-personalizadas', 'ClasePersonalizadaController@index');
-Route::get('agendar/clases-personalizadas/progreso/{id}', 'ClasePersonalizadaController@progreso');
+Route::get('agendar/clases-personalizadas/progreso/{id}', 'ConfigClasePersonalizadaController@progreso');
 Route::get('agendar/clases-personalizadas/agregar/{id}', 'ClasePersonalizadaController@reservacion');
 
 // PROGRESO
@@ -360,6 +360,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/direccion','AlumnoController@updateDireccion');
 			Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
+			Route::post('participante/alumno/update/mensualidad', 'AlumnoController@updateCostoMensualidad');
 
 			//INSTRUCTOR
 
@@ -739,6 +740,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-personalizadas/agregar', 'ClasePersonalizadaController@create');
 			Route::post('agendar/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
 			Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
+			Route::get('agendar/clases-personalizadas/{id}', 'ClasePersonalizadaController@progreso');
 
 			//REGALO
 

@@ -610,7 +610,7 @@
 
                         <div class="col-sm-12">
 
-                        <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->id}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: {{$clase_grupal->fecha_pago}}</span>
+                        <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: {{$clase_grupal->fecha_pago}}</span>
 
                         <div class="clearfix p-b-15"></div>
                         <div class="clearfix p-b-15"></div>
@@ -633,6 +633,58 @@
 
                         </div>
                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalCostoMensualidad-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_costo_mensualidad_clase_grupal" id="edit_costo_mensualidad_clase_grupal"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" id="inscripcion_id" name="inscripcion_id" value="">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="costo">Costo Mensualidad</label>
+                                    <input type="text" class="form-control input-sm" name="costo_mensualidad" id="costo_mensualidad" placeholder="Ej. 5000" data-mask="00000000000000000000">
+                                 </div>
+                                 <div class="has-error" id="error-costo_mensualidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-costo_mensualidad_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                              
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <!-- <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_costo_mensualidad_clase_grupal" data-update="costomensualidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
+                              <button type="button" class="btn btn-blanco m-r-10 f-12" id="guardar_mensualidad" name="guardar_mensualidad">Guardar</button>
+
+                            </div>
+                        </div></form>
                     </div>
                 </div>
             </div>
@@ -861,6 +913,28 @@
     // });
 
     $(document).ready(function(){
+
+      $(document)  
+      .on('show.bs.modal', '.modal', function(event) {
+        $(this).appendTo($('body'));
+      })
+      .on('shown.bs.modal', '.modal.in', function(event) {
+        setModalsAndBackdropsOrder();
+      })
+      .on('hidden.bs.modal', '.modal', function(event) {
+        setModalsAndBackdropsOrder();
+      });
+
+    function setModalsAndBackdropsOrder() {  
+      var modalZIndex = 1040;
+      $('.modal.in').each(function(index) {
+        var $modal = $(this);
+        modalZIndex++;
+        $modal.css('zIndex', modalZIndex);
+        $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+    });
+      $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+    }
 
       function formatmoney(n) {
         return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -1265,7 +1339,12 @@
 
     $(".clase_grupal").click(function(){
         id = this.id;
-        window.location = "{{url('/')}}/agendar/clases-grupales/participantes/"+id;
+
+        $('#inscripcion_id').val(id);
+
+        $('#costo_mensualidad').val($(this).data('costo'));
+
+        $('#modalCostoMensualidad-ClaseGrupal').modal('show');
                
       });
     
@@ -1316,56 +1395,99 @@
         }
       };
 
-      // $("a[name=generar]").click(function(){
+      $("#guardar_mensualidad").click(function(){
+            swal({   
+                    title: "¿Seguro deseas modificar el costo de la mensualidad?",   
+                    text: "Confirmar el cambio",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#ec6c62",   
+                    confirmButtonText: "Sí, modificar",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+            if (isConfirm) {
 
-      //   id = "{{$id}}";
-      //   var nFrom = $(this).attr('data-from');
-      //   var nAlign = $(this).attr('data-align');
-      //   var nIcons = $(this).attr('data-icon');
-      //   var nAnimIn = "animated flipInY";
-      //   procesando();
-      //   var token = $('input:hidden[name=_token]').val();
+                var route = route_update+"/mensualidad";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#edit_costo_mensualidad_clase_grupal" ).serialize(); 
+                procesando();
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
 
-      //   var route = route_sesion+"/"+id;
-      //   $.ajax({
-      //       url: route,
-      //       headers: {'X-CSRF-TOKEN': token},
-      //       type: 'POST',
-      //       dataType: 'json',          
-      //       success: function (respuesta) {
-      //         setTimeout(function() {
-      //           if(respuesta.status=='OK'){
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          
+                          var costo_mensualidad = $("#costo_mensualidad").val();
+                          $('#'+respuesta.id).data('costo', respuesta.costo_mensualidad);
 
-      //               window.location = "{{url('/')}}/administrativo/pagos/generar/"                                    
-      //           }else{
-      //             var nTitle="Ups! ";
-      //             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-      //             var nType = 'danger';
-      //           }
 
-      //           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-      //            finprocesado();
-      //         }, 1000);  
-      //       },
-      //       error:function (msj, ajaxOptions, thrownError){
-      //         setTimeout(function(){ 
-      //           var nType = 'danger';
-      //           if(msj.responseJSON.status=="ERROR"){
-      //             console.log(msj.responseJSON.errores);
-      //             errores(msj.responseJSON.errores);
-      //             var nTitle=" Ups! "; 
-      //             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-      //           }else{
-      //             var nTitle=" Ups! "; 
-      //             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-      //           }
-      //            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-      //             finprocesado();
-      //         }, 1000);             
-      //       }
-      //   })
+                          finprocesado();
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $('#modalCostoMensualidad-ClaseGrupal').modal('hide');
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
 
-      // });
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          finprocesado();
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        finprocesado();
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }            
+
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+              }
+            });
+        });
 
    </script> 
 

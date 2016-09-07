@@ -859,15 +859,18 @@ class ClasePersonalizadaController extends BaseController {
     public function progreso($id)
     {
 
-        $academia = Academia::find($id);
-        // $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
+        $clase_personalizada = DB::table('inscripcion_clase_personalizada')
+            ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'inscripcion_clase_personalizada.estudio_id', '=', 'config_estudios.id')
+            ->select('instructores.nombre as instructor_nombre' , 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad_nombre', 'inscripcion_clase_personalizada.hora_inicio', 'inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.fecha_inicio', 'clases_personalizadas.academia_id', 'config_estudios.nombre as estudio_nombre')
+            ->where('inscripcion_clase_personalizada.id', $id)
+        ->first();
 
-        $instructores = DB::table('instructores')
-            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
-            ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
-            ->where('academia_id', $id)
-            ->where('boolean_promocionar', 1)
-        ->get();
+
+        $academia = Academia::find($clase_personalizada->academia_id);
+
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
 
@@ -901,7 +904,7 @@ class ClasePersonalizadaController extends BaseController {
                 $link_video = '';
             }
 
-        return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
+        return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'id' => $id, 'clase_personalizada' => $clase_personalizada, 'config_clase_personalizada' => $config_clase_personalizada]);
     }
 
     public function destroy($id)

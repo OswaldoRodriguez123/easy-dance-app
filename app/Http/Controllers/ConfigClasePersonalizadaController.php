@@ -1107,7 +1107,7 @@ class ConfigClasePersonalizadaController extends BaseController {
                 $link_video = '';
             }
 
-        return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
+        return view('configuracion.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
     }
 
     public function destroy($id)
