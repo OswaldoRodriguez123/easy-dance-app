@@ -669,6 +669,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('/correo/adelanto', 'CorreoController@correoAdelanto');
 			Route::post('/correo/ayuda', 'CorreoController@correoAyuda');
 			Route::post('/correo/informacion', 'CorreoController@correoInformacion');
+			Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
 
 
 			// ASISTENCIA

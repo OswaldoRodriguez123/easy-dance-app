@@ -357,7 +357,9 @@
             <div class="form-wizard-basic fw-container">
             <ul class="tab-nav tn-justified" role="tablist">
                 <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Clase Grupal</a></li>
-                <li class="waves-effect"><a href="{{url('/')}}/normativas/clases-grupales" onclick="procesando()">Reglamentos</a></li>
+                @if(Auth::check())
+                  <li class="waves-effect"><a href="{{url('/')}}/normativas/clases-grupales" onclick="procesando()">Reglamentos</a></li>
+                @endif
 
                 @if(Auth::check())
 
@@ -683,7 +685,7 @@
 
         $(".reservar").click(function(){
 
-        //   if("{{Auth::check()}}"){
+          if("{{Auth::check()}}"){
 
         //     if(condiciones){
 
@@ -710,6 +712,9 @@
               }else{
                 $(".guardar").click();
               }
+            }else{
+              $(".guardar").click();
+            }
 
         });
 
