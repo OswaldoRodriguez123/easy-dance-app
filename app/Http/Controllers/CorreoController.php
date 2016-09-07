@@ -111,7 +111,6 @@ class CorreoController extends BaseController {
         $correo_informacion->msj_html = $request->msj_html;
         $correo_informacion->titulo = $request->subj;
 
-
         if($correo_informacion->save())
         {
 
@@ -141,7 +140,7 @@ class CorreoController extends BaseController {
 	                $correo_informacion->imagen = $nombre_img;
 	                $correo_informacion->save();
 
-	                $imagen = "{{url('/')}}/assets/uploads/correo/".$nombre_img;
+	                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$nombre_img;
 
 	        }else{
 	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
@@ -149,7 +148,6 @@ class CorreoController extends BaseController {
 
 			foreach($alumnos as $alumno)
 			{
-
 				
 				$array = [
 					'imagen' => $imagen,
