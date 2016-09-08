@@ -208,6 +208,8 @@
                     
                 </div>
             </section>
+
+            <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
 @stop
 
 @section('js') 

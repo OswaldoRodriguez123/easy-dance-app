@@ -200,6 +200,9 @@
                     
                     
                 </div>
+
+                <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
+                
             </section>
 @stop
 

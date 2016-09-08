@@ -75,7 +75,8 @@
                                 <tr>
                                     <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
-                                    <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th> 
+                                    <th class="text-center" data-column-id="acepto" data-order="desc"></th>
+                                    <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th>
                                     <th class="text-center" data-column-id="clase_personalizada" data-order="desc">Clase Personalizada</th>                           
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc" >Fecha</th>
@@ -138,7 +139,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[3, 'desc'], [4, 'desc']],
+        order: [[4, 'desc'], [5, 'desc']],
         fnDrawCallback: function() {
         if ("{{count($activas)}}" < 25) {
               $('.dataTables_paginate').hide();
@@ -147,8 +148,8 @@
         },
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -446,7 +447,14 @@
 
             $.each(activas, function (index, array) {
 
+              if(array.boolean_alumno_aceptacion == 1){
+                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
+              }else{
+                acepto = '';
+              }
+
                 var rowNode=t.row.add( [
+                ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
@@ -465,7 +473,14 @@
 
             $.each(finalizadas, function (index, array) {
 
+              if(array.boolean_alumno_aceptacion == 1){
+                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
+              }else{
+                acepto = '';
+              }
+
                 var rowNode=t.row.add( [
+                ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
@@ -484,7 +499,13 @@
 
             $.each(canceladas, function (index, array) {
 
+                if(array.boolean_alumno_aceptacion == 1){
+                  acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
+                }else{
+                  acepto = '';
+                }
                 var rowNode=t.row.add( [
+                ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
