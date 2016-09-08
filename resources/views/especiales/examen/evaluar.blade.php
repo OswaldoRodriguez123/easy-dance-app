@@ -24,6 +24,10 @@
 
 	<section id="content">
 		<div class="container">
+			<div class="block-header">
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Examen</a>
+                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+            </div>
 			<!-- PRINT BUTTON -->
 			<button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
 	        <div class="card">
@@ -33,14 +37,15 @@
 	            </div>
 		
 				<div class="card-body card-padding">
-					<form name="agregar_evaluacion" id="agregar_evaluacion">
+					<form
+					 name="agregar_evaluacion" id="agregar_evaluacion">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	                    <div class="row m-b-25">
 	                        <div class="col-xs-6">
 	                            <div class="text-left m-l-25">
 	                                <!--<p class="c-gray">Invoice from</p>-->
 	                                
-	                                <h4>Evaluación: "{{ $examen->nombre }}"</h4>
+	                                <h4 id="id-evaluacion">Evaluación: "{{ $examen->nombre }}"</h4>
 	                                <div class="clearfix"></div>
 									<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
 									<div class="clearfix"></div>
@@ -97,9 +102,9 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-									<span class="f-30" id="eval_total">50</span>
+									<span class="f-30" id="eval_total">{{count($itemsExamenes)}}</span>
 									<div class="text-right" id="id-total"></div>
-									<input type="hidden" name="total_nota" id="total_nota">
+									<input type="hidden" name="total_nota" id="total_nota" value="{{count($itemsExamenes)}}">
 								</div>
 
                                  <div class="has-error" id="error-total_nota">
@@ -158,19 +163,25 @@
 <script>
 
 route_agregar="{{url('/')}}/especiales/evaluaciones/agregar";
-route_principal="{{url('/')}}/especiales/examenes";
-	
+route_principal="{{url('/')}}/especiales/evaluaciones";
+
+var arrayNotas = new Array();
+
 $(document).ready(function() {
 	@foreach( $itemsExamenes as $items)
 		loadId({{$items->id}});
 	@endforeach
 
-	var notas = new Array();
+	
+	
+	for (var i = 0; i < {{count($itemsExamenes)}}; i++) {
+		arrayNotas[i]=1;
+	}
 	$('.slider-mov').change(function() {
 		notas = $('.slider-value').text();
 		//Divido la cadena usando el separador
 		//punto (.) de las notas		
-		var arrayNotas = notas.split(".");
+		arrayNotas = notas.split(".");
 		var total = 0;
 		for (var i = 0; i < arrayNotas.length-1; i++) {
 		    total += arrayNotas[i] << 0;
@@ -214,7 +225,7 @@ $(document).ready(function() {
                 var academia = {{$examen->academia_id}}
                 var examen = {{$examen->id}}
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen; 
+                var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen+'&nota_detalle='+arrayNotas; 
                 $("#guardar").attr("disabled","disabled");
                 procesando();
                 $("#guardar").css({
@@ -247,15 +258,15 @@ $(document).ready(function() {
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          	finprocesado();
+                          	//finprocesado();
                           	var nType = 'success';
                           	$("#agregar_evaluacion")[0].reset();
                           	var nTitle="Ups! ";
                           	var nMensaje=respuesta.mensaje;
 							notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                          	setTimeout(function(){ 
-                          		window.location = route_principal 
-                          	},1500);
+                          	
+                          	window.location = route_principal 
+                          	
                           	
                         }else{
                           var nTitle="Ups! ";
@@ -329,7 +340,19 @@ $(document).ready(function() {
 				}, 800);
 
 			}
-
+			$("#cancelar").click(function(){
+				var items_examen = <?php echo json_encode($itemsExamenes);?>;
+				$.each(items_examen,function(index,array){
+					$('#slider'+array.id).find('.noUi-origin').css('left','0%');
+					$('#value-lower'+array.id).text("1.00");
+					$("#eval_total").html({{count($itemsExamenes)}});
+					$("#total_nota").val({{count($itemsExamenes)}});
+					$('html,body').animate({scrollTop: $("#id-evaluacion").
+						offset().top-90,}, 800);
+					$("#agregar_evaluacion")[0].reset();;
+					$("#alumno_id").selectpicker('render');
+				});
+			});
 
 </script>
 

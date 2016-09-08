@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
 use App\Http\Requests;
+use App\ItemsExamenes;
 use App\Evaluacion;
+use App\DetalleEvaluacion;
 use Validator;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -29,9 +31,9 @@ class EvaluacionController extends Controller
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('examenes.id as id' , 'examenes.nombre as nombreExamen', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
             ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
-        ->get();        //
+        ->get();
 
         return view('especiales.evaluaciones.principal')->with('evaluacion', $evaluacion_join);
     }
@@ -55,7 +57,6 @@ class EvaluacionController extends Controller
     public function store(Request $request)
     {
 
-
         $rules = [
             'alumno_id' => 'required',
             'total_nota' => 'required',
@@ -76,6 +77,7 @@ class EvaluacionController extends Controller
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
+            $detalle_nota=explode(",",$request->nota_detalle);
 
             $evaluacion = new Evaluacion;
 
@@ -85,12 +87,60 @@ class EvaluacionController extends Controller
             $evaluacion->instructor_id= $request->instructor;
             $evaluacion->total = $request->total_nota;
 
+
             if($evaluacion->save()){
+                
+                $items_examenes = ItemsExamenes::where('examen_id', '=' , $request->examen)->get();
+                for ($i=0; $i < count($detalle_nota)-1; $i++) {
+                    $detalles = new DetalleEvaluacion;
+
+                    $detalles->nombre = $items_examenes[$i]->nombre;
+                    $detalles->nota = $detalle_nota[$i];
+                    $detalles->evaluacion_id = $evaluacion->id;
+                    $detalles->save();
+                }
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
         }
+    }
+
+    public function getDetalle($id){
+        //DATOS DE ENCABEZADO
+        
+        $nota_final = evaluacion::find($id);
+        
+        $alumno = DB::table('evaluaciones')
+                            ->join('alumnos', 'evaluaciones.alumno_id','=','alumnos.id')
+                            ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido')
+                            ->where('evaluaciones.id','=',$id)
+                            ->first();
+
+        $instructor = DB::table('evaluaciones')
+                            ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
+                            ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido')
+                            ->where('evaluaciones.id','=',$id)
+                            ->first();
+
+        $academia = DB::table('evaluaciones')
+                            ->join('academias', 'evaluaciones.academia_id','=','academias.id')
+                            ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia')
+                            ->where('evaluaciones.id','=',$id)
+                            ->first();
+
+        //DATOS DE DETALLE
+        $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
+                            ->where('evaluacion_id','=',$id)
+                            ->get();
+
+        return view('especiales.evaluaciones.detalle')->with([
+                'instructor'          => $instructor, 
+                'alumno'            => $alumno, 
+                'academia'          => $academia, 
+                'detalle_notas'    => $detalles_notas,
+                'nota_final'       => $nota_final->total
+                ]);
     }
 
     /**

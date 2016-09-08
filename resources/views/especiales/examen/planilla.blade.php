@@ -209,7 +209,7 @@
                                  </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$examen->id}}"></input>
+                               <input type="hidden" name="id" id="id" value="{{$examen->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -263,6 +263,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="tiempos_musicales" name="tiempos_musicales" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="tiempos-switch" type="checkbox" hidden="hidden">
                                           <label for="tiempos-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -280,6 +282,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="compromiso" name="compromiso" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="compromiso-switch" type="checkbox" hidden="hidden">
                                           <label for="compromiso-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -299,9 +303,11 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="condicion" name="condicion" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="condiciones-switch" type="checkbox" hidden="hidden">
-                                          <label for="condiciones-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="condicion-switch" type="checkbox" hidden="hidden">
+                                          <label for="condicion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </li>
                                       </div>
@@ -316,6 +322,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="habilidades" name="habilidades" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="habilidades-switch" type="checkbox" hidden="hidden">
                                           <label for="habilidades-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -335,6 +343,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="disciplina" name="disciplina" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="disciplina-switch" type="checkbox" hidden="hidden">
                                           <label for="disciplina-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -352,9 +362,11 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="expresion_corporal" name="expresion_corporal" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="expresion-switch" type="checkbox" hidden="hidden">
-                                          <label for="expresion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="expresion-corporal-switch" type="checkbox" hidden="hidden">
+                                          <label for="expresion-corporal-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </li>
                                       </div>
@@ -364,16 +376,18 @@
 
                                       <div class="col-sm-3 text-left">
 
-                                      <span class="f-16 f-700">Alergia</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
+                                      <span class="f-16 f-700">Expresión facial</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
 
                                       </div>
                                       
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="expresion_facial" name="expresion_facial" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="alergia-switch" type="checkbox" hidden="hidden">
-                                          <label for="alergia-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="expresion-facial-switch" type="checkbox" hidden="hidden">
+                                          <label for="expresion-facial-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </li>
                                       </div>
@@ -388,6 +402,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="destreza" name="destreza" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="destreza-switch" type="checkbox" hidden="hidden">
                                           <label for="destreza-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -407,6 +423,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="dedicacion" name="dedicacion" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="dedicacion-switch" type="checkbox" hidden="hidden">
                                           <label for="dedicacion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -424,6 +442,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="oido_musical" name="oido_musical" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="oido-switch" type="checkbox" hidden="hidden">
                                           <label for="oido-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -443,6 +463,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="postura" name="postura" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="postura-switch" type="checkbox" hidden="hidden">
                                           <label for="postura-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -460,6 +482,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="respeto" name="respeto" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="respeto-switch" type="checkbox" hidden="hidden">
                                           <label for="respeto-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -479,6 +503,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="elasticidad" name="elasticidad" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="elasticidad-switch" type="checkbox" hidden="hidden">
                                           <label for="elasticidad-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -496,6 +522,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="complejidad_de_movimientos" name="complejidad_de_movimientos" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="complejidad-switch" type="checkbox" hidden="hidden">
                                           <label for="complejidad-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -515,6 +543,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="asistencia" name="asistencia" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="asistencia-switch" type="checkbox" hidden="hidden">
                                           <label for="asistencia-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -532,6 +562,8 @@
                                       <div class="col-sm-3 text-left">
 
                                       <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+
+                                      <input type="text" id="estilo" name="estilo" value="" hidden="hidden">
                                       <div class="toggle-switch" data-ts-color="purple">
                                           <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
                                           <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
@@ -542,7 +574,50 @@
                                       <div class="clearfix p-b-35"></div>
                                       <div class="clearfix p-b-35"></div>
 
+                                      <div class="col-sm-3">
+                                      <label for="nombre" id="id-item_nuevo">Nombre</label>
+                                      <input type="text" class="form-control input-sm" name="item_nuevo" id="item_nuevo" placeholder="Ej. ritmo">
+                                      </div>
+                                      <div class="clearfix p-b-35"></div>
+                                      <div class="col-md-2">
+                                  <button type="button" class="btn btn-blanco m-r-8 f-10" name= "add" id="add" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                                </div>
 
+                                <div class="col-sm-4">
+                                  <div class="has-error" id="error-item_nuevo">
+                                        <span >
+                                          <small class="help-block error-span" id="error-item_nuevo_mensaje" ></small>                                           
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+                      
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="forma_pago">nombre</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($items_examenes as $items)
+                                <?php $id = $items->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$items->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                  </tr>
+                            @endforeach 
+                         
+                            </tbody>
+                          </table>
+
+                        </div>
+                        </div>
 
                                     </div>
 
@@ -724,6 +799,8 @@
     route_update="{{url('/')}}/especiales/examenes/update";
     route_eliminar="{{url('/')}}/especiales/examenes/eliminar/";
     route_principal="{{url('/')}}/especiales/examenes";
+    route_edit="{{url('/')}}/especiales/examenes/actualizar_item"
+    route_eliminar_item="{{url('/')}}/especiales/examenes/eliminar_item_fijo";
 
     $(document).ready(function(){
 
@@ -743,6 +820,69 @@
                 $(".card-body").removeClass(animation);
             }, animationDuration);
 
+          if("{{$examen->tiempos_musicales}}" == 1){
+          $("#tiempos_musicales").val('1');  
+          $("#tiempos-switch").attr("checked", true);}
+
+          if("{{$examen->compromiso}}" == 1){
+          $("#compromiso").val('1');  
+          $("#compromiso-switch").attr("checked", true);}
+
+          if("{{$examen->condicion}}" == 1){
+          $("#condicion").val('1');  
+          $("#condicion-switch").attr("checked", true);}
+
+          if("{{$examen->habilidades}}" == 1){
+          $("#habilidades").val('1');  
+          $("#habilidades-switch").attr("checked", true);}
+
+          if("{{$examen->disciplina}}" == 1){
+          $("#disciplina").val('1');  
+          $("#disciplina-switch").attr("checked", true);}
+
+          if("{{$examen->expresion_corporal}}" == 1){
+          $("#expresion_corporal").val('1');  
+          $("#expresion-corporal-switch").attr("checked", true);}
+
+          if("{{$examen->expresion_facial}}" == 1){
+          $("#expresion_facial").val('1');  
+          $("#expresion-facial-switch").attr("checked", true);}
+
+          if("{{$examen->destreza}}" == 1){
+          $("#destreza").val('1');  
+          $("#destreza-switch").attr("checked", true);}
+
+          if("{{$examen->dedicacion}}" == 1){
+          $("#dedicacion").val('1');  
+          $("#dedicacion-switch").attr("checked", true);}
+
+          if("{{$examen->oido_musical}}" == 1){
+          $("#oido_musical").val('1');  
+          $("#oido-switch").attr("checked", true);}
+
+          if("{{$examen->postura}}" == 1){
+          $("#postura").val('1');  
+          $("#postura-switch").attr("checked", true);}
+
+          if("{{$examen->respeto}}" == 1){
+          $("#respeto").val('1');  
+          $("#respeto-switch").attr("checked", true);}
+
+          if("{{$examen->elasticidad}}" == 1){
+          $("#elasticidad").val('1');  
+          $("#elasticidad-switch").attr("checked", true);}
+
+          if("{{$examen->complejidad_de_movimientos}}" == 1){
+          $("#complejidad_de_movimientos").val('1');  
+          $("#complejidad-switch").attr("checked", true);}
+
+          if("{{$examen->asistencia}}" == 1){
+          $("#asistencia").val('1');  
+          $("#asistencia-switch").attr("checked", true);}
+
+          if("{{$examen->estilo}}" == 1){
+          $("#estilo").val('1');  
+          $("#estilo-switch").attr("checked", true);}
       });
 
     $('#modalNombre-Examen').on('show.bs.modal', function (event) {
@@ -766,6 +906,135 @@
       limpiarMensaje();
       $("#instructor option:selected").val($("#examen-instructor").text()); 
     })
+
+    $("#tiempos-switch").on('change', function(){
+          if ($("#tiempos-switch").is(":checked")){
+            $("#tiempos_musicales").val('1');
+          }else{
+            $("#tiempos_musicales").val('0');
+          }
+          console.log($("#tiempos_musicales").val());     
+        });
+
+      $("#compromiso-switch").on('change', function(){
+          if ($("#compromiso-switch").is(":checked")){
+            $("#compromiso").val('1');
+          }else{
+            $("#compromiso").val('0');
+          }     
+        });
+
+      $("#condiciones-switch").on('change', function(){
+          if ($("#condiciones-switch").is(":checked")){
+            $("#condicion").val('1');
+          }else{
+            $("#condicion").val('0');
+          }     
+        });
+
+      $("#habilidades-switch").on('change', function(){
+          if ($("#habilidades-switch").is(":checked")){
+            $("#habilidades").val('1');
+          }else{
+            $("#habilidades").val('0');
+          }     
+        });
+
+      $("#disciplina-switch").on('change', function(){
+          if ($("#disciplina-switch").is(":checked")){
+            $("#disciplina").val('1');
+          }else{
+            $("#disciplina").val('0');
+          }     
+        });
+
+      $("#expresion-corporal-switch").on('change', function(){
+          if ($("#expresion-corporal-switch").is(":checked")){
+            $("#expresion_corporal").val('1');
+          }else{
+            $("#expresion_corporal").val('0');
+          }     
+        });
+
+      $("#expresion-facial-switch").on('change', function(){
+          if ($("#expresion-facial-switch").is(":checked")){
+            $("#expresion_facial").val('1');
+          }else{
+            $("#expresion_facial").val('0');
+          }     
+        });
+
+      $("#destreza-switch").on('change', function(){
+          if ($("#destreza-switch").is(":checked")){
+            $("#destreza").val('1');
+          }else{
+            $("#destreza").val('0');
+          }     
+        });
+
+      $("#dedicacion-switch").on('change', function(){
+          if ($("#dedicacion-switch").is(":checked")){
+            $("#dedicacion").val('1');
+          }else{
+            $("#dedicacion").val('0');
+          }     
+        });
+
+      $("#oido-switch").on('change', function(){
+          if ($("#oido-switch").is(":checked")){
+            $("#oido_musical").val('1');
+          }else{
+            $("#oido_musical").val('0');
+          }     
+        });
+
+      $("#postura-switch").on('change', function(){
+          if ($("#postura-switch").is(":checked")){
+            $("#postura").val('1');
+          }else{
+            $("#postura").val('0');
+          }     
+        });
+
+      $("#respeto-switch").on('change', function(){
+          if ($("#respeto-switch").is(":checked")){
+            $("#respeto").val('1');
+          }else{
+            $("#respeto").val('0');
+          }     
+        });
+
+      $("#elasticidad-switch").on('change', function(){
+          if ($("#elasticidad-switch").is(":checked")){
+            $("#elasticidad").val('1');
+          }else{
+            $("#elasticidad").val('0');
+          }     
+        });
+
+      $("#complejidad-switch").on('change', function(){
+          if ($("#complejidad-switch").is(":checked")){
+            $("#complejidad_de_movimientos").val('1');
+          }else{
+            $("#complejidad_de_movimientos").val('0');
+          }     
+        });
+
+      $("#asistencia-switch").on('change', function(){
+          if ($("#asistencia-switch").is(":checked")){
+            $("#asistencia").val('1');
+          }else{
+            $("#asistencia").val('0');
+          }     
+        });
+
+      $("#estilo-switch").on('change', function(){
+          if ($("#estilo-switch").is(":checked")){
+            $("#estilo").val('1');
+          }else{
+            $("#estilo").val('0');
+          }     
+        });
 
     function limpiarMensaje(){
         var campo = ["nombre", "descripcion", "fecha", "instructor_id"];
@@ -822,6 +1091,158 @@
           $("#estatus-"+c.name).addClass('c-verde');
         });
       }
+
+      var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+      $("#add").click(function(){
+
+              var route = route_edit;
+                  var token = $('input:hidden[name=_token]').val();
+                  var datos = '&item_nuevo='+ $('#item_nuevo').val()+'&id='+$('#id').val(); 
+                  limpiarMensaje();
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                          dataType: 'json',
+                          data:datos,
+                      success:function(respuesta){
+                        setTimeout(function(){ 
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          if(respuesta.status=="OK"){
+                            var nType = 'success';
+                            var nTitle="Ups! ";
+                            var nMensaje=respuesta.mensaje;
+
+                            var item_nuevo = respuesta.item_nuevo;
+
+                            var rowId=respuesta.id;
+                            var rowNode=t.row.add( [
+                            ''+item_nuevo+'',
+                            '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                            ] ).draw(false).node();
+                            $( rowNode )
+                            .attr('id',rowId)
+                            .addClass('seleccion');
+
+                          }else{
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+                          }                       
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          $(".cancelar").removeAttr("disabled");
+                          $("#add").removeAttr("disabled");
+                          $("#add").css({
+                            "opacity": ("1")
+                          });
+
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }, 1000);
+                      },
+                      error:function(msj){
+                        setTimeout(function(){ 
+                        //   if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                          if(msj.responseJSON.status=="ERROR"){
+                            console.log(msj.responseJSON.errores);
+                            errores(msj.responseJSON.errores);
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                          }else{
+                            var nTitle="   Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          }                        
+                          $("#add").removeAttr("disabled");
+                          $("#add").css({
+                            "opacity": ("1")
+                          });
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nType = 'danger';
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY";                       
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                        }, 1000);
+                      }
+                  });
+            });
+
+$('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+                  var padre=$(this).parents('tr');
+                  var token = $('input:hidden[name=_token]').val();
+                  var id = $(this).closest('tr').attr('id');
+                        $.ajax({
+                             url: route_eliminar_item+"/"+id,
+                             headers: {'X-CSRF-TOKEN': token},
+                             type: 'POST',
+                             dataType: 'json',                
+                            success: function (data) {
+                              if(data.status=='OK'){
+
+                                                                            
+                              }else{
+                                swal(
+                                  'Solicitud no procesada',
+                                  'Ha ocurrido un error, intente nuevamente por favor',
+                                  'error'
+                                );
+                              }
+                            },
+                            error:function (xhr, ajaxOptions, thrownError){
+                              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                            }
+                          })
+
+                        t.row( $(this).parents('tr') )
+                                .remove()
+                                .draw();   
+
+                          
+                        });
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({

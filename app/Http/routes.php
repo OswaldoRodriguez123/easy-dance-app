@@ -143,11 +143,16 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/examenes/update/fecha', 'ExamenController@updateFecha');
 			Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
 			Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
+			Route::post('especiales/examenes/agregar_item','ExamenController@agregar_item');
+			Route::post('especiales/examenes/eliminar_item/{id}','ExamenController@eliminar_item');
+			Route::post('especiales/examenes/actualizar_item','ExamenController@actualizar_item');
+			Route::post('especiales/examenes/eliminar_item_fijo/{id}','ExamenController@eliminar_item_fijo');
 
 			//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
 			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
 			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');
 
+			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 			// ---- CONFIGURACION ----
 
 			Route::get('configuracion', 'AcademiaConfiguracionController@principal');
@@ -558,9 +563,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/promociones/update/fecha', 'PromocionController@updateFecha');
 			Route::put('especiales/promociones/update/sexo', 'PromocionController@updateSexo');
 			Route::put('especiales/promociones/update/edad', 'PromocionController@updateEdad');
-
-			//EXAMENES
-
 
 			//CAMPAÑAS
 

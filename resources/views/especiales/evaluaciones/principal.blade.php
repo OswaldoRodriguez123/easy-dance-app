@@ -37,26 +37,30 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
-                                    <th class="text-center" data-column-id="examen" data-order="desc">Examen</th>
+                                    <th class="text-center" data-column-id="organizador"></th>
+                                    <th class="text-center" data-column-id="identificacion">Identificación</th>
+                                    <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="instructor">Instructor</th>
+                                    <th class="text-center" data-column-id="examen">Examen</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
-                                    <th class="text-center" data-column-id="nota" data-order="desc">Nota</th>
+                                    <th class="text-center" data-column-id="nota">Nota</th>
 
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
                             @foreach ($evaluacion as $evaluaciones)
                                 <?php $id = $evaluaciones->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion"> 
+                                <tr id="row_{{$id}}" class="seleccion">
+                                    <td class="text-center previa"><span style="display: none">{{$evaluaciones->id}}</span></td>
+                                    <td class="text-center previa">
+                                    {{$evaluaciones->identificacion}}
+                                    </td>
                                     <td class="text-center previa">{{$evaluaciones->alumno_nombre}} {{$evaluaciones->alumno_apellido}}</td>
                                     <td class="text-center previa">{{$evaluaciones->instructor_nombre}} {{$evaluaciones->instructor_apellido}}</td>
                                     <td class="text-center previa">{{$evaluaciones->nombreExamen}}</td>
                                     <td class="text-center previa">{{$evaluaciones->fecha}}</td>
                                     <td class="text-center previa">{{$evaluaciones->nota_total}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach  
                                                            
@@ -84,7 +88,7 @@
 
 <script type="text/javascript">
 
-        //route_detalle="{{url('/')}}/especiales/examenes/detalle";
+        route_detalle="{{url('/')}}/especiales/evaluaciones/detalle";
         //route_operacion="{{url('/')}}/especiales/examenes/operaciones";
 
         $(document).ready(function(){
@@ -92,7 +96,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,    
-        order: [[0, 'asc']],
+        order: [[0, 'desc']],
         fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
@@ -159,12 +163,13 @@
 
             });
 
-    /*function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_examen = row.split('_');
-        var route =route_detalle+"/"+id_examen[1];
-        window.location=route;
-    }*/
+    function previa(t){
+
+            var row = $(t).closest('tr').attr('id');
+            var id_alumno = row.split('_');
+            var route =route_detalle+"/"+id_alumno[1];
+            window.location=route;
+        }
 
         /*$("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
