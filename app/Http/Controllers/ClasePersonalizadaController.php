@@ -44,7 +44,7 @@ class ClasePersonalizadaController extends BaseController {
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion')
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
             ->where('inscripcion_clase_personalizada.estatus','=', 1)
@@ -56,7 +56,7 @@ class ClasePersonalizadaController extends BaseController {
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion')
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.fecha_inicio', '<', Carbon::now()->format('Y-m-d'))
             ->where('inscripcion_clase_personalizada.estatus','=', 1)
@@ -68,7 +68,7 @@ class ClasePersonalizadaController extends BaseController {
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion')
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.estatus','=', 0)
         ->get();
@@ -134,7 +134,9 @@ class ClasePersonalizadaController extends BaseController {
 
         $id = Auth::user()->academia_id;
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
         
     }
 
@@ -167,7 +169,9 @@ class ClasePersonalizadaController extends BaseController {
 
         $academia_id = Auth::user()->academia_id;
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id]);
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id, 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
         
     }
 
@@ -769,7 +773,8 @@ class ClasePersonalizadaController extends BaseController {
                'hora_inicio' => $request->hora_inicio,
                'hora_final' => $request->hora_final,
                'fecha' => $fecha_inicio,
-               'subj' => $subj2
+               'subj' => $subj2,
+               'id' => $clasepersonalizada->id
             ];
 
             Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
@@ -855,15 +860,18 @@ class ClasePersonalizadaController extends BaseController {
     public function progreso($id)
     {
 
-        $academia = Academia::find($id);
-        // $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
+        $clase_personalizada = DB::table('inscripcion_clase_personalizada')
+            ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'inscripcion_clase_personalizada.estudio_id', '=', 'config_estudios.id')
+            ->select('instructores.nombre as instructor_nombre' , 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad_nombre', 'inscripcion_clase_personalizada.hora_inicio', 'inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.fecha_inicio', 'clases_personalizadas.academia_id', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.imagen', 'clases_personalizadas.descripcion')
+            ->where('inscripcion_clase_personalizada.id', $id)
+        ->first();
 
-        $instructores = DB::table('instructores')
-            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
-            ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
-            ->where('academia_id', $id)
-            ->where('boolean_promocionar', 1)
-        ->get();
+
+        $academia = Academia::find($clase_personalizada->academia_id);
+
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();
 
@@ -897,7 +905,19 @@ class ClasePersonalizadaController extends BaseController {
                 $link_video = '';
             }
 
-        return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
+        return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'id' => $id, 'clase_personalizada' => $clase_personalizada, 'config_clase_personalizada' => $config_clase_personalizada]);
+    }
+
+    public function aceptarcondiciones($id)
+    {
+        $clasepersonalizada = InscripcionClasePersonalizada::find($id);
+        $clasepersonalizada->boolean_alumno_aceptacion = 1;
+        
+        if($clasepersonalizada->save()){
+            return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function destroy($id)

@@ -18,63 +18,6 @@
 
 @section('content')
 
-<div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Condiciones y Normativas<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="configuracion_clase_personalizada" id="configuracion_clase_personalizada"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                                <div class="col-sm-12">
-                                    
-                                <div style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc">
-
-                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones"></p>
-
-                                  </div>
-
-                                </div>
-
-                                <div class="col-sm-3" style="margin-left: 39%">
-
-                                <input type="checkbox" id="condiciones" name="condiciones">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
-
-                                <div class="text-center">
-
-                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar">Reservar</button>
-
-                                </div>
-
-                              </div>
-                            
-
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
 <div class="container">
 
 @if(Auth::check())
@@ -112,28 +55,8 @@
                 </div>
 
                   <div class="clearfix p-b-15"></div>
-                    <div class="clearfix p-b-15"></div>
+                  <div class="clearfix p-b-15"></div>
 
-                    <ul class="rrssb-buttons clearfix">
-
-                      <li class="rrssb-facebook">
-                        <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}/agendar/clases-personalizadas/progreso/{{$id}}" class="popup">
-                          <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
-                          <span class="rrssb-text">facebook</span>
-                        </a>
-                      </li>
-                      <li class="rrssb-twitter">
-                        <!-- Replace href with your Meta and URL information  -->
-                        <a href="https://twitter.com/intent/tweet?text=Participa en las clases personalizadas te invita {{$academia->nombre}} {{url('/')}}/agendar/clases-personalizadas/progreso/{{$id}}"
-                        class="popup">
-                          <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span>
-                          <span class="rrssb-text">twitter</span>
-                        </a>
-                      </li>
-                    </ul>
-
-                    <div class="clearfix p-b-15"></div>
 
                     <div class="pmo-block pmo-contact hidden-xs">
 
@@ -184,25 +107,6 @@
 
                     </div>
 
-                    <div class="clearfix p-b-15"></div>
-
-
-                     <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
-                                  <ul class="ca-menu pointer">
-                                    <li>
-                                        <a class ="reservar">
-                                            <span class="ca-icon"><i class="icon_a-clase-personalizada"></i></span>
-                                            <div class="ca-content">
-                                                <h2 class="ca-main">Reserva tu Clase Personalizada</h2>
-                                                <h3 class="ca-sub">Activate ya!</h3>
-                                            </div>
-                                        </a>
-                                    </li>
-                                  </ul>
-                          </div>
 
             </div>
             
@@ -211,34 +115,45 @@
 
             <div class="pmo-block pmo-contact hidden-xs" style="padding-top:15px">
       
-                      <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Instructores</div>
-                        
-                        
-
-                        @foreach($instructores_academia as $instructor)
-                        <div class ="detalle instructor" id ="{{$instructor->id}}">
-                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e">  
-                          {{$instructor->nombre}} {{$instructor->apellido}}
-    
-                            </a> </div>
-                          @endforeach
-
+                      <div style="border: 1px solid;">
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Datos Generales</div>
+                          <div class="col-sm-12">
                           <div class="clearfix p-b-15"></div>
 
+                              <label class="text-left opaco-0-8"><i class="zmdi zmdi-calendar f-22"></i>  Fecha de inicio:</label>
+                              <p class="text-left opaco-0-8 f-16">{{$clase_personalizada->fecha_inicio}}</p>
+
+                              <hr class="linea-morada opaco-0-8">
+
+                              <label class="text-left opaco-0-8" ><i class="icon_a-especialidad f-22"></i> Especialidad:</label>
+                              <p class="text-left opaco-0-8 f-16">{{$clase_personalizada->especialidad_nombre}}</p> 
+
+                               <hr class="linea-morada opaco-0-8">
+
+                              <label class="text-left opaco-0-8" ><i class="icon_a-estudio-salon f-22"></i> Estudio salón:</label>
+                              <p class="text-left f-16">{{$clase_personalizada->estudio_nombre}}</p> 
+
+                               <hr class="linea-morada opaco-0-8">
+
+                              <label class="text-left opaco-0-8" ><i class="icon_a-instructor f-22"></i> Instructor:</label>
+                              <p class="text-left f-16">{{$clase_personalizada->instructor_nombre}} {{$clase_personalizada->instructor_apellido}}</p> 
+
+                               <hr class="linea-morada opaco-0-8">
+
+                              <label class="text-left opaco-0-8" ><i class="zmdi zmdi-alarm f-22"></i> Horarios:</label>
+                              <p class="text-left f-16">{{$clase_personalizada->hora_inicio}} - {{$clase_personalizada->hora_final}}</p>
+
 
 
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
 
+                        </div>
 
-                    </div> <!-- AGENDAR -->
+                    </div>
 
-
-                              
-
-                              
+    
             </div>
 
         </div>
@@ -247,9 +162,7 @@
             <div role="tabpanel">
             <div class="form-wizard-basic fw-container">
             <ul class="tab-nav tn-justified" role="tablist">
-                <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Sobre las clases</a></li>
-                <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab" class="tab_instructor">Sobre los instructores</a></li>
-                <li class="waves-effect"><a class="reservar">Reservar</a></li>
+                <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Sobre la clase</a></li>
 
             </ul>
             
@@ -259,18 +172,18 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        @if($config_clase_personalizada->imagen_principal)
-                        <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$config_clase_personalizada->imagen_principal}}" class="img-responsive opaco-0-8" alt="">
+                        @if($clase_personalizada->imagen)
+                        <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$clase_personalizada->imagen}}" class="img-responsive opaco-0-8" alt="">
                         @endif
                         
                         <div class="clearfix p-b-20"></div>
 
-                        @if($config_clase_personalizada->descripcion)
+                        @if($clase_personalizada->descripcion)
 
 
                         <div class="f-700 f-30">Descripción</div>
                         <hr class="linea-morada">
-                        {!! nl2br($config_clase_personalizada->descripcion) !!}
+                        {!! nl2br($clase_personalizada->descripcion) !!}
 
                         <div class="clearfix p-b-20"></div>
 
@@ -300,12 +213,63 @@
                         <div class="clearfix p-b-20"></div>
                         @endif
 
-                        <div class="col-sm-3" style="margin-left: 35%">
+                        <div class="col-sm-12">
 
+                                <div style="margin-left: 25%">
+                                    
+                                <div class="col-sm-8" style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc; overflow-y: auto; height:400px">
+
+                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones">
+                                    
+                                            <div class="text-center f-25 f-700">Normativas de las clases personalizadas</div>
+                                        <hr>
+                                    <div class="table-responsive row">
+                                    <div class="col-md-1"></div>
+                                       <div class="col-md-10">
+                                      <div class="text-justify">
+
+                                      <div class="f-18 f-700"> 1. Principal   </div>
+                                      <br>
+
+                                      <p>Al momento de hacer la reserva, al alumno comprende que envía una solicitud a la academia  y no una confirmación de la  clase, la reserva  deberá ser verificada y constatada   por un representante  la academia, por medio de la  plataforma o través de una llamada telefónica.</p>
+
+
+                                      <div class="f-18 f-700">2.  Reservar  </div><br>
+
+                                      <p>Todas las clases personalizadas o paquetes de su elección, deberán ser  apartadas con el 50% del costo total, al momento de asistir deberá pagar  el resto de la  totalidad de la clase, dicha pago podrá ser ejecutado a través de la plataforma o enviando el Boucher del  pago generado  a través, de la cuenta de banco establecida por la academia. </p>
+
+                                      <div class="f-18 f-700"> 3. Asistencia  </div><br>
+
+                                      <p>El alumno deberá asistir en el horario establecido en la reservación, en caso de atraso de parte del alumno, la academia no se responsabiliza ni se obliga  a reponer el tiempo perdido. </p>
+
+
+                                      <div class="f-18 f-700"> 4. Inasistencia  </div><br>
+
+                                      <p>En caso de que el alumnos no pueda asistir a su clase programada  deberá notificarlo con 08 horas de antelación a través de la plataforma, o confirmar a través de una llamada telefónica su cancelación, de lo contrario, la clase obtendrá un estatus de <b>“cancelación tardía”</b>, lo que significa que esta será percibida como una  clase vista, por tal motivo, esta deberá ser pagada en su totalidad, sin derecho a reprogramar dicha clase, esta podrá ser reprogramada siempre y cuando la cancelación sea superior a las 08 horas de límite que estable la institución.  </p>
+
+                                      <div class="f-18 f-700"> 5. Dinámica </div><br>
+
+                                      <p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantesen una misma sección u hora de clases. </p>
+
+                                      </div>
+                                      </div>
+                                      </div>
+
+                                  </p>
+
+                                  </div>
+
+                                  </div>
+
+                                </div>
+
+                                <div class="col-sm-3" style="margin-left: 39%">
+
+                                <input type="checkbox" id="condiciones" name="condiciones">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
 
                                 <div class="text-center">
 
-                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
+                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name="guardar" id="guardar" >Agendar</button>
 
                                 </div>
 
@@ -315,236 +279,6 @@
 
                     </div>
 
-                </div>
-
-                <div role="tabpanel" class="tab-pane animated fadeInUp in" id="nuestro-equipo">
-
-                    <div class="pmb-block m-t-0 p-t-0">
-
-                        @if(count($instructores_academia) > 0)
-
-                          <img name="imagen_artistica" id="imagen_artistica" src="{{url('/')}}/assets/uploads/instructor/{{$instructores_academia[0]->imagen_artistica}}" class="img-responsive opaco-0-8" alt="">
-
-                        @endif
-
-                        
-
-                        <div class="circulos_instructor">
-
-                        <div class="clearfix p-b-20"></div>
-
-                        <div class="f-700 f-30">Experiencia laboral como instructor </div>
-                        <hr class="linea-morada">
-
-                        @if(count($instructores_academia) > 0)
-
-                          
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_instructor" id ="tiempo_experiencia_instructor"> {{$instructores_academia[0]->tiempo_experiencia_instructor}}</div>
-                              <span class="span_circulo"> Años de experiencia</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="genero_instructor" id ="genero_instructor"> {{$instructores_academia[0]->genero_instructor}}</div>
-                              <span class="span_circulo"> Géneros que domina</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="cantidad_horas" id ="cantidad_horas"> {{$instructores_academia[0]->cantidad_horas}}</div>
-                              <span class="span_circulo"> Horas impartidas</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="titulos_instructor" id ="titulos_instructor"> {{$instructores_academia[0]->titulos_instructor}}</div>
-                              <span class="span_circulo"> Títulos y reconocimientos </span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="organizador" id ="organizador"> {{$instructores_academia[0]->organizador}}</div>
-                              <span class="span_circulo"> Organizador de eventos</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="invitacion_evento" id ="invitacion_evento"> {{$instructores_academia[0]->invitacion_evento}}</div>
-                              <span class="span_circulo"> Invitaciones a eventos</span>
-                            </div>
-
-                          
-                          
-
-                        @endif
-                        <hr class="linea-morada">
-
-                        </div>
-                        
-                        
-
-                        <div class="div_descripcion">
-
-                        <div class="clearfix p-b-20"></div>
-
-                          <div class="f-700 f-30">Perfil del instructor</div>
-                          <hr class="linea-morada">
-                          <p class="f-14" name="descripcion_instructor" id="descripcion_instructor">
-
-                          @if(count($instructores_academia) > 0)
-
-                            {!! nl2br($instructores_academia[0]->descripcion) !!}
-
-                          @endif
-
-                          </p>
-
-                        </div>
-
-                        @if(count($instructores_academia) > 0)
-
-                        <p class="text-center">
-                               
-                                <a name="facebook" id="facebook" href="{{ empty($instructores_academia[0]->facebook) ? '' : $instructores_academia[0]->facebook}}" target="_blank"><i class="{{ empty($instructores_academia[0]->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
-
-                                <a name="twitter" id="twitter" href="{{ empty($instructores_academia[0]->twitter) ? '' : $instructores_academia[0]->twitter}}" target="_blank"><i class="{{ empty($instructores_academia[0]->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
-
-                                <a name="instagram" id="instagram" href="{{ empty($instructores_academia[0]->instagram) ? '' : $instructores_academia[0]->instagram}}" target="_blank"><i class="{{ empty($instructores_academia[0]->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
-
-                                <a name="linkedin" id="linkedin" href="{{ empty($instructores_academia[0]->linkedin) ? '' : $instructores_academia[0]->linkedin}}" target="_blank"><i class="{{ empty($instructores_academia[0]->linkedin) ? '' : 'zmdi zmdi-linkedin-box f-25 c-linkedin m-l-5'}}"></i></a>
-
-                                <a name="youtube" id="youtube" href="{{ empty($instructores_academia[0]->youtube) ? '' : $instructores_academia[0]->youtube}}" target="_blank"><i class="{{ empty($instructores_academia[0]->youtube) ? '' : 'zmdi zmdi-collection-video f-25 c-youtube m-l-5'}}"></i></a>
-
-                                <a name="pagina_web" id="pagina_web" href="{{ empty($instructores_academia[0]->pagina_web) ? '' : $instructores_academia[0]->pagina_web}}" target="_blank"><i class="{{ empty($instructores_academia[0]->pagina_web) ? '' : 'zmdi zmdi zmdi-google-earth zmdi-hc-fw f-25 c-verde m-l-5'}}"></i></a>
-                              
-                                
-                              </p>
-
-                          @endif
-
-                          
-
-                        @if(count($instructores_academia) > 0)
-
-                        <div class="div_promocional">
-
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-
-                            <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                              <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
-                                <iframe name="video_promocional" id="video_promocional" class="embed-responsive-item" src=""></iframe>
-                              </div>
-                            </div>
-                        </div>
-                          @endif
-
-                        
-
-                        <div class="circulos_instructor">
-
-                        <div class="clearfix p-b-20"></div>
-
-                        <div class="f-700 f-30">Experiencia como bailarín </div>
-                        <hr class="linea-morada">
-
-                        @if(count($instructores_academia) > 0)
-
-                        
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_bailador" id ="tiempo_experiencia_bailador"> {{$instructores_academia[0]->tiempo_experiencia_bailador}}</div>
-                              <span class="span_circulo"> Años de experiencia</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="genero_bailador" id ="genero_bailador"> {{$instructores_academia[0]->genero_bailador}}</div>
-                              <span class="span_circulo"> Géneros que domina</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="participacion_coreografia" id ="participacion_coreografia"> {{$instructores_academia[0]->participacion_coreografia}}</div>
-                              <span class="span_circulo"> Participación en coreografías</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="montajes" id ="montajes"> {{$instructores_academia[0]->montajes}}</div>
-                              <span class="span_circulo"> Montajes coreográficos </span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="titulos_bailador" id ="titulos_bailador"> {{$instructores_academia[0]->titulos_bailador}}</div>
-                              <span class="span_circulo"> Títulos y reconocimientos</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="participacion_escenario" id ="participacion_escenario"> {{$instructores_academia[0]->participacion_escenario}}</div>
-                              <span class="span_circulo"> Participación en escenarios y shows</span>
-                            </div>
-
-                          
-                          
-
-                        @endif
-                        <hr class="linea-morada">
-
-                        </div>
-                        
-                        
-
-                        <div class="div_resumen">
-
-                        <div class="clearfix p-b-20"></div>
-
-                          <div class="f-700 f-30">Resumen artístico</div>
-                          <hr class="linea-morada">
-                          <p class="f-14" name="resumen_artistico" id="resumen_artistico">
-
-                          @if(count($instructores_academia) > 0)
-
-                            {!! nl2br($instructores_academia[0]->resumen_artistico) !!}
-
-                          @endif
-
-                          </p>
-
-                        </div>
-
-                        @if(count($instructores_academia) > 0)
-
-                        <div class="div_testimonial">
-
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-
-
-                            <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                              <div class="embed-responsive embed-responsive-4by3" name="video_testimonial_frame" id="video_testimonial_frame">
-                                <iframe name="video_testimonial" id="video_testimonial" class="embed-responsive-item" src=""></iframe>
-                              </div>
-                            </div>
-                        </div>
-
-
-                        @endif
-
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-
-                        <div class="col-sm-3" style="margin-left: 35%">
-
-
-                                <div class="text-center">
-
-                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
-
-                                </div>
-
-                              </div>
-
-                        
-
-                    </div>
-                    
                 </div>
 
 
@@ -581,12 +315,7 @@
 
                 </div>
 
-                    <ul class="fw-footer pagination wizard">
-                        <!--<li class="previous first"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
-                        <li class="previous"><a class="a-prevent" href=""><i class="zmdi zmdi-arrow-back"></i></a></li>
-                        <li class="next"><a class="a-prevent" href=""><i class="zmdi zmdi-arrow-forward"></i></a></li>
-                        <!--<li class="next last"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
-                    </ul>
+
 
                     
 
@@ -638,76 +367,18 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-        var condiciones = <?php echo json_encode($config_clase_personalizada->condiciones);?>;
+        route_aceptar="{{url('/')}}/agendar/clases-personalizadas/";
+        route_principal="{{url('/')}}/inicio";
 
         $(document).ready(function() {
 
-            var tmp = "{{$instructores_academia[0]->video_promocional}}";
+          $(".guardar").attr("disabled","disabled");
 
-            var video_promocional = tmp.split('=');
+          $(".guardar").css({
+            "opacity": ("0.2")
+          });
 
-            if(video_promocional[1])
-            {
-              $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+video_promocional[1]);
-              $(".div_promocional").show();
-            }else{
-              $(".div_promocional").hide();
-            }
-
-            var tmp = "{{$instructores_academia[0]->video_testimonial}}";
-            var video_testimonial = tmp.split('=');
-
-            if(video_testimonial[1])
-            {
-              $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
-              $(".div_testimonial").show();
-              // document.getElementById('video_testimonial').contentDocument.location.reload(true);
-
-            }else{
-              $(".div_testimonial").hide();
-            }
-
-
-            var tmp = "{{strlen($instructores_academia[0]->descripcion)}}";
-
-            if(tmp > 0)
-            {
-              $(".div_descripcion").show();
-
-            }else{
-              $(".div_descripcion").hide();
-            }
-
-            var tmp = "{{strlen($instructores_academia[0]->resumen_artistico)}}";
-
-            if(tmp > 0)
-            {
-              $(".div_resumen").show();
-
-            }else{
-              $(".div_resumen").hide();
-            }
-
-             var tmp = "{{$instructores_academia[0]->tiempo_experiencia_instructor}}";
-
-            if(tmp)
-            {
-
-            $(".circulos_instructor").show();
-
-            }else{
-              $(".circulos_instructor").hide();
-            }
-
-              $("#pre_condiciones").html(nl2br(condiciones));
-
-              $(".guardar").attr("disabled","disabled");
-
-              $(".guardar").css({
-                  "opacity": ("0.2")
-              });
-
-            });
+        });
 
       $("#condiciones").on('change', function(){
           if ($("#condiciones").is(":checked")){
@@ -746,186 +417,52 @@
 
         });
 
-       $(".reservar").click(function(){
+       $(".guardar").click(function(){
 
-          procesando();
+        id = "{{$id}}";
+        var token = $('input:hidden[name=_token]').val();
 
-          window.location = "{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$academia->id}}"
+        procesando();
+        var route = route_aceptar + id;
+                  
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      success:function(respuesta){
 
+                          window.location=route_principal; 
 
-        });
-
-
-       $(".instructor").click(function(){
-
-        $(".tab_instructor").click();
-
-        $('body,html').animate({scrollTop : 0}, 500);
-
-          id = this.id;
-
-          var instructores = <?php echo json_encode($instructores_academia);?>;
-
-          var instructor = $.grep(instructores, function(e){ return e.id == id; });
-
-          $.each(instructor, function (index, array) {
-            console.log(array.descripcion);
-
-            if(array.descripcion)
-            {
-              $('.div_descripcion').show();
-              $("#descripcion_instructor").html(nl2br(array.descripcion));
-            }else{
-              $('.div_descripcion').hide();
-            }
-
-            if(array.resumen_artistico)
-            {
-              $('.div_resumen').show();
-              $("#resumen_artistico").html(nl2br(array.resumen_artistico));
-            }else{
-              $('.div_resumen').hide();
-            }
-
-            if(array.tiempo_experiencia_instructor != null)
-            {
-
-            $(".circulos_instructor").show();
-
-            $("#tiempo_experiencia_instructor").html(array.tiempo_experiencia_instructor);
-            $("#genero_instructor").html(array.genero_instructor);
-            $("#cantidad_horas").html(array.cantidad_horas);
-            $("#titulos_instructor").html(array.titulos_instructor);
-            $("#invitacion_evento").html(array.invitacion_evento);
-            $("#organizador").html(array.organizador);
-
-            $("#tiempo_experiencia_bailador").html(array.tiempo_experiencia_bailador);
-            $("#genero_bailador").html(array.genero_bailador);
-            $("#participacion_coreografia").html(array.participacion_coreografia);
-            $("#montajes").html(array.montajes);
-            $("#titulos_bailador").html(array.titulos_bailador);
-            $("#participacion_escenario").html(array.participacion_escenario);
-
-            }else{
-              $(".circulos_instructor").hide();
-            }
+                      },
+                      error:function(msj){
+                                  // $("#msj-danger").fadeIn(); 
+                                  // var text="";
+                                  // console.log(msj);
+                                  // var merror=msj.responseJSON;
+                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                  // $("#msj-error").html(text);
+                                  // setTimeout(function(){
+                                  //          $("#msj-danger").fadeOut();
+                                  //         }, 3000);
+                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                  }
 
 
-            if(array.imagen_artistica){
-              $("#imagen_artistica").attr('src', "{{url('/')}}/assets/uploads/instructor/"+array.imagen_artistica);
-              $("#imagen_artistica").show();
-            }else{
-              $("#imagen_artistica").hide();
-            }
-
-            var video_promocional = array.video_promocional.split('=');
-
-            if(video_promocional[1])
-            {
-              $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+video_promocional[1]);
-              $(".div_promocional").show();
-            }else{
-              $(".div_promocional").hide();
-            }
-
-            var video_testimonial = array.video_testimonial.split('=');
-
-            if(video_testimonial[1])
-            {
-              $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
-              $(".div_testimonial").show();
-
-              // document.getElementById('video_testimonial').contentDocument.location.reload(true);
-
-            }else{
-              $(".div_testimonial").hide();
-            }
-
-            if(array.facebook)
-            {
-              $("#facebook").attr('href', array.facebook);
-              $("#facebook").show();
-            }else{
-              $("#facebook").hide();
-            }
-
-            if(array.twitter)
-            {
-              $("#twitter").attr('href', array.twitter);
-              $("#twitter").show();
-            }else{
-              $("#twitter").hide();
-            }
-
-            if(array.instagram)
-            {
-              $("#instagram").attr('href', array.instagram);
-              $("#instagram").show();
-            }else{
-              $("#instagram").hide();
-            }
-
-            if(array.linkedin)
-            {
-              $("#linkedin").attr('href', array.linkedin);
-              $("#linkedin").show();
-            }else{
-              $("#linkedin").hide();
-            }
-
-            if(array.pagina_web)
-            {
-              $("#pagina_web").attr('href', array.pagina_web);
-              $("#pagina_web").show();
-            }else{
-              $("#pagina_web").hide();
-            }
-
-            if(array.youtube)
-            {
-              $("#youtube").attr('href', array.youtube);
-              $("#youtube").show();
-            }else{
-              $("#youtube").hide();
-            }
-
-            
-            
-            // $("#alumno-nombre").text(array.nombre)
-            // $("#alumno-apellido").text(array.apellido)
-            // $("#alumno-fecha_nacimiento").text(array.fecha_nacimiento)
-            // $("#alumno-correo").text(array.correo)
-            // $("#alumno-telefono").text(array.telefono)
-            // $("#alumno-celular").text(array.celular)
-            // $("#alumno-direccion").text(array.direccion)
-
-            // if(array.sexo=='F'){
-
-            //   $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/1.jpg');
-
-            // }
-
-            // else{
-
-            //   $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/2.jpg');
-
-            // }
-         
-
+                  });
             });
 
-        });
 
        $("#condiciones").on('change', function(){
           if ($("#condiciones").is(":checked")){
-             $(".agendar").removeAttr("disabled");
+             $("#guardar").removeAttr("disabled");
                            
-             $(".agendar").css({
+             $("#guardar").css({
                 "opacity": ("1")
              });
           }else{
-            $(".agendar").attr("disabled","disabled");
-            $(".agendar").css({
+            $("#guardar").attr("disabled","disabled");
+            $("#guardar").css({
                 "opacity": ("0.2")
             });
           }    

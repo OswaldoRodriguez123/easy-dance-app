@@ -88,14 +88,18 @@ Route::post('especiales/regalos/enviar', 'RegaloController@EnviarRegaloUsuario')
 
 Route::get('agendar/clases-personalizadas/disponibles/{id}', 'ClasePersonalizadaController@indexconacademia');
 Route::get('agendar/clases-personalizadas', 'ClasePersonalizadaController@index');
-Route::get('agendar/clases-personalizadas/progreso/{id}', 'ClasePersonalizadaController@progreso');
+Route::get('agendar/clases-personalizadas/progreso/{id}', 'ConfigClasePersonalizadaController@progreso');
 Route::get('agendar/clases-personalizadas/agregar/{id}', 'ClasePersonalizadaController@reservacion');
+
+// CLASES GRUPALES USUARIO
+
+Route::get('agendar/clases-grupales/disponibles/{id}', 'ClaseGrupalController@indexconacademia');
+Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
 
 // PROGRESO
 
 Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeInscripcionVistaAlumno');
 Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
-Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 
 // CAMPAÑAS
@@ -227,6 +231,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/descripcion', 'ConfigClasesGrupalesController@updateDescripcion');
 			Route::put('configuracion/clases-grupales/update/impuesto', 'ConfigClasesGrupalesController@updateImpuesto');
 			Route::put('configuracion/clases-grupales/update/condiciones', 'ConfigClasesGrupalesController@updateCondiciones');
+			Route::put('configuracion/clases-grupales/update/imagen', 'ConfigClasesGrupalesController@updateImagen');
 
 			//CLASES PERSONALIZADAS
 
@@ -365,6 +370,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/direccion','AlumnoController@updateDireccion');
 			Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
+			Route::post('participante/alumno/update/mensualidad', 'AlumnoController@updateCostoMensualidad');
 
 			//INSTRUCTOR
 
@@ -671,6 +677,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('/correo/adelanto', 'CorreoController@correoAdelanto');
 			Route::post('/correo/ayuda', 'CorreoController@correoAyuda');
 			Route::post('/correo/informacion', 'CorreoController@correoInformacion');
+			Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
 
 
 			// ASISTENCIA
@@ -740,6 +747,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-personalizadas/agregar', 'ClasePersonalizadaController@create');
 			Route::post('agendar/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
 			Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
+			Route::get('agendar/clases-personalizadas/{id}', 'ClasePersonalizadaController@progreso');
+			Route::post('agendar/clases-personalizadas/{id}', 'ClasePersonalizadaController@aceptarcondiciones');
 
 			//REGALO
 

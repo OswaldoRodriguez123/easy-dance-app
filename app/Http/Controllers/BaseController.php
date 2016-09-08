@@ -17,7 +17,7 @@ class BaseController extends Controller {
 
 	       $array = array(2, 4);
 
-           $alumnos = DB::table('alumnos')
+        $alumnos = DB::table('alumnos')
             ->join('users', 'users.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.*', 'users.imagen')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)

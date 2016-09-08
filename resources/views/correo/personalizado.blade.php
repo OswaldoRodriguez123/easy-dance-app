@@ -55,19 +55,32 @@
                                 </td>
                               </tr>
                               <tr>
+                                <td valign="top" style="text-align:center;">
+                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> La aplicación web para el gremio del baile. <br><br>
+                                  </font>
+                              </td>
+                              </tr>
+                              <tr>
+                                <td align="center" valign="top"><a href="{{$url}}"><img class="CToWUd" alt="Pocket-logo-email-original" src="{{$imagen}}" height="200" width="570"></a>
+                                </td>
+                              </tr>
+                              <tr>
                                 <td style="font-size:2px" height="30">
                                 </td>
                               </tr>
 			<tr>
                                 <td valign="top" style="text-align:center;">
-                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> ESTAMOS MUY FELICES DE TENERTE A BORDO <br><br>
+                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> {{$subj}} <br><br>
                                   </font>
                               </td></tr><tr>
 			</tr><tr>
                                 <td valign="top">
-                                  <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b> {{$nombre}} </b> estamos muy contentos que te hayas unido a nuestra comunidad del baile tu cuenta ha sido creada, ahora sólo necesitas pulsar el boton para la verificación de tu cuenta.</font>
+
+                                    {!! $msj_html !!}
+                                    
                                 </td>
+
+                              
                               </tr>
                        
                              
@@ -80,13 +93,22 @@
                                 <td style="font-size:2px" height="20">
                                 </td>
                               </tr>
+                            
+                                              <tr>
+                                <td style="font-size:2px" height="20">
+                                </td>
+                              </tr>
+                              
+                              <tr>
+                                <td style="font-size:2px" height="20">
+                                </td>
+                              </tr>
                               
                               <tr>
                                 
-                                <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
-            
-              <a href="{{$link}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Confirma tu correo</a>
-            </td>
+                              <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
+                                  <a href="{{$url}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Entrar</a>
+                                </td>
                               </tr>
 
                               <tr>
@@ -103,7 +125,7 @@
                               <tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Si no has creado una cuenta de  Easy Dance, simplemente ignora este mensaje. Si tienes alguna duda o pregunta, ponte en contacto con nosotros en <a href="mailto:soporte@easydance.com" target="_blank">soporte@easydance.com</a>. </font>
+                                    Si has recibido este mensaje por error, simplemente ignora este mensaje. Si tienes alguna duda o pregunta, ponte en contacto con nosotros en <a href="mailto:info@easydancelatino.com" target="_blank">info@easydancelatino.com</a>. </font>
                                 </td>
                               </tr>
                               

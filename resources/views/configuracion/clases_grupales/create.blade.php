@@ -139,6 +139,32 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
+                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                
+                                <div class="clearfix p-b-15"></div>
+                                  
+                                  <input type="hidden" name="imageBase64" id="imageBase64">
+                                  <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                    <div>
+                                        <span class="btn btn-info btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imagen" id="imagen" >
+                                        </span>
+                                        <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                    </div>
+                                </div>
+                                  <div class="has-error" id="error-imagen">
+                                  <span >
+                                      <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
                                        <div class="form-group fg-line ">
                                           <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
                                           
@@ -298,6 +324,28 @@
   route_principal="{{url('/')}}/configuracion/clases-grupales";
   
   $(document).ready(function(){
+
+      $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+            setTimeout(function(){
+              var imagen = $("#imagena img").attr('src');
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagen;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+            },500);
+
+        });
 
         if("{{$incluye_iva}}" == 1){
           $("#incluye_iva").val('1');  //VALOR POR DEFECTO

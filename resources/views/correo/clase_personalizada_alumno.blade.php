@@ -66,7 +66,7 @@
       </tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b> {{$nombre_alumno}} </b> La academia <b>{{$academia}}</b> ha asignado una Clase personalizada dirigida por <b>{{$nombre_instructor}} {{$apellido_instructor}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Para mayor informacion te invitamos a ver los detalles en tu cuenta personal.
+                                    Hola <b> {{$nombre_alumno}} </b> La academia <b>{{$academia}}</b> ha asignado una Clase personalizada dirigida por <b>{{$nombre_instructor}} {{$apellido_instructor}}</b> para la Fecha del <b>{{$fecha}}</b> desde las <b>{{$hora_inicio}}</b> hasta las <b>{{$hora_final}}</b>. Ahora sólo necesitas pulsar el boton para confirmar tu clase personalizada.
 
                                     </font>
                                 </td>
@@ -89,9 +89,10 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
+                                  <a href="http://app.easydancelatino.com/agendar/clases-personalizadas/{{$id}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Confirmar tu clase</a>
+                                </td>
+                                                  
 
-            </td>
-                              </tr>
 
                               <tr>
                                 <td style="font-size:2px" height="20">

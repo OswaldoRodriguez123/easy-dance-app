@@ -12,6 +12,7 @@ use App\Academia;
 use Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class ConfigClasesGrupalesController extends BaseController {
 
@@ -95,6 +96,34 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->tiempo_tolerancia = $request->tiempo_tolerancia;
 
         if($clasegrupal->save()){
+
+            if($request->imageBase64){
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "clasegrupal2-". $clasegrupal->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/clase_grupal/'.$nombre_img);
+
+                $clasegrupal->imagen = $nombre_img;
+                $clasegrupal->save();
+
+            }
 
             $servicio = new ConfigServicios;
             
@@ -287,6 +316,43 @@ class ConfigClasesGrupalesController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function updateImagen(Request $request)
+    {
+                $clasegrupal = ConfigClasesGrupales::find($request->id);
+                
+                if($request->imageBase64){
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "clasegrupal2-". $clasegrupal->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/clase_grupal/'.$nombre_img);
+                }
+                else{
+                    $nombre_img = "";
+                }
+
+                $clasegrupal->imagen = $nombre_img;
+                $clasegrupal->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     public function destroy($id)

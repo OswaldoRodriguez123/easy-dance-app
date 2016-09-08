@@ -21,79 +21,74 @@
                 <div class="container">
                 
                     <div class="block-header">
-    
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
 
+                        @if(Auth::check())
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+
+                        @endif
+
+                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Clases Grupales</p>
-                            <hr class="linea-morada"> 
-                                                 
+                            <hr class="linea-morada">                                                         
                         </div>
 
-                        @if($clase_grupal_join)
-                        <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
-                                    <th class="text-center" data-column-id="dia" data-order="desc">Dia</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center" >
 
-                            @foreach ($clase_grupal_join as $clase_grupal)
-                                <?php $id = $clase_grupal['id']; ?>
-                                <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$clase_grupal['clase_grupal_nombre']}}</td>
-                                    <td class="text-center previa">{{$clase_grupal['especialidad_nombre']}}</td>
-                                    <td class="text-center previa"><span style="display: none;">{{$clase_grupal['dia_de_semana']}}</span> 
 
-                                    @if($clase_grupal['dia_de_semana'] == 1)
 
-                                    Lunes
+                        
+                        <div class="card-body p-b-20">
+                            <div class="row">
+                              <div class="container">
 
-                                    @elseif($clase_grupal['dia_de_semana'] == 2)
 
-                                    Martes
+                              @if(count($clase_grupal_join) > 0)
 
-                                    @elseif($clase_grupal['dia_de_semana'] == 3)
+                                  @foreach($clase_grupal_join as $clase_grupal)
+                  
+                                      <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-                                    Miercoles
+                                        @if($clase_grupal['imagen'])
+                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                        @else
 
-                                    @elseif($clase_grupal['dia_de_semana'] == 4)
+                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
 
-                                    Jueves
+                                        @endif
 
-                                    @elseif($clase_grupal['dia_de_semana'] == 5)
+                                        <div class="col-sm-8">
 
-                                    Viernes
+                                        <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal['clase_grupal_nombre']}}</p>
+                                    
+                                        <p class="f-15 f-700">{{ str_limit($clase_grupal['descripcion'], $limit = 250, $end = '...') }}</p>
 
-                                    @elseif($clase_grupal['dia_de_semana'] == 6)
+                                        <p class="f-15 f-700">{{ number_format($clase_grupal['costo_mensualidad'], 2, '.' , '.') }}</p>
 
-                                    Sabado
+                                        </div>
 
-                                    @elseif($clase_grupal['dia_de_semana'] == 7)
+                                        <div class="col-sm-2">
 
-                                    Domingo
+                                        <div style="padding-top: 50px">
+                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_grupal['id']}}">Conocer más<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                                        </div>
 
-                                    @endif</td>
-                                    <td class="text-center previa">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} </td>
-                                  </tr>
-                            @endforeach 
-                                                           
-                            </tbody>
-                        </table>
-                         </div>
-                        </div>
+                                        </div>
 
-                        @else
+                                                    
+                                    
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                @endforeach
+
+                                <hr style="margin-top: 1px">
+
+                                @else
 
                                <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
 
@@ -108,13 +103,8 @@
 
 
                             @endif
-                        <div class="card-body p-b-20">
-                            <div class="row">
-                              <div class="container">
-                                
-                              </div>
-                            </div>
-                        </div>
+
+                            <br><br><br>
                         
                         
                     </div>
@@ -126,88 +116,20 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-        route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
+    route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
 
-        $(document).ready(function(){
+    $(document).on( 'click', '.previa', function () {
+        var id = this.id;
+        procesando();
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,    
-        order: [[2, 'asc'], [3, 'asc']],
-       fnDrawCallback: function() {
-        if ("{{count($clase_grupal_join)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }
-        },
-        pageLength: 25,
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
+        window.location=route_progreso+"/"+id;
+
+      });
+
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
+     </script>
 
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-
-            });
-
-    function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var route =route_progreso+"/"+row;
-
-        window.location=route;
-      }
-
-    </script>
 @stop

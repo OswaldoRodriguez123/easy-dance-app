@@ -617,6 +617,23 @@
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
+
+                           <div class="col-sm-12">
+                                <div class="form-group">
+                                 <div class="form-group fg-line">
+                                    <label>Titulo del Video Promocional</label>
+                                    <br></br>
+                                    <input type="text" class="form-control caja input-sm" name="titulo_video" id="titulo_video" placeholder="Ingresa el titulo" value="{{$clasegrupal->titulo_video}}">
+                                 </div>
+                                    <div class="has-error" id="error-titulo_video">
+                                      <span >
+                                          <small id="error-titulo_video_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                                <div class="clearfix p-b-35"></div>
                                <div class="col-sm-12">
                                 <div class="form-group">
                                  <div class="form-group fg-line">

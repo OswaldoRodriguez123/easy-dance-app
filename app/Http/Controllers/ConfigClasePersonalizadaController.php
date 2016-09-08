@@ -860,7 +860,7 @@ class ConfigClasePersonalizadaController extends BaseController {
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('configuracion.clase_personalizada.participantes')->with(['activas' => $activas, 'canceladas' => $canceladas, 'id' => $id, 'clasepersonalizada' => $clasepersonalizada, 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('configuracion.clase_personalizada.participantes')->with(['alumnos' => $alumnos, 'activas' => $activas, 'canceladas' => $canceladas, 'id' => $id, 'clasepersonalizada' => $clasepersonalizada, 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     public function storeInscripcion(Request $request)
@@ -979,7 +979,8 @@ class ConfigClasePersonalizadaController extends BaseController {
                'hora_inicio' => $request->hora_inicio,
                'hora_final' => $request->hora_final,
                'fecha' => $fecha_inicio,
-               'subj' => $subj2
+               'subj' => $subj2,
+               'id' => $clasepersonalizada->id
             ];
 
             Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
@@ -1107,7 +1108,7 @@ class ConfigClasePersonalizadaController extends BaseController {
                 $link_video = '';
             }
 
-        return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
+        return view('configuracion.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
     }
 
     public function destroy($id)
