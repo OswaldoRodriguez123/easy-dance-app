@@ -91,11 +91,15 @@ Route::get('agendar/clases-personalizadas', 'ClasePersonalizadaController@index'
 Route::get('agendar/clases-personalizadas/progreso/{id}', 'ConfigClasePersonalizadaController@progreso');
 Route::get('agendar/clases-personalizadas/agregar/{id}', 'ClasePersonalizadaController@reservacion');
 
+// CLASES GRUPALES USUARIO
+
+Route::get('agendar/clases-grupales/disponibles/{id}', 'ClaseGrupalController@indexconacademia');
+Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
+
 // PROGRESO
 
 Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeInscripcionVistaAlumno');
 Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
-Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 
 // CAMPAÑAS
@@ -222,6 +226,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/descripcion', 'ConfigClasesGrupalesController@updateDescripcion');
 			Route::put('configuracion/clases-grupales/update/impuesto', 'ConfigClasesGrupalesController@updateImpuesto');
 			Route::put('configuracion/clases-grupales/update/condiciones', 'ConfigClasesGrupalesController@updateCondiciones');
+			Route::put('configuracion/clases-grupales/update/imagen', 'ConfigClasesGrupalesController@updateImagen');
 
 			//CLASES PERSONALIZADAS
 

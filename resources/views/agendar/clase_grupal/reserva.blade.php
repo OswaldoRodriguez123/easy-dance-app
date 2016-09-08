@@ -160,27 +160,27 @@
 <div class="container">
 
 
-@if(Auth::check())
+    <div class="block-header">
 
-  <div class="block-header">
+      @if(Auth::check())
 
-    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+      @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+      
+
+        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
+                        
+      @endif
+
+      @else
+
+        <?php $url = "/agendar/clases-grupales" ?>
+        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+      @endif
+
     
-
-      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
-                      
-
-    @else
-
-      <?php $url = "/agendar/clases-grupales" ?>
-      <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-
-    @endif
-
-  </div> 
-  
-@endif
-
+    </div> 
 
 
     <div class="card" id="profile-main">
@@ -229,6 +229,11 @@
                                 <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentaje}}%;"></div>
                               </div>
                               <p class="text-center f-700" >{{$porcentaje}} % Inscritos</p>
+
+                              <br>
+
+                              <div class="text-center f-700" >Tiempo restante para el inicio</div>
+                              <hr class="linea-morada opaco-0-8">
 
                               <style type="text/css">
                                 @import url(http://fonts.googleapis.com/css?family=Comfortaa);
@@ -406,7 +411,7 @@
                         <div class="clearfix p-b-20"></div>
 
                         <div class="f-700 f-30">Descripción</div>
-                        <br>
+                        <hr class="linea-morada">
                         <p class="f-14">{!! nl2br($clase_grupal->descripcion) !!}</p>
 
                         @endif
@@ -422,6 +427,21 @@
 
                           <div class="clearfix p-b-20"></div>
                           <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+
+                        @if($clase_grupal->titulo_video)
+
+                        <div class="f-700 f-30">{{$clase_grupal->titulo_video}}</div>
+
+                        @else
+
+                        <div class="f-700 f-30">Titulo del Video Promocional</div>
+
+                        @endif
+                        <hr class="linea-morada">
+
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
 
                           <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
                             <div class="embed-responsive embed-responsive-4by3">

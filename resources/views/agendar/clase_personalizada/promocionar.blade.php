@@ -29,10 +29,50 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                 <div class="col-sm-12">
-                                    
-                                <div style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc">
 
-                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones"></p>
+                                <div style="margin-left: 25%">
+                                    
+                                <div class="col-sm-8" style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc; overflow-y: auto; height:400px">
+
+                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones">
+                                    
+                                            <div class="text-center f-25 f-700">Normativas de las clases personalizadas</div>
+                                        <hr>
+                                    <div class="table-responsive row">
+                                    <div class="col-md-1"></div>
+                                       <div class="col-md-10">
+                                      <div class="text-justify">
+
+                                      <div class="f-18 f-700"> 1. Principal   </div>
+                                      <br>
+
+                                      <p>Al momento de hacer la reserva, al alumno comprende que envía una solicitud a la academia  y no una confirmación de la  clase, la reserva  deberá ser verificada y constatada   por un representante  la academia, por medio de la  plataforma o través de una llamada telefónica.</p>
+
+
+                                      <div class="f-18 f-700">2.  Reservar  </div><br>
+
+                                      <p>Todas las clases personalizadas o paquetes de su elección, deberán ser  apartadas con el 50% del costo total, al momento de asistir deberá pagar  el resto de la  totalidad de la clase, dicha pago podrá ser ejecutado a través de la plataforma o enviando el Boucher del  pago generado  a través, de la cuenta de banco establecida por la academia. </p>
+
+                                      <div class="f-18 f-700"> 3. Asistencia  </div><br>
+
+                                      <p>El alumno deberá asistir en el horario establecido en la reservación, en caso de atraso de parte del alumno, la academia no se responsabiliza ni se obliga  a reponer el tiempo perdido. </p>
+
+
+                                      <div class="f-18 f-700"> 4. Inasistencia  </div><br>
+
+                                      <p>En caso de que el alumnos no pueda asistir a su clase programada  deberá notificarlo con 08 horas de antelación a través de la plataforma, o confirmar a través de una llamada telefónica su cancelación, de lo contrario, la clase obtendrá un estatus de <b>“cancelación tardía”</b>, lo que significa que esta será percibida como una  clase vista, por tal motivo, esta deberá ser pagada en su totalidad, sin derecho a reprogramar dicha clase, esta podrá ser reprogramada siempre y cuando la cancelación sea superior a las 08 horas de límite que estable la institución.  </p>
+
+                                      <div class="f-18 f-700"> 5. Dinámica </div><br>
+
+                                      <p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantesen una misma sección u hora de clases. </p>
+
+                                      </div>
+                                      </div>
+                                      </div>
+
+                                  </p>
+
+                                  </div>
 
                                   </div>
 
@@ -44,7 +84,7 @@
 
                                 <div class="text-center">
 
-                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar">Reservar</button>
+                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name="guardar" id="guardar" >Agendar</button>
 
                                 </div>
 
@@ -74,7 +114,6 @@
                     </div>
                 </div>
             </div>
-
 <div class="container">
 
 @if(Auth::check())
@@ -229,18 +268,18 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        @if($config_clase_personalizada->imagen_principal)
-                        <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$config_clase_personalizada->imagen_principal}}" class="img-responsive opaco-0-8" alt="">
+                        @if($clase_personalizada->imagen)
+                        <img src="{{url('/')}}/assets/uploads/clase_personalizada/{{$clase_personalizada->imagen}}" class="img-responsive opaco-0-8" alt="">
                         @endif
                         
                         <div class="clearfix p-b-20"></div>
 
-                        @if($config_clase_personalizada->descripcion)
+                        @if($clase_personalizada->descripcion)
 
 
                         <div class="f-700 f-30">Descripción</div>
                         <hr class="linea-morada">
-                        {!! nl2br($config_clase_personalizada->descripcion) !!}
+                        {!! nl2br($clase_personalizada->descripcion) !!}
 
                         <div class="clearfix p-b-20"></div>
 
@@ -270,12 +309,63 @@
                         <div class="clearfix p-b-20"></div>
                         @endif
 
-                        <div class="col-sm-3" style="margin-left: 35%">
+                        <div class="col-sm-12">
 
+                                <div style="margin-left: 25%">
+                                    
+                                <div class="col-sm-8" style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc; overflow-y: auto; height:400px">
+
+                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones">
+                                    
+                                            <div class="text-center f-25 f-700">Normativas de las clases personalizadas</div>
+                                        <hr>
+                                    <div class="table-responsive row">
+                                    <div class="col-md-1"></div>
+                                       <div class="col-md-10">
+                                      <div class="text-justify">
+
+                                      <div class="f-18 f-700"> 1. Principal   </div>
+                                      <br>
+
+                                      <p>Al momento de hacer la reserva, al alumno comprende que envía una solicitud a la academia  y no una confirmación de la  clase, la reserva  deberá ser verificada y constatada   por un representante  la academia, por medio de la  plataforma o través de una llamada telefónica.</p>
+
+
+                                      <div class="f-18 f-700">2.  Reservar  </div><br>
+
+                                      <p>Todas las clases personalizadas o paquetes de su elección, deberán ser  apartadas con el 50% del costo total, al momento de asistir deberá pagar  el resto de la  totalidad de la clase, dicha pago podrá ser ejecutado a través de la plataforma o enviando el Boucher del  pago generado  a través, de la cuenta de banco establecida por la academia. </p>
+
+                                      <div class="f-18 f-700"> 3. Asistencia  </div><br>
+
+                                      <p>El alumno deberá asistir en el horario establecido en la reservación, en caso de atraso de parte del alumno, la academia no se responsabiliza ni se obliga  a reponer el tiempo perdido. </p>
+
+
+                                      <div class="f-18 f-700"> 4. Inasistencia  </div><br>
+
+                                      <p>En caso de que el alumnos no pueda asistir a su clase programada  deberá notificarlo con 08 horas de antelación a través de la plataforma, o confirmar a través de una llamada telefónica su cancelación, de lo contrario, la clase obtendrá un estatus de <b>“cancelación tardía”</b>, lo que significa que esta será percibida como una  clase vista, por tal motivo, esta deberá ser pagada en su totalidad, sin derecho a reprogramar dicha clase, esta podrá ser reprogramada siempre y cuando la cancelación sea superior a las 08 horas de límite que estable la institución.  </p>
+
+                                      <div class="f-18 f-700"> 5. Dinámica </div><br>
+
+                                      <p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantesen una misma sección u hora de clases. </p>
+
+                                      </div>
+                                      </div>
+                                      </div>
+
+                                  </p>
+
+                                  </div>
+
+                                  </div>
+
+                                </div>
+
+                                <div class="col-sm-3" style="margin-left: 39%">
+
+                                <input type="checkbox" id="condiciones" name="condiciones">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
 
                                 <div class="text-center">
 
-                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
+                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name="guardar" id="guardar" >Agendar</button>
 
                                 </div>
 
@@ -437,14 +527,14 @@
 
        $("#condiciones").on('change', function(){
           if ($("#condiciones").is(":checked")){
-             $(".agendar").removeAttr("disabled");
+             $("#guardar").removeAttr("disabled");
                            
-             $(".agendar").css({
+             $("#guardar").css({
                 "opacity": ("1")
              });
           }else{
-            $(".agendar").attr("disabled","disabled");
-            $(".agendar").css({
+            $("#guardar").attr("disabled","disabled");
+            $("#guardar").css({
                 "opacity": ("0.2")
             });
           }    

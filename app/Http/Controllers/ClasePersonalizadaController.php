@@ -864,7 +864,7 @@ class ClasePersonalizadaController extends BaseController {
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'inscripcion_clase_personalizada.estudio_id', '=', 'config_estudios.id')
-            ->select('instructores.nombre as instructor_nombre' , 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad_nombre', 'inscripcion_clase_personalizada.hora_inicio', 'inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.fecha_inicio', 'clases_personalizadas.academia_id', 'config_estudios.nombre as estudio_nombre')
+            ->select('instructores.nombre as instructor_nombre' , 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad_nombre', 'inscripcion_clase_personalizada.hora_inicio', 'inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.fecha_inicio', 'clases_personalizadas.academia_id', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.imagen', 'clases_personalizadas.descripcion')
             ->where('inscripcion_clase_personalizada.id', $id)
         ->first();
 

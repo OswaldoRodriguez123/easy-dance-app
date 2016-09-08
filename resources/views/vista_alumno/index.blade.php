@@ -81,10 +81,10 @@
                         
                         <div class ="detalle">
                           @if($clases_grupales != 1)
-                            <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
+                            <a href="{{url('/')}}/agendar/clases-grupales/disponibles/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
                               
                             @else
-                              <a href="{{url('/')}}/agendar/clases-grupales" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clase Grupal <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
+                              <a href="{{url('/')}}/agendar/clases-grupales/disponibles/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clase Grupal <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
                             @endif
                             </a> 
                           </div>

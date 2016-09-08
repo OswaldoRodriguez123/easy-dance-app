@@ -41,7 +41,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->OrderBy('clases_grupales.hora_inicio')
@@ -85,7 +85,9 @@ class ClaseGrupalController extends BaseController {
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $dia_de_semana = $fecha->dayOfWeek;
 
-                if($fecha > Carbon::now()){
+                if($fecha >= Carbon::now()){
+
+
 
                     $collection=collect($clase_grupal);     
                     $clase_grupal_array = $collection->toArray();
@@ -98,6 +100,43 @@ class ClaseGrupalController extends BaseController {
              return view('agendar.clase_grupal.principal_alumno')->with(['clase_grupal_join' => $array, 'academia' => $academia]);
 
         }
+    }
+
+    public function indexconacademia($id)
+    {
+
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad')
+            ->where('clases_grupales.academia_id','=', $id)
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->OrderBy('clases_grupales.hora_inicio')
+        ->get();
+
+        $array = array();
+
+        $academia = Academia::find($id);
+
+        foreach($clase_grupal_join as $clase_grupal){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia_de_semana = $fecha->dayOfWeek;
+
+            if($fecha >= Carbon::now()){
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+
+                $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $array[$clase_grupal->id] = $clase_grupal_array;
+            }
+        }
+
+        return view('agendar.clase_grupal.principal_alumno')->with(['clase_grupal_join' => $array, 'academia' => $academia]);
+        
     }
 
     public function index()
@@ -217,7 +256,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('academias', 'clases_grupales.academia_id', '=', 'academias.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.cupo_reservacion', 'clases_grupales.fecha_inicio', 'clases_grupales.imagen', 'config_clases_grupales.descripcion', 'academias.imagen as imagen_academia', 'clases_grupales.link_video', 'config_clases_grupales.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre', 'academias.id as academia_id', 'config_clases_grupales.costo_inscripcion', 'config_clases_grupales.costo_mensualidad')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.cupo_reservacion', 'clases_grupales.fecha_inicio', 'clases_grupales.imagen', 'config_clases_grupales.descripcion', 'academias.imagen as imagen_academia', 'clases_grupales.link_video', 'config_clases_grupales.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre', 'academias.id as academia_id', 'config_clases_grupales.costo_inscripcion', 'config_clases_grupales.costo_mensualidad', 'clases_grupales.titulo_video')
             ->where('clases_grupales.id','=', $id)
         ->first();
 
@@ -503,6 +542,7 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->cupo_maximo = $request->cupo_maximo;
         $clasegrupal->cupo_reservacion = $request->cupo_reservacion;
         $clasegrupal->link_video = $request->link_video;
+        $clasegrupal->titulo_video = $request->titulo_video;
         $clasegrupal->boolean_promocionar = $request->boolean_promocionar;
         // $clasegrupal->cantidad_hombres = $request->cantidad_hombre;
         // $clasegrupal->cantidad_mujeres = $request->cantidad_mujer;
@@ -1236,6 +1276,7 @@ class ClaseGrupalController extends BaseController {
 
         $clasegrupal = ClaseGrupal::find($request->id);
         $clasegrupal->link_video = $request->link_video;
+        $clasegrupal->titulo_video = $request->titulo_video;
 
         if($clasegrupal->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -1460,7 +1501,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar', 'clases_grupales.titulo_video')
                 ->where('clases_grupales.id', '=', $id)
                 ->first();
 

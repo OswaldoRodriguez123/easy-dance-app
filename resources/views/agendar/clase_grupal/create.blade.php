@@ -528,6 +528,28 @@
                                <div class="clearfix p-b-35"></div> -->
 
                                <div class="col-sm-12">
+                                  <label for="id" id="id-titulo_video">Ingresa titulo del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="titulo_video" id="titulo_video" placeholder="Ingresa el titulo">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-titulo_video">
+                                    <span >
+                                     <small id="error-titulo_video_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
                                   <label for="id" id="id-link_video">Ingresa url del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
                                   
                                     <div class="input-group">
@@ -546,6 +568,8 @@
                                     </span>
                                     </div>                                          
                                 </div>
+
+                                <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12">
                                        <div class="form-group fg-line ">

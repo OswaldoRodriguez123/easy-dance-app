@@ -148,7 +148,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
 
-                if($fecha > Carbon::now()){
+                if($fecha >= Carbon::now()){
 
                     if($clase->imagen){
                         $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
@@ -169,7 +169,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
 
-                if($fecha > Carbon::now()){
+                if($fecha >= Carbon::now()){
 
                     if($taller->imagen){
                         $imagen = "/assets/uploads/taller/{$taller->imagen}";
@@ -190,7 +190,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
 
-                if($fecha > Carbon::now()){
+                if($fecha >= Carbon::now()){
 
                     if($fiesta->imagen){
                         $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
@@ -211,7 +211,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
 
-                if($fecha > Carbon::now()){
+                if($fecha >= Carbon::now()){
 
                     $contador_campana = $contador_campana + 1;
                 }
@@ -1443,7 +1443,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                                         $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
 
-                                        if($fecha > Carbon::now()){
+                                        if($fecha >= Carbon::now()){
 
                                             if($clase->imagen){
                                                 $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
@@ -1465,7 +1465,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                                         $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
 
-                                        if($fecha > Carbon::now()){
+                                        if($fecha >= Carbon::now()){
 
                                             if($taller->imagen){
                                                 $imagen = "/assets/uploads/taller/{$taller->imagen}";
@@ -1486,7 +1486,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                                         $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
 
-                                        if($fecha > Carbon::now()){
+                                        if($fecha >= Carbon::now()){
 
                                             if($fiesta->imagen){
                                                 $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
@@ -1507,7 +1507,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                                         $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
 
-                                        if($fecha > Carbon::now()){
+                                        if($fecha >= Carbon::now()){
 
                                             $contador_campana = $contador_campana + 1;
                                         }
