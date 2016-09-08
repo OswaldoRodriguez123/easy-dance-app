@@ -41,7 +41,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->OrderBy('clases_grupales.hora_inicio')
@@ -85,9 +85,7 @@ class ClaseGrupalController extends BaseController {
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $dia_de_semana = $fecha->dayOfWeek;
 
-                if($fecha >= Carbon::now()){
-
-
+                if($fecha >= Carbon::now() && $clase_grupal->boolean_promocionar == 1){
 
                     $collection=collect($clase_grupal);     
                     $clase_grupal_array = $collection->toArray();
@@ -110,7 +108,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar')
             ->where('clases_grupales.academia_id','=', $id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->OrderBy('clases_grupales.hora_inicio')
@@ -125,7 +123,7 @@ class ClaseGrupalController extends BaseController {
             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
             $dia_de_semana = $fecha->dayOfWeek;
 
-            if($fecha >= Carbon::now()){
+            if($fecha >= Carbon::now() && $clase_grupal->boolean_promocionar == 1){
 
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();

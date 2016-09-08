@@ -140,6 +140,7 @@ class AcademiaConfiguracionController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio')
                 ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                ->where('clases_grupales.boolean_promocionar','=', 1)
                 ->where('clases_grupales.deleted_at', '=', null)
             ->get();
 
@@ -1437,6 +1438,7 @@ class AcademiaConfiguracionController extends BaseController {
                                         ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio')
                                         ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                                         ->where('clases_grupales.deleted_at', '=', null)
+                                        ->where('clases_grupales.boolean_promocionar','=', 1)
                                     ->get();
 
                                     foreach($clase_grupal_join as $clase){

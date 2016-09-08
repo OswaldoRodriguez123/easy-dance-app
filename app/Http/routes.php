@@ -746,6 +746,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-personalizadas/reservar', 'ClasePersonalizadaController@reservar');
 			Route::get('agendar/clases-personalizadas/completado', 'ClasePersonalizadaController@completado');
 			Route::get('agendar/clases-personalizadas/{id}', 'ClasePersonalizadaController@progreso');
+			Route::post('agendar/clases-personalizadas/{id}', 'ClasePersonalizadaController@aceptarcondiciones');
 
 			//REGALO
 

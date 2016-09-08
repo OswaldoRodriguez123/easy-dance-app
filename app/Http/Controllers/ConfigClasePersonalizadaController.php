@@ -979,7 +979,8 @@ class ConfigClasePersonalizadaController extends BaseController {
                'hora_inicio' => $request->hora_inicio,
                'hora_final' => $request->hora_final,
                'fecha' => $fecha_inicio,
-               'subj' => $subj2
+               'subj' => $subj2,
+               'id' => $clasepersonalizada->id
             ];
 
             Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){

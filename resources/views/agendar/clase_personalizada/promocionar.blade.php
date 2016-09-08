@@ -18,102 +18,6 @@
 
 @section('content')
 
-<div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Condiciones y Normativas<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="configuracion_clase_personalizada" id="configuracion_clase_personalizada"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                                <div class="col-sm-12">
-
-                                <div style="margin-left: 25%">
-                                    
-                                <div class="col-sm-8" style ="background-color:#f5f5f5; color:#333333; padding:8.5px; margin: 0 0 9px; border-radius: 2px; border:1px solid #cccccc; overflow-y: auto; height:400px">
-
-                                  <p style="font-size: 12px" name="pre_condiciones" id="pre_condiciones">
-                                    
-                                            <div class="text-center f-25 f-700">Normativas de las clases personalizadas</div>
-                                        <hr>
-                                    <div class="table-responsive row">
-                                    <div class="col-md-1"></div>
-                                       <div class="col-md-10">
-                                      <div class="text-justify">
-
-                                      <div class="f-18 f-700"> 1. Principal   </div>
-                                      <br>
-
-                                      <p>Al momento de hacer la reserva, al alumno comprende que envía una solicitud a la academia  y no una confirmación de la  clase, la reserva  deberá ser verificada y constatada   por un representante  la academia, por medio de la  plataforma o través de una llamada telefónica.</p>
-
-
-                                      <div class="f-18 f-700">2.  Reservar  </div><br>
-
-                                      <p>Todas las clases personalizadas o paquetes de su elección, deberán ser  apartadas con el 50% del costo total, al momento de asistir deberá pagar  el resto de la  totalidad de la clase, dicha pago podrá ser ejecutado a través de la plataforma o enviando el Boucher del  pago generado  a través, de la cuenta de banco establecida por la academia. </p>
-
-                                      <div class="f-18 f-700"> 3. Asistencia  </div><br>
-
-                                      <p>El alumno deberá asistir en el horario establecido en la reservación, en caso de atraso de parte del alumno, la academia no se responsabiliza ni se obliga  a reponer el tiempo perdido. </p>
-
-
-                                      <div class="f-18 f-700"> 4. Inasistencia  </div><br>
-
-                                      <p>En caso de que el alumnos no pueda asistir a su clase programada  deberá notificarlo con 08 horas de antelación a través de la plataforma, o confirmar a través de una llamada telefónica su cancelación, de lo contrario, la clase obtendrá un estatus de <b>“cancelación tardía”</b>, lo que significa que esta será percibida como una  clase vista, por tal motivo, esta deberá ser pagada en su totalidad, sin derecho a reprogramar dicha clase, esta podrá ser reprogramada siempre y cuando la cancelación sea superior a las 08 horas de límite que estable la institución.  </p>
-
-                                      <div class="f-18 f-700"> 5. Dinámica </div><br>
-
-                                      <p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantesen una misma sección u hora de clases. </p>
-
-                                      </div>
-                                      </div>
-                                      </div>
-
-                                  </p>
-
-                                  </div>
-
-                                  </div>
-
-                                </div>
-
-                                <div class="col-sm-3" style="margin-left: 39%">
-
-                                <input type="checkbox" id="condiciones" name="condiciones">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
-
-                                <div class="text-center">
-
-                                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name="guardar" id="guardar" >Agendar</button>
-
-                                </div>
-
-                              </div>
-                            
-
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-
-                        </div></form>
-                    </div>
-                </div>
-            </div>
 <div class="container">
 
 @if(Auth::check())
@@ -463,20 +367,18 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-        var condiciones = <?php echo json_encode($config_clase_personalizada->condiciones);?>;
+        route_aceptar="{{url('/')}}/agendar/clases-personalizadas/";
+        route_principal="{{url('/')}}/inicio";
 
         $(document).ready(function() {
 
+          $(".guardar").attr("disabled","disabled");
 
-              $("#pre_condiciones").html(nl2br(condiciones));
+          $(".guardar").css({
+            "opacity": ("0.2")
+          });
 
-              $(".guardar").attr("disabled","disabled");
-
-              $(".guardar").css({
-                  "opacity": ("0.2")
-              });
-
-            });
+        });
 
       $("#condiciones").on('change', function(){
           if ($("#condiciones").is(":checked")){
@@ -515,14 +417,40 @@
 
         });
 
-       $(".reservar").click(function(){
+       $(".guardar").click(function(){
 
-          procesando();
+        id = "{{$id}}";
+        var token = $('input:hidden[name=_token]').val();
 
-          window.location = "{{url('/')}}/agendar/clases-personalizadas/disponibles/{{$academia->id}}"
+        procesando();
+        var route = route_aceptar + id;
+                  
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      success:function(respuesta){
+
+                          window.location=route_principal; 
+
+                      },
+                      error:function(msj){
+                                  // $("#msj-danger").fadeIn(); 
+                                  // var text="";
+                                  // console.log(msj);
+                                  // var merror=msj.responseJSON;
+                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                  // $("#msj-error").html(text);
+                                  // setTimeout(function(){
+                                  //          $("#msj-danger").fadeOut();
+                                  //         }, 3000);
+                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                  }
 
 
-        });
+                  });
+            });
 
 
        $("#condiciones").on('change', function(){

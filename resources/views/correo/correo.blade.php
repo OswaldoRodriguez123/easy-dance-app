@@ -66,7 +66,7 @@
 			</tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b> {{$nombre}} </b> estamos muy contentos que te hayas unido a nuestra comunidad del baile tu cuenta ha sido creada, ahora sólo pulsar el enlace  para la verificación tu correo.</font>
+                                    Hola <b> {{$nombre}} </b> estamos muy contentos que te hayas unido a nuestra comunidad del baile tu cuenta ha sido creada, ahora sólo necesitas pulsar el boton para la verificación de tu cuenta.</font>
                                 </td>
                               </tr>
                        

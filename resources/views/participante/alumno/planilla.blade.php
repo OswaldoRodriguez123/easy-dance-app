@@ -610,7 +610,7 @@
 
                         <div class="col-sm-12">
 
-                        <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: {{$clase_grupal->fecha_pago}}</span>
+                        <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}</span></span>
 
                         <div class="clearfix p-b-15"></div>
                         <div class="clearfix p-b-15"></div>
@@ -648,6 +648,19 @@
                            <input type="hidden" id="inscripcion_id" name="inscripcion_id" value="">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
+                           <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                    <label for="fecha_pago">Fecha de pago</label>
+                                    <input type="text" class="form-control date-picker input-sm" name="fecha_pago" id="fecha_pago" placeholder="Ej. 00/00/0000">
+                                 </div>
+                                    <div class="has-error" id="error-fecha_pago">
+                                      <span >
+                                          <small id="error-fecha_pago_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="costo">Costo Mensualidad</label>
@@ -1100,9 +1113,13 @@
       //$("#direccion").val($("#alumno-direccion").text());
     })
 
+    $('#modalCostoMensualidad-ClaseGrupal').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+    })
+
 
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "fecha_pago", "costo_mensualidad"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1343,6 +1360,7 @@
         $('#inscripcion_id').val(id);
 
         $('#costo_mensualidad').val($(this).data('costo'));
+        $('#fecha_pago').val($(this).data('fecha'));
 
         $('#modalCostoMensualidad-ClaseGrupal').modal('show');
                
@@ -1397,7 +1415,7 @@
 
       $("#guardar_mensualidad").click(function(){
             swal({   
-                    title: "¿Seguro deseas modificar el costo de la mensualidad?",   
+                    title: "¿Seguro deseas modificar los datos de la clase grupal?",   
                     text: "Confirmar el cambio",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -1434,8 +1452,9 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
                           
-                          var costo_mensualidad = $("#costo_mensualidad").val();
                           $('#'+respuesta.id).data('costo', respuesta.costo_mensualidad);
+                          $('#'+respuesta.id).data('fecha', respuesta.fecha_pago);
+                          $('#fecha_pago_'+respuesta.id).text(respuesta.fecha_pago);
 
 
                           finprocesado();

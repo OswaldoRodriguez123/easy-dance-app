@@ -773,7 +773,8 @@ class ClasePersonalizadaController extends BaseController {
                'hora_inicio' => $request->hora_inicio,
                'hora_final' => $request->hora_final,
                'fecha' => $fecha_inicio,
-               'subj' => $subj2
+               'subj' => $subj2,
+               'id' => $clasepersonalizada->id
             ];
 
             Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
@@ -905,6 +906,18 @@ class ClasePersonalizadaController extends BaseController {
             }
 
         return view('agendar.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'id' => $id, 'clase_personalizada' => $clase_personalizada, 'config_clase_personalizada' => $config_clase_personalizada]);
+    }
+
+    public function aceptarcondiciones($id)
+    {
+        $clasepersonalizada = InscripcionClasePersonalizada::find($id);
+        $clasepersonalizada->boolean_alumno_aceptacion = 1;
+        
+        if($clasepersonalizada->save()){
+            return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function destroy($id)
