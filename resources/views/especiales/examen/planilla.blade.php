@@ -247,10 +247,12 @@
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title bg-gris-oscuro">Editar Examen<button type="button" data-dismiss="modal" class="close c-blanco f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
+                        <form name="edit_items_examen" id="edit_items_examen"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="modal-body">
                         <div class="row p-l-10 p-r-10">
                               <div class="panel-body">
-                                      
+                                      <input type="hidden" name="id" id="id" value="{{$examen->id}}"></input>
 
                                       <div class="clearfix p-b-35"></div>
 
@@ -262,14 +264,14 @@
                                       
                                       <div class="col-sm-3 text-left">
 
-                                      <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
+                                        <li id="switch" type="button" data-toggle="tooltip" data-placement="bottom" title="" >
 
-                                      <input type="text" id="tiempos_musicales" name="tiempos_musicales" value="" hidden="hidden">
-                                      <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="tiempos-switch" type="checkbox" hidden="hidden">
-                                          <label for="tiempos-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-                                      </li>
+                                        <input type="text" id="tiempos_musicales" name="tiempos_musicales" value="" hidden="hidden">
+                                        <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="tiempos-switch" type="checkbox" hidden="hidden">
+                                            <label for="tiempos-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                        </div>
+                                        </li>
                                       </div>
 
 
@@ -569,8 +571,9 @@
                                           <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                       </li>
-                                      </div>
 
+                                      </div>
+                    
                                       <div class="clearfix p-b-35"></div>
                                       <div class="clearfix p-b-35"></div>
 
@@ -634,7 +637,7 @@
                                       </div>
                                       <div class="col-sm-12">                            
 
-                                        <a class="btn-blanco m-r-5 f-16 guardar" id="guardar" href="#" data-formulario="edit_instructor_examen" data-update="instructor" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                                        <a class="btn-blanco m-r-5 f-16 guardar" id="guardar" href="#" data-formulario="edit_items_examen" data-update="items" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                                       </div>
                                   </div></form>

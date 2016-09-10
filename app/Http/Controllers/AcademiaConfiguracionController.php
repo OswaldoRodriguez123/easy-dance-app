@@ -291,19 +291,19 @@ class AcademiaConfiguracionController extends BaseController {
 
     public function principal()
     {
-        $academia= Academia::where('id',Auth::user()->academia_id)
-                   ->select('nombre', 'imagen', 'descripcion', 'telefono', 'celular', 'correo', 'direccion', 'normativa' , 'manual', 'programacion','link_video')
-                   ->get();
+        // $academia= Academia::where('id',Auth::user()->academia_id)
+        //            ->select('nombre', 'imagen', 'descripcion', 'telefono', 'celular', 'correo', 'direccion', 'normativa' , 'manual', 'programacion','link_video')
+        //            ->get();
 
-        $academiaRedes= Academia::where('id',Auth::user()->academia_id)
-                   ->select('facebook','twitter','linkedin','instagram','pagina_web','youtube')
-                   ->get();
+        // $academiaRedes= Academia::where('id',Auth::user()->academia_id)
+        //            ->select('facebook','twitter','linkedin','instagram','pagina_web','youtube')
+        //            ->get();
 
-        $academiaEstudios= ConfigEstudios::where('academia_id',Auth::user()->academia_id)
-                   ->get();
+        // $academiaEstudios= ConfigEstudios::where('academia_id',Auth::user()->academia_id)
+        //            ->get();
 
-        $academiaNiveles= ConfigNiveles::where('academia_id',Auth::user()->academia_id)
-                   ->get();
+        // $academiaNiveles= ConfigNiveles::where('academia_id',Auth::user()->academia_id)
+        //            ->get();
 
         $academiaGrupales= ConfigClasesGrupales::where('academia_id',Auth::user()->academia_id)
                    ->get();
@@ -311,82 +311,126 @@ class AcademiaConfiguracionController extends BaseController {
         $academiaServicios= ConfigServicios::where('academia_id',Auth::user()->academia_id)
                    ->get();
 
+        $clasepersonalizada= ClasePersonalizada::where('academia_id',Auth::user()->academia_id)
+                   ->get();
 
-        $collection = collect($academia[0]);
-        $keys = $collection->keys();
-        $arrayCampos=$keys->all();
 
-        $collectionRedes = collect($academiaRedes[0]);
-        $keysRedes = $collection->keys();
-        $arrayCamposRedes=$keysRedes->all();
+        // $collection = collect($academia[0]);
+        // $keys = $collection->keys();
+        // $arrayCampos=$keys->all();
 
-        $cantCampos=count($arrayCampos)+4;
+        // $collectionRedes = collect($academiaRedes[0]);
+        // $keysRedes = $collection->keys();
+        // $arrayCamposRedes=$keysRedes->all();
 
-        $lleno=1;
-        $vacio=0;
-        $redes=1;
+        // $cantCampos=count($arrayCampos)+4;
 
-        if(!collect($academiaEstudios)->isEmpty()){
-            $lleno=$lleno+1;
-        }else{
-            $vacio=$vacio+1;
-        } 
+        // $lleno=1;
+        // $vacio=0;
+        // $redes=1;
 
-        if(!collect($academiaNiveles)->isEmpty()){
-            $lleno=$lleno+1;
-        }else{
-            $vacio=$vacio+1;
-        }    
+        // if(!collect($academiaEstudios)->isEmpty()){
+        //     $lleno=$lleno+1;
+        // }else{
+        //     $vacio=$vacio+1;
+        // } 
 
-        foreach ($arrayCampos as $campo) {
-            if($academia[0]->$campo!=""){
-                $lleno=$lleno+1;
-            }else{
-                $vacio=$vacio+1;
-            }
-        }
+        // if(!collect($academiaNiveles)->isEmpty()){
+        //     $lleno=$lleno+1;
+        // }else{
+        //     $vacio=$vacio+1;
+        // }    
 
-        foreach ($arrayCamposRedes as $campo) {
-            if($academiaRedes[0]->$campo!=""){
-                $lleno=$lleno+1;
-                $redes=0;
-                breack;
-            }
-        }
+        // foreach ($arrayCampos as $campo) {
+        //     if($academia[0]->$campo!=""){
+        //         $lleno=$lleno+1;
+        //     }else{
+        //         $vacio=$vacio+1;
+        //     }
+        // }
 
-        if($redes!=0){
-            $vacio=$vacio+$redes;
-        }        
+        // foreach ($arrayCamposRedes as $campo) {
+        //     if($academiaRedes[0]->$campo!=""){
+        //         $lleno=$lleno+1;
+        //         $redes=0;
+        //         breack;
+        //     }
+        // }
+
+        // if($redes!=0){
+        //     $vacio=$vacio+$redes;
+        // }        
         
 
-        $porcentajeAcademia=($lleno/$cantCampos)*100;
+        // $porcentajeAcademia=($lleno/$cantCampos)*100;
 
-        $porcentajeAcademia=round($porcentajeAcademia,2);
+        // $porcentajeAcademia=round($porcentajeAcademia,2);
 
 
-        if(!collect($academiaGrupales)->isEmpty()){
-            $porcentajeGrupales=100;
+        // if(!collect($academiaGrupales)->isEmpty()){
+        //     $porcentajeGrupales=100;
+        // }else{
+        //     $porcentajeGrupales=0;
+        // } 
+
+
+        // if(!collect($academiaServicios)->isEmpty()){
+        //     $porcentajeServicios=100;
+        // }else{
+        //     $porcentajeServicios=0;
+        // } 
+
+
+        // $porcentajeTotal=(($porcentajeAcademia+$porcentajeGrupales+$porcentajeServicios)/300)*100;
+
+        // $porcentajeTotal=round($porcentajeTotal,2);
+
+        // //dd(round($porcentaje,2));
+
+        // //dd($vacio);
+        $campos_array=array("imagen","telefono","celular","correo","direccion","facebook","twitter","linkedin","instagram","pagina_web","youtube","normativa","manual","programacion","incluye_iva","link_video");
+        $porcentajeAcademia=0;
+        $campos_ocupados=0;
+
+         $academia= Academia::find(Auth::user()->academia_id);
+         $info_de_academias=DB::getSchemaBuilder()->getColumnListing('academias');
+         
+         for ($i=0; $i < count($info_de_academias)-2; $i++) {
+
+             for ($j=0; $j < count($campos_array)-1; $j++) { 
+
+                 if($info_de_academias[$i]==$campos_array[$j]){
+//revisar
+                    if(DB::table('academias')->pluck($info_de_academias[$i]);)
+                    {
+                        //$campos_ocupados++;
+                    }
+                 }
+             }
+         }
+
+         $porcentajeAcademia=($campos_ocupados/count($campos_array))*100;
+         dd($campos_ocupados);
+
+        if($academiaGrupales){
+             $porcentajeGrupales=100;
         }else{
-            $porcentajeGrupales=0;
-        } 
+             $porcentajeGrupales=0;
+        }
 
-
-        if(!collect($academiaServicios)->isEmpty()){
-            $porcentajeServicios=100;
+        if($clasepersonalizada){
+             $porcentajePersonalizado=100;
         }else{
-            $porcentajeServicios=0;
+             $porcentajePersonalizado=0;
+        }
+
+        if($academiaServicios){
+             $porcentajeServicios=100;
+        }else{
+             $porcentajeServicios=0;
         } 
-
-
-        $porcentajeTotal=(($porcentajeAcademia+$porcentajeGrupales+$porcentajeServicios)/300)*100;
-
-        $porcentajeTotal=round($porcentajeTotal,2);
-
-        //dd(round($porcentaje,2));
-
-        //dd($vacio);
         
-        return view('configuracion.index',compact('porcentajeAcademia','porcentajeGrupales','porcentajeServicios','porcentajeTotal'));                  
+        return view('configuracion.index',compact('porcentajeGrupales','porcentajeServicios','porcentajePersonalizado','porcentajeAcademia'));                  
     }
 
     public function listo()

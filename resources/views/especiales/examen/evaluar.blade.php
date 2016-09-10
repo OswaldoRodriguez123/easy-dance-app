@@ -54,7 +54,7 @@
 				                    <div class="select">
 				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
 				                        <option value="">Seleccione</option>
-				                        @foreach ( $alumno as $alumnos )
+				                        @foreach ( $alumnosacademia as $alumnos )
 				                        <option value = "{!! $alumnos->id !!}">{!! $alumnos->nombre !!} {!! $alumnos->apellido !!}</option>
 				                        @endforeach 
 				                        </select>
@@ -73,7 +73,7 @@
 	                        <div class="col-xs-6">
 	                            <div class="i-to">
 	                                <h5>Fecha: {{ $fecha }}</h5>
-									 <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">
+									 <img class="img-responsive img-circle" style="width:60px; height:60px" id="imagen_evaluar" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">
 	                            </div>
 	                        </div>
 	                    </div>
@@ -83,17 +83,20 @@
 							
 							<hr>
 							{{--$itemsExamenes--}}
+							<?php $i=0 ?>
 							@foreach( $itemsExamenes as $items)
-							<?php $id = $items->id ?>
+							<?php $id = $i ?>
 							<div class="clearfix"></div>
 							<div class="col-md-4">
 
-								<div class="m-b-20 m-l-25">{{ $items->nombre }}</div>
+								<div class="m-b-20 m-l-25">{{ $items }}</div>
 								<div class="clearfix">
 									<div class="input-slider m-b-25 m-l-25 slider-mov" id="slider{{$id}}"></div>
 									<strong class="pull-right text-muted slider-value" id="value-lower{{$id}}"></strong>
 				                </div>    
 							</div>
+							<?php $item[$i] = $i ?>
+							<?php $i++ ?>
 							@endforeach
 							
 						</div><!-- END ROW ITEMS -->
@@ -140,14 +143,14 @@
 						<div class="clearfix"></div>
 						<div class="clearfix"></div>
 						<br><br>
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-6">
 								<div class="f-20 f-500 text-right">Evaluado Por</div>
 							</div>
 							<div class="col-md-6">
 								<div class="f-20 f-500 text-left">Supervisado Por</div>
 							</div>
-						</div>
+						</div> -->
 					</form>	
 				</div><!-- END CARD BODY -->
 	
@@ -168,8 +171,10 @@ route_principal="{{url('/')}}/especiales/evaluaciones";
 var arrayNotas = new Array();
 
 $(document).ready(function() {
-	@foreach( $itemsExamenes as $items)
-		loadId({{$items->id}});
+	$("#agregar_evaluacion")[0].reset();
+	$("#alumno_id").selectpicker('render');
+	@foreach( $item as $items)
+		loadId({{$items}});
 	@endforeach
 
 	
@@ -224,8 +229,9 @@ $(document).ready(function() {
                 //var alumno = $("#alumno_id").val();
                 var academia = {{$examen->academia_id}}
                 var examen = {{$examen->id}}
+                var itemsExamenes = <?php echo json_encode($itemsExamenes);?>;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen+'&nota_detalle='+arrayNotas; 
+                var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen+'&nota_detalle='+arrayNotas+'&nombre_detalle='+itemsExamenes; 
                 $("#guardar").attr("disabled","disabled");
                 procesando();
                 $("#guardar").css({
@@ -341,17 +347,38 @@ $(document).ready(function() {
 
 			}
 			$("#cancelar").click(function(){
-				var items_examen = <?php echo json_encode($itemsExamenes);?>;
+				var items_examen = <?php echo json_encode($item);?>;
 				$.each(items_examen,function(index,array){
-					$('#slider'+array.id).find('.noUi-origin').css('left','0%');
-					$('#value-lower'+array.id).text("1.00");
-					$("#eval_total").html({{count($itemsExamenes)}});
-					$("#total_nota").val({{count($itemsExamenes)}});
-					$('html,body').animate({scrollTop: $("#id-evaluacion").
-						offset().top-90,}, 800);
-					$("#agregar_evaluacion")[0].reset();;
+					$('#slider'+array).find('.noUi-origin').css('left','0%');
+					$('#value-lower'+array).text("1.00");
+					$("#eval_total").html(items_examen.length);
+					$("#total_nota").val(items_examen.length);
+					$("#agregar_evaluacion")[0].reset();
 					$("#alumno_id").selectpicker('render');
 				});
+				$('html,body').animate({scrollTop: $("#id-evaluacion").
+					offset().top-90,}, 800);
+			});
+
+			$("#alumno_id").change(function(){
+				var alumnos = <?php echo json_encode($alumnosacademia);?>;
+
+				id = $(this).val();
+
+				var alumno = $.grep(alumnos, function(e){ return e.id == id; });
+
+				var imagen = alumno[0].imagen;
+		        var sexo = alumno[0].imagen;
+
+		        if(imagen){
+		          $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+		        }else{
+		          if(sexo == 'M'){
+		            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+		          }else{
+		            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+		          }
+		        }
 			});
 
 </script>

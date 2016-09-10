@@ -43,7 +43,7 @@
                             
                             <br>
 
-                            <div class="opaco-0-8 f-20 text-center">Con sólo 3 pasos fáciles y listo.</div>
+                            <div class="opaco-0-8 f-20 text-center">Con sólo 4 pasos fáciles y listo.</div>
 
                             <div class="clearfix p-b-35"></div>
 
@@ -68,22 +68,11 @@
                             <div class="ca-content-j">
                                 <h2 class="ca-main-j">Personaliza tu academia </h2>
                                 <h3 class="ca-sub-j">Paso 1  </h3>
+                                
                             </div>
-
+                            
                             
                         </a>
-
-                        
-
-                        <div class="col-md-12">
-                            <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
-                            <div class="col-xs-11">
-                              <div class="clearfix p-b-20"></div>
-                              <div class="progress-fino progress-striped m-b-10">
-                                <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                              </div>
-                            </div>
-                        </div>
 
 
 
@@ -109,6 +98,7 @@
                                             <div class="ca-content">
                                                 <h2 class="ca-main-j">Crea tus clases grupales</h2>
                                                 <h3 class="ca-sub-j">Paso 2</h3>
+
                                             </div>
                                         </a>
                                     </li>
@@ -143,6 +133,46 @@
                     </li> -->
 					   </div>
 					 </ul>
+
+                     <!-- aqui -->
+                     <div class="clearfix p-b-35"></div>
+                     <ul class="ca-menu-j" >
+                    
+                    <div class="col-sm-12" style="margin-left: 2%">
+                    
+                        <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">  
+                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeAcademia}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeAcademia}}%;"></div>
+                                </div>
+                                <p class="text-center f-700" >{{$porcentajeAcademia}} %</p>
+                                </li>
+
+                                <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">
+                                       <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeGrupales}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeGrupales}}%;"></div>
+                                </div>
+                                <p class="text-center f-700" >{{$porcentajeGrupales}} %</p>
+                                    </li>
+                                    <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">
+                                       <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajePersonalizado}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajePersonalizado}}%;"></div>
+                                </div>
+                                <p class="text-center f-700" >{{$porcentajePersonalizado}} %</p>
+                                    </li>
+                            <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">
+                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeServicios}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeServicios}}%;"></div>
+                                </div>
+                                <p class="text-center f-700" >{{$porcentajeServicios}} %</p>
+                    </li>
+                                    
+
+                                    
+                                  
+                       
+                       </div>
+                     </ul>
+                     
                      <div class="clearfix p-b-35"></div>
                      <div class="clearfix p-b-35"></div>
                      <div class="clearfix p-b-35"></div>

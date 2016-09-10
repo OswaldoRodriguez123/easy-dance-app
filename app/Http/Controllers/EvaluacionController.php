@@ -11,6 +11,7 @@ use App\Evaluacion;
 use App\DetalleEvaluacion;
 use Validator;
 use DB;
+use Session;
 use Illuminate\Support\Facades\Auth;
 
 class EvaluacionController extends Controller
@@ -27,6 +28,7 @@ class EvaluacionController extends Controller
      */
     public function index()
     {
+        $id_evaluacion=Session::get('id_evaluar');
         $evaluacion_join = DB::table('evaluaciones')
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
@@ -35,7 +37,7 @@ class EvaluacionController extends Controller
             ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        return view('especiales.evaluaciones.principal')->with('evaluacion', $evaluacion_join);
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion]);
     }
 
     /**
@@ -56,7 +58,6 @@ class EvaluacionController extends Controller
      */
     public function store(Request $request)
     {
-
         $rules = [
             'alumno_id' => 'required',
             'total_nota' => 'required',
@@ -78,6 +79,7 @@ class EvaluacionController extends Controller
 
         }else{
             $detalle_nota=explode(",",$request->nota_detalle);
+            $detalle_nombre=explode(",",$request->nombre_detalle);
 
             $evaluacion = new Evaluacion;
 
@@ -94,7 +96,7 @@ class EvaluacionController extends Controller
                 for ($i=0; $i < count($detalle_nota)-1; $i++) {
                     $detalles = new DetalleEvaluacion;
 
-                    $detalles->nombre = $items_examenes[$i]->nombre;
+                    $detalles->nombre = $detalle_nombre[$i];//$items_examenes[$i]->nombre;
                     $detalles->nota = $detalle_nota[$i];
                     $detalles->evaluacion_id = $evaluacion->id;
                     $detalles->save();
