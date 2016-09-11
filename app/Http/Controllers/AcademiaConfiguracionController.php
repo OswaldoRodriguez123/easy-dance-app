@@ -410,7 +410,7 @@ class AcademiaConfiguracionController extends BaseController {
          }
 
          $porcentajeAcademia=($campos_ocupados/count($campos_array))*100;
-         dd($campos_ocupados);
+         // dd($campos_ocupados);
 
         if($academiaGrupales){
              $porcentajeGrupales=100;
