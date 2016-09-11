@@ -105,15 +105,17 @@ Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 // CAMPAÑAS
 
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
-Route::get('especiales/campañas/contribuir/{id}', 'CampanaController@contribuir');
+
 Route::post('especiales/campañas/contribuir', 'CampanaController@storePatrocinador');
-//NUEVA
-Route::get('especiales/campañas/contribuir_pagar/{id}', 'CampanaController@contribuirPagar');
-//PAGO CON MERCADOPAGO
-Route::post('especiales/campañas/contribuir_mercadopago', 'CampanaController@storeMercadopago');
-//PAGO PARA CONTRIBUCION DE CAMPAÑA PERSONAS EXTERNAS
-Route::post('especiales/campañas/partcipante_externo', 'CampanaController@contribuirExterno');
-Route::get('especiales/campañas/partcipante_externo', 'CampanaController@procesarExterno');
+Route::get('especiales/campañas/contribuir/campaña/{id}', 'CampanaController@contribuirCampana');
+Route::get('especiales/campañas/contribuir/recompensa/{id}', 'CampanaController@contribuirRecompensa');
+Route::post('especiales/campañas/contribuir/participante-externo', 'CampanaController@contribuirExterno');
+Route::get('especiales/campañas/contribuir/participante-externo', 'CampanaController@procesarExterno');
+Route::get('especiales/campañas/contribuir/mercadopago', 'CampanaController@procesarExterno');
+
+Route::post('especiales/campañas/contribuir/mercadopago', 'CampanaController@storeMercadopago');
+
+
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 

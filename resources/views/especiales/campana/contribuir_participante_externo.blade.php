@@ -18,6 +18,10 @@
     
     <div class="container">
 
+    <div class="block-header">
+            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas/contribuir/campaña/{{$usuario_ext['campana_id']}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
+        </div> 
+
         <div class="card">
             <div class="card-header text-center">
                 <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos</span>
@@ -55,7 +59,7 @@
                 <hr>
                 <div class="clearfix p-b-15"></div>
                 <div class="text-center">
-                    <a href="{{$pago['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>
+                    <a href="{{$datos['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>
                 </div>
                 <div class="clearfix p-b-20"></div>
                 <div class="clearfix p-b-20"></div>
@@ -70,7 +74,7 @@
             
 	<script type="text/javascript">
 
-        route_mercadopago="{{url('/')}}/especiales/campañas/contribuir_mercadopago";
+        route_mercadopago="{{url('/')}}/especiales/campañas/contribuir/mercadopago";
 
         //RETURN DE MERCADOPAGO
         function respuesta_mercadopago(json) {
@@ -117,7 +121,7 @@
             var monto = "{{ $usuario_ext['monto'] }}";
             var academia_id = "{{ $usuario_ext['academia_id'] }}";
             var nombre = "{{ $usuario_ext['nombre'] }}";
-            var email = "{{ $usuario_ext['email_externo'] }}";
+            var email_externo = "{{ $usuario_ext['email_externo']}}";
             var route = route_mercadopago;
             var token = $('input:hidden[name=_token]').val();
 
@@ -133,7 +137,7 @@
                       campana_id : campana_id,
                       campana_nombre : campana_nombre,
                       monto : monto,
-                      email : email
+                      email_externo : email
                   },
               success:function(respuesta){
 

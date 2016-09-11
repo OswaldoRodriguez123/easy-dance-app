@@ -234,7 +234,7 @@
                         si el la sesion existe, de lo contrario solamente habra un
                         boton de contribucion para personas externas a la Aplicacion
                   -->
-                  @if(Auth::check())
+
                       @foreach ($recompensas as $recompensa)
 
                       <div style="border: 1px solid;">
@@ -265,10 +265,30 @@
                       <div class="clearfix p-b-15"></div>
 
                       @endforeach 
+
+                      <div style="border: 1px solid;">
+                      <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Otro Monto</div>
+
+                      
+                    <div class="col-sm-12">
+
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+
+                    </div>
+
+                        <span class="text-center">
+                             <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
+
+                            <button id="{{$campana->id}}" name ="{{$campana->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa_otra" style="width:100%; padding:5px"> </i> Contribuir </button> 
+                        </span>
+
+                      </div>
                   
-                  @else
-                      <button id="{{$campana->id}}" name ="{{$campana->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button> 
-                  @endif
+                  
+
                   <!-- FIN CONDICION -->
     
             </div>
@@ -557,8 +577,8 @@
         <script type="text/javascript">
 
         //route_agregar="{{url('/')}}/especiales/campañas/contribuir";
-        route_agregar="{{url('/')}}/especiales/campañas/contribuir_pagar";
-        route_agregar_unsign="{{url('/')}}/especiales/campañas/contribuir";
+        route_agregar="{{url('/')}}/especiales/campañas/contribuir/recompensa";
+        route_agregar_unsign="{{url('/')}}/especiales/campañas/contribuir/campaña";
 
         var recompensa = 0;
 
@@ -605,10 +625,6 @@
                   padding:"false",
                   visual:"ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0"
               });
-
-
-
-    
 
 
               // create a more advanced counter
@@ -750,17 +766,27 @@
                 });
             }); */
 
-        $(".recompensa").click(function(){            
+        $(".recompensa").click(function(){   
+
+        procesando();         
       
             recompensa = this.id;            
-            if("{{Auth::check()}}"){            
+         
               var route=route_agregar+"/"+recompensa;             
               window.location=route;    
-            }else{    
+      
+          });
+
+         $(".recompensa_otra").click(function(){   
+
+         procesando();         
+      
+              recompensa = this.id;            
+  
               campana = "{{$campana->id}}"    
               var route=route_agregar_unsign+"/"+campana;   
               window.location=route;    
-            }   
+   
       
           });
 

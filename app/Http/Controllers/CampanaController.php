@@ -1004,54 +1004,38 @@ class CampanaController extends BaseController {
         return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia]);
     }
 
-    public function contribuir($id)
+    public function contribuirCampana($id)
     {   
-        $campana = Campana::find($id);
-        $academia = Academia::find($campana->academia_id);
-        return view('especiales.campana.contribuir')->with(['id' => $id, 'campana' => $campana, 'academia' => $academia]);        
-    }
-
-    //VISTA PARA PAGOS DE CONTRIBUCION / DONACION PARTICIPANTES EXTERNOS
-    public function contribuirExterno(Request $request){
-        $preference_data = array(
-            "items" => array(
-                array(
-                //"id" => $array['mov_id'],
-                "currency_id" => "VEF",
-                "title" => "Contribucion Campaña ".$request->campana_nombre,
-                "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
-                "description" => 'Contribucion para la campaña '. $request->campana_nombre,
-                "quantity" => 1,
-                "unit_price" =>  intval($request->monto)
-                )
-            ),
-            "payer" => array(
-              "name" => $request->nombre,
-              /*"surname" => $alumno->apellido,*/
-              "email" => $request->email_externo,
-              //"date_created" => "2014-07-28T09:50:37.521-04:00"
-            )
-        );
-
-        $preference = MP::create_preference($preference_data);
-        Session::put('data_pago', $preference);
-        Session::put('data_user', $request->all());
-
-        if(isset($request,$preference)){
-            return response()->json(['mensaje' => 'Preferencia de pago creada', 'status' => 'OK', 200]);
+        if(Auth::check()){
+            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_id = Auth::user()->id;
+            $usuario_nombre = Auth::user()->nombre . ' ' . Auth::user()->apellido;
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $usuario_tipo = '';
+            $usuario_id = '';
+            $usuario_nombre = '';
         }
 
-    }
-    //RETORNO A VISTA PARA PAGAR
-    public function procesarExterno()
-    {
-        return view('especiales.campana.contribuir_participante')->with(['pago' => Session::get('data_pago'), 'usuario_ext' => Session::get('data_user')]);
+        $campana = Campana::find($id);
+        $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->get();
+
+        $academia = Academia::find($campana->academia_id);
+        return view('especiales.campana.contribuir_campana')->with(['id' => $id, 'campana' => $campana, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre, 'alumnos' => $alumnos]);        
     }
 
-    public function contribuirPagar($id)
+    public function contribuirRecompensa($id)
     {   
+
+        if(Auth::check()){
+            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_id = Auth::user()->id;
+            $usuario_nombre = Auth::user()->nombre . ' ' . Auth::user()->apellido;
+        }else{
+            $usuario_tipo = '';
+            $usuario_id = '';
+            $usuario_nombre = '';
+        }
+
         $recompensa = Recompensa::find($id);
         $academia = Academia::find($recompensa->academia_id);
 
@@ -1072,7 +1056,7 @@ class CampanaController extends BaseController {
                 )
             )/*,
             "payer" => array(
-              "name" => $alumno->nombre,
+              "name" => $alumno->nocontribuimbre,
               "surname" => $alumno->apellido,
               "email" => $alumno->correo,
               //"date_created" => "2014-07-28T09:50:37.521-04:00"
@@ -1080,14 +1064,117 @@ class CampanaController extends BaseController {
         );
         $preference = MP::create_preference($preference_data);
 
-        return view('especiales.campana.pagar_contribuir')->with(['id' => $id, 'recompensas' => $recompensa, 'academia' => $academia, 'datos' => $preference, 'campana' => $campana, 'alumnos' => $alumnos]);
+        return view('especiales.campana.contribuir_recompensa')->with(['id' => $id, 'recompensas' => $recompensa, 'academia' => $academia, 'datos' => $preference, 'campana' => $campana, 'alumnos' => $alumnos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre]);
+    }
+
+    //VISTA PARA PAGOS DE CONTRIBUCION / DONACION PARTICIPANTES EXTERNOS
+    public function contribuirExterno(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:3|max:40',
+            'monto' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 40',
+            'monto.numeric' => 'Ups! El costo es inválido, debe contener sólo  números',
+            'monto.required' => 'Ups! El costo es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        if(!Auth::check())
+        {
+
+            $rules = [
+                'email_externo' => 'required|email',
+            ];
+
+            $messages = [
+                'email_externo.required' => 'Ups! El correo  es requerido ',
+                'email_externo.email' => 'Ups! El correo tiene una dirección inválida',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()){
+
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            }
+
+        }
+
+        if(Auth::check()){
+
+            if($request->alumno_id){
+                $alumno = Alumno::find($request->alumno_id);
+                $nombre = $alumno->nombre . ' ' . $alumno->apellido;
+                $email = $alumno->correo;
+            }else{
+                $nombre = Auth::user()->nombre;
+                $email = Auth::user()->email;
+            }
+            
+            $request->merge(array('nombre' => $nombre));
+            $request->merge(array('email_externo' => $email));
+
+        }else{
+            $nombre = $request->nombre;
+            $email = $request->email_externo;
+        }
+
+        $preference_data = array(
+            "items" => array(
+                array(
+                //"id" => $array['mov_id'],
+                "currency_id" => "VEF",
+                "title" => "Contribucion Campaña ".$request->campana_nombre,
+                "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
+                "description" => 'Contribucion para la campaña '. $request->campana_nombre,
+                "quantity" => 1,
+                "unit_price" =>  intval($request->monto)
+                )
+            ),
+            "payer" => array(
+              "name" => $nombre,
+              /*"surname" => $alumno->apellido,*/
+              "email" => $email,
+              //"date_created" => "2014-07-28T09:50:37.521-04:00"
+            )
+        );
+
+        $preference = MP::create_preference($preference_data);
+        Session::put('data_pago', $preference);
+        Session::put('data_user', $request->all());
+
+        if(isset($request,$preference)){
+            return response()->json(['mensaje' => 'Preferencia de pago creada', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+    //RETORNO A VISTA PARA PAGAR
+    public function procesarExterno()
+    {
+        return view('especiales.campana.contribuir_participante_externo')->with(['datos' => Session::get('data_pago'), 'usuario_ext' => Session::get('data_user')]);
     }
 
     //FUNCTION MERADOPAGO
     public function storeMercadopago(Request $request)
     {
         //SI EL USUARIO ESTA LOGEADO (SI LA SESION EXISTE)
-        if(Auth::check() && Auth::user()->isType()=='alumno'){
+        if(Auth::check()){
 
             $numerofactura = DB::table('facturas')
                 ->select('facturas.*')
@@ -1115,19 +1202,29 @@ class CampanaController extends BaseController {
 
             if($request->json['collection_status']!=null){
 
+                if($request->alumno_id){
+                    $array = array(2, 4);
+                    $alumno_id = $request->alumno_id;
+                    $alumno = Alumno::find($request->alumno_id);
+                    $usuario = User::where('usuario_id', $alumno->id)->whereIn('usuario_tipo', $array)->first();
+                    $usuario_id = $usuario->id;
+                }else{
+                    $alumno_id = Auth::user()->usuario_id;
+                    $usuario_id = Auth::user()->id;
+                }
+
                 //$factura->alumno_id = $request->alumno;
-                $factura->alumno_id = Auth::user()->id;
+                $factura->alumno_id = $alumno_id;
                 $factura->academia_id = Auth::user()->academia_id;
                 $factura->fecha = Carbon::now()->toDateString();
                 $factura->hora = Carbon::now()->toTimeString();
                 $factura->numero_factura = $numero_factura;
-                $factura->concepto = $request->recompensa;
+                $factura->concepto = 'Contribucion para la campaña '. $request->campana_nombre;
 
                 $factura->save();
 
                 $mercadopago->academia_id = Auth::user()->academia_id;
-                //$mercadopago->alumno_id = $request->alumno;
-                $mercadopago->alumno_id = Auth::user()->id;
+                $mercadopago->alumno_id = $alumno_id;
                 $mercadopago->numero_factura = $numero_factura;
                 $mercadopago->status_pago = $request->json['collection_status'];
                 $mercadopago->pago_id = $request->json['collection_id'];
@@ -1138,8 +1235,7 @@ class CampanaController extends BaseController {
 
                 $patrocinador->academia_id = Auth::user()->academia_id;
                 $patrocinador->campana_id = $request->campana_id;
-                //$patrocinador->usuario_id = $request->alumno;
-                $patrocinador->usuario_id = Auth::user()->id;
+                $patrocinador->usuario_id = $usuario_id;
                 $patrocinador->tipo_id = 1;
                 $patrocinador->monto = $request->monto;
 
@@ -1180,7 +1276,7 @@ class CampanaController extends BaseController {
                 $UsuarioExterno->nombre = $request->nombre;
                 $UsuarioExterno->campana_id = $request->campana_id;
                 $UsuarioExterno->monto = $request->monto;
-                $UsuarioExterno->correo = $request->email;
+                $UsuarioExterno->correo = $request->email_externo;
 
                 $UsuarioExterno->save();
 

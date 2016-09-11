@@ -401,7 +401,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                  if($info_de_academias[$i]==$campos_array[$j]){
 //revisar
-                    if(DB::table('academias')->pluck($info_de_academias[$i]);)
+                    if(DB::table('academias')->pluck($info_de_academias[$i]))
                     {
                         //$campos_ocupados++;
                     }
