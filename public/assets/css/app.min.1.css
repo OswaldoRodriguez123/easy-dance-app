@@ -6107,6 +6107,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ffffff;
   /*background-color: #080808;*/
   text-decoration: underline;
+  text-decoration-color: #4E1E43; 
 }
 
 .navbar-inverse .navbar-nav > .disabled > a,
