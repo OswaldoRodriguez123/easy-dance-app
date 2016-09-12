@@ -98,6 +98,8 @@
                 </div>
             </div>
 
+            <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" alt="">
+
 <div class="container">
 
 <!-- @if(Auth::check())
@@ -120,11 +122,7 @@
   
 @endif -->
 
-    <div class="card">
-        <div class="col-sm-12">
-          <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" alt="">
-        </div>
-    </div>
+
 
     <div class="clearfix"></div>
 
