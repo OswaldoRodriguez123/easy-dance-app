@@ -69,7 +69,7 @@
 
 		
 
-		<section id="main" data-layout="layout-1">
+		<section id="main" data-layout="layout-1" style="padding-bottom: 0px; padding-top:50px">
 	
 
 			

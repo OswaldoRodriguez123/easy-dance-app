@@ -25,82 +25,9 @@
 
 @section('content')
 
+<img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" alt="">
 
-<div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title">Verificación de datos<button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div class="modal-body">
-                        <div class="row p-l-10 p-r-10">
-
-                        <div class="col-sm-5"></div>
-                        <div class="col-sm-2"><i class="icon_a-acuerdo-de-pago f-75"></i> </div>
-                        <div class="col-sm-5"></div>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="text-center">
-                            <span class="f-25 c-morado text-center">Gracias por tu colaboración</span>  
-                            <br></br>   
-                            <span class="f-16 c-morado">Selecciona el patrocinador</span>  
-                        </div>
-
-                        <hr></hr>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="col-sm-12">
-                            
-                                      
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <!-- <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
- -->
-                                        <!-- <select class="selectpicker bs-select-hidden" id="alumno_id" name="alumno_id" multiple="" data-max-options="5" title="Selecciona"> -->
-
-                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
-
-                                         @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-alumno_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div class="clearfix p-b-15"></div>
-
-                        <hr></hr>
-                      
-
-                        <div class="clearfix p-b-15"></div>
-
-                        <div class="text-center">
-
-                          <button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Contribuir</button>
-
-                        </div>
-
-                        <div class="clearfix p-b-15"></div>
-                           
-
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" alt="">
-
-<div class="container">
+<!-- <div class="container"> -->
 
 <!-- @if(Auth::check())
 
@@ -126,7 +53,7 @@
 
     <div class="clearfix"></div>
 
-    <div class="card" id="profile-main">
+    <div class="card" id="profile-main" style="margin-bottom: 0px">
         <div class="pm-overview c-overflow">
             <div class="pmo-pic">
                 <div class="p-relative">
@@ -329,7 +256,20 @@
 
                         <div class="f-700 f-30">Historia</div>
                         <br>
-                        <p class="f-14">{!! nl2br($campana->historia) !!}.</p>
+                        <p class="f-20">Emprendí un viaje a Colombia, específicamente al departamento de Risaralda en la ciudad de Pereira, con el objetivo de sumar fuerzas en el área de baile y gerencia de la academia <b>TU CLASE DE BAILE</b> y a su vez, validar el proyecto tecnológico de creación personal llamado <b>Easy Dance</b> que he venido forjando desde unos años atrás, (aplicación web para academias de baile) herramienta que sería estrenada formalmente con la academia <b>TU CLASE DE BAILE</b>.</p>
+
+                        <p class="f-20">Al encontrarme en mis actividades diarias, sentía como fuertes dolores oprimían mi pecho y parte de mi espalda y decidí asistir al médico, pensando que era un problema muscular, pues este aparecía sólo al momento de exigirme físicamente, Entre consultas y exámenes pude darme por enterado que padecía de una enfermedad coronaria severa. Fue así que de manera muy rápida y en un cerrar de ojos me encontraba hospitalizado y sin oportunidad de volver a Venezuela.</p>
+
+                        <p class="f-20">Después de haber sido sometido varios exámenes y a la práctica de un cateterismo fui valorado por el médico, el cual diagnosticó que habría que generarme la cirugía a corazón abierto, hoy día me encuentro esperando con mucha fe y optimismo que saldré adelante de esta dura prueba.</p>
+
+                        <div class="clearfix p-b-20"></div>
+
+                        <div class="f-700 f-30">Mi Perfil</div>
+                        <br>
+                        <p class="f-20">Mi nombre es Robert Virona soy de la ciudad de Maracaibo y desde muy joven me apasioné por los bailes en especial los géneros latinos, por esa razón hace Aproximadamente hace 20 años atrás decidí tomar un rumbo e iniciar mi carrera como bailador, con el paso del tiempo fui inclinando una profunda atención a los procesos y gerencia de las academias de baile, eventos y actividades en el que pude sentir una gran afinidad con el arte de gerenciar y organizar.</p>
+
+                        <p class="f-20">Siempre me acompaña un deseo inmenso de superación y tengo la fortuna de ser un apasionado a los procesos de mejoramiento continuo, por eso utilizo la tecnología a mi favor para ser cada vez mejor, mis mejores fuentes de aprendizaje las consigo a través de la lectura y tutoriales que diariamente nos ofrece el internet , el cual , a mi juicio lo considero como la casa de estudio número 1 en el mundo , debido a la fuente de recursos y herramientas que te brinda para el crecimiento profesional.</p>
+
 
                         @if($link_video)
                         <div class="clearfix p-b-20"></div>
@@ -341,18 +281,35 @@
                           </div>
                         @endif
 
-                          <div class="clearfix p-b-20"></div>
-
-                      @if($campana->presentacion)
-                        <div class="f-700 f-30">Presentación general de la campaña</div>
-                        <br>
-                        <p class="f-14">{!! nl2br($campana->presentacion) !!}</p>
-                      @endif
-
-                        @if($campana->imagen_presentacion)
                         <div class="clearfix p-b-20"></div>
-                        <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen_presentacion}}" class="img-responsive opaco-0-8" alt="">
-                        @endif
+
+                        <div class="f-700 f-30">Logros Más Significativos</div>
+
+                        <br>
+
+                        <p class="f-20">1.  Uno de los principales promotores  de la bailoterapia en el estado Zulia- Venezuela 1997</p>
+                        <p class="f-20">2.  Pionero del estilo de baile de salsa casino en el estado Zulia- Venezuela 2005</p>
+                        <p class="f-20">3.  Dirigió la academia de baile Habana Maracaibo por diez 10 años consecutivos (2005-2015)</p>
+                        <p class="f-20">4.  Sub campeón nacional de salsa en Venezuela 2006</p>
+                        <p class="f-20">5.  Seleccionado por la revista estampa Zuliana entre los 10 venezolanos más destacado del país en el año – 2008</p>
+                        <p class="f-20">6.  Ganador del  Mara de Oro (2008)</p>
+                        <p class="f-20">7.  Productor principal  del proyecto de la rueda de salsa casino más grande de Venezuela, superando la del record guiness en Cali Colombia. En Abril 2014 ,a través de AZUCA (Asociación Zuliana de Casineros del estado Zulia )</p>
+                        <p class="f-20">8.  Productor general del evento festival de la gaita en el año 2014.</p>
+                        <p class="f-20">9.  Productor del Reality show de baile llamado “la elite” 2015</p>
+                        <p class="f-20">10. Fundador y ex -presidente de la asociación zuliana de salsa casino (2013-2015)</p>
+                        <p class="f-20">11. Ha organizado evento con artistas nacionales e internacionales durante  varios años</p>
+                        <p class="f-20">12.  Fundador de la primera aplicación  web en Latinoamérica  para el gremio del baile llamada Easy dance</p>
+
+
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
+                          <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
+                            <div class="embed-responsive embed-responsive-4by3">
+                              <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/sNdOSfbqggU"></iframe>
+                            </div>
+                          </div>
+                          
+                          <div class="clearfix p-b-35"></div>
                         
 
                     </div>
@@ -725,8 +682,8 @@
             <!--<data ui-view></data>-->
         </div>
     </div>
-</div>
-
+<!-- </div>
+ -->
 
 
 
