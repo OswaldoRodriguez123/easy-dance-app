@@ -681,39 +681,7 @@
 
                     </div>
                   </div>
-                </div>
 
-
-                <div role="tabpanel" class="tab-pane animated fadeInUp in" id="faqs">
-
-                 <div class="pmb-block m-t-0 p-t-0">
-
-                        <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg">
-
-                        <div class="f-700 f-30">Easy Dance</div>
-                        <br>
-
-                        <p class="f-14">Easy dance es la nueva aplicación web para academias de baile en Latinoamérica. De esta forma nos complace presentar la característica que hemos diseñado llamada  campaña,  en el que a través de la aplicación, las personas podrán contribuir con el logro de sus objetivos, haciendo que con su valioso  aporte  económico las metas sean  respaldadas por los seguidores, amigos , compañeros y todo aquel que desee sumarse al apoyo para las academias de baile .    </p>
-
-                        <div class="f-700 f-30">Misión</div>
-                        <br>
-                        <p class="f-14">Hacer del ecosistema del baile un mejor lugar, más organizado y transparente a nivel global, aprovechando el uso de la tecnología para brindar en gran medida valor a los usuarios, directores de academia, bailarines e instructores.</p>
-
-                        <div class="f-700 f-30">Visión</div>
-                        <br>
-                        <p class="f-14">Easy dance trazará una nueva forma y estilo a nivel internacional, todos conectados en una gran comunidad, vemos a cientos de miles de persona compartiendo a través de la aplicación.</p>
-                        <hr>
-                        <div class="f-200 f-30">Resumen</div>
-                        <br>
-                        <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
-
-                        <p class="f-14">Easy dance se encuentra en un proceso de periodo de prueba (Fase Beta) completamente abierta para cualquier academia de baile que desee integrarse, haciendo uso y prueba de nuestro proyecto piloto. Por tal motivo invitamos a toda la comunidad de baile a participar generando invitaciones a todas aquellas academias que aún no conocen la herramienta.</p>
-
-                        <p class="f-14">Así que los invitamos a estar muy atentos de todos nuestros avances, semanalmente estaremos haciendo nuevos anuncios de todas las características que se estarán actualizando dentro de la plataforma para el disfrute y organización en el ambiente del baile.</p>
-
-                    </div>
-
-                </div>
 
                 </div>
 
