@@ -13,6 +13,7 @@ use App\ItemsFacturaProforma;
 use App\Factura;
 use App\MercadopagoMovs;
 use App\UsuarioExterno;
+use App\TransferenciaCampana;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -107,6 +108,14 @@ class CampanaController extends BaseController {
              return view('especiales.campana.principal')->with(['campanas' => $array, 'academia' => $academia]);
 
         }
+    }
+
+    public function principalcontribuciones($id){
+
+        $contribuciones = TransferenciaCampana::where('campana_id', $id)->where('status', 0)->get();
+
+        return view('especiales.campana.contribucion')->with(['contribuciones' => $contribuciones, 'id' => $id]);
+
     }
 
     public function indexconacademia($id)
@@ -508,6 +517,70 @@ class CampanaController extends BaseController {
                         return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                     }
 
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }
+        }
+
+    public function storeTransferencia(Request $request)
+    {
+
+    $rules = [
+        'nombre' => 'required|min:3|max:30|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'monto' => 'required|numeric',
+        'nombre_banco' => 'required',
+        'tipo_cuenta' => 'required',
+        'numero_cuenta' => 'required',
+        'rif' => 'required|min:7',
+        'correo' => 'required|email|max:255',
+    ];
+
+    $messages = [
+        
+        'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
+        'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+        'nombre.max' => 'El máximo de caracteres permitidos son 30',
+        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+        'monto.required' => 'Ups! El monto de dinero es requerido',
+        'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
+        'tipo_cuenta.required' => 'Ups! El Tipo de cuenta es requerido',
+        'numero_cuenta.required' => 'Ups! El Numero de cuenta es requerido',
+        'rif.required' => 'Ups! El Rif - Cedula es requerido',
+        'rif.min' => 'El mínimo de numeros permitidos son 7',
+        'correo.required' => 'Ups! El correo  es requerido ',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'correo.max' => 'El máximo de caracteres permitidos son 255',
+    ];
+
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+                $transferencia = new TransferenciaCampana;
+
+                $transferencia->campana_id = $request->id;
+                $transferencia->nombre = $request->nombre;
+                $transferencia->monto = $request->monto;
+                $transferencia->nombre_banco = $request->nombre_banco;
+                $transferencia->tipo_cuenta = $request->tipo_cuenta;
+                $transferencia->numero_cuenta = $request->numero_cuenta;
+                $transferencia->rif = $request->rif;
+                $transferencia->correo = $request->correo;
+
+                if($transferencia->save()){
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+          
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                 }
@@ -1341,6 +1414,82 @@ class CampanaController extends BaseController {
             }
         }else{
             return response()->json(['error_mensaje'=> 'Ups! Esta campaña no puede ser eliminada ya que esta activa' , 'status' => 'ERROR-BORRADO'],422);
+        }
+    }
+
+    public function confirmarcontribucion($id)
+    {
+
+        $contribucion = TransferenciaCampana::find($id);
+
+        $contribucion->status = 1;
+            
+        if($contribucion->save()){
+
+            $campana = Campana::find($contribucion->id);
+
+            $numerofactura = DB::table('facturas')
+                ->select('facturas.*')
+                ->orderBy('created_at', 'desc')
+                ->where('facturas.academia_id', '=', $campana->academia_id)
+            ->first();
+
+            if($numerofactura){
+               $numero_factura = $numerofactura->numero_factura + 1;
+            }else{
+                $academia = Academia::find($campana->academia_id);
+                    
+                    if($academia->numero_factura){
+                        $numero_factura = $academia->numero_factura;
+                    }
+                    else{
+                        $numero_factura = 1;
+                    }
+            }
+
+            $UsuarioExterno = new UsuarioExterno;
+            $factura = new Factura;
+            $patrocinador = new Patrocinador;
+
+            $UsuarioExterno->nombre = $contribucion->nombre;
+            $UsuarioExterno->campana_id = $contribucion->campana_id;
+            $UsuarioExterno->monto = $contribucion->monto;
+            $UsuarioExterno->correo = $contribucion->correo;
+
+            $UsuarioExterno->save();
+
+            $factura->externo_id = $UsuarioExterno->id;
+            $factura->academia_id = $campana->academia_id;
+            $factura->fecha = Carbon::now()->toDateString();
+            $factura->hora = Carbon::now()->toTimeString();
+            $factura->numero_factura = $numero_factura;
+            $factura->concepto = 'Contribucion para la campaña '. $campana->nombre;
+
+            $factura->save();
+
+            $patrocinador->academia_id = $campana->academia_id;
+            $patrocinador->campana_id = $contribucion->campana_id;
+            $patrocinador->externo_id = $UsuarioExterno->id;
+            $patrocinador->tipo_id = 1;
+            $patrocinador->monto = $contribucion->monto;
+
+            $patrocinador->save();
+
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function eliminarcontribucion($id)
+    {
+
+        $contribucion = TransferenciaCampana::find($id);
+            
+        if($contribucion->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 

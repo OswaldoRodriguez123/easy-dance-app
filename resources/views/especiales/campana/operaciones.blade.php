@@ -29,7 +29,7 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-5"></div>
+            <div class = "col-sm-2"></div>
 
             <ul class="ca-menu-c " style="width: 720px;">
 
@@ -43,6 +43,18 @@
                             </div>
                         </a>
                     </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class = "contribuciones">
+                            <span class="ca-icon-c"><i class="icon_c-money f-35 boton blue sa-warning" 
+                                   data-original-title="Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c f-20">Ver Contribuciones</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class ="eliminar">
                             <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
@@ -52,16 +64,6 @@
                             </div>
                         </a>
                     </li>
-
-                    <!--<li>
-                        <a href="#">
-                            <span class="ca-icon-c">A</span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Exceptional Service</h2>
-                                <h3 class="ca-sub-c">Personalized to your needs</h3>
-                            </div>
-                        </a>
-                    </li>-->
                     
 
 
@@ -119,6 +121,12 @@
     $(".progreso").click(function(){
                
     window.location = "{{url('/')}}/especiales/campañas/progreso/{{$id}}";
+
+    });
+
+    $(".contribuciones").click(function(){
+               
+    window.location = "{{url('/')}}/especiales/campañas/contribuciones/{{$id}}";
 
     });
 

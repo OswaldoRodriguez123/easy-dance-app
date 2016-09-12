@@ -18,11 +18,12 @@ class BaseController extends Controller {
 	       $array = array(2, 4);
 
         $alumnos = DB::table('alumnos')
-            ->join('users', 'users.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.*', 'users.imagen')
+            ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
             ->whereIn('users.usuario_tipo', $array)
+            ->orWhere('users.usuario_tipo', null)
         ->get();
 
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();

@@ -909,6 +909,7 @@
                                   <hr></hr>
                                   
                                   <a href="{{url('/')}}/especiales/campañas/progreso/{{$campana->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a href="{{url('/')}}/especiales/campañas/contribuciones/{{$campana->id}}"><i class="icon_c-money f-16 m-r-5 boton blue"  data-original-title="Ver Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$campana->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>

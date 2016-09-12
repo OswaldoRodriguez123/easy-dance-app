@@ -557,9 +557,9 @@
                                       <input type="text" class="form-control input-sm proceso" name="rif" id="rif" placeholder="Ej. Rif: J-298324278">
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-numero_cuenta">
+                                 <div class="has-error" id="error-rif">
                                       <span >
-                                          <small class="help-block error-span" id="error-numero_cuenta_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-rif_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -607,6 +607,7 @@
                               </div>
                               </div>
                             </div>
+                            
                             <div class="col-sm-12 text-left">
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Lanza la Campaña</button>

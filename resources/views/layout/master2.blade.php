@@ -4,7 +4,7 @@
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>Material Admin</title>
+			<title>Easy Dance</title>
 			
 			<!-- Vendor CSS -->
 			<link href="{{url('/')}}/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
@@ -22,104 +22,63 @@
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_0.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_1.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_2.css" rel="stylesheet">
-      <link href="{{url('/')}}/assets/css/easy_dance_ico_3.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/easy_dance_ico_4.css" rel="stylesheet">
 			<!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css">	 -->
       <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/ripple.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+
+      <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />
 
 			@yield('css')
 		
 	</head>
     <body>
-	    
-		@include('layout.header') 
-		
+	   
 
-		<!-- <div class="modal fade" id="modalPrueba" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-									<div class="modal-body">                           
-                                    <div class="row p-t-20 p-b-0">
-                                    <h4>
-									<div class="iconox-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-										<title>Confirma tu academia</title>
-										<circle fill="#692A5A" cx="16" cy="16" r="16"/>
-                                    <img src="{{url('/')}}/assets/img/icono_easydance2.png"  height="26" width="28" style="margin-top: -30px; margin-left: 3px;"/></svg>
-                                    </div>Confirma tu academia </h4>
-                                    <form  name="agregar" method="POST" action="configuracion/carga-inicial/primer-paso">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <div class="col-sm-11"><br>
-                                    <p align="left" style="font-size: 16px;">Saludos, <b>Valeria </b><br>
-                                    <text style="font-size: 13px;">Dedica un momento para ayudarnos a configurar la  cuenta de tu academia.</text></p>
-                                    </div>
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <div class="col-sm-7">
-                                            <div class="form-group ">
-                                                <div class="form-group fg-line">
-                                                    <label for="id" class="labeli">Nombre de la academia </label> 
-                                                    <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Baila para todos">
-                                                </div>
-                                            </div>
-                                            </div>
-                                            <div class="col-sm-7">
-                                                       <label class="labeli" >Especialidad </label>
-                                                      <div class="form-group">
-                                                          <div class="fg-line">
-                                                              <div class="select">
-                                                                  <select class="form-control" id="como_nos_conociste" name="como_nos_conociste" placeholder="seleccione>>">
-                                                                  <option value="Baile">Baile</option>
-                                                                  <option value="Otros">Otros</option>
-                                                                  </select>
-                                                              </div> </div></div> </div>
-                                                 <div class="col-sm-7">
-                                                       <label class="labeli" >País </label>
-                                                      <div class="form-group">
-                                                          <div class="fg-line">
-                                                              <div class="select">
-                                                                  <select class="form-control" id="como_nos_conociste" name="como_nos_conociste" placeholder="seleccione">
-                                                                  <option value="Venezuela">Venezuela</option>
-                                                                  <option value="Colombia">Colombia</option>
-                                                                  <option value="Ecuador">Ecuador</option>
-                                                                  <option value="Estados Unidos">Estados Unidos</option>
-                                                                  </select>
-                                                              </div>
-                                                    </div>
-                                                </div>
-                                             </div> 
-                                             <div class="col-sm-7">
-                                            <div class="form-group ">
-                                                <div class="form-group fg-line">
-                                                    <label for="id" class="labeli">Estado / Provincia/  Región </label> 
-                                                    <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Caracas ">
-                                                </div>
-                                            </div>
-                                </div>
-                                 <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
-                                  <a class="btn-blanco2 btn-blanco1._largesubmit  m-r-5 f-16 " type="submit"   data-formulario="edit_cupo_taller" data-update="cupo" style=" margin-top: 20px; " >Enviar </a>
-                                <br><br><br><br>
-                                </div>
-                                  </div>
-                               </div>
-                            </form>
-                        </div>
-                    </div>
-                </div> -->
+<header id="header" class="clearfix" data-current-skin="orange">
+		<nav class="navbar navbar-inverse navbar-blanco navbar-fixed-top" style="background-color: rgb(78, 30, 67); border-color: none">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Menú</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <li style="list-style: none; margin-top:10px" class="logo hidden-xs" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
+                    <a data-ui-sref="home" href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}"data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="{{url('/')}}/assets/img/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
+                    <sub class="beta text-capitalize f-12 text-right">beta</sub>
+                    </a>
+
+            </li>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" style="border-color: none">
+          <ul class="nav navbar-nav" style="margin-top: 10px">
+            <li style="padding-left: 50px"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab"> <span style="color:white; font-size:20px"> Campaña</span></a></li>
+            <li><a a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab"> <span style="color:white; font-size:20px"> Patrocinadores</span></a></li>
+            <li><a a href="#datos" aria-controls="datos" role="tab" data-toggle="tab"> <span style="color:white; font-size:20px">Datos Bancarios</span></a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    </header>
+
+
+		
 
 		<section id="main" data-layout="layout-1">
-		
-			@include('layout.menu')
+	
 
 			
 			@yield('content')
 		 
 		</section>
-		
 
-    <div class="modal fade" id="modalAsistencia" tabindex="-1" role="dialog" aria-hidden="true">
+     <div class="modal fade" id="modalAsistencia" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -132,24 +91,80 @@
 
                                            <div class="col-sm-3">
   
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+                                                <img name = "alumno_imagen" id ="alumno_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
 
                                                 <div class="clearfix p-b-15"></div>
     
                                                 <p class="p-l-10" id="asistencia-nombre-alumno"> </p>
+
+                                                <p class="p-l-10">Participa en :  </p>
+
+                                                <p class="p-l-10" id = "clases_grupales_alumno"></p>
+
+                                                <span class="f-16 f-700" id="acciones" name="acciones">Acciones</span>
+
+                                                <hr id="acciones_linea" name ="acciones_linea"></hr>
+                                                
+                                                <a id="url_pagar" name="url_pagar"><i class="icon_a-pagar f-25 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                                   
                                            </div>
 
                                            <div class="col-sm-5">
                                              <div class="form-group fg-line">
-                                                <label for="asistencia-estado_economico">Estado económico</label>
+                                                <!-- <label for="asistencia-estado_economico">Estado económico</label>
                                                 <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-estado_economico"> --</span>
+                                                <span class="text-center" id="asistencia-estado_economico"> --</span> -->
+
+                                                <table class="table table-striped table-bordered historial">
+                                                 <tr class="detalle historial">
+                                                 <td class = "historial"></td>
+                                                 <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-16 f-700 historial">Balance Económico: </span><span class = "f-16 f-700 historial" id="asistencia-estado_economico" name="asistencia-estado_economico"></span> <i class="zmdi zmdi-money f-20 m-r-5 historial" name="status_economico" id="status_economico"></i></td>
+                                                </tr>
+                                                </table>
                                               </div>
 
-                                               <div class="clearfix"></div> 
+                                               <!-- <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
 
-                                               <label for="asistencia-clase_grupal_id">Nombre de la clase</label>
+
+                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
+                                               <div class="fg-line">
+                                                  <div class="select">
+                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
+
+                                                      <option value="">Selecciona</option>
+                                                      
+                                                    
+                                                    </select>
+                                                  </div>
+                                                </div>
+ -->
+
+                                           </div>
+
+                                           <div class="col-sm-4">
+
+                                             <div class="form-group fg-line">
+                                                <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
+                                                <div class="clearfix p-b-15"></div>
+                                                <span class="text-center" id="asistencia-estado_ausencia"> --</span>
+                                             </div>
+
+                                              <!--  <div class="clearfix"></div> 
+
+                                              <div class="form-group fg-line">
+                                                <label for="asistencia-horario" class="f-16">Horario</label>
+                                                <div class="clearfix p-b-15"></div>
+                                                <span class="text-center" id="asistencia-horario"> --</span>
+                                             </div> -->
+                                             
+                                           </div>
+                                           
+
+                                           <div class="col-sm-9">
+
+
+                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
                                                <div class="fg-line">
                                                   <div class="select">
                                                     <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
@@ -163,25 +178,6 @@
 
 
                                            </div>
-
-                                           <div class="col-sm-4">
-
-                                             <div class="form-group fg-line">
-                                                <label for="asistencia-estado_ausencia">Estado de ausencia</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-estado_ausencia"> --</span>
-                                             </div>
-
-                                               <div class="clearfix"></div> 
-
-                                              <div class="form-group fg-line">
-                                                <label for="asistencia-horario">Horario</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-horario"> --</span>
-                                             </div>
-                                             
-                                           </div>
-                                           
 
                                            <div class="clearfix"></div> 
 
@@ -233,8 +229,8 @@
                                                   
                                            </div>
 
-                                           <div class="col-sm-5">
-                                               <label for="asistencia-clase_grupal_id">Nombre de la clase</label>
+                                           <div class="col-sm-9">
+                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
                                                <div class="fg-line">
                                                   <div class="select">
                                                     <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id_instructor" id="asistencia-clase_grupal_id_instructor" data-live-search="true">
@@ -249,15 +245,15 @@
 
                                            </div>
 
-                                           <div class="col-sm-4">
+                                           <!-- <div class="col-sm-4">
 
                                             <div class="form-group fg-line">
-                                                <label for="asistencia-horario">Horario</label>
+                                                <label for="asistencia-horario" class="f-16">Horario</label>
                                                 <div class="clearfix p-b-15"></div>
                                                 <span class="text-center" id="asistencia-horario-instructor"> --</span>
                                              </div>
                                              
-                                           </div>
+                                           </div> -->
                                            
 
                                            <div class="clearfix"></div> 
@@ -288,7 +284,7 @@
                             </div>
                         </div>
 
-		
+    
     <aside id="chat" class="sidebar c-overflow">
 
                 <div class="col-md-12">
@@ -302,7 +298,7 @@
                 <div class="well p-b-35">
                   <!--Ver listado-->     
 
-                  <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>             
+                  <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:30%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>             
                 </div>
                 </div>
                 
@@ -316,22 +312,35 @@
                             </thead>
                             <tbody>
                             
-                            @if(isset($alumno))                            
-                            @foreach ($alumno as $alumnos)
+                            @if(isset($alumnosacademia))      
+                                                 
+                            @foreach ($alumnosacademia as $alumno)
                                 
-                                <?php $id = $alumnos['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$alumnos['nombre']}} {{$alumnos['apellido']}}" data-identificacion-participante="{{$alumnos['identificacion']}}" data-tipo-participante="alumno" >
+                                <?php $id = $alumno->id ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
                                     <td class="p-10" >
                                       <div class="listview">
                                       <a class="lv-item" href="javascript:void(0)"  >
                                               <div class="media">
                                                   <div class="pull-left p-relative">
-                                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+
+                                                  @if($alumno->imagen)
+                                                  
+                                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
+  
+                                                  @else
+
+                                                      @if($alumno->sexo == 'M')
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                                      @else
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                                      @endif
+                                                  @endif
                                                       <i class="chat-status-busy"></i>
                                                   </div>
                                                   <div class="media-body">
-                                                      <div class="lv-title">{{$alumnos['nombre']}} {{$alumnos['apellido']}}</div>
-                                                      <small class="lv-small">{{$alumnos['identificacion']}}</small>
+                                                      <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
+                                                      <small class="lv-small">{{$alumno->identificacion}}</small>
                                                   </div>
                                               </div>
                                       </a>
@@ -341,11 +350,11 @@
                             @endforeach 
                             @endif
                             
-                            @if(isset($instructor))                            
-                            @foreach ($instructor as $instructores)
+                            @if(isset($instructores))                            
+                            @foreach ($instructores as $instructor)
                                 
-                                <?php $id = $instructores['id']; ?>
-                                <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructores['nombre']}} {{$instructores['apellido']}}" data-identificacion-participante="{{$instructores['identificacion']}}" data-tipo-participante="insctructor" >
+                                <?php $id = $instructor['id']; ?>
+                                <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
                                     <td class="p-10" >
                                       <div class="listview">
                                       <a class="lv-item" href="javascript:void(0)"  >
@@ -355,8 +364,8 @@
                                                       <i class="chat-status-busy"></i>
                                                   </div>
                                                   <div class="media-body">
-                                                      <div class="lv-title">{{$instructores['nombre']}} {{$instructores['apellido']}}</div>
-                                                      <small class="lv-small">{{$instructores['identificacion']}}</small>
+                                                      <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
+                                                      <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
                                                   </div>
                                               </div>
                                       </a>
@@ -372,8 +381,8 @@
 
                 
             </aside>
-
-            <!--  fin de asistencia -->
+		
+		
 		
 		<!-- Page Loader -->
         <div class="page-loader">
@@ -424,9 +433,10 @@
         <script src="{{url('/')}}/assets/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-		<script src="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.updated.min.js"></script>
-		<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
-    <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
+    		<script src="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.js"></script>
+    		<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
+        <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
+        <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
 
 		
         
@@ -451,6 +461,9 @@
 
         <script src="{{url('/')}}/assets/js/functions.js"></script>
         <script src="{{url('/')}}/assets/js/demo.js"></script>
+        <script src="{{url('/')}}/assets/js/jquery.floating-social-share.js"></script>
+        <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
+        <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 
         <!-- <script src="{{url('/')}}/assets/js/loader.js" type="text/javascript"></script>
         <script src="{{url('/')}}/assets/js/loader2.js" type="text/javascript"></script>
@@ -462,6 +475,7 @@
 
     route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
     route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
+    route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
     route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
     route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
 
@@ -561,7 +575,9 @@
           asistencia.search( this.value ).draw();
       } );
 
-
+    $("#listado").on('click',function(){
+      window.location = "{{url('/')}}/asistencia";
+    });
     $("#permitir").on('click',function(){
       var route = route_agregar_asistencia;
       var token = $('input:hidden[name=_token]').val();
@@ -594,14 +610,20 @@
               var nTitle="Ups! ";
               var nMensaje=respuesta.mensaje;
               //$('#modalAsistencia').modal('hidden');
+              // $('#modalAsistencia').modal('hide');
+              // //console.log(repuesta);
+              // $("#content").toggleClass("opacity-content");
+              // $("header").toggleClass("abierto");
+              // $("footer").toggleClass("opacity-content");
+              // $("#buscar").val(' ');
+              // $("#chat-trigger").click();
+              // $("#buscar").focus();
+
               $('#modalAsistencia').modal('hide');
-              //console.log(repuesta);
+              swal("Permitido!", respuesta.mensaje, "success");
               $("#content").toggleClass("opacity-content");
               $("header").toggleClass("abierto");
               $("footer").toggleClass("opacity-content");
-              $("#buscar").val(' ');
-              $("#chat-trigger").click();
-              $("#buscar").focus();
 
 
             }else{
@@ -610,8 +632,9 @@
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
               var nType = 'danger';
               //console.log(msj);
+              // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            
           },
           error:function(msj){
             var nType = 'danger';
@@ -625,15 +648,75 @@
               var nTitle="    Ups! "; 
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
             }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
-              var nType = 'warning';
-              var nTitle="    Ups! "; 
-              var nMensaje="El alumno no se encuentra asociado a la clase"; 
+              swal({   
+                    title: "¿Desea permitir la entrada?",   
+                    text: "El alumno no se encuentra asociado a esta clase!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Permitir!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+                if (isConfirm) {
+                    var route = route_agregar_asistencia_permitir;
+                    var token = $('input:hidden[name=_token]').val();
+                    var datos = $( "#agregar_asistencia" ).serialize(); 
+                    $.ajax({
+                      url: route,
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
+                      dataType: 'json',
+                      data:datos,
+                        success:function(respuesta){  
+                          console.log(respuesta)          
+                          if(respuesta.status=="OK"){
+                            $('#modalAsistencia').modal('hide');
+                            swal("Permitido!", respuesta.mensaje, "success");
+                            $("#content").toggleClass("opacity-content");
+                            $("header").toggleClass("abierto");
+                            $("footer").toggleClass("opacity-content");                                              
+                          }else{
+                            var nType = 'danger';
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                            //console.log(msj);
+                          }
+                          
+                        },
+                        error:function(msj){
+                          var nType = 'danger';
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nTitle="Ups! ";
+                          if(msj.responseJSON.status=="ERROR"){
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+                          }else{
+
+                           
+                          }
+                          
+                        }
+                        
+                      });
+                  
+                  
+                }
+              });
+
             }else if(msj.responseJSON.status=="ERROR_REGISTRADO"){
               var nType = 'info';
               var nTitle="    Ups! "; 
               var nMensaje="El alumno no ha formalizado su inscripción"; 
             } 
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
           }
           
         });
@@ -664,8 +747,14 @@
               var nTitle="Ups! ";
               var nMensaje=respuesta.mensaje;
               //$('#modalAsistencia').modal('hidden');
-              $('#modalAsistenciaInstructor').modal('hide');
+              // $('#modalAsistenciaInstructor').modal('hide');
               //console.log(repuesta);
+
+              $('#modalAsistenciaInstructor').modal('hide');
+              swal("Permitido!", respuesta.mensaje, "success");
+              $("#content").toggleClass("opacity-content");
+              $("header").toggleClass("abierto");
+              $("footer").toggleClass("opacity-content"); 
             }else{
               var nType = 'danger';
               var nTitle="Ups! ";
@@ -673,7 +762,7 @@
               var nType = 'danger';
               //console.log(msj);
             }
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
           },
           error:function(msj){
             var nType = 'danger';
@@ -686,7 +775,7 @@
             if(msj.responseJSON.status=="ERROR"){
               var nTitle="    Ups! "; 
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+              // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
             }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
 
               swal({   
@@ -722,7 +811,7 @@
                             var nTitle="Ups! ";
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                             var nType = 'danger';
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                             //console.log(msj);
                           }
                           
@@ -738,7 +827,7 @@
                           if(msj.responseJSON.status=="ERROR"){
                             var nTitle="    Ups! "; 
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
                           }else{
 
                            
@@ -749,15 +838,6 @@
                       });
                   
                   
-                  /*var nFrom = $(this).attr('data-from');
-                  var nAlign = $(this).attr('data-align');
-                  var nIcons = $(this).attr('data-icon');
-                  var nType = 'success';
-                  var nAnimIn = $(this).attr('data-animation-in');
-                  var nAnimOut = $(this).attr('data-animation-out');                  
-                  var nTitle="   Ups! "; 
-                  var nMensaje="¡Excelente! La Asistencia se han guardado satisfactoriamente";
-                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);*/
                 }
               });
               /*
@@ -834,8 +914,9 @@
             $('#asistencia-clase_grupal_id_instructor').empty();        
             $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) { 
-              console.log(array.nombre);                      
-              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+              // console.log(array);                      
+              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+
             });
 
             finprocesado();
@@ -852,6 +933,7 @@
 
       function buscarAlumno(t){
         procesando();
+        $('#clases_grupales_alumno').empty();
 
         var row = $(t).closest('tr');
         //console.log(row.data());
@@ -859,9 +941,25 @@
 
         var id_alumno = $(row).data('id-participante');
         var nombre_alumno = $(row).data('nombre-participante');
+        var imagen = $(row).data('imagen');
+        var sexo = $(row).data('sexo');
+
+        if(imagen){
+          $('#alumno_imagen').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+        }else{
+          if(sexo == 'M'){
+            $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+          }else{
+            console.log(sexo);
+            $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+          }
+        }
+
         $('#asistencia_id_alumno').val(id_alumno);
         //$("#buscar").val("");
         $('#asistencia-nombre-alumno').text(nombre_alumno);
+        $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+id_alumno);
+
         $("#asistencia-horario").text("---");
         //var route =route_verificar+"/"+id_alumno[1];
         //window.location=route;
@@ -874,17 +972,32 @@
           type: 'GET',
           dataType: 'json',
           success:function(respuesta){
+            $.each(respuesta.inscripciones, function (index, array) { 
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br> Desde:' + array.hora_inicio + ' Hasta: ' + array.hora_final + ' <br> ' + array.dia + '</p>')
+            });
             
             console.log(respuesta.clases_grupales); 
             //$('#asistencia-clase_grupal_id').selectpicker('refresh');  
             $('#asistencia-clase_grupal_id').empty();        
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
-            $.each(respuesta.clases_grupales, function (index, array) { 
-              console.log(array.nombre);                      
-              $('#asistencia-clase_grupal_id').append( new Option(array.nombre,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+            $.each(respuesta.clases_grupales, function (index, array) {                   
+              $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
             });
 
             $('#asistencia-estado_economico').text(respuesta.deuda);
+            if(respuesta.deuda > 0){
+              $( "#url_pagar" ).show();
+              $( "#acciones" ).show();
+              $( "#acciones_linea" ).show();
+              $("#status_economico").removeClass("c-verde");
+              $("#status_economico").addClass("c-youtube");
+            }else{
+              $( "#url_pagar" ).hide();
+              $( "#acciones" ).hide();
+              $( "#acciones_linea" ).hide();
+              $("#status_economico").removeClass("c-youtube");
+              $("#status_economico").addClass("c-verde");
+            }
             finprocesado();
             $('#modalAsistencia').modal('show');
           },
@@ -962,14 +1075,29 @@
         $("#content").removeClass("opacity-content");
         $("header").removeClass("abierto");
         $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
+      })
+
+      $('#modalAsistenciaInstructor').on('hidden.bs.modal', function (e) {
+        $("#content").removeClass("opacity-content");
+        $("header").removeClass("abierto");
+        $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
       })
 
 
-		$('body').on('click', '#content, footer, header.abierto', function(e){
+    $('body').on('click', '#what_we_do, #menuTopConfig, #main,#content, footer, header.abierto', function(e){
 
-			$("#content").removeClass("opacity-content");
+            $("#content").removeClass("opacity-content");
             $("footer").removeClass("opacity-content");
             $("header").removeClass("abierto");
+            $("#main").removeClass("opacity-content");
+            $("#chat").removeClass("toggled");
+            $("#what_we_do").removeClass("opacity-content");
 
             //$("footer").toggleClass("opacity-content");
             //$("header").toggleClass("abierto");
@@ -981,7 +1109,7 @@
         });
         $('body').on('change', '#menu-trigger.open', function(e){
 
-			$("#content").addClass("opacity-content");
+            $("#content").addClass("opacity-content");
             $("footer").addClass("opacity-content");
             $("header").addClass("abierto");
 
@@ -995,8 +1123,40 @@
         });
 
        
-		</script>
-		
+    </script>
+
+    <script>
+
+      //setInterval(notificacion, 240000);
+
+      var route_consultar_notificacion="{{url('/')}}/notificacion";
+
+      //setInterval(notificacion,120000);      
+
+      function notificacion (){        
+        
+        //alert('hola');
+        console.log('Hola Mundo');
+        var route = route_consultar_notificacion;
+        console.log(route_consultar_notificacion);
+        var token = $('input:hidden[name=_token]').val();
+        console.log(token);
+         
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'GET',
+            dataType: 'json',
+            success:function(respuesta){  
+                console.log(respuesta);             
+            },
+            error:function(msj){
+                console.log(msj);              
+            }
+        });
+      }
+
+    </script>		
 		
 		@yield('js')
 		

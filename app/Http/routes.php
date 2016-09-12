@@ -107,6 +107,7 @@ Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
 
 Route::post('especiales/campañas/contribuir', 'CampanaController@storePatrocinador');
+Route::post('especiales/campañas/contribuir/contribucion', 'CampanaController@storeTransferencia');
 Route::get('especiales/campañas/contribuir/campaña/{id}', 'CampanaController@contribuirCampana');
 Route::get('especiales/campañas/contribuir/recompensa/{id}', 'CampanaController@contribuirRecompensa');
 Route::post('especiales/campañas/contribuir/participante-externo', 'CampanaController@contribuirExterno');
@@ -576,6 +577,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//CAMPAÑAS
 
 			//Route::get('especiales/campañas', 'CampanaController@index');
+			Route::get('especiales/campañas/contribuciones/{id}', 'CampanaController@principalcontribuciones');
+			Route::post('especiales/campañas/contribuciones/confirmar/{id}', 'CampanaController@confirmarcontribucion');
+			Route::delete('especiales/campañas/contribuciones/eliminar/{id}', 'CampanaController@eliminarcontribucion');
 			Route::get('especiales/campañas/agregar', 'CampanaController@create');
 			Route::post('especiales/campañas/agregar', 'CampanaController@store');
 			Route::get('especiales/campañas/detalle/{id}', 'CampanaController@edit');
