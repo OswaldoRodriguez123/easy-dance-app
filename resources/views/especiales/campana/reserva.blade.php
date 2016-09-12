@@ -100,7 +100,7 @@
 
 <div class="container">
 
-@if(Auth::check())
+<!-- @if(Auth::check())
 
   <div class="block-header">
 
@@ -118,16 +118,15 @@
 
   </div> 
   
-@endif
+@endif -->
 
-    <div class="block-header">
+    <div class="card">
         <div class="col-sm-12">
           <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" alt="">
-          <div class="clearfix p-b-15"></div>
         </div>
     </div>
 
-    <div class="clearfix p-b-15"></div>
+    <div class="clearfix"></div>
 
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
@@ -204,10 +203,7 @@
                               </p>
                               <div class="clearfix"></div>
 
-                              <?php if($porcentaje < 1){
-                                $porcentaje = 1;
-                              }
-                              ?>
+                     
                               <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
                                 <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" id="barra-progreso" style="width: {{$porcentaje}}%;"></div>
                               </div>
@@ -693,13 +689,11 @@
 
                 </div>
 
-                    <ul class="fw-footer pagination wizard">
-                        <!--<li class="previous first"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
+                <!--     <ul class="fw-footer pagination wizard">
                         <li class="previous"><a class="a-prevent" href="" onclick="irArriba('tabs')" ><i class="zmdi zmdi-arrow-back"></i></a></li>
                         <li class="next"><a class="a-prevent" href="" onclick="irArriba('tabs')" ><i class="zmdi zmdi-arrow-forward"></i></a></li>
-                        <!--<li class="next last"><a class="a-prevent" href=""><i class="zmdi zmdi-more-horiz"></i></a></li>-->
                     </ul>
-
+ -->
                     <footer id="footer" style="position:relative">
 
                           <div class=" p-10 footer-text">

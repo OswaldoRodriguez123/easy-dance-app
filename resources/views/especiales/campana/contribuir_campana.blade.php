@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('layout.master3')
 
 @section('css_vendor')
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
