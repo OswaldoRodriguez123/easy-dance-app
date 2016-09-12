@@ -785,6 +785,22 @@
 
               // create a simple soon counter on the supplied element
             $(document).ready(function() {
+
+              $('body,html').animate({scrollTop : 0}, 500);
+              var animation = 'fadeInDownBig';
+              //var cardImg = $(this).closest('#content').find('h1');
+              if (animation === "hinge") {
+              animationDuration = 3100;
+              }
+              else {
+              animationDuration = 3200;
+              }
+              //$("h1").removeAttr('class');
+              $(".container").addClass('animated '+animation);
+
+                  setTimeout(function(){
+                      $(".card-body").removeClass(animation);
+                  }, animationDuration);
               $(".soon").soon({
                   due:"{{$campana->fecha_final}}",
                   //layout:"group"
