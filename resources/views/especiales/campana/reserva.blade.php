@@ -120,6 +120,12 @@
   
 @endif
 
+    <div class="card">
+        <div class="col-sm-12"><img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+        <div class="clearfix p-b-15"></div></div>
+
+    </div>
+
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
             <div class="pmo-pic">

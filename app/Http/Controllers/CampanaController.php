@@ -285,7 +285,7 @@ class CampanaController extends BaseController {
     $rules = [
         'cantidad' => 'required|numeric',
         'nombre' => 'required|min:5|max:40',
-        'eslogan' => 'required|min:5|max:30',
+        'eslogan' => 'required|min:5|max:100',
         'historia' => 'required|max:1000',
         'plazo' => 'required|numeric',
     ];
@@ -299,7 +299,7 @@ class CampanaController extends BaseController {
         'nombre.max' => 'El máximo de caracteres permitidos son 40',
         'eslogan.required' => 'Ups! El Eslogan es requerido',
         'eslogan.min' => 'El mínimo de caracteres permitidos son 5',
-        'eslogan.max' => 'El máximo de caracteres permitidos son 30', 
+        'eslogan.max' => 'El máximo de caracteres permitidos son 100', 
         'historia.required' => 'Ups! La Historia es requerida',
         'historia.max' => 'El máximo de caracteres permitidos son 1000', 
         'plazo.required' => 'Ups! El plazo es requerido',
@@ -316,7 +316,7 @@ class CampanaController extends BaseController {
 
     else{
 
-        if($request->plazo <= 45){
+        if($request->plazo <= 60){
 
             if($request->link_video){
 
@@ -451,7 +451,7 @@ class CampanaController extends BaseController {
 
         }else{
 
-            return response()->json(['errores' => ['plazo' => [0, 'El plazo no puede ser mayor a 45 dias']], 'status' => 'ERROR'],422);
+            return response()->json(['errores' => ['plazo' => [0, 'El plazo no puede ser mayor a 60 dias']], 'status' => 'ERROR'],422);
         }
     }
     }
