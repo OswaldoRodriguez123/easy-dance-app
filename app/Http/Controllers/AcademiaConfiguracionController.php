@@ -388,29 +388,31 @@ class AcademiaConfiguracionController extends BaseController {
         // //dd(round($porcentaje,2));
 
         // //dd($vacio);
+
+
+        //$= ClasePersonalizada::where('academia_id',Auth::user()->academia_id)->get();
         $campos_array=array("imagen","telefono","celular","correo","direccion","facebook","twitter","linkedin","instagram","pagina_web","youtube","normativa","manual","programacion","incluye_iva","link_video");
         $porcentajeAcademia=0;
         $campos_ocupados=0;
 
-         $academia= Academia::find(Auth::user()->academia_id);
+         $academias_datos = Academia::where('id',Auth::user()->id)->get();
          $info_de_academias=DB::getSchemaBuilder()->getColumnListing('academias');
-         
-         for ($i=0; $i < count($info_de_academias)-2; $i++) {
 
-             for ($j=0; $j < count($campos_array)-1; $j++) { 
+         for ($i=0; $i < count($info_de_academias); $i++) {
+
+             for ($j=0; $j < count($campos_array); $j++) { 
 
                  if($info_de_academias[$i]==$campos_array[$j]){
-//revisar
-                    if(DB::table('academias')->pluck($info_de_academias[$i]))
+
+                    if($academias_datos[0]['attributes'][$info_de_academias[$i]])
                     {
-                        //$campos_ocupados++;
+                        $campos_ocupados++;
                     }
                  }
              }
          }
 
-         $porcentajeAcademia=($campos_ocupados/count($campos_array))*100;
-         // dd($campos_ocupados);
+        $porcentajeAcademia=($campos_ocupados*100)/count($campos_array);
 
         if($academiaGrupales){
              $porcentajeGrupales=100;
