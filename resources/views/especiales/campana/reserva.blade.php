@@ -286,7 +286,6 @@
                     </div>
 
                         <span class="text-center">
-                             <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
 
                             <button id="{{$campana->id}}" name ="{{$campana->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa_otra" style="width:100%; padding:5px"> </i> Contribuir </button> 
                         </span>

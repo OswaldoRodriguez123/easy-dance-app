@@ -1148,7 +1148,7 @@
 
     $('#modalEslogan-Campana').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      var eslogan=$("#campana-nombre").data('valor');
+      var eslogan=$("#campana-eslogan").data('valor');
        $("#eslogan").val(eslogan);
     })
 
