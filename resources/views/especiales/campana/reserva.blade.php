@@ -242,12 +242,7 @@
                     <div class="pmb-block m-t-0 p-t-0">
 
 <!--                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg"> -->
-                        
-                        @if($campana->imagen)
-                        <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" class="img-responsive opaco-0-8" alt="">
-                        @endif
-
-                        <div class="clearfix p-b-20"></div>
+                      
 
                         <p class="text-center f-30 f-700 opaco-0-8">{!! nl2br($campana->nombre) !!}</p>
                         <p class="text-center f-20 f-700 opaco-0-8">{!! nl2br($campana->eslogan) !!}</p>
@@ -266,7 +261,7 @@
 
                         <div class="f-700 f-30">Mi Perfil</div>
                         <br>
-                        <p class="f-20">Mi nombre es Robert Virona soy de la ciudad de Maracaibo y desde muy joven me apasioné por los bailes en especial los géneros latinos, por esa razón hace Aproximadamente hace 20 años atrás decidí tomar un rumbo e iniciar mi carrera como bailador, con el paso del tiempo fui inclinando una profunda atención a los procesos y gerencia de las academias de baile, eventos y actividades en el que pude sentir una gran afinidad con el arte de gerenciar y organizar.</p>
+                        <p class="f-20">Mi nombre es Robert Virona soy de la ciudad de Maracaibo y desde muy joven me apasioné por los bailes en especial los géneros latinos, por esa razón hace aproximadamente 20 años atrás decidí tomar un rumbo e iniciar mi carrera como bailador, con el paso del tiempo fui inclinando una profunda atención a los procesos y gerencia de las academias de baile, eventos y actividades en el que pude sentir una gran afinidad con el arte de gerenciar y organizar.</p>
 
                         <p class="f-20">Siempre me acompaña un deseo inmenso de superación y tengo la fortuna de ser un apasionado a los procesos de mejoramiento continuo, por eso utilizo la tecnología a mi favor para ser cada vez mejor, mis mejores fuentes de aprendizaje las consigo a través de la lectura y tutoriales que diariamente nos ofrece el internet , el cual , a mi juicio lo considero como la casa de estudio número 1 en el mundo , debido a la fuente de recursos y herramientas que te brinda para el crecimiento profesional.</p>
 
@@ -308,7 +303,7 @@
                               <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/sNdOSfbqggU"></iframe>
                             </div>
                           </div>
-                          
+
                           <div class="clearfix p-b-35"></div>
                         
 
