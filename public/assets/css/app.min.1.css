@@ -6126,8 +6126,16 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   background-color: #333333;
 }
 
-.navbar-inverse .navbar-toggle .icon-bar {
+/*.navbar-inverse .navbar-toggle .icon-bar {
   background-color: #ffffff;
+}*/
+
+.navbar-inverse .navbar-toggle .icon-bar {
+  background-color: #101010;
+}
+
+.navbar-inverse .navbar-toggle .icon-bar:focus {
+  color: #FFFFFF;
 }
 
 .navbar-inverse .navbar-collapse,

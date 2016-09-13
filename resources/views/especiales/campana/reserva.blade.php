@@ -33,7 +33,6 @@
                         </div>
                         <form name="form_modal" id="form_modal"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <input type="hidden" name="id" value="{{ $campana->id }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
 
@@ -207,9 +206,8 @@
             </div>
             <!-- END -->
 
-<div style="padding:0 ; background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}');  min-height: 450px; background-repeat: no-repeat; background-size: cover; background-position: center;" >
-
-</div>
+<div style="padding:0 ; background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}');  height: 0;
+    padding-bottom: 35%; background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
 
 <!-- <div class="container"> -->
 
@@ -586,7 +584,9 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
+                    <div class="clearfix p-b-35"></div>
+
                 </div>
 
                 <div role="tabpanel" class="tab-pane animated fadeInUp in" id="invitar">
@@ -596,9 +596,8 @@
                         <p class="text-left f-30 opaco-0-8 f-700" id="offset_invitar" >Invitar</p>
                         <hr class='linea-morada'>
 
-                        <form name="formInvitacion" id="formInvitacion" class="">
+                        <form name="formInvitacion" id="formInvitacion">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="id" value="{{ $id }}">
 
                                         <div class="col-sm-6">
                                             <label id="id-invitacion_nombre">Ingresa tu nombre </label>
@@ -704,7 +703,10 @@
                                         <a class="btn-blanco m-r-10 f-25 pointer" id="guardar_invitacion"> Enviar</a>
                                     </div> 
 
+
+
                       </div>
+
                  </div>
 
                 <div role="tabpanel" class="tab-pane animated fadeInUp in" id="datos">
@@ -912,8 +914,6 @@
 
                                           <div class="clearfix p-b-35"></div>
                                           
-                                          <input type="hidden" name="id" value="{{ $campana->id }}">
-
                                           <div class="modal-footer p-b-20 m-b-20">
                                             <div class="col-sm-12 text-left">
                                               <div class="procesando hidden">
@@ -1023,6 +1023,10 @@
         var recompensa = 0;
 
             $(document).ready(function() {
+
+              $("#navbar li a").click(function(event) {
+                 $('.navbar-collapse').collapse('hide');
+              });
 
               $('body,html').animate({scrollTop : 0}, 500);
               var animation = 'fadeInDownBig';
@@ -1138,7 +1142,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos,
+                        data:datos+"&id={{$campana->id}}",
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -1223,7 +1227,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos,
+                        data:datos+"&id={{$campana->id}}",
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -1435,7 +1439,7 @@
                         if(respuesta.status=="OK"){
 
                            $('html,body').animate({
-                              scrollTop: $("#add").offset().top-90,
+                              scrollTop: $("#tableañadir").offset().top-90,
                             }, 1000);
 
                           $("#formComparte")[0].reset();

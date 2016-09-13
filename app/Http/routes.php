@@ -136,6 +136,11 @@ Route::post('especiales/campañas/invitar', 'CampanaController@invitar');
 Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
 Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enhorabuena_invitacion_sinid');
 
+Route::get('error', function () {
+	return view('errors.error_sistema');
+
+});
+
 
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
@@ -146,10 +151,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
-		Route::get('error', function () {
-		    return view('errors.error_sistema');
 
-		});
 		/*------------------------------------------------------
 		//MIDDLEWARE ADMINISTRADOR
 		//RUTAS QUE SOLAMENTE PODRA TENER ACCESO EL ROL ADMIN

@@ -56,10 +56,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" style="border-color: none">
           <ul class="nav navbar-nav" style="margin-top: 5px">
-            <li style="padding-left: 50px; margin-top:5px"><a id = "tab_campana" href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Campaña</span></a></li>
-            <li style="margin-top:5px"><a id = "tab_patrocinador" href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Patrocinadores</span></a></li>
-            <li style="margin-top:5px"><a id = "tab_datos" href="#datos" aria-controls="datos" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Datos Bancarios</span></a></li>
-            <li style="margin-top:5px"><a id = "tab_invitar" href="#invitar" aria-controls="invitar" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Invitar</span></a></li>
+            <li style="padding-left: 50px; margin-top:5px"></li>
+            <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_campana" href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Campaña</span></a></li>
+            <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_patrocinador" href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Patrocinadores</span></a></li>
+            <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_datos" href="#datos" aria-controls="datos" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Datos Bancarios</span></a></li>
+            <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_invitar" href="#invitar" aria-controls="invitar" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Invitar</span></a></li>
 
           </ul>
         </div><!--/.nav-collapse -->
