@@ -1059,6 +1059,7 @@ class CampanaController extends BaseController {
 
     public function progreso($id)
     {
+        Session::forget('invitaciones');
 
          $campaña = Campana::find($id);
 
@@ -1100,7 +1101,7 @@ class CampanaController extends BaseController {
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
              ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, alumnos.id')
              ->where('patrocinadores.campana_id', '=', $id)
-             ->orderBy('patrocinadores.monto', 'desc')
+             // ->orderBy('patrocinadores.monto', 'desc')
          ->get();
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
@@ -1577,16 +1578,16 @@ class CampanaController extends BaseController {
         
     $rules = [
 
-        'nombre' => 'required',
-        'correo' => 'required|email',
+        'nombre_invitado' => 'required',
+        'correo_invitado' => 'required|email',
 
     ];
 
     $messages = [
 
-        'nombre.required' => 'Ups! El Nombre es requerido',
-        'correo.required' => 'Ups! El Correo es requerido',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'nombre_invitado.required' => 'Ups! El Nombre es requerido',
+        'correo_invitado.required' => 'Ups! El Correo es requerido',
+        'correo_invitado.email' => 'Ups! El correo tiene una dirección inválida',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -1599,7 +1600,7 @@ class CampanaController extends BaseController {
 
     else{
 
-        $array = array(['nombre' => $request->nombre, 'email' => $request->correo]);
+        $array = array(['nombre' => $request->nombre_invitado, 'email' => $request->correo_invitado]);
 
         Session::push('invitaciones', $array);
 
@@ -1624,23 +1625,57 @@ class CampanaController extends BaseController {
     }
 
     public function invitar(Request $request){
-        
-            $invitaciones = Session::get('invitaciones');
+
+        if(isset($request->invitacion_nombre))
+        {
+
+            $rules = [
+
+                'invitacion_nombre' => 'required',
+
+
+            ];
+
+            $messages = [
+
+                'invitacion_nombre.required' => 'Ups! El Nombre es requerido',
+
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()){
+
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            }
+
+            $campana_id = $request->id;
+            $nombre = $request->invitacion_nombre;
+
+        }else{
 
             $contribucion = TransferenciaCampana::find($request->id);
+            $campana_id = $contribucion->campana_id;
+            $nombre = $contribucion->nombre;
+
+        }
+
+        
+            $invitaciones = Session::get('invitaciones');
 
             if($invitaciones)
             {
 
                 foreach($invitaciones as $invitacion){
 
-                    $subj =  $contribucion->nombre . ' te invita a contribuir con la campaña “TODOS CON ROBERT”';
+                    $subj =  $nombre . ' te invita a contribuir con la campaña “TODOS CON ROBERT”';
                     
                     $array = [
                        'correo' => $invitacion[0]['email'],
-                       'nombre_envio' => $contribucion->nombre,
+                       'nombre_envio' => $nombre,
                        'nombre_destino' => $invitacion[0]['nombre'],
-                       'id' => $contribucion->campana_id,
+                       'id' => $campana_id,
                        'subj' => $subj
                     ];
 

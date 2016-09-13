@@ -56,35 +56,35 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="hidden" name="id" value="{{ $id }}">
                                         <div class="col-sm-6">
-                                            <label id="id-nombre">Ingresa el nombre </label>
+                                            <label id="id-nombre_invitado">Ingresa el nombre</label>
                                             <div class="input-group input-group-lg">
 
                                                 <span class="input-group-addon"><i class="icon_b icon_b-nombres"></i></span>
                                                 <div class="fg-line">
-                                                    <input class="form-control input-lg" name="nombre" id="nombre" placeholder="ej: Valeria" required="required">
+                                                    <input class="form-control input-lg" name="nombre_invitado" id="nombre_invitado" placeholder="ej: Valeria" required="required">
                                                 </div>
                                             </div>
-                                            <div class="has-error" id="error-nombre">
+                                            <div class="has-error" id="error-nombre_invitado">
                                               <span >
-                                                  <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
+                                                  <small class="help-block error-span" id="error-nombre_invitado_mensaje" ></small>                                
                                               </span>
                                           </div>
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <label id="id-correo">Ingresa su correo electrónico </label>
+                                            <label id="id-correo_invitado">Ingresa su correo electrónico </label>
                                             <div class="input-group input-group-lg">
 
                                                 <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
                                                 <div class="fg-line">
-                                                    <input class="form-control input-lg" name="correo" id="correo" placeholder="ej: info@easydancelatino.com" type="email" required="required">
+                                                    <input class="form-control input-lg" name="correo_invitado" id="correo_invitado" placeholder="ej: info@easydancelatino.com" type="email" required="required">
                                                     <input type="hidden" value="" id="alm-email">
                                                 </div>
 
                                             </div>
-                                            <div class="has-error" id="error-correo">
+                                            <div class="has-error" id="error-correo_invitado">
                                               <span >
-                                                  <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
+                                                  <small class="help-block error-span" id="error-correo_invitado_mensaje" ></small>                                
                                               </span>
                                           </div>
                                         </div>
@@ -404,7 +404,7 @@
             });
 
     function limpiarMensaje(){
-      var campo = ["nombre", "correo"];
+      var campo = ["nombre_invitado", "correo_invitado", "linea"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

@@ -554,10 +554,10 @@
                                               <div class="media">
                                                   <div class="pull-left p-relative">
                                                       @if($patrocinador->sexo == 'F')
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/mujer.jpg" alt="">
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
                                                         <i class="chat-status-busy"></i>
                                                       @else
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/hombre.jpg" alt="">
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
                                                         <i class="chat-status-busy"></i>
                                                       @endif
                                                   </div>
@@ -588,6 +588,124 @@
                     </div>
                     
                 </div>
+
+                <div role="tabpanel" class="tab-pane animated fadeInUp in" id="invitar">
+
+                    <div class="pmb-block m-t-0 p-t-0">
+
+                        <p class="text-left f-30 opaco-0-8 f-700" id="offset_invitar" >Invitar</p>
+                        <hr class='linea-morada'>
+
+                        <form name="formInvitacion" id="formInvitacion" class="">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="id" value="{{ $id }}">
+
+                                        <div class="col-sm-6">
+                                            <label id="id-invitacion_nombre">Ingresa tu nombre </label>
+                                            <div class="input-group input-group-lg">
+
+                                                <span class="input-group-addon"><i class="icon_b icon_b-nombres"></i></span>
+                                                <div class="fg-line">
+                                                    <input class="form-control input-lg" name="invitacion_nombre" id="invitacion_nombre" placeholder="ej: Valeria" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="has-error" id="error-invitacion_nombre">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-invitacion_nombre_mensaje" ></small>                                
+                                              </span>
+                                          </div>
+                                        </div></form>
+
+                                        <div class="clearfix p-b-35"></div>
+
+                                        <form name="formComparte" id="formComparte" class="">
+           
+                                        <div class="col-sm-6">
+                                            <label id="id-nombre_invitado">Ingresa el nombre de la persona </label>
+                                            <div class="input-group input-group-lg">
+
+                                                <span class="input-group-addon"><i class="icon_b icon_b-nombres"></i></span>
+                                                <div class="fg-line">
+                                                    <input class="form-control input-lg" name="nombre_invitado" id="nombre_invitado" placeholder="ej: Valeria" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="has-error" id="error-nombre_invitado">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-nombre_invitado_mensaje" ></small>                                
+                                              </span>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <label id="id-correo_invitado">Ingresa su correo electrónico </label>
+                                            <div class="input-group input-group-lg">
+
+                                                <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
+                                                <div class="fg-line">
+                                                    <input class="form-control input-lg" name="correo_invitado" id="correo_invitado" placeholder="ej: info@easydancelatino.com" type="email" required="required">
+                                                    <input type="hidden" value="" id="alm-email">
+                                                </div>
+
+                                            </div>
+                                            <div class="has-error" id="error-correo_invitado">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-correo_invitado_mensaje" ></small>                                
+                                              </span>
+                                          </div>
+                                        </div></form>
+
+                                        <div class="clearfix p-b-35"></div>
+                                        <div class="clearfix p-b-35"></div>
+
+                                        <div class="col-sm-2">
+
+                                          <button type="button" class="btn btn-blanco m-r-8 f-10" name= "add" id="add" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+
+                                        </div>
+
+                                      <div class="col-sm-4">
+                                        <div class="has-error" id="error-linea">
+                                              <span >
+                                                <small class="help-block error-span" id="error-linea_mensaje" ></small>                                           
+                                              </span>
+                                          </div>
+                                      </div>
+
+
+                                    
+
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+                                    
+
+                                    <div class="table-responsive row">
+                                       <div class="col-md-12">
+                                        <table class="table table-striped table-bordered text-center " id="tableañadir" >
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
+                                                <th class="text-center" data-column-id="correo">Correo</th>
+                                                <th class="text-center" data-column-id="operacion">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                          <tbody>
+                                                                         
+                                          </tbody>
+                                        </table>
+
+
+                                      </div>
+                                    </div>
+
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <div class="block-header text-right">
+                                        <a class="btn-blanco m-r-10 f-25 pointer" id="guardar_invitacion"> Enviar</a>
+                                    </div> 
+
+                      </div>
+                 </div>
 
                 <div role="tabpanel" class="tab-pane animated fadeInUp in" id="datos">
 
@@ -889,7 +1007,6 @@
         <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
         <script src="{{url('/')}}/assets/js/soon.min.js" data-auto="false"></script>
 
-        <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
         //route_agregar="{{url('/')}}/especiales/campañas/contribuir";
@@ -898,41 +1015,13 @@
         route_agregar_contribucion="{{url('/')}}/especiales/campañas/contribuir/contribucion";
         route_enhorabuena="{{url('/')}}/especiales/campañas/contribuir/enhorabuena/";
 
+        route_enviar_invitacion="{{url('/')}}/especiales/campañas/invitar";
+        route_agregar_invitacion="{{url('/')}}/especiales/campañas/invitar/agregar";
+        route_eliminar_invitacion="{{url('/')}}/especiales/campañas/invitar/eliminar";
+        route_enhorabuena_invitacion="{{url('/')}}/especiales/campañas/invitacion/enhorabuena/";
+
         var recompensa = 0;
 
-          // (function(){
-
-          //     var i=0,soons = document.querySelectorAll('.auto-due .soon'),l=soons.length;
-          //     for (;i<l;i++) {
-          //         soons[i].setAttribute('data-due','2016-01-30T14:10:09');
-          //         soons[i].setAttribute('data-now','2016-01-01T00:00:00');
-          //     }
-
-          // }());
-
-          // if ('addEventListener' in document) {
-          //   var showDemo = function(e){
-          //       var btn = e.target;
-          //       btn.style.display = 'none';
-          //       var wrapper = e.target.parentNode;
-          //       var panel = wrapper.querySelector('.el-sample');
-          //       panel.style.display = 'block';
-          //       var nodes = e.target.parentNode.querySelectorAll('.soon');
-          //       for(var i=0;i<nodes.length;i++){
-          //           Soon.create(nodes[i]);
-          //       }
-          //   };
-          //   var buttons = document.querySelectorAll('.demo-button');
-          //   for(var i=0;i<buttons.length;i++) {
-          //       buttons[i].addEventListener('click',showDemo);
-          //   }
-          // }
-          // var soons = document.querySelectorAll('.auto-due .soon');
-          // for(var i=0;i<soons.length;i++) {
-          //     Soon.create(soons[i]);
-          // }
-
-              // create a simple soon counter on the supplied element
             $(document).ready(function() {
 
               $('body,html').animate({scrollTop : 0}, 500);
@@ -944,7 +1033,6 @@
               else {
               animationDuration = 3200;
               }
-              //$("h1").removeAttr('class');
               $(".container").addClass('animated '+animation);
 
                   setTimeout(function(){
@@ -960,16 +1048,6 @@
                   visual:"ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0"
               });
 
-
-              // create a more advanced counter
-              // $(".your-advanced-counter").soon({
-              //     due:"2015-11-25",
-              //     layout:"group tight",
-              //     face:"flip color-light corners-sharp shadow-soft",
-              //     separateChars:false,
-              //     eventComplete:function(){ alert("done!"); }
-              // });
-
               if("{{$porcentaje}}" >= 100){
                 $("#barra-progreso").removeClass('progress-bar-morado');
                 $("#barra-progreso").addClass('progress-bar-success');
@@ -978,13 +1056,48 @@
                 $("#barra-progreso").addClass('progress-bar-morado');
               }
 
-              $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+            //   $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-                  A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
-                }
+            //       A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+            //     }
 
-            });
+            // });
           });
+
+        var h=$('#tableañadir').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+            });
 
       function errores(merror){
         console.log(merror);
@@ -992,36 +1105,12 @@
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
-              //console.log(this);
               var error=value;
               $("#error-"+n+"_mensaje").html(error);
               console.log(value);
            });
         });
        }
-
-      
-            /*$(document).ready(function(){
-
-                $('li').hover(function(){
-                    //alert('prueba');
-                    var animation = "bounceIn";
-                    var cardImg = $(this).closest('.tab-nav').find('li');
-                    if (animation === "hinge") {
-                        animationDuration = 2100;
-                    }
-                    else {
-                        animationDuration = 1200;
-                    }
-                    
-                    cardImg.removeAttr('class');
-                    cardImg.addClass('animated '+animation);
-                    
-                    setTimeout(function(){
-                        cardImg.removeClass(animation);
-                    }, animationDuration);
-                });
-            });*/
 
             $(".recompensa_confirmar").click(function(){
               $('#modalConfirmar').modal('show');
@@ -1115,8 +1204,95 @@
                 });
             });
 
+          $("#guardar_invitacion").click(function(){
+
+                var route = route_enviar_invitacion;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#formInvitacion" ).serialize(); 
+                $("#guardar").attr("disabled","disabled");
+                procesando();
+                $("#guardar").css({
+                  "opacity": ("0.2")
+                });
+                $(".cancelar").attr("disabled","disabled");
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          // var nType = 'success';
+                          // $("#agregar_alumno")[0].reset();
+                          // var nTitle="Ups! ";
+                          // var nMensaje=respuesta.mensaje;
+                          window.location = route_enhorabuena_invitacion + "{{ $id }}";
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          finprocesado();
+                          $("#guardar").css({
+                            "opacity": ("1")
+                          });
+                          $(".cancelar").removeAttr("disabled");
+
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                         if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
         function limpiarMensaje(){
-          var campo = ["nombre", "nombre_banco", "tipo_cuenta", "numero_cuenta", "correo", "rif"];
+          var campo = ["nombre", "nombre_banco", "tipo_cuenta", "numero_cuenta", "correo", "rif", "nombre_invitado", "correo_invitado", "invitacion_nombre", "linea"];
           fLen = campo.length;
           for (i = 0; i < fLen; i++) {
               $("#error-"+campo[i]+"_mensaje").html('');
@@ -1218,6 +1394,152 @@
 
           }, 1000);
         })
+
+        $('#tab_invitar').click(function (){
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_invitar").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
+
+
+        $("#add").click(function(){
+
+                $("#add").attr("disabled","disabled");
+                    $("#add").css({
+                      "opacity": ("0.2")
+                });
+
+                var route = route_agregar_invitacion;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#formComparte").serialize(); 
+                limpiarMensaje();
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          $("#formComparte")[0].reset();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var nombre = respuesta.array[0].nombre;
+                          var email = respuesta.array[0].email;
+
+                          var rowId=respuesta.id;
+                          var rowNode=h.row.add( [
+                          ''+nombre+'',
+                          ''+email+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        $("#add").removeAttr("disabled");
+                          $("#add").css({
+                            "opacity": ("1")
+                          });
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        //  if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $("#add").removeAttr("disabled");
+                          $("#add").css({
+                            "opacity": ("1")
+                          });
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+          });
+
+           $('#tableañadir tbody').on( 'click', 'i.zmdi-delete', function () {
+                  var padre=$(this).parents('tr');
+                  var token = $('input:hidden[name=_token]').val();
+                  var id = $(this).closest('tr').attr('id');
+                        $.ajax({
+                             url: route_eliminar_invitacion+"/"+id,
+                             headers: {'X-CSRF-TOKEN': token},
+                             type: 'POST',
+                             dataType: 'json',                
+                            success: function (data) {
+                              if(data.status=='OK'){
+
+                                    
+                              }else{
+                                swal(
+                                  'Solicitud no procesada',
+                                  'Ha ocurrido un error, intente nuevamente por favor',
+                                  'error'
+                                );
+                              }
+                            },
+                            error:function (xhr, ajaxOptions, thrownError){
+                              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                            }
+                          })
+
+                        h.row( $(this).parents('tr') )
+                            .remove()
+                            .draw();
+                                                
+                    });   
 
         </script>
 @stop        
