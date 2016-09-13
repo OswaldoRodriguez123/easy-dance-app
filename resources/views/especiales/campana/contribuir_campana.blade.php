@@ -25,7 +25,7 @@
         <div class="block-header">
             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas/progreso/{{$campana->id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
         </div> 
-      <div class="card" style="height:900px">
+      <div class="card">
         <div class="card-header text-center">
                 <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos</span>
         </div>
@@ -155,6 +155,8 @@
                                      </div>
 
                                     @if(!Auth::check())
+                                        <div class="clearfix m-20 m-b-25"></div>
+
                                         <div class="text-center c-morado f-30">Dime tu Correo Electronico</div>
                                         <div class="clearfix m-20 m-b-25"></div> 
                                         <input type="text" class="form-control caja" id="email_externo" name="email_externo"></input>
@@ -163,7 +165,37 @@
                                                 <small id="error-email_externo_mensaje" class="help-block error-span" ></small>
                                             </span>
                                          </div>
-                          
+
+                                         <div class="clearfix m-20 m-b-25"></div>
+
+                                             <div class="col-sm-8 col-sm-offset-2">
+                                                     
+                                                <div class="text-center c-morado f-30" id="id-sexo">Dime tu Sexo</div>
+                                                <div class="clearfix m-20 m-b-25"></div>
+                                                    <div class="text-center">
+                                                        <div class="input-group">
+                                                          <span class="input-group-addon"></span>
+                                                          <div class="p-t-10">
+                                                          <label class="radio radio-inline m-r-20">
+                                                              <input name="sexo" id="mujer" value="F" type="radio" checked>
+                                                              <i class="input-helper"></i>  
+                                                              <span class="f-20">Mujer</span> <i class="zmdi zmdi-female p-l-5 f-25"></i>
+                                                          </label>
+                                                          <label class="radio radio-inline m-r-20 ">
+                                                              <input name="sexo" id="hombre" value="M" type="radio">
+                                                              <i class="input-helper"></i>  
+                                                              <span class="f-20">Hombre</span> <i class="zmdi zmdi-male-alt p-l-5 f-25"></i>
+                                                          </label>
+                                                          </div>
+                                                        </div>
+                                                         <div class="has-error" id="error-sexo">
+                                                              <span >
+                                                                  <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                                              </span>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              
 
 
                                      @endif
@@ -207,6 +239,12 @@
 
     $(document).ready(function(){
 
+        if("{{Auth::check()}}" == 0){
+            $(".card").height(1100)
+        }else{
+            $(".card").height(800)
+        }
+
         $('#cambio').val('');
         $('#email_externo').val('');
         $('#monto').val('');
@@ -245,9 +283,9 @@
           "opacity": ("0.2")
         });
 
-        $('#cambio').mask('AAAAAAAAAAAAAA', {'translation': {
+        $('#cambio').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-            A: {pattern: /[A-Za-z]/}
+            A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
             }
 
         });
@@ -258,6 +296,7 @@
             procesando();
             var token = $('input:hidden[name=_token]').val();
             var nombre = $("input[name=nombre]").val();
+            var sexo = $("input[name=sexo]").val();
             var monto = $("input[name=monto]").val();
             var email_externo = $("input[name=email_externo]").val();
             var alumno_id = $("#alumno_id").val();
@@ -280,7 +319,8 @@
                             campana_nombre : campana_nombre,
                             academia_id : academia_id,
                             email_externo : email_externo,
-                            alumno_id : alumno_id
+                            alumno_id : alumno_id,
+                            sexo: sexo
                         },
                     success:function(respuesta){
                         if(respuesta.status == 'OK'){

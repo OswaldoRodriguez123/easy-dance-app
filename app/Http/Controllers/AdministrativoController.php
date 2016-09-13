@@ -158,12 +158,23 @@ class AdministrativoController extends BaseController {
         $array = array();
 
         $factura_join = DB::table('facturas')
-            ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
             ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
             ->where('alumnos.deleted_at' , '=' , null)
             ->OrderBy('facturas.created_at')
         ->get();
+
+        // $patrocinadores = DB::table('patrocinadores')
+        //      ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+        //      ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+        //      //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+        //      ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, alumnos.id')
+        //      ->where('patrocinadores.campana_id', '=', $id)
+        //      ->orderBy('patrocinadores.monto', 'desc')
+        //  ->get();
 
         foreach($factura_join as $factura){
 
@@ -1932,6 +1943,16 @@ class AdministrativoController extends BaseController {
                             ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido', 'alumnos.identificacion AS dni', 'alumnos.direccion AS direccion', 'alumnos.telefono AS telefono', 'alumnos.correo AS email')
                             ->where('facturas.id','=',$id)
                             ->first();
+
+        $alumno = DB::table('facturas')
+            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, alumnos.identificacion AS dni, IF(alumnos.correo is null, usuario_externos.correo, alumnos.correo) as email, alumnos.direccion AS direccion, alumnos.telefono AS telefono')
+            // ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido', 'alumnos.identificacion AS dni', 'alumnos.direccion AS direccion', 'alumnos.telefono AS telefono', 'alumnos.correo AS email')
+            ->where('facturas.id','=',$id)
+        ->first();
+
 
         $academia = DB::table('facturas')
                             ->join('academias', 'facturas.academia_id','=','academias.id')

@@ -89,7 +89,7 @@
                                     <div class="i-to">
                                         <p class="c-gray">Factura para</p>
                                         
-                                        <h4>{{ $alumno->alumno_nombre }} {{ $alumno->alumno_apellido }}</h4>
+                                        <h4>{{ $alumno->nombre }}</h4>
                                         
                                         <span class="text-muted">
                                             <address>

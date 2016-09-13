@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('layout.master3')
 
 @section('css_vendor')
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
@@ -17,6 +17,15 @@
 
 <div class="container">
 
+    @if(isset($_SERVER['HTTP_REFERER']))
+
+
+        <div class="block-header">
+
+             <a class="btn-blanco m-r-10 f-16" href="{{$_SERVER['HTTP_REFERER']}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
+        </div> 
+
+    @endif
 
     <div class="card" id="profile-main">
         <div class="pm-overview c-overflow">
@@ -170,7 +179,7 @@
 
                                 </div>
                                 
-                                <div class="t-view" data-tv-type="text">
+                               <!--  <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
                                         <a href="" class="tvh-user pull-left">
                                             <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/henry_fuenmayor.png" alt="">
@@ -195,7 +204,7 @@
 
                                     </div>
 
-                                </div>
+                                </div> -->
                                 
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">

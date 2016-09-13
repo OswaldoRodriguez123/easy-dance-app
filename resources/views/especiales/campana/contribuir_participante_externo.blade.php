@@ -121,6 +121,7 @@
             var monto = "{{ $usuario_ext['monto'] }}";
             var academia_id = "{{ $usuario_ext['academia_id'] }}";
             var nombre = "{{ $usuario_ext['nombre'] }}";
+            var sexo = "{{ $usuario_ext['sexo'] }}";
             var email_externo = "{{ $usuario_ext['email_externo']}}";
             var route = route_mercadopago;
             var token = $('input:hidden[name=_token]').val();
@@ -137,7 +138,8 @@
                       campana_id : campana_id,
                       campana_nombre : campana_nombre,
                       monto : monto,
-                      email_externo : email
+                      email_externo : email,
+                      sexo: sexo
                   },
               success:function(respuesta){
 

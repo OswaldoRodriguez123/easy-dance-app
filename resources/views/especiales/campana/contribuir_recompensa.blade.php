@@ -137,6 +137,36 @@
                               </span>
                            </div>
                          </div>
+
+                         <div class="clearfix m-20 m-b-25"></div>
+
+                         <div class="col-sm-8 col-sm-offset-2">
+                                 
+                            <div class="text-center c-morado f-30" id="id-sexo">Dime tu Sexo</div>
+                            <div class="clearfix m-20 m-b-25"></div>
+                                <div class="text-center">
+                                    <div class="input-group">
+                                      <span class="input-group-addon"></span>
+                                      <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="sexo" id="mujer" value="F" type="radio" checked>
+                                          <i class="input-helper"></i>  
+                                          <span class="f-20">Mujer</span> <i class="zmdi zmdi-female p-l-5 f-25"></i>
+                                      </label>
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="sexo" id="hombre" value="M" type="radio">
+                                          <i class="input-helper"></i>  
+                                          <span class="f-20">Hombre</span> <i class="zmdi zmdi-male-alt p-l-5 f-25"></i>
+                                      </label>
+                                      </div>
+                                    </div>
+                                     <div class="has-error" id="error-sexo">
+                                          <span >
+                                              <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                          </span>
+                                      </div>
+                                  </div>
+                              </div>
                       
                       @endif
                     </div>
@@ -246,6 +276,13 @@
             $('#segundo').addClass('active')
           }
 
+          $('#cambio').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+
+              A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+              }
+
+            });
+
         });
 
 
@@ -293,7 +330,7 @@
               $("input[name=nombre]").val(nombre);
               $('#mostrar').text(nombre);
 
-          });
+        });
 
         //RETURN DE MERCADOPAGO
         function respuesta_mercadopago(json) {
@@ -343,6 +380,7 @@
             var campana_nombre = "{{$campana->nombre}}";
             var academia_id = "{{$academia->id}}";
             var alumno_id = $("#alumno_id").val();
+            var sexo = $("input[name=sexo]").val();
 
             $.ajax({
               url: route,
@@ -358,7 +396,8 @@
                       email_externo: email_externo,
                       academia_id: academia_id,
                       alumno_id: alumno_id,
-                      campaña_nombre: campaña_nombre
+                      campaña_nombre: campaña_nombre,
+                      sexo: sexo
 
                   },
               success:function(respuesta){
@@ -369,9 +408,9 @@
               }
             });
 
-            setTimeout(function(){ window.location = "{{url('/')}}/especiales/campañas/progreso/"+{{$campana->id}}; },3000);
+              setTimeout(function(){ window.location = "{{url('/')}}/especiales/campañas/progreso/"+{{$campana->id}}; },3000);
 
-        }
+            }
 
               //PAGO NORMAL, VERSION ANTERIOR
               $("#guardar").click(function(){

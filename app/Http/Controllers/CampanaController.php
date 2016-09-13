@@ -11,6 +11,7 @@ use App\Alumno;
 use App\Patrocinador;
 use App\ItemsFacturaProforma;
 use App\Factura;
+use App\ItemsFactura;
 use App\MercadopagoMovs;
 use App\UsuarioExterno;
 use App\TransferenciaCampana;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use Image;
 use MP;
+use Mail;
 
 class CampanaController extends BaseController {
 
@@ -528,10 +530,10 @@ class CampanaController extends BaseController {
     {
 
     $rules = [
-        'nombre' => 'required|min:3|max:30|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'sexo' => 'required',
         'monto' => 'required|numeric',
         'nombre_banco' => 'required',
-        'tipo_cuenta' => 'required',
         'numero_cuenta' => 'required',
         'rif' => 'required|min:7',
         'correo' => 'required|email|max:255',
@@ -541,14 +543,14 @@ class CampanaController extends BaseController {
         
         'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
         'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-        'nombre.max' => 'El máximo de caracteres permitidos son 30',
+        'nombre.max' => 'El máximo de caracteres permitidos son 50',
         'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'monto.required' => 'Ups! El monto de dinero es requerido',
+        'sexo.required' => 'Ups! El Sexo  es requerido ',
+        'monto.required' => 'Ups! El monto es requerido',
         'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
         'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
-        'tipo_cuenta.required' => 'Ups! El Tipo de cuenta es requerido',
-        'numero_cuenta.required' => 'Ups! El Numero de cuenta es requerido',
-        'rif.required' => 'Ups! El Rif - Cedula es requerido',
+        'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
+        'rif.required' => 'Ups! La Cedula - Pasaporte es requerido',
         'rif.min' => 'El mínimo de numeros permitidos son 7',
         'correo.required' => 'Ups! El correo  es requerido ',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
@@ -566,18 +568,42 @@ class CampanaController extends BaseController {
 
         else{
 
+                Session::put('nombre_contribuyente', $request->nombre);
+
                 $transferencia = new TransferenciaCampana;
 
                 $transferencia->campana_id = $request->id;
                 $transferencia->nombre = $request->nombre;
+                $transferencia->sexo = $request->sexo;
                 $transferencia->monto = $request->monto;
                 $transferencia->nombre_banco = $request->nombre_banco;
-                $transferencia->tipo_cuenta = $request->tipo_cuenta;
                 $transferencia->numero_cuenta = $request->numero_cuenta;
                 $transferencia->rif = $request->rif;
                 $transferencia->correo = $request->correo;
 
                 if($transferencia->save()){
+
+                    if($request->correo)
+                    {
+
+                        $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
+
+                        $array = [
+
+                           'nombre' => $request->nombre,
+                           'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
+                           'correo' => $transferencia->correo = $request->correo,
+                           'subj' => $subj,
+                           'id' => $transferencia->id
+
+                        ];
+
+                        Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
+                                $msj->subject($array['subj']);
+                                $msj->to($array['correo']);
+                            });
+
+                    }
 
                     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
           
@@ -587,6 +613,12 @@ class CampanaController extends BaseController {
 
             }
         }
+
+    public function enhorabuena($id)
+    {
+        $nombre = Session::get('nombre_contribuyente');
+        return view('especiales.campana.enhorabuena')->with(['id' => $id, 'nombre' => $nombre]);
+    }
 
     public function updateCantidad(Request $request){
 
@@ -1066,7 +1098,7 @@ class CampanaController extends BaseController {
              ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
              ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, alumnos.id')
+             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, alumnos.id')
              ->where('patrocinadores.campana_id', '=', $id)
              ->orderBy('patrocinadores.monto', 'desc')
          ->get();
@@ -1272,7 +1304,6 @@ class CampanaController extends BaseController {
             $factura = new Factura;
             $patrocinador = new Patrocinador;
 
-
             if($request->json['collection_status']!=null){
 
                 if($request->alumno_id){
@@ -1360,6 +1391,7 @@ class CampanaController extends BaseController {
             if($request->json['collection_status']!=null){
 
                 $UsuarioExterno->nombre = $request->nombre;
+                $UsuarioExterno->sexo = $request->sexo;
                 $UsuarioExterno->campana_id = $request->campana_id;
                 $UsuarioExterno->monto = $request->monto;
                 $UsuarioExterno->correo = $request->email_externo;
@@ -1452,7 +1484,7 @@ class CampanaController extends BaseController {
             
         if($contribucion->save()){
 
-            $campana = Campana::find($contribucion->id);
+            $campana = Campana::find($contribucion->campana_id);
 
             $numerofactura = DB::table('facturas')
                 ->select('facturas.*')
@@ -1478,6 +1510,7 @@ class CampanaController extends BaseController {
             $patrocinador = new Patrocinador;
 
             $UsuarioExterno->nombre = $contribucion->nombre;
+            $UsuarioExterno->sexo = $contribucion->sexo;
             $UsuarioExterno->campana_id = $contribucion->campana_id;
             $UsuarioExterno->monto = $contribucion->monto;
             $UsuarioExterno->correo = $contribucion->correo;
@@ -1492,6 +1525,19 @@ class CampanaController extends BaseController {
             $factura->concepto = 'Contribucion para la campaña '. $campana->nombre;
 
             $factura->save();
+
+            $item_factura = new ItemsFactura;
+
+            $item_factura->factura_id = $factura->id;
+            $item_factura->item_id = $factura->id;
+            $item_factura->nombre = 'Contribucion para la campaña '. $campana->nombre;
+            $item_factura->tipo = 12;
+            $item_factura->cantidad = 1;
+            $item_factura->precio_neto = 0;
+            $item_factura->impuesto = 0;
+            $item_factura->importe_neto = $contribucion->monto;
+
+            $item_factura->save();
 
             $patrocinador->academia_id = $campana->academia_id;
             $patrocinador->campana_id = $contribucion->campana_id;
@@ -1517,6 +1563,102 @@ class CampanaController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function principalinvitar($id){
+
+        Session::forget('invitaciones');
+
+        return view('especiales.campana.invitar')->with('id', $id);
+
+    }
+
+    public function agregarlinea(Request $request){
+        
+    $rules = [
+
+        'nombre' => 'required',
+        'correo' => 'required|email',
+
+    ];
+
+    $messages = [
+
+        'nombre.required' => 'Ups! El Nombre es requerido',
+        'correo.required' => 'Ups! El Correo es requerido',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $array = array(['nombre' => $request->nombre, 'email' => $request->correo]);
+
+        Session::push('invitaciones', $array);
+
+        $items = Session::get('invitaciones');
+        end( $items );
+        $contador = key( $items );
+
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminarlinea($id){
+
+        $arreglo = Session::get('invitaciones');
+
+        unset($arreglo[$id]);
+        Session::put('invitaciones', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+
+    }
+
+    public function invitar(Request $request){
+        
+            $invitaciones = Session::get('invitaciones');
+
+            $contribucion = TransferenciaCampana::find($request->id);
+
+            if($invitaciones)
+            {
+
+                foreach($invitaciones as $invitacion){
+
+                    $subj =  $contribucion->nombre . ' te invita a contribuir con la campaña “TODOS CON ROBERT”';
+                    
+                    $array = [
+                       'correo' => $invitacion[0]['email'],
+                       'nombre_envio' => $contribucion->nombre,
+                       'nombre_destino' => $invitacion[0]['nombre'],
+                       'id' => $contribucion->campana_id,
+                       'subj' => $subj
+                    ];
+
+                     Mail::send('correo.invitacion_campana', $array , function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo']);
+                    });
+                }
+               
+             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores' => ['linea' => [0, 'Ups! Debes agregar un correo electrónico primero']], 'status' => 'ERROR'],422);
+            }
+    }
+
+    public function enhorabuena_invitacion($id)
+    {;
+        return view('especiales.campana.enhorabuena_invitacion')->with('id', $id);
     }
 
 }

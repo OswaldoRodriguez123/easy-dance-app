@@ -29,7 +29,7 @@
                 <div class="modal-dialog ">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Confirma tu pago aqui<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Confirma tu pago aquí<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="form_modal" id="form_modal"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -38,7 +38,7 @@
                            <div class="row p-t-20 p-b-0">
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre">Nombre del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre">Nombre y Apellido del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -58,8 +58,36 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
+                                 
+                                              <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
+
+                                              <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
+                                                <div class="p-t-10">
+                                              <label class="radio radio-inline m-r-20">
+                                                  <input name="sexo" id="mujer" value="F" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                              </label>
+                                              <label class="radio radio-inline m-r-20 ">
+                                                  <input name="sexo" id="hombre" value="M" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                              </label>
+                                              </div>
+                                              </div>
+                                           <div class="has-error" id="error-sexo">
+                                                <span >
+                                                    <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                                </span>
+                                            </div>
+                                         </div>
+
+                                         <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-12">
+                                      <div class="form-group">
+                                      <div class="form-group">
                                         <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
@@ -80,7 +108,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre_banco">Nombre del banco</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -100,29 +128,11 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-tipo_cuenta">Tipo de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
-                                                  <div class="input-group">
-                                                    <span class="input-group-addon"><i class="icon_c-credit-cards f-22"></i></span>
-                                                     <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="tipo_cuenta" id="tipo_cuenta" placeholder="Ej. Cuenta Corriente">
-                                                      </div>
-                                                    </div>
-                                                  <div class="has-error" id="error-tipo_cuenta">
-                                                    <span >
-                                                        <small id="error-tipo_cuenta_mensaje" class="help-block error-span" ></small>                                           
-                                                    </span>
-                                                  </div>
-                                              
-                                          </div>
-
-                                          <div class="clearfix p-b-35"></div>
-
-                                          <div class="col-sm-12">
-                                              <label for="id" id="id-numero_cuenta">Numero de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                                                      <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="0000-0000-00-0000000000" placeholder="Ingresa Número de Cuenta">
+                                                      <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="00000000000000000000" placeholder="Ingresa Número de Transferencia">
                                                       </div>
                                                     </div>
                                                   <div class="has-error" id="error-numero_cuenta">
@@ -136,7 +146,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-rif">Rif - Cédula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -154,7 +164,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -309,27 +319,31 @@
                               </div>
                               <p class="text-center f-700" > {{$porcentaje}} % de {{ number_format($campana->cantidad, 2, '.' , '.') }}</p> 
 
-         
 
-            <style type="text/css">
-                  @import url(http://fonts.googleapis.com/css?family=Comfortaa);
-                  #my-soon-watch-red {background-color:#030303;}
-                  #my-soon-watch-red .soon-reflection {background-color:#030303;background-image:linear-gradient(#030303 25%,rgba(3,3,3,0));}
-                  #my-soon-watch-red {color:#ffffff;}
-                  #my-soon-watch-red .soon-label {color:#ffffff;color:rgba(255,255,255,0.75);}
-                  #my-soon-watch-red {font-family:"Comfortaa",sans-serif;}
-                  #my-soon-watch-red .soon-ring-progress {background-color:#410918;}
-                  #my-soon-watch-red .soon-ring-progress {border-top-width:14px;}
-                  #my-soon-watch-red .soon-ring-progress {border-bottom-width:13px;}
-              </style>
-              <div class="soon" id="my-soon-watch-red"
-                   data-layout="group tight label-uppercase label-small"
-                   data-format="d,h,m,s"
-                   data-face="slot"
-                   data-padding="false"
-                   data-visual="ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0">
-              </div>
-             
+                              <br>
+
+                              <div class="text-center f-700" >Tiempo restante de la campaña</div>
+                              <hr class="linea-morada opaco-0-8">
+
+                                <style type="text/css">
+                                      @import url(http://fonts.googleapis.com/css?family=Comfortaa);
+                                      #my-soon-watch-red {background-color:#030303;}
+                                      #my-soon-watch-red .soon-reflection {background-color:#030303;background-image:linear-gradient(#030303 25%,rgba(3,3,3,0));}
+                                      #my-soon-watch-red {color:#ffffff;}
+                                      #my-soon-watch-red .soon-label {color:#ffffff;color:rgba(255,255,255,0.75);}
+                                      #my-soon-watch-red {font-family:"Comfortaa",sans-serif;}
+                                      #my-soon-watch-red .soon-ring-progress {background-color:#410918;}
+                                      #my-soon-watch-red .soon-ring-progress {border-top-width:14px;}
+                                      #my-soon-watch-red .soon-ring-progress {border-bottom-width:13px;}
+                                  </style>
+                                  <div class="soon" id="my-soon-watch-red"
+                                       data-layout="group tight label-uppercase label-small"
+                                       data-format="d,h,m,s"
+                                       data-face="slot"
+                                       data-padding="false"
+                                       data-visual="ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0">
+                                  </div>
+                                 
 
                
                           <div class="clearfix p-b-15"></div>
@@ -372,12 +386,15 @@
                       @endforeach 
 
                       <div style="border: 1px solid;">
-                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Otro Monto</div>
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Otro monto a través de MercadoPago</div>
 
                         
                         <div class="col-sm-12">
 
                             <div class="clearfix p-b-15"></div>
+                            <div class="text-center">
+                            <i class="icon_a-pagar f-50"></i>
+                            </div>
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
 
@@ -393,12 +410,15 @@
                       <div class="clearfix p-b-15"></div>
 
                       <div style="border: 1px solid;">
-                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Confirma tu pago aqui</div>
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Confirma tu pago aquí</div>
 
                         
                         <div class="col-sm-12">
 
                             <div class="clearfix p-b-15"></div>
+                            <div class="text-center">
+                            <i class="zmdi zmdi-check c-verde  zmdi-hc-5x"></i>
+                            </div>
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
 
@@ -533,8 +553,13 @@
                                       <a class="lv-item" href="javascript:void(0)"  >
                                               <div class="media">
                                                   <div class="pull-left p-relative">
-                                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                                      <i class="chat-status-busy"></i>
+                                                      @if($patrocinador->sexo == 'F')
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/mujer.jpg" alt="">
+                                                        <i class="chat-status-busy"></i>
+                                                      @else
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/hombre.jpg" alt="">
+                                                        <i class="chat-status-busy"></i>
+                                                      @endif
                                                   </div>
                                                   <div class="col-sm-6">
                                                     <div class="media-body">
@@ -568,60 +593,44 @@
 
                  <div class="pmb-block m-t-0 p-t-0">
 
-                        @if($campana->nombre_banco)
 
                         <p class="text-left f-30 opaco-0-8 f-700" id ="offset_datos" >Datos Bancarios</p>
 
                           <hr class='linea-morada'>
 
-                        <div class="col-sm-12">
-                                 
-                                    <label for="nombre">Nombre del banco</label> <br>
-                                    <span class="f-15">{{$campana->nombre_banco}}</span>
-
-                               </div>
-
-                              <div class="clearfix p-b-35"></div>
-                                    <div class="col-sm-12">
-                                    
-                                    <label for="nombre">Tipo de Cuenta</label> <br>
-                                    <span class="f-15">{{$campana->tipo_cuenta}}</span>
-
-                                 
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
+                          <div class="clearfix p-b-35"></div>
 
                               <div class="col-sm-12">
+                                 
+                                <p class="text-left f-22 opaco-0-8 f-700">TRANSFERENCIAS O DEPÓSITOS  BANCARIOS EN VENEZUELA</p>
+                                <hr class='linea-morada'>
 
-                                    <label for="nombre">Número de Cuenta</label> <br>
-                                    <span class="f-15">{{$campana->numero_cuenta}}</span>
+                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Banco Occidental de Descuento ( B.O.D ), Cuenta Corriente, No: 0116-0128-62-0007411502</p>
+                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Banco de Venezuela, Cuenta Corriente, No: 0102-0345-77-0000076241</p>
+                                
+                                <p class="text-left f-16 opaco-0-8 f-700">A nombre de: Richard Virona. Número de cédula 12.590.716</p>
+                                
+                                <div class="clearfix p-b-35"></div>
 
-                               </div>
-                               <div class="clearfix p-b-35"></div>
+                                <p class="text-left f-22 opaco-0-8 f-700">TRANSFERENCIAS O DEPÓSITOS  BANCARIOS EN COLOMBIA</p>
+                                <hr class='linea-morada'>
+                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Banco Davivienda, Cuenta de Ahorros, No: 126000663123. Energía Latina</p>
 
-                               <div class="col-sm-12">
+                                <div class="clearfix p-b-35"></div>
 
-                                    <label for="nombre">Rif - Cédula</label> <br>
-                                    <span class="f-15">{{$campana->rif}}</span>
+                                <p class="text-left f-22 opaco-0-8 f-700">APORTES EN EFECTIVO  DESDE EL EXTRANJERO</p>
+                                <hr class='linea-morada'>
+                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Los aportes realizados en efectivo de cuentas del exterior hacia Colombia podrán ser realizados a través de Western Union a nombre de Helmer Morcillo 7 3141903</p>
 
-                               </div>
 
-                               <div class="clearfix p-b-35"></div>
-
-                                <div class="col-sm-12">
-
-                                    <label for="nombre">Correo Electrónico</label> <br>
-                                    <span class="f-15">{{$campana->correo}}</span>
-
-                               </div>
+                              </div>
 
                                <div class="clearfix p-b-35"></div>
 
 
                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre" id="id-aporte">Confirma tu pago aqui</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde aqui podras dejar los datos de tu transferencia o deposito"></i>
+                                    <label for="nombre" id="id-aporte">Confirma tu pago aquí</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde aquí podras dejar los datos de tu transferencia o deposito"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -641,7 +650,7 @@
                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre">Nombre del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre">Nombre y Apellido del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -661,8 +670,36 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
+                                 
+                                              <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
+
+                                              <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
+                                                <div class="p-t-10">
+                                              <label class="radio radio-inline m-r-20">
+                                                  <input name="sexo" id="mujer" value="F" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                              </label>
+                                              <label class="radio radio-inline m-r-20 ">
+                                                  <input name="sexo" id="hombre" value="M" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                              </label>
+                                              </div>
+                                              </div>
+                                           <div class="has-error" id="error-sexo">
+                                                <span >
+                                                    <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                                </span>
+                                            </div>
+                                         </div>
+
+                                         <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-12">
+                                      <div class="form-group">
+                                      <div class="form-group">
                                         <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
@@ -683,7 +720,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre_banco">Nombre del banco</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -703,29 +740,11 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-tipo_cuenta">Tipo de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
-                                                  <div class="input-group">
-                                                    <span class="input-group-addon"><i class="icon_c-credit-cards f-22"></i></span>
-                                                     <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="tipo_cuenta" id="tipo_cuenta" placeholder="Ej. Cuenta Corriente">
-                                                      </div>
-                                                    </div>
-                                                  <div class="has-error" id="error-tipo_cuenta">
-                                                    <span >
-                                                        <small id="error-tipo_cuenta_mensaje" class="help-block error-span" ></small>                                           
-                                                    </span>
-                                                  </div>
-                                              
-                                          </div>
-
-                                          <div class="clearfix p-b-35"></div>
-
-                                          <div class="col-sm-12">
-                                              <label for="id" id="id-numero_cuenta">Numero de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                                                      <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="0000-0000-00-0000000000" placeholder="Ingresa Número de Cuenta">
+                                                      <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="00000000000000000000" placeholder="Ingresa Número de Transferencia">
                                                       </div>
                                                     </div>
                                                   <div class="has-error" id="error-numero_cuenta">
@@ -739,7 +758,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-rif">Rif - Cédula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -757,7 +776,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -811,13 +830,12 @@
                               </div>
                             </div>
 
-                            @endif
 
                     </div>
                   </div>
-
-
                 </div>
+
+                <div class="clearfix p-b-35"></div>
 
                 <!--     <ul class="fw-footer pagination wizard">
                         <li class="previous"><a class="a-prevent" href="" onclick="irArriba('tabs')" ><i class="zmdi zmdi-arrow-back"></i></a></li>
@@ -878,6 +896,7 @@
         route_agregar="{{url('/')}}/especiales/campañas/contribuir/recompensa";
         route_agregar_unsign="{{url('/')}}/especiales/campañas/contribuir/campaña";
         route_agregar_contribucion="{{url('/')}}/especiales/campañas/contribuir/contribucion";
+        route_enhorabuena="{{url('/')}}/especiales/campañas/contribuir/enhorabuena/";
 
         var recompensa = 0;
 
@@ -958,6 +977,13 @@
                 $("#barra-progreso").removeClass('progress-bar-success');
                 $("#barra-progreso").addClass('progress-bar-morado');
               }
+
+              $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+
+                  A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+                }
+
+            });
           });
 
       function errores(merror){
@@ -1032,10 +1058,10 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          finprocesado();
                           var nType = 'success';
                           $("#"+form)[0].reset();
                           $('#modalConfirmar').modal('hide');
+                          window.location = route_enhorabuena + "{{$campana->id}}"
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
                           $('html,body').animate({
@@ -1049,7 +1075,6 @@
                           $(".procesando").removeClass('show');
                           $(".procesando").addClass('hidden');
                           $("#guardar").removeAttr("disabled");
-                          finprocesado();
                           $("#guardar").css({
                             "opacity": ("1")
                           });

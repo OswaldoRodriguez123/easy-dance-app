@@ -37,10 +37,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="nombre_banco" data-order="desc">Nombre del Banco</th>
-                                    <th class="text-center" data-column-id="tipo_cuenta" data-order="desc">Tipo de Cuenta</th>
-                                    <th class="text-center" data-column-id="numero_cuenta" data-order="desc">Numero de Cuenta</th>
-                                    <th class="text-center" data-column-id="rif" data-order="desc">Rif - Cedula</th>
+                                    <th class="text-center" data-column-id="monto" data-order="desc">Monto</th>
+                                    <th class="text-center" data-column-id="nombre_banco" data-order="desc">Identidad bancaria</th>
+                                    <th class="text-center" data-column-id="numero_cuenta" data-order="desc">Número de transferencia</th>
+                                    <th class="text-center" data-column-id="rif" data-order="desc">Cedula - Pasaporte</th>
                                     <th class="text-center" data-column-id="correo" data-order="desc">Correo Electronico</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -52,8 +52,8 @@
                                 <?php $id = $contribucion['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$contribucion['nombre']}}</td>
+                                    <td class="text-center previa">{{$contribucion['monto']}}</td>
                                     <td class="text-center previa">{{$contribucion['nombre_banco']}}</td>
-                                    <td class="text-center previa">{{$contribucion['tipo_cuenta']}}</td>
                                     <td class="text-center previa">{{$contribucion['numero_cuenta']}}</td>
                                     <td class="text-center previa">{{$contribucion['rif']}}</td>
                                     <td class="text-center previa">{{$contribucion['correo']}}</td>

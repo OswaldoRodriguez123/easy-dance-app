@@ -232,7 +232,7 @@
                 }
                 var rowNode=t.row.add( [
                 ''+pad(array.factura, 10)+'',
-                ''+array.nombre+ ' '+array.apellido+'',
+                ''+array.nombre+'',
                 ''+concepto+'',
                 ''+array.fecha+'',
                 ''+formatmoney(parseFloat(array.total))+'',

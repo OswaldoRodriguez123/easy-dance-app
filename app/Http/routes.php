@@ -74,6 +74,17 @@ Route::get('/reservacion/completado', function () {
 	return view('reserva.reserva_completado');
 });
 
+//EMPRESA
+
+Route::get('empresa/sobre-la-empresa', 'EmpresaController@index');
+
+//EMBAJADOR
+
+Route::get('empresa/embajadores', 'EmbajadorController@principal');
+
+Route::post('/embajadores/agregar', 'EmbajadorController@agregarlinea');
+Route::post('/embajadores/eliminar/{id}', 'EmbajadorController@eliminarlinea');
+
 Route::get('reservacion/{id}','ReservaController@reserva');
 
 // REGALO USUARIO
@@ -339,7 +350,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//EMBAJADOR
 
 			Route::get('/invitar', 'EmbajadorController@index');
-			Route::post('/invitar', 'EmbajadorController@invitar');			
+			Route::post('/invitar', 'EmbajadorController@invitar');	
+			Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');		
 		
 		});	//END MIDDLEWARE ADMIN
 		/*----------------------------------------------------------
@@ -645,6 +657,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 			Route::get('configuracion/clases-personalizadas/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 			Route::get('agendar/talleres/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
+			Route::get('especiales/campañas/contribuir/enhorabuena/{id}', 'CampanaController@enhorabuena');
+
+			Route::get('especiales/campañas/invitar/{id}', 'CampanaController@principalinvitar');
+			Route::post('especiales/campañas/invitar/agregar', 'CampanaController@agregarlinea');
+			Route::post('especiales/campañas/invitar/eliminar/{id}', 'CampanaController@eliminarlinea');
+			Route::post('especiales/campañas/invitar', 'CampanaController@invitar');	
+			Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
 
 			Route::get('guia/pay', function () {
 			    return view('guia.index3');
@@ -662,15 +681,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('soporte/normas', function () {
 			    return view('soporte.normas');
 			});
-
-			Route::get('empresa/sobre-la-empresa', 'EmpresaController@index');
-
-			//EMBAJADOR
-
-			Route::get('empresa/embajadores', 'EmbajadorController@principal');
-
-			Route::post('/embajadores/agregar', 'EmbajadorController@agregarlinea');
-			Route::post('/embajadores/eliminar/{id}', 'EmbajadorController@eliminarlinea');
 
 			// CORREO
 
