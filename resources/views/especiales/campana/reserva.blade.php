@@ -563,7 +563,7 @@
                                                   </div>
                                                   <div class="col-sm-6">
                                                     <div class="media-body">
-                                                        <div class="lv-title"><span class="c-morado">
+                                                        <div class="lv-title"><span class="c-morado capitalize">
                                                           {{ $patrocinador->Nombres }}
                                                         </span></div>
                                                         <!-- <small class="lv-small">hace 10 minutos</small> -->
@@ -1433,6 +1433,10 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
+
+                           $('html,body').animate({
+                              scrollTop: $("#add").offset().top-90,
+                            }, 1000);
 
                           $("#formComparte")[0].reset();
                           var nType = 'success';
