@@ -127,6 +127,14 @@ Route::get('especiales/campañas/contribuir/mercadopago', 'CampanaController@pro
 
 Route::post('especiales/campañas/contribuir/mercadopago', 'CampanaController@storeMercadopago');
 
+Route::get('especiales/campañas/contribuir/enhorabuena/{id}', 'CampanaController@enhorabuena');
+
+Route::get('especiales/campañas/invitar/{id}', 'CampanaController@principalinvitar');
+Route::post('especiales/campañas/invitar/agregar', 'CampanaController@agregarlinea');
+Route::post('especiales/campañas/invitar/eliminar/{id}', 'CampanaController@eliminarlinea');
+Route::post('especiales/campañas/invitar', 'CampanaController@invitar');	
+Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
+
 
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
@@ -657,13 +665,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 			Route::get('configuracion/clases-personalizadas/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 			Route::get('agendar/talleres/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
-			Route::get('especiales/campañas/contribuir/enhorabuena/{id}', 'CampanaController@enhorabuena');
 
-			Route::get('especiales/campañas/invitar/{id}', 'CampanaController@principalinvitar');
-			Route::post('especiales/campañas/invitar/agregar', 'CampanaController@agregarlinea');
-			Route::post('especiales/campañas/invitar/eliminar/{id}', 'CampanaController@eliminarlinea');
-			Route::post('especiales/campañas/invitar', 'CampanaController@invitar');	
-			Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
 
 			Route::get('guia/pay', function () {
 			    return view('guia.index3');
