@@ -1692,8 +1692,13 @@ class CampanaController extends BaseController {
     }
 
     public function enhorabuena_invitacion($id)
-    {;
+    {
         return view('especiales.campana.enhorabuena_invitacion')->with('id', $id);
+    }
+
+    public function enhorabuena_invitacion_sinid()
+    {
+        return view('especiales.campana.enhorabuena_invitacion');
     }
 
 }

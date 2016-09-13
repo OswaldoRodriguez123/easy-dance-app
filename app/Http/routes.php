@@ -134,6 +134,7 @@ Route::post('especiales/campañas/invitar/agregar', 'CampanaController@agregarli
 Route::post('especiales/campañas/invitar/eliminar/{id}', 'CampanaController@eliminarlinea');
 Route::post('especiales/campañas/invitar', 'CampanaController@invitar');	
 Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
+Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enhorabuena_invitacion_sinid');
 
 
 

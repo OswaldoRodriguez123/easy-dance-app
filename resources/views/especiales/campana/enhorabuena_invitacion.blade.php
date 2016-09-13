@@ -61,9 +61,20 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
-                                    <div class="block-header text-center">
-                                        <a class="btn-blanco m-r-10 f-20 pointer" href="{{url('/')}}/especiales/campañas/invitar/{{$id}}" > INVITAR A OTRA PERSONA</a>
-                                    </div> 
+                                    @if(isset($id))
+
+
+                                      <div class="block-header text-center">
+                                          <a class="btn-blanco m-r-10 f-20 pointer" href="{{url('/')}}/especiales/campañas/invitar/{{$id}}" > INVITAR A OTRA PERSONA</a>
+                                      </div> 
+
+                                    @else
+
+                                      <div class="block-header text-center">
+                                          <a class="btn-blanco m-r-10 f-20 pointer" href="{{url('/')}}/especiales/campañas/progreso/9" > INVITAR A OTRA PERSONA</a>
+                                      </div> 
+
+                                    @endif
               
                             </div>
                           <div class="col-md-1"></div>           
