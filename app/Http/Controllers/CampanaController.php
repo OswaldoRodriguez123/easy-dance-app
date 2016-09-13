@@ -1104,6 +1104,11 @@ class CampanaController extends BaseController {
              // ->orderBy('patrocinadores.monto', 'desc')
          ->get();
 
+
+         foreach($patrocinadores as $patrocinador){
+            $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
+         }
+
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
          $academia = Academia::find($campaña->academia_id);
 

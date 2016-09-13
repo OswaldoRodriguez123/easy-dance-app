@@ -63,7 +63,6 @@
 
                                     @if(isset($id))
 
-
                                       <div class="block-header text-center">
                                           <a class="btn-blanco m-r-10 f-20 pointer" href="{{url('/')}}/especiales/campañas/invitar/{{$id}}" > INVITAR A OTRA PERSONA</a>
                                       </div> 

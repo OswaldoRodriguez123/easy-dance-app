@@ -563,9 +563,9 @@
                                                   </div>
                                                   <div class="col-sm-6">
                                                     <div class="media-body">
-                                                        <div class="lv-title"><span class="c-morado capitalize">
+                                                        <div class="lv-title"><p class="c-morado">
                                                           {{ $patrocinador->Nombres }}
-                                                        </span></div>
+                                                        </p></div>
                                                         <!-- <small class="lv-small">hace 10 minutos</small> -->
                                                     </div>
                                                   </div>
