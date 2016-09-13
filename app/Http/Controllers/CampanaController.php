@@ -1296,6 +1296,19 @@ class CampanaController extends BaseController {
 
                 $factura->save();
 
+                $item_factura = new ItemsFactura;
+
+                $item_factura->factura_id = $factura->id;
+                $item_factura->item_id = $factura->id;
+                $item_factura->nombre = 'Contribucion para la campaña '. $request->campana_nombre;
+                $item_factura->tipo = 12;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $request->monto;
+
+                $item_factura->save();
+
                 $mercadopago->academia_id = Auth::user()->academia_id;
                 $mercadopago->alumno_id = $alumno_id;
                 $mercadopago->numero_factura = $numero_factura;
@@ -1361,6 +1374,19 @@ class CampanaController extends BaseController {
                 $factura->concepto = 'Contribucion para la campaña '. $request->campana_nombre;
 
                 $factura->save();
+
+                $item_factura = new ItemsFactura;
+
+                $item_factura->factura_id = $factura->id;
+                $item_factura->item_id = $factura->id;
+                $item_factura->nombre = 'Contribucion para la campaña '. $request->campana_nombre;
+                $item_factura->tipo = 12;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $request->monto;
+
+                $item_factura->save();
 
                 $mercadopago->academia_id = $request->academia_id;
                 $mercadopago->externo_id = $UsuarioExterno->id;

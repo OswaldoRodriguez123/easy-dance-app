@@ -25,7 +25,181 @@
 
 @section('content')
 
-<img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" alt="">
+<div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Confirma tu pago aqui<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_modal" id="form_modal"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="id" value="{{ $campana->id }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+
+                                        <div class="col-sm-12">
+                                              <label for="id" id="id-nombre">Nombre del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      
+                                                      <input type="text" class="form-control input-sm input-mask" name="nombre" id="nombre" placeholder="Ej. Valeria Zambrano">
+
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-nombre">
+                                                    <span >
+                                                        <small id="error-nombre_mensaje" class="help-block error-span" ></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          <div class="clearfix p-b-35"></div>
+
+                                          <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="monto" id="monto" data-mask="000000000000000" placeholder="Ej. 5000">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-monto">
+                                      <span >
+                                          <small id="error-monto_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                                        <div class="col-sm-12">
+                                              <label for="id" id="id-nombre_banco">Nombre del banco</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      
+                                                      <input type="text" class="form-control input-sm input-mask" name="nombre_banco" id="nombre_banco" placeholder="Ej. Banco del Tesoro">
+
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-nombre_banco">
+                                                    <span >
+                                                        <small id="error-nombre_banco_mensaje" class="help-block error-span" ></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          <div class="clearfix p-b-35"></div>
+
+                                          <div class="col-sm-12">
+                                              <label for="id" id="id-tipo_cuenta">Tipo de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_c-credit-cards f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      <input type="text" class="form-control input-sm input-mask" name="tipo_cuenta" id="tipo_cuenta" placeholder="Ej. Cuenta Corriente">
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-tipo_cuenta">
+                                                    <span >
+                                                        <small id="error-tipo_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          <div class="clearfix p-b-35"></div>
+
+                                          <div class="col-sm-12">
+                                              <label for="id" id="id-numero_cuenta">Numero de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="0000-0000-00-0000000000" placeholder="Ingresa Número de Cuenta">
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-numero_cuenta">
+                                                    <span >
+                                                        <small id="error-numero_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          <div class="clearfix p-b-35"></div>
+
+                                          <div class="col-sm-12">
+                                              <label for="id" id="id-rif">Rif - Cédula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      <input type="text" class="form-control input-sm input-mask" name="rif" id="rif" placeholder="Rif: J-298324278">
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-rif">
+                                                    <span >
+                                                        <small id="error-rif_mensaje" class="help-block error-span" ></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          <div class="clearfix p-b-35"></div>
+
+                                          <div class="col-sm-12">
+                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      <input type="text" class="form-control input-sm input-mask" name="correo" id="correo" placeholder="Ej: easydance@gmail.com">
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-correo">
+                                                    <span >
+                                                        <small id="error-correo_mensaje" class="help-block error-span" ></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                             <button type="button" data-formulario="form_modal" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+            <!-- END -->
+
+<div style="padding:0 ; background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}');  min-height: 450px; background-repeat: no-repeat; background-size: cover; background-position: center;" >
+
+</div>
 
 <!-- <div class="container"> -->
 
@@ -77,6 +251,7 @@
                           <span class="rrssb-text">facebook</span>
                         </a>
                       </li>
+
                       <li class="rrssb-twitter">
                         <!-- Replace href with your Meta and URL information  -->
                         <a href="https://twitter.com/intent/tweet?text=Ayuda a que la campaña {{$campana->nombre}} se haga realidad en @EasyDanceLatino {{url('/')}}/especiales/campañas/progreso/{{$id}}"
@@ -197,21 +372,41 @@
                       @endforeach 
 
                       <div style="border: 1px solid;">
-                      <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Otro Monto</div>
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Otro Monto</div>
 
-                      
-                    <div class="col-sm-12">
+                        
+                        <div class="col-sm-12">
 
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
 
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-
-                    </div>
+                        </div>
 
                         <span class="text-center">
 
                             <button id="{{$campana->id}}" name ="{{$campana->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa_otra" style="width:100%; padding:5px"> </i> Contribuir </button> 
+                        </span>
+
+                      </div>
+
+                      <div class="clearfix p-b-15"></div>
+
+                      <div style="border: 1px solid;">
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Confirma tu pago aqui</div>
+
+                        
+                        <div class="col-sm-12">
+
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+                            <div class="clearfix p-b-15"></div>
+
+                        </div>
+
+                        <span class="text-center">
+
+                            <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa_confirmar" style="width:100%; padding:5px"> </i> Confirmar </button> 
                         </span>
 
                       </div>
@@ -244,13 +439,13 @@
 <!--                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg"> -->
                       
 
-                        <p class="text-center f-30 f-700 opaco-0-8">{!! nl2br($campana->nombre) !!}</p>
+                        <p class="text-center f-30 f-700 opaco-0-8" id="offset_nombre">{!! nl2br($campana->nombre) !!}</p>
                         <p class="text-center f-20 f-700 opaco-0-8">{!! nl2br($campana->eslogan) !!}</p>
                         
                         <div class="clearfix p-b-20"></div>
 
                         <div class="f-700 f-30">Historia</div>
-                        <br>
+                        <hr class='linea-morada'>
                         <p class="f-20">Emprendí un viaje a Colombia, específicamente al departamento de Risaralda en la ciudad de Pereira, con el objetivo de sumar fuerzas en el área de baile y gerencia de la academia <b>TU CLASE DE BAILE</b> y a su vez, validar el proyecto tecnológico de creación personal llamado <b>Easy Dance</b> que he venido forjando desde unos años atrás, (aplicación web para academias de baile) herramienta que sería estrenada formalmente con la academia <b>TU CLASE DE BAILE</b>.</p>
 
                         <p class="f-20">Al encontrarme en mis actividades diarias, sentía como fuertes dolores oprimían mi pecho y parte de mi espalda y decidí asistir al médico, pensando que era un problema muscular, pues este aparecía sólo al momento de exigirme físicamente, Entre consultas y exámenes pude darme por enterado que padecía de una enfermedad coronaria severa. Fue así que de manera muy rápida y en un cerrar de ojos me encontraba hospitalizado y sin oportunidad de volver a Venezuela.</p>
@@ -260,7 +455,7 @@
                         <div class="clearfix p-b-20"></div>
 
                         <div class="f-700 f-30">Mi Perfil</div>
-                        <br>
+                        <hr class='linea-morada'>
                         <p class="f-20">Mi nombre es Robert Virona soy de la ciudad de Maracaibo y desde muy joven me apasioné por los bailes en especial los géneros latinos, por esa razón hace aproximadamente 20 años atrás decidí tomar un rumbo e iniciar mi carrera como bailador, con el paso del tiempo fui inclinando una profunda atención a los procesos y gerencia de las academias de baile, eventos y actividades en el que pude sentir una gran afinidad con el arte de gerenciar y organizar.</p>
 
                         <p class="f-20">Siempre me acompaña un deseo inmenso de superación y tengo la fortuna de ser un apasionado a los procesos de mejoramiento continuo, por eso utilizo la tecnología a mi favor para ser cada vez mejor, mis mejores fuentes de aprendizaje las consigo a través de la lectura y tutoriales que diariamente nos ofrece el internet , el cual , a mi juicio lo considero como la casa de estudio número 1 en el mundo , debido a la fuente de recursos y herramientas que te brinda para el crecimiento profesional.</p>
@@ -279,8 +474,7 @@
                         <div class="clearfix p-b-20"></div>
 
                         <div class="f-700 f-30">Logros Más Significativos</div>
-
-                        <br>
+                        <hr class='linea-morada'>
 
                         <p class="f-20">1.  Uno de los principales promotores  de la bailoterapia en el estado Zulia- Venezuela 1997</p>
                         <p class="f-20">2.  Pionero del estilo de baile de salsa casino en el estado Zulia- Venezuela 2005</p>
@@ -295,6 +489,8 @@
                         <p class="f-20">11. Ha organizado evento con artistas nacionales e internacionales durante  varios años</p>
                         <p class="f-20">12.  Fundador de la primera aplicación  web en Latinoamérica  para el gremio del baile llamada Easy dance</p>
 
+                        <div class="f-700 f-30">En clases bailando recientemente</div>
+                        <hr class='linea-morada'>
 
                         <div class="clearfix p-b-20"></div>
                         <div class="clearfix p-b-20"></div>
@@ -315,18 +511,8 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        
-
-                        @if($campana->imagen)
-                        <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" class="img-responsive opaco-0-8" alt="">
-                        @endif
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-
-                        <p class="text-left f-30 opaco-0-8 f-700" >Nuestros patrocinadores ángeles</p>
-
-                          <hr class='linea-morada'>
+                        <p class="text-left f-30 opaco-0-8 f-700" id="offset_patrocinador" >Nuestros patrocinadores ángeles</p>
+                        <hr class='linea-morada'>
 
 
                          <table class="table" id="tablelistar" >
@@ -374,10 +560,6 @@
                                                            
                             </tbody>
                         </table>
-                            
-
-
-
                     </div>
                     
                 </div>
@@ -388,7 +570,7 @@
 
                         @if($campana->nombre_banco)
 
-                        <p class="text-left f-30 opaco-0-8 f-700" >Datos Bancarios</p>
+                        <p class="text-left f-30 opaco-0-8 f-700" id ="offset_datos" >Datos Bancarios</p>
 
                           <hr class='linea-morada'>
 
@@ -439,7 +621,7 @@
 
                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre" id="id-aporte">Realiza tu aporte aqui</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde aqui podras aportar a la campaña"></i>
+                                    <label for="nombre" id="id-aporte">Confirma tu pago aqui</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde aqui podras dejar los datos de tu transferencia o deposito"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -455,7 +637,7 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
-                                    <form name="agregar_contribucion" id="agregar_contribucion"  >
+                                    <form name="form_normal" id="form_normal"  >
                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                         <div class="col-sm-12">
@@ -610,9 +792,7 @@
 
                                             <div class="col-sm-12 text-left">
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
-
-                                              <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
+                                              <button data-formulario="form_normal" type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
                                             </div>
                                         </div></form>
@@ -817,12 +997,18 @@
                 });
             });*/
 
+            $(".recompensa_confirmar").click(function(){
+              $('#modalConfirmar').modal('show');
+            })
+
 
             $(".guardar").click(function(){
 
                 var route = route_agregar_contribucion;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_contribucion" ).serialize(); 
+                var form = $(this).data('formulario');
+                var datos = $( "#"+form ).serialize(); 
+                
                 $("#guardar").attr("disabled","disabled");
                 procesando();
                 $("#guardar").css({
@@ -848,7 +1034,8 @@
                         if(respuesta.status=="OK"){
                           finprocesado();
                           var nType = 'success';
-                          $("#agregar_contribucion")[0].reset();
+                          $("#"+form)[0].reset();
+                          $('#modalConfirmar').modal('hide');
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
                           $('html,body').animate({
@@ -929,7 +1116,9 @@
 
         $('html,body').animate({
               scrollTop: $("#id-"+elemento).offset().top-90,
-        }, 1000);          
+        }, 1000); 
+
+        $("#modalConfirmar").scrollTop(0);         
 
       }
 
@@ -970,6 +1159,40 @@
                         scrollTop: $("#id-"+elemento).offset().top-90,
                 }, 300); 
         }
+
+
+        $('#tab_campana').click(function (){
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_nombre").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
+
+        $('#tab_patrocinador').click(function (){
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_patrocinador").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
+
+        $('#tab_datos').click(function (){
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_datos").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
 
         </script>
 @stop        

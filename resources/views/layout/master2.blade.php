@@ -39,7 +39,7 @@
 	   
 
 <header id="header" class="clearfix" data-current-skin="orange">
-		<nav class="navbar navbar-inverse navbar-blanco navbar-fixed-top" style="background-color: #FFF; border-color: none">
+		<nav class="navbar navbar-inverse navbar-blanco navbar-fixed-top" style="background-color: #FFF; border-color: none; min-height: 69px">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -48,17 +48,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-            <li style="list-style: none; margin-top:10px" class="logo hidden-xs" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
+            <li style="list-style: none" class="logo hidden-xs" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
                     <a data-ui-sref="home" href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}"data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="http://easydancelatino.com/img/correos/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
                     </a>
 
             </li>
         </div>
         <div id="navbar" class="navbar-collapse collapse" style="border-color: none">
-          <ul class="nav navbar-nav" style="margin-top: 10px">
-            <li style="padding-left: 50px"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Campaña</span></a></li>
-            <li><a a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Patrocinadores</span></a></li>
-            <li><a a href="#datos" aria-controls="datos" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Datos Bancarios</span></a></li>
+          <ul class="nav navbar-nav" style="margin-top: 5px">
+            <li style="padding-left: 50px; margin-top:5px"><a id = "tab_campana" href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Campaña</span></a></li>
+            <li style="margin-top:5px"><a id = "tab_patrocinador" href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Patrocinadores</span></a></li>
+            <li style="margin-top:5px"><a id = "tab_datos" href="#datos" aria-controls="datos" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Datos Bancarios</span></a></li>
 
           </ul>
         </div><!--/.nav-collapse -->
