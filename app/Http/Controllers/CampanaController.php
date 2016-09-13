@@ -1104,9 +1104,11 @@ class CampanaController extends BaseController {
              // ->orderBy('patrocinadores.monto', 'desc')
          ->get();
 
+         mb_internal_encoding("UTF-8");
 
          foreach($patrocinadores as $patrocinador){
-            $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
+            // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
+            $patrocinador->Nombres = title_case($patrocinador->Nombres);
          }
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
