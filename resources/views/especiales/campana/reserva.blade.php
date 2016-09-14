@@ -386,7 +386,7 @@
                       @endforeach 
 
                       <div style="border: 1px solid;">
-                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Otro monto a través de MercadoPago</div>
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Paga con MercadoPago</div>
 
                         
                         <div class="col-sm-12">

@@ -38,7 +38,7 @@
     <body>
 	   
 
-<header id="header" class="clearfix" data-current-skin="orange">
+<header id="header" class="clearfix" data-current-skin="orange" style="background-color: transparent; box-shadow: none">
 		<nav class="navbar navbar-inverse navbar-blanco navbar-fixed-top" style="background-color: #FFF; border-color: none">
       <div class="container">
         <div class="navbar-header">
