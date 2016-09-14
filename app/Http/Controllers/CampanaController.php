@@ -735,6 +735,8 @@ public function todos_con_robert()
     public function storeTransferencia(Request $request)
     {
 
+
+
     $rules = [
         'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'sexo' => 'required',
@@ -768,7 +770,7 @@ public function todos_con_robert()
 
         if ($validator->fails()){
 
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'form' => $request->form, 'status' => 'ERROR'],422);
 
         }
 

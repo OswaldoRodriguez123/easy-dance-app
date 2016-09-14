@@ -33,11 +33,12 @@
                         </div>
                         <form name="form_modal" id="form_modal"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="form" value="1">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre">Nombre y Apellido del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre1">Nombre y Apellido del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -46,9 +47,9 @@
 
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-nombre">
+                                                  <div class="has-error" id="error-nombre1">
                                                     <span >
-                                                        <small id="error-nombre_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-nombre1_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -58,7 +59,7 @@
 
                                           <div class="col-sm-12">
                                  
-                                              <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="apellido" id="id-sexo1">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
 
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
@@ -75,9 +76,9 @@
                                               </label>
                                               </div>
                                               </div>
-                                           <div class="has-error" id="error-sexo">
+                                           <div class="has-error" id="error-sexo1">
                                                 <span >
-                                                    <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                                    <small class="help-block error-span" id="error-sexo1_mensaje" ></small>                                
                                                 </span>
                                             </div>
                                          </div>
@@ -87,7 +88,7 @@
                                     <div class="col-sm-12">
                                       <div class="form-group">
                                       <div class="form-group">
-                                        <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
+                                        <label for="monto" id="id-monto1">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
@@ -96,9 +97,9 @@
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="has-error" id="error-monto">
+                                    <div class="has-error" id="error-monto1">
                                       <span >
-                                          <small id="error-monto_mensaje" class="help-block error-span" ></small>                                           
+                                          <small id="error-monto1_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
                                     </div>
                                 </div>
@@ -107,7 +108,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre_banco1">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -116,9 +117,9 @@
 
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-nombre_banco">
+                                                  <div class="has-error" id="error-nombre1_banco">
                                                     <span >
-                                                        <small id="error-nombre_banco_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-nombre_banco1_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -127,16 +128,16 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-numero_cuenta1">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="00000000000000000000" placeholder="Ingresa Número de Transferencia">
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-numero_cuenta">
+                                                  <div class="has-error" id="error-numero_cuenta1">
                                                     <span >
-                                                        <small id="error-numero_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-numero_cuenta1_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -145,16 +146,16 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-rif1">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       <input type="text" class="form-control input-sm input-mask" name="rif" id="rif" placeholder="Rif: J-298324278">
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-rif">
+                                                  <div class="has-error" id="error-rif1">
                                                     <span >
-                                                        <small id="error-rif_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-rif1_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -163,16 +164,16 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-correo1">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       <input type="text" class="form-control input-sm input-mask" name="correo" id="correo" placeholder="Ej: easydance@gmail.com">
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-correo">
+                                                  <div class="has-error" id="error-correo1">
                                                     <span >
-                                                        <small id="error-correo_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-correo1_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -770,9 +771,10 @@
 
                                     <form name="form_normal" id="form_normal"  >
                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                      <input type="hidden" name="form" value="2">
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre">Nombre y Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre2">Nombre y Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -781,9 +783,9 @@
 
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-nombre">
+                                                  <div class="has-error" id="error-nombre2">
                                                     <span >
-                                                        <small id="error-nombre_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-nombre2_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -793,7 +795,7 @@
 
                                           <div class="col-sm-12">
                                  
-                                              <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="apellido" id="id-sexo2">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
 
                                               <div class="input-group">
                                                 <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
@@ -810,9 +812,9 @@
                                               </label>
                                               </div>
                                               </div>
-                                           <div class="has-error" id="error-sexo">
+                                           <div class="has-error" id="error-sexo2">
                                                 <span >
-                                                    <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                                    <small class="help-block error-span" id="error-sexo2_mensaje" ></small>                                
                                                 </span>
                                             </div>
                                          </div>
@@ -822,7 +824,7 @@
                                     <div class="col-sm-12">
                                       <div class="form-group">
                                       <div class="form-group">
-                                        <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
+                                        <label for="monto" id="id-monto2">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
@@ -831,9 +833,9 @@
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="has-error" id="error-monto">
+                                    <div class="has-error" id="error-monto2">
                                       <span >
-                                          <small id="error-monto_mensaje" class="help-block error-span" ></small>                                           
+                                          <small id="error-monto2_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
                                     </div>
                                 </div>
@@ -842,7 +844,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre_banco2">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -851,9 +853,9 @@
 
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-nombre_banco">
+                                                  <div class="has-error" id="error-nombre_banco2">
                                                     <span >
-                                                        <small id="error-nombre_banco_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-nombre_banco2_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -862,16 +864,16 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-numero_cuenta2">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="00000000000000000000" placeholder="Ingresa Número de Transferencia">
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-numero_cuenta">
+                                                  <div class="has-error" id="error-numero_cuenta2">
                                                     <span >
-                                                        <small id="error-numero_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-numero_cuenta2_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -880,16 +882,16 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-rif2">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       <input type="text" class="form-control input-sm input-mask" name="rif" id="rif" placeholder="Rif: J-298324278">
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-rif">
+                                                  <div class="has-error" id="error-rif2">
                                                     <span >
-                                                        <small id="error-rif_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-rif2_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -898,16 +900,16 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-correo2">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       <input type="text" class="form-control input-sm input-mask" name="correo" id="correo" placeholder="Ej: easydance@gmail.com">
                                                       </div>
                                                     </div>
-                                                  <div class="has-error" id="error-correo">
+                                                  <div class="has-error" id="error-correo2">
                                                     <span >
-                                                        <small id="error-correo_mensaje" class="help-block error-span" ></small>                                           
+                                                        <small id="error-correo2_mensaje" class="help-block error-span" ></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -1105,19 +1107,6 @@
                     }
             });
 
-      function errores(merror){
-        console.log(merror);
-        var campo = ["alumno_id"];
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-       }
-
             $(".recompensa_confirmar").click(function(){
               $('#modalConfirmar').modal('show');
             })
@@ -1183,7 +1172,7 @@
                       setTimeout(function(){ 
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
+                          errores2(msj.responseJSON.errores, msj.responseJSON.form );
                           var nTitle="    Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
                         }else{
@@ -1323,6 +1312,31 @@
 
         $('html,body').animate({
               scrollTop: $("#id-"+elemento).offset().top-90,
+        }, 1000); 
+
+        $("#modalConfirmar").scrollTop(0);         
+
+      }
+
+
+      function errores2(merror, i){
+        $('#collapseTwo').collapse('show');
+        var elemento="";
+        var contador=0;
+        $.each(merror, function (n, c) {
+          if(contador==0){
+          elemento=n;
+          }
+          contador++;
+
+           $.each(this, function (name, value) {              
+              var error=value;
+              $("#error-"+n+i+"_mensaje").html(error);             
+           });
+        });
+
+        $('html,body').animate({
+              scrollTop: $("#id-"+elemento+i).offset().top-90,
         }, 1000); 
 
         $("#modalConfirmar").scrollTop(0);         
