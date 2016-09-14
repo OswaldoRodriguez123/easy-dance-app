@@ -1243,7 +1243,7 @@
                           // $("#agregar_alumno")[0].reset();
                           // var nTitle="Ups! ";
                           // var nMensaje=respuesta.mensaje;
-                          window.location = route_enhorabuena_invitacion + "{{ $id }}";
+                          window.location = route_enhorabuena_invitacion;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
