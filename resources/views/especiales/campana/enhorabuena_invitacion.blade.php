@@ -19,10 +19,9 @@
 @section('content')
 
     
-            <section id="content">
-                <div class="container">
+                <div class="container" style="background-color: #fff; margin:0; width: 100%">
                     
-                    <div class="card">
+                    <!-- <div class="card"> -->
                         <div class="card-header">
 
                         </div>
@@ -31,7 +30,7 @@
                             <div class="col-md-10">
 
 
-                            
+                            <div class="clearfix p-b-35"></div>
                             <div class="text-center"><i class="zmdi zmdi-mood zmdi-hc-5x text-center c-amarillo"></i></div>
                             
 
@@ -87,7 +86,7 @@
                     </div>
                     
                     
-                </div>
-            </section>
+             <!--    </div> -->
+
 
 @stop
