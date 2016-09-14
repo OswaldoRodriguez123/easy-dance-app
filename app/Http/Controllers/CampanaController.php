@@ -797,7 +797,7 @@ public function todos_con_robert()
                         $array = [
 
                            'nombre' => $request->nombre,
-                           'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
+                           'link' => "http://app.easydancelatino.com/todos-con-robert",
                            'correo' => $transferencia->correo = $request->correo,
                            'subj' => $subj,
                            'id' => $transferencia->id
