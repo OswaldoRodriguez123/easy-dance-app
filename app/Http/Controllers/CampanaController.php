@@ -1226,8 +1226,6 @@ class CampanaController extends BaseController {
              ->orderBy('patrocinadores.created_at', 'desc')
          ->get();
 
-         dd($patrocinadores);
-
          mb_internal_encoding("UTF-8");
 
         $fecha_de_realizacion_general = array();
