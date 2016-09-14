@@ -98,7 +98,7 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-                                  <a href="http://app.easydancelatino.com/especiales/campañas/progreso/9" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Ver campaña</a>
+                                  <a href="http://app.easydancelatino.com/todos-con-robert" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Ver campaña</a>
                                 </td>
                                                   
 

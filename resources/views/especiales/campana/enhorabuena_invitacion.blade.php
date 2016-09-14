@@ -38,7 +38,7 @@
 
                             <div class="clearfix p-b-35"></div>
                             
-                            <div class="f-700 f-30 text-center">¡Felicidades!  Haz acumulado puntos</div>
+                            <div class="f-700 f-30 text-center">¡Muchas gracias!</div>
                             
                             <br>
 
@@ -50,7 +50,7 @@
 
                             <div class="clearfix p-b-35"></div>
 
-                            <div class="opaco-0-8 f-20 text-center">Mientras  más directores se agregas a la plataforma, más crece tu ranking en Easy Dance
+                            <div class="opaco-0-8 f-20 text-center">Gracias por el apoyo que nos estas brindando a esta campaña
                             </div>
 
                             <div class="opaco-0-8 f-20 text-center">Continúa así
@@ -70,7 +70,7 @@
                                     @else
 
                                       <div class="block-header text-center">
-                                          <a class="btn-blanco m-r-10 f-20 pointer" href="{{url('/')}}/especiales/campañas/progreso/9" > INVITAR A OTRA PERSONA</a>
+                                          <a class="btn-blanco m-r-10 f-20 pointer" href="{{url('/')}}/todos-con-robert" > INVITAR A OTRA PERSONA</a>
                                       </div> 
 
                                     @endif

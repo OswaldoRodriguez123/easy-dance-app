@@ -24,7 +24,7 @@
     <div style="background-color: #fff"> -->
       <div class="container" style="background-color: #fff; margin:0; width: 100%">
         <div class="block-header" style="padding-top: 5%">
-            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas/progreso/{{$campana->id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
+            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/todos-con-robert" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
         </div> 
 <!--       <div class="card"> -->
         <div class="card-header text-center">
