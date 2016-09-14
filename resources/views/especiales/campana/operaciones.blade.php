@@ -29,9 +29,7 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-2"></div>
-
-            <ul class="ca-menu-c " style="width: 720px;">
+            <ul class="ca-menu-c " style="width: 900px;">
 
                     <li data-ripplecator class ="dark-ripples">
                         <a class = "progreso">
@@ -50,6 +48,17 @@
                                    data-original-title="Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c f-20">Ver Contribuciones</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class = "patrocinadores">
+                            <span class="ca-icon-c"><i class="icon_a-campana f-35 boton blue sa-warning" 
+                                   data-original-title="Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c f-20">Ver Patrocinadores</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
@@ -127,6 +136,12 @@
     $(".contribuciones").click(function(){
                
     window.location = "{{url('/')}}/especiales/campañas/contribuciones/{{$id}}";
+
+    });
+
+    $(".patrocinadores").click(function(){
+               
+    window.location = "{{url('/')}}/especiales/campañas/patrocinadores/{{$id}}";
 
     });
 

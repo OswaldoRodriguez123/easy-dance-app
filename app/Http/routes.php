@@ -600,10 +600,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//CAMPAÑAS
 
-			//Route::get('especiales/campañas', 'CampanaController@index');
-			Route::get('especiales/campañas/contribuciones/{id}', 'CampanaController@principalcontribuciones');
-			Route::post('especiales/campañas/contribuciones/confirmar/{id}', 'CampanaController@confirmarcontribucion');
-			Route::delete('especiales/campañas/contribuciones/eliminar/{id}', 'CampanaController@eliminarcontribucion');
 			Route::get('especiales/campañas/agregar', 'CampanaController@create');
 			Route::post('especiales/campañas/agregar', 'CampanaController@store');
 			Route::get('especiales/campañas/detalle/{id}', 'CampanaController@edit');
@@ -625,6 +621,21 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');
 		    Route::post('especiales/campañas/agregarrecompensafija', 'CampanaController@agregarrecompensafija');
 		    Route::post('especiales/campañas/eliminarrecompensafija/{id}', 'CampanaController@eliminarrecompensafija');
+
+		    //PATROCINADORES
+
+			Route::get('especiales/campañas/patrocinadores/{id}', 'CampanaController@principalpatrocinadores');
+			Route::get('especiales/campañas/patrocinadores/detalle/{id}', 'CampanaController@detallepatrocinador');
+			Route::put('especiales/campañas/patrocinadores/update/nombre', 'CampanaController@updateNombrePatrocinador');
+			Route::put('especiales/campañas/patrocinadores/update/monto', 'CampanaController@updateMontoPatrocinador');
+			Route::delete('especiales/campañas/patrocinadores/eliminar/{id}', 'CampanaController@eliminarpatrocinador');
+
+
+			//CONTRIBUCIONES
+
+			Route::get('especiales/campañas/contribuciones/{id}', 'CampanaController@principalcontribuciones');
+			Route::post('especiales/campañas/contribuciones/confirmar/{id}', 'CampanaController@confirmarcontribucion');
+			Route::delete('especiales/campañas/contribuciones/eliminar/{id}', 'CampanaController@eliminarcontribucion');
 
 			//REGALOS
 

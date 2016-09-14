@@ -112,6 +112,127 @@ class CampanaController extends BaseController {
         }
     }
 
+    public function principalpatrocinadores($id){
+
+        $patrocinadores = DB::table('patrocinadores')
+             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+             //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+             ->select('patrocinadores.*', 'usuario_externos.nombre')
+             ->where('patrocinadores.campana_id', '=', $id)
+         ->get();
+
+        return view('especiales.campana.patrocinadores')->with(['patrocinadores' => $patrocinadores, 'id' => $id]);
+
+    }
+
+    public function detallepatrocinador($id)
+    {
+
+        $patrocinador = DB::table('patrocinadores')
+             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+             ->select('patrocinadores.*', 'usuario_externos.nombre')
+             ->where('patrocinadores.id', '=', $id)
+         ->first();
+
+        if($patrocinador){
+           return view('especiales.campana.planilla_patrocinador')->with(['patrocinador' => $patrocinador, 'id' => $id, 'campana_id' => $patrocinador->campana_id]);
+        }else{
+           return redirect("especiales/campañas"); 
+        }
+    }
+
+    public function updateMontoPatrocinador(Request $request){
+
+        $rules = [
+            'monto' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $patrocinador = Patrocinador::find($request->id);
+            $patrocinador->monto = $request->monto;
+
+
+            if($patrocinador->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+        // return redirect("alumno/edit/{$request->id}");
+    }
+
+    public function updateNombrePatrocinador(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:3|max:40',
+        ];
+
+        $messages = [
+
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 40',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+
+        else{
+
+            $patrocinador = Patrocinador::find($request->id);
+
+            $usuario_externo = UsuarioExterno::find($patrocinador->externo_id);
+
+            $usuario_externo->nombre = $request->nombre;
+
+            if($usuario_externo->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+            // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
+    public function eliminarpatrocinador($id)
+    {
+
+        $patrocinador = Patrocinador::find($id);
+        $usuario_externo = UsuarioExterno::find($patrocinador->externo_id);
+            
+        if($patrocinador->delete()){
+            if($usuario_externo->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+
     public function principalcontribuciones($id){
 
         $contribuciones = TransferenciaCampana::where('campana_id', $id)->where('status', 0)->get();
@@ -622,9 +743,6 @@ class CampanaController extends BaseController {
 
     public function updateCantidad(Request $request){
 
-        $campana = Campana::find($request->id);
-        $campana->cantidad = $request->cantidad;
-
         $rules = [
             'cantidad' => 'required|numeric',
         ];
@@ -644,6 +762,10 @@ class CampanaController extends BaseController {
         }
 
         else{
+
+            $campana = Campana::find($request->id);
+            $campana->cantidad = $request->cantidad;
+
 
             if($campana->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

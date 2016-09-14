@@ -16,60 +16,41 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-<a href="{{url('/')}}/especiales/campañas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
-@endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
-                        @else
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-                        @endif
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
+                        <?php $url = "/especiales/campañas/detalle/$id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-                            <span class="f-16 p-t-0 text-success">Agregar una Campaña <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
-                        @endif
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-campana f-25"></i> Sección de Campañas</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_c-money f-25"></i> Sección de Patrocinadores</p>
                             <hr class="linea-morada">                                                         
                         </div>
-                        @if($campanas)
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="fecha_inicio" data-order="desc">Fecha Inicio</th>
-                                    <th class="text-center" data-column-id="fecha_final" data-order="desc">Fecha Final</th>
-                                    <th class="text-center" data-column-id="meta" data-order="desc">Meta</th>
-                                    <th class="text-center" data-column-id="actual" data-order="desc">Actual</th>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    <th class="text-center" data-column-id="monto" data-order="desc">Monto</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
-                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($campanas as $campana)
+                            @foreach ($patrocinadores as $patrocinador)
 
-                                <?php $id = $campana['id']; ?>
+                                <?php $id = $patrocinador->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$campana['nombre']}}</td>
-                                    <td class="text-center previa">{{$campana['fecha_inicio']}}</td>
-                                    <td class="text-center previa">{{$campana['fecha_final']}}</td>
-                                    <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
-                                    <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-                                        <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
-                                    @endif
+                                    <td class="text-center previa">{{$patrocinador->nombre}}</td>
+                                    <td class="text-center previa">{{$patrocinador->monto}}</td>
+                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+
                                   </tr>
                             @endforeach 
                                                            
@@ -78,21 +59,6 @@
                          </div>
                         </div>
 
-                        @else
-
-                               <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
-
-
-                                  <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
-                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado campañas. </div>
-
-
-                             </div>
-
-
-
-
-                            @endif
                         <div class="card-body p-b-20">
                             <div class="row">
                               <div class="container">
@@ -113,10 +79,8 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/especiales/campañas/detalle";
-        route_operacion="{{url('/')}}/especiales/campañas/operaciones";
-        route_eliminar="{{url('/')}}/especiales/campañas/eliminar/";
-        route_progreso="{{url('/')}}/especiales/campañas/progreso";
+        route_eliminar="{{url('/')}}/especiales/campañas/patrocinadores/eliminar/";
+        route_detalle="{{url('/')}}/especiales/campañas/patrocinadores/detalle";
 
         $(document).ready(function(){
 
@@ -126,7 +90,7 @@
         bPaginate: false,    
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-        if ("{{count($campanas)}}" < 25) {
+        if ("{{count($patrocinadores)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
           }
@@ -134,7 +98,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -191,21 +155,6 @@
 
             });
 
-    function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
-        {
-            var route =route_detalle+"/"+row;
-        }else{
-            var route =route_progreso+"/"+row;
-        }
-        window.location=route;
-      }
-
-      $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-        });
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
@@ -215,7 +164,7 @@
                 element = this;
 
                 swal({   
-                    title: "Desea eliminar la campaña?",   
+                    title: "Desea eliminar al patrocinador?",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -239,6 +188,8 @@
             });
       
         function eliminar(id, element){
+        procesando();
+        $(".sweet-alert").hide();
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
                 
@@ -255,7 +206,7 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
+                          finprocesado();
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
@@ -264,7 +215,7 @@
                             .remove()
                             .draw();
 
-                        swal("Exito!","La campaña ha sido eliminada!","success");
+                        swal("Exito!","El patrocinador ha sido eliminado!","success");
                         
                         }
                     },
@@ -281,6 +232,13 @@
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
+      }
+
+      function previa(t){
+        var row = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+row;
+
+        window.location=route;
       }
 
 
