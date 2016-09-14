@@ -566,7 +566,7 @@
                                                         <div class="lv-title"><p class="c-morado">
                                                           {{ $patrocinador->Nombres }}
                                                         </p></div>
-                                                        <!-- <small class="lv-small">hace 10 minutos</small> -->
+                                                        <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
                                                     </div>
                                                   </div>
 

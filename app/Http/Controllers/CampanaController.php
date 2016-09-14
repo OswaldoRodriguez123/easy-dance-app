@@ -1221,7 +1221,7 @@ class CampanaController extends BaseController {
              ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
              ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, alumnos.id')
+             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, alumnos.id, patrocinadores.created_at')
              ->where('patrocinadores.campana_id', '=', $id)
              // ->orderBy('patrocinadores.monto', 'desc')
          ->get();
@@ -1231,12 +1231,65 @@ class CampanaController extends BaseController {
          foreach($patrocinadores as $patrocinador){
             // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
             $patrocinador->Nombres = title_case($patrocinador->Nombres);
+
+            $fecha_de_registro = new Carbon($patrocinador->created_at);
+            $now = Carbon::now();
+            $diferencia_tiempo = $fecha_de_registro->diffInDays($now);
+
+            if($diferencia_tiempo<1){
+
+                $fecha_de_registro = new Carbon($patrocinador->created_at);
+                $now = Carbon::now();
+                $diferencia_tiempo = $fecha_de_registro->diffInHours($now);
+
+                if($diferencia_tiempo<1){
+
+                    $fecha_de_registro = new Carbon($patrocinador->created_at);
+                    $now = Carbon::now();
+                    $diferencia_tiempo = $fecha_de_registro->diffInMinutes($now);
+
+                    if($diferencia_tiempo<1){
+
+                        $fecha_de_registro = new Carbon($patrocinador->created_at);
+                        $now = Carbon::now();
+                        $diferencia_tiempo = $fecha_de_registro->diffInSeconds($now);
+
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." segundo";
+                        }else{
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." Segundos";
+                        }
+                     }else{
+
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." minuto";
+                        }else{
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." minutos";
+                        }
+                    }
+                }else{
+
+                    if($diferencia_tiempo==1){
+                        $fecha_de_realizacion = "hace ".$diferencia_tiempo." hora";
+                    }else{
+                        $fecha_de_realizacion = "hace ".$diferencia_tiempo." horas";
+                    }
+                }
+            }else{
+
+                 if($diferencia_tiempo==1){
+                    $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
+                 }else{
+                    $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
+                 }
+            }
+            $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
          }
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
          $academia = Academia::find($campaña->academia_id);
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia]);
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general]);
     }
 
     public function contribuirCampana($id)
