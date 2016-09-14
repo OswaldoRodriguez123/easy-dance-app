@@ -1223,7 +1223,7 @@ class CampanaController extends BaseController {
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
              ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at')
              ->where('patrocinadores.campana_id', '=', $id)
-             // ->orderBy('patrocinadores.monto', 'desc')
+             ->orderBy('patrocinadores.created_at', 'desc')
          ->get();
 
          mb_internal_encoding("UTF-8");
