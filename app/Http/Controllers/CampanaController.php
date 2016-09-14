@@ -1228,32 +1228,29 @@ class CampanaController extends BaseController {
 
          mb_internal_encoding("UTF-8");
 
-         $fecha_de_realizacion_general = array();
+        $fecha_de_realizacion_general = array();
+        $now = Carbon::now();
 
          foreach($patrocinadores as $patrocinador){
             // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
             $patrocinador->Nombres = title_case($patrocinador->Nombres);
 
             $fecha_de_registro = new Carbon($patrocinador->created_at);
-            $now = Carbon::now();
             $diferencia_tiempo = $fecha_de_registro->diffInDays($now);
 
             if($diferencia_tiempo<1){
 
                 $fecha_de_registro = new Carbon($patrocinador->created_at);
-                $now = Carbon::now();
                 $diferencia_tiempo = $fecha_de_registro->diffInHours($now);
 
                 if($diferencia_tiempo<1){
 
                     $fecha_de_registro = new Carbon($patrocinador->created_at);
-                    $now = Carbon::now();
                     $diferencia_tiempo = $fecha_de_registro->diffInMinutes($now);
 
                     if($diferencia_tiempo<1){
 
                         $fecha_de_registro = new Carbon($patrocinador->created_at);
-                        $now = Carbon::now();
                         $diferencia_tiempo = $fecha_de_registro->diffInSeconds($now);
 
                         if($diferencia_tiempo==1){
@@ -1280,9 +1277,14 @@ class CampanaController extends BaseController {
             }else{
 
                  if($diferencia_tiempo==1){
-                    $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
+                    // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
+                    $hora_segundos = $now->format('m:s');
+                    $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
                  }else{
-                    $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
+                    // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
+                    $hora_segundos = $now->format('m:s');
+                    $dia = $now->format('D');
+                    $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
                  }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
