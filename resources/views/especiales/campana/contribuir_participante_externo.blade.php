@@ -16,13 +16,12 @@
 @section('content')
   <!-- PAGO RECOMPENSA MERCADOPAGO -->
     
-    <div class="container">
-
-    <div class="block-header">
+  <div class="container" style="background-color: #fff; margin:0; width: 100%">
+        <div class="block-header" style="padding-top: 5%">
             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas/contribuir/campaña/{{$usuario_ext['campana_id']}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
         </div> 
 
-        <div class="card">
+        <!-- <div class="card"> -->
             <div class="card-header text-center">
                 <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos</span>
             </div>
@@ -60,12 +59,19 @@
                 <div class="clearfix p-b-15"></div>
                 <div class="text-center">
                     <a href="{{$datos['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
                 </div>
-                <div class="clearfix p-b-20"></div>
-                <div class="clearfix p-b-20"></div>
+
                 
             </div><!-- END CARD BODY -->
-        </div><!-- END CARD -->
+  <!--       </div>END CARD -->
     </div><!-- END CONTAINER -->
 
 @stop

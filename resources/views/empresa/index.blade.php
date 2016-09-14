@@ -15,19 +15,20 @@
 
 @section('content')
 
-<div class="container">
+<!-- <div class="container"> -->
 
     @if(isset($_SERVER['HTTP_REFERER']))
 
 
-        <div class="block-header">
+        <div class="block-header" style="padding-top: 5%; padding-bottom: 5%; background-color: #fff; margin-bottom:0">
 
              <a class="btn-blanco m-r-10 f-16" href="{{$_SERVER['HTTP_REFERER']}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
+             <br>
         </div> 
 
     @endif
 
-    <div class="card" id="profile-main">
+    <div class="card" id="profile-main" style="margin-bottom: 0px">
         <div class="pm-overview c-overflow">
             <div class="pmo-pic">
                 <div class="p-relative">
@@ -507,7 +508,7 @@
             <!--<data ui-view></data>-->
         </div>
     </div>
-</div>
+<!-- </div> -->
 
 
 

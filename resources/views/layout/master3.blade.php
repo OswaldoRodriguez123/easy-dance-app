@@ -42,12 +42,12 @@
 		<nav class="navbar navbar-inverse navbar-blanco navbar-fixed-top" style="background-color: #FFF; border-color: none">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+<!--           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Menú</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </button> -->
             <li style="list-style: none" class="logo" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
                     <a  href="{{url('/')}}/empresa/sobre-la-empresa"><img src="http://easydancelatino.com/img/correos/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
                     </a>
@@ -69,7 +69,7 @@
 
 		
 
-		<section id="main" data-layout="layout-1">
+		<section id="main" data-layout="layout-1" style="padding-bottom: 0px; padding-top:50px">
 	
 
 			
