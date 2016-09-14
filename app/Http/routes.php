@@ -258,6 +258,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/impuesto', 'ConfigClasesGrupalesController@updateImpuesto');
 			Route::put('configuracion/clases-grupales/update/condiciones', 'ConfigClasesGrupalesController@updateCondiciones');
 			Route::put('configuracion/clases-grupales/update/imagen', 'ConfigClasesGrupalesController@updateImagen');
+			Route::put('configuracion/clases-grupales/update/inasistencias','ConfigClasesGrupalesController@updateAsistencia');
 
 			//CLASES PERSONALIZADAS
 
