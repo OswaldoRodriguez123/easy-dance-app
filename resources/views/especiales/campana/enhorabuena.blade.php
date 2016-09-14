@@ -21,7 +21,7 @@
 
   
     
-    <div class="container" style="background-color: #fff; margin:0; width: 100%">
+    <div class="container" style="background-color: #fff; margin:0; height: 100%; width: 100%">
     <!--   <div class="card"> -->
         <div class="clearfix m-20 m-b-25"></div>
         <div class="clearfix m-20 m-b-25"></div>
@@ -49,6 +49,10 @@
          <div class="clearfix"></div>  
         </div>
       <div class="clearfix m-20 m-b-25"></div>
+      <div class="clearfix m-20 m-b-25"></div>
+      <div class="clearfix m-20 m-b-25"></div>
+      <div class="clearfix m-20 m-b-25"></div>
+      <div class="clearfix m-20 m-b-10"></div>
       </div>
       
       <!--<div class="clearfix"></div>-->
