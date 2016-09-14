@@ -1226,6 +1226,8 @@ class CampanaController extends BaseController {
              ->orderBy('patrocinadores.created_at', 'desc')
          ->get();
 
+         dd($patrocinadores);
+
          mb_internal_encoding("UTF-8");
 
         $fecha_de_realizacion_general = array();
@@ -1278,11 +1280,11 @@ class CampanaController extends BaseController {
 
                  if($diferencia_tiempo==1){
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
-                    $hora_segundos = $fecha_de_registro->format('m:s');
+                    $hora_segundos = $fecha_de_registro->format('H:m');
                     $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
                  }else{
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
-                    $hora_segundos = $fecha_de_registro->format('m:s');
+                    $hora_segundos = $fecha_de_registro->format('H:m');
                     $dia = $fecha_de_registro->format('D');
                     $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
                  }
