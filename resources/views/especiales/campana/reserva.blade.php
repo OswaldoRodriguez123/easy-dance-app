@@ -270,6 +270,33 @@
                       </li>
                     </ul>
 
+                    <br>
+
+                    <p class="text-left f-15 f-700"> {{ number_format($recaudado, 2, '.' , '.') }} recaudado  
+
+                            @if($cantidad == 0)
+
+                            @elseif($cantidad == 1)
+                            
+                              por <br> {{$cantidad}}  patrocinador 
+                            
+                            @else
+
+                              por <br> {{$cantidad}}  patrocinantes
+
+                            @endif
+
+                              </p>
+                              <div class="clearfix"></div>
+
+                     
+                              <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" id="barra-progreso" style="width: {{$porcentaje}}%;"></div>
+                              </div>
+                              <p class="text-center f-700" > {{$porcentaje}} % de {{ number_format($campana->cantidad, 2, '.' , '.') }}</p> 
+
+
+
                    <!--  <br> -->
 
                     <!-- <p class="text-center">
@@ -294,32 +321,7 @@
             </div>
 
             <div class="pmo-block pmo-contact hidden-xs" style="padding-top:15px">
-                            <p class="text-left f-15 f-700"> {{ number_format($recaudado, 2, '.' , '.') }} recaudado  
-
-                            @if($cantidad == 0)
-
-                            @elseif($cantidad == 1)
                             
-                              por <br> {{$cantidad}}  patrocinador 
-                            
-                            @else
-
-                              por <br> {{$cantidad}}  patrocinantes
-
-                            @endif
-
-                              </p>
-                              <div class="clearfix"></div>
-
-                     
-                              <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" id="barra-progreso" style="width: {{$porcentaje}}%;"></div>
-                              </div>
-                              <p class="text-center f-700" > {{$porcentaje}} % de {{ number_format($campana->cantidad, 2, '.' , '.') }}</p> 
-
-
-                              <br>
-
                               <div class="text-center f-700" >Tiempo restante de la campaña</div>
                               <hr class="linea-morada opaco-0-8">
 
@@ -770,7 +772,7 @@
                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre">Nombre y Apellido del contribuyente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre">Nombre y Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -791,10 +793,10 @@
 
                                           <div class="col-sm-12">
                                  
-                                              <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
 
                                               <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
+                                                <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                                 <div class="p-t-10">
                                               <label class="radio radio-inline m-r-20">
                                                   <input name="sexo" id="mujer" value="F" type="radio">
@@ -820,7 +822,7 @@
                                     <div class="col-sm-12">
                                       <div class="form-group">
                                       <div class="form-group">
-                                        <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
+                                        <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
@@ -840,7 +842,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                         <div class="col-sm-12">
-                                              <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -860,7 +862,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -878,7 +880,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -896,7 +898,7 @@
                                           <div class="clearfix p-b-35"></div>
 
                                           <div class="col-sm-12">
-                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
+                                              <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                      <div class="fg-line"> 
@@ -1548,6 +1550,10 @@
                             .draw();
                                                 
                     });   
+
+                    function collapse_minus(collaps){
+                        $('#'+collaps).collapse('hide');
+                    }
 
         </script>
 @stop        

@@ -48,8 +48,8 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-            <li style="list-style: none; margin-top:10px" class="logo hidden-xs" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
-                    <a data-ui-sref="home" href="{{url('/')}}/empresa/sobre-la-empresa" data-ng-click="edctrl.sidebarStat($event)"><!--Easy Dance--> <img src="http://easydancelatino.com/img/correos/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
+            <li style="list-style: none" class="logo" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
+                    <a  href="{{url('/')}}/empresa/sobre-la-empresa"><img src="http://easydancelatino.com/img/correos/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
                     </a>
 
             </li>
