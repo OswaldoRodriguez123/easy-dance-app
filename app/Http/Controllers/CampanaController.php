@@ -1221,12 +1221,14 @@ class CampanaController extends BaseController {
              ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
              ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, alumnos.id, patrocinadores.created_at')
+             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at')
              ->where('patrocinadores.campana_id', '=', $id)
              // ->orderBy('patrocinadores.monto', 'desc')
          ->get();
 
          mb_internal_encoding("UTF-8");
+
+         $fecha_de_realizacion_general = array();
 
          foreach($patrocinadores as $patrocinador){
             // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
