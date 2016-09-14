@@ -1278,11 +1278,11 @@ class CampanaController extends BaseController {
 
                  if($diferencia_tiempo==1){
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
-                    $hora_segundos = $fecha_de_registro->format('H:m');
+                    $hora_segundos = $fecha_de_registro->format('H:i');
                     $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
                  }else{
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
-                    $hora_segundos = $fecha_de_registro->format('H:m');
+                    $hora_segundos = $fecha_de_registro->format('H:i');
                     $dia = $fecha_de_registro->format('D');
                     $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
                  }
