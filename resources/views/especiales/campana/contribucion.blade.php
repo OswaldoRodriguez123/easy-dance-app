@@ -38,6 +38,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="monto" data-order="desc">Monto</th>
+                                    <th class="text-center" data-column-id="monto" data-order="desc">Tipo de Pago</th>
                                     <th class="text-center" data-column-id="nombre_banco" data-order="desc">Identidad bancaria</th>
                                     <th class="text-center" data-column-id="numero_cuenta" data-order="desc">Número de transferencia</th>
                                     <th class="text-center" data-column-id="rif" data-order="desc">Cedula - Pasaporte</th>
@@ -53,6 +54,20 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$contribucion['nombre']}}</td>
                                     <td class="text-center previa">{{$contribucion['monto']}}</td>
+                                    <td class="text-center previa">
+
+                                    @if($contribucion['tipo_cuenta'] == 1)
+
+                                    Efectivo
+
+                                    @else
+
+                                    Deposito
+
+                                    @endif
+
+
+                                    </td>
                                     <td class="text-center previa">{{$contribucion['nombre_banco']}}</td>
                                     <td class="text-center previa">{{$contribucion['numero_cuenta']}}</td>
                                     <td class="text-center previa">{{$contribucion['rif']}}</td>

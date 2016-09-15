@@ -735,35 +735,61 @@ public function todos_con_robert()
     public function storeTransferencia(Request $request)
     {
 
+    if($request->tipo_cuenta == 1)
+    {
 
+        $rules = [
+            'rif' => 'required|min:7',
+            'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'sexo' => 'required',
+            'correo' => 'required|email|max:255',
+            'monto' => 'required|numeric',
+        ];
 
-    $rules = [
-        'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'sexo' => 'required',
-        'monto' => 'required|numeric',
-        'nombre_banco' => 'required',
-        'numero_cuenta' => 'required',
-        'rif' => 'required|min:7',
-        'correo' => 'required|email|max:255',
-    ];
+        $messages = [
+            'rif.required' => 'Ups! La Cedula - Pasaporte es requerido',
+            'rif.min' => 'El mínimo de numeros permitidos son 7',
+            'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'sexo.required' => 'Ups! El Sexo  es requerido ',
+            'correo.required' => 'Ups! El correo  es requerido ',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        ];
 
-    $messages = [
-        
-        'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-        'nombre.max' => 'El máximo de caracteres permitidos son 50',
-        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'sexo.required' => 'Ups! El Sexo  es requerido ',
-        'monto.required' => 'Ups! El monto es requerido',
-        'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
-        'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
-        'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
-        'rif.required' => 'Ups! La Cedula - Pasaporte es requerido',
-        'rif.min' => 'El mínimo de numeros permitidos son 7',
-        'correo.required' => 'Ups! El correo  es requerido ',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-    ];
+    }else{
+
+        $rules = [
+            'rif' => 'required|min:7',
+            'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'sexo' => 'required',
+            'correo' => 'required|email|max:255',
+            'monto' => 'required|numeric',
+            'nombre_banco' => 'required',
+            'numero_cuenta' => 'required',
+        ];
+
+        $messages = [
+            'rif.required' => 'Ups! La Cedula - Pasaporte es requerido',
+            'rif.min' => 'El mínimo de numeros permitidos son 7',
+            'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'sexo.required' => 'Ups! El Sexo  es requerido ',
+            'correo.required' => 'Ups! El correo  es requerido ',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
+            'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
+        ];
+    }
 
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -785,6 +811,7 @@ public function todos_con_robert()
                 $transferencia->sexo = $request->sexo;
                 $transferencia->monto = $request->monto;
                 $transferencia->nombre_banco = $request->nombre_banco;
+                $transferencia->tipo_cuenta = $request->tipo_cuenta;
                 $transferencia->numero_cuenta = $request->numero_cuenta;
                 $transferencia->rif = $request->rif;
                 $transferencia->correo = $request->correo;
