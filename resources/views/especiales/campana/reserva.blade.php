@@ -535,8 +535,17 @@
                                                       @if($patrocinador->sexo == 'F')
                                                         <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
                                                         <i class="chat-status-busy"></i>
-                                                      @else
+                                                      @elseif($patrocinador->sexo == 'M')
                                                         <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                                                        <i class="chat-status-busy"></i>
+                                                      @elseif($patrocinador->sexo == 'FA')
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
+                                                        <i class="chat-status-busy"></i>
+                                                      @elseif($patrocinador->sexo == 'O')
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
+                                                        <i class="chat-status-busy"></i>
+                                                      @else
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt="">
                                                         <i class="chat-status-busy"></i>
                                                       @endif
                                                   </div>
@@ -741,30 +750,49 @@
 
                           <div class="clearfix p-b-35"></div>
 
-                                    <form name="form_normal" id="form_normal"  >
-                                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                      <input type="hidden" name="form" value="2">
+                                    <form name="form_normal" id="form_normal">
+                                      <input name="_token" value="{{ csrf_token() }}" type="hidden">
+                                      <input name="form" value="2" type="hidden">
 
+                                      <div class="col-sm-12" style="padding:0px">
+                                 
+                                              <label for="apellido" id="id-tipo_contribuyente">Tipo de Contribuyente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
 
-                                          <div class="col-sm-12" style="padding:0px">
-                                              <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
-                                                  <div class="input-group">
-                                                    <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                                     <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="rif" id="rif" placeholder="Rif: J-298324278">
-                                                      </div>
-                                                    </div>
-                                                  <div class="has-error" id="error-rif">
-                                                    <span >
-                                                        <small id="error-rif_mensaje" class="help-block error-span" ></small>                                           
-                                                    </span>
-                                                  </div>
-                                              
-                                          </div>
+                                              <div class="input-group">
+                                                <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
+                                                <div class="p-t-10">
+                                              <label class="radio radio-inline m-r-20">
+                                                  <input checked="checked" name="tipo_contribuyente" id="particular" value="1" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Particular 
+                                              </label>
+                                              <label class="radio radio-inline m-r-20 ">
+                                                  <input name="tipo_contribuyente" id="familia" value="2" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Familia
+                                              </label>
+                                              <label class="radio radio-inline m-r-20 ">
+                                                  <input name="tipo_contribuyente" id="organizacion" value="3" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Organización
+                                              </label>
+                                              <label class="radio radio-inline m-r-20 ">
+                                                  <input name="tipo_contribuyente" id="anonimo" value="4" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Anónimo
+                                              </label>
+                                              </div>
+                                              </div>
+                                           <div class="has-error" id="error-tipo_contribuyente">
+                                                <span>
+                                                    <small class="help-block error-span" id="error-tipo_contribuyente_mensaje"></small>                                
+                                                </span>
+                                            </div>
+                                         </div>
 
-                                          <div class="clearfix p-b-35"></div>
+                                        <div class="col-sm-12" id="div_nombre" style="padding: 0px">
 
-                                        <div class="col-sm-12" style="padding:0px">
+                                            <div class="clearfix p-b-35"></div>
 
 
                                               <label for="id" id="id-nombre">Nombre y Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
@@ -772,21 +800,22 @@
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       
-                                                      <input type="text" class="form-control input-sm input-mask" name="nombre" id="nombre" placeholder="Ej. Valeria Zambrano">
+                                                      <input class="form-control input-sm input-mask" name="nombre" id="nombre" placeholder="Ej: Valeria Zambrano" type="text">
 
                                                       </div>
                                                     </div>
                                                   <div class="has-error" id="error-nombre">
-                                                    <span >
-                                                        <small id="error-nombre_mensaje" class="help-block error-span" ></small>                                           
+                                                    <span>
+                                                        <small id="error-nombre_mensaje" class="help-block error-span"></small>                                           
                                                     </span>
                                                   </div>
                                               
                                           </div>
 
-                                          <div class="clearfix p-b-35"></div>
 
-                                          <div class="col-sm-12" style="padding:0px">
+                                          <div class="col-sm-12" id="div_sexo" style="padding: 0px">
+
+                                            <div class="clearfix p-b-35"></div>
                                  
                                               <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
 
@@ -806,34 +835,79 @@
                                               </div>
                                               </div>
                                            <div class="has-error" id="error-sexo">
-                                                <span >
-                                                    <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                                <span>
+                                                    <small class="help-block error-span" id="error-sexo_mensaje"></small>                                
                                                 </span>
                                             </div>
                                          </div>
 
-                                         <div class="clearfix p-b-35"></div>
+                                         
 
-                                          <div class="col-sm-12" style="padding:0px">
+                                          <div class="col-sm-12" id="div_correo" style="padding: 0px">
+
+                                              <div class="clearfix p-b-35"></div>
+
                                               <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                                      <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="correo" id="correo" placeholder="Ej: easydance@gmail.com">
+                                                      <input class="form-control input-sm input-mask" name="correo" id="correo" placeholder="Ej: easydance@gmail.com" type="text">
                                                       </div>
                                                     </div>
                                                   <div class="has-error" id="error-correo">
-                                                    <span >
-                                                        <small id="error-correo_mensaje" class="help-block error-span" ></small>                                           
+                                                    <span>
+                                                        <small id="error-correo_mensaje" class="help-block error-span"></small>                                           
                                                     </span>
                                                   </div>
                                               
                                           </div>
 
+                                          <div class="col-sm-12" id="div_telefono" style="padding: 0px">
 
-                                          <div class="clearfix p-b-35"></div>
+                                              <div class="clearfix p-b-35"></div>
+
+                                              <label for="id" id="id-telefono">Número Telefónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el número telefónico del contribuyente" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_b icon_b-telefono f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      <input autocomplete="off" maxlength="13" class="form-control input-sm input-mask" data-mask="(000)000-0000" name="telefono" id="telefono" placeholder="Ej: (426)367-0894" type="text">
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-telefono">
+                                                    <span>
+                                                        <small id="error-telefono_mensaje" class="help-block error-span"></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          <div class="col-sm-12" id="div_coordinador" style="padding: 0px">
+
+                                            <div class="clearfix p-b-35"></div>
+
+
+                                              <label for="id" id="id-coordinador">Coordinador</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del coordinador de la organización" title="" data-original-title="Ayuda"></i>
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                                     <div class="fg-line"> 
+                                                      
+                                                      <input class="form-control input-sm input-mask" name="coordinador" id="coordinador" placeholder="Ej. Valeria Zambrano" type="text">
+
+                                                      </div>
+                                                    </div>
+                                                  <div class="has-error" id="error-coordinador">
+                                                    <span>
+                                                        <small id="error-coordinador_mensaje" class="help-block error-span"></small>                                           
+                                                    </span>
+                                                  </div>
+                                              
+                                          </div>
+
+                                          
 
                                             <div class="col-sm-12" style="padding:0px">
+
+                                            <div class="clearfix p-b-35"></div>
                                               <div class="form-group">
                                               <div class="form-group">
                                                 <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
@@ -841,22 +915,21 @@
                                               <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                                 <div class="fg-line">
-                                                <input type="text" class="form-control input-sm input-mask" name="monto" id="monto" data-mask="000000000000000" placeholder="Ej. 5000">
+                                                <input autocomplete="off" maxlength="15" class="form-control input-sm input-mask" name="monto" id="monto" data-mask="000000000000000" placeholder="Ej. 5000" type="text">
                                                 </div>
                                               </div>
                                             </div>
                                             <div class="has-error" id="error-monto">
-                                              <span >
-                                                  <small id="error-monto_mensaje" class="help-block error-span" ></small>                                           
+                                              <span>
+                                                  <small id="error-monto_mensaje" class="help-block error-span"></small>                                           
                                               </span>
                                             </div>
                                         </div>
                                        </div>
 
-                               
-                                          <div class="clearfix p-b-35"></div>
-
                                           <div class="col-sm-12" style="padding:0px">
+
+                                              <div class="clearfix p-b-35"></div>
                                  
                                               <label for="apellido" id="id-tipo_cuenta">Tipo de Pago</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
 
@@ -864,7 +937,7 @@
                                                 <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                                 <div class="p-t-10">
                                               <label class="radio radio-inline m-r-20">
-                                                  <input name="tipo_cuenta" id="efectivo" value="1" type="radio" checked>
+                                                  <input name="tipo_cuenta" id="efectivo" value="1" checked="checked" type="radio">
                                                   <i class="input-helper"></i>  
                                                   Efectivo 
                                               </label>
@@ -876,45 +949,50 @@
                                               </div>
                                               </div>
                                            <div class="has-error" id="error-tipo_cuenta">
-                                                <span >
-                                                    <small class="help-block error-span" id="error-tipo_cuenta_mensaje" ></small>                                
+                                                <span>
+                                                    <small class="help-block error-span" id="error-tipo_cuenta_mensaje"></small>                                
                                                 </span>
                                             </div>
                                          </div>
 
-                                          <div class="clearfix p-b-35"></div>
+                                        <div class="col-sm-12" id="div_identidad" style="padding: 0px">
 
-                                        <div class="col-sm-12" style="padding:0px">
+                                              <div class="clearfix p-b-35"></div>
+
+
                                               <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
                                                      <div class="fg-line"> 
                                                       
-                                                      <input type="text" class="form-control input-sm input-mask" name="nombre_banco" id="nombre_banco" placeholder="Ej. Banco del Tesoro">
+                                                      <input class="form-control input-sm input-mask" name="nombre_banco" id="nombre_banco" placeholder="Ej. Banco del Tesoro" type="text">
 
                                                       </div>
                                                     </div>
                                                   <div class="has-error" id="error-nombre_banco">
-                                                    <span >
-                                                        <small id="error-nombre_banco_mensaje" class="help-block error-span" ></small>                                           
+                                                    <span>
+                                                        <small id="error-nombre_banco_mensaje" class="help-block error-span"></small>                                           
                                                     </span>
                                                   </div>
                                               
                                           </div>
 
-                                          <div class="clearfix p-b-35"></div>
+                                          
 
-                                          <div class="col-sm-12" style="padding:0px">
+                                          <div class="col-sm-12" id="div_numero" style="padding: 0px">
+
+                                              <div class="clearfix p-b-35"></div>
+
                                               <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                                                      <div class="fg-line"> 
-                                                      <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="00000000000000000000" placeholder="Ingresa Número de Transferencia">
+                                                      <input autocomplete="off" maxlength="20" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="00000000000000000000" placeholder="Ingresa Número de Transferencia" type="text">
                                                       </div>
                                                     </div>
                                                   <div class="has-error" id="error-numero_cuenta">
-                                                    <span >
-                                                        <small id="error-numero_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                                    <span>
+                                                        <small id="error-numero_cuenta_mensaje" class="help-block error-span"></small>                                           
                                                     </span>
                                                   </div>
                                               
@@ -938,7 +1016,7 @@
 
                                             <div class="col-sm-12 text-left">
 
-                                              <button data-formulario="form_normal" type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
+                                              <button data-formulario="form_normal" type="button" class="btn btn-blanco m-r-10 f-18 guardar waves-effect" id="guardar">Guardar</button>
 
                                             </div>
                                         </div></form>
@@ -1023,8 +1101,11 @@
 
             $(document).ready(function() {
 
-              $('#numero_cuenta').prop('readonly', true);
-              $('#nombre_banco').prop('readonly', true);
+              $("#form_normal")[0].reset();
+
+              $('#div_numero').hide();
+              $('#div_identidad').hide();
+              $('#div_coordinador').hide();
 
               $("#navbar li a").click(function(event) {
                  $('.navbar-collapse').collapse('hide');
@@ -1045,7 +1126,7 @@
                       $(".card-body").removeClass(animation);
                   }, animationDuration);
               $(".soon").soon({
-                  due:"{{$campana->fecha_final}}",
+                  due:"2016-08-17",
                   //layout:"group"
                   layout:"group tight label-uppercase label-small",
                   format:"d,h,m,s",
@@ -1054,7 +1135,7 @@
                   visual:"ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0"
               });
 
-              if("{{$porcentaje}}" >= 100){
+              if("0" >= 100){
                 $("#barra-progreso").removeClass('progress-bar-morado');
                 $("#barra-progreso").addClass('progress-bar-success');
               }else{
@@ -1123,7 +1204,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos+"&id={{$campana->id}}",
+                        data:datos+"&id=1",
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -1135,7 +1216,7 @@
                           var nType = 'success';
                           $("#"+form)[0].reset();
                           $('#modalConfirmar').modal('hide');
-                          window.location = route_enhorabuena + "{{$campana->id}}"
+                          window.location = route_enhorabuena + "1"
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
                           $('html,body').animate({
@@ -1187,7 +1268,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos+"&id={{$campana->id}}",
+                        data:datos+"&id=1",
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -1215,7 +1296,7 @@
                     error:function(msj){
                       setTimeout(function(){ 
                          if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
+                          window.location = "http://localhost:8000/error";
                         }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
@@ -1240,7 +1321,7 @@
             });
 
         function limpiarMensaje(){
-          var campo = ["nombre", "nombre_banco", "tipo_cuenta", "numero_cuenta", "correo", "rif", "nombre_invitado", "correo_invitado", "invitacion_nombre", "linea"];
+          var campo = ["nombre", "nombre_banco", "tipo_cuenta", "numero_cuenta", "correo", "telefono", "nombre_invitado", "correo_invitado", "invitacion_nombre", "linea", "monto", "coordinador", "sexo"];
           fLen = campo.length;
           for (i = 0; i < fLen; i++) {
               $("#error-"+campo[i]+"_mensaje").html('');
@@ -1289,7 +1370,7 @@
       
           recompensa = this.id;            
   
-          campana = "{{$campana->id}}"    
+          campana = "1"    
           var route=route_agregar_unsign+"/"+campana;   
           window.location=route;    
    
@@ -1440,7 +1521,7 @@
                     error:function(msj){
                       setTimeout(function(){ 
                         //  if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
+                        //   window.location = "http://localhost:8000/error";
                         // }
                         if(msj.responseJSON.status=="ERROR"){
                           errores(msj.responseJSON.errores);
@@ -1503,24 +1584,60 @@
                                                 
                     });   
 
-                    function collapse_minus(collaps){
-                        $('#'+collaps).collapse('hide');
-                    }
-
                     $("input[name=tipo_cuenta]").change(function(){
 
-                      console.log(1);
+                      limpiarMensaje();
 
                       if($(this).val() == 1){
                         $('#numero_cuenta').val('');
                         $('#nombre_banco').val('');
-                        $('#numero_cuenta').prop('readonly', true);
-                        $('#nombre_banco').prop('readonly', true);
+                        $('#div_identidad').hide();
+                        $('#div_numero').hide()
 
                       }
                       else{
-                        $('#numero_cuenta').prop('readonly', false);
-                        $('#nombre_banco').prop('readonly', false);
+                        $('#div_identidad').show();
+                        $('#div_numero').show()
+                      }
+
+                    });
+
+                    $("input[name=tipo_contribuyente]").change(function(){
+
+                      limpiarMensaje();
+
+                      if($(this).val() == 1){
+                        $('#id-nombre').text('Nombre y Apellido');
+                        $('#nombre').attr('placeholder','Ej: Valeria Zambrano');
+                        $('#div_nombre').show();
+                        $('#div_sexo').show();
+                        $('#div_correo').show();
+                        $('#div_telefono').show();
+                        $('#div_coordinador').hide();
+    
+                      }
+                      else if($(this).val() == 2){
+                        $('#id-nombre').text('Apellidos');
+                        $('#nombre').attr('placeholder','Ej: Zambrano Rivera');
+                        $('#div_nombre').show();
+                        $('#div_sexo').hide();
+                        $('#div_correo').show();
+                        $('#div_telefono').show();
+                        $('#div_coordinador').hide();
+                      }else if($(this).val() == 3){
+                        $('#id-nombre').text('Nombre');
+                        $('#nombre').attr('placeholder','Ej: Habana Maracaibo');
+                        $('#div_nombre').show();
+                        $('#div_sexo').hide();
+                        $('#div_correo').show();
+                        $('#div_telefono').show();
+                        $('#div_coordinador').show();
+                      }else{
+                        $('#div_nombre').hide();
+                        $('#div_sexo').hide();
+                        $('#div_correo').hide();
+                        $('#div_telefono').hide();
+                        $('#div_coordinador').hide();
                       }
 
                     });

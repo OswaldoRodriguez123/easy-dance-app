@@ -735,57 +735,94 @@ public function todos_con_robert()
     public function storeTransferencia(Request $request)
     {
 
-    if($request->tipo_cuenta == 1)
+    if($request->tipo_contribuyente == 1)
     {
 
         $rules = [
-            'rif' => 'required|min:7',
             'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
             'sexo' => 'required',
-            'correo' => 'required|email|max:255',
+            'correo' => 'email',
+            'telefono' => 'required',
             'monto' => 'required|numeric',
         ];
 
         $messages = [
-            'rif.required' => 'Ups! La Cedula - Pasaporte es requerido',
-            'rif.min' => 'El mínimo de numeros permitidos son 7',
             'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
             'nombre.min' => 'El mínimo de caracteres permitidos son 5',
             'nombre.max' => 'El máximo de caracteres permitidos son 50',
             'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
             'sexo.required' => 'Ups! El Sexo  es requerido ',
-            'correo.required' => 'Ups! El correo  es requerido ',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
-            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'telefono.required' => 'Ups! El número telefónico es requerido',
             'monto.required' => 'Ups! El monto es requerido',
             'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
         ];
-
-    }else{
+    }else if($request->tipo_contribuyente == 2)
+    {
 
         $rules = [
-            'rif' => 'required|min:7',
             'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-            'sexo' => 'required',
-            'correo' => 'required|email|max:255',
+            'correo' => 'email',
+            'telefono' => 'required',
             'monto' => 'required|numeric',
+        ];
+
+        $messages = [
+            'nombre.required' => 'Ups! El Apellido es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'nombre.regex' => 'Ups! El apellido es inválido, debe ingresar sólo letras',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'telefono.required' => 'Ups! El número telefónico es requerido',
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        ];
+    }else if($request->tipo_contribuyente == 3)
+    {
+
+        $rules = [
+            'nombre' => 'required|min:3|max:50',
+            'correo' => 'email',
+            'telefono' => 'required',
+            'coordinador' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'monto' => 'required|numeric',
+        ];
+
+        $messages = [
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'telefono.required' => 'Ups! El número telefónico es requerido',
+            'coordinador.required' => 'Ups! El Patrocinador es requerido',
+            'coordinador.min' => 'El mínimo de caracteres permitidos son 5',
+            'coordinador.max' => 'El máximo de caracteres permitidos son 50',
+            'coordinador.regex' => 'Ups! El Nombre del coordinador es inválido, debe ingresar sólo letras',
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        ];
+    }else
+    {
+
+        $rules = [
+            'monto' => 'required|numeric',
+        ];
+
+        $messages = [
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        ];
+    }
+
+    if($request->tipo_cuenta == 2)
+    {
+
+        $rules = [
             'nombre_banco' => 'required',
             'numero_cuenta' => 'required',
         ];
 
         $messages = [
-            'rif.required' => 'Ups! La Cedula - Pasaporte es requerido',
-            'rif.min' => 'El mínimo de numeros permitidos son 7',
-            'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
-            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-            'nombre.max' => 'El máximo de caracteres permitidos son 50',
-            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-            'sexo.required' => 'Ups! El Sexo  es requerido ',
-            'correo.required' => 'Ups! El correo  es requerido ',
-            'correo.email' => 'Ups! El correo tiene una dirección inválida',
-            'correo.max' => 'El máximo de caracteres permitidos son 255',
-            'monto.required' => 'Ups! El monto es requerido',
-            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
             'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
             'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
         ];
@@ -798,23 +835,34 @@ public function todos_con_robert()
 
             return response()->json(['errores'=>$validator->messages(), 'form' => $request->form, 'status' => 'ERROR'],422);
 
+        }if($request->tipo_contribuyente == 1){
+            $sexo = $request->sexo;
+            $nombre = $request->nombre;
+        }else if($request->tipo_contribuyente == 2){
+            $sexo = 'FA';
+            $nombre = 'Flia ' . $request->nombre;
+        }else if($request->tipo_contribuyente == 3){
+            $sexo = 'O';
+            $nombre = $request->nombre;
+        }else{
+            $sexo = 'A';
+            $nombre = 'Anónimo';
         }
 
-        else{
-
-                Session::put('nombre_contribuyente', $request->nombre);
+                Session::put('nombre_contribuyente', $nombre);
 
                 $transferencia = new TransferenciaCampana;
 
                 $transferencia->campana_id = $request->id;
-                $transferencia->nombre = $request->nombre;
-                $transferencia->sexo = $request->sexo;
+                $transferencia->nombre = $nombre;
+                $transferencia->sexo = $sexo;
                 $transferencia->monto = $request->monto;
                 $transferencia->nombre_banco = $request->nombre_banco;
                 $transferencia->tipo_cuenta = $request->tipo_cuenta;
                 $transferencia->numero_cuenta = $request->numero_cuenta;
-                $transferencia->rif = $request->rif;
+                $transferencia->telefono = $request->telefono;
                 $transferencia->correo = $request->correo;
+                $transferencia->coordinador = $request->coordinador;
 
                 if($transferencia->save()){
 
@@ -846,7 +894,6 @@ public function todos_con_robert()
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                 }
 
-            }
         }
 
     public function enhorabuena($id)

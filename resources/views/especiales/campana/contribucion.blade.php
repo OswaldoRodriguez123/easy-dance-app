@@ -41,7 +41,7 @@
                                     <th class="text-center" data-column-id="monto" data-order="desc">Tipo de Pago</th>
                                     <th class="text-center" data-column-id="nombre_banco" data-order="desc">Identidad bancaria</th>
                                     <th class="text-center" data-column-id="numero_cuenta" data-order="desc">Número de transferencia</th>
-                                    <th class="text-center" data-column-id="rif" data-order="desc">Cedula - Pasaporte</th>
+                                    <th class="text-center" data-column-id="rif" data-order="desc">Telefono</th>
                                     <th class="text-center" data-column-id="correo" data-order="desc">Correo Electronico</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -70,7 +70,7 @@
                                     </td>
                                     <td class="text-center previa">{{$contribucion['nombre_banco']}}</td>
                                     <td class="text-center previa">{{$contribucion['numero_cuenta']}}</td>
-                                    <td class="text-center previa">{{$contribucion['rif']}}</td>
+                                    <td class="text-center previa">{{$contribucion['telefono']}}</td>
                                     <td class="text-center previa">{{$contribucion['correo']}}</td>
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> &nbsp; <i data-toggle="modal" class="zmdi zmdi-check confirmar f-20 p-r-10"></i></td>
 
