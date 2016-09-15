@@ -251,6 +251,8 @@
                     <div class="clearfix p-b-15"></div>
                     <div class="clearfix p-b-15"></div>
 
+                    <p class="text-center f-700" >Compartir en</p>
+
                     <ul class="rrssb-buttons clearfix">
 
                       <li class="rrssb-facebook">
