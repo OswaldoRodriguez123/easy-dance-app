@@ -132,8 +132,8 @@ public function todos_con_robert()
                  }else{
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
                     $hora_segundos = $fecha_de_registro->format('H:i');
-                    $dia = $fecha_de_registro->format('d');
-                    $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
+                    $dia_registro = $fecha_de_registro->format('d');
+                    $fecha_de_realizacion = $dia_registro . " de septiembre a las ".$hora_segundos;
                  }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
