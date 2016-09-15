@@ -132,8 +132,8 @@ public function todos_con_robert()
                  }else{
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
                     $hora_segundos = $fecha_de_registro->format('H:i');
-                    $dia_registro = $fecha_de_registro->format('d');
-                    $fecha_de_realizacion = $dia_registro . " de septiembre a las ".$hora_segundos;
+                    $dia = $fecha_de_registro->format('d');
+                    $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
                  }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
@@ -862,7 +862,7 @@ public function todos_con_robert()
                 $transferencia->numero_cuenta = $request->numero_cuenta;
                 $transferencia->telefono = $request->telefono;
                 $transferencia->correo = $request->correo;
-                $transferencia->coordinador = $request->coordinador;
+                $transferencia->coordinador = $request->correo;
 
                 if($transferencia->save()){
 
@@ -1444,7 +1444,7 @@ public function todos_con_robert()
                  }else{
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
                     $hora_segundos = $fecha_de_registro->format('H:i');
-                    $dia = $fecha_de_registro->format('D');
+                    $dia = $fecha_de_registro->format('d');
                     $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
                  }
             }
