@@ -511,6 +511,8 @@
                         <p class="text-left f-30 opaco-0-8 f-700" id="offset_patrocinador" >Nuestros patrocinadores ángeles</p>
                         <hr class='linea-morada'>
 
+                        <div class="col-sm-12" style="padding:0px">
+
 
                          <table class="table" id="tablelistar" >
 
@@ -562,6 +564,7 @@
                                                            
                             </tbody>
                         </table>
+                        </div>
                     </div>
 
                     <div class="clearfix p-b-35"></div>
@@ -732,20 +735,18 @@
 
                  <div class="pmb-block m-t-0 p-t-0">
 
-                        <p class="text-left f-30 opaco-0-8 f-700" id ="offset_pago" >Confirma tu Pago</p>
+                        <p class="text-left f-30 opaco-0-8 f-700" id ="offset_pago" >Confirma tu Aporte</p>
 
                           <hr class='linea-morada'>
 
                           <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
 
                                     <form name="form_normal" id="form_normal"  >
                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                       <input type="hidden" name="form" value="2">
 
 
-                                          <div class="col-sm-12">
+                                          <div class="col-sm-12" style="padding:0px">
                                               <label for="id" id="id-rif">Cédula - Pasaporte</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa la cedula o pasaporte del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
@@ -763,7 +764,7 @@
 
                                           <div class="clearfix p-b-35"></div>
 
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12" style="padding:0px">
 
 
                                               <label for="id" id="id-nombre">Nombre y Apellido</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del contribuyente" title="" data-original-title="Ayuda"></i>
@@ -785,7 +786,7 @@
 
                                           <div class="clearfix p-b-35"></div>
 
-                                          <div class="col-sm-12">
+                                          <div class="col-sm-12" style="padding:0px">
                                  
                                               <label for="apellido" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el sexo del contribuyente" title="" data-original-title="Ayuda"></i>
 
@@ -813,7 +814,7 @@
 
                                          <div class="clearfix p-b-35"></div>
 
-                                          <div class="col-sm-12">
+                                          <div class="col-sm-12" style="padding:0px">
                                               <label for="id" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el correo electronico del contribuyente" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
@@ -832,7 +833,7 @@
 
                                           <div class="clearfix p-b-35"></div>
 
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12" style="padding:0px">
                                               <div class="form-group">
                                               <div class="form-group">
                                                 <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el monto que deseas contribuir" title="" data-original-title="Ayuda"></i>
@@ -855,7 +856,7 @@
                                
                                           <div class="clearfix p-b-35"></div>
 
-                                          <div class="col-sm-12">
+                                          <div class="col-sm-12" style="padding:0px">
                                  
                                               <label for="apellido" id="id-tipo_cuenta">Tipo de Pago</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
 
@@ -870,7 +871,7 @@
                                               <label class="radio radio-inline m-r-20 ">
                                                   <input name="tipo_cuenta" id="transferencia" value="2" type="radio">
                                                   <i class="input-helper"></i>  
-                                                  Transferencia / Deposito 
+                                                  Transferencia
                                               </label>
                                               </div>
                                               </div>
@@ -883,7 +884,7 @@
 
                                           <div class="clearfix p-b-35"></div>
 
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12" style="padding:0px">
                                               <label for="id" id="id-nombre_banco">Identidad bancaria</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el nombre del banco" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
@@ -903,7 +904,7 @@
 
                                           <div class="clearfix p-b-35"></div>
 
-                                          <div class="col-sm-12">
+                                          <div class="col-sm-12" style="padding:0px">
                                               <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
                                                   <div class="input-group">
                                                     <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
@@ -946,7 +947,7 @@
 
 
                                     </div>
-                                  </div>
+                       
                         
 
                     </div>
