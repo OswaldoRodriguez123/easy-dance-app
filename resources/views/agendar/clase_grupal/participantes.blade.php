@@ -213,8 +213,18 @@
                                         <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
 
                                          @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          <?php $exist = false; ?>
+                                          @foreach ( $alumnos_inscritos as $inscripcion)
+                                            @if ($inscripcion->alumno_id==$alumno['id'] )
+                                              <?php $exist = true; ?>
+                                            @endif
                                           @endforeach
+                                          @if ($exist)
+                                              <option value = "{{ $alumno['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          @else
+                                              <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          @endif
+                                         @endforeach
                                         </select>
                                       </div>
                                     </div>
