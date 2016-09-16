@@ -80,6 +80,8 @@ public function todos_con_robert()
         $fecha_de_realizacion_general = array();
         $now = Carbon::now();
 
+        $recaudado = 0;
+
          foreach($patrocinadores as $patrocinador){
             // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
             $patrocinador->Nombres = title_case($patrocinador->Nombres);
