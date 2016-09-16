@@ -562,7 +562,18 @@
 
                                                    <div class="col-sm-5">
                                                      <div class="pull-right p-relative">
-                                                        <div class="lv-title"><span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} BsF</span></div>
+                                                        <div class="lv-title"><span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
+                                                        @if($patrocinador->tipo_moneda == 1)
+
+                                                        BsF
+
+                                                        @else
+
+                                                        USD
+
+                                                        @endif
+
+                                                      </span></div>
                                                     </div>
                                                   </div>
                                                   
@@ -928,6 +939,35 @@
                                             </div>
                                         </div>
                                        </div>
+
+                                       <div class="col-sm-12" style="padding:0px">
+
+                                              <div class="clearfix p-b-35"></div>
+                                 
+                                              <label for="apellido" id="id-tipo_moneda">Moneda</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el tipo de moneda" title="" data-original-title="Ayuda"></i>
+
+                                              <div class="input-group">
+                                                <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
+                                                <div class="p-t-10">
+                                              <label class="radio radio-inline m-r-20">
+                                                  <input checked="checked" name="tipo_moneda" id="bolivares" value="1" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Bolivares 
+                                              </label>
+                                              <label class="radio radio-inline m-r-20 ">
+                                                  <input name="tipo_moneda" id="dolares" value="2" type="radio">
+                                                  <i class="input-helper"></i>  
+                                                  Dolares
+                                              </label>
+                                              </div>
+                                              </div>
+                                           <div class="has-error" id="error-tipo_moneda">
+                                                <span>
+                                                    <small class="help-block error-span" id="error-tipo_moneda_mensaje"></small>                                
+                                                </span>
+                                            </div>
+                                         </div>
+
 
                                           <div class="col-sm-12" style="padding:0px">
 

@@ -53,7 +53,20 @@
                                 <?php $id = $contribucion['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$contribucion['nombre']}}</td>
-                                    <td class="text-center previa">{{$contribucion['monto']}}</td>
+                                    <td class="text-center previa">{{$contribucion['monto']}}
+
+                                    @if($contribucion['tipo_moneda'] == 1)
+
+                                    BsF
+
+                                    @else
+
+                                    USD
+
+                                    @endif
+
+
+                                    </td>
                                     <td class="text-center previa">
 
                                     @if($contribucion['tipo_cuenta'] == 1)

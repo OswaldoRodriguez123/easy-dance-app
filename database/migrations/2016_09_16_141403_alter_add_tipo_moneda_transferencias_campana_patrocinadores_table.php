@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterAddCoordinadorTransferenciasCampana2Table extends Migration
+class AlterAddTipoMonedaTransferenciasCampanaPatrocinadoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,13 @@ class AlterAddCoordinadorTransferenciasCampana2Table extends Migration
     {
         Schema::table('transferencias_campana', function (Blueprint $table) {
             
-            $table->string('coordinador');
+            $table->integer('tipo_moneda')->default(1);
+
+        });
+
+        Schema::table('patrocinadores', function (Blueprint $table) {
+            
+            $table->integer('tipo_moneda')->default(1);
 
         });
     }
@@ -29,7 +35,13 @@ class AlterAddCoordinadorTransferenciasCampana2Table extends Migration
 
         Schema::table('transferencias_campana', function (Blueprint $table) {
             
-            $table->dropColumn('coordinador');
+            $table->dropColumn('tipo_moneda');
+            
+        });
+
+        Schema::table('patrocinadores', function (Blueprint $table) {
+            
+            $table->dropColumn('tipo_moneda');
             
         });
 

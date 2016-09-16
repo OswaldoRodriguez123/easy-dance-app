@@ -857,6 +857,7 @@ public function todos_con_robert()
                 $transferencia->nombre = $nombre;
                 $transferencia->sexo = $sexo;
                 $transferencia->monto = $request->monto;
+                $transferencia->tipo_moneda = $request->tipo_moneda;
                 $transferencia->nombre_banco = $request->nombre_banco;
                 $transferencia->tipo_cuenta = $request->tipo_cuenta;
                 $transferencia->numero_cuenta = $request->numero_cuenta;
@@ -1375,14 +1376,14 @@ public function todos_con_robert()
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
          $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
-         $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
+         // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
          $patrocinadores = DB::table('patrocinadores')
              ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
              ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at')
+             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
              ->where('patrocinadores.campana_id', '=', $id)
              ->orderBy('patrocinadores.created_at', 'desc')
          ->get();
@@ -1391,6 +1392,7 @@ public function todos_con_robert()
 
         $fecha_de_realizacion_general = array();
         $now = Carbon::now();
+        $recaudado = 0;
 
          foreach($patrocinadores as $patrocinador){
             // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
@@ -1449,6 +1451,14 @@ public function todos_con_robert()
                  }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
+
+            if($patrocinador->tipo_moneda == 1){
+                $patrocinador_monto = $patrocinador->monto;
+            }else{
+                $patrocinador_monto = $patrocinador->monto * 1000;
+            }
+
+            $recaudado = $recaudado + $patrocinador_monto;
          }
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
@@ -1891,6 +1901,7 @@ public function todos_con_robert()
             $patrocinador->campana_id = $contribucion->campana_id;
             $patrocinador->externo_id = $UsuarioExterno->id;
             $patrocinador->tipo_id = 1;
+            $patrocinador->tipo_moneda = $contribucion->tipo_moneda;
             $patrocinador->monto = $contribucion->monto;
 
             $patrocinador->save();
