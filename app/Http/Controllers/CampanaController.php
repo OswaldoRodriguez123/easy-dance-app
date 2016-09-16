@@ -63,7 +63,7 @@ public function todos_con_robert()
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
          $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
-         $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
+         // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
          $patrocinadores = DB::table('patrocinadores')
@@ -137,6 +137,14 @@ public function todos_con_robert()
                  }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
+
+            if($patrocinador->tipo_moneda == 1){
+                $patrocinador_monto = $patrocinador->monto;
+            }else{
+                $patrocinador_monto = $patrocinador->monto * 1000;
+            }
+
+            $recaudado = $recaudado + $patrocinador_monto;
          }
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
@@ -1376,6 +1384,7 @@ public function todos_con_robert()
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
          $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
+         // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
          $patrocinadores = DB::table('patrocinadores')
@@ -1451,20 +1460,14 @@ public function todos_con_robert()
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
 
-            // if($patrocinador->tipo_moneda == 1){
-            //     $patrocinador_monto = $patrocinador->monto;
-            // }else{
-            //     $patrocinador_monto = $patrocinador->monto * 1000;
-            // }
+            if($patrocinador->tipo_moneda == 1){
+                $patrocinador_monto = $patrocinador->monto;
+            }else{
+                $patrocinador_monto = $patrocinador->monto * 1000;
+            }
 
-            // $recaudado = $recaudado + $patrocinador_monto;
+            $recaudado = $recaudado + $patrocinador_monto;
          }
-
-        $recaudado1 = Patrocinador::where('campana_id', '=' ,  $id)->where('tipo_moneda', 1)->sum('monto');
-         $recaudado2 = Patrocinador::where('campana_id', '=' ,  $id)->where('tipo_moneda', 2)->sum('monto');
-         $recaudado2 = $recaudado2 * 1000;
-
-         $recaudado = $recaudado1 + $recaudado2;
 
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
          $academia = Academia::find($campaña->academia_id);
