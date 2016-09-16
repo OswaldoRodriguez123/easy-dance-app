@@ -1128,7 +1128,7 @@
                       $(".card-body").removeClass(animation);
                   }, animationDuration);
               $(".soon").soon({
-                  due:"2016-08-17",
+                  due:"{{$campana->fecha_final}}",
                   //layout:"group"
                   layout:"group tight label-uppercase label-small",
                   format:"d,h,m,s",
