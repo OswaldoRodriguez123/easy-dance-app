@@ -766,7 +766,8 @@
                                     <form name="form_normal" id="form_normal">
                                       <input name="_token" value="{{ csrf_token() }}" type="hidden">
                                       <input name="form" value="2" type="hidden">
-
+                                      <input name="id" value="{{$campana->id}}" type="hidden">
+                                      
                                       <div class="col-sm-12" style="padding:0px">
                                  
                                               <label for="apellido" id="id-tipo_contribuyente">Tipo de Contribuyente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
@@ -1238,7 +1239,7 @@
                 var route = route_agregar_contribucion;
                 var token = $('input:hidden[name=_token]').val();
                 var form = $(this).data('formulario');
-                var datos = $( "#"+form ).serialize(); 
+                var datos = $( "#form_normal" ).serialize(); 
                 procesando();
                 limpiarMensaje();
                 $.ajax({
@@ -1246,31 +1247,29 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos+"&id=1",
+                        data:datos,
                     success:function(respuesta){
                       setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
+                        
                         if(respuesta.status=="OK"){
                           var nType = 'success';
-                          $("#"+form)[0].reset();
-                          $('#modalConfirmar').modal('hide');
-                          window.location = route_enhorabuena + "1"
+                          $("#form_normal")[0].reset();
+                          window.location = route_enhorabuena + "{{$campana->id}}"
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
-                          $('html,body').animate({
-                            scrollTop: $("#id-aporte").offset().top-90,
-                          }, 1000);
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                         }
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                       
+                                                 
                         
                       }, 1000);
                     },
