@@ -729,9 +729,16 @@
                                 <p class="text-left f-22 opaco-0-8 f-700">TRANSFERENCIAS O DEPÓSITOS  BANCARIOS EN VENEZUELA</p>
                                 <hr class='linea-morada'>
 
-                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Banco Occidental de Descuento ( B.O.D ), Cuenta Corriente, No: 0116-0128-62-0007411502</p>
-                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Banco de Venezuela, Cuenta Corriente, No: 0102-0345-77-0000076241</p>
-                                
+                                @foreach($datos as $dato)
+
+                                  <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> {{$dato->nombre_banco}}, {{$dato->tipo_cuenta}}, No: {{$dato->numero_cuenta}}</p>
+                                  
+                                  
+
+                                  <!-- <p class="text-left f-16 opaco-0-8 f-700">A nombre de: {{$dato->nombre}}. Número de cédula: {{$dato->rif}}</p> -->
+
+                                @endforeach
+
                                 <p class="text-left f-16 opaco-0-8 f-700">A nombre de: Richard Virona. Número de cédula 12.590.716</p>
                                 
                                 <div class="clearfix p-b-35"></div>

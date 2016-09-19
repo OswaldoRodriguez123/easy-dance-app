@@ -153,7 +153,9 @@ public function todos_con_robert()
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
          $academia = Academia::find($campaña->academia_id);
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general]);
+         $datos = DatosBancariosCampana::where('campana_id', $campaña->id)->get();
+
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos]);
     }
 
     public function index(){
@@ -1480,7 +1482,9 @@ public function todos_con_robert()
          $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
          $academia = Academia::find($campaña->academia_id);
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general]);
+         $datos = DatosBancariosCampana::where('campana_id', $campaña->id)->get();
+
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos]);
     }
 
     public function contribuirCampana($id)
