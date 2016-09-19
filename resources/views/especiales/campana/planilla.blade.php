@@ -558,7 +558,7 @@
                                     <div class="form-group fg-line">
                                         <label for="id">Nombre del Banco</label>
                                         <div class="fg-line">                       
-                                        <input type="text" class="form-control input-sm" name="nombre_banco" id="nombre_banco" placeholder="Banco del Tesoro" value="{{$campana->nombre_banco}}">
+                                        <input type="text" class="form-control input-sm" name="nombre_banco" id="nombre_banco" placeholder="Banco del Tesoro">
                                       </div>
                                     </div>
                                     <div class="has-error" id="error-nombre_banco">
@@ -577,7 +577,7 @@
                                         <div class="form-group fg-line">
                                             <label for="id">Tipo de Cuenta</label>
                                             <div class="fg-line">                       
-                                            <input type="text" class="form-control input-sm" name="tipo_cuenta" id="tipo_cuenta" placeholder="Cuenta Corriente" value="{{$campana->tipo_cuenta}}">
+                                            <input type="text" class="form-control input-sm" name="tipo_cuenta" id="tipo_cuenta" placeholder="Cuenta Corriente">
                                           </div>
                                         </div>
                                         <div class="has-error" id="error-tipo_cuenta">
@@ -595,7 +595,7 @@
                                         <div class="form-group fg-line">
                                             <label for="id">Número de Cuenta</label>
                                             <div class="fg-line">                       
-                                            <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="0000-0000-00-0000000000" placeholder="Ingresa Número de Cuenta" value="{{$campana->numero_cuenta}}">
+                                            <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="0000-0000-00-0000000000" placeholder="Ingresa Número de Cuenta">
                                           </div>
                                         </div>
                                         <div class="has-error" id="error-numero_cuenta">
@@ -613,7 +613,7 @@
                                         <div class="form-group fg-line">
                                             <label for="id">Rif - Cédula</label>
                                             <div class="fg-line">                       
-                                            <input type="text" class="form-control input-sm" name="rif" id="rif" placeholder="Ingresa Numero de Cuenta" value="{{$campana->rif}}">
+                                            <input type="text" class="form-control input-sm" name="rif" id="rif" placeholder="Ingresa Numero de Cuenta">
                                           </div>
                                         </div>
                                         <div class="has-error" id="error-rif">
@@ -629,20 +629,70 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-group fg-line">
-                                            <label for="id">Correo Electrónico</label>
+                                            <label for="id">Nombre</label>
                                             <div class="fg-line">                       
-                                            <input type="text" class="form-control input-sm" name="correo" id="correo" placeholder="Ej. easydance@gmail.com" value="{{$campana->correo}}">
+                                            <input type="text" class="form-control input-sm" name="nombre_creador" id="nombre_creador" placeholder="Ej. Valeria Zambrano">
                                           </div>
                                         </div>
-                                        <div class="has-error" id="error-correo">
+                                        <div class="has-error" id="error-nombre_creador">
                                           <span >
-                                              <small id="error-correo_mensaje" class="help-block error-span" ></small>                                           
+                                              <small id="error-nombre_creador_mensaje" class="help-block error-span" ></small>                                           
                                           </span>
                                         </div>
                                     </div>
                                    </div>
 
                                <div class="clearfix p-b-35"></div>
+
+                               <div class ="col-sm-12">
+
+                                 <br><br>
+
+                                 <div class="card-header text-left">
+                                <button type="button" class="btn btn-blanco m-r-10 f-10" id="adddatos" >Agregar Linea</button>
+                                </div>
+
+                                <br></br>
+
+                              </div>
+
+                              <div class="clearfix"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tabledatos" >
+                            <thead>
+                                <tr>
+                                    
+                                    <th class="text-center" data-column-id="nombre_banco"></th>
+                                    <th class="text-center" data-column-id="tipo" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="numero"></th>
+                                    <th class="text-center" data-column-id="rif"></th>
+                                    <th class="text-center" data-column-id="nombre_creador"></th>
+                                    <th class="text-center" data-column-id="operaciones"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($datos as $dato)
+                                <?php $id = $dato->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$dato->nombre_banco}}</td>
+                                    <td class="text-center previa">{{$dato->tipo_cuenta}}</td>
+                                    <td class="text-center previa">{{$dato->numero_cuenta}}</td>
+                                    <td class="text-center previa">{{$dato->rif}}</td>
+                                    <td class="text-center previa">{{$dato->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                  </tr>
+                            @endforeach 
+                                                           
+                            </tbody>
+                            </table>
+
+                            </div>
+                            </div>
+
                             
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -660,7 +710,7 @@
                             
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-16 guardar" href="#" id="guardar" data-formulario="edit_datos_campana" data-update="datos" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                               <a class="btn-blanco m-r-5 f-12 dismiss" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
 
@@ -1016,7 +1066,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDatos-Campana">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($campana->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($datos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_c-piggy-bank f-22"></i> </span>
                                <span class="f-14"> Datos Bancaríos </span>
                              </td>
@@ -1060,6 +1110,8 @@
     route_principal="{{url('/')}}/especiales/campañas";
     route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensafija";
     route_eliminarrecompensa="{{url('/')}}/especiales/campañas/eliminarrecompensafija";
+    route_agregardatos="{{url('/')}}/especiales/campañas/agregardatosfijos";
+    route_eliminardatos="{{url('/')}}/especiales/campañas/eliminardatosfijos";
 
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -1221,6 +1273,41 @@
       }
 
       var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+      var h=$('#tabledatos').DataTable({
         processing: true,
         serverSide: false, 
         bPaginate: false, 
@@ -1443,6 +1530,11 @@
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#edit_recompensa_campana" ).serialize(); 
 
+                $("#add").attr("disabled","disabled");
+                $("#add").css({
+                    "opacity": ("0.2")
+                }); 
+
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -1460,6 +1552,8 @@
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
+
+                          $("#edit_recompensa_campana")[0].reset();
 
                           var recompensa = respuesta.array.nombre;
                           var cantidad = respuesta.array.cantidad;
@@ -1552,9 +1646,138 @@
                   .draw();
             });
 
+    $("#adddatos").click(function(){
+
+                var route = route_agregardatos;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#edit_datos_campana" ).serialize(); 
+
+                $("#adddatos").attr("disabled","disabled");
+                $("#adddatos").css({
+                    "opacity": ("0.2")
+                }); 
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          $("#edit_datos_campana")[0].reset();
+
+                          var nombre_banco = respuesta.array.nombre_banco;
+                          var tipo_cuenta = respuesta.array.tipo_cuenta;
+                          var numero_cuenta = respuesta.array.numero_cuenta;
+                          var rif = respuesta.array.rif;
+                          var nombre = respuesta.array.nombre;
+
+                          var rowId=respuesta.id;
+                          var rowNode=h.row.add( [
+                          ''+nombre_banco+'',
+                          ''+tipo_cuenta+'',
+                          ''+numero_cuenta+'',
+                          ''+rif+'',
+                          ''+nombre+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $("#adddatos").removeAttr("disabled");
+                        $("#adddatos").css({
+                            "opacity": ("1")
+                        });
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#adddatos").removeAttr("disabled");
+                        $("#adddatos").css({
+                            "opacity": ("1")
+                        });
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = $('input:hidden[name=_token]').val();
+        var id = $(this).closest('tr').attr('id');
+              $.ajax({
+                   url: route_eliminardatos+"/"+id,
+                   headers: {'X-CSRF-TOKEN': token},
+                   type: 'POST',
+                   dataType: 'json',                
+                  success: function (data) {
+                    if(data.status=='OK'){
+                        
+                                         
+                    }else{
+                      swal(
+                        'Solicitud no procesada',
+                        'Ha ocurrido un error, intente nuevamente por favor',
+                        'error'
+                      );
+                    }
+                  },
+                  error:function (xhr, ajaxOptions, thrownError){
+                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                  }
+                })
+
+                h.row( $(this).parents('tr') )
+                  .remove()
+                  .draw();
+            });
+
+
           $(".dismiss").click(function(){
             $('.modal').modal('hide');
           });
+
+
     
    </script> 
 

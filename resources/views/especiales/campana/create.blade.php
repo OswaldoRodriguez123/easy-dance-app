@@ -121,8 +121,6 @@
 
 
                         <div class="card-body p-b-20">
-                          <form name="agregar_campana" id="agregar_campana"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
@@ -136,6 +134,8 @@
                                 <div class="clearfix p-b-15"></div>
 
                                 <div class="col-sm-12">
+                                 <form name="agregar_campana" id="agregar_campana"  >
+                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                  
                                     <label for="nombre" id="id-cantidad">¿Cuánto dinero deseas recaudar?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad máxima que aspiras recaudar en tu campaña" title="" data-original-title="Ayuda"></i>
 
@@ -201,8 +201,7 @@
                                     <div class="col-sm-12">
                                  
                                     <span class="f-30 text-center c-morado">Fundamento e Historia</span>
-                                    
-
+                                  
 
                                     <hr></hr>
 
@@ -331,7 +330,29 @@
                             </div>
                           </div>
 
+                          <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres"></textarea>
+                                      </div>
+                                    <div class="has-error" id="error-condiciones">
+                                      <span >
+                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div></div></form>
                             <div class="clearfix p-b-35"></div>
+
+
+                            <div class="col-sm-12">
+
+
+
 
                             <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -360,6 +381,8 @@
                                     
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
+
+                                    <form name="agregar_recompensa" id="agregar_recompensa">
 
                                     <label for="nombre_estudio" id="id-nombre_recompensa">Título</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El título para esta recompensa es lo que aparecerá en tu página de la campaña de Easy Dance . Crear un título que describa bien el contenido de lo que ofrece esta recompensa" title="" data-original-title="Ayuda"></i>
 
@@ -405,7 +428,7 @@
                                       <span >
                                           <small class="help-block error-span" id="error-descripcion_recompensa_mensaje" ></small>                               
                                       </span>
-                                  </div>
+                                  </div></form>
                                </div>
 
                               <br>
@@ -450,30 +473,16 @@
                                     </div>
                                  </div>
                                </div>
-
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
+                               
 
                                <div class="clearfix p-b-35"></div>
-                          
 
+                                  <div class="col-sm-12">
+                                          
+        
                                     <div class="col-sm-12">
+
+
 
                                     <div class="form-group fg-line">
                                     <label for="nombre">Datos Bancarios</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los datos personales o jurídicos correspondientes a tu cuenta, de esa forma, tus alumnos podrán gestionar sus cancelaciones de manera directa a tu cuenta bancaria" title="" data-original-title="Ayuda"></i>
@@ -492,10 +501,12 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
+                                    <form name="agregar_datos" id="agregar_datos">
+
 
                                     <div class="col-sm-12">
                                  
-                                    <label for="nombre">Nombre del banco</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la identidad bancaria a la que deseas que tus clientes y alumnos realicen sus aportes" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre_banco">Nombre del banco</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la identidad bancaria a la que deseas que tus clientes y alumnos realicen sus aportes" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_c-piggy-bank f-22"></i></span>
@@ -513,7 +524,7 @@
                               <div class="clearfix p-b-35"></div>
                                     <div class="col-sm-12">
                                     
-                                    <label for="nombre">Tipo de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta que representa tu identidad bancaria" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-tipo_cuenta">Tipo de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tipo de cuenta que representa tu identidad bancaria" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_c-credit-cards f-22"></i></span>
@@ -531,7 +542,7 @@
 
                               <div class="col-sm-12">
 
-                                    <label for="nombre">Número de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cuenta que representa tu identidad bancaria" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-numero_cuenta">Número de Cuenta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cuenta que representa tu identidad bancaria" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_c-money f-22"></i></span>
@@ -549,7 +560,7 @@
 
                                <div class="col-sm-12">
 
-                                    <label for="nombre">Rif - Cédula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la identidad legal del número de cuenta" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-rif">Rif - Cédula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la identidad legal del número de cuenta" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
@@ -567,20 +578,59 @@
 
                                 <div class="col-sm-12">
 
-                                    <label for="nombre">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico de tu preferencia" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre_creador">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la identidad legal del número de cuenta" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
+                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_creador" id="nombre_creador" placeholder="Ej. Valeria Zambrano">
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-correo">
+                                 <div class="has-error" id="error-nombre_creador">
                                       <span >
-                                          <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-nombre_creador_mensaje" ></small>                                
                                       </span>
                                   </div>
-                               </div>
+                               </div></form>
+
+
+                               <div class ="col-sm-12">
+
+                                 <br><br>
+
+                                 <div class="card-header text-left">
+                                <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="adddatos" >Agregar Linea</button>
+                                </div>
+
+                                <br></br>
+
+                              </div>
+
+                              <div class="clearfix"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tabledatos" >
+                            <thead>
+                                <tr>
+                                    
+                                    <th class="text-center" data-column-id="nombre_banco"></th>
+                                    <th class="text-center" data-column-id="tipo" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="numero"></th>
+                                    <th class="text-center" data-column-id="rif"></th>
+                                    <th class="text-center" data-column-id="nombre_creador"></th>
+                                    <th class="text-center" data-column-id="operaciones"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                                           
+                            </tbody>
+                            </table>
+
+                            </div>
+                            </div>
+
 
                                <div class="clearfix p-b-35"></div>
                               <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseDatos')" ></i></div>
@@ -591,7 +641,6 @@
                                  </div>
                               </div>
                             </div>
-                          </div>
                           </div>
 
                                <div class="clearfix p-b-35"></div>
@@ -615,7 +664,7 @@
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
 
                             </div>
-                        </div></form>
+                        </div>
                     </div>
                 </div>
             </div> 
@@ -648,6 +697,8 @@
   route_principal="{{url('/')}}/especiales/campañas";
   route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensa";
   route_eliminar="{{url('/')}}/especiales/campañas/eliminarrecompensa";
+  route_datos_agregar="{{url('/')}}/especiales/campañas/agregardatos";
+  route_datos_eliminar="{{url('/')}}/especiales/campañas/eliminardatos";
   
   $(document).ready(function(){
         document.getElementById("cantidad").focus();
@@ -716,7 +767,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "cantidad", "imagen", "historia", "eslogan", "plazo", "link_video", "nombre_banco", "tipo_cuenta", "numero_cuenta", "rif", "correo", "condiciones", "presentacion", "imagen_presentacion"];
+    var campo = ["nombre", "cantidad", "imagen", "historia", "eslogan", "plazo", "link_video", "condiciones", "presentacion", "imagen_presentacion"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -794,6 +845,40 @@
                     }
         });
 
+    var h=$('#tabledatos').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
   function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
                     icon: icon,
@@ -840,7 +925,12 @@
 
                 var route = route_recompensa;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_campana" ).serialize(); 
+                var datos = $( "#agregar_recompensa" ).serialize();
+
+                $("#add").attr("disabled","disabled");
+                $("#add").css({
+                      "opacity": ("0.2")
+                }); 
 
                 $.ajax({
                     url: route,
@@ -859,6 +949,8 @@
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
+
+                          $("#agregar_recompensa")[0].reset();
 
                           var recompensa = respuesta.array[0].recompensa;
                           var cantidad = respuesta.array[0].cantidad;
@@ -879,11 +971,11 @@
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
+                        }
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
+                            "opacity": ("1")
+                        });                     
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                       }, 1000);
@@ -902,10 +994,10 @@
                           var nTitle="   Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
+                            "opacity": ("1")
+                        });
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
@@ -946,6 +1038,135 @@
                 })
 
                 t.row( $(this).parents('tr') )
+                  .remove()
+                  .draw();
+            });
+
+    $("#adddatos").click(function(){
+
+              $("#adddatos").attr("disabled","disabled");
+              $("#adddatos").css({
+                  "opacity": ("0.2")
+              }); 
+
+                var route = route_datos_agregar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#agregar_datos" ).serialize(); 
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          $("#agregar_datos")[0].reset();
+
+                          $("#adddatos").removeAttr("disabled");
+                          $("#adddatos").css({
+                              "opacity": ("1")
+                          });
+
+                          var nombre_banco = respuesta.array[0].nombre_banco;
+                          var tipo_cuenta = respuesta.array[0].tipo_cuenta;
+                          var numero_cuenta = respuesta.array[0].numero_cuenta;
+                          var rif = respuesta.array[0].rif;
+                          var nombre = respuesta.array[0].nombre;
+
+                          var rowId=respuesta.id;
+                          var rowNode=h.row.add( [
+                          ''+nombre_banco+'',
+                          ''+tipo_cuenta+'',
+                          ''+numero_cuenta+'',
+                          ''+rif+'',
+                          ''+nombre+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
+                            "opacity": ("1")
+                        });
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#adddatos").removeAttr("disabled");
+                        $("#adddatos").css({
+                            "opacity": ("1")
+                        });
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = $('input:hidden[name=_token]').val();
+        var id = $(this).closest('tr').attr('id');
+              $.ajax({
+                   url: route_datos_eliminar+"/"+id,
+                   headers: {'X-CSRF-TOKEN': token},
+                   type: 'POST',
+                   dataType: 'json',                
+                  success: function (data) {
+                    if(data.status=='OK'){
+                        
+                                         
+                    }else{
+                      swal(
+                        'Solicitud no procesada',
+                        'Ha ocurrido un error, intente nuevamente por favor',
+                        'error'
+                      );
+                    }
+                  },
+                  error:function (xhr, ajaxOptions, thrownError){
+                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                  }
+                })
+
+                h.row( $(this).parents('tr') )
                   .remove()
                   .draw();
             });
@@ -1090,6 +1311,8 @@
 
        $( "#cancelar" ).click(function() {
         $("#agregar_campana")[0].reset();
+        $("#agregar_recompensa")[0].reset();
+        $("#agregar_datos")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
         scrollTop: $("#id-cantidad").offset().top-90,

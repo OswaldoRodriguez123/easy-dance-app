@@ -15,6 +15,7 @@ use App\ItemsFactura;
 use App\MercadopagoMovs;
 use App\UsuarioExterno;
 use App\TransferenciaCampana;
+use App\DatosBancariosCampana;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -268,7 +269,6 @@ public function todos_con_robert()
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateNombrePatrocinador(Request $request){
@@ -306,7 +306,6 @@ public function todos_con_robert()
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -373,6 +372,7 @@ public function todos_con_robert()
     public function create()
     {
         Session::forget('recompensa');
+        Session::forget('datos_bancarios');
 
         return view('especiales.campana.create');
     }
@@ -577,11 +577,6 @@ public function todos_con_robert()
             $campana->eslogan = $eslogan;
             $campana->plazo = $request->plazo;
             $campana->link_video = $request->link_video;
-            $campana->correo = $request->correo;
-            $campana->nombre_banco = $request->nombre_banco;
-            $campana->tipo_cuenta = $request->tipo_cuenta;
-            $campana->numero_cuenta = $request->numero_cuenta;
-            $campana->rif = $request->rif;
             $campana->condiciones = $request->condiciones;
             $campana->presentacion = $request->presentacion;
 
@@ -658,6 +653,26 @@ public function todos_con_robert()
                         $recompensa->descripcion = $arreglo[0]['descripcion'];
 
                         $recompensa->save();
+
+                    }
+                }
+
+                $arreglos = Session::get('datos_bancarios');
+
+                if($arreglos)
+                {
+                    foreach($arreglos as $arreglo){
+
+                        $dato = New DatosBancariosCampana;
+
+                        $dato->campana_id = $campana->id;
+                        $dato->nombre_banco = $arreglo[0]['nombre_banco'];
+                        $dato->tipo_cuenta = $arreglo[0]['tipo_cuenta'];
+                        $dato->numero_cuenta = $arreglo[0]['numero_cuenta'];
+                        $dato->rif = $arreglo[0]['rif'];
+                        $dato->nombre = $arreglo[0]['nombre'];
+
+                        $dato->save();
 
                     }
                 }
@@ -945,7 +960,6 @@ public function todos_con_robert()
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateNombre(Request $request){
@@ -983,7 +997,6 @@ public function todos_con_robert()
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -1022,7 +1035,6 @@ public function todos_con_robert()
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -1062,7 +1074,6 @@ public function todos_con_robert()
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -1099,7 +1110,6 @@ public function todos_con_robert()
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -1148,7 +1158,6 @@ public function todos_con_robert()
                 return response()->json(['errores' => ['plazo' => [0, 'El plazo no puede ser mayor a 45 dias']], 'status' => 'ERROR'],422);
             }
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateLink(Request $request){
@@ -1325,16 +1334,13 @@ public function todos_con_robert()
     
     public function edit($id)
     {
-        // $visitante_presencial_join = DB::table('visitantes_presenciales')
-        //     ->join('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->select('config_especialidades.nombre as especialidad_nombre')
-        //     ->get();
 
         $campana = Campana::find($id);
 
         if($campana){
             $recompensas = Recompensa::where('campana_id' , $id)->get();
-           return view('especiales.campana.planilla')->with(['campana' => $campana, 'recompensas' => $recompensas]);
+            $datos = DatosBancariosCampana::where('campana_id' , $id)->get();
+           return view('especiales.campana.planilla')->with(['campana' => $campana, 'recompensas' => $recompensas, 'datos' => $datos]);
         }else{
            return redirect("especiales/campañas"); 
         }
@@ -2067,6 +2073,120 @@ public function todos_con_robert()
     public function enhorabuena_invitacion_sinid()
     {
         return view('especiales.campana.enhorabuena_invitacion');
+    }
+
+
+    public function agregardatos(Request $request){
+        
+    $rules = [
+
+        'nombre_banco' => 'required',
+        'tipo_cuenta' => 'required',
+        'numero_cuenta' => 'required',
+        'rif' => 'required',
+        'nombre_creador' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_banco.required' => 'Ups! El Banco es requerido',
+        'tipo_cuenta.required' => 'Ups! El tipo de cuenta es requerida',
+        'numero_cuenta.required' => 'Ups! El número de cuenta es requerido',
+        'rif.required' => 'Ups! El Rif - Cedula es requerido',
+        'nombre_creador.required' => 'Ups! El nombre es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $array = array(['nombre_banco' => $request->nombre_banco, 'tipo_cuenta' => $request->tipo_cuenta, 'numero_cuenta' => $request->numero_cuenta, 'rif' => $request->rif, 'nombre' => $request->nombre_creador]);
+
+            Session::push('datos_bancarios', $array);
+
+            $items = Session::get('datos_bancarios');
+            end( $items );
+            $contador = key( $items );
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminardatos($id){
+
+        $arreglo = Session::get('datos_bancarios');
+
+        // unset($arreglo[$id]);
+        unset($arreglo[$id]);
+        Session::put('datos_bancarios', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function agregardatosfijos(Request $request){
+        
+    $rules = [
+
+        'nombre_banco' => 'required',
+        'tipo_cuenta' => 'required',
+        'numero_cuenta' => 'required',
+        'rif' => 'required',
+        'nombre_creador' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_banco.required' => 'Ups! El Banco es requerido',
+        'tipo_cuenta.required' => 'Ups! El tipo de cuenta es requerida',
+        'numero_cuenta.required' => 'Ups! El número de cuenta es requerido',
+        'rif.required' => 'Ups! El Rif - Cedula es requerido',
+        'nombre_creador.required' => 'Ups! El nombre es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_recompensa))));
+
+        $datos = New DatosBancariosCampana;
+
+        $datos->campana_id = $request->id;
+        $datos->nombre_banco = $request->nombre_banco;
+        $datos->tipo_cuenta = $request->tipo_cuenta;
+        $datos->numero_cuenta = $request->numero_cuenta;
+        $datos->rif = $request->rif;
+        $datos->nombre = $request->nombre_creador;
+
+        $datos->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $datos, 'id' => $datos->id, 200]);
+
+        }
+    }
+
+    public function eliminardatosfijos($id){
+
+        $datos = DatosBancariosCampana::find($id);
+
+        $datos->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
     }
 
 }

@@ -623,6 +623,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('especiales/campañas/eliminarrecompensa/{id}', 'CampanaController@eliminarrecompensa');
 		    Route::post('especiales/campañas/agregarrecompensafija', 'CampanaController@agregarrecompensafija');
 		    Route::post('especiales/campañas/eliminarrecompensafija/{id}', 'CampanaController@eliminarrecompensafija');
+		    Route::post('especiales/campañas/agregardatos', 'CampanaController@agregardatos');
+			Route::post('especiales/campañas/eliminardatos/{id}', 'CampanaController@eliminardatos');
+			Route::post('especiales/campañas/agregardatosfijos', 'CampanaController@agregardatosfijos');
+		    Route::post('especiales/campañas/eliminardatosfijos/{id}', 'CampanaController@eliminardatosfijos');
 
 		    //PATROCINADORES
 
