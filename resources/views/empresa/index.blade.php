@@ -1,4 +1,4 @@
-@extends('layout.master3')
+@extends('layout.master4')
 
 @section('css_vendor')
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 @section('content')
 
 <!-- <div class="container"> -->
-
+<!-- 
     @if(isset($_SERVER['HTTP_REFERER']))
 
 
@@ -26,7 +26,7 @@
              <br>
         </div> 
 
-    @endif
+    @endif -->
 
     <div class="card" id="profile-main" style="margin-bottom: 0px">
         <div class="pm-overview c-overflow">
@@ -68,12 +68,12 @@
         <div class="pm-body clearfix" id="id-tabs">
             <div role="tabpanel">
             <div class="form-wizard-basic fw-container">
-            <ul class="tab-nav tn-justified efecto-hover" role="tablist">
-                <li class="active waves-effect"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Empresa</a></li>
-                <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Nuestro Equipo</a></li>
-                <li class="waves-effect"><a href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">FAQs</a></li>
+            <!-- <ul class="tab-nav tn-justified efecto-hover" role="tablist">
+                <li class="active waves-effect"><a id ="tab_empresa" href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Empresa</a></li>
+                <li class="waves-effect"><a id ="tab_nosotros" href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Nuestro Equipo</a></li>
+                <li class="waves-effect"><a id ="tab_faqs" href="#faqs" aria-controls="faqs" role="tab" data-toggle="tab">FAQs</a></li>
 
-            </ul>
+            </ul> -->
             
             <div class="tab-content">
                 
@@ -83,18 +83,21 @@
 
                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg">
 
+                        <div class="f-700 f-30" id="offset_empresa">Empresa</div>
+                        <hr class="linea-morada">
+
                         <p class="f-14">Easy dance llega con el objetivo resolver los problemas organizativos, que surgen a través de las múltiples características específicas en el ecosistema del baile , tales como , clases grupales y privadas , show de las compañías de baile , eventos de exhibición y competencia , graduaciones, inscripción , reserva y compra en línea ,presupuesto de montajes coreográficos ,entre otras actividades, que impactan en gran medida a nuestros gremio , que se ve afectado por la falta de herramientas organizacional .</p>
 
                         <div class="f-700 f-30">Misión</div>
-                        <br>
+                         <hr class="linea-morada">
                         <p class="f-14">Hacer del ecosistema del baile un mejor lugar, más organizado y transparente a nivel global, aprovechando el uso de la tecnología para brindar en gran medida valor a los usuarios, directores de academia, bailarines e instructores.</p>
 
                         <div class="f-700 f-30">Visión</div>
-                        <br>
+                         <hr class="linea-morada">
                         <p class="f-14">Easy dance trazará una nueva forma y estilo a nivel internacional, todos conectados en una gran comunidad, vemos a cientos de miles de persona compartiendo a través de la aplicación.</p>
                         <hr>
-                        <div class="f-200 f-30">Resumen</div>
-                        <br>
+                        <div class="f-700 f-30">Resumen</div>
+                        <hr class="linea-morada">
                         <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
 
                         <p class="f-14">Easy dance se encuentra en un proceso de periodo de prueba (Fase Beta) completamente abierta para cualquier academia de baile que desee integrarse, haciendo uso y prueba de nuestro proyecto piloto. Por tal motivo invitamos a toda la comunidad de baile a participar generando invitaciones a todas aquellas academias que aún no conocen la herramienta.</p>
@@ -110,6 +113,9 @@
                     <div class="pmb-block m-t-0 p-t-0">
 
                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/nosotros.jpg">
+
+                        <div class="f-700 f-30" id="offset_nosotros">Nuestro Equipo</div>
+                        <hr class="linea-morada">
 
 
 
@@ -290,10 +296,10 @@
                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/preguntas-frecuentes.jpg">
 
 
-                        <div class="f-700 f-30 text-center">Preguntas Frecuentes</div>
+                        <div class="f-700 f-30 text-center" id="offset_faqs">Preguntas Frecuentes</div>
                         <br>
-                        <div class="f-700 f-25">Generales</div>
-                        <br>
+                        <div class="f-700 f-30">Generales</div>
+                        <hr class="linea-morada">
                         <!--<div class="f-500 f-20">1. ¿Qué es Easy dance?</div>-->
                         <br>
 
@@ -431,7 +437,7 @@
                             </div>
 
                         <div class="f-700 f-30">Directores</div>
-                        <br>
+                        <hr class="linea-morada">
                         <!--<div class="f-500 f-20">8. Soy director de una academia y deseo registrarme?</div>
                         <br>
                         <p>Para registrarte es muy sencillo, sólo debes llenar el formulario on line con los datos de tu academia y de esa forma podrás ingresar, te invitamos a conocernos regístrate</p>-->
@@ -519,29 +525,44 @@
 
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
+
+        $("#navbar li a").click(function(event) {
+            $('.navbar-collapse').collapse('hide');
+        });
         
 
-            /*$(document).ready(function(){
+        $('#tab_empresa').click(function (){
 
-                $('li').hover(function(){
-                    //alert('prueba');
-                    var animation = "bounceIn";
-                    var cardImg = $(this).closest('.tab-nav').find('li');
-                    if (animation === "hinge") {
-                        animationDuration = 2100;
-                    }
-                    else {
-                        animationDuration = 1200;
-                    }
-                    
-                    cardImg.removeAttr('class');
-                    cardImg.addClass('animated '+animation);
-                    
-                    setTimeout(function(){
-                        cardImg.removeClass(animation);
-                    }, animationDuration);
-                });
-            });*/
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_empresa").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
+
+        $('#tab_nosotros').click(function (){
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_nosotros").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
+
+        $('#tab_faqs').click(function (){
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+                scrollTop: $("#offset_faqs").offset().top-90,
+                }, 1000);
+
+          }, 1000);
+        })
             function irArriba(elemento){
                 $('html,body').animate({
                         scrollTop: $("#id-"+elemento).offset().top-90,

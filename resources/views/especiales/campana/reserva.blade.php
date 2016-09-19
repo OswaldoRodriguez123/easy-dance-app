@@ -1252,11 +1252,8 @@
                       setTimeout(function(){ 
                         
                         if(respuesta.status=="OK"){
-                          var nType = 'success';
                           $("#form_normal")[0].reset();
                           window.location = route_enhorabuena + "{{$campana->id}}"
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
