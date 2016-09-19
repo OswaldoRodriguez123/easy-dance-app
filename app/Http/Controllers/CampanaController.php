@@ -176,8 +176,24 @@ public function todos_con_robert()
         if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
             foreach($campanas as $campana){
-            
-                $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+
+                $recaudado = 0;
+                $patrocinador_monto = 0;
+
+                $patrocinadores = Patrocinador::where('campana_id', '=' ,  $campana->id)->get();
+
+                foreach($patrocinadores as $patrocinador){
+
+                    if($patrocinador->tipo_moneda == 1){
+                        $patrocinador_monto = $patrocinador->monto;
+                    }else{
+                        $patrocinador_monto = $patrocinador->monto * 1000;
+                    }
+
+                    $recaudado = $recaudado + $patrocinador_monto;
+
+                }
+                
                 $collection=collect($campana);     
                 $campana_array = $collection->toArray();
                 
@@ -192,18 +208,36 @@ public function todos_con_robert()
 
             foreach($campanas as $campana){
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
+                $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_final);
 
                 if($fecha > Carbon::now()){
 
-                    $recaudado = Patrocinador::where('campana_id', '=' ,  $campana->id)->sum('monto');
+                    $recaudado = 0;
+                    $patrocinador_monto = 0;
+
+                    $patrocinadores = Patrocinador::where('campana_id', '=' ,  $campana->id)->get();
+
+                    foreach($patrocinadores as $patrocinador){
+
+                        if($patrocinador->tipo_moneda == 1){
+                            $patrocinador_monto = $patrocinador->monto;
+                        }else{
+                            $patrocinador_monto = $patrocinador->monto * 1000;
+                        }
+
+                        $recaudado = $recaudado + $patrocinador_monto;
+
+                    }
+                    
                     $collection=collect($campana);     
                     $campana_array = $collection->toArray();
                     
                     $campana_array['total']=$recaudado;
                     $array[$campana->id] = $campana_array;
+            
                 }
             }
+
 
              return view('especiales.campana.principal')->with(['campanas' => $array, 'academia' => $academia]);
 
