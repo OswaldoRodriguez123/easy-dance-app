@@ -26,7 +26,9 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
+                        <div class="card-header">
+
+                        <div class="text-left"><a class="text-success f-20" href="{{url('/')}}/reportes/asistencias">Reporte</a></div>
 
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-shield-check zmdi-hc-fw f-25"></i> Registro de asistencia</p>
                         <hr class="linea-morada">

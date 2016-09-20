@@ -257,17 +257,113 @@ public function PresencialesFiltros(Request $request)
 
     public function asistencias()
     {
-        $asistencia = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                        ->select('alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion as cedula', 'alumnos.fecha_nacimiento as fecha_nacimiento','alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular','asistencias.fecha as fecha', 'asistencias.hora as hora')
-                        ->where('asistencias.academia_id','=', Auth::user()->academia_id)
-                        ->get();
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'clases_grupales.fecha_inicio as fecha_inicio')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+        ->get();
+
+        $array = array();
+
+        foreach($clase_grupal_join as $clase_grupal){
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia = $fecha_inicio->dayOfWeek;   
+
+            $collection=collect($clase_grupal);     
+            $clase_array = $collection->toArray();
+                
+            $clase_array['dia']=$dia;
+            $array[$clase_grupal->clase_grupal_id] = $clase_array;
+        }
+
         //dd($asistencia);
-        return view('reportes.asistencias')->with(['asistencias' => $asistencia]);
+        return view('reportes.asistencias')->with(['clases_grupales' => $array]);
     }
 
     public function charts()
     {
         return view('reportes.procesos_inscripcion');
+    }
+
+    public function filtrarAsistencias(Request $request)
+    {
+        $rules = [
+
+            'participante_id' => 'required',
+            'fecha' => 'required',
+            'clase_grupal_id' => 'required',
+            'instructor_id' => 'required',
+        ];
+
+        $messages = [
+
+            'participante_id.required' => 'Ups! Tiene que seleccionar una opción',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
+            'instructor_id.required' => 'Ups! El instructor es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            if($request->fecha > Carbon::now()){
+                return response()->json(['errores' => ['linea' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
+
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+
+            $asistencias = DB::table('asistencias')
+                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion')
+                ->where('clases_grupales.id', '=', $request->clase_grupal_id)
+                // ->where('instructores.id', '=', $request->instructor_id)
+                ->where('asistencias.fecha', '=', $fecha)
+            ->get();
+
+            $inscripciones = DB::table('inscripcion_clase_grupal')
+                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion')
+                ->where('clases_grupales.id', '=', $request->clase_grupal_id)
+            ->get();
+
+            $inasistencias = array();
+
+            foreach($inscripciones as $inscripcion){
+
+                $asistio = 0;
+
+                foreach($asistencias as $asistencia){
+                    if($asistencia->alumno_id == $inscripcion->alumno_id){
+                        $asistio = 1;
+                    }
+                }
+                if($asistio == 0)
+                {
+                    array_push($inasistencias, $inscripcion);
+                }                
+
+            }
+
+            if($request->participante_id == 1)
+            {
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $asistencias, 'tipo' => $request->participante_id, 200]);
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 200]);
+            }
+
+        }
     }
 
 }

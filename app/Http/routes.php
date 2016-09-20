@@ -359,6 +359,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('reportes/presenciales', 'ReporteController@PresencialesFiltros');
 			Route::get('reportes/contactos', 'ReporteController@Contactos');
 			Route::get('reportes/asistencias', 'ReporteController@asistencias');
+			Route::post('reportes/asistencias/filtrar', 'ReporteController@filtrarAsistencias');
 			Route::get('reportes/chart', 'ReporteController@charts');
 
 			//EMBAJADOR
