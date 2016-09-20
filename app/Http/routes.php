@@ -14,14 +14,14 @@
 		return view('correo.ayuda');
 	});
 
-	// Route::get('/confirmacion/{token}', [
-	//     'uses' => 'RegistroController@confirmacion',
-	//     'as'   => 'confirmacion'
-	// ]);
+	Route::get('/confirmacion/{token}', [
+	    'uses' => 'RegistroController@confirmacion',
+	    'as'   => 'confirmacion'
+	]);
 
 Route::get('todos-con-robert', 'CampanaController@todos_con_robert');
 
-Route::get('confirmacion/{token}', 'RegistroController@confirmacion');
+// Route::get('confirmacion/{token}', 'RegistroController@confirmacion');
 
 
 Route::auth();
