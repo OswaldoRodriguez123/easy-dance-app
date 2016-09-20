@@ -14,12 +14,14 @@
 		return view('correo.ayuda');
 	});
 
-	Route::get('/confirmacion/{token}', [
-	    'uses' => 'RegistroController@confirmacion',
-	    'as'   => 'confirmacion'
-	]);
+	// Route::get('/confirmacion/{token}', [
+	//     'uses' => 'RegistroController@confirmacion',
+	//     'as'   => 'confirmacion'
+	// ]);
 
 Route::get('todos-con-robert', 'CampanaController@todos_con_robert');
+
+Route::get('confirmacion/{token}', 'RegistroController@confirmacion');
 
 
 Route::auth();
@@ -425,6 +427,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/instructor/update/redes', 'InstructorController@updateRedes');
 			Route::put('participante/instructor/update/avanzado','InstructorController@updateAvanzado');
 			Route::put('participante/instructor/update/imagen','InstructorController@updateImagen');
+
+			Route::get('participante/instructor/pagos/{id}', 'InstructorController@principalpagos');
 
 			//VISITANTE
 

@@ -790,4 +790,60 @@ class InstructorController extends BaseController {
         }
         // return redirect("alumno");
     }
+
+    public function principalpagos($id)
+    {
+
+        $instructor = Instructor::find($id);
+
+        if($instructor)
+        {
+
+            $pagadas = DB::table('asistencias_instructor')
+                ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida', 'asistencias_instructor.monto')
+                ->where('instructores.id', $id)
+                ->where('asistencias_instructor.boolean_clase_pagada', 1)
+            ->get();
+
+
+            $por_pagar = DB::table('asistencias_instructor')
+                ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida', 'asistencias_instructor.monto')
+                ->where('instructores.id', $id)
+                ->where('asistencias_instructor.boolean_clase_pagada', 0)
+            ->get();
+
+            $total = DB::table('asistencias_instructor')
+                ->select('asistencias.*')
+                ->where('asistencias_instructor.instructor_id', $id)
+                ->where('asistencias_instructor.boolean_clase_pagada', 0)
+            ->sum('asistencias_instructor.monto');
+
+            $pagos_instructor = DB::table('configuracion_pagos_instructor')
+                ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre')
+                ->where('instructores.id', $id)
+            ->get();
+
+            $clase_grupal_join = DB::table('clases_grupales')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('clases_grupales.id', 'config_clases_grupales.nombre')
+                ->where('clases_grupales.instructor_id', $id)
+            ->get();
+
+            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join ]);
+        }else{ 
+
+            return redirect("participante/instructor"); 
+        }
+    }
 }

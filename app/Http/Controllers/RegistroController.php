@@ -251,6 +251,8 @@ class RegistroController extends Controller {
 
 
     public function confirmacion($token){
+
+        $token = trim($token);
         
         $user = User::where('confirmation_token', $token)
         ->firstOrFail();
