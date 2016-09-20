@@ -321,7 +321,7 @@
                         
                     $.each(respuesta.array, function (index, array) {
 
-                        if(respuesta.array.nombre=='F'){
+                        if(array.nombre=='F'){
                             sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i>'
                         }
                         else{
