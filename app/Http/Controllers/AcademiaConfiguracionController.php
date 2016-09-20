@@ -138,7 +138,7 @@ class AcademiaConfiguracionController extends BaseController {
 
             $clase_grupal_join = DB::table('clases_grupales')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio')
+                ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio', 'clases_grupales.dias_prorroga')
                 ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                 ->where('clases_grupales.boolean_promocionar','=', 1)
                 ->where('clases_grupales.deleted_at', '=', null)
@@ -148,7 +148,7 @@ class AcademiaConfiguracionController extends BaseController {
             foreach($clase_grupal_join as $clase){
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
-
+                $fecha->addDays($clase->dias_prorroga);
                 if($fecha >= Carbon::now()){
 
                     if($clase->imagen){
@@ -1481,7 +1481,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                                     $clase_grupal_join = DB::table('clases_grupales')
                                         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                                        ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio')
+                                        ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio', 'clases_grupales.dias_prorroga')
                                         ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                                         ->where('clases_grupales.deleted_at', '=', null)
                                         ->where('clases_grupales.boolean_promocionar','=', 1)
@@ -1490,6 +1490,7 @@ class AcademiaConfiguracionController extends BaseController {
                                     foreach($clase_grupal_join as $clase){
 
                                         $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+                                        $fecha->addDays($clase->dias_prorroga);
 
                                         if($fecha >= Carbon::now()){
 

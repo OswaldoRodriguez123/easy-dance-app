@@ -593,6 +593,22 @@
                                         </div>
                                      </div>
 
+                                     <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Dias de prorroga</label id="id-dias_prorroga"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de dias de prorroga que tendra la clase grupal en la web luego de iniciar" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" class="form-control input-sm input-mask" name="dias_prorroga" id="dias_prorroga" data-mask="000" placeholder="Ej. 7">
+                                       </div>
+                                       <div class="has-error" id="error-dias_prorroga">
+                                            <span >
+                                                <small class="help-block error-span" id="error-dias_prorroga_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
                             <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
