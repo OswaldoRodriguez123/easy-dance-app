@@ -374,7 +374,7 @@
                           var nMensaje="Tu correo ha sido enviado exitósamente";
 
                       finprocesado();
-                      $('#modalPersonalizado').modal('hide');
+                      $('#modalCorreo').modal('hide');
 
                         }else{
                           var nTitle="Ups! ";
