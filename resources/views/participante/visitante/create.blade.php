@@ -340,7 +340,7 @@
 
       });
 
-        document.getElementById("identificacion").focus();
+        document.getElementById("nombre").focus();
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
         //var cardImg = $(this).closest('#content').find('h1');
@@ -362,7 +362,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
+    var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -535,7 +535,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
+      var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -543,7 +543,7 @@
       }
 
        function errores(merror){
-      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
+      var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

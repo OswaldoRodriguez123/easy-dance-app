@@ -214,10 +214,6 @@
 
       });
 
-    $('#modalID-Visitante').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#identificacion").val($("#visitante-identificacion").text()); 
-    })
     $('#modalNombre-Visitante').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#nombre").val($("#visitante-nombre").text()); 
@@ -267,7 +263,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
+        var campo = ["nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -276,7 +272,7 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
+        var campo = ["nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
