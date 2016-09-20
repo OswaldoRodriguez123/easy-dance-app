@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/summernote/dist/summernote.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -14,8 +15,117 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script src="{{url('/')}}/assets/vendors/summernote/dist/summernote.js"></script>
+<!--<script src="{{url('/')}}/assets/vendors/summernote/dist/summernote-updated.min.js"></script>-->
+<script src="{{url('/')}}/assets/vendors/summernote/dist/lang/summernote-es-ES.js"></script>
 @stop
 @section('content')
+
+<div class="modal fade" id="modalCorreo" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <form name="correo_personalizado" id="correo_personalizado"  >
+
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                              <div class="col-sm-12">
+                                  <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                                  <br><br>
+                                  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
+                                    </div>
+                                   
+                                   <div class="has-error" id="error-url">
+                                    <span >
+                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+
+                                <br><br>
+                                 
+                                    <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
+                                      </div>
+                                 <div class="has-error" id="error-subj">
+                                      <span >
+                                          <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                          <div class="col-sm-12">
+                            <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                            
+                            <div class="clearfix p-b-15"></div>
+                              
+                            <input type="hidden" name="imageBase64" id="imageBase64">
+                              <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                                <div>
+                                    <span class="btn btn-info btn-file">
+                                        <span class="fileinput-new">Seleccionar Imagen</span>
+                                        <span class="fileinput-exists">Cambiar</span>
+                                        <input type="file" name="imagen" id="imagen" >
+                                    </span>
+                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                </div>
+                            </div>
+                              <div class="has-error" id="error-imagen">
+                              <span >
+                                  <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                              </span>
+                            </div>
+                          </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+
+         
+
+                        </form>
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>                        
+                        <div class="col-md-12">
+                        <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                                  <br><br>
+                            <div id="html-personalizado"></div>
+                        </div>
+
+                         <div class="clearfix p-b-15"></div>
+                         <div class="clearfix p-b-15"></div>
+
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarPersonalizado" >Enviar</button>
+                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
 
 <a href="{{url('/')}}/participante/visitante/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
@@ -27,8 +137,15 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar un Visitante <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                        <div class="card-header ">
+
+                            <div class="text-left">
+                                <a data-toggle="modal" id="modalPe" href="#modalCorreo" class="f-16 p-t-0 text-success">Enviar Correo</a>
+                            </div>
+
+                            <div class="text-right">
+                                <span class="f-16 p-t-0 text-success">Agregar un Visitante <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            </div>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-visitante-presencial f-25"></i> Sección de Visitantes</p>
                             <hr class="linea-morada">                                                         
@@ -100,6 +217,7 @@
 
         route_detalle="{{url('/')}}/participante/visitante/detalle";
         route_operacion="{{url('/')}}/participante/visitante/operaciones";
+        route_personalizado="{{url('/')}}/correo/personalizadovisitante";
             
         $(document).ready(function(){
 
@@ -184,6 +302,123 @@
             var route =route_operacion+"/"+this.id;
             window.location=route;
          });
+
+      $("#imagen").bind("change", function() {
+              //alert('algo cambio');
+              
+              setTimeout(function(){
+                var imagen = $("#imagena img").attr('src');
+                var canvas = document.createElement("canvas");
+       
+                var context=canvas.getContext("2d");
+                var img = new Image();
+                img.src = imagen;
+                
+                canvas.width  = img.width;
+                canvas.height = img.height;
+
+                context.drawImage(img, 0, 0);
+         
+                var newimage = canvas.toDataURL("image/jpeg", 0.8);
+                var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+              },500);
+
+          });
+
+      $("#modalPe").on("click", function(){
+                $('#html-personalizado').summernote({
+                        height: 150,
+                        toolbar: [
+                          // [groupName, [list of button]]
+                          ['style', ['bold', 'italic', 'underline']],
+                          ['fontsize', ['fontsize']],
+                          ['color', ['color']],
+                          ['para', ['ul', 'ol', 'paragraph']],
+                          ['height', ['height']],
+                          ['link', ['link']],
+                        ],
+                        lang: 'es-ES'
+
+                    });
+                $('#html-personalizado').summernote('code', '');                
+            });
+
+      $("#EnviarPersonalizado").on('click', function(){
+
+                procesando();
+
+                var datos = $( "#correo_personalizado" ).serialize();
+                var html = $('#html-personalizado').summernote('code');
+                var token = $('input:hidden[name=_token]').val();
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': token},
+                    url: route_personalizado,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: datos+"&msj_html="+html,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                      finprocesado();
+                      $('#modalPersonalizado').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+                        
+            });
+
 
 
     </script>

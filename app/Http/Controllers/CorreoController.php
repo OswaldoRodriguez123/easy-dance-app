@@ -169,6 +169,112 @@ class CorreoController extends BaseController {
         	}
 	 	}
 	}
+
+	public function correoPersonalizadoVisitante(Request $request){
+
+	 $rules = [
+        'url' => 'required|active_url',
+        'subj' => 'required',
+    ];
+
+    $messages = [
+
+    	'url.required' => 'Ups! La URL es requerida',
+        'url.active_url' => 'Ups! La URL no es valida',
+        'subj.required' => 'Ups! El titulo es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+		$visitantes = Visitante::where('academia_id', Auth::user()->academia_id)->get();
+
+		$subj = $request->subj;
+		$msj_html = $request->msj_html;
+
+		$correo_informacion = new CorreoInformacion;
+
+		$correo_informacion->academia_id = Auth::user()->academia_id;
+        $correo_informacion->url = $request->url;
+        $correo_informacion->msj_html = $request->msj_html;
+        $correo_informacion->titulo = $request->subj;
+
+        if($correo_informacion->save())
+        {
+
+			if($request->imageBase64){
+
+	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+	                $path = storage_path();
+	                $split = explode( ';', $request->imageBase64 );
+	                $type =  explode( '/',  $split[0]);
+	                $ext = $type[1];
+	                
+	                if($ext == 'jpeg' || 'jpg'){
+	                    $extension = '.jpg';
+	                }
+
+	                if($ext == 'png'){
+	                    $extension = '.png';
+	                }
+
+	                $nombre_img = "correo-". $correo_informacion->id . $extension;
+	                $image = base64_decode($base64_string);
+
+	                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+	                $img = Image::make($image)->resize(1440, 500);
+	                $img->save('assets/uploads/correo/'.$nombre_img);
+
+	                $correo_informacion->imagen = $nombre_img;
+	                $correo_informacion->save();
+
+	                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$nombre_img;
+
+	        }else{
+	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+	        }
+
+			foreach($visitantes as $visitante)
+			{
+				if($visitante->correo)
+				{
+
+					$array = [
+						'imagen' => $imagen,
+						'url' => $request->url,
+						'msj_html' => $request->msj_html,
+						'email' => $visitante->correo,
+						'subj' => $subj
+					];
+
+						Mail::send('correo.personalizado', $array, function($msj) use ($array){
+							$msj->subject($array['subj']);
+						    $msj->to($array['email']);
+						});
+				}
+			}
+
+			return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+
+		 	}else{
+            	return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        	}
+	 	}
+	}
 	
 
 	public function indexsinselector($id){
