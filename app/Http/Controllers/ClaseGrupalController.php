@@ -25,6 +25,8 @@ use Mail;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use App\Asistencia;
+
 
 class ClaseGrupalController extends BaseController {
 
@@ -241,7 +243,21 @@ class ClaseGrupalController extends BaseController {
         $inscripcion = InscripcionClaseGrupal::find($id);
         
         if($inscripcion->delete()){
-            return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $asistencias = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id', $inscripcion->alumno_id)->get();
+
+            if($asistencias)
+            {
+                
+                $detele = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id', $inscripcion->alumno_id)->delete();
+
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+               
+            }else{
+
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

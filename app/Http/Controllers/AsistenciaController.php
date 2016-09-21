@@ -235,6 +235,7 @@ class AsistenciaController extends BaseController
 
 	    $fechaActual = Carbon::now();
  		  $fechaActual->tz = 'America/Caracas';
+
         //$actual = $fechaActual->toDateString();
 
         $collection = collect($clases_grupales);
@@ -356,7 +357,9 @@ class AsistenciaController extends BaseController
               return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_REGISTRADO'],422);
             }elseif($estatu=="inscrito") {
               $actual = Carbon::now();
-              $actual->tz = 'America/Caracas';
+              // $actual->tz = 'America/Caracas';
+              $actual->tz = $request->timezone;
+
               
               $fecha_actual=$actual->toDateString();
               $hora_actual=$actual->toTimeString();
@@ -425,7 +428,8 @@ class AsistenciaController extends BaseController
             $clase_id=explode('-', $clase);
 
                 $actual = Carbon::now();
-                $actual->tz = 'America/Caracas';
+                // $actual->tz = 'America/Caracas';
+                $actual->tz = $request->timezone;
                 
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
@@ -493,7 +497,8 @@ class AsistenciaController extends BaseController
                 $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
 
                   $actual = Carbon::now();
-                  $actual->tz = 'America/Caracas';
+                  // $actual->tz = 'America/Caracas';
+                  $actual->tz = $request->timezone;
                   
                   $fecha_actual=$actual->toDateString();
                   $hora_actual=$actual->toTimeString();
@@ -554,7 +559,8 @@ class AsistenciaController extends BaseController
             $clase_id=explode('-', $clase);
 
                 $actual = Carbon::now();
-                $actual->tz = 'America/Caracas';
+                // $actual->tz = 'America/Caracas';
+                $actual->tz = $request->timezone;
                 
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();

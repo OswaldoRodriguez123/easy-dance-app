@@ -17,6 +17,16 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
+<script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.js"></script>
+<script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.resize.js"></script>
+<script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.pie.js"></script>
+<script src="{{url('/')}}/assets/vendors/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
+<script src="{{url('/')}}/assets/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>                         
+<script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
+
+<script src="{{url('/')}}/assets/js/flot-charts/pie-chart.js"></script>
+
 @stop
 @section('content')
 
@@ -96,8 +106,78 @@
 
                                  <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
 
+                                <div class ="clearfix m-b-10"></div>
+                                <div class ="clearfix m-b-10"></div>
+
                             </form>
                         </div>
+
+                       
+                        <div class="col-md-6">
+                            <h2>Procesos de Inscripcion</h2>
+                            <hr>
+                            <!-- <ul class="actions">
+                                <li class="dropdown action-show">
+                                    <a href="#" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+                    
+                                    <div class="dropdown-menu pull-right">
+                                        <p class="p-20">
+                                            You can put anything here
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul> -->
+                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
+                            <div class="flc-pie hidden-xs"></div>
+
+                        </div><!-- COL-MD-6 -->
+
+
+                        <div class="col-md-6">
+                            <h2>Información</h2>
+                            <hr>
+
+
+                            <!-- <ul class="actions">
+                                <li class="dropdown action-show">
+                                    <a href="#" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+                    
+                                    <div class="dropdown-menu pull-right">
+                                        <p class="p-20">
+                                            You can put anything here
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul> -->
+                            
+                            <div class="col-md-3">    
+                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
+                            </div>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-3">    
+                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
+                            </div>
+                            <div class="clearfix"></div>    
+
+                            <div class="mini-charts-item bgm-blue">
+                                <div class="clearfix">
+                                   <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
+                                    <div class="count">
+                                        <small>Total Asistencias:</small>
+                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
+                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+ 
+                        </div><!-- COL-MD-6 -->
 
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
@@ -105,10 +185,11 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
-                                    <th class="text-center" data-column-id="telefono">Contacto Local</th>
+                                    <th class="text-center" data-column-id="estatus_e">Estatus E</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
@@ -116,6 +197,33 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+                            @foreach ($asistencias as $asistencia)
+                                <?php $id = $asistencia->id; ?>
+                                <tr id="{{$id}}" class="seleccion">
+                                    <td class="text-center previa"></td>
+                                    <td class="text-center previa">{{$asistencia->nombre}} {{$asistencia->apellido}}</td>
+                                    <td class="text-center previa">{{$asistencia->identificacion}}</td>
+                                    <td class="text-center previa">{{$asistencia->fecha_nacimiento}}</td>
+                                    <td class="text-center previa">
+                                    <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20"></i>
+                                    </td>
+                                    <td class="text-center previa">{{$asistencia->celular}}</td>
+
+                                    <td class="text-center previa">
+            
+                                    @if($asistencia->sexo=='F')
+                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                    @else
+                                    <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
+                                    @endif
+
+                                    </td>
+                                    <td class="text-center previa">{{$asistencia->fecha}}</td>
+                                    <td class="text-center previa">{{$asistencia->hora}}</td>
+                                  
+                                </tr>
+                            @endforeach  
                                                            
                             </tbody>
                         </table>
@@ -160,7 +268,7 @@
         serverSide: false,
         pageLength: 50, 
         // paging:false, 
-        order: [[0, 'asc']],
+        order: [[7, 'desc'], [8, 'desc']],
         fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 50) {
               $('.dataTables_paginate').hide();
@@ -321,7 +429,7 @@
                         
                     $.each(respuesta.array, function (index, array) {
 
-                        if(array.nombre=='F'){
+                        if(array.sexo=='F'){
                             sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i>'
                         }
                         else{
@@ -340,10 +448,11 @@
 
                         var rowId=array.id;
                         var rowNode=t.row.add( [
+                        ''+array.pertenece+'',
                         ''+array.nombre+ ' '+array.apellido+ '',
                         ''+array.identificacion+'',
                         ''+array.fecha_nacimiento+'',
-                        ''+array.telefono+'',
+                        ''+array.deuda+'',
                         ''+array.celular+'',
                         ''+sexo+'',
                         ''+fecha+'',
@@ -353,6 +462,57 @@
                           .attr('id',rowId)
                           .addClass('seleccion');
                     });
+
+                    datos = JSON.parse(JSON.stringify(respuesta));
+
+                    $("#mujeres").text(datos.mujeres);
+                    $("#hombres").text(datos.hombres);
+
+                    var data1 = ''
+                    data1 += '[';
+                    $.each( datos.sexos, function( i, item ) {
+                        var edad = item[0];
+                        var cant = item[1];
+                        data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                    });
+
+                    data1 = data1.substring(0, data1.length -1);
+                    data1 += ']';
+                        //GRAFICO FILTRO MES ACTUAL
+                        $("#pie-chart-procesos").html('');
+                        $(".flc-pie").html('');
+                        $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                            series: {
+                                pie: {
+                                    show: true,
+                                    stroke: { 
+                                        width: 2,
+                                    },
+                                },
+                            },
+                            legend: {
+                                container: '.flc-pie',
+                                backgroundOpacity: 0.5,
+                                noColumns: 0,
+                                backgroundColor: "white",
+                                lineWidth: 0
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                shifts: {
+                                    x: 20,
+                                    y: 0
+                                },
+                                defaultTheme: false,
+                                cssClass: 'flot-tooltip'
+                            }
+                            
+                        });
                 
                     }else{
                       var nTitle="Ups! ";
@@ -411,6 +571,66 @@
         });       
 
     }
+
+    //PLOTS
+        var pieData1 = [
+                @foreach ($sexos as $sexo)
+                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
+                @endforeach
+            ];
+        
+        var values = [
+            @foreach ($sexos as $sexo)        
+                   {{$sexo->CantSex}} ,
+            @endforeach                    
+            ];
+
+
+        $.plot('#pie-chart-procesos', pieData1, {
+            series: {
+                pie: {
+                    show: true,
+                    stroke: { 
+                        width: 2,
+                    },
+                },
+            },
+            legend: {
+                container: '.flc-pie',
+                backgroundOpacity: 0.5,
+                noColumns: 0,
+                backgroundColor: "white",
+                lineWidth: 0
+            },
+            grid: {
+                hoverable: true,
+                clickable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: false,
+                cssClass: 'flot-tooltip'
+            }
+            
+        });
+
+    // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
+
+    //     function sparklinePie(id, values, width, height, sliceColors) {
+    //         $('.'+id).sparkline(values, {
+    //             type: 'pie',
+    //             width: width,
+    //             height: height,
+    //             sliceColors: sliceColors,
+    //             offset: 0,
+    //             borderWidth: 0
+    //         });
+    //     }    
 
 </script>
 

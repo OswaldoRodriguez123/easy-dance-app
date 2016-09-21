@@ -220,7 +220,7 @@
                                             @endif
                                           @endforeach
                                           @if ($exist)
-                                              <option value = "{{ $alumno['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                              <option disabled title="My Title" data-content="<span title='Este alumno ya se encuentra en la clase grupal'><i class='glyphicon glyphicon-remove'></i> {{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</span>" value = "{{ $alumno['id'] }}"></option>
                                           @else
                                               <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
                                           @endif
@@ -461,8 +461,8 @@
 
                             <div class="col-sm-5 text-left">
                                       <div class="p-t-10"> 
-                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" style="padding-left:5px"> {{$mujeres}}</span>
-                                        <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" style="padding-left:5px"> {{$hombres}} </span>
+                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
+                                        <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
                                     </div>
                             </div> 
 
@@ -488,7 +488,7 @@
 
                             @foreach ($alumnos_inscritos as $alumno)
                                 <?php $id = $alumno->inscripcion_id; ?>
-                                <tr id="{{$id}}" class="seleccion" data-id="{{$alumno->id}}" data-fecha="{{$alumno->fecha_pago}}" data-mensualidad="{{$alumno->costo_mensualidad}}" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}">
+                                <tr id="{{$id}}" class="seleccion" data-id="{{$alumno->id}}" data-fecha="{{$alumno->fecha_pago}}" data-mensualidad="{{$alumno->costo_mensualidad}}" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}" data-sexo="{{$alumno->sexo}}">
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
                                     @if($alumno->sexo=='F')
@@ -536,6 +536,9 @@
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
+
+        var hombres = "{{$hombres}}";
+        var mujeres = "{{$mujeres}}";
 
         $(document).ready(function(){
 
@@ -1210,6 +1213,7 @@
         function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
+         var sexo = $(element).closest('tr').data('sexo');
                 
                 $.ajax({
                     url: route,
@@ -1232,6 +1236,18 @@
                           t.row( $(element).parents('tr') )
                             .remove()
                             .draw();
+
+                          if(sexo == 'F'){
+
+                            mujeres = mujeres - 1
+
+                            $('#span_mujeres').text(mujeres)
+
+                          }else{
+                            hombres = hombres - 1
+
+                            $('#span_hombres').text(hombres)
+                          }
                         
                         }
                     },
