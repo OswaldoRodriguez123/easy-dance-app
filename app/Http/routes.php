@@ -21,8 +21,6 @@
 
 Route::get('todos-con-robert', 'CampanaController@todos_con_robert');
 
-// Route::get('confirmacion/{token}', 'RegistroController@confirmacion');
-
 
 Route::auth();
 
@@ -175,6 +173,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/examenes/update/descripcion', 'ExamenController@updateDescripcion');
 			Route::put('especiales/examenes/update/fecha', 'ExamenController@updateFecha');
 			Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
+			Route::put('especiales/examenes/update/generos', 'ExamenController@updateGeneros');
+			Route::put('especiales/examenes/update/tipos_de_evaluacion', 'ExamenController@updateTipos');
 			Route::put('especiales/examenes/update/items', 'ExamenController@updateItem');
 			Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
 			Route::post('especiales/examenes/agregar_item','ExamenController@agregar_item');
@@ -361,7 +361,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('reportes/presenciales', 'ReporteController@PresencialesFiltros');
 			Route::get('reportes/contactos', 'ReporteController@Contactos');
 			Route::get('reportes/asistencias', 'ReporteController@asistencias');
-			Route::post('reportes/asistencias/filtrar', 'ReporteController@filtrarAsistencias');
 			Route::get('reportes/chart', 'ReporteController@charts');
 
 			//EMBAJADOR
@@ -427,8 +426,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/instructor/update/redes', 'InstructorController@updateRedes');
 			Route::put('participante/instructor/update/avanzado','InstructorController@updateAvanzado');
 			Route::put('participante/instructor/update/imagen','InstructorController@updateImagen');
-
-			Route::get('participante/instructor/pagos/{id}', 'InstructorController@principalpagos');
 
 			//VISITANTE
 
@@ -723,7 +720,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('/correo/ayuda', 'CorreoController@correoAyuda');
 			Route::post('/correo/informacion', 'CorreoController@correoInformacion');
 			Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
-			Route::post('/correo/personalizadovisitante', 'CorreoController@correoPersonalizadoVisitante');
 
 
 			// ASISTENCIA

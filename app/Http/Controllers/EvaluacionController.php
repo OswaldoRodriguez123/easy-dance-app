@@ -137,9 +137,9 @@ class EvaluacionController extends Controller
                             ->get();
 
         return view('especiales.evaluaciones.detalle')->with([
-                'instructor'          => $instructor, 
-                'alumno'            => $alumno, 
-                'academia'          => $academia, 
+                'instructor'       => $instructor, 
+                'alumno'           => $alumno, 
+                'academia'         => $academia, 
                 'detalle_notas'    => $detalles_notas,
                 'nota_final'       => $nota_final->total
                 ]);

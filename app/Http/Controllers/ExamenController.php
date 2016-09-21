@@ -8,6 +8,7 @@ use App\Examen;
 use App\Alumno;
 use App\Instructor;
 use App\ItemsExamenes;
+use App\ConfigEspecialidades;
 use Validator;
 use Session;
 use Carbon\Carbon;
@@ -47,10 +48,11 @@ class ExamenController extends BaseController {
 	 */
 	public function create()
 	{
+        $generos_musicales = DB::table('config_especialidades')->get();
         if (Session::has('nuevo_item')) {
             Session::forget('nuevo_item'); 
         }
-		return view('especiales.examen.create')->with('instructor', Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+		return view('especiales.examen.create')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales]);
 	}
 
     public function store(Request $request)
@@ -62,7 +64,7 @@ class ExamenController extends BaseController {
             'fecha' => 'required',
             'color_etiqueta' => 'required',
             'descripcion' => 'min:3|max:500',
-
+            'genero_id' => 'required',
         ];
 
         $messages = [
@@ -75,6 +77,7 @@ class ExamenController extends BaseController {
             'fecha.required' => 'Ups! La fecha es requerida',
             'color_etiqueta.required' => 'Ups! La etiqueta es  requerida',
             'instructor_id.required' => 'Ups! El instructor es  requerido',
+            'genero_id.required' => 'Ups! El genero es requerido',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -124,17 +127,23 @@ class ExamenController extends BaseController {
             $examen->complejidad_de_movimientos = $request->complejidad_de_movimientos;
             $examen->asistencia = $request->asistencia;
             $examen->estilo = $request->estilo;
+            $examen->tipo = $request->tipo_de_evaluacion;
+            $examen->genero = $request->generos;
 
             if($examen->save()){
                 
                 $item = Session::get('nuevo_item');
 
-                foreach ($item as $itemsEx) {
-                    $ItemsExamenes = new ItemsExamenes;
-                    $ItemsExamenes->academia_id = Auth::user()->academia_id;
-                    $ItemsExamenes->examen_id = $examen->id;
-                    $ItemsExamenes->nombre = $itemsEx;
-                    $ItemsExamenes->save();
+                if(count($item) > 0){
+
+                    foreach ($item as $itemsEx) {
+                        $ItemsExamenes = new ItemsExamenes;
+                        $ItemsExamenes->academia_id = Auth::user()->academia_id;
+                        $ItemsExamenes->examen_id = $examen->id;
+                        $ItemsExamenes->nombre = $itemsEx;
+                        $ItemsExamenes->save();
+                    }
+
                 }
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -251,6 +260,30 @@ class ExamenController extends BaseController {
         }
     }
 
+    public function updateGeneros(Request $request){
+        $examen = Examen::find($request->id);
+        $examen->genero = $request->generos_musicales;
+
+        // return redirect("alumno/edit/{$request->id}");
+        if($examen->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateTipos(Request $request){
+        $examen = Examen::find($request->id);
+        $examen->tipo = $request->tipos_de_evaluacion;
+
+        // return redirect("alumno/edit/{$request->id}");
+        if($examen->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function updateItem(Request $request){
         $examen = Examen::find($request->id);
             $examen->tiempos_musicales = $request->tiempos_musicales;
@@ -304,15 +337,16 @@ class ExamenController extends BaseController {
 
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo')
+            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo','examenes.genero as generos','examenes.tipo as tipos')
             ->where('examenes.id', '=', $id)
         ->first();
 
         $item_examen = DB::table('items_examenes')
             ->where('examen_id','=',$id)->get();
+        $generos = DB::table('config_especialidades')->get();
 
         if($examen_join){
-           return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen]);
+           return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen, 'genero'=>$generos]);
         }else{
            return redirect("especiales/examenes"); 
         }
@@ -331,7 +365,7 @@ class ExamenController extends BaseController {
         Session::put('id_evaluar', $id);
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo')
+            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos')
             ->where('examenes.id', '=', $id)
         ->first();
         
@@ -402,6 +436,19 @@ class ExamenController extends BaseController {
             $arrays_de_items[$i]="Estilo";
             $i++;
         }
+
+        if($examen_join->tipos == 1){
+            $tipo_de_evaluacion="Evaluacion";
+        }
+        if($examen_join->tipos == 2){
+            $tipo_de_evaluacion="Clase Personalizada";
+        }
+        if($examen_join->tipos == 3){
+            $tipo_de_evaluacion="Casting";
+        }
+        if($examen_join->tipos == 4){
+            $tipo_de_evaluacion="Otros";
+        }
         
         $hoy = Carbon::now()->format('m-d-Y');
 
@@ -416,7 +463,7 @@ class ExamenController extends BaseController {
         //dd($arrays_de_items);
 
         return view('especiales.examen.evaluar')
-               ->with(['alumno' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id]);
+               ->with(['alumno' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $tipo_de_evaluacion, 'numero_de_items'=>$i]);
     }
 
     public function actualizar_item(Request $request){

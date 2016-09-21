@@ -129,6 +129,66 @@
                                     </div>
                                 </div>
                                 <div class="clearfix p-b-35"></div>
+                                
+                                <div class="col-sm-12">
+                                     <label for="nivel_baile" id="id-genero">Selecciona tus generos musicales</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un genero, en caso de no poseerlo, dirígete a la sección de genero y procede a registrarlo" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker bs-select-hidden" id="genero" name="genero" multiple="" data-max-options="5" title="Selecciona">
+
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $generos_musicales as $generos )
+                                          <option value = "{{$generos->nombre}}">{{$generos->nombre}}</option>
+                                          @endforeach
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-genero">
+                                      <span >
+                                        <small class="help-block error-span" id="error-genero_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                  <div class="clearfix"></div>
+                                  <label for="fecha_cobro" id="id-tipo_de_evaluacion">Tipo de evaluacion:</label>
+                                  <div class="clearfix"></div>
+                                  <div class="input-group">
+                                      <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
+                                      <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20">
+                                          <input checked="checked" name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="1" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Evaluacion 
+                                      </label>
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="2" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Clase personalizada
+                                      </label>
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="3" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Casting
+                                      </label>
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="4" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Otros
+                                      </label>
+                                    </div>
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix p-b-35"></div>
 
                                  <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -644,14 +704,20 @@
                 });
                 $(".cancelar").attr("disabled","disabled");
                 $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
+                $(".procesando").addClass('show');
+
+                var generos = [];
+                $('#genero option:selected').each(function() {
+                  generos.push( $( this ).text() );
+                });
+               
                 limpiarMensaje();
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos,
+                        data:datos+"&generos="+generos,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -715,12 +781,6 @@
                     }
                 });
             });
-
-
-
-
-
-
   });
 
   setInterval(porcentaje, 1000);
@@ -746,7 +806,6 @@
           cantidad=cantidad+1;
         }
       }
-      
     }
 
     porcetaje=(cantidad/fLen)*100;
@@ -814,7 +873,7 @@
 
 
       function limpiarMensaje(){
-        var campo = ["nombre", "fecha", "descripcion", "instructor_id", "color_etiqueta", "condiciones"];
+        var campo = ["nombre", "fecha", "descripcion", "instructor_id", "color_etiqueta", "genero", "condiciones"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -822,7 +881,7 @@
       }
 
       function errores(merror){
-      var campo = ["nombre", "fecha", "descripcion", "instructor_id", "color_etiqueta", "condiciones"];
+      var campo = ["nombre", "fecha", "descripcion", "instructor_id", "color_etiqueta", "genero", "condiciones"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

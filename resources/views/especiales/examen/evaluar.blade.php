@@ -49,6 +49,10 @@
 	                                <div class="clearfix"></div>
 									<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
 									<div class="clearfix"></div>
+									<h4>Tipo de Evaluación: {{ $tipo_de_evaluacion }}</h4>
+									<div class="clearfix"></div>
+									<h4>Generos: <div class="clearfix"></div> {{ $examen->generos }}</h4>
+									<div class="clearfix"></div>
 									<h5 id="id-alumno_id">Seleccione un Alumno: </h5>
 									<div class="clearfix"></div>
 				                    <div class="select">
@@ -58,7 +62,6 @@
 				                        <option value = "{!! $alumnos->id !!}">{!! $alumnos->nombre !!} {!! $alumnos->apellido !!}</option>
 				                        @endforeach 
 				                        </select>
-
 				                    </div>
 
 	                                 <div class="has-error" id="error-alumno_id">
@@ -157,6 +160,20 @@
 	        </div>
 		</div>
 	</section>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+              <div class="container">
+                
+                <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
+                <div class="col-xs-11">
+                  <div class="clearfix p-b-20"></div>
+                  <div class="progress-fino progress-striped m-b-10">
+                    <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                    <div class="clearfix"></div>
+                    <div id="msj_porcentaje" class="m-b-20 m-l-25" style="text-align: center">0% de la nota</div>
+                  </div>
+                </div>
+              </div>
+            </nav>
 
 @stop
 
@@ -177,7 +194,9 @@ $(document).ready(function() {
 		loadId({{$items}});
 	@endforeach
 
-	
+	$("#barra-progreso").css({
+	      "width": ({{$numero_de_items}} + "%")
+	   	});
 	
 	for (var i = 0; i < {{count($itemsExamenes)}}; i++) {
 		arrayNotas[i]=1;
@@ -219,6 +238,57 @@ $(document).ready(function() {
 			console.log($(".sexo-alumno").html());
 
 		});*/
+
+	setInterval(porcentaje, 1000);
+
+  	function porcentaje(){
+
+  		var numero_items = {{$numero_de_items}};
+	    var nota_total = numero_items*10;
+	    var nota_actual =$("#total_nota").attr("value");
+	    
+	    porcetaje = (nota_actual*100)/nota_total;
+	    porcetaje = porcetaje.toFixed(2);
+	    $("#text-progreso").text(porcetaje+"%");
+	    $("#barra-progreso").css({
+	      "width": (porcetaje + "%")
+	   	});
+	    
+	    if(porcetaje<="25"){
+	      $("#barra-progreso").removeClass('progress-bar-success');
+	      $("#barra-progreso").addClass('progress-bar-morado');
+	      $("#barra-progreso").css("background-color","red");
+	      $("#msj_porcentaje").html("debajo 25% de la nota");
+	    }else if(porcetaje<="50"){
+	      $("#barra-progreso").removeClass('progress-bar-success');
+	      $("#barra-progreso").addClass('progress-bar-morado');
+	      $("#barra-progreso").css("background-color","orange");
+	      $("#msj_porcentaje").html("debajo 50% de la nota");
+	    }else if(porcetaje<="75"){
+	      $("#barra-progreso").removeClass('progress-bar-success');
+	      $("#barra-progreso").addClass('progress-bar-morado');
+	      $("#barra-progreso").css("background-color","gold");
+	      $("#msj_porcentaje").html("debajo 75% de la nota");
+	    }else{
+	      $("#barra-progreso").removeClass('progress-bar-success');
+	      $("#barra-progreso").addClass('progress-bar-morado');
+	      $("#barra-progreso").css("background-color","greenyellow ");
+	      $("#msj_porcentaje").html("debajo 100% de la nota");
+	    }
+
+	    if(porcetaje=="100" || porcetaje=="100.00"){
+	      $("#barra-progreso").removeClass('progress-bar-morado');
+	      $("#barra-progreso").addClass('progress-bar-success');
+	      $("#barra-progreso").css("background-color","green");
+	      $("#msj_porcentaje").html("100% maxima nota");
+	    }else{
+	      $("#barra-progreso").removeClass('progress-bar-success');
+	      $("#barra-progreso").addClass('progress-bar-morado');
+	    }
+
+	   	
+	    //$("#barra-progreso").s
+  	}
 
 	//GUARDAR EXAMEN
   		$("#guardar").click(function(){

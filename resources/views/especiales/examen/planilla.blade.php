@@ -240,6 +240,148 @@
                 </div>
             </div>
             <!-- END -->  
+            
+            <!-- edit generos de baile -->
+            <div class="modal fade" id="modalGeneros" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar los generos musicales <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_generos_musicales" id="edit_generos_musicales"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group fg-line">
+                                    <label for="apellido">Generos</label>
+
+                                      <div class="select">
+                                        <select class="selectpicker bs-select-hidden" id="generos_selector" name="generos_selector" multiple="" data-max-options="5" title="Selecciona">
+                                        @foreach ( $genero as $generos )
+                                        <option value = "{{$generos->nombre}}">{{$generos->nombre}}</option>
+                                        @endforeach
+                                        </select>
+                                      </div> 
+                                    </div>
+                                    <div class="has-error" id="error-generos">
+                                      <span >
+                                          <small class="help-block error-span" id="error-generos_mensaje" ></small>                                           
+                                      </span>
+                                 </div>
+                               </div>
+
+                               <input type="hidden" name="id" id="id" value="{{$examen->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_generos_musicales" data-update="generos" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+            <!-- end -->
+
+            <!-- edit tipo de evaluacion -->
+            <div class="modal fade" id="modalTiposDeEvaluacion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar el tipo de evaluacion <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_tipos_de_evaluacion" id="edit_tipos_de_evaluacion"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                  <div class="form-group fg-line">
+                                      <label for="fecha_cobro" id="id-tipo_de_evaluacion">Tipo de evaluacion:</label>
+                                      <div class="clearfix"></div>
+                                      <div class="input-group">
+                                      <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
+                                      <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="tipos_de_evaluacion" id="tipo_de_evaluacion" value="1" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Evaluacion 
+                                      </label><br />
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipos_de_evaluacion" id="tipos_de_evaluacion" value="2" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Clase personalizada
+                                      </label><br />
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipos_de_evaluacion" id="tipos_de_evaluacion" value="3" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Casting
+                                      </label><br />
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipos_de_evaluacion" id="tipos_de_evaluacion" value="4" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Otros
+                                      </label><br />
+                                    </div>
+                                  </div>
+                                    </div>
+                                    <div class="has-error" id="error-tipos_de_evaluacion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipos_de_evaluacion_mensaje" ></small>                                           
+                                      </span>
+                                 </div>
+                               </div>
+
+                               <input type="hidden" name="id" id="id" value="{{$examen->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_tipos_de_evaluacion" data-update="tipos_de_evaluacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+            <!-- end -->
 
             <div class="modal fade" id="modalItems-Examen" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -775,6 +917,34 @@
                              </td>
                              <td  class="f-14 m-l-15" id="examen-instructor" ></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+
+                            <tr class="detalle" data-toggle="modal" href="#modalGeneros">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-generos" class="zmdi {{ empty($examen->generos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
+                               <span class="f-14"> generos musicales </span>
+                             </td>
+                             <td  class="f-14 m-l-15" id="examen-generos_selector" >{{$examen->generos}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
+                            <tr class="detalle" data-toggle="modal" href="#modalTiposDeEvaluacion">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipos_de_evaluacion" class="zmdi {{ empty($examen->tipos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
+                               <span class="f-14"> tipo de evaluacion </span>
+                             </td>
+                             <td  class="f-14 m-l-15" id="examen-tipos_de_evaluacion"  data-valor="{{$examen->tipos}}">
+                                @if($examen->tipos==1)
+                                  Evaluacion
+                                @elseif($examen->tipos==2)
+                                  Clase Personalizada
+                                @elseif($examen->tipos==3)
+                                  Casting
+                                @else
+                                  Otros
+                                @endif    
+                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             
                            </table>
 
@@ -885,8 +1055,8 @@
 
           if("{{$examen->estilo}}" == 1){
           $("#estilo").val('1');  
-          $("#estilo-switch").attr("checked", true);}
-      });
+          $("#estilo-switch").attr("checked", true);}   
+    });
 
     $('#modalNombre-Examen').on('show.bs.modal', function (event) {
       limpiarMensaje();
@@ -908,6 +1078,16 @@
     $('#modalInstructor-Examen').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#instructor option:selected").val($("#examen-instructor").text()); 
+    })
+
+    $('#modalGeneros').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#generos_selector option:selected").val($("#examen-generos").text()); 
+    })
+
+    $('#modalTiposDeEvaluacion').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#tipos_de_evaluacion option:selected").val($("#examen-generos").data('valor')); 
     })
 
     $("#tiempos-switch").on('change', function(){
@@ -1040,7 +1220,7 @@
         });
 
     function limpiarMensaje(){
-        var campo = ["nombre", "descripcion", "fecha", "instructor_id"];
+        var campo = ["nombre", "descripcion", "fecha", "instructor_id", "generos_selector"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1049,7 +1229,7 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["nombre", "descripcion", "fecha", "instructor_id"];
+        var campo = ["nombre", "descripcion", "fecha", "instructor_id", "generos_selector"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -1086,6 +1266,25 @@
              $("#examen-"+c.name).data('valor',c.value);
              $("#examen-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='generos_selector'){
+            $("#examen-"+c.name).data('valor',c.value);
+            $("#examen-"+c.name).html(c.value.substr(0, 30) + "...");
+
+          }else if(c.name=='tipos_de_evaluacion'){
+            $("#examen-"+c.name).data('valor',c.value);
+            var nombre;
+
+            if(c.value==1){
+              nombre="Evaluacion";
+            }else if(c.value==2){
+              nombre="Clase Personalizada";
+            }else if(c.value==3){
+              nombre="Casting";
+            }else{
+              nombre="Otros";
+            }
+            $("#examen-"+c.name).html(nombre);
+
           }else{
             $("#examen-"+c.name).text(c.value);
           }
@@ -1312,13 +1511,18 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
         var datos_array=  $( "#"+form ).serializeArray();
         console.log(datos_array);
         
+        var generos_musicales = [];
+        $('#generos_selector option:selected').each(function() {
+          generos_musicales.push( $( this ).text() );
+        });
+
         var route = route_update+"/"+update;
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
             type: 'PUT',
             dataType: 'json',
-            data: datos,                
+            data: datos+"&generos_musicales="+generos_musicales,                
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){
