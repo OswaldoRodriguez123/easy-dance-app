@@ -29,7 +29,11 @@
                 <div class="container invoice">
 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/evaluaciones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de evaluaciones</a>
+                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/evaluaciones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de evaluaciones</a>
+                        @else
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        @endif
                     </div> 
                     
                     <div class="card">

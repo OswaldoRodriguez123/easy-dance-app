@@ -114,7 +114,7 @@ class AcademiaConfiguracionController extends BaseController {
 
         // }
         
-
+        //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
             $fecha_comprobacion = Carbon::createFromFormat('Y-m-d', $academia->fecha_comprobacion);
@@ -126,7 +126,7 @@ class AcademiaConfiguracionController extends BaseController {
             return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
         }
 
-
+        //ALUMNOS
         if(Auth::user()->boolean_condiciones){
 
             $contador_clase = 0;
@@ -143,6 +143,13 @@ class AcademiaConfiguracionController extends BaseController {
                 ->where('clases_grupales.boolean_promocionar','=', 1)
                 ->where('clases_grupales.deleted_at', '=', null)
             ->get();
+
+            $alumno_examenes = DB::table('evaluaciones')
+                ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+                ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+                ->select('examenes.nombre','evaluaciones.id')
+                ->where('evaluaciones.alumno_id','=',Auth::user()->usuario_id)
+                ->get();
 
 
             foreach($clase_grupal_join as $clase){
@@ -270,7 +277,7 @@ class AcademiaConfiguracionController extends BaseController {
                 }
                 
 
-                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'proformas' => $array_deuda]);  
+                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'proformas' => $array_deuda, 'alumno_examenes' => $alumno_examenes]);  
             
         }else{
             return view('vista_alumno.condiciones')->with('academia', $academia);

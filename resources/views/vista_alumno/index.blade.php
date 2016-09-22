@@ -196,7 +196,24 @@
                             <div class="clearfix p-b-15"></div>
 
 
-                    </div> <!-- ESPECIALES -->
+                  </div> <!-- ESPECIALES -->
+
+                    <div class="clearfix p-b-15"></div>
+
+                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                      <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Evaluacion / Diagnostico</div>
+
+                       @foreach($alumno_examenes as $examenes)
+                        <div class ="detalle">
+                          <a href="especiales/evaluaciones/detalle/{{$examenes->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$examenes->nombre}} </a> 
+                        </div>
+                        @endforeach
+
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+                    </div>
             
    
                 </div>

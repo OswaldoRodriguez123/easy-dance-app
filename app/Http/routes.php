@@ -186,7 +186,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
 			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');
 
-			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 			// ---- CONFIGURACION ----
 
 			Route::get('configuracion', 'AcademiaConfiguracionController@principal');
@@ -850,7 +849,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//TALLERES
 			
 			Route::get('agendar/talleres', 'TallerController@index');
-			
+
+			//EVALUACIONES
+			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 
 		});//END MIDDLEWARE ALUMNO
 
