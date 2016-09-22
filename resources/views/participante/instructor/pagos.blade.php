@@ -25,13 +25,13 @@
                         </div>
                         <form name="form_pago" id="form_pago"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="id" value="{{ $instructor->id }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                
                                
-                          <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <div class="clearfix p-b-35"></div>
+                              <div class="col-sm-12">
+                                <div class="clearfix p-b-35"></div>
 
                                     <label for="clase_grupal_id" id="id-clase_grupal_id">Ingresa la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El título para esta recompensa es lo que aparecerá en tu página de la campaña de Easy Dance . Crear un título que describa bien el contenido de lo que ofrece esta recompensa" title="" data-original-title="Ayuda"></i>
 
@@ -39,12 +39,12 @@
                                       <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
                                       <div class="fg-line">
                                           <div class="select">
-                                            <select class="selectpicker bs-select-hidden" id="clase_grupal_id" name="clase_grupal_id" multiple="" data-max-options="5" title="Selecciona">
+                                            <select class="selectpicker bs-select-hidden" id="clase_grupal_id" name="clase_grupal_id" multiple="" data-max-options="5" title="Todas">
 
                                              @foreach ( $clases_grupales as $clase_grupal )
                                               <?php $exist = false; ?>
                                               @foreach ( $pagos_instructor as $pagos)
-                                                @if ($pagos_instructor->clase_grupal_id==$clase_grupal->id )
+                                                @if ($pagos->clase_grupal_id==$clase_grupal->id )
                                                   <?php $exist = true; ?>
                                                 @endif
                                               @endforeach
@@ -58,27 +58,29 @@
                                           </div>
                                     </div>
                                     </div>
-                                 <div class="has-error" id="error-clase_grupal_id">
-                                      <span >
-                                          <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                               
-                                      </span>
-                                  </div>
+                                     <div class="has-error" id="error-clase_grupal_id">
+                                          <span >
+                                              <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                               
+                                          </span>
+                                      </div>
 
                                   <div class="clearfix p-b-35"></div>
 
-                                  <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Este monto representa lo que deseas recaudar  de los patrocinadores que busquen esta recompensa, por los elementos incluidos en este campo" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
-                                      <div class="fg-line">
-                                        <input type="text" class="form-control input-sm input-mask" name="monto" id="monto" data-mask="0000000" placeholder="Ej. 50">
+                                    <div class="form-group">
+                                        <label for="cantidad" id="id-cantidad">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por clase grupal" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="00000000" placeholder="Ej. 5000">
+                                        </div>
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-monto">
+                                    <div class="has-error" id="error-cantidad">
                                       <span >
-                                          <small class="help-block error-span" id="error-monto_mensaje" ></small>                               
+                                          <small id="error-cantidad_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
-                                  </div>
+                                    </div>
 
                                   <div class="clearfix p-b-35"></div>
 
@@ -89,42 +91,41 @@
 
                               <br></br>
 
-                          <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    
-                                    <th class="text-center" data-column-id="clase_grupal"></th>
-                                    <th class="text-center" data-column-id="monto" data-type="numeric"></th>
-                                    <th class="text-center" data-column-id="operaciones"></th>
+                              <div class="table-responsive row">
+                                 <div class="col-md-12">
+                                  <table class="table table-striped table-bordered text-center " id="tablepagos" >
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th class="text-center" data-column-id="clase_grupal"></th>
+                                            <th class="text-center" data-column-id="monto" data-type="numeric"></th>
+                                            <th class="text-center" data-column-id="operaciones"></th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                            @foreach ($pagos_instructor as $pagos)
-                                <?php $id = $pagos->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$pagos->nombre}}</td>
-                                    <td class="text-center previa">{{$pagos->monto}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
-                                  </tr>
-                            @endforeach 
-                                                           
-                            </tbody>
-                            </table>
+                                    @foreach ($pagos_instructor as $pagos)
+                                        <?php $id = $pagos->id; ?>
+                                        <tr id="{{$id}}" class="seleccion" >
+                                            <td class="text-center">{{$pagos->nombre}}</td>
+                                            <td class="text-center">{{$pagos->monto}}</td>
+                                            <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                          </tr>
+                                    @endforeach 
+                                                                   
+                                    </tbody>
+                                  </table>
 
-                            </div>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
+                                </div>
+                              </div> <!-- TABLE RESPONSIVE -->
+                            </div><!--  COL-SM-12 -->
+                          </div><!-- ROW -->
 
                         <div class="clearfix p-b-35"></div>
 
                         <div class="clearfix"></div> 
-                       <div class="modal-footer p-b-20 m-b-20">
+                          <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
                               <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
@@ -142,18 +143,20 @@
                               <div class="clearfix p-b-35"></div>
 
                             </div>
-                        </div></form>
-                    </div>
+                        </div>
+                    </div></form>
                 </div>
             </div>
-          </div>
+        </div>
 
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participantes/instructores" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Instructores</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
+                        <?php $url = "/participantes/instructores/detalle/$id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
                     </div> 
                     
                     <div class="card">
@@ -166,6 +169,16 @@
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-25"></i> Sección de Pagos</p>
                         <hr class="linea-morada">
                                                               
+                        </div>
+
+                        <div class="col-md-offset-10">
+                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" > Pagar <i class="icon_a-pagar"></i></button>
+
+                          <div class="has-error" id="error-asistencias">
+                            <span >
+                                <small id="error-asistencias_mensaje" class="help-block error-span" ></small>                                           
+                            </span>
+                          </div>
                         </div>
 
                         <div class="col-sm-5">
@@ -189,7 +202,7 @@
                                 <div class="clearfix"></div>
                                 
                                 <div class="col-md-12">
-                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
+                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : <span id="total">{{ number_format($total, 2) }}</span></span>
                                 </div>
                                 <br><br>
                                 <!-- <div class="clearfix"></div> -->
@@ -199,6 +212,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th style="width:7%;"><input style="margin-left:49%; display: none" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="clase">Clase</th>
                                     <th class="text-center" data-column-id="hora_entrada">Hora Entrada</th>
@@ -231,12 +245,17 @@
 @section('js') 
             
         <script type="text/javascript">
-            route_detalle="{{url('/')}}/administrativo/factura";
-            route_enviar="{{url('/')}}/administrativo/factura/enviar/";
-            route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
-            route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
+
+        route_agregar="{{url('/')}}/participante/instructor/agregarpago";
+        route_eliminar="{{url('/')}}/participante/instructor/eliminarpago/";
+        route_pagar="{{url('/')}}/participante/instructor/pagar";
 
         tipo = 'pagadas';
+
+        var total = "{{$total}}"
+
+        var por_pagar = <?php echo json_encode($por_pagar);?>;
+        var pagadas = <?php echo json_encode($pagadas);?>;
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -244,95 +263,108 @@
 
         $(document).ready(function(){
 
-        $("#pagadas").prop("checked", true);
-
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 50, 
-        order: [[0, 'desc']],
-        fnDrawCallback: function() {
-        if ("{{count($por_pagar)}}" < 50) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-
-        });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-
-                rechargeFactura();
+          $("#pagar").hide();
+          $("#pagar").attr("disabled","disabled");
+            
+            $("#pagar").css({
+                "opacity": ("0.2")
             });
 
-        function previa(t){
+          $('#clase_grupal_id').val('');
+          $("#form_pago")[0].reset();
+          $('#clase_grupal_id').selectpicker('refresh');
 
-            if(tipo =='pagadas'){
+          $("#pagadas").prop("checked", true);
 
-                var row = $(t).closest('tr').attr('id');
-                var route =route_detalle+"/"+row;
-                window.location=route;
+          t=$('#tablelistar').DataTable({
+          "columnDefs": [ {
+            "targets": [ 0 ],
+            "orderable": false
+          } ],
+          processing: true,
+          serverSide: false,
+          pageLength: 50, 
+          order: [[1, 'desc'], [3, 'desc']],
+          fnDrawCallback: function() {
+          if ("{{count($por_pagar)}}" < 50) {
+                $('.dataTables_paginate').hide();
+                $('#tablelistar_length').hide();
             }
+          },
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     " ",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
 
-        }
+          });
 
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+
+          rechargeFactura();
+
+        });
+
+        h=$('#tablepagos').DataTable({
+          processing: true,
+          serverSide: false,
+          pageLength: 50, 
+          order: [[0, 'desc']],
+          fnDrawCallback: function() {
+          if ("{{count($por_pagar)}}" < 50) {
+                $('.dataTables_paginate').hide();
+                $('#tablelistar_length').hide();
+            }
+          },
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     " ",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+
+          });
+
 
          function clear(){
 
@@ -345,24 +377,28 @@
             if ($(this).val()=='pagadas') {
                   tipo = 'pagadas';
                   rechargeFactura();
+                  $('#pagar').hide();
             } else  {
                   tipo= 'proformas';
                   rechargeProforma();
+                  $('#pagar').show();
             }
          });
 
         function rechargeFactura(){
-            var pagadas = <?php echo json_encode($pagadas);?>;
+
             $('#monto').css('opacity', '0');
+            $('#select_all').hide();
 
             $.each(pagadas, function (index, array) {
                 var rowNode=t.row.add( [
+                ''+ ' ' +'',
                 ''+array.fecha+'',
                 ''+array.clase+'',
                 ''+array.hora+'',
                 ''+array.hora_salida+'',
                 ''+array.monto+'',
-                '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -371,18 +407,20 @@
         }
 
         function rechargeProforma(){
-            var por_pagar = <?php echo json_encode($por_pagar);?>;
+            
 
             $('#monto').css('opacity', '1');
+            $('#select_all').show();
 
             $.each(por_pagar, function (index, array) {
                 var rowNode=t.row.add( [
+                ''+'<input name="select_check" id="select_check" type="checkbox" />'+'', 
                 ''+array.fecha+'',
                 ''+array.clase+'',
                 ''+array.hora+'',
                 ''+array.hora_salida+'',
                 ''+array.monto+'',
-                '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -476,15 +514,13 @@
                 });
       }
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
 
                 var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
                 element = this;
 
                 swal({   
-                    title: "Desea eliminar la proforma?",   
+                    title: "Desea eliminar esta configuración?",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -500,7 +536,7 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","La campaña ha sido eliminada!","success");
+                        swal("Exito!","La configuración ha sido eliminada!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                         eliminar(id, element);
           }
@@ -529,7 +565,12 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          t.row( $(element).parents('tr') )
+                          $("#clase_grupal_id option[value='"+respuesta.id+"']").removeAttr("disabled");
+                          $("#clase_grupal_id option[value='"+respuesta.id+"']").data("icon","");
+
+                          $('#clase_grupal_id').selectpicker('refresh');
+
+                          h.row( $(element).parents('tr') )
                             .remove()
                             .draw();
                         
@@ -553,6 +594,299 @@
     $(".dismiss").click(function(){
       $('.modal').modal('hide');
     });
+
+
+    $("#add").click(function(){
+
+
+      $("#add").attr("disabled","disabled");
+        $("#add").css({
+          "opacity": ("0.2")
+        });
+
+      var route = route_agregar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_pago" ).serialize(); 
+      limpiarMensaje();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos+"&clase_grupal_id="+$("#clase_grupal_id").val(),
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+                $("#form_pago")[0].reset();
+
+                $.each(respuesta.array, function (index, array) {
+
+                  var rowId=array.id;
+                  var rowNode=h.row.add( [
+                  ''+array.nombre+'',
+                  ''+array.monto+'',
+                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  // .attr('data-precio',precio_neto)
+                  .addClass('seleccion');
+
+                  $("#clase_grupal_id option[value='"+array.clase_grupal_id+"']").attr("disabled","disabled");
+                  $("#clase_grupal_id option[value='"+array.clase_grupal_id+"']").data("icon","glyphicon-remove");
+
+                  
+
+                });
+
+                $('#clase_grupal_id').val('');
+                $('#clase_grupal_id').selectpicker('refresh');
+                
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });                        
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
+
+    $("#pagar").click(function(){
+
+
+      // procesando();
+
+      var route = route_pagar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = "&asistencias="+getChecked();
+      limpiarMensaje();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+
+                $.each(respuesta.array, function (index, id) {
+
+                  var pago = $.grep(por_pagar, function(e){ return e.id == id; });
+
+                  pagadas.push(pago[0]);
+
+                  console.log(pagadas);
+
+                  indexes = $.map(por_pagar, function(obj, index) {
+                      if(obj.id == id){
+                          por_pagar.splice( $.inArray(por_pagar[index], por_pagar), 1 );
+
+                          t.row( $('#'+id) )
+                            .remove()
+                            .draw();
+
+                          total = total - obj.monto;
+
+                          $('#total').text(total);
+
+
+                      }
+                  })
+
+
+                  // value = 1
+                  // index = $.inArray value, array
+                  // if index > -1
+                  // array.splice(index, 1)
+
+                });
+
+                $('#clase_grupal_id').val('');
+                $('#clase_grupal_id').selectpicker('refresh');
+                
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });                        
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
+
+    function limpiarMensaje(){
+      var campo = ["monto"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
+      }
+
+      function errores(merror){
+      var elemento="";
+      var contador=0;
+      $.each(merror, function (n, c) {
+      if(contador==0){
+      elemento=n;
+      }
+      contador++;
+
+       $.each(this, function (name, value) {              
+          var error=value;
+          $("#error-"+n+"_mensaje").html(error);             
+       });
+    });    
+
+  }
+
+  function getChecked(){
+      var checked = [];
+      $('#tablelistar tr').each(function (i, row) {
+          var actualrow = $(row);
+          checkbox = actualrow.find('input:checked').val();
+          if(checkbox == 'on')
+          {
+            var id = $(actualrow).attr('id');
+            checked[i] = id;
+          }
+      });
+
+      return checked;
+    }
+
+
+  $('#select_all').on('click', function(){
+      // Check/uncheck all checkboxes in the table
+      var rows = t.rows({ 'search': 'applied' }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+
+      values = getChecked();
+
+      if(values.length > 0){
+
+        $("#pagar").removeAttr("disabled");
+        $("#pagar").css({
+          "opacity": ("1")
+        });
+
+      }else{
+        $("#pagar").attr("disabled","disabled");
+        $("#pagar").css({
+          "opacity": ("0.2")
+        });
+      }
+
+   });
+
+  $('#tablelistar tbody').on( 'click', 'input[type="checkbox"]', function () {
+      values = getChecked();
+
+      if(values.length > 0){
+
+        $("#pagar").removeAttr("disabled");
+        $("#pagar").css({
+          "opacity": ("1")
+        });
+
+      }else{
+        $("#pagar").attr("disabled","disabled");
+        $("#pagar").css({
+          "opacity": ("0.2")
+        });
+      }
+
+
+  });
 
 
     </script>

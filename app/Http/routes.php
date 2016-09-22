@@ -427,6 +427,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/instructor/update/avanzado','InstructorController@updateAvanzado');
 			Route::put('participante/instructor/update/imagen','InstructorController@updateImagen');
 
+<<<<<<< HEAD
+			Route::get('participante/instructor/pagos/{id}', 'InstructorController@principalpagos');
+			Route::post('participante/instructor/agregarpago', 'InstructorController@agregarpago');
+			Route::delete('participante/instructor/eliminarpago/{id}', 'InstructorController@eliminarpago');
+			Route::post('participante/instructor/pagar', 'InstructorController@pagar');
+
+=======
+>>>>>>> e9095243f9c1ea4c73e01c3220f68874020e05b2
 			//VISITANTE
 
 			Route::get('participante/visitante', 'VisitanteController@index');

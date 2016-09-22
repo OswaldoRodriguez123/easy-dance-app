@@ -1120,7 +1120,8 @@
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-                                  
+
+                                  <a href="{{url('/')}}/participante/instructor/pagos/{{$instructor->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$instructor->id}}" name= "eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 

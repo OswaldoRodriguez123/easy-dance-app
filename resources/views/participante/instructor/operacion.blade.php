@@ -30,9 +30,21 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-4"></div>
+            <div class = "col-sm-3"></div>
 
-            <ul class="ca-menu-c col-sm-4" style="width: 720px;">
+            <ul class="ca-menu-c col-sm-5" style="width: 720px;">
+
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a href="{{url('/')}}/participante/instructor/pagos/{{$instructor->id}}">
+                            <span class="ca-icon-c"><i class="zmdi zmdi-money f-35 boton blue sa-warning" 
+                                   data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Pagos</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
 
                     <li data-ripplecator class ="dark-ripples">
                         <a class="email">
@@ -69,7 +81,7 @@
 
                 </ul>
 
-                <div class = "col-sm-4"></div>
+                <div class = "col-sm-3"></div>
                 </div>
             </div>
         </div>

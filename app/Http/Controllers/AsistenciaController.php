@@ -16,6 +16,8 @@ use App\Asistencia;
 
 use App\AsistenciaInstructor;
 
+use App\ConfigPagosInstructor;
+
 use App\Alumno;
 
 use Carbon\Carbon;
@@ -517,6 +519,12 @@ class AsistenciaController extends BaseController
                   $asistencia->instructor_id=$id_instructor;
                   $asistencia->academia_id=Auth::user()->academia_id;
 
+                  $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
+
+                  if($config_pago){
+                    $asistencia->monto = $config_pago->monto;
+                  }
+
                   $asistencia->save();
 
                 }
@@ -580,6 +588,12 @@ class AsistenciaController extends BaseController
                   $asistencia->clase_grupal_id=$clase_id[0];
                   $asistencia->instructor_id=$id_instructor;
                   $asistencia->academia_id=Auth::user()->academia_id;
+
+                  $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
+
+                  if($config_pago){
+                    $asistencia->monto = $config_pago->monto;
+                  }
 
                   $asistencia->save();
 

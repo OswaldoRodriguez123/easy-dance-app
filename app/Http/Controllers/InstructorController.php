@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Image;
 use DB;
 use Illuminate\Support\Facades\Session;
+use App\ConfigPagosInstructor;
+use App\AsistenciaInstructor;
 
 class InstructorController extends BaseController {
 
@@ -815,9 +817,10 @@ class InstructorController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida', 'asistencias_instructor.monto')
+                ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida', 'asistencias_instructor.monto', 'asistencias_instructor.id')
                 ->where('instructores.id', $id)
                 ->where('asistencias_instructor.boolean_clase_pagada', 0)
+                ->where('asistencias_instructor.monto', '>', 0)
             ->get();
 
             $total = DB::table('asistencias_instructor')
@@ -830,7 +833,7 @@ class InstructorController extends BaseController {
                 ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre')
+                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id')
                 ->where('instructores.id', $id)
             ->get();
 
@@ -840,10 +843,188 @@ class InstructorController extends BaseController {
                 ->where('clases_grupales.instructor_id', $id)
             ->get();
 
-            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join ]);
+            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join, 'id' => $id ]);
         }else{ 
 
             return redirect("participante/instructor"); 
+        }
+    }
+
+
+    public function agregarpago(Request $request)
+    {
+        
+        $rules = [
+            'cantidad' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Monto es requerido',
+            'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            // return redirect("/home")
+
+            // ->withErrors($validator)
+            // ->withInput();
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            //dd($validator);
+
+        }
+
+        else{
+
+            $array = array();
+
+            if($request->clase_grupal_id != 'null'){
+
+                $clases_grupales = explode(",", $request->clase_grupal_id);
+
+                foreach($clases_grupales as $clase_grupal){
+
+                    $posee_pago = DB::table('configuracion_pagos_instructor')
+                        ->select('configuracion_pagos_instructor.*')
+                        ->where('configuracion_pagos_instructor.instructor_id', $request->id)
+                        ->where('configuracion_pagos_instructor.clase_grupal_id', $clase_grupal)
+                    ->first();
+
+
+                    if(!$posee_pago){
+
+                        $config_pagos = new ConfigPagosInstructor;
+
+                        $config_pagos->clase_grupal_id = $clase_grupal;
+                        $config_pagos->instructor_id = $request->id;
+                        $config_pagos->monto = $request->cantidad;
+
+                        $config_pagos->save();
+
+                        $clase_grupal_join = DB::table('clases_grupales')
+                            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                            ->select('config_clases_grupales.nombre')
+                            ->where('clases_grupales.id', $clase_grupal)
+                        ->first();
+
+                        $config_pagos['nombre'] = $clase_grupal_join->nombre;
+
+                        array_push($array, $config_pagos);
+
+
+                    }
+
+                }
+
+
+            }else{
+
+                $clases_grupales = DB::table('clases_grupales')
+                        ->select('clases_grupales.id')
+                        ->where('clases_grupales.instructor_id', $request->id)
+                    ->get();
+
+                foreach($clases_grupales as $clase_grupal){
+
+                    $posee_pago = DB::table('configuracion_pagos_instructor')
+                        ->select('configuracion_pagos_instructor.*')
+                        ->where('configuracion_pagos_instructor.instructor_id', $request->id)
+                        ->where('configuracion_pagos_instructor.clase_grupal_id', $clase_grupal->id)
+                    ->first();
+
+                    if(!$posee_pago){
+
+                        $config_pagos = new ConfigPagosInstructor;
+
+                        $config_pagos->clase_grupal_id = $clase_grupal->id;
+                        $config_pagos->instructor_id = $request->id;
+                        $config_pagos->monto = $request->cantidad;
+
+                        $config_pagos->save();
+
+                        $clase_grupal_join = DB::table('clases_grupales')
+                            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                            ->select('config_clases_grupales.nombre')
+                            ->where('clases_grupales.id', $clase_grupal->id)
+                        ->first();
+
+                        $config_pagos['nombre'] = $clase_grupal_join->nombre;
+
+                        array_push($array, $config_pagos);
+
+
+                    }
+
+                }
+
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);   
+        }
+    }
+
+    public function eliminarpago($id)
+    {
+
+        $pago = ConfigPagosInstructor::find($id);
+        
+        if($pago->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'id' => $pago->clase_grupal_id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno");
+    }
+
+    public function pagar(Request $request)
+    {
+        $rules = [
+            'asistencias' => 'required',
+        ];
+
+        $messages = [
+
+            'asistencias.required' => 'Ups! Debe seleccionar un pago',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+        
+            $asistencias = explode(",", $request->asistencias);
+            $array = array();
+
+            foreach($asistencias as $asistencia)
+            {
+                if($asistencia != ''){
+
+                    $pago = AsistenciaInstructor::find($asistencia);
+                    // $pago->boolean_clase_pagada = 1;
+
+                    $pago->save();
+
+                    array_push($array,$asistencia);
+
+                }
+            }
+
+
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+
         }
     }
 }

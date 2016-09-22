@@ -761,73 +761,65 @@
 
     var checked = getChecked();
 
-                var route = route_factura;
-                var token = $('input:hidden[name=_token]').val();
-                // var datos = "&alumno_id="+$("#alumno_id option:selected" ).val();
-                // var datos = $( "#agregar_item" ).serialize();
-                var datos = "&alumno_id="+alumno_id+"&items_factura="+checked;
-                limpiarMensaje();
-                procesando();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          window.location = "{{url('/')}}/administrativo/pagos/gestion";
+      var route = route_factura;
+      var token = $('input:hidden[name=_token]').val();
+      // var datos = "&alumno_id="+$("#alumno_id option:selected" ).val();
+      // var datos = $( "#agregar_item" ).serialize();
+      var datos = "&alumno_id="+alumno_id+"&items_factura="+checked;
+      limpiarMensaje();
+      procesando();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                window.location = "{{url('/')}}/administrativo/pagos/gestion";
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        // finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              // finprocesado();
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              finprocesado();
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+  });
 
     $("#servicio").click(function(){
         $( "#producto2" ).removeClass( "c-verde" );
