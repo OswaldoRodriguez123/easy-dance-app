@@ -121,6 +121,23 @@
 
 							</div>
 						</div>
+						<!-- observaciones -->
+						<div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="observacion" id="id-observacion">Observaciones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las observaciones y detalles correspondientes a la evalucion del alumno, las cuales seran vistas por el al revisar los resultados de la prueba" title="" data-original-title="Ayuda"></i>
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="1000 Caracteres"></textarea>
+                                    </div>
+                                    <div class="has-error" id="error-observacion">
+                                      <span >
+                                        <small class="help-block error-span" id="error-observacion_mensaje" ></small> 
+                                      </span>
+                                    </div>
+                                  </div>
 
 						<hr>
 						<!-- SECCION BOTONES --> 
@@ -154,26 +171,26 @@
 								<div class="f-20 f-500 text-left">Supervisado Por</div>
 							</div>
 						</div> -->
+						<nav class="navbar navbar-default navbar-fixed-bottom">
+              				<div class="container">
+                            	<div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
+		            				<div class="col-xs-11">
+		              					<div class="clearfix p-b-20"></div>
+		              					<div class="progress-fino progress-striped m-b-10">
+		                				<div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+		                				<div class="clearfix"></div>
+		                				<input type="hidden" name="barra_de_progreso" id="barra_de_progreso">
+		                				<div id="msj_porcentaje" class="m-b-20 m-l-25" style="text-align: center">0% de la nota</div>
+		              				</div>
+                				</div>
+              				</div>
+            			</nav>
 					</form>	
 				</div><!-- END CARD BODY -->
 	
 	        </div>
 		</div>
 	</section>
-	<nav class="navbar navbar-default navbar-fixed-bottom">
-              <div class="container">
-                
-                <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
-                <div class="col-xs-11">
-                  <div class="clearfix p-b-20"></div>
-                  <div class="progress-fino progress-striped m-b-10">
-                    <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                    <div class="clearfix"></div>
-                    <div id="msj_porcentaje" class="m-b-20 m-l-25" style="text-align: center">0% de la nota</div>
-                  </div>
-                </div>
-              </div>
-            </nav>
 
 @stop
 
@@ -249,6 +266,7 @@ $(document).ready(function() {
 	    
 	    porcetaje = (nota_actual*100)/nota_total;
 	    porcetaje = porcetaje.toFixed(2);
+	    $("#barra_de_progreso").attr("value",porcetaje);
 	    $("#text-progreso").text(porcetaje+"%");
 	    $("#barra-progreso").css({
 	      "width": (porcetaje + "%")

@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\ItemsExamenes;
 use App\Evaluacion;
 use App\DetalleEvaluacion;
+use App\Examen;
 use Validator;
 use DB;
 use Session;
@@ -61,6 +62,7 @@ class EvaluacionController extends Controller
         $rules = [
             'alumno_id' => 'required',
             'total_nota' => 'required',
+            'observacion' => 'max:1000',
         ];
 
         $messages = [
@@ -69,6 +71,7 @@ class EvaluacionController extends Controller
             //'alumno_id.unique' => 'Ups! Este alumno ya ha sido evaluado ',
             //'alumno_id.in' => 'Error, usuario seleccionado no existe!',
             'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
+            'observacion.max' => 'Ups! no pueden ser mas de 1000 caracteres',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -88,10 +91,10 @@ class EvaluacionController extends Controller
             $evaluacion->examen_id = $request->examen;
             $evaluacion->instructor_id= $request->instructor;
             $evaluacion->total = $request->total_nota;
-
+            $evaluacion->observacion = $request->observacion;
+            $evaluacion->porcentaje = $request->barra_de_progreso;
 
             if($evaluacion->save()){
-                
                 $items_examenes = ItemsExamenes::where('examen_id', '=' , $request->examen)->get();
                 for ($i=0; $i < count($detalle_nota)-1; $i++) {
                     $detalles = new DetalleEvaluacion;
@@ -131,17 +134,27 @@ class EvaluacionController extends Controller
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
+        $genero_examen = DB::table('evaluaciones')
+                            ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
+                            ->select('examenes.genero','evaluaciones.porcentaje')
+                            ->where('evaluaciones.id','=',$id)
+                            ->first();
+
         //DATOS DE DETALLE
         $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
                             ->where('evaluacion_id','=',$id)
                             ->get();
-
+        
         return view('especiales.evaluaciones.detalle')->with([
                 'instructor'       => $instructor, 
                 'alumno'           => $alumno, 
                 'academia'         => $academia, 
                 'detalle_notas'    => $detalles_notas,
-                'nota_final'       => $nota_final->total
+                'nota_final'       => $nota_final->total,
+                'observacion'      => $nota_final->observacion,
+                'fecha'            => $nota_final->created_at,
+                'genero_examen'    => $genero_examen->genero,
+                'porcentaje'       => $genero_examen->porcentaje,
                 ]);
     }
 

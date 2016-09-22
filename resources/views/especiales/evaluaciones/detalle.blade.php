@@ -44,25 +44,31 @@
                                 <div class="col-xs-6">
                                     <div class="text-right">
                                         <p class="c-gray">Instructor</p>
-                                        
                                         <h4>{{ $instructor->instructor_nombre }} {{ $instructor->instructor_apellido }}</h4>
-                                        
-
                                     </div>
                                 </div>
                                 
                                 <div class="col-xs-6">
                                     <div class="i-to">
                                         <p class="c-gray">Alumno</p>
-                                        
                                         <h4>{{ $alumno->alumno_nombre }} {{ $alumno->alumno_apellido }}</h4>
-                                        
-                                        
                                     </div>
                                 </div>
-                                
                             </div>
-                            
+                            <div class="row m-b-25">
+                                <div class="col-xs-6">
+                                    <div class="text-right">
+                                        <p class="c-gray">Fecha de la realizacion de la evaluacion</p>
+                                        <h4>{{$fecha}}</h4>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="">
+                                        <p class="c-gray">Generos musicales evaluados</p>
+                                        <h4>{{$genero_examen}}</h4>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="clearfix"></div>
                             
 
@@ -111,8 +117,26 @@
                             </div>
                             </div>
                             
-                            <div class="clearfix"></div>
-                            
+                            <div class="clearfix"></div><hr />
+                            <label for="observacion" id="id-observacion">Observaciones</label>
+                            <div>{{$observacion}}</div>
+                            <div class="clearfix p-b-20"></div>
+                            <div class="clearfix p-b-20"></div>
+
+                            <nav class="navbar navbar-default navbar-fixed-bottom">
+                                <div class="container">
+                                    <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
+                                    <div class="col-xs-11">
+                                        <div class="clearfix p-b-20"></div>
+                                        <div class="progress-fino progress-striped m-b-10">
+                                            <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                                            <div class="clearfix"></div>
+                                            <input type="hidden" name="barra_de_progreso" id="barra_de_progreso">
+                                            <div id="msj_porcentaje" class="m-b-20 m-l-25" style="text-align: center">0% de la nota</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nav>
                             <!-- <div class="p-25">
                                 <h4 class="c-green f-400">REMARKS</h4>
                                 <p class="c-gray">Ornare non tortor. Nam quis ipsum vitae dolor porttitor interdum. Curabitur faucibus erat vel ante fermentum lacinia. Integer porttitor laoreet suscipit. Sed cursus cursus massa ut pellentesque. Phasellus vehicula dictum arcu, eu interdum massa bibendum.</p>
@@ -190,10 +214,37 @@
 
         $("#refresh").on("click", function(){
             location.reload(true);
-        })
+        });
+
+        porcentaje();
     });
 
+    function porcentaje(){
 
+        
+        porcentaje ={{$porcentaje}};
+        $("#text-progreso").text(porcentaje+"%");
+        $("#barra-progreso").css({
+          "width": (porcentaje + "%")
+        });        
+        
+        if(porcentaje<="25"){
+          $("#barra-progreso").css("background-color","red");
+          $("#msj_porcentaje").html("Debe mejorar");
+        }else if(porcentaje<="50"){
+          $("#barra-progreso").css("background-color","orange");
+          $("#msj_porcentaje").html("Regular");
+        }else if(porcentaje<="75"){
+          $("#barra-progreso").css("background-color","gold");
+          $("#msj_porcentaje").html("Bueno");
+        }else if(porcentaje<"100"){
+          $("#barra-progreso").css("background-color","greenyellow ");
+          $("#msj_porcentaje").html("Muy bueno");
+        }else{
+          $("#barra-progreso").css("background-color","green");
+          $("#msj_porcentaje").html("excelente");
+        }
+    }
 </script>
 
 
