@@ -181,9 +181,8 @@ class AlumnoController extends BaseController
 
         $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
 
         $correo = strtolower($request->correo);
 
@@ -196,7 +195,7 @@ class AlumnoController extends BaseController
 
         if($request->direccion)
         {
-            $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+            $direccion = title_case($request->direccion);
 
         }else{
             $direccion = '';
@@ -264,16 +263,26 @@ class AlumnoController extends BaseController
                 }
 
                 //Envio de Sms
-                
-                // $data = collect([
-                //     'nombre' => $request->nombre,
-                //     'apellido' => $request->apellido,
-                //     'celular' => $request->celular
-                // ]);
-                
-                // $academia = Academia::find($alumno->academia_id);
-                // $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
-                // $sms = $this->sendAlumno($data, $msg);
+
+                if($request->celular)
+                {
+                    $array_prefix = array('424', '414', '426', '416', '412');
+                    $prefix = substr($request->celular, 1, 3);
+
+                    if (in_array($prefix, $array_prefix)) {
+              
+                        $data = collect([
+                            'nombre' => $request->nombre,
+                            'apellido' => $request->apellido,
+                            'celular' => $request->celular
+                        ]);
+                        
+                        $academia = Academia::find(Auth::user()->academia_id);
+                        $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
+                        $sms = $this->sendAlumno($data, $msg);
+
+                    }
+                } 
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
             }
