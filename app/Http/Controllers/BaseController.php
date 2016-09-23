@@ -7,6 +7,7 @@ use App\Alumno;
 use App\Instructor;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use App\CentauroSMS\CentauroSMS;
 
 
 class BaseController extends Controller {
