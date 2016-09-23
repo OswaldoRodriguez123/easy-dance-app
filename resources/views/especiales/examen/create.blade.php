@@ -508,7 +508,7 @@
                                       <div class="clearfix p-b-35"></div>
                                       <div class="col-sm-3">
                                       <label for="nombre" id="id-item_nuevo">Nombre</label>
-                                      <input type="text" class="form-control input-sm" name="item_nuevo" id="item_nuevo" placeholder="Ej. ritmo">
+                                      <input type="text" class="form-control input-sm" name="item_nuevo" id="item_nuevo" placeholder="Ej. ritmo" value="">
                                       </div>
                                       <div class="clearfix p-b-35"></div>
                                       <div class="col-md-2">
@@ -660,6 +660,7 @@
         document.getElementById("nombre").focus();
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
+        $("#item_nuevo").val('');
         //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
         animationDuration = 3100;
@@ -1112,6 +1113,8 @@
                             var nType = 'success';
                             var nTitle="Ups! ";
                             var nMensaje=respuesta.mensaje;
+
+                            $("#item_nuevo").val('');
 
                             var item_nuevo = respuesta.item_nuevo;
 
