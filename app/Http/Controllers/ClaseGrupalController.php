@@ -26,6 +26,8 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
 use App\Asistencia;
+use App\Notificacion;
+use App\NotificacionUsuario;
 
 
 class ClaseGrupalController extends BaseController {
@@ -566,6 +568,28 @@ class ClaseGrupalController extends BaseController {
         // $clasegrupal->cantidad_mujeres = $request->cantidad_mujer;
 
         if($clasegrupal->save()){
+            // $nombre=DB::table('config_clases_grupales')
+            //     ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+            //     ->select('config_clases_grupales.nombre')
+            //     ->where('config_clases_grupales.id','=',$request->clase_grupal_id)
+            // ->get();
+
+            // $notificacion = new Notificacion;
+            // $notificacion->tipo_evento=1;//1 clase grupal
+            // $notificacion->evento_id =$request->clase_grupal_id;
+            // $notificacion->mensaje = "tu academia a creado una nueva clase grupal llamada:".$nombre;
+
+            // if($notificacion->save()){
+            //     $alumnos_de_la_academia=DB::table('users')
+            //         ->select('users.id')
+            //         ->where('users.academia_id','=',Auth::user()->academia_id;)
+            //     ->get();
+
+            //     foreach ($alumnos_de_la_academia as $alumnos) {
+            //         $notificar_usuario = new NotificacionUsuario;
+            //         $notificar_usuario->id_alumno
+            //     }
+            // }
 
             if($request->imageBase64){
 

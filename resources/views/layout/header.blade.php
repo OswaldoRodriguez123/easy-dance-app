@@ -44,6 +44,42 @@
                             </a>
                         </li> --}}
 
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" href="#">
+                                <i class="tm-icon zmdi zmdi-notifications"></i>
+                                <i class="tmn-counts">{{$sin_ver}}</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg pull-right">
+                                <div class="listview" id="notifications">
+                                    <div class="lv-header">Notification
+                                        <ul class="actions">
+                                            <li class="dropdown">
+                                                <a href="#" data-clear="notification">
+                                                    <i class="zmdi zmdi-check-all"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="lv-body">
+                                        @foreach( $notificaciones as $notificacion)
+                                            <a class="lv-item" href="#">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="lv-title">David Belle</div>
+                                                        <small class="lv-small">Cum sociis natoque penatibus et magnis dis parturient montes</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                    <a class="lv-footer" href="#">View Previous</a>
+                                </div>
+                            </div>
+                        </li>
+
                         @if(Auth::check())
               
                             <li class="dropdown" data-original-title="" data-toggle="popover" data-placement="bottom" title="" type="button" data-animation="fadeInLeft,fadeOutLeft,600">
@@ -586,5 +622,3 @@
                 </div>
             </div>
         </header>
-        
-        
