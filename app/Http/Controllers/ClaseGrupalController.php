@@ -193,7 +193,7 @@ class ClaseGrupalController extends BaseController {
 
         $clasegrupal = DB::table('config_clases_grupales')
                 ->join('clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio')
+                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final')
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
@@ -220,9 +220,52 @@ class ClaseGrupalController extends BaseController {
                 ->where('alumnos.sexo', '=', 'M')
         ->count();
 
-        // $alumnos = DB::table('alumnos')
-        //         ->select('alumnos.*')
-        // ->get();
+        $asistencias = DB::table('asistencias')
+                ->select('asistencias.*')
+                ->where('asistencias.clase_grupal_id', '=', $id)
+        ->get();
+
+        $asistio = array();
+        $numero_de_asistencias=0;
+
+        $hoy = Carbon::now();
+        $fecha_de_inicio = $clasegrupal->fecha_inicio;
+        $fecha_de_inicio = Carbon::parse($fecha_de_inicio);
+        $fecha_de_finalizacion = $clasegrupal->fecha_final;
+        $fecha_de_finalizacion = Carbon::parse($fecha_de_finalizacion);
+        $clases_completadas = 0;
+        $asistencia_roja = $clasegrupal->asistencia_rojo;
+        $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
+
+        if($hoy<$fecha_de_finalizacion){
+            while($fecha_de_inicio<$hoy){
+                $clases_completadas++;
+                $fecha_de_inicio->addWeek();
+            }
+        }else{
+            while($fecha_de_inicio<$fecha_de_finalizacion){
+                $clases_completadas++;
+                $fecha_de_inicio->addWeek();
+            }
+        }
+
+        foreach($alumnos_inscritos as $inscrito) {
+            foreach($asistencias as $asistencia) {
+                if($inscrito->id==$asistencia->alumno_id)
+                {
+                    $numero_de_asistencias++;
+                }
+            }
+
+            if(($clases_completadas-$numero_de_asistencias)>=$asistencia_roja){
+                $asistio[$inscrito->id]="c-youtube";
+            }else if(($clases_completadas-$numero_de_asistencias)>=$asistencia_amarilla){
+                $asistio[$inscrito->id]="c-amarillo";
+            }else{
+                $asistio[$inscrito->id]="c-verde";
+            }
+            $numero_de_asistencias=0;
+        }
 
         // dd($alumnos_inscritos);
 
@@ -235,8 +278,8 @@ class ClaseGrupalController extends BaseController {
         //         }
         //     }
         // }
-
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres]);
+        
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio]);
     }
 
     public function eliminarinscripcion($id)
@@ -429,8 +472,6 @@ class ClaseGrupalController extends BaseController {
         'cupo_minimo' => 'required|numeric',
         'cupo_maximo' => 'required|numeric',
         'cupo_reservacion' => 'required|numeric',
-        
-
     ];
 
     $messages = [
@@ -1540,7 +1581,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar', 'clases_grupales.titulo_video', 'clases_grupales.dias_prorroga')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'config_clases_grupales.asistencia_rojo as inasistencia_max', 'config_clases_grupales.asistencia_amarilla as inasistencia_min', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar', 'clases_grupales.titulo_video', 'clases_grupales.dias_prorroga')
             ->where('clases_grupales.id', '=', $id)
         ->first();
 

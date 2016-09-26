@@ -48,7 +48,8 @@ class ConfigClasesGrupalesController extends BaseController {
         'descripcion' => 'required',
         'porcentaje_retraso' => 'numeric',
         'tiempo_tolerancia' => 'numeric',
-
+        'asistencia_rojas' => 'required|numeric',
+        'asistencia_amarillas' => 'required|numeric',
     ];
 
     $messages = [
@@ -58,7 +59,11 @@ class ConfigClasesGrupalesController extends BaseController {
         'costo_mensualidad.numeric' => 'Ups! El campo del costo de la mensualidad es inválido , debe contener sólo números',
         'descripcion.required' => 'Ups! La descripción es requerida',  
         'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
-        'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',      
+        'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',
+        'asistencia_rojas.required' => 'Ups! el campo de inasistencias maximas es requerido',
+        'asistencia_rojas.numeric' => 'Ups! el campo de inasistencias maximas solo debe contener numeros',
+        'asistencia_amarillas.required' => 'Ups! el campo de inasistencias minimas es requerido',
+        'asistencia_amarillas.numeric' => 'Ups! el campo de inasistencias minimas solo debe contener numeros',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -94,6 +99,8 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->incluye_iva = $request->incluye_iva;
         $clasegrupal->porcentaje_retraso = $request->porcentaje_retraso;
         $clasegrupal->tiempo_tolerancia = $request->tiempo_tolerancia;
+        $clasegrupal->asistencia_rojo = $request->asistencia_rojas;
+        $clasegrupal->asistencia_amarilla = $request->asistencia_amarillas;
 
         if($clasegrupal->save()){
 
@@ -218,6 +225,51 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->costo_inscripcion = $costo_inscripcion;
         if($clasegrupal->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_inscripcion', 'valor' => $costo_inscripcion, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
+    public function updateAsistencias(Request $request){
+
+    $rules = [
+        'asistencia_rojas' => 'numeric|required',
+        'asistencia_amarillas' => 'numeric|required',
+    ];
+
+    $messages = [
+        'asistencia_rojas.required' => 'Ups! El campo inasistencias maxima es requerida',
+        'asistencia_rojas.numeric' => 'Ups! El campo inasistencias maxima debe contener sólo números',
+        'asistencia_amarillas.required' => 'Ups! El campo inasistencias minima es requerida',
+        'asistencia_amarillas.numeric' => 'Ups! El campo inasistencias minima debe contener sólo números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+    }
+
+    else{
+        $clasegrupal = ConfigClasesGrupales::find($request->id);
+
+        $asistencia_roja = $request->asistencia_rojas;
+        $asistencia_amarillo = $request->asistencia_amarillas;
+
+        if($asistencia_roja < 0){
+            $asistencia_roja = 0;
+        }
+        if($asistencia_amarillo < 0){
+            $asistencia_amarillo = 0;
+        }
+        
+        $clasegrupal->asistencia_rojo = $asistencia_roja;
+        $clasegrupal->asistencia_amarilla = $asistencia_amarillo;
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'asistencia_roja', 'valor' => $asistencia_amarillo, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }

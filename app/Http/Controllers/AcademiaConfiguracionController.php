@@ -506,6 +506,10 @@ class AcademiaConfiguracionController extends BaseController {
 	 * @return Response
 	 */
 
+    public function error(){
+        return view('errors.error_sistema');
+    }
+
     public function store(Request $request)
     {
 

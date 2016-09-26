@@ -117,6 +117,46 @@
                                       </span>
                                   </div>
                                </div>
+
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Inasistencias Maximas*</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de las inasistencias maximas permitidas" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_rojas" data-mask="00000000" placeholder="Ej. 5">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-asistencia_rojas">
+                                      <span >
+                                          <small id="error-asistencia_rojas_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Inasistencias Minimas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de las inasistencias minimas permitidas" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_amarillas" id="asistencia_amarillas" data-mask="00000000" placeholder="Ej. 2">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-asistencia_amarillas">
+                                      <span >
+                                          <small id="error-asistencia_amarillas_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
                                
                                <div class="clearfix p-b-35"></div>
 
@@ -557,7 +597,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["nombre", "costo_inscripcion", "costo_mensualidad", "descripcion", "incluye_iva", "condiciones", "porcentaje_retraso", "tiempo_tolerancia"];
+      var campo = ["nombre", "costo_inscripcion", "costo_mensualidad", "descripcion", "incluye_iva", "condiciones", "porcentaje_retraso", "tiempo_tolerancia", "asistencia_amarillas", "asistencia_rojas"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -565,7 +605,7 @@
       }
 
       function errores(merror){
-      var campo = ["nombre", "costo_inscripcion", "costo_mensualidad", "descripcion", "incluye_iva", "condiciones", "porcentaje_retraso", "tiempo_tolerancia"];
+      var campo = ["nombre", "costo_inscripcion", "costo_mensualidad", "descripcion", "incluye_iva", "condiciones", "porcentaje_retraso", "tiempo_tolerancia", "asistencia_amarillas", "asistencia_rojas"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
