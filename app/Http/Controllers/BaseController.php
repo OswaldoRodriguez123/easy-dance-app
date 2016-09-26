@@ -28,21 +28,22 @@ class BaseController extends Controller {
             ->orWhere('users.usuario_tipo', null)
         ->get();
 
-        $notificaciones = DB::table('notificacion')
-            ->join('notificacion_usuario','notificacion.id','=','notificacion_usuario.id_notificacion')
+        $notificaciones = DB::table('notificacion_usuario')
+            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
             ->join('users','notificacion_usuario.id_usuario','=','users.id')
             ->select('notificacion.mensaje','notificacion.evento_id','notificacion.tipo_evento','notificacion_usuario.visto as visto')
-            ->where('users.id','=',Auth::user()->id)
+            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
         ->get();
 
         $numero_de_notificaciones = 0;
 
         foreach( $notificaciones as $notificacion){
-            if($notificaciones->visto == 0){
+            if($notificacion->visto == 0){
                 $numero_de_notificaciones++;
             }
         }
 
+        //dd($numero_de_notificaciones);
 
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 

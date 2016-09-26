@@ -8,6 +8,8 @@ use App\Taller;
 use App\Fiesta;
 use App\Campana;
 use App\ClaseGrupal;
+use App\Notificacion;
+use App\NotificacionUsuario;
 use Session;
 use Carbon\Carbon;
 use App\Http\Requests;
@@ -32,5 +34,9 @@ class NotificacionController extends Controller
         $clases_grupales=ClaseGrupal::whereBetween('created_at', [ new Carbon($fecha_carga), new Carbon($date)])->get();
 
         dd($clases_grupales);
+    }
+
+    public function revisarNotificacion(){
+        
     }
 }

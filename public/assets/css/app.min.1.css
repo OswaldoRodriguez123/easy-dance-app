@@ -11124,7 +11124,7 @@ body:not(.sw-toggled) #sidebar {
   color: #A9A9A9;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   display: block;
   width: 100%;
 }

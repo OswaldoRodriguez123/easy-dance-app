@@ -68,8 +68,11 @@
                                                         <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
                                                     </div>
                                                     <div class="media-body">
-                                                        <div class="lv-title">David Belle</div>
-                                                        <small class="lv-small">Cum sociis natoque penatibus et magnis dis parturient montes</small>
+                                                        @if ($notificacion->tipo_evento == 1)
+                                                            <div class="lv-title">Nueva Clase Grupal</div>
+                                                        @endif
+                                                        
+                                                        <small class="lv-small">{{$notificacion->mensaje}}</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -622,3 +625,22 @@
                 </div>
             </div>
         </header>
+        <script>
+            $('zmdi-notifications').on('click', function(e){
+
+            $("#content").removeClass("opacity-content");
+            $("footer").removeClass("opacity-content");
+            $("header").removeClass("abierto");
+            $("#main").removeClass("opacity-content");
+            $("#chat").removeClass("toggled");
+            $("#what_we_do").removeClass("opacity-content");
+
+            //$("footer").toggleClass("opacity-content");
+            //$("header").toggleClass("abierto");
+
+
+            //$("#content").removeClass("opacity-content");
+            //$("footer").removeClass("opacity-content");
+
+        });
+        </script>
