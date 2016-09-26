@@ -12,7 +12,8 @@
         "intervention/image": "2.3.*",
         "watson/autologin": "^0.4.1",
         "doctrine/dbal": "^2.5",
-        "livepixel/mercado-pago": "^1.0"        
+        "livepixel/mercado-pago": "^1.0",
+        "pulkitjalan/geoip": "2.*"  
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

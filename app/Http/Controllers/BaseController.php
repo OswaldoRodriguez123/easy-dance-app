@@ -8,6 +8,7 @@ use App\Instructor;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use App\CentauroSMS\CentauroSMS;
+use PulkitJalan\GeoIP\GeoIP;
 
 
 class BaseController extends Controller {
