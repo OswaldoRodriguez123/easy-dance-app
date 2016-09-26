@@ -28,6 +28,8 @@ use Validator;
 
 use Illuminate\Support\Facades\Auth;
 
+use PulkitJalan\GeoIP\GeoIP;
+
 class AsistenciaController extends BaseController
 {
 
@@ -359,8 +361,12 @@ class AsistenciaController extends BaseController
               return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_REGISTRADO'],422);
             }elseif($estatu=="inscrito") {
               $actual = Carbon::now();
+              $geoip = new GeoIP();
+              $geoip->setIp($request->ip());
+
               // $actual->tz = 'America/Caracas';
-              $actual->tz = $request->timezone;
+              // $actual->tz = $request->timezone;
+              $actual->tz = $geoip->getTimezone();
 
               
               $fecha_actual=$actual->toDateString();
@@ -430,8 +436,12 @@ class AsistenciaController extends BaseController
             $clase_id=explode('-', $clase);
 
                 $actual = Carbon::now();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+
                 // $actual->tz = 'America/Caracas';
-                $actual->tz = $request->timezone;
+                // $actual->tz = $request->timezone;
+                $actual->tz = $geoip->getTimezone();
                 
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
@@ -500,7 +510,12 @@ class AsistenciaController extends BaseController
 
                   $actual = Carbon::now();
                   // $actual->tz = 'America/Caracas';
-                  $actual->tz = $request->timezone;
+                  $geoip = new GeoIP();
+                  $geoip->setIp($request->ip());
+
+                  // $actual->tz = 'America/Caracas';
+                  // $actual->tz = $request->timezone;
+                  $actual->tz = $geoip->getTimezone();
                   
                   $fecha_actual=$actual->toDateString();
                   $hora_actual=$actual->toTimeString();
@@ -568,7 +583,12 @@ class AsistenciaController extends BaseController
 
                 $actual = Carbon::now();
                 // $actual->tz = 'America/Caracas';
-                $actual->tz = $request->timezone;
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+
+                // $actual->tz = 'America/Caracas';
+                // $actual->tz = $request->timezone;
+                $actual->tz = $geoip->getTimezone();
                 
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();

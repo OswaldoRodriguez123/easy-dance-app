@@ -8,6 +8,7 @@ use App\Instructor;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use App\CentauroSMS\CentauroSMS;
+use PulkitJalan\GeoIP\GeoIP;
 
 
 class BaseController extends Controller {
@@ -41,6 +42,7 @@ class BaseController extends Controller {
                 $numero_de_notificaciones++;
             }
         }
+
 
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
