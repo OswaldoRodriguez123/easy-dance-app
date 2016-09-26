@@ -47,7 +47,7 @@
                         <li class="dropdown">
                             <a data-toggle="dropdown" href="#">
                                 <i class="tm-icon zmdi zmdi-notifications"></i>
-                                <!-- <i class="tmn-counts">{{$sin_ver}}</i> -->
+                                <i class="tmn-counts">{{$sin_ver}}</i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg pull-right">
                                 <div class="listview" id="notifications">

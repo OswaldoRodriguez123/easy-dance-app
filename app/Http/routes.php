@@ -140,11 +140,6 @@ Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enh
 
 Route::get('error', 'AcademiaConfiguracionController@error');
 
-Route::get('error', function () {
-	return view('errors.error_sistema');
-
-});
-
 
 
 Route::group(['middleware' => ['auth','verified'] ], function () {

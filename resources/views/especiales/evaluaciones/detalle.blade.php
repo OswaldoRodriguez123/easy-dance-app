@@ -246,7 +246,7 @@
           $("#msj_porcentaje").html("Muy bueno");
         }else{
           $("#barra-progreso").css("background-color","green");
-          $("#msj_porcentaje").html("excelente");
+          $("#msj_porcentaje").html("Excelente");
         }
     }
 </script>

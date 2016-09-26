@@ -37,10 +37,11 @@ class BaseController extends Controller {
         $numero_de_notificaciones = 0;
 
         foreach( $notificaciones as $notificacion){
-            if($notificaciones->visto == 1){
+            if($notificaciones->visto == 0){
                 $numero_de_notificaciones++;
             }
         }
+
 
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 

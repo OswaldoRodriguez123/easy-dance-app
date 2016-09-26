@@ -128,7 +128,7 @@ class ExamenController extends BaseController {
             $examen->asistencia = $request->asistencia;
             $examen->estilo = $request->estilo;
             $examen->tipo = $request->tipo_de_evaluacion;
-            $examen->genero = $request->generos;
+            $examen->genero = $request->genero_id;
 
             if($examen->save()){
                 

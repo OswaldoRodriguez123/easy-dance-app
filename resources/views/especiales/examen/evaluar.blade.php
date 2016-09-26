@@ -276,29 +276,29 @@ $(document).ready(function() {
 	      $("#barra-progreso").removeClass('progress-bar-success');
 	      $("#barra-progreso").addClass('progress-bar-morado');
 	      $("#barra-progreso").css("background-color","red");
-	      $("#msj_porcentaje").html("debajo 25% de la nota");
+	      $("#msj_porcentaje").html("Debe mejorar");
 	    }else if(porcetaje<="50"){
 	      $("#barra-progreso").removeClass('progress-bar-success');
 	      $("#barra-progreso").addClass('progress-bar-morado');
 	      $("#barra-progreso").css("background-color","orange");
-	      $("#msj_porcentaje").html("debajo 50% de la nota");
+	      $("#msj_porcentaje").html("Regular");
 	    }else if(porcetaje<="75"){
 	      $("#barra-progreso").removeClass('progress-bar-success');
 	      $("#barra-progreso").addClass('progress-bar-morado');
 	      $("#barra-progreso").css("background-color","gold");
-	      $("#msj_porcentaje").html("debajo 75% de la nota");
+	      $("#msj_porcentaje").html("Bueno");
 	    }else{
 	      $("#barra-progreso").removeClass('progress-bar-success');
 	      $("#barra-progreso").addClass('progress-bar-morado');
 	      $("#barra-progreso").css("background-color","greenyellow ");
-	      $("#msj_porcentaje").html("debajo 100% de la nota");
+	      $("#msj_porcentaje").html("Muy bueno");
 	    }
 
 	    if(porcetaje=="100" || porcetaje=="100.00"){
 	      $("#barra-progreso").removeClass('progress-bar-morado');
 	      $("#barra-progreso").addClass('progress-bar-success');
 	      $("#barra-progreso").css("background-color","green");
-	      $("#msj_porcentaje").html("100% maxima nota");
+	      $("#msj_porcentaje").html("Excelente");
 	    }else{
 	      $("#barra-progreso").removeClass('progress-bar-success');
 	      $("#barra-progreso").addClass('progress-bar-morado');

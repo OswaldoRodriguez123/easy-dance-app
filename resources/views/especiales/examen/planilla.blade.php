@@ -1107,8 +1107,8 @@
           }     
         });
 
-      $("#condiciones-switch").on('change', function(){
-          if ($("#condiciones-switch").is(":checked")){
+      $("#condicion-switch").on('change', function(){
+          if ($("#condicion-switch").is(":checked")){
             $("#condicion").val('1');
           }else{
             $("#condicion").val('0');
