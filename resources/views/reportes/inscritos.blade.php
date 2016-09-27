@@ -82,6 +82,30 @@
                                             <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
                                     </div>
                                 </div>
+
+                                <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                      <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="meses" id="meses" data-live-search="true">
+
+                                          <option value="01/01/2016-31/01/2016">Enero</option>
+                                          <option value="01/02/2016-31/02/2016">Febrero</option>
+                                          <option value="01/03/2016-31/03/2016">Marzo</option>
+                                          <option value="01/04/2016-31/04/2016">Abril</option>
+                                          <option value="01/05/2016-31/05/2016">Mayo</option>
+                                          <option value="01/06/2016-31/06/2016">Junio</option>
+                                          <option value="01/07/2016-31/07/2016">Julio</option>
+                                          <option value="01/08/2016-31/08/2016">Agosto</option>
+                                          <option value="01/09/2016-31/09/2016">Septiembre</option>
+                                          <option value="01/10/2016-31/10/2016">Octubre</option>
+                                          <option value="01/11/2016-31/11/2016">Noviembre</option>
+                                          <option value="01/12/2016-31/12/2016">Diciembre</option>
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
                                 <!--<a class="btn-blanco m-r-10 f-25" id="personalizar"> Personalizar <i class="zmdi zmdi-calendar"></i></a>-->
                             </div>
 
@@ -335,10 +359,100 @@
                 }
             });
 
+            $('#meses').on('change', function () {
+                var token = $('input:hidden[name=_token]').val();
+                var Fecha = $(this).val();
+                procesando();
+                $.ajax({
+                    url: route_filtrar,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Fecha: Fecha},
+                    success:function(respuesta){
+
+                        finprocesado();
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
+                        //console.log(datos.edades);
+
+                        t.clear().draw();
+
+                        $.each(respuesta.inscritos, function (index, array) {
+                            var rowNode=t.row.add( [
+                            ''+array.fecha+'',
+                            ''+array.nombre+'',
+                            ''+array.apellido+'',
+                            ''+array.fecha_nacimiento+'',
+                            ''+array.celular+'',
+                            ''+array.especialidad+'',
+                            ''+array.curso+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                                .attr('id',array.id)
+                                .addClass('seleccion');
+                        });
+
+                        $("#mujeres").text(datos.mujeres);
+                        $("#hombres").text(datos.hombres);
+
+                        var data1 = ''
+                        data1 += '[';
+                        $.each( datos.edades, function( i, item ) {
+                            var edad = item.age_range;
+                            var cant = item.count
+                            data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                        });
+                        data1 = data1.substring(0, data1.length -1);
+                        data1 += ']';
+                            //GRAFICO FILTRO MES ACTUAL
+                            $("#pie-chart-procesos").html('');
+                            $(".flc-pie").html('');
+                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '.flc-pie',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                }
+                                
+                            });
+
+
+                    }
+                });
+                
+            }); //END CLICK FECHA RANGO
+
+
             $(".applyBtn").on("click", function(){
                 var token = $('input:hidden[name=_token]').val();
                 var fechaInicio = $("input[name=daterangepicker_start]").val();
                 var fechaFin = $("input[name=daterangepicker_end]").val();
+                procesando();
                 $.ajax({
                     url: route_filtrar,
                     headers: {'X-CSRF-TOKEN': token},
@@ -347,8 +461,27 @@
                     data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
                     success:function(respuesta){
 
+                        finprocesado();
+
                         datos = JSON.parse(JSON.stringify(respuesta));
                         //console.log(datos.edades);
+
+                        t.clear().draw();
+
+                        $.each(respuesta.inscritos, function (index, array) {
+                            var rowNode=t.row.add( [
+                            ''+array.fecha+'',
+                            ''+array.nombre+'',
+                            ''+array.apellido+'',
+                            ''+array.fecha_nacimiento+'',
+                            ''+array.celular+'',
+                            ''+array.especialidad+'',
+                            ''+array.curso+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                                .attr('id',array.id)
+                                .addClass('seleccion');
+                        });
 
                         $("#mujeres").text(datos.mujeres);
                         $("#hombres").text(datos.hombres);
@@ -416,6 +549,7 @@ FILTROS PARA GRAFCAS
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#actual_month").is(":checked")){
                     $("#mes_actual").val('1');
+                    procesando();
                         $.ajax({
                             url: route_filtrar,
                             headers: {'X-CSRF-TOKEN': token},
@@ -423,6 +557,8 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { mesActual: 'mes_actual' },
                             success:function(respuesta){
+
+                                finprocesado();
 
                                 t.clear().draw();
 
@@ -505,6 +641,7 @@ FILTROS PARA GRAFCAS
             $("#past_month").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#past_month").is(":checked")){
+                    procesando();
                     //$("#mes_actual").val('1');
                         $.ajax({
                             url: route_filtrar,
@@ -513,6 +650,8 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { mesPasado: 'mes_pasado' },
                             success:function(respuesta){
+
+                                finprocesado();
 
                                 t.clear().draw();
 
@@ -595,6 +734,7 @@ FILTROS PARA GRAFCAS
             $("#today").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#today").is(":checked")){
+                    procesando();
                     //$("#mes_actual").val('1');
                         $.ajax({
                             url: route_filtrar,
@@ -603,6 +743,8 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { today: 'today' },
                             success:function(respuesta){
+
+                                finprocesado();
 
                                 t.clear().draw();
 
