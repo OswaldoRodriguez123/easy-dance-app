@@ -31,8 +31,9 @@ class BaseController extends Controller {
         $notificaciones = DB::table('notificacion_usuario')
             ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
             ->join('users','notificacion_usuario.id_usuario','=','users.id')
-            ->select('notificacion.mensaje','notificacion.evento_id','notificacion.tipo_evento','notificacion_usuario.visto as visto')
+            ->select('notificacion.*','notificacion_usuario.visto as visto')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+            ->orderBy('created_at','desc')
         ->get();
 
         $numero_de_notificaciones = 0;
@@ -42,6 +43,15 @@ class BaseController extends Controller {
                 $numero_de_notificaciones++;
             }
         }
+
+        $notificaciones = DB::table('notificacion_usuario')
+            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
+            ->join('users','notificacion_usuario.id_usuario','=','users.id')
+            ->select('notificacion.*','notificacion_usuario.visto as visto')
+            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+            ->orderBy('created_at','desc')
+            ->limit(5)
+        ->get();
 
         //dd($numero_de_notificaciones);
 

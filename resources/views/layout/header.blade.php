@@ -45,9 +45,9 @@
                         </li> --}}
 
                         <li class="dropdown">
-                            <a data-toggle="dropdown" href="#">
+                            <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
                                 <i class="tm-icon zmdi zmdi-notifications"></i>
-                                <i class="tmn-counts">{{$sin_ver}}</i>
+                                <i class="tmn-counts" id="numero_actual">{{$sin_ver}}</i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg pull-right">
                                 <div class="listview" id="notifications">
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="lv-body">
                                         @foreach( $notificaciones as $notificacion)
-                                            <a class="lv-item" href="#">
+                                            <a class="lv-item {{ empty($notificacion->visto) ? 'bgm_notificacion_sin_ver' : '' }}" href="#">
                                                 <div class="media">
                                                     <div class="pull-left">
                                                         <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
@@ -70,9 +70,8 @@
                                                     <div class="media-body">
                                                         @if ($notificacion->tipo_evento == 1)
                                                             <div class="lv-title">Nueva Clase Grupal</div>
+                                                            <small class="lv-small">{{$notificacion->mensaje}}</small>
                                                         @endif
-                                                        
-                                                        <small class="lv-small">{{$notificacion->mensaje}}</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -295,7 +294,7 @@
                                          <div class="form-group fg-line">
                                             <label for="">Estado económico</label>
                                             <div class="clearfix p-b-15"></div>
-                                            <span class="text-center" id="estado_economico"> --</span>
+                                            <span class="text-center" id="estado_economico"> </span>
                                           </div>
 
                                            <div class="clearfix"></div> 
@@ -625,22 +624,3 @@
                 </div>
             </div>
         </header>
-        <script>
-            $('zmdi-notifications').on('click', function(e){
-
-            $("#content").removeClass("opacity-content");
-            $("footer").removeClass("opacity-content");
-            $("header").removeClass("abierto");
-            $("#main").removeClass("opacity-content");
-            $("#chat").removeClass("toggled");
-            $("#what_we_do").removeClass("opacity-content");
-
-            //$("footer").toggleClass("opacity-content");
-            //$("header").toggleClass("abierto");
-
-
-            //$("#content").removeClass("opacity-content");
-            //$("footer").removeClass("opacity-content");
-
-        });
-        </script>

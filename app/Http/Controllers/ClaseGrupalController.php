@@ -626,7 +626,32 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->cantidad_hombres = $cantidad_hombres;
         $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
+        $notificacion = new Notificacion;
+        $usuarios_notificados = new NotificacionUsuario; 
+
         if($clasegrupal->save()){
+            $nombre = DB::table('config_clases_grupales')
+                ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                ->select('config_clases_grupales.nombre')
+                ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
+            ->get();
+
+            $notificacion->tipo_evento = 1;
+            $notificacion->evento_id = $clasegrupal->id;
+            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$nombre[0]->nombre;
+
+            if($notificacion->save()){
+                $alumnos_a_notificar = DB::table('users')
+                    ->select('users.id')
+                    ->where('users.academia_id', '=', Auth::user()->academia_id)
+                ->get();
+                foreach ($alumnos_a_notificar as $alumnos) {
+                    $usuarios_notificados->id_usuario = $alumnos->id;
+                    $usuarios_notificados->id_notificacion = $notificacion->id;
+                    $usuarios_notificados->visto = 0;
+                    $usuarios_notificados->save();
+                }
+            }
             // $nombre=DB::table('config_clases_grupales')
             //     ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
             //     ->select('config_clases_grupales.nombre')

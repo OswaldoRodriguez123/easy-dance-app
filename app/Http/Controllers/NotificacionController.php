@@ -11,8 +11,10 @@ use App\ClaseGrupal;
 use App\Notificacion;
 use App\NotificacionUsuario;
 use Session;
+use DB;
 use Carbon\Carbon;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class NotificacionController extends Controller
 {
@@ -37,6 +39,14 @@ class NotificacionController extends Controller
     }
 
     public function revisarNotificacion(){
-        
+        $notificacion= NotificacionUsuario::where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+        ->get();
+
+        foreach ($notificacion as $revisadas) {
+            if (($revisadas->visto)==0) {
+                $revisadas->visto=1;
+                $revisadas->save();
+            }
+        }
     }
 }
