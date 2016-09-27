@@ -50,6 +50,18 @@ class ReporteController extends BaseController
 
         $total = InscripcionClaseGrupal::count();
 
+        $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.*')
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.sexo','=', 'F')
+        ->count();
+
+        $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.*')
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.sexo','=', 'M')
+        ->count();
+
         $forAge = DB::select('SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN "3 - 10"
                             WHEN age BETWEEN 11 and 20 THEN "11 - 20"
@@ -64,7 +76,7 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');       
 
-        return view('reportes.inscritos')->with(['inscritos' => $inscritos, 'sexos' => $sexo, 'total_inscritos' => $total, 'edades' => $forAge]);
+        return view('reportes.inscritos')->with(['inscritos' => $inscritos, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge]);
 	}
 
     public function InscritosFiltros(Request $request)
@@ -108,7 +120,9 @@ class ReporteController extends BaseController
             ->groupBy('alumnos.sexo')
             ->get();
 
-        $total = InscripcionClaseGrupal::whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])->count();
+        $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])->where('alumnos.sexo','F')->count();
+
+        $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])->where('alumnos.sexo','M')->count();
 
         $forAge = DB::select("SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN '3 - 10'
@@ -129,7 +143,8 @@ class ReporteController extends BaseController
             [
                 'inscritos'         => $inscritos,
                 'sexos'             => $sexo,
-                'total_inscritos'   => $total,
+                'mujeres'           => $mujeres,
+                'hombres'           => $hombres,
                 'edades'            => $forAge
             ]);
 

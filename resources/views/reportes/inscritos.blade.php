@@ -129,20 +129,21 @@
                             </ul> -->
                             
                             <div class="col-md-3">    
-                                <i class="zmdi zmdi-male zmdi-hc-5x c-azul"></i>
+                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
                             </div>
                             <div class="col-md-6"></div>
                             <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-female zmdi-hc-5x c-rosado"></i>
+                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
                             </div>
                             <div class="clearfix"></div>    
 
                             <div class="mini-charts-item bgm-blue">
                                 <div class="clearfix">
-                                    <div class="chart chart-pie inscritos-stats-pie"></div>
+                                   <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
                                     <div class="count">
                                         <small>Total Inscritos:</small>
-                                        <h2 id="total">{{$total_inscritos}}</h2>
+                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
+                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +350,8 @@
                         datos = JSON.parse(JSON.stringify(respuesta));
                         //console.log(datos.edades);
 
-                        $("#total").text(datos.total_inscritos);
+                        $("#mujeres").text(datos.mujeres);
+                        $("#hombres").text(datos.hombres);
 
                         var data1 = ''
                         data1 += '[';
@@ -442,7 +444,8 @@ FILTROS PARA GRAFCAS
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
 
-                                $("#total").text(datos.total_inscritos);
+                                $("#mujeres").text(datos.mujeres);
+                                $("#hombres").text(datos.hombres);
 
                                 var data1 = ''
                                 data1 += '[';
@@ -530,7 +533,8 @@ FILTROS PARA GRAFCAS
 
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
-                                $("#total").text(datos.total_inscritos);
+                                $("#mujeres").text(datos.mujeres);
+                                $("#hombres").text(datos.hombres);
 
                                 var data1 = ''
                                 data1 += '[';
@@ -619,7 +623,8 @@ FILTROS PARA GRAFCAS
 
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
-                                $("#total").text(datos.total_inscritos);
+                                $("#mujeres").text(datos.mujeres);
+                                $("#hombres").text(datos.hombres);
 
                                 var data1 = ''
                                 data1 += '[';
