@@ -1110,19 +1110,19 @@
 
       //setInterval(notificacion,120000);      
 
-      function notificacion (){        
+     
         
-        //alert('hola');
-        console.log('Hola Mundo');
-        var route = route_consultar_notificacion;
-        console.log(route_consultar_notificacion);
-        var token = $('input:hidden[name=_token]').val();
-        console.log(token);
-         
-        $.ajax({
+
+      var route_edit_notificacion="{{url('/')}}/notificacion_revisado";
+
+      $('#numero_de_notificaciones').on('click', function(e){
+          $("#numero_actual").text(0);
+          var route = route_edit_notificacion;
+          var token = $('input:hidden[name=_token]').val();
+          $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
-            type: 'GET',
+            type: 'POST',
             dataType: 'json',
             success:function(respuesta){  
                 console.log(respuesta);             
@@ -1130,9 +1130,8 @@
             error:function(msj){
                 console.log(msj);              
             }
-        });
-      }
-
+          });
+      });
     </script>		
 		
 		@yield('js')

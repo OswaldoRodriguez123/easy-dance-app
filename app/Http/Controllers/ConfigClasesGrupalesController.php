@@ -92,8 +92,6 @@ class ConfigClasesGrupalesController extends BaseController {
         }
 
         $clasegrupal = new ConfigClasesGrupales;
-        $notificacion = new Notificacion;
-        $usuarios_notificados = new NotificacionUsuario; 
         
         $clasegrupal->academia_id = Auth::user()->academia_id;
         $clasegrupal->nombre = $nombre;
@@ -108,23 +106,6 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->asistencia_amarilla = $request->asistencia_amarillas;
 
         if($clasegrupal->save()){
-
-            $notificacion->tipo_evento = 1;
-            $notificacion->evento_id = $clasegrupal->id;
-            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$nombre;
-
-            if($notificacion->save()){
-                $alumnos_a_notificar = DB::table('users')
-                    ->select('users.id')
-                    ->where('users.academia_id', '=', Auth::user()->academia_id)
-                ->get();
-                foreach ($alumnos_a_notificar as $alumnos) {
-                    $usuarios_notificados->id_usuario = $alumnos->id;
-                    $usuarios_notificados->id_notificacion = $notificacion->id;
-                    $usuarios_notificados->visto = 0;
-                    $usuarios_notificados->save();
-                }
-            }
 
             if($request->imageBase64){
 
