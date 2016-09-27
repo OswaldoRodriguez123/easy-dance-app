@@ -48,8 +48,6 @@ class ReporteController extends BaseController
             ->groupBy('alumnos.sexo')
             ->get();
 
-        $total = InscripcionClaseGrupal::count();
-
         $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.*')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
@@ -102,6 +100,12 @@ class ReporteController extends BaseController
             $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
         }
 
+        if($request->Fecha){
+            $fechas = explode('-', $request->Fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
+        }
+
         $inscritos = DB::table('inscripcion_clase_grupal')
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
@@ -110,19 +114,25 @@ class ReporteController extends BaseController
             ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
-            
         ->get();
 
-        $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
-            ->groupBy('alumnos.sexo')
-            ->get();
+        // $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+        //     ->selectRaw('sexo, count(sexo) as CantSex')
+        //     ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+        //     ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
+        //     ->groupBy('alumnos.sexo')
+        //     ->get();
 
-        $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])->where('alumnos.sexo','F')->count();
+        $mujeres = 0;
+        $hombres = 0;
 
-        $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])->where('alumnos.sexo','M')->count();
+        foreach($inscritos as $inscrito){
+            if($inscrito->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+        }
 
         $forAge = DB::select("SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN '3 - 10'
@@ -135,14 +145,13 @@ class ReporteController extends BaseController
                         FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
                         FROM inscripcion_clase_grupal
                         INNER JOIN  alumnos ON alumno_id=alumnos.id
-                        WHERE inscripcion_clase_grupal.fecha_inscripcion >= '".$start."' AND inscripcion_clase_grupal.fecha_inscripcion <= '".$end."')  as alumnos
+                        WHERE inscripcion_clase_grupal.fecha_inscripcion >= '".$start."' AND inscripcion_clase_grupal.fecha_inscripcion <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
                         GROUP BY age_range
                         ORDER BY age_range");            
         
         return response()->json(
             [
                 'inscritos'         => $inscritos,
-                'sexos'             => $sexo,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
                 'edades'            => $forAge
@@ -170,7 +179,8 @@ class ReporteController extends BaseController
             ->groupBy('visitantes_presenciales.sexo')
             ->get();
         //dd($sexo);
-        $total = Visitante::count();
+        $mujeres = Visitante::where('sexo', 'F')->where('academia_id',Auth::user()->academia_id)->count();
+        $hombres = Visitante::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->count();
 
         $forAge = DB::select('SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN "3 - 10"
@@ -186,7 +196,7 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');
 
-        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'total_visitantes' => $total, 'edades' => $forAge]);
+        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge]);
 	}
 
 
@@ -212,22 +222,37 @@ public function PresencialesFiltros(Request $request)
             $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
         }
 
+        if($request->Fecha){
+            $fechas = explode('-', $request->Fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
+        }
+
         $presenciales = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id')
+            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
         ->get();
 
-        $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-            ->groupBy('visitantes_presenciales.sexo')
-            ->get();
+        // $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+        //     ->selectRaw('sexo, count(sexo) as CantSex')
+        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+        //     ->groupBy('visitantes_presenciales.sexo')
+        //     ->get();
 
-        
-        $total = Visitante::whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])->count();
+
+        $mujeres = 0;
+        $hombres = 0;
+
+        foreach($presenciales as $presencial){
+            if($presencial->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+        }
 
         $forAge = DB::select("SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN '3 - 10'
@@ -247,8 +272,8 @@ public function PresencialesFiltros(Request $request)
         return response()->json(
             [
                 'presenciales'      => $presenciales,
-                'sexos'             => $sexo,
-                'total_visitantes'  => $total,
+                'mujeres'           => $mujeres,
+                'hombres'           => $hombres,
                 'edades'            => $forAge
             ]);
 
