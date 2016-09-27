@@ -230,7 +230,7 @@
                                       <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" name="especialidad_id" id="especialidad_id" data-live-search="true">
+                                        <select class="selectpicker bs-select-hidden" id="especialidad_id" name="especialidad_id" multiple="" data-max-options="5" title="Selecciona">
                                           <option value="">Selecciona</option>
                                           @foreach ( $especialidad as $especialidades )
                                           <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
@@ -362,7 +362,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
+    var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "dias_clase_id"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -461,12 +461,13 @@
                 $(".procesando").removeClass('hidden');
                 $(".procesando").addClass('show');         
                 limpiarMensaje();
+                especialidad = $('#especialidad_id').val();
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos,
+                        data:datos+"&especialidad_id="+especialidad,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -502,9 +503,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

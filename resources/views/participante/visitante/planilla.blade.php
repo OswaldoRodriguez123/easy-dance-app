@@ -136,11 +136,11 @@
                             </tr>
                             <tr class="disabled" data-toggle="modal" href="#modalEspecialidades-Visitante">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidad_id" class="zmdi {{ empty($visitante->especialidad_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidades" class="zmdi {{ empty($especialidades) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Especialidad de Interés </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="visitante-especialidad_id"><span>{{$visitante->especialidad_nombre}}</span></span></td>
+                             <td class="f-14 m-l-15" ><span id="visitante-especialidades"><span>{{$especialidades}}</span></span></td>
                             </tr>
                             <tr class="disabled" data-toggle="modal" href="#modalDireccion-Visitante">
                              <td>

@@ -34,6 +34,10 @@ class ComoNosConocisteTableSeeder extends Seeder
 	    ));
 
 	    ComoNosConociste::create(array(
+	      'nombre' => 'Ubicación/Lugar',
+	    ));
+
+	    ComoNosConociste::create(array(
 	      'nombre' => 'Otros',
 	    ));
 

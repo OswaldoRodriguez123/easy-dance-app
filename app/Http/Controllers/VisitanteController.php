@@ -363,25 +363,32 @@ class VisitanteController extends BaseController {
         $visitante_join = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 
         if($visitante_join){
-            $config['center'] = '10.6913156,-71.6800493';
-            $config['zoom'] = 14;
-            \Gmaps::initialize($config);
 
-            $marker = array();
-            $marker['position'] = '10.6913156,-71.6800493';
-            $marker['draggable'] = true;
-            $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-            \Gmaps::add_marker($marker);
+            $especialidad_id = explode(",", $visitante_join->especialidades);
 
 
-            $map = \Gmaps::create_map();
+            if($especialidad_id[0] != 0)
+            {
+                $array = array();
+
+                foreach($especialidad_id as $tmp){
+                    $especialidad = ConfigEspecialidades::find($tmp);
+                    array_push($array, $especialidad->nombre);
+                   
+                }
+
+                $especialidades = implode(",", $array);
+
+            }else{
+                $especialidades = $visitante_join->especialidad_nombre;
+            }
  
-           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all()]);
+           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades]);
         }else{
            return redirect("participante/visitante"); 
         }
