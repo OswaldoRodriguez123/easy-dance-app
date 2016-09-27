@@ -156,11 +156,9 @@ class FamiliaController extends BaseController {
         }
 
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
-
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
+        $direccion = title_case($request->direccion);
 
         $correo = strtolower($request->correo);
 
@@ -181,7 +179,7 @@ class FamiliaController extends BaseController {
 
         if($usuario->save()){
 
-            $apellido_familia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido_familia))));
+            $apellido_familia = title_case($request->apellido_familia);
 
             $familia = new Familia;
 
@@ -258,9 +256,8 @@ class FamiliaController extends BaseController {
 
                             $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $item['fecha_nacimiento'])->toDateString();
 
-                            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($item['nombre']))));
-
-                            $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($item['apellido']))));
+                            $nombre = title_case($item['nombre']);
+                            $apellido = title_case($item['apellido']);
 
                             $correo = strtolower($item['correo']);
 
@@ -504,9 +501,8 @@ class FamiliaController extends BaseController {
 
         $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
 
         $correo = strtolower($request->correo);
 
@@ -524,7 +520,7 @@ class FamiliaController extends BaseController {
 
         if($request->direccion)
         {
-            $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+            $direccion = title_case($request->direccion);
 
         }else{
 

@@ -599,7 +599,7 @@ class AcademiaConfiguracionController extends BaseController {
 
             $correo = strtolower($request->correo);
 
-            $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+            $direccion = title_case($request->direccion);
 
             $academia->correo = $correo;
             $academia->telefono = $request->telefono;
@@ -699,7 +699,7 @@ class AcademiaConfiguracionController extends BaseController {
 
         $porcentaje_impuesto = Impuesto::where('pais_id' , '=', $request->pais_id)->first();
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $academia->nombre = $nombre;
         $academia->identificacion = $request->identificacion;
@@ -931,7 +931,7 @@ class AcademiaConfiguracionController extends BaseController {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_estudio))));
+        $nombre = title_case($request->nombre_estudio);
         
         $array = array(['nombre' => $nombre , 'cantidad' => $request->cantidad_estudio]);
 
@@ -975,7 +975,7 @@ class AcademiaConfiguracionController extends BaseController {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_nivel))));
+        $nombre = title_case($request->nombre_nivel);
 
         // $array = array(['nombre' => $nombre]);
 
@@ -1097,7 +1097,7 @@ class AcademiaConfiguracionController extends BaseController {
 
     else{
 
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $direccion = title_case($request->direccion);
 
         $correo = strtolower($request->correo);
 

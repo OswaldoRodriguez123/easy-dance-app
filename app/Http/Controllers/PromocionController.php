@@ -110,7 +110,7 @@ class PromocionController extends BaseController {
 
         $promocion = new Promocion;
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $promocion->academia_id = Auth::user()->academia_id;
         $promocion->nombre = $nombre;
@@ -163,7 +163,7 @@ class PromocionController extends BaseController {
 
         $promocion = Promocion::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $promocion->nombre = $nombre;
 

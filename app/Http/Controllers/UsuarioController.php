@@ -115,9 +115,8 @@ class UsuarioController extends BaseController {
         }
         $usuario = User::find(Auth::user()->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
 
         $usuario->nombre = $nombre;
         $usuario->apellido = $apellido;
@@ -278,8 +277,7 @@ class UsuarioController extends BaseController {
     public function updateDireccion(Request $request){
         $usuario = User::find(Auth::user()->id);
 
-
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $direccion = title_case($request->direccion);
 
         $usuario->direccion = $direccion;
         

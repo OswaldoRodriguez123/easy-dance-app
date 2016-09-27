@@ -61,7 +61,7 @@ class ConfigServiciosController extends BaseController {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $servicio = new ConfigServicios;
         
@@ -129,7 +129,7 @@ class ConfigServiciosController extends BaseController {
 
         $servicio = ConfigServicios::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $servicio->nombre = $nombre;
 

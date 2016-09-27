@@ -160,11 +160,9 @@ class InstructorController extends BaseController {
             return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
         }
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
-
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
+        $direccion = title_case($request->direccion);
 
         $correo = strtolower($request->correo);
 
@@ -360,9 +358,8 @@ class InstructorController extends BaseController {
     }
         $instructor = Instructor::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
 
         $instructor->nombre = $nombre;
         $instructor->apellido = $apellido;
@@ -452,11 +449,9 @@ class InstructorController extends BaseController {
     public function updateDireccion(Request $request){
         $instructor = Instructor::find($request->id);
 
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $direccion = title_case($request->direccion);
 
         $instructor->direccion = $direccion;
-
-
 
         if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

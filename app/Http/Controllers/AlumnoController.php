@@ -512,9 +512,10 @@ class AlumnoController extends BaseController
         }
         $alumno = Alumno::withTrashed()->find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
 
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
+
 
         $alumno->nombre = $nombre;
         $alumno->apellido = $apellido;
@@ -728,7 +729,7 @@ class AlumnoController extends BaseController
     public function updateDireccion(Request $request){
         $alumno = Alumno::withTrashed()->find($request->id);
 
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $direccion = title_case($request->direccion);
 
         $alumno->direccion = $direccion;
         

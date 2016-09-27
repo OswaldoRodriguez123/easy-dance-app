@@ -111,11 +111,9 @@ class ProveedorController extends BaseController {
 
         $proveedor = new Proveedor;
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
-
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
+        $direccion = title_case($request->direccion);
 
         $correo = strtolower($request->correo);
 
@@ -172,9 +170,8 @@ class ProveedorController extends BaseController {
 
     }
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $apellido = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->apellido))));
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
 
         $proveedor = Proveedor::find($request->id);
         $proveedor->nombre = $nombre;
@@ -268,7 +265,7 @@ class ProveedorController extends BaseController {
     public function updateDireccion(Request $request){
         $proveedor = Proveedor::find($request->id);
 
-        $direccion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->direccion))));
+        $direccion = title_case($request->direccion);
 
         $proveedor->direccion = $direccion;
 

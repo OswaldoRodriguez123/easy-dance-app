@@ -498,7 +498,7 @@ public function todos_con_robert()
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_recompensa))));
+        $nombre = title_case($request->nombre);
 
         $recompensa = New Recompensa;
 
@@ -590,14 +590,10 @@ public function todos_con_robert()
             
             }
 
-            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+            $nombre = title_case($request->nombre);
+            $historia = title_case($request->historia);
+            $eslogan = title_case($request->eslogan);
 
-            // $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
-
-            // $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
-
-            $historia = $request->historia;
-            $eslogan = $request->eslogan;
 
             $campana = new Campana;
 
@@ -1024,7 +1020,7 @@ public function todos_con_robert()
 
             $campana = Campana::find($request->id);
 
-            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+            $nombre = title_case($request->nombre);
 
             $campana->nombre = $nombre;
 
@@ -1060,9 +1056,7 @@ public function todos_con_robert()
         else{
 
             $campana = Campana::find($request->id);
-            // $eslogan = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->eslogan))));
-
-            $eslogan = $request->eslogan;
+            $eslogan = title_case($request->eslogan);
             
             $campana->eslogan = $eslogan;
 
@@ -1099,11 +1093,9 @@ public function todos_con_robert()
 
             $campana = Campana::find($request->id);
 
-            // $historia = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->historia))));
-
-            $historia = $request->historia;
-        
-            $campana->historia = $request->historia;
+            $historia = title_case($request->historia);
+     
+            $campana->historia = $historia;
 
             if($campana->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -1137,9 +1129,9 @@ public function todos_con_robert()
 
             $campana = Campana::find($request->id);
 
-            $presentacion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->presentacion))));
+            $presentacion = title_case($request->presentacion);
         
-            $campana->presentacion = $request->presentacion;
+            $campana->presentacion = $presentacion;
 
             if($campana->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -2199,7 +2191,7 @@ public function todos_con_robert()
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre_recompensa))));
+        $nombre = title_case($request->nombre_recompensa);
 
         $datos = New DatosBancariosCampana;
 

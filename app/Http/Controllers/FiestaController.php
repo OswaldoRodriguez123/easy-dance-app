@@ -256,11 +256,9 @@ class FiestaController extends BaseController {
 
         $fiesta = new Fiesta;
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        $lugar = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->lugar))));
-
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        $nombre = title_case($request->nombre);
+        $lugar = title_case($request->lugar);
+        $descripcion = title_case($request->descripcion);
 
         $fiesta->academia_id = Auth::user()->academia_id;
         $fiesta->nombre = $nombre;
@@ -340,7 +338,7 @@ class FiestaController extends BaseController {
     }
         $fiesta = Fiesta::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $fiesta->nombre = $nombre;
 
@@ -379,7 +377,7 @@ class FiestaController extends BaseController {
     }
         $fiesta = Fiesta::find($request->id);
 
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        $descripcion = title_case($request->descripcion);
 
         $fiesta->descripcion = $descripcion;
 
@@ -515,7 +513,7 @@ class FiestaController extends BaseController {
     }
         $fiesta = Fiesta::find($request->id);
 
-        $lugar = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->lugar))));
+        $lugar = title_case($request->lugar);
 
         $fiesta->lugar = $lugar;
 

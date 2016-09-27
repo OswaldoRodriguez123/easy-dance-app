@@ -125,7 +125,8 @@ class AdministradorController extends Controller
             }
 
             $correo = strtolower($request->email);
-            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->responsable))));
+
+            $nombre = title_case($request->responsable);
 
             $usuario = new User;
 

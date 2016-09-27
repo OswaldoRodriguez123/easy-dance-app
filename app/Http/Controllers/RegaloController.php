@@ -308,7 +308,7 @@ class RegaloController extends BaseController {
 
             $regalo = Regalo::find($request->id);
 
-            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+            $nombre = title_case($request->nombre);
 
             $regalo->nombre = $nombre;
 
@@ -346,7 +346,7 @@ class RegaloController extends BaseController {
 
             $regalo = Regalo::find($request->id);
 
-            $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+            $descripcion = title_case($request->descripcion);
         
             $regalo->descripcion = $request->descripcion;
 

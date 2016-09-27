@@ -237,7 +237,7 @@ class ClasePersonalizadaController extends BaseController {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $clasepersonalizada = new ClasePersonalizada;
 

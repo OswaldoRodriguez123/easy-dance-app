@@ -193,12 +193,8 @@ class TallerController extends BaseController {
 
         $taller = new Taller;
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-        // $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
-
-        $descripcion = $request->descripcion;
-
+        $nombre = title_case($request->nombre);
+        $descripcion = title_case($request->descripcion);
 
         $taller->academia_id = Auth::user()->academia_id;
         $taller->descripcion = $descripcion;
@@ -301,7 +297,7 @@ class TallerController extends BaseController {
 
         $taller = Taller::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $taller->nombre = $nombre;
 
@@ -390,9 +386,7 @@ class TallerController extends BaseController {
 
         $taller = Taller::find($request->id);
 
-        // $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
-
-        $descripcion = $request->descripcion;
+        $descripcion = title_case($request->descripcion);
 
         $taller->descripcion = $descripcion;
 

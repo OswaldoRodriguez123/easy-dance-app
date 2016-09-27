@@ -79,7 +79,7 @@ class ConfigClasesGrupalesController extends BaseController {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
         $costo_inscripcion = trim($request->costo_inscripcion);
         $costo_mensualidad =  trim($request->costo_mensualidad);
 
@@ -198,7 +198,7 @@ class ConfigClasesGrupalesController extends BaseController {
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $clasegrupal->nombre = $nombre;
 
@@ -353,9 +353,7 @@ class ConfigClasesGrupalesController extends BaseController {
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
 
-        // $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
-
-        $descripcion = $request->descripcion;
+        $descripcion = title_case($request->descripcion);
 
         $clasegrupal->descripcion = $descripcion;
 

@@ -103,8 +103,7 @@ class RegistroController extends Controller {
 
         $data['email'] = trim($data['email']);
 
-
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($data['nombre']))));
+        $nombre = title_case($data['nombre']);
 
         return User::create([
 

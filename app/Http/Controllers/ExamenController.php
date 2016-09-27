@@ -102,7 +102,7 @@ class ExamenController extends BaseController {
             
             $examen = new Examen;
 
-            $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+            $nombre = title_case($request->nombre);
 
             $examen->academia_id = Auth::user()->academia_id;
             $examen->nombre = $nombre;
@@ -163,7 +163,7 @@ class ExamenController extends BaseController {
 
         $examen = Examen::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $examen->nombre = $nombre;
 

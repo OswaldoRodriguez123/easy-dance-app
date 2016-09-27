@@ -55,9 +55,8 @@ class ConfigProductosController extends BaseController {
 
     else{
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
-
-         $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        $nombre = title_case($request->nombre);
+        $descripcion = title_case($request->descripcion);
 
         $producto = new ConfigProductos;
         
@@ -121,7 +120,7 @@ class ConfigProductosController extends BaseController {
 
         $producto = ConfigProductos::find($request->id);
 
-        $nombre = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->nombre))));
+        $nombre = title_case($request->nombre);
 
         $producto->nombre = $nombre;
 
@@ -174,7 +173,7 @@ class ConfigProductosController extends BaseController {
 
         $producto = ConfigProductos::find($request->id);
 
-        $descripcion = str_replace('\' ', '\'', ucwords(str_replace('\'', '\' ', strtolower($request->descripcion))));
+        $descripcion = title_case($request->descripcion);
 
         $producto->descripcion = $descripcion;
 
