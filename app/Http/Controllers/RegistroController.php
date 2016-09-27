@@ -249,6 +249,14 @@ class RegistroController extends Controller {
         return view('login.activar.index');
     }
 
+    public function completado(){
+        return view('flujo_registro.registro_completado');
+    }
+
+    public function activarcompletado(){
+        return view('login.contrasena.salvavidas');
+    }
+
 
     public function confirmacion($token){
 

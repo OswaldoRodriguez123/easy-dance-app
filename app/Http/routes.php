@@ -10,56 +10,36 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-	Route::get('/correo/help',function(){
-		return view('correo.ayuda');
-	});
 
-	Route::get('/confirmacion/{token}', [
-	    'uses' => 'RegistroController@confirmacion',
-	    'as'   => 'confirmacion'
-	]);
+Route::get('error', 'AcademiaConfiguracionController@error');
+
+Route::get('/confirmacion/{token}', [
+    'uses' => 'RegistroController@confirmacion',
+    'as'   => 'confirmacion'
+]);
 
 Route::get('todos-con-robert', 'CampanaController@todos_con_robert');
 
-
 Route::auth();
-
-Route::get('autologin/{token}', ['as' => 'autologin', 'uses' => '\Watson\Autologin\AutologinController@autologin']);
 
 // FLUJO DE REGISTRO
 
 Route::get('/registro','RegistroController@registrar');
 Route::post('/registro', 'RegistroController@postRegister');
-
-Route::get('/registro/completado', function () {
-    return view('flujo_registro.registro_completado');
-});
+Route::get('/registro/completado', 'RegistroController@completado');
 
 // ACTIVAR CUENTA
 
 Route::get('/activar','RegistroController@activar');
 Route::post('/activar', 'CorreoController@correoActivacion');
-Route::get('/activar/completado', function () {
-    return view('login.contrasena.salvavidas');
-});
+Route::get('/activar/completado', 'RegistroController@activarcompletado');
 
 // RESTABLECIMIENTO DE CONTRASEÑA
 
-Route::get('/restablecer', function () {
-    return view('login.contrasena.restablecer');
-});
-
-Route::get('/restablecer/confirmar', function () {
-    return view('login.contrasena.salvavidas');
-});
-
-Route::get('/restablecer/completado', function () {
-    return view('login.contrasena.completado');
-});
-
-Route::get('/restablecer/fallo', function () {
-    return view('login.contrasena.fallo');
-});
+Route::get('/restablecer', 'LoginController@restablecer');
+Route::get('/restablecer/confirmar', 'LoginController@restablecerconfirmar');
+Route::get('/restablecer/fallo', 'LoginController@restablecerfallo');
+Route::get('/restablecer/completado', 'LoginController@restablecercompletado');
 
 // LOGIN
 
@@ -68,13 +48,12 @@ Route::post('/login', 'LoginController@postLogin');
 
 // RESERVACION
 
+Route::get('reservacion/{id}','ReservaController@reserva');
 Route::post('reservacion/{id}', 'ReservaController@GuardarTipo');
 Route::post('reservar', 'ReservaController@store');
 Route::post('reservarconusuario', 'ReservaController@storeconusuario');
+Route::get('reservacion/completado', 'ReservaController@completado');
 
-Route::get('/reservacion/completado', function () {
-	return view('reserva.reserva_completado');
-});
 
 //EMPRESA
 
@@ -83,11 +62,9 @@ Route::get('empresa/sobre-la-empresa', 'EmpresaController@index');
 //EMBAJADOR
 
 Route::get('empresa/embajadores', 'EmbajadorController@principal');
-
 Route::post('/embajadores/agregar', 'EmbajadorController@agregarlinea');
 Route::post('/embajadores/eliminar/{id}', 'EmbajadorController@eliminarlinea');
 
-Route::get('reservacion/{id}','ReservaController@reserva');
 
 // REGALO USUARIO
 
@@ -137,10 +114,6 @@ Route::post('especiales/campañas/invitar/eliminar/{id}', 'CampanaController@eli
 Route::post('especiales/campañas/invitar', 'CampanaController@invitar');	
 Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
 Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enhorabuena_invitacion_sinid');
-
-Route::get('error', 'AcademiaConfiguracionController@error');
-
-
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
@@ -678,15 +651,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			|------------------
 			*/
 
-			Route::get('participante/alumno/transferir/{id}', function ($id) {
-				Session::put('id_alumno', $id);
-				return view('guia.transferir')->with('id', Session::get('id_alumno'));
-			});
-
-			Route::get('participante/alumno/enhorabuena/{id}', function ($id) {
-				Session::put('id_alumno', $id);
-			    return view('guia.index');
-			});
+			Route::get('participante/alumno/transferir/{id}', 'AlumnoController@transferir');
+			Route::get('participante/alumno/enhorabuena/{id}', 'AlumnoController@enhorabuena');
 
 			Route::get('agendar/clases-grupales/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 			Route::get('configuracion/clases-personalizadas/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
@@ -699,18 +665,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			// FOOTER
 
-			Route::get('soporte/acuerdo', function () {
-			    return view('soporte.acuerdo_servicio');
-			});
-			Route::get('soporte/politicas', function () {
-			    return view('soporte.politicas');
-			});
-
-			Route::get('soporte/normas', function () {
-			    return view('soporte.normas');
-			});
+			Route::get('soporte/acuerdo', 'EmpresaController@acuerdos');
+			Route::get('soporte/politicas', 'EmpresaController@politicas');
+			Route::get('soporte/normas', 'EmpresaController@normas');
 
 			// CORREO
+
+			Route::get('/correo/help', 'CorreoController@indexayuda');
 
 			Route::get('/correo','CorreoController@index');
 			Route::get('/correo/{id}','CorreoController@indexsinselector');

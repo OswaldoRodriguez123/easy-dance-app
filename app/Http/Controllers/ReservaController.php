@@ -40,6 +40,10 @@ class ReservaController extends BaseController
 		return view('reserva.registro')->with(['id' => $id, 'como_nos_conociste' => ComoNosConociste::all(), 'academia' => $academia]);
 	}
 
+    public function completado(){
+        return view('reserva.reserva_completado');
+    }
+
     public function GuardarTipo($id)
     {
 

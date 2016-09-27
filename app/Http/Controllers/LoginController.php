@@ -261,4 +261,20 @@ class LoginController extends Controller {
     {
         return property_exists($this, 'guard') ? $this->guard : null;
     }
+
+    public function restablecer(){
+        return view('login.contrasena.restablecer');
+    }
+
+    public function restablecerfallo(){
+        return view('login.contrasena.fallo');
+    }
+
+    public function restablecercompletado(){
+        return view('login.contrasena.completado');
+    }
+
+    public function restablecerconfirmar(){
+        return view('login.contrasena.salvavidas');
+    }
 }

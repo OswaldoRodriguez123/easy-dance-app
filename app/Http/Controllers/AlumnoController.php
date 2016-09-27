@@ -111,7 +111,7 @@ class AlumnoController extends BaseController
 
 	public function store(Request $request)
 	{
-
+        
 		$request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
@@ -940,5 +940,15 @@ class AlumnoController extends BaseController
         }
 
         return view('usuario.planilla_evaluacion')->with('perfil', $perfil);
+    }
+
+    public function transferir($id){
+        Session::put('id_alumno', $id);
+        return view('guia.transferir')->with('id', Session::get('id_alumno'));
+    }
+
+    public function enhorabuena($id){
+        Session::put('id_alumno', $id);
+        return view('guia.index');
     }
 }

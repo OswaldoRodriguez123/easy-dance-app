@@ -1298,4 +1298,8 @@ class CorreoController extends BaseController {
 
 		    return 'Enviado';
  		}
+
+ 		public function indexayuda(){
+ 			return view('correo.ayuda');
+ 		}
  }

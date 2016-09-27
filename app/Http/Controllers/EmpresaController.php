@@ -27,4 +27,17 @@ class EmpresaController extends BaseController {
         return view('flujo_registro.listo');                    
     }
 
+    public function acuerdos()
+    {
+        return view('soporte.acuerdo_servicio');                   
+    }
+
+    public function politicas(){
+    	return view('soporte.politicas');
+    }
+
+    public function normas(){
+    	return view('soporte.normas');
+    }
+
 }
