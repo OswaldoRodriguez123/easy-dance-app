@@ -472,6 +472,8 @@ class ClaseGrupalController extends BaseController {
         'cupo_minimo' => 'required|numeric',
         'cupo_maximo' => 'required|numeric',
         'cupo_reservacion' => 'required|numeric',
+        'cantidad_hombres' => 'numeric',
+        'cantidad_mujeres' => 'numeric',
     ];
 
     $messages = [
@@ -491,6 +493,8 @@ class ClaseGrupalController extends BaseController {
         'cupo_minimo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
         'cupo_maximo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
         'cupo_reservacion.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+        'cantidad_hombres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+        'cantidad_mujeres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -550,10 +554,10 @@ class ClaseGrupalController extends BaseController {
         $fecha_final = $fecha_final->toDateString();
 
 
-        // if($fecha_inicio > $fecha_final)
-        // {
-        //     return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
-        // }
+        if($fecha_inicio > $fecha_final)
+        {
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
+        }
 
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
@@ -577,6 +581,20 @@ class ClaseGrupalController extends BaseController {
         //                 return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! La fecha de primer cobro automático es mayor a la fecha final']], 'status' => 'ERROR'],422);
         //             }
         // }
+
+        if(trim($request->cantidad_hombres) == '')
+        {
+            $cantidad_hombres = null;
+        }else{
+            $cantidad_hombres = $request->cantidad_hombres;
+        }
+
+        if(trim($request->cantidad_mujeres) == '')
+        {
+            $cantidad_mujeres = null;
+        }else{
+            $cantidad_mujeres = $request->cantidad_mujeres;
+        }
 
         if($request->cupo_minimo > $request->cupo_maximo)
         {
@@ -605,8 +623,8 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->titulo_video = $request->titulo_video;
         $clasegrupal->boolean_promocionar = $request->boolean_promocionar;
         $clasegrupal->dias_prorroga = $request->dias_prorroga;
-        // $clasegrupal->cantidad_hombres = $request->cantidad_hombre;
-        // $clasegrupal->cantidad_mujeres = $request->cantidad_mujer;
+        $clasegrupal->cantidad_hombres = $cantidad_hombres;
+        $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
         if($clasegrupal->save()){
             // $nombre=DB::table('config_clases_grupales')
@@ -728,7 +746,6 @@ class ClaseGrupalController extends BaseController {
         // comprobar si esta inscrito
         if(!$alumnosclasegrupal){ 
 
-            // $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
 
             // $count = DB::table('inscripcion_clase_grupal')
             //     ->select('inscripcion_clase_grupal.*')
@@ -745,32 +762,51 @@ class ClaseGrupalController extends BaseController {
             //     return response()->json(['errores'=>'CAPACIDAD LLENA', 'status' => 'ERROR-SERVIDOR'],422);
             // }
 
-            // if($clasegrupal->cantidad_hombres >= 0){
+            
 
-            //     $hombres = DB::table('inscripcion_clase_grupal')
-            //     ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            //     ->select('inscripcion_clase_grupal.*')
-            //     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
-            //     ->where('alumnos.sexo', '=', 'M')
-            //     ->count();
-            //     if($clasegrupal->cantidad_hombres <= $hombres){
-            //         return response()->json(['errores'=>'Cantidad Hombres Llena', 'status' => 'ERROR-SERVIDOR'],422);
-            //     }
-            // }
+            if($request->permitir == 0)
+            {
+                $alumno = Alumno::find($request->alumno_id);
+                $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
 
-            // if($clasegrupal->cantidad_mujeres >= 0){
 
-            //     $mujeres = DB::table('inscripcion_clase_grupal')
-            //     ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            //     ->select('inscripcion_clase_grupal.*')
-            //     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
-            //     ->where('alumnos.sexo', '=', 'F')
-            //     ->count();
+                if($alumno->sexo == 'M')
+                {
+                    if(!is_null($clasegrupal->cantidad_hombres)){
 
-            //     if($clasegrupal->cantidad_hombres <= $mujeres){
-            //         return response()->json(['errores'=>'Cantidad Mujeres Llena', 'status' => 'ERROR-SERVIDOR'],422);
-            //     }
-            // }
+                        $hombres = DB::table('inscripcion_clase_grupal')
+                            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                            ->select('inscripcion_clase_grupal.*')
+                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
+                            ->where('alumnos.sexo', '=', 'M')
+                        ->count();
+
+
+                        if($clasegrupal->cantidad_hombres <= $hombres){
+                            return response()->json(['mensaje'=>'Ups! La cantidad de hombres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
+                        }
+                    }
+
+                }
+
+                else{
+
+                    if(!is_null($clasegrupal->cantidad_mujeres)){
+
+                        $mujeres = DB::table('inscripcion_clase_grupal')
+                            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                            ->select('inscripcion_clase_grupal.*')
+                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
+                            ->where('alumnos.sexo', '=', 'F')
+                        ->count();
+
+                        if($clasegrupal->cantidad_mujeres <= $mujeres){
+                            return response()->json(['mensaje'=>'Ups! La cantidad de mujeres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
+                        }
+                    }
+
+                }
+            }
 
             // $alumnos = explode('-',$request->alumno_id);
 
@@ -1405,9 +1441,66 @@ class ClaseGrupalController extends BaseController {
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function updateCantidad(Request $request){
+
+    $rules = [
+
+        'cantidad_hombres' => 'numeric',
+        'cantidad_mujeres' => 'numeric',
+    ];
+
+    $messages = [
+
+        'cantidad_hombres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+        'cantidad_mujeres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+        if(trim($request->cantidad_hombres) == '')
+        {
+            $cantidad_hombres = null;
+        }else{
+            $cantidad_hombres = $request->cantidad_hombres;
+        }
+
+        if(trim($request->cantidad_mujeres) == '')
+        {
+            $cantidad_mujeres = null;
+        }else{
+            $cantidad_mujeres = $request->cantidad_mujeres;
+        }
+
+        $clasegrupal = ClaseGrupal::find($request->id);
+        $clasegrupal->cantidad_hombres = $cantidad_hombres;
+        $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    }
+
     public function updateInscripcion(Request $request){
 
-        
 
     $rules = [
 
@@ -1581,7 +1674,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'config_clases_grupales.asistencia_rojo as inasistencia_max', 'config_clases_grupales.asistencia_amarilla as inasistencia_min', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar', 'clases_grupales.titulo_video', 'clases_grupales.dias_prorroga')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'config_clases_grupales.asistencia_rojo as inasistencia_max', 'config_clases_grupales.asistencia_amarilla as inasistencia_min', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'config_niveles_baile.nombre as nivel_nombre' , 'clases_grupales.fecha_inicio as fecha_inicio', 'clases_grupales.fecha_final as fecha_final' , 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id' , 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.link_video', 'clases_grupales.cupo_minimo' , 'clases_grupales.cupo_maximo', 'clases_grupales.cupo_reservacion', 'clases_grupales.imagen', 'clases_grupales.color_etiqueta', 'clases_grupales.boolean_promocionar', 'clases_grupales.titulo_video', 'clases_grupales.dias_prorroga', 'clases_grupales.cantidad_hombres', 'clases_grupales.cantidad_mujeres')
             ->where('clases_grupales.id', '=', $id)
         ->first();
 

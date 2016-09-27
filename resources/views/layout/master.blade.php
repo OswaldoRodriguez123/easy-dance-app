@@ -411,7 +411,6 @@
     		<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
 
 		
         
@@ -446,9 +445,6 @@
 
 		
 		<script> 
-
-    var tz = jstz.determine(); // Determines the time zone of the browser client
-    var timezone = tz.name(); //'Asia/Kolhata' for Indian Time.
 
     route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
     route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
@@ -573,7 +569,7 @@
         headers: {'X-CSRF-TOKEN': token},
         type: 'POST',
         dataType: 'json',
-        data:datos+"&timezone="+timezone,
+        data:datos,
           success:function(respuesta){            
             if(respuesta.status=="OK"){
               var nType = 'success';
@@ -644,7 +640,7 @@
                       headers: {'X-CSRF-TOKEN': token},
                       type: 'POST',
                       dataType: 'json',
-                      data:datos+"&timezone="+timezone,
+                      data:datos,
                         success:function(respuesta){  
                           console.log(respuesta)          
                           if(respuesta.status=="OK"){
@@ -709,7 +705,7 @@
         headers: {'X-CSRF-TOKEN': token},
         type: 'POST',
         dataType: 'json',
-        data:datos+"&timezone="+timezone,
+        data:datos,
           success:function(respuesta){  
             console.log(respuesta)          
             if(respuesta.status=="OK"){
@@ -774,7 +770,7 @@
                       headers: {'X-CSRF-TOKEN': token},
                       type: 'POST',
                       dataType: 'json',
-                      data:datos+"&timezone="+timezone,
+                      data:datos,
                         success:function(respuesta){  
                           console.log(respuesta)          
                           if(respuesta.status=="OK"){
@@ -999,7 +995,7 @@
           headers: {'X-CSRF-TOKEN': token},
           type: 'POST',
           dataType: 'json',
-          data:datos+"&timezone="+timezone,
+          data:datos,
             success:function(respuesta){  
               console.log(respuesta)          
               if(respuesta.status=="OK"){

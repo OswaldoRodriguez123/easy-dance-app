@@ -188,8 +188,10 @@
                             <h4 class="modal-title c-negro">Agregar <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="agregar_inscripcion" id="agregar_inscripcion">
+
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <input type="hidden" name="clase_grupal_id" value="{{ $id }}">
+
                             <div class="row p-l-10 p-r-10">
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
@@ -343,6 +345,8 @@
                                     </div> -->
                                 </div>
                                 <div class="clearfix p-b-35"></div>
+
+
                               
 
 
@@ -539,6 +543,7 @@
 
         var hombres = "{{$hombres}}";
         var mujeres = "{{$mujeres}}";
+        var permitir = 0;
 
         $(document).ready(function(){
 
@@ -700,7 +705,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&clase_grupal_id="+clase_grupal_id+"&alumno_id="+values+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago,
+                        data:"&clase_grupal_id="+clase_grupal_id+"&alumno_id="+values+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago+"&permitir="+permitir,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -709,8 +714,10 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          if(respuesta.array){
 
+                          //SI SE ESTA INSCRIBIENDO MAS DE UNA PERSONA
+                          if(respuesta.array){
+                            finprocesado();
                             var nType = 'success';
                             // $("#agregar_inscripcion")[0].reset();
                             var nTitle="Ups! ";
@@ -750,6 +757,8 @@
 
                               });
                             }
+
+                            //SOLO UNA PERSONA
                             else{
 
                               window.location = route_enhorabuena + respuesta.id;
@@ -763,7 +772,6 @@
                         }                       
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
-                        // finprocesado();
                         $("#guardar").removeAttr("disabled");
                         $(".cancelar").removeAttr("disabled");
 
@@ -780,9 +788,25 @@
                           errores(msj.responseJSON.errores);
                           var nTitle="    Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }else if(msj.responseJSON.status=="CANTIDAD-FULL"){
+                          swal({   
+                          title: msj.responseJSON.mensaje,   
+                          text: "Confirmar inscripción!",   
+                          type: "warning",   
+                          showCancelButton: true,   
+                          confirmButtonColor: "#DD6B55",   
+                          confirmButtonText: "Inscribir!",  
+                          cancelButtonText: "Cancelar",         
+                          closeOnConfirm: false 
+                          }, function(isConfirm){   
+                          if (isConfirm) {
+                            $(".sweet-alert").hide();
+                            permitir = 1;
+                            $('#agregar').click();
+                                        
+                                    
+                            }
+                          });
                         }                        
                         $("#guardar").removeAttr("disabled");
                         $(".cancelar").removeAttr("disabled");

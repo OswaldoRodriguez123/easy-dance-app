@@ -569,7 +569,42 @@
                                     </div>                                          
                                 </div>
 
-                                <div class="clearfix p-b-35"></div>                        
+                                <div class="clearfix p-b-35"></div>   
+
+                              <div class="col-xs-12">
+                                <label for="nombre" id="id-cantidad_hombres">Cantidad de Participantes</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de participantes permitidos en la clase grupal" title="" data-original-title="Ayuda"></i>
+                               </div>
+
+                                          <div class="col-xs-6" id="id-cantidad_mujeres">
+                                            <div class="input-group col-xs-12">
+                                            <div class="dtp-container fg-line">
+                                                    <!-- <input name="cupo_minimo" id="cupo_minimo" class="form-control" placeholder="Minimo" type="text"> -->
+
+                                                    <input type="text" class="form-control input-sm input-mask" name="cantidad_hombres" id="cantidad_hombres" data-mask="000" placeholder="Hombres">
+                                                </div>
+                                          </div>
+                                       <div class="has-error" id="error-cantidad_hombres">
+                                            <span >
+                                                <small class="help-block error-span" id="error-cantidad_hombres_mensaje" ></small>                                
+                                            </span>
+                                        </div>
+                                     </div>
+
+                                     <div class="col-xs-6" id="id-cupo_maximo">
+                                            <div class="input-group col-xs-12">
+                                            <div class="dtp-container fg-line">
+                                                    <input type="text" class="form-control input-sm input-mask" name="cantidad_mujeres" id="cantidad_mujeres" data-mask="000" placeholder="Mujeres">
+                                                </div>
+                                          </div>
+                                       <div class="has-error" id="error-cantidad_mujeres">
+                                            <span >
+                                                <small class="help-block error-span" id="error-cantidad_mujeres_mensaje" ></small>                                
+                                            </span>
+                                        </div>
+                                      </div>
+
+
+                               <div class="clearfix p-b-35"></div>                     
 
                                 <div class="col-sm-12">
                                        <div class="form-group fg-line ">
