@@ -3128,7 +3128,7 @@ background-color: #C37500;
 
 
 
-.loader {
+/*.loader {
   width: 100px;
   height: 100px;
   background: #ffffff;
@@ -3136,7 +3136,7 @@ background-color: #C37500;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
-}
+}*/
 
 .counter {
   width: 100%;
