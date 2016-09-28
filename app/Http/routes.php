@@ -813,7 +813,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//EVALUACIONES
 			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 			Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
-
+			Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
 		});//END MIDDLEWARE ALUMNO
 
 });

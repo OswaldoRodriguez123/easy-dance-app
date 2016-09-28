@@ -33,7 +33,7 @@
 
 
                         <li class="dropdown" data-original-title="" data-content="Notificación" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
-                            <a href="{{url('/')}}/notificacion">
+                            <a href="{{url('/')}}/notificacion_revisado">
                                 <i class="tm-icon zmdi zmdi-notifications f-18 f-18"></i>
                             </a>
                         </li>
@@ -43,7 +43,7 @@
                                 <i class="tm-icon zmdi zmdi-check f-18"></i>
                             </a>
                         </li> --}}
-
+                        @if(Auth::user()->usuario_tipo == 2)
                         <li class="dropdown">
                             <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
                                 <i class="tm-icon zmdi zmdi-notifications"></i>
@@ -54,7 +54,7 @@
                                     <div class="lv-header">Notification
                                         <ul class="actions">
                                             <li class="dropdown">
-                                                <a href="#" data-clear="notification" class="eliminar">
+                                                <a href="#" data-clear="notification" id="limpiar_notificaciones">
                                                     <i class="zmdi zmdi-check-all"></i>
                                                 </a>
                                             </li>
@@ -81,6 +81,7 @@
                                 </div>
                             </div>
                         </li>
+                        @endif
 
                         @if(Auth::check())
               

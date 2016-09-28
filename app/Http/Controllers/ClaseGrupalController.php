@@ -626,8 +626,7 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->cantidad_hombres = $cantidad_hombres;
         $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
-        $notificacion = new Notificacion;
-        $usuarios_notificados = new NotificacionUsuario; 
+        $notificacion = new Notificacion; 
 
         if($clasegrupal->save()){
             $nombre = DB::table('config_clases_grupales')
@@ -643,9 +642,12 @@ class ClaseGrupalController extends BaseController {
             if($notificacion->save()){
                 $alumnos_a_notificar = DB::table('users')
                     ->select('users.id')
+                    ->where('users.usuario_tipo','=',2)
                     ->where('users.academia_id', '=', Auth::user()->academia_id)
                 ->get();
+                
                 foreach ($alumnos_a_notificar as $alumnos) {
+                    $usuarios_notificados = new NotificacionUsuario;
                     $usuarios_notificados->id_usuario = $alumnos->id;
                     $usuarios_notificados->id_notificacion = $notificacion->id;
                     $usuarios_notificados->visto = 0;

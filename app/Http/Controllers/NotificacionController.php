@@ -34,8 +34,6 @@ class NotificacionController extends Controller
 		}
 
         $clases_grupales=ClaseGrupal::whereBetween('created_at', [ new Carbon($fecha_carga), new Carbon($date)])->get();
-
-        dd($clases_grupales);
     }
 
     public function revisarNotificacion(){
@@ -48,5 +46,12 @@ class NotificacionController extends Controller
                 $revisadas->save();
             }
         }
+        dd("reviso notificacion");
+    }
+
+    public function eliminarNotificaciones(){
+        $notificacion = NotificacionUsuario::where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+        ->delete();
+        dd("eliminar notificaciones");
     }
 }
