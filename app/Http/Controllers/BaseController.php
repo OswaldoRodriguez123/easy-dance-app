@@ -53,8 +53,6 @@ class BaseController extends Controller {
             ->limit(5)
         ->get();
 
-        //dd($numero_de_notificaciones);
-
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
 	       View::share ( 'alumnosacademia', $alumnos  );

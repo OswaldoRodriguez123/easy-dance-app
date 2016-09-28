@@ -54,7 +54,7 @@
                                     <div class="lv-header">Notification
                                         <ul class="actions">
                                             <li class="dropdown">
-                                                <a href="#" data-clear="notification">
+                                                <a href="#" data-clear="notification" class="eliminar">
                                                     <i class="zmdi zmdi-check-all"></i>
                                                 </a>
                                             </li>
