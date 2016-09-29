@@ -50,39 +50,55 @@
                                 <i class="tmn-counts" id="numero_actual">{{$sin_ver}}</i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg pull-right">
-                                <div class="listview" id="notifications">
-                                    <div class="lv-header">Notification
-                                        <ul class="actions">
-                                            <li class="dropdown">
-                                                <a href="#" data-clear="notification" id="limpiar_notificaciones">
-                                                    <i class="zmdi zmdi-check-all"></i>
+                                @if(!empty($notificaciones))
+                                    <div class="listview" id="notifications">
+                                        <div class="lv-header">Notification
+                                            <ul class="actions">
+                                                <li class="dropdown">
+                                                    <a href="#" data-clear="notification" id="limpiar_notificaciones">
+                                                        <i class="zmdi zmdi-check-all"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="lv-body">
+                                            @foreach( $notificaciones as $notificacion)
+                                                <a class="lv-item {{ empty($notificacion->visto) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion->evento_id}}">
+                                                    <div class="media">
+                                                        <div class="pull-left">
+                                                            @if($notificacion->imagen)
+                                                                <img class="img-circle" src="{{url('/')}}/assets/uploads/{{$notificacion->imagen}}" alt="" width="45px" height="auto">
+                                                            @else
+                                                                <img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">
+                                                            @endif
+                                                        </div>
+                                                        <div class="media-body">
+                                                            @if ($notificacion->tipo_evento == 1)
+                                                                <div class="lv-title">Nueva Clase Grupal</div>
+                                                                <small class="lv-small">{{$notificacion->mensaje}}</small>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                 </a>
-                                            </li>
-                                        </ul>
+                                            @endforeach
+                                        </div>
+                                        <a class="lv-footer" href="#">View Previous</a>
                                     </div>
-                                    <div class="lv-body">
-                                        @foreach( $notificaciones as $notificacion)
-                                            <a class="lv-item {{ empty($notificacion->visto) ? 'bgm_notificacion_sin_ver' : '' }}" href="#">
-                                                <div class="media">
-                                                    <div class="pull-left">
-                                                        @if($notificacion->imagen)
-                                                            <img class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{$notificacion->imagen}}" alt="" width="45px" height="auto">  
-                                                        @else
-                                                            <img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">
-                                                        @endif
-                                                    </div>
-                                                    <div class="media-body">
-                                                        @if ($notificacion->tipo_evento == 1)
-                                                            <div class="lv-title">Nueva Clase Grupal</div>
-                                                            <small class="lv-small">{{$notificacion->mensaje}}</small>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        @endforeach
+                                @else
+                                    <div class="listview empty" id="notifications">
+                                        <div class="lv-header">Notification
+                                            <ul class="actions">
+                                                <li class="dropdown">
+                                                    <!-- <a href="#" data-clear="notification" id="limpiar_notificaciones">
+                                                        <i class="zmdi zmdi-check-all"></i> 
+                                                    </a> -->
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="lv-body"></div>
+                                        <a class="lv-footer" href="#">View Previous</a>
                                     </div>
-                                    <a class="lv-footer" href="#">View Previous</a>
-                                </div>
+                                @endif
                             </div>
                         </li>
                         @endif

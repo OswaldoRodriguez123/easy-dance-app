@@ -814,6 +814,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 			Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
 			Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
+			Route::post('notificacion_nueva', 'NotificacionController@nuevaNotificaion');
 		});//END MIDDLEWARE ALUMNO
 
 });

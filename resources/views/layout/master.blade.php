@@ -1102,13 +1102,89 @@
 
       //setInterval(notificacion, 240000);
 
-      var route_consultar_notificacion="{{url('/')}}/notificacion";
+      var route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
 
-      //setInterval(notificacion,120000);      
+      setInterval(notificacion,12000);      
 
-     
+      function notificacion(){
+        var route = route_consultar_notificacion;
+        var token = $('input:hidden[name=_token]').val();
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          success: function (respuesta) {
+              setTimeout(function() {
+                if(respuesta.status=='OK'){
+                  finprocesado(); 
+                  campoValor(datos_array);            
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+                  $('#numero_actual').val(respuesta.sin_ver);
+                  var notificaciones=respuesta.notificaciones;
+
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                $(".guardar").removeAttr("disabled");
+                finprocesado();
+                $("#guardar").css({ "opacity": ("1") });
+                $(".cancelar").removeAttr("disabled");
+                $('.modal').modal('hide');
+            }, 1000);
+          },
+          error:function(msj){
+            console.log("algo salio mal");
+          }
+        });
+      }
+
+      // function nuevas_notificaciones(){
+      //   var img;
+      //   var tipo_de_notificacion;
+      //   var mensaje;
+      //   var link;
+      //   var etiqueta_de_contenido;
+      //   var etiqueta_de_img;
+      //   var etiqueta_de_cuerpo;
+      //   var seccion_notifcacion;
         
+      //   etiqueta_de_contenido = '<div class="media">';
+      //   etiqueta_de_img = '<div class="pull-left">';
+      //   etiqueta_de_cuerpo = '<div class="media-body">';
 
+      //   if({{$notificaciones}}){
+      //     $({{$notificaciones}}).each(function(index, array){
+
+      //       if(array.imagen){
+      //         img = '<img class="img-circle" src="{{url('/')}}/assets/uploads/'+array.imagen+'" alt="" width="45px" height="auto">';
+      //       }else{
+      //         img = '<img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">';
+      //       }
+
+      //       link = '<a class="lv-item {{ empty($notificacion->visto) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+array.evento_id+'">';
+
+      //       if(array.tipo_evento == 1){
+      //         tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
+      //         mensaje = '<small class="lv-small">'+array.mensaje+'</small>';
+      //       }else{
+
+      //       }
+      //       seccion_notifcacion += link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
+      //     })
+      //   }else{
+
+      //   }
+      // }     
+      
       var route_edit_notificacion="{{url('/')}}/notificacion_revisado";
 
       $('#numero_de_notificaciones').on('click', function(e){
