@@ -1104,9 +1104,10 @@
 
       var route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
 
-      setInterval(notificacion,12000);      
+      window.setInterval(notificacion,10000);
 
       function notificacion(){
+        
         var route = route_consultar_notificacion;
         var token = $('input:hidden[name=_token]').val();
         $.ajax({
@@ -1118,27 +1119,17 @@
               setTimeout(function() {
                 if(respuesta.status=='OK'){
                   finprocesado(); 
-                  campoValor(datos_array);            
+                  //campoValor(datos_array);            
                   var nType = 'success';
                   var nTitle="Ups! ";
-                  var nMensaje=respuesta.mensaje;
-                  $('#numero_actual').val(respuesta.sin_ver);
                   var notificaciones=respuesta.notificaciones;
-
+                  var nMensaje=respuesta.mensaje;
+                  nuevas_notificaciones(notificaciones, respuesta.sin_ver);
                 }else{
                   var nTitle="Ups! ";
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                   var nType = 'danger';
                 }
-
-                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                $(".procesando").removeClass('show');
-                $(".procesando").addClass('hidden');
-                $(".guardar").removeAttr("disabled");
-                finprocesado();
-                $("#guardar").css({ "opacity": ("1") });
-                $(".cancelar").removeAttr("disabled");
-                $('.modal').modal('hide');
             }, 1000);
           },
           error:function(msj){
@@ -1147,43 +1138,48 @@
         });
       }
 
-      // function nuevas_notificaciones(){
-      //   var img;
-      //   var tipo_de_notificacion;
-      //   var mensaje;
-      //   var link;
-      //   var etiqueta_de_contenido;
-      //   var etiqueta_de_img;
-      //   var etiqueta_de_cuerpo;
-      //   var seccion_notifcacion;
+      function nuevas_notificaciones(notificaciones, sin_ver){
+        var img;
+        var tipo_de_notificacion;
+        var mensaje;
+        var link;
+        var etiqueta_de_contenido;
+        var etiqueta_de_img;
+        var etiqueta_de_cuerpo;
+        var seccion_notifcacion;
+        var cabecera;
+        var pie;
         
-      //   etiqueta_de_contenido = '<div class="media">';
-      //   etiqueta_de_img = '<div class="pull-left">';
-      //   etiqueta_de_cuerpo = '<div class="media-body">';
+        etiqueta_de_contenido = '<div class="media">';
+        etiqueta_de_img = '<div class="pull-left">';
+        etiqueta_de_cuerpo = '<div class="media-body">';
+        cabecera = '<div class="lv-header">Notification<ul class="actions"><li class="dropdown"><a href="#" data-clear="notification" id="limpiar_notificaciones"><i class="zmdi zmdi-check-all"></i></a></li></ul></div>';
+        pie = '<a class="lv-footer" href="#">View Previous</a>';
 
-      //   if({{$notificaciones}}){
-      //     $({{$notificaciones}}).each(function(index, array){
+        if(notificaciones){
+          for (var i = 0; i < notificaciones.length; i++) {
+            if(notificaciones[i]["imagen"]){
+              img = '<img class="img-circle" src="{{url('/')}}/assets/uploads/'+notificaciones[i]["imagen"]+'" alt="" width="45px" height="auto">';
+            }else{
+              img = '<img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">';
+            }
 
-      //       if(array.imagen){
-      //         img = '<img class="img-circle" src="{{url('/')}}/assets/uploads/'+array.imagen+'" alt="" width="45px" height="auto">';
-      //       }else{
-      //         img = '<img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">';
-      //       }
+            link = '<a class="lv-item notificacion->visto) ? "bgm_notificacion_sin_ver" : "" }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+notificaciones[i]["evento_id"]+'">';
 
-      //       link = '<a class="lv-item {{ empty($notificacion->visto) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+array.evento_id+'">';
+            if(notificaciones[i]["tipo_evento"] == 1){
+              tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
+              mensaje = '<small class="lv-small">'+notificaciones[0]["mensaje"]+'</small>';
+            }else{
 
-      //       if(array.tipo_evento == 1){
-      //         tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
-      //         mensaje = '<small class="lv-small">'+array.mensaje+'</small>';
-      //       }else{
-
-      //       }
-      //       seccion_notifcacion += link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
-      //     })
-      //   }else{
-
-      //   }
-      // }     
+            }
+            seccion_notifcacion += link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
+          }
+        }else{
+          seccion_notifcacion = '';
+        }
+        $("#numero_actual").html(sin_ver);
+        $("#lv-body").html(seccion_notifcacion);
+      }     
       
       var route_edit_notificacion="{{url('/')}}/notificacion_revisado";
 

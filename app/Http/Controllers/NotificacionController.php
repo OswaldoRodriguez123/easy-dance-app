@@ -80,12 +80,14 @@ class NotificacionController extends Controller
             ->limit(5)
         ->get();
 
-        $creada = $notificacion->created_at;
-        $creada = $creada->format('d-m-Y');
         $hoy = Carbon::now();
         $hoy = $hoy->format('d-m-Y');
+        $nueva_notificacion = "";
 
         foreach ($notificaciones as $notificacion) {
+            $creada = $notificacion->created_at;
+            $creada = Carbon::parse($creada);
+            $creada = $creada->format('d-m-Y');
             if(($notificacion->visto==0)&&($creada==$hoy)){
                 $nueva_notificacion = "!! tienes una nueva notificacion de ".$notificacion->nombre." !!";
             }

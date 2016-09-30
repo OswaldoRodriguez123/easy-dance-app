@@ -88,11 +88,7 @@
                                     <div class="listview empty" id="notifications">
                                         <div class="lv-header">Notification
                                             <ul class="actions">
-                                                <li class="dropdown">
-                                                    <!-- <a href="#" data-clear="notification" id="limpiar_notificaciones">
-                                                        <i class="zmdi zmdi-check-all"></i> 
-                                                    </a> -->
-                                                </li>
+                                                <li class="dropdown"></li>
                                             </ul>
                                         </div>
                                         <div class="lv-body"></div>
