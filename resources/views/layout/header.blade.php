@@ -24,25 +24,6 @@
 
                 <li class="pull-right m-r-5">
                     <ul class="top-menu">
-                        {{--<li id="toggle-width" data-original-title="" type="button" data-toggle="popover" data-placement="bottom" title="" data-trigger='hover' data-content="Suiche" >
-                            <div class="toggle-switch">
-                                <span class="p-r-10 f-700 c-blanco">Off</span><input id="tw-switch" type="checkbox" hidden="hidden">
-                                <label for="tw-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 c-blanco">On</span>
-                            </div>
-                        </li>
-
-
-                        <li class="dropdown" data-original-title="" data-content="Notificación" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
-                            <a href="{{url('/')}}/notificacion_revisado">
-                                <i class="tm-icon zmdi zmdi-notifications f-18 f-18"></i>
-                            </a>
-                        </li>
-
-                         <li class="dropdown" data-original-title="" data-content="Validar" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
-                            <a href="{{url('/')}}/validar">
-                                <i class="tm-icon zmdi zmdi-check f-18"></i>
-                            </a>
-                        </li> --}}
                         @if(Auth::user()->usuario_tipo == 2)
                         <li class="dropdown">
                             <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
@@ -52,7 +33,7 @@
                             <div class="dropdown-menu dropdown-menu-lg pull-right">
                                 @if(!empty($notificaciones))
                                     <div class="listview" id="notifications">
-                                        <div class="lv-header">Notification
+                                        <div class="lv-header">Notificaciones
                                             <ul class="actions">
                                                 <li class="dropdown">
                                                     <a href="#" data-clear="notification" id="limpiar_notificaciones">
@@ -63,36 +44,36 @@
                                         </div>
                                         <div class="lv-body">
                                             @foreach( $notificaciones as $notificacion)
-                                                <a class="lv-item {{ empty($notificacion->visto) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion->evento_id}}">
+                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
                                                     <div class="media">
                                                         <div class="pull-left">
-                                                            @if($notificacion->imagen)
-                                                                <img class="img-circle" src="{{url('/')}}/assets/uploads/{{$notificacion->imagen}}" alt="" width="45px" height="auto">
-                                                            @else
+                                                            <!-- if($notificacion->imagen) -->
+                                                                <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
+                                                           <!--  else
                                                                 <img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">
-                                                            @endif
+                                                            endif -->
                                                         </div>
                                                         <div class="media-body">
-                                                            @if ($notificacion->tipo_evento == 1)
+                                                            @if ($notificacion['tipo_evento'] == 1)
                                                                 <div class="lv-title">Nueva Clase Grupal</div>
-                                                                <small class="lv-small">{{$notificacion->mensaje}}</small>
+                                                                <small class="lv-small">{{$notificacion['mensaje']}}</small>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </a>
                                             @endforeach
                                         </div>
-                                        <a class="lv-footer" href="#">View Previous</a>
+                                        <!-- <a class="lv-footer" href="#">View Previous</a> -->
                                     </div>
                                 @else
                                     <div class="listview empty" id="notifications">
-                                        <div class="lv-header">Notification
+                                        <div class="lv-header">Notificaciones
                                             <ul class="actions">
                                                 <li class="dropdown"></li>
                                             </ul>
                                         </div>
                                         <div class="lv-body"></div>
-                                        <a class="lv-footer" href="#">View Previous</a>
+                                        <!-- <a class="lv-footer" href="#">View Previous</a> -->
                                     </div>
                                 @endif
                             </div>

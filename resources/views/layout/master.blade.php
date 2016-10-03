@@ -452,6 +452,11 @@
     route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
     route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
 
+    var ver;
+    $( document ).ready(function() {
+      ver = {{$sin_ver}};
+    });
+
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
                     icon: icon,
@@ -1104,7 +1109,7 @@
 
       var route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
 
-      window.setInterval(notificacion,10000);
+      window.setInterval(notificacion,500000);
 
       function notificacion(){
         
@@ -1117,6 +1122,11 @@
           dataType: 'json',
           success: function (respuesta) {
               setTimeout(function() {
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";
                 if(respuesta.status=='OK'){
                   finprocesado(); 
                   //campoValor(datos_array);            
@@ -1124,11 +1134,12 @@
                   var nTitle="Ups! ";
                   var notificaciones=respuesta.notificaciones;
                   var nMensaje=respuesta.mensaje;
+                  
+                  if(respuesta.sin_ver>ver){
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    ver = respuesta.sin_ver;
+                  }
                   nuevas_notificaciones(notificaciones, respuesta.sin_ver);
-                }else{
-                  var nTitle="Ups! ";
-                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                  var nType = 'danger';
                 }
             }, 1000);
           },
@@ -1147,16 +1158,14 @@
         var etiqueta_de_img;
         var etiqueta_de_cuerpo;
         var seccion_notifcacion;
-        var cabecera;
-        var pie;
-        
+                
         etiqueta_de_contenido = '<div class="media">';
         etiqueta_de_img = '<div class="pull-left">';
         etiqueta_de_cuerpo = '<div class="media-body">';
-        cabecera = '<div class="lv-header">Notification<ul class="actions"><li class="dropdown"><a href="#" data-clear="notification" id="limpiar_notificaciones"><i class="zmdi zmdi-check-all"></i></a></li></ul></div>';
-        pie = '<a class="lv-footer" href="#">View Previous</a>';
 
         if(notificaciones){
+          $(".lv-body").empty();
+          $("#notifications").removeClass("empty");
           for (var i = 0; i < notificaciones.length; i++) {
             if(notificaciones[i]["imagen"]){
               img = '<img class="img-circle" src="{{url('/')}}/assets/uploads/'+notificaciones[i]["imagen"]+'" alt="" width="45px" height="auto">';
@@ -1168,17 +1177,17 @@
 
             if(notificaciones[i]["tipo_evento"] == 1){
               tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
-              mensaje = '<small class="lv-small">'+notificaciones[0]["mensaje"]+'</small>';
+              mensaje = '<small class="lv-small">'+notificaciones[i]["mensaje"]+'</small>';
             }else{
 
             }
-            seccion_notifcacion += link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
+            seccion_notifcacion = link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
+            $(".lv-body").append(seccion_notifcacion);
           }
         }else{
           seccion_notifcacion = '';
         }
         $("#numero_actual").html(sin_ver);
-        $("#lv-body").html(seccion_notifcacion);
       }     
       
       var route_edit_notificacion="{{url('/')}}/notificacion_revisado";

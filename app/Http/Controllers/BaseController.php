@@ -51,14 +51,37 @@ class BaseController extends Controller {
             ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
             ->orderBy('created_at','desc')
-            ->limit(5)
+            ->limit(10)
         ->get();
 
+        $array = array();
+
+        foreach ($notificaciones as $notificacion) {
+            $collection=collect($notificacion);     
+            $notificacion_imagen_array = $collection->toArray();
+                
+                $imagen = DB::table('config_clases_grupales')
+                    ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                    ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
+                    ->select('config_clases_grupales.imagen')
+                    ->where('notificacion.evento_id','=',$notificacion->evento_id)
+                ->first();
+
+            if($imagen->imagen){
+                $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
+            }else{
+                $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+            }
+            
+            $array[$notificacion->id] = $notificacion_imagen_array;
+        }
+
 	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+           // dd($array);
 
 	       View::share ( 'alumnosacademia', $alumnos  );
 	       View::share ( 'instructores', $instructor );
-           View::share ( 'notificaciones', $notificaciones );
+           View::share ( 'notificaciones', $array);
            View::share ( 'sin_ver', $numero_de_notificaciones );
    		}
 

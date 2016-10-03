@@ -10348,8 +10348,10 @@ h6 small,
   position: relative;
 }
 
-#notifications .lv-body {
+#notifications > .lv-body {
   overflow-x: hidden;
+  max-height: 300px;
+  overflow-y: scroll;
 }
 
 #notifications:before {

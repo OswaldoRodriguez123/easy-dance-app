@@ -46,6 +46,7 @@ class NotificacionController extends Controller
                 $revisadas->save();
             }
         }
+        return response()->json(['status' => 'OK', 200]);
     }
 
     public function eliminarNotificaciones(){
@@ -77,13 +78,13 @@ class NotificacionController extends Controller
             ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen','academias.nombre as nombre')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
             ->orderBy('created_at','desc')
-            ->limit(5)
+            ->limit(10)
         ->get();
 
         $hoy = Carbon::now();
         $hoy = $hoy->format('d-m-Y');
         $nueva_notificacion = "";
-
+        
         foreach ($notificaciones as $notificacion) {
             $creada = $notificacion->created_at;
             $creada = Carbon::parse($creada);
