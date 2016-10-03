@@ -51,6 +51,18 @@ class ClaseGrupalController extends BaseController {
             ->OrderBy('clases_grupales.hora_inicio')
         ->get();
 
+        $horarios_clase_grupales = DB::table('horario_clase_grupales')
+            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->OrderBy('horario_clase_grupales.hora_inicio')
+        ->get();
+
         $array = array();
 
         $academia = Academia::find(Auth::user()->academia_id);
@@ -73,7 +85,25 @@ class ClaseGrupalController extends BaseController {
                 
                 $clase_grupal_array['dia_de_semana']=$dia_de_semana;
                 $clase_grupal_array['inicio']=$inicio;
-                $array[$clase_grupal->id] = $clase_grupal_array;
+                $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+            }
+
+            foreach($horarios_clase_grupales as $clase_grupal){
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($fecha > Carbon::now()){
+                    $inicio = 0;
+                }else{
+                    $inicio = 1;
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                
+                $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['inicio']=$inicio;
+                $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
             }
 
             $hoy = Carbon::now()->dayOfWeek;
@@ -97,7 +127,22 @@ class ClaseGrupalController extends BaseController {
                     $clase_grupal_array = $collection->toArray();
 
                     $clase_grupal_array['dia_de_semana']=$dia_de_semana;
-                    $array[$clase_grupal->id] = $clase_grupal_array;
+                    $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+                }
+            }
+
+            foreach($horarios_clase_grupales as $clase_grupal){
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $fecha->addDays($clase_grupal->dias_prorroga);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($fecha >= Carbon::now() && $clase_grupal->boolean_promocionar == 1){
+
+                    $collection=collect($clase_grupal);     
+                    $clase_grupal_array = $collection->toArray();
+
+                    $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                    $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
                 }
             }
 
@@ -1766,6 +1811,26 @@ class ClaseGrupalController extends BaseController {
      */
 
     public function destroy($id)
+    {
+
+        $exist = InscripcionClaseGrupal::where('clase_grupal_id', $id)->first();
+
+        if(!$exist)
+        {
+           $clasegrupal = ClaseGrupal::find($id);
+        
+            if($clasegrupal->delete()){
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+        else{
+            return response()->json(['error_mensaje'=> 'Ups! Esta clase grupal no puede ser eliminada ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
+        }
+    }
+
+    public function Trasladar(Request $request)
     {
 
         $exist = InscripcionClaseGrupal::where('clase_grupal_id', $id)->first();

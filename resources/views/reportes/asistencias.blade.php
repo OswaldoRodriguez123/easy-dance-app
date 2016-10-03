@@ -80,18 +80,6 @@
                               </div>
      -->
 
-                                  &nbsp; &nbsp;&nbsp; <label>Instructor</label> &nbsp; &nbsp; &nbsp;
-
-
-                                <select name="instructor_id" id="instructor_id">
-                                </select> 
-                                
-                              <!--   <div class="has-error" id="error-instructor_id">
-                                  <span>
-                                      <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>      
-                                  </span>
-                              </div>
-                                 -->
 
                                  <div class="clearfix m-b-10"></div>
                                  <div class="has-error" id="error-linea">
@@ -354,44 +342,18 @@
                 if(array.dia == dia){
 
                     clase_grupal_array.push(array); 
-
                    
-                    $('#clase_grupal_id').append( new Option(array.clase_grupal_nombre,array.clase_grupal_id));
+                    $('#clase_grupal_id').append( new Option(array.clase_grupal_nombre +'  -  '+array.hora_inicio+' / '+array.hora_final + '  -  ' + array.instructor_nombre + ' ' + array.instructor_apellido,array.clase_grupal_id));
 
                 }
             });
             // }
         }
 
-        function rechargeInstructor(){
-
-            $('#instructor_id').empty();
-
-            var id = $('#clase_grupal_id').val();
-            $.each(clase_grupal_array, function (index, array) {
-                if(array.clase_grupal_id == id){
-                    $.each(instructores, function (n, arreglo) {
-                        if(array.instructor_id == arreglo.id)
-                        {
-
-                            $('#instructor_id').append( new Option(arreglo.nombre + ' ' + arreglo.apellido,arreglo.id));
-                        }
-                    });
-                }
-            });
-        }
-
         $("#fecha").on("dp.change", function (e) {
 
             rechargeClase();
-            rechargeInstructor();
             
-        });
-
-        $('#clase_grupal_id').on('change', function() {
-
-          rechargeInstructor();
-
         });
 
          $("#guardar").click(function(){

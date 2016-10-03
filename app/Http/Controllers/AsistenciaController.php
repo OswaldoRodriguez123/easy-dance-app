@@ -14,11 +14,15 @@ use App\InscripcionClaseGrupal;
 
 use App\Asistencia;
 
+use App\Instructor;
+
 use App\AsistenciaInstructor;
 
 use App\ConfigPagosInstructor;
 
 use App\Alumno;
+
+use App\HorarioClaseGrupal;
 
 use Carbon\Carbon;
 
@@ -44,8 +48,7 @@ class AsistenciaController extends BaseController
             ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias.academia_id', '=', 'academias.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'alumnos.nombre', 'alumnos.apellido')
+            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
@@ -58,7 +61,31 @@ class AsistenciaController extends BaseController
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
-        return view('inicio.asistencia')->with(['alumnos_asistencia' => $alumnos, 'instructores_asistencia' => $instructores]);   
+        array();
+
+        foreach($alumnos as $asistencia){
+
+          if($asistencia->tipo == 2)
+          {
+            $horario = HorarioClaseGrupal::find($asistencia->tipo_id);
+            $instructor = Instructor::find($horario->instructor_id);
+
+          }else{
+            $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
+            $instructor = Instructor::find($clasegrupal->instructor_id);
+          }
+
+          $collection=collect($asistencia);     
+          $asistencia_array = $collection->toArray();
+              
+          $asistencia_array['nombre_instructor']=$instructor->nombre;
+          $asistencia_array['apellido_instructor']=$instructor->apellido;
+          $array[$asistencia->clase_grupal_id] = $asistencia_array;
+        }
+
+
+
+        return view('inicio.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores]);   
         }  
 
         if(Auth::user()->usuario_tipo == 2)
@@ -112,6 +139,17 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();
 
+      $horarios_clase_grupales= DB::table('horario_clase_grupales')
+            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horario_clase_grupales.id as horario_id')
+            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
+
 
 
      // dd($claseGrupal);
@@ -119,14 +157,12 @@ class AsistenciaController extends BaseController
       $arrayClaseGrupal=array();
 
       $fechaActual = Carbon::now();
-      $fechaActual->tz = 'America/Caracas';
+      $diaActual = $fechaActual->dayOfWeek;
 
       $collection = collect($claseGrupal);
 
 
       foreach ($claseGrupal as $grupal) {
-
-        
 
         $fecha_start=explode('-',$grupal->fecha_inicio);
         $fecha_end=explode('-',$grupal->fecha_final);
@@ -138,27 +174,41 @@ class AsistenciaController extends BaseController
         $etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
-        $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        // $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
-        $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0); 
+        // $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0); 
 
-        if($fechaActual->toDateString()==$dt->toDateString()){      
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
+        $dia_de_semana = $fecha_inicio->dayOfWeek;
 
-          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);
+        if($diaActual==$dia_de_semana){      
+
+          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id);
 
           }
+        }
 
-      $c=0;
-      
-      while($dt->timestamp<$df->timestamp){
-        $fecha="";    
-        $fecha=$dt->addWeek()->toDateString();
-        if($fechaActual->toDateString()==$fecha){
-        $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);  
-        } 
-          $c++;
-      }
-        
+        foreach ($horarios_clase_grupales as $grupal) {
+
+          $fecha_start=explode('-',$grupal->fecha_inicio);
+          $fecha_end=explode('-',$grupal->fecha_final);
+          $id=$grupal->id;
+          $nombre=$grupal->nombre;
+          $descripcion=$grupal->descripcion;
+          $hora_inicio=$grupal->hora_inicio;
+          $hora_final=$grupal->hora_final;
+          $etiqueta=$grupal->color_etiqueta;
+          $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
+
+
+          $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
+          $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+          if($diaActual==$dia_de_semana){       
+
+            $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id);
+
+          }
         
       }
 
@@ -181,6 +231,17 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
+        $horarios_clase_grupales= DB::table('horario_clase_grupales')
+            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horario_clase_grupales.id as horario_id')
+            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
+
          $inscripciones = DB::table('inscripcion_clase_grupal')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -194,6 +255,7 @@ class AsistenciaController extends BaseController
       foreach($inscripciones as $inscripcion){
 
       $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
+      
         $i = $fecha->dayOfWeek;
 
         if($i == 1){
@@ -220,7 +282,7 @@ class AsistenciaController extends BaseController
 
           $dia = 'Sabado';
 
-        }else if($i == 7){
+        }else if($i == 0){
 
           $dia = 'Domingo';
 
@@ -237,18 +299,13 @@ class AsistenciaController extends BaseController
   
 	    $arrayClases=array();
 
-	    $fechaActual = Carbon::now();
- 		  $fechaActual->tz = 'America/Caracas';
+      $fechaActual = Carbon::now();
+      $diaActual = $fechaActual->dayOfWeek;
 
-        //$actual = $fechaActual->toDateString();
-
-        $collection = collect($clases_grupales);
-
-        //$lista=get_object_vars($talleres);
+      $collection = collect($clases_grupales);
 
      	foreach ($clases_grupales as $grupal) {
 
-        
      		$fecha_start=explode('-',$grupal->fecha_inicio);
      		$fecha_end=explode('-',$grupal->fecha_final);
      		$id=$grupal->id;
@@ -259,36 +316,41 @@ class AsistenciaController extends BaseController
      		$etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
-     		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 
-     		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0); 
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
+        $dia_de_semana = $fecha_inicio->dayOfWeek;
 
+        if($diaActual==$dia_de_semana){   		
 
+     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id);
 
-     		if($fechaActual->toDateString()==$dt->toDateString()){   		
-
-     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);
-
-     	    }
-
-		 	$c=0;
-
-		 	while($dt->timestamp<$df->timestamp){
-
-		 		$fecha="";		
-		 		$fecha=$dt->addWeek();
-
-		 		if($fechaActual->toDateString()==$fecha->toDateString()){
-		 		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor);	
-		 		}	
-	     		$c++;
-		 	}
-		    
+     	  }
 		    
 		}
 
-        //dd($fechaActual->toDateString());
-		//dd($arrayTalleres);
+    foreach ($horarios_clase_grupales as $grupal) {
+
+        $fecha_start=explode('-',$grupal->fecha_inicio);
+        $fecha_end=explode('-',$grupal->fecha_final);
+        $id=$grupal->id;
+        $nombre=$grupal->nombre;
+        $descripcion=$grupal->descripcion;
+        $hora_inicio=$grupal->hora_inicio;
+        $hora_final=$grupal->hora_final;
+        $etiqueta=$grupal->color_etiqueta;
+        $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
+
+
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
+        $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+        if($diaActual==$dia_de_semana){       
+
+          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id);
+
+        }
+        
+    }
 
     $deuda=$this->deuda($id_alumno);
 
@@ -378,6 +440,8 @@ class AsistenciaController extends BaseController
               $asistencia->clase_grupal_id=$clase;
               $asistencia->alumno_id=$id_alumno;
               $asistencia->academia_id=Auth::user()->academia_id;
+              $asistencia->tipo = $clase_id[2];
+              $asistencia->tipo_id = $clase_id[3];
 
               $asistencia->save();
 
@@ -452,6 +516,8 @@ class AsistenciaController extends BaseController
                 $asistencia->clase_grupal_id=$clase_id[0];
                 $asistencia->alumno_id=$alumno_id;
                 $asistencia->academia_id=Auth::user()->academia_id;
+                $asistencia->tipo = $clase_id[2];
+                $asistencia->tipo_id = $clase_id[3];
 
                 $asistencia->save();
 
@@ -492,9 +558,16 @@ class AsistenciaController extends BaseController
 
             $clase_id=explode('-', $clase);
 
-            $ClasesAsociadas=ClaseGrupal::where('instructor_id',$id_instructor)
-            ->where('id',$clase_id[0])
-            ->get();
+            if($clase_id[2] == '2'){
+              $ClasesAsociadas=HorarioClaseGrupal::where('instructor_id',$id_instructor)
+              ->where('id',$clase_id[3])
+              ->get();
+            }else{
+              $ClasesAsociadas=ClaseGrupal::where('instructor_id',$id_instructor)
+              ->where('id',$clase_id[0])
+              ->get();
+            }
+            
 
             // dd(count($id_instructor));
 

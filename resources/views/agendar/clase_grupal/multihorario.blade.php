@@ -56,12 +56,16 @@
 	                        <div class="clearfix p-b-35"></div>
 	                        <div class="row">
 
-                            <div class="col-sm-3 text-center">
+                            <div class="col-sm-2 text-center">
                                 <span class="f-16 c-morado">Instructor</span>
                             </div>
 
-                            <div class="col-sm-3 text-center">
+                            <div class="col-sm-2 text-center">
                                 <span class="f-16 c-morado">Especialidad</span>
+                            </div>
+
+                            <div class="col-sm-2 text-center">
+                                <span class="f-16 c-morado">Estudio</span>
                             </div>
                                    
                             <div class="col-sm-2 text-center">
@@ -82,7 +86,7 @@
 
 	                        <div class="clearfix p-b-35"></div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                     <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="instructor_acordeon_id" id="instructor_acordeon_id" data-live-search="true">
@@ -95,7 +99,7 @@
                                     </div>
                                   </div>
 
-                              <div class="col-sm-3 text-center">
+                              <div class="col-sm-2 text-center">
                                     <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="especialidad_acordeon_id" id="especialidad_acordeon_id" data-live-search="true">
@@ -103,6 +107,21 @@
                                           <option value="">Selecciona</option>
                                           @foreach ( $config_especialidades as $especialidades )
                                           <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
+                                          @endforeach
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                              </div>
+
+                              <div class="col-sm-2 text-center">
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="estudio_id" id="estudio_id" data-live-search="true">
+
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $config_estudios as $estudio )
+                                          <option value = "{{ $estudio['id'] }}">{{ $estudio['nombre'] }}</option>
                                           @endforeach
                                         
                                         </select>
@@ -143,6 +162,56 @@
                                     </div>
                               </div>
 
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-2 text-center">
+                                <div class="has-error" id="error-instructor_acordeon_id">
+                                  <span>
+                                       <small id="error-instructor_acordeon_id_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 text-center">
+                                <div class="has-error" id="error-especialidad_acordeon_id">
+                                  <span>
+                                       <small id="error-especialidad_acordeon_id_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 text-center">
+                                <div class="has-error" id="error-estudio_id">
+                                  <span>
+                                       <small id="error-estudio_id_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 text-center">
+                                <div class="has-error" id="error-dia_de_semana_id">
+                                  <span>
+                                       <small id="error-dia_de_semana_id_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 text-center">
+                                <div class="has-error" id="error-hora_inicio_acordeon">
+                                  <span>
+                                       <small id="error-hora_inicio_acordeon_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 text-center">
+                                <div class="has-error" id="error-hora_final_acordeon">
+                                  <span>
+                                       <small id="error-hora_final_acordeon_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+
                             <div class="clearfix p-b-35"></div>
                             <div class="clearfix p-b-35"></div>
 
@@ -157,6 +226,7 @@
 		                                <tr>
 		                                    <th class="text-center" data-column-id="id" data-type="numeric">Instructor</th>
 		                                    <th class="text-center" data-column-id="sexo">Especialidad</th>
+                                        <th class="text-center" data-column-id="sexo">Estudio</th>
 		                                    <th class="text-center" data-column-id="nombre" data-order="desc">Día</th>
 		                                    <th class="text-center" data-column-id="estatu_c" data-order="desc">Hora Inicio</th>
 		                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Hora Final</th>
@@ -164,14 +234,17 @@
 		                                </tr>
 		                            </thead>
 		                            <tbody class="text-center">
-		                                @foreach($arrayHorario as $key => $horario)
+		                                @foreach($arrayHorario as $horario)
                                     
-                                    <tr id="{{$key}}" class="odd seleccion text-center" role="row">
+                                    <tr id="{{$horario['id']}}" class="odd seleccion text-center" role="row">
                                       <td onclick="previa(this)" class="text-center">
                                         {{$horario['instructor']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
                                         {{$horario['especialidad']}}
+                                      </td>
+                                      <td onclick="previa(this)" class="text-center">
+                                        {{$horario['estudio']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
                                         {{$horario['dia_de_semana']}}
@@ -293,6 +366,7 @@
                 var route = route_horario;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_clase_grupal" ).serialize(); 
+                limpiarMensaje();
 
                 $.ajax({
                     url: route,
@@ -314,14 +388,16 @@
 
                           var instructor_id = respuesta.array.instructor;
                           var especialidad_id = respuesta.array.especialidad;
+                          var estudio = respuesta.array.estudio;
                           var dia_de_semana_id = respuesta.array.dia_de_semana;
                           var hora_inicio = respuesta.array.hora_inicio;
                           var hora_final = respuesta.array.hora_final;
 
-                          var rowId=respuesta.id;
+                          var rowId=respuesta.array.id;
                           var rowNode=t.row.add( [
                           ''+instructor_id+'',
                           ''+especialidad_id+'',
+                          ''+estudio+'',
                           ''+dia_de_semana_id+'',
                           ''+hora_inicio+'',
                           ''+hora_final+'',
@@ -415,7 +491,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["clase_grupal_id", "fecha_inicio", "fecha_cobro", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "video_promocional"];
+      var campo = ["instructor_acordeon_id", "especialidad_acordeon_id", "estudio_id", "hora_final_acordeon", "hora_inicio_acordeon", "dia_de_semana_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -423,7 +499,6 @@
       }
 
       function errores(merror){
-      var campo = ["clase_grupal_id", "fecha_inicio", "fecha_cobro", "color_etiqueta", "especialidad_id", "nivel_baile_id", "instructor_id", "estudio_id", "hora_inicio", "hora_final", "video_promocional"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

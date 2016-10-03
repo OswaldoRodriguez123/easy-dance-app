@@ -893,7 +893,7 @@
             $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) { 
               // console.log(array);                      
-              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
 
             });
 
@@ -951,7 +951,7 @@
           dataType: 'json',
           success:function(respuesta){
             $.each(respuesta.inscripciones, function (index, array) { 
-              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br> Desde:' + array.hora_inicio + ' Hasta: ' + array.hora_final + ' <br> ' + array.dia + '</p>')
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + '</p>')
             });
             
             console.log(respuesta.clases_grupales); 
@@ -959,7 +959,7 @@
             $('#asistencia-clase_grupal_id').empty();        
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) {                   
-              $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final));
+              $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
             });
 
             $('#asistencia-estado_economico').text(respuesta.deuda);

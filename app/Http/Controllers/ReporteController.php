@@ -300,9 +300,18 @@ public function PresencialesFiltros(Request $request)
         $clase_grupal_join = DB::table('clases_grupales')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'clases_grupales.fecha_inicio as fecha_inicio')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'clases_grupales.fecha_inicio as fecha_inicio', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
+        ->get();
+
+        $horarios = DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('horario_clase_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.id as horario_id','instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('horario_clase_grupales.deleted_at', '=', null)
         ->get();
 
         $sexo = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
@@ -355,7 +364,23 @@ public function PresencialesFiltros(Request $request)
             $clase_array = $collection->toArray();
                 
             $clase_array['dia']=$dia;
-            $array[$clase_grupal->clase_grupal_id] = $clase_array;
+            $clase_array['tipo']=1;
+            $clase_array['tipo_id']=$clase_grupal->clase_grupal_id;
+            $array['1'.$clase_grupal->clase_grupal_id] = $clase_array;
+        }
+
+
+        foreach($horarios as $clase_grupal){
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia = $fecha_inicio->dayOfWeek;   
+
+            $collection=collect($clase_grupal);     
+            $clase_array = $collection->toArray();
+                
+            $clase_array['dia']=$dia;
+            $clase_array['tipo']=2;
+            $clase_array['tipo_id']=$clase_grupal->horario_id;
+            $array['2'.$clase_grupal->clase_grupal_id] = $clase_array;
         }
 
         //dd($asistencia);
@@ -374,7 +399,6 @@ public function PresencialesFiltros(Request $request)
             'participante_id' => 'required',
             'fecha' => 'required',
             'clase_grupal_id' => 'required',
-            'instructor_id' => 'required',
         ];
 
         $messages = [
@@ -382,7 +406,6 @@ public function PresencialesFiltros(Request $request)
             'participante_id.required' => 'Ups! Tiene que seleccionar una opción',
             'fecha.required' => 'Ups! La fecha es requerida',
             'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
-            'instructor_id.required' => 'Ups! El instructor es requerido',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
