@@ -1163,34 +1163,34 @@
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
-        // if(form != 'edit_especiales_academia'){
+        if(form != 'edit_especiales_academia'){
           var datos = $( "#"+form ).serialize();
           tipo = 'PUT';
-        //   contenido = null;
-        // }
-        // else{
-        //   tipo = 'PUT';
-        //   var data = new FormData();
-        //   var programacion = document.getElementById('programacion');
-        //   data.append('programacion', programacion.files[0]);
-        //   data.append('normativa', $('#normativa').val());
-        //   data.append('manual', $('#manual').val());
-        //   var datos = data;
-        //   contenido = false;
-        // }
+          $.ajaxSetup({cache:false, contentType:"application/x-www-form-urlencoded; charset=UTF-8"});
+        }
+        else{
+          tipo = 'POST';
+          var data = new FormData();
+          var programacion = document.getElementById('programacion');
+          data.append('programacion', programacion.files[0]);
+          data.append('normativa', $('#normativa').val());
+          data.append('manual', $('#manual').val());
+          var datos = data;
+          $.ajaxSetup({cache:false, contentType: false})
+        }
         
         var datos_array=  $( "#"+form ).serializeArray();
         
         var route = route_update+"/"+update;
+        //inicia aqui
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
             type: tipo,
             dataType: 'json',
             data: datos,
-            cache: false,
-            //contentType: '',
-            processData: false,                
+            processData: false,
+                            
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){
@@ -1244,7 +1244,7 @@
               }, 1000);             
             }
         })
-       
+       //finaliza aqui
     })
 
     $(".dismiss").click(function(){
