@@ -493,6 +493,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
 			Route::post('agendar/clases-grupales/editarinscripcion', 'ClaseGrupalController@editarinscripcion');
 
+			Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');
+
 			//CLASES PERSONALIZADAS
 
 			Route::get('agendar/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');

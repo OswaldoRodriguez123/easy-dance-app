@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\ClaseGrupal;
+use App\HorarioClaseGrupal;
 use App\Factura;
 use App\ItemsFactura;
 use App\Alumno;
@@ -1727,8 +1728,70 @@ class ClaseGrupalController extends BaseController {
             ->select('config_clases_grupales.nombre as nombre')
             ->where('clases_grupales.id', '=', $id)
             ->first();
+        if($clasegrupal)
+       	{
+       		$clases_grupales = ClaseGrupal::join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+		        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+		        ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+		        ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'config_clases_grupales.nombre as clase_grupal_nombre', 'config_especialidades.nombre as especialidad_nombre' , 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+		        ->where('clases_grupales.id', '!=' , $id)
+		        ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+        	->get();
 
-        return view('agendar.clase_grupal.operacion')->with(['id' => $id, 'clasegrupal' => $clasegrupal]);        
+        	$array = array();
+
+        	foreach($clases_grupales as $clase_grupal)
+        	{
+        		$fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+      
+		        $i = $fecha->dayOfWeek;
+
+		        if($i == 1){
+
+		          $dia = 'Lunes';
+
+		        }else if($i == 2){
+
+		          $dia = 'Martes';
+
+		        }else if($i == 3){
+
+		          $dia = 'Miercoles';
+
+		        }else if($i == 4){
+
+		          $dia = 'Jueves';
+
+		        }else if($i == 5){
+
+		          $dia = 'Viernes';
+
+		        }else if($i == 6){
+
+		          $dia = 'Sabado';
+
+		        }else if($i == 0){
+
+		          $dia = 'Domingo';
+
+		        }
+
+        		$array[$clase_grupal->id] = array(
+        			'nombre' => $clase_grupal->clase_grupal_nombre,
+                    'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido,
+                    'dia_de_semana' => $dia,
+                    'especialidad' => $clase_grupal->especialidad_nombre,
+                    'hora_inicio' => $clase_grupal->hora_inicio,
+                    'hora_final' => $clase_grupal->hora_final,
+                    'id'=>$clase_grupal->id
+            	);
+        	}
+
+        	return view('agendar.clase_grupal.operacion')->with(['id' => $id, 'clasegrupal' => $clasegrupal, 'grupales' => $array]);
+       	}else{
+       		return redirect("agendar/clases-grupales"); 
+       	}
+                
     }
 
     /**
@@ -1752,7 +1815,64 @@ class ClaseGrupalController extends BaseController {
 
         if($clase_grupal_join){
 
-            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all()]);
+        	$clases_grupales = ClaseGrupal::join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+		        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+		        ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+		        ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'config_clases_grupales.nombre as clase_grupal_nombre', 'config_especialidades.nombre as especialidad_nombre' , 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+		        ->where('clases_grupales.id', '!=' , $id)
+		        ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+        	->get();
+
+        	$array = array();
+
+        	foreach($clases_grupales as $clase_grupal)
+        	{
+        		$fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+      
+		        $i = $fecha->dayOfWeek;
+
+		        if($i == 1){
+
+		          $dia = 'Lunes';
+
+		        }else if($i == 2){
+
+		          $dia = 'Martes';
+
+		        }else if($i == 3){
+
+		          $dia = 'Miercoles';
+
+		        }else if($i == 4){
+
+		          $dia = 'Jueves';
+
+		        }else if($i == 5){
+
+		          $dia = 'Viernes';
+
+		        }else if($i == 6){
+
+		          $dia = 'Sabado';
+
+		        }else if($i == 0){
+
+		          $dia = 'Domingo';
+
+		        }
+
+        		$array[$clase_grupal->id] = array(
+        			'nombre' => $clase_grupal->clase_grupal_nombre,
+                    'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido,
+                    'dia_de_semana' => $dia,
+                    'especialidad' => $clase_grupal->especialidad_nombre,
+                    'hora_inicio' => $clase_grupal->hora_inicio,
+                    'hora_final' => $clase_grupal->hora_final,
+                    'id'=>$clase_grupal->id
+            	);
+        	}
+
+            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'grupales' => $array]);
 
         }else{
            return redirect("agendar/clases-grupales"); 
@@ -1832,21 +1952,62 @@ class ClaseGrupalController extends BaseController {
 
     public function Trasladar(Request $request)
     {
+    	$rules = [
 
-        $exist = InscripcionClaseGrupal::where('clase_grupal_id', $id)->first();
+	        'clasegrupal_id' => 'required',
+	        'id' => 'required',
+        ];
 
-        if(!$exist)
-        {
-           $clasegrupal = ClaseGrupal::find($id);
-        
-            if($clasegrupal->delete()){
-                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
-        }
-        else{
-            return response()->json(['error_mensaje'=> 'Ups! Esta clase grupal no puede ser eliminada ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
-        }
-    }
+        $messages = [
+
+            'clasegrupal_id.required' => 'Ups! La Clase Grupal es requerida',
+            'id.required' => 'Ups! La Clase Grupal es requerida',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
+
+        }else{
+
+	        $inscritos = InscripcionClaseGrupal::where('clase_grupal_id', $request->id)->get();
+	        $clasegrupal = ClaseGrupal::find($request->id);
+
+	        if($clasegrupal)
+	        {
+		        if($inscritos)
+		        {
+
+		        	$config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
+
+		        	foreach($inscritos as $inscrito){
+		        		$existe = InscripcionClaseGrupal::where('alumno_id', $inscrito->alumno_id)->where('clase_grupal_id', $request->clasegrupal_id)->first();
+		        		if(!$existe){
+		        			$inscrito->clase_grupal_id = $request->clasegrupal_id;
+		        			$inscrito->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+		        			$inscrito->save();
+		        		}else{
+		        			$inscrito->delete();
+		        		}
+		        	}
+		        }
+
+		        $horarios = HorarioClaseGrupal::where('clase_grupal_id', $request->id)->delete();
+		        $asistencias = Asistencia::where('clase_grupal_id', $request->id)->delete();
+
+	
+	    		if($clasegrupal->delete()){
+	        		return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+		        }else{
+		            return response()->json(['errores'=>'error', 'status' => 'ERROR-CLASEGRUPAL'],422);
+		        }
+		        	
+		    }else{
+		    	return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]); 
+		    }
+	    }
+	}
 }

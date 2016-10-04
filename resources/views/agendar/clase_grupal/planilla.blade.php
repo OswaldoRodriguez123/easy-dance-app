@@ -756,171 +756,6 @@
                 </div>
             </div>
 
-            <!-- <div class="modal fade" id="modalMultihorario-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-
-                        <form name="edit_multihorario_clasegrupal" id="edit_multihorario_clasegrupal"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <div class="modal-body">                           
-                              <div class="row p-t-20 p-b-0">
-                                  <div class="col-md-offset-1 col-sm-12">
-                                
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-2 text-center">
-                                    
-                                    <span class="f-16 c-morado">Instructor</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Especialidad</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Día de la semana</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Hora Desde</span>
-
-                                   </div>
-
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Hora Hasta</span>
-
-                                   </div>
-
-
-                              <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-2">
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="instructor_acordeon_id" id="instructor_acordeon_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $instructores as $instructor )
-                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                              <div class="col-sm-2 text-center">
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="especialidad_acordeon_id" id="especialidad_acordeon_id" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $config_especialidades as $especialidades )
-                                          <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
-                                          @endforeach
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="dia_de_semana_id" id="dia_de_semana_id" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $dias_de_semana as $dias )
-                                          <option value = "{{ $dias['id'] }}">{{ $dias['nombre'] }}</option>
-                                          @endforeach
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                     <div class="input-group">
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_inicio_acordeon" id="hora_inicio_acordeon" class="form-control time-picker" placeholder="Desde" type="text">
-                                          </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                    <div class="input-group">
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_final_acordeon" id="hora_final_acordeon" class="form-control time-picker" placeholder="Hasta" type="text">
-                                          </div>
-                                    </div>
-                              </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-                              <div class="card-header text-left">
-
-                              <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="add" >Agregar Linea</button>
-                              
-                              </div>
-                                </div>
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
-
-                              <div class="table-responsive row">
-                               <div class="col-md-12">
-                                <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" data-column-id="id" data-type="numeric"></th>
-                                        <th class="text-center" data-column-id="sexo"></th>
-                                        <th class="text-center" data-column-id="nombre" data-order="desc"></th>
-                                        <th class="text-center" data-column-id="estatu_c" data-order="desc"></th>
-                                        <th class="text-center" data-column-id="estatu_e" data-order="desc"></th>
-                                        <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                                               
-                                </tbody>
-                                </table>
-
-                                </div>
-                                </div>
-
-                                <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
-                              
-                                <div class="modal-footer p-b-20 m-b-20">
-                                    <div class="col-sm-12 text-left">
-                                      <div class="procesando hidden">
-                                      <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                      <div class="preloader pls-purple">
-                                          <svg class="pl-circular" viewBox="25 25 50 50">
-                                              <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                          </svg>
-                                      </div>
-                                      </div>
-                                    </div>
-                            <div class="col-sm-12">                            
-                              
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_link_clasegrupal" data-update="video" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-
-
-                        </div></form>
-                      </div>
-                    </div>
-                </div>
-            </div> -->
-          
-
             <div class="modal fade" id="modalCupo-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -1175,6 +1010,66 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalTrasladar-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_trasladar" id="form_trasladar"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Clases Grupales</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="clasegrupal_id" name="clasegrupal_id">
+                                          @foreach ( $grupales as $grupal )
+                                          <option value = "{{ $grupal['id'] }}">{{ $grupal['nombre'] }} - {{ $grupal['hora_inicio'] }} / {{ $grupal['hora_final'] }} - {{ $grupal['dia_de_semana'] }} - {{ $grupal['instructor'] }} - {{ $grupal['especialidad'] }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-clasegrupal_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-clasegrupal_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -1224,7 +1119,7 @@
                               <hr></hr>
 
                               
-                              
+                              <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal"><i class="zmdi zmdi-trending-up f-16 m-r-5 boton blue"  data-original-title="Trasladar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <a href="{{url('/')}}/agendar/clases-grupales/participantes/{{$clasegrupal->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
@@ -1418,6 +1313,7 @@
     route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar/";
     route_principal="{{url('/')}}/agendar/clases-grupales";
     route_progreso="{{url('/')}}/agendar/clases-grupales/progreso/";
+    route_trasladar="{{url('/')}}/agendar/clases-grupales/trasladar";
 
     $(document).ready(function(){
 
@@ -1885,9 +1781,71 @@
           }    
         });
 
+    $(".trasladar").click(function(){
+      id = this.id;
+      swal({   
+          title: "Desea trasladar todos los alumnos inscritos a la clase grupal seleccionada?",   
+          text: "Tenga en cuenta que la otra clase grupal sera eliminada",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Trasladar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: false 
+      }, function(isConfirm){   
+          if (isConfirm) {
+            $(".sweet-alert").hide();
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                      
+            trasladar();
+            }
+        });
+    });
+      function trasladar(){
+        var route = route_trasladar;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = $( "#form_trasladar" ).serialize();
 
+        procesando();
+                
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            data:datos,
+            success:function(respuesta){
 
-    
+                window.location=route_principal; 
+
+            },
+            error:function (msj, ajaxOptions, thrownError){
+              setTimeout(function(){ 
+                // if (typeof msj.responseJSON === "undefined") {
+                //           window.location = "{{url('/')}}/error";
+                //         }
+                var nType = 'danger';
+                if(msj.responseJSON.status=="ERROR"){
+                  errores(msj.responseJSON.errores);
+                  var nTitle=" Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle=" Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                finprocesado();
+                  
+              }, 1000);             
+            }
+        });
+      }
+
    </script> 
 
    <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        
