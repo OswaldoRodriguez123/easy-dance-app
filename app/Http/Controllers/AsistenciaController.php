@@ -65,15 +65,15 @@ class AsistenciaController extends BaseController
 
         foreach($alumnos as $asistencia){
 
-          if($asistencia->tipo == 2)
+          if($asistencia->tipo == 1)
           {
-            $clasegrupal = HorarioClaseGrupal::find($asistencia->tipo_id);
+            $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
             if($clasegrupal){
               $instructor = Instructor::find($clasegrupal->instructor_id);
             }
             
           }else{
-            $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
+            $clasegrupal = HorarioClaseGrupal::find($asistencia->tipo_id);
             if($clasegrupal){
               $instructor = Instructor::find($clasegrupal->instructor_id);
             }
@@ -81,13 +81,12 @@ class AsistenciaController extends BaseController
 
           if($clasegrupal)
           {
-
             $collection=collect($asistencia);     
             $asistencia_array = $collection->toArray();
                 
             $asistencia_array['nombre_instructor']=$instructor->nombre;
             $asistencia_array['apellido_instructor']=$instructor->apellido;
-            $array[$asistencia->clase_grupal_id] = $asistencia_array;
+            $array[$asistencia->id] = $asistencia_array;
           }
         }
 
