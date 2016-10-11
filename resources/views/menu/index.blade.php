@@ -17,7 +17,7 @@
 
 @section('js_vendor')
   
-  {{--<script type="text/javascript" src="{{url('/')}}/assets/js/jquery.js"></script>--}}
+
   <script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script>
   <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>

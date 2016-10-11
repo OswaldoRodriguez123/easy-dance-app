@@ -194,6 +194,7 @@
          });
 
         function rechargeAlumno(){
+            procesando();
             var alumno = <?php echo json_encode($alumnos_asistencia);?>;
 
             document.getElementById('participante').innerHTML = 'Participante';
@@ -212,9 +213,12 @@
                     .attr('id',array.id)
                     .addClass('seleccion');
             });
+
+            finprocesado();
         }
 
         function rechargeInstructor(){
+            procesando();
             var instructor = <?php echo json_encode($instructores_asistencia);?>;
 
             document.getElementById('participante').innerHTML = 'Hora Entrada'; 
@@ -233,6 +237,7 @@
                     .attr('id',array.id)
                     .addClass('seleccion');
             });
+            finprocesado();
         }
 
         $("#alumnos").click(function(){
