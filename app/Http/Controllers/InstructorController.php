@@ -898,6 +898,7 @@ class InstructorController extends BaseController {
 
                         $config_pagos->clase_grupal_id = $clase_grupal;
                         $config_pagos->instructor_id = $request->id;
+                        $config_pagos->tipo = $request->tipo;
                         $config_pagos->monto = $request->cantidad;
 
                         $config_pagos->save();
@@ -939,6 +940,7 @@ class InstructorController extends BaseController {
 
                         $config_pagos->clase_grupal_id = $clase_grupal->id;
                         $config_pagos->instructor_id = $request->id;
+                        $config_pagos->tipo = $request->tipo;
                         $config_pagos->monto = $request->cantidad;
 
                         $config_pagos->save();

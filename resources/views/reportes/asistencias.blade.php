@@ -59,7 +59,7 @@
                                   &nbsp; &nbsp; &nbsp; <label>Fecha</label> &nbsp; &nbsp; &nbsp;
 
 
-                                <input type="text" id="fecha" name="fecha" class="date-picker proceso pointer" placeholder="Selecciona la fecha" style="display: inline; width: 10% "> 
+                                <input type="text" id="fecha" name="fecha" class="date-picker proceso pointer" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" placeholder="Selecciona la fecha" style="display: inline; width: 10% "> 
                                 
                                <!--  <div class="has-error" id="error-fecha">
                                   <span>
@@ -321,6 +321,8 @@
                         iconUp: 'zmdi-expand-less'
                     }
                 });
+
+                rechargeClase()
             });
 
         function rechargeClase(){

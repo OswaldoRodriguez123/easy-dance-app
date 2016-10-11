@@ -66,6 +66,32 @@
 
                                   <div class="clearfix p-b-35"></div>
 
+                               
+                                  <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
+                                    <div class="p-t-10">
+                                  <label class="radio radio-inline m-r-20">
+                                      <input name="sexo" id="monto" value="1" type="radio">
+                                      <i class="input-helper"></i>  
+                                      Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                  </label>
+                                  <label class="radio radio-inline m-r-20 ">
+                                      <input name="tipo" id="porcentaje" value="2" type="radio">
+                                      <i class="input-helper"></i>  
+                                      Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                  </label>
+                                  </div>
+                                  </div>
+                               <div class="has-error" id="error-tipo">
+                                    <span >
+                                        <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                    </span>
+                                </div>
+
+                               <div class="clearfix p-b-35"></div>
+
                                     <div class="form-group">
                                         <label for="cantidad" id="id-cantidad">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por clase grupal" title="" data-original-title="Ayuda"></i>
                                         

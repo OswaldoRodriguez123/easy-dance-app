@@ -56,31 +56,39 @@ class AsistenciaController extends BaseController
             ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('instructores', 'asistencias_instructor.instructor_id', '=', 'instructores.id')
             ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
-        array();
+        $array = array();
 
         foreach($alumnos as $asistencia){
 
           if($asistencia->tipo == 2)
           {
-            $horario = HorarioClaseGrupal::find($asistencia->tipo_id);
-            $instructor = Instructor::find($horario->instructor_id);
-
+            $clasegrupal = HorarioClaseGrupal::find($asistencia->tipo_id);
+            if($clasegrupal){
+              $instructor = Instructor::find($clasegrupal->instructor_id);
+            }
+            
           }else{
             $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
-            $instructor = Instructor::find($clasegrupal->instructor_id);
+            if($clasegrupal){
+              $instructor = Instructor::find($clasegrupal->instructor_id);
+            }
           }
 
-          $collection=collect($asistencia);     
-          $asistencia_array = $collection->toArray();
-              
-          $asistencia_array['nombre_instructor']=$instructor->nombre;
-          $asistencia_array['apellido_instructor']=$instructor->apellido;
-          $array[$asistencia->clase_grupal_id] = $asistencia_array;
+          if($clasegrupal)
+          {
+
+            $collection=collect($asistencia);     
+            $asistencia_array = $collection->toArray();
+                
+            $asistencia_array['nombre_instructor']=$instructor->nombre;
+            $asistencia_array['apellido_instructor']=$instructor->apellido;
+            $array[$asistencia->clase_grupal_id] = $asistencia_array;
+          }
         }
 
 
@@ -610,7 +618,10 @@ class AsistenciaController extends BaseController
                   $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
 
                   if($config_pago){
-                    $asistencia->monto = $config_pago->monto;
+                    if($config_pago->tipo == 1)
+                    {
+                      $asistencia->monto = $config_pago->monto;
+                    }
                   }
 
                   $asistencia->save();
@@ -685,7 +696,10 @@ class AsistenciaController extends BaseController
                   $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
 
                   if($config_pago){
-                    $asistencia->monto = $config_pago->monto;
+                    if($config_pago->tipo == 1)
+                    {
+                      $asistencia->monto = $config_pago->monto;
+                    }
                   }
 
                   $asistencia->save();
