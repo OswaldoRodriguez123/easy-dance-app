@@ -86,12 +86,12 @@
                             <a data-toggle="dropdown" href="#" id="menuTopConfig" style="color:white">
 
                                     @if(Auth::user()->imagen)
-                                        <img class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  
+                                        <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  
                                     @else
                                      @if(Auth::user()->sexo=='F')
-                                          <img class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="45px" height="auto">        
+                                          <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="45px" height="auto">        
                                        @else
-                                          <img class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
+                                          <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
                                        @endif
                                     @endif
 

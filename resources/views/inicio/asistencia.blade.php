@@ -185,6 +185,7 @@
          }
 
          $('input[name="tipo"]').on('change', function(){
+            procesando();
             clear();
             if ($(this).val()=='alumnos') {
                   rechargeAlumno();
@@ -194,7 +195,6 @@
          });
 
         function rechargeAlumno(){
-            procesando();
             var alumno = <?php echo json_encode($alumnos_asistencia);?>;
 
             document.getElementById('participante').innerHTML = 'Participante';
@@ -218,7 +218,6 @@
         }
 
         function rechargeInstructor(){
-            procesando();
             var instructor = <?php echo json_encode($instructores_asistencia);?>;
 
             document.getElementById('participante').innerHTML = 'Hora Entrada'; 

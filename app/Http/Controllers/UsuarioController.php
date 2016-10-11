@@ -370,7 +370,7 @@ class UsuarioController extends BaseController {
 
     public function updateImagen(Request $request)
     {          
-            if($request->imageBase64){
+            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
 
                 $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                 $path = storage_path();
@@ -403,7 +403,7 @@ class UsuarioController extends BaseController {
                 $usuario->imagen = $nombre_img;
                 $usuario->save();
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
     }
 
     public function documentos(){
