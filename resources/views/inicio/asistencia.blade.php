@@ -94,6 +94,9 @@
             
         <script type="text/javascript">
 
+        var alumno = <?php echo json_encode($alumnos_asistencia);?>;
+        var instructor = <?php echo json_encode($instructores_asistencia);?>;
+
         $(document).ready(function(){
 
         $("#alumnos").prop("checked", true);
@@ -178,47 +181,47 @@
             window.location=route;
          });
 
-         function clear(){
-
-            t.clear().draw();
-            // t.destroy();
-         }
 
          $('input[name="tipo"]').on('change', function(){
             procesando();
-            clear();
+            t.clear().draw();
+
             if ($(this).val()=='alumnos') {
                   rechargeAlumno();
             } else  {
                   rechargeInstructor();
             }
+            
          });
 
         function rechargeAlumno(){
-            var alumno = <?php echo json_encode($alumnos_asistencia);?>;
 
-            document.getElementById('participante').innerHTML = 'Participante';
-            document.getElementById('hora').innerHTML = 'Hora';  
+            setTimeout(function(){
+            
+                document.getElementById('participante').innerHTML = 'Participante';
+                document.getElementById('hora').innerHTML = 'Hora';  
 
-            $.each(alumno, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+array.fecha+'',
-                ''+array.clase+'',
-                ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
-                ''+array.nombre+ ' '+array.apellido+'',
-                ''+array.hora+'',
-                '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
+                $.each(alumno, function (index, array) {
+                    var rowNode=t.row.add( [
+                    ''+array.fecha+'',
+                    ''+array.clase+'',
+                    ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
+                    ''+array.nombre+ ' '+array.apellido+'',
+                    ''+array.hora+'',
+                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('seleccion');
+                });
 
-            finprocesado();
+                finprocesado();
+
+            }, 1000);
         }
 
         function rechargeInstructor(){
-            var instructor = <?php echo json_encode($instructores_asistencia);?>;
+            
 
             document.getElementById('participante').innerHTML = 'Hora Entrada'; 
             document.getElementById('hora').innerHTML = 'Hora Salida'; 
