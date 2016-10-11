@@ -69,6 +69,20 @@
                             </thead>
                             <tbody>
 
+                                @foreach($alumnos_asistencia as $asistencia)
+
+                                    <?php $id = $asistencia['id']; ?>
+                                
+                                    <tr id="row_{{$id}}" class="seleccion" >
+                                        <td class="text-center previa">{{$asistencia['fecha']}}</td>
+                                        <td class="text-center previa">{{$asistencia['clase']}}</td>
+                                        <td class="text-center previa">{{$asistencia['nombre_instructor']}} {{$asistencia['apellido_instructor']}}</td>
+                                        <td class="text-center previa">{{$asistencia['nombre']}} {{$asistencia['apellido']}}</td>
+                                        <td class="text-center previa">{{$asistencia['hora']}}</td>
+                                    </tr>
+
+                                @endforeach
+
                                                            
                             </tbody>
                         </table>
@@ -94,224 +108,128 @@
             
         <script type="text/javascript">
 
-        var alumno = <?php echo json_encode($alumnos_asistencia);?>;
-        var instructor = <?php echo json_encode($instructores_asistencia);?>;
+            var alumno = <?php echo json_encode($alumnos_asistencia);?>;
+            var instructor = <?php echo json_encode($instructores_asistencia);?>;
 
-        $(document).ready(function(){
+            $(document).ready(function(){
 
-        $("#alumnos").prop("checked", true);
+                $("#alumnos").prop("checked", true);
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,    
-        order: [[0, 'desc'], [4, 'desc']],
-        fnDrawCallback: function() {
-        if ("{{count($alumnos_asistencia)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }
-        },
-        pageLength: 25,
-        language: {
-              searchPlaceholder: "Buscar"
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled");
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
+                t=$('#tablelistar').DataTable({
+                    processing: true,
+                    serverSide: false,    
+                    order: [[0, 'desc'], [4, 'desc']],
+                    fnDrawCallback: function() {
+                    if ("{{count($alumnos_asistencia)}}" < 25) {
+                          $('.dataTables_paginate').hide();
+                          $('#tablelistar_length').hide();
+                      }
+                    },
+                    pageLength: 25,
+                    language: {
+                          searchPlaceholder: "Buscar"
+                    },
+                    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+                      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled");
+                    },
+                    language: {
+                                    processing:     "Procesando ...",
+                                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                    searchPlaceholder: "BUSCAR",
+                                    lengthMenu:     "Mostrar _MENU_ Registros",
+                                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                    infoPostFix:    "",
+                                    loadingRecords: "...",
+                                    zeroRecords:    "No se encontraron registros coincidentes",
+                                    emptyTable:     "No hay datos disponibles en la tabla",
+                                    paginate: {
+                                        first:      "Primero",
+                                        previous:   "Anterior",
+                                        next:       "Siguiente",
+                                        last:       "Ultimo"
+                                    },
+                                    aria: {
+                                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                    }
+                                }
 
-        });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
                 });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-
-                rechargeAlumno();
+            
             });
 
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
 
+             $('input[name="tipo"]').on('change', function(){
+                procesando();
+                t.clear().draw();
 
-         $('input[name="tipo"]').on('change', function(){
-            procesando();
-            t.clear().draw();
+                if ($(this).val()=='alumnos') {
+                      rechargeAlumno();
+                } else  {
+                      rechargeInstructor();
+                }
+                
+             });
 
-            if ($(this).val()=='alumnos') {
-                  rechargeAlumno();
-            } else  {
-                  rechargeInstructor();
+            function rechargeAlumno(){
+
+                setTimeout(function(){
+                
+                    document.getElementById('participante').innerHTML = 'Participante';
+                    document.getElementById('hora').innerHTML = 'Hora';  
+
+                    $.each(alumno, function (index, array) {
+                        var rowNode=t.row.add( [
+                        ''+array.fecha+'',
+                        ''+array.clase+'',
+                        ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
+                        ''+array.nombre+ ' '+array.apellido+'',
+                        ''+array.hora+''
+                        // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                        ] ).draw(false).node();
+                        $( rowNode )
+                            .attr('id',array.id)
+                            .addClass('seleccion');
+                    });
+
+                    finprocesado();
+
+                }, 1000);
             }
-            
-         });
 
-        function rechargeAlumno(){
+            function rechargeInstructor(){
+                
+                document.getElementById('participante').innerHTML = 'Hora Entrada'; 
+                document.getElementById('hora').innerHTML = 'Hora Salida'; 
 
-            setTimeout(function(){
-            
-                document.getElementById('participante').innerHTML = 'Participante';
-                document.getElementById('hora').innerHTML = 'Hora';  
-
-                $.each(alumno, function (index, array) {
+                $.each(instructor, function (index, array) {
                     var rowNode=t.row.add( [
                     ''+array.fecha+'',
                     ''+array.clase+'',
                     ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
-                    ''+array.nombre+ ' '+array.apellido+'',
                     ''+array.hora+'',
-                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                    ''+array.hora_salida+''
+                    // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
                         .addClass('seleccion');
                 });
-
                 finprocesado();
+            }
 
-            }, 1000);
-        }
-
-        function rechargeInstructor(){
-            
-
-            document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-            document.getElementById('hora').innerHTML = 'Hora Salida'; 
-
-            $.each(instructor, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+array.fecha+'',
-                ''+array.clase+'',
-                ''+array.nombre_instructor+ ' '+array.apellido_instructor+'',
-                ''+array.hora+'',
-                ''+array.hora_salida+'',
-                '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
+            $("#alumnos").click(function(){
+                $( "#instructores2" ).removeClass( "c-verde" );
+                $( "#alumnos2" ).addClass( "c-verde" );
             });
-            finprocesado();
-        }
 
-        $("#alumnos").click(function(){
-            $( "#instructores2" ).removeClass( "c-verde" );
-            $( "#alumnos2" ).addClass( "c-verde" );
-        });
-
-        $("#instructores").click(function(){
-            $( "#alumnos2" ).removeClass( "c-verde" );
-            $( "#instructores2" ).addClass( "c-verde" );
-        });
-
-        $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
-            var id = $(this).closest('tr').attr('id');
-            window.location = route_gestion + id;
-        });
-
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-                var id = $(this).closest('tr').attr('id');
-                var element = this;
-                swal({   
-                    title: "Desea eliminar la factura proforma ?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
-          }
-                });
+            $("#instructores").click(function(){
+                $( "#alumnos2" ).removeClass( "c-verde" );
+                $( "#instructores2" ).addClass( "c-verde" );
             });
-      function eliminar(id, element){
-
-          var token = "{{ csrf_token() }}"
-                $.ajax({
-                    url: route_eliminar+id,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-
-                        t.row( $(element).parents('tr') )
-                        .remove()
-                        .draw();
-                              
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-        }
 
         </script>
 
