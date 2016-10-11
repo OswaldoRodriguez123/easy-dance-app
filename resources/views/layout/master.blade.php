@@ -1076,8 +1076,11 @@
             $("#main").removeClass("opacity-content");
             $("#chat").removeClass("toggled");
             $("#what_we_do").removeClass("opacity-content");
-            $("#buscar").val('');
-            asistencia.search('').draw();
+            if($("#buscar").val() != '')
+            {
+              $("#buscar").val('');
+              asistencia.search('').draw();
+            }
 
             //$("footer").toggleClass("opacity-content");
             //$("header").toggleClass("abierto");
