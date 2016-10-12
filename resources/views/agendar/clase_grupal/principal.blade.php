@@ -120,14 +120,16 @@
         route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
 
         var i;
+        var hoy;
 
         $(document).ready(function(){
 
-        i = "{{$hoy}}";
-        i = parseInt(i);
+        i = parseInt("{{$hoy}}");
+        hoy = i;
         
         $(".button_izquierda").removeAttr("disabled");
         $(".button_derecha").removeAttr("disabled");
+
 
         if( i == 1){
             $(".button_izquierda").attr("disabled","disabled");
@@ -238,11 +240,32 @@
             changeSpan();
         });
 
+        $('.button_dia').click(function(){
+            i = parseInt($(this).val());
+
+            if( i >= 7){
+                $(".button_derecha").attr("disabled","disabled");
+            }else{
+                $(".button_derecha").removeAttr("disabled");
+            }
+
+            if( i <= 1){
+                $(".button_izquierda").attr("disabled","disabled");
+            }else{
+                $(".button_izquierda").removeAttr("disabled");
+            }
+
+            changeSpan();
+
+         });
+
         function changeSpan(){
 
-            $(".button_dia").removeAttr("style")
+            if(i == hoy){
+                $('.span_dia').text('HOY');
+            }
             
-            if(i == 1){
+            else if(i == 1){
 
                 $('.span_dia').text('LUNES');
 
@@ -271,6 +294,11 @@
                 $('.span_dia').text('DOMINGO');
 
             }
+
+            $(".button_dia").removeAttr("style")
+
+            $(".button_dia[value='"+i+"']").css("background-color", "#2196F3");
+            $(".button_dia[value='"+i+"']").css("color", "white");
 
             rechargeClase();
 
@@ -331,30 +359,6 @@
             var route =route_operacion+"/"+this.id;
             window.location=route;
          });
-
-      $('.button_dia').click(function(){
-        i = parseInt($(this).val());
-        $('.span_dia').text('HOY');
-        $(".button_dia").removeAttr("style")
-        $(this).addClass('fondo-azul');
-        $(this).css("background-color", "#2196F3");
-        $(this).css("color", "white");
-
-        if( i >= 7){
-            $(".button_derecha").attr("disabled","disabled");
-        }else{
-            $(".button_derecha").removeAttr("disabled");
-        }
-
-        if( i <= 1){
-            $(".button_izquierda").attr("disabled","disabled");
-        }else{
-            $(".button_izquierda").removeAttr("disabled");
-        }
-
-        rechargeClase();
-
-      });
 
     </script>
 @stop
