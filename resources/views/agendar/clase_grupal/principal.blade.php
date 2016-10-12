@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+
 @stop
 
 @section('js_vendor')
@@ -37,6 +38,18 @@
                             <div class="text-center"> 
 
                                <button class="btn btn-blanco button_izquierda" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <span class="span_dia f-20 c-morado">LUNES</span> <button class="btn btn-blanco button_derecha" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
+
+                                <div class="clearfix"></div>
+
+                                <button class="no_border_button btn btn-blanco button_dia" value="1">Lun</button> &nbsp; 
+                                <button class="btn btn-blanco button_dia no_border_button" value="2">Mar</button> &nbsp; 
+                                <button class="btn btn-blanco button_dia no_border_button" value="3">Mier</button> &nbsp; 
+                                <button class="btn btn-blanco button_dia no_border_button" value="4">Juev</button> &nbsp; 
+                                <button class="btn btn-blanco button_dia no_border_button" value="5">Vier</button> &nbsp; 
+                                <button class="btn btn-blanco button_dia no_border_button" value="6">Sab</button> &nbsp; 
+                                <button class="btn btn-blanco button_dia no_border_button" value="7">Dom</button>
+
+
 
                             </div>                                                   
                         </div>
@@ -198,7 +211,6 @@
             });
 
         $(".button_izquierda").click(function(){
-            console.log(i);
 
             $(".button_derecha").removeAttr("disabled");
 
@@ -213,7 +225,6 @@
         });
 
         $(".button_derecha").click(function(){
-            console.log(i);
 
             $(".button_izquierda").removeAttr("disabled");
 
@@ -228,6 +239,8 @@
         });
 
         function changeSpan(){
+
+            $(".button_dia").removeAttr("style")
             
             if(i == 1){
 
@@ -319,6 +332,29 @@
             window.location=route;
          });
 
+      $('.button_dia').click(function(){
+        i = parseInt($(this).val());
+        $('.span_dia').text('HOY');
+        $(".button_dia").removeAttr("style")
+        $(this).addClass('fondo-azul');
+        $(this).css("background-color", "#2196F3");
+        $(this).css("color", "white");
+
+        if( i >= 7){
+            $(".button_derecha").attr("disabled","disabled");
+        }else{
+            $(".button_derecha").removeAttr("disabled");
+        }
+
+        if( i <= 1){
+            $(".button_izquierda").attr("disabled","disabled");
+        }else{
+            $(".button_izquierda").removeAttr("disabled");
+        }
+
+        rechargeClase();
+
+      });
 
     </script>
 @stop

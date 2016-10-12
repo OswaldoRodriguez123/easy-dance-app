@@ -1753,5 +1753,10 @@ align-items: center;
 }
 
 
+.no_border_button{
+    border:none !IMPORTANT; 
+    box-shadow: none !IMPORTANT;
+}
+
 
 

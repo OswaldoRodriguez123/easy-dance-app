@@ -25,8 +25,8 @@
       <link href="{{url('/')}}/assets/css/easy_dance_ico_4.css" rel="stylesheet">
 			<!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css">	 -->
-      <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/ripple.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 
