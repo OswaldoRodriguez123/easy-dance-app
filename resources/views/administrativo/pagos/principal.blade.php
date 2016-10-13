@@ -67,12 +67,27 @@
                                     <th class="text-center" data-column-id="factura" data-order="asc">&nbsp;&nbsp;#&nbsp;&nbsp;</th>
                                     <th class="text-center" data-column-id="cliente">Cliente</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
-                                    <th class="text-center" data-column-id="fecha" id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
                                     <th class="text-center" data-column-id="total">Total</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                                @foreach($facturas as $factura)
+                                    <?php $id = $factura['id']; ?>
+
+                                    <tr id="{{$id}}" class="seleccion">
+                                        <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
+                                        <td class="text-center previa">{{$factura['nombre']}}</td>
+                                        <td class="text-center previa">{{$factura['concepto']}}</td>
+                                        <td class="text-center previa">{{$factura['fecha']}}</td>
+                                        <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
+                                        <td class="text-center previa"><i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i></td>
+                                      
+                                    </tr>
+
+                                @endforeach
                                                            
                             </tbody>
                         </table>
@@ -104,85 +119,64 @@
 
         tipo = 'pagadas';
 
+        
+
+        var proforma = <?php echo json_encode($proforma);?>;
+        var factura = <?php echo json_encode($facturas);?>;
+
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
         } 
 
         $(document).ready(function(){
 
-        $("#pagadas").prop("checked", true);
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 50, 
-        order: [[0, 'desc']],
-        fnDrawCallback: function() {
-        if ("{{count($proforma)}}" < 50) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            $("#pagadas").prop("checked", true);
+
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 50, 
+            order: [[0, 'desc']],
+            fnDrawCallback: function() {
+            if ("{{count($proforma)}}" < 50) {
+                  $('.dataTables_paginate').hide();
+                  $('#tablelistar_length').hide();
+              }
+            },
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     " ",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
+
+            });
+    
+           document.getElementById('fecha').innerHTML = 'Fecha'; 
 
         });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-
-                rechargeFactura();
-            });
 
         function previa(t){
 
@@ -195,19 +189,9 @@
 
         }
 
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
-
-         function clear(){
-
-            t.clear().draw();
-            // t.destroy();
-         }
-
          $('input[name="tipo"]').on('change', function(){
-            clear();
+            procesando();
+            t.clear().draw();
             if ($(this).val()=='pagadas') {
                   tipo = 'pagadas';
                   rechargeFactura();
@@ -218,53 +202,65 @@
          });
 
         function rechargeFactura(){
-            var factura = <?php echo json_encode($facturas);?>;
-            console.log(factura);
-            $('#monto').css('opacity', '0');
 
-            document.getElementById('fecha').innerHTML = 'Fecha'; 
+            setTimeout(function(){
+                $('#monto').css('opacity', '0');
 
-            $.each(factura, function (index, array) {
-                concepto = array.concepto;
-                if(concepto.length > 50)
-                {
-                    concepto = concepto.substr(0, 50) + "...";
-                }
-                var rowNode=t.row.add( [
-                ''+pad(array.factura, 10)+'',
-                ''+array.nombre+'',
-                ''+concepto+'',
-                ''+array.fecha+'',
-                ''+formatmoney(parseFloat(array.total))+'',
-                '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
+                document.getElementById('fecha').innerHTML = 'Fecha'; 
+
+                $.each(factura, function (index, array) {
+                    concepto = array.concepto;
+                    if(concepto.length > 50)
+                    {
+                        concepto = concepto.substr(0, 50) + "...";
+                    }
+                    var rowNode=t.row.add( [
+                    ''+pad(array.factura, 10)+'',
+                    ''+array.nombre+'',
+                    ''+concepto+'',
+                    ''+array.fecha+'',
+                    ''+formatmoney(parseFloat(array.total))+'',
+                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('seleccion');
+                });
+
+                finprocesado();
+
+             }, 1000);
+
+            
         }
 
         function rechargeProforma(){
-            var proforma = <?php echo json_encode($proforma);?>;
 
-            $('#monto').css('opacity', '1');
+            setTimeout(function(){
+            
+                $('#monto').css('opacity', '1');
 
-            document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento'; 
+                document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento'; 
 
-            $.each(proforma, function (index, array) {
-                concepto = array.concepto;
-                var rowNode=t.row.add( [
-                ''+array.id+'',
-                ''+array.nombre+ ' '+array.apellido+'',
-                ''+array.cantidad+ ' ' +concepto+'',
-                ''+array.fecha_vencimiento+'',
-                ''+formatmoney(parseFloat(array.total))+'',
-                '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('text-center');
-            });
+                $.each(proforma, function (index, array) {
+                    concepto = array.concepto;
+                    var rowNode=t.row.add( [
+                    ''+array.id+'',
+                    ''+array.nombre+ ' '+array.apellido+'',
+                    ''+array.cantidad+ ' ' +concepto+'',
+                    ''+array.fecha_vencimiento+'',
+                    ''+formatmoney(parseFloat(array.total))+'',
+                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('text-center');
+                });
+
+                finprocesado();
+
+            }, 1000);
+
         }
 
         $("#pagadas").click(function(){
