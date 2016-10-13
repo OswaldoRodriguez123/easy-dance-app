@@ -82,6 +82,27 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="cantidad" id="id-cantidad">Cantidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de unidades disponibles del producto" title="" data-original-title="Ayuda"></i>
+                                        <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="00000000" placeholder="Ej. 50">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-costo">
+                                      <span >
+                                          <small id="error-cantidad_mensaje" class="help-block error-span" ></small>
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
                                 <label for="imagen" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
                             
                                 <div class="clearfix"></div>
@@ -262,7 +283,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["nombre", "costo", "descripcion", "imagen", "iva"];
+    var campo = ["nombre", "costo", "descripcion", "imagen", "iva", "cantidad"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;

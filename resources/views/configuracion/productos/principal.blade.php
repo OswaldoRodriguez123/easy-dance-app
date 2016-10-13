@@ -42,6 +42,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="descripcion">Nombre</th>
                                     <th class="text-center" data-column-id="costo" data-type="numeric">Costo</th>
+                                    <th class="text-center" data-column-id="costo" data-type="numeric">Cantidad</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -52,6 +53,7 @@
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$producto['nombre']}}</td>
                                     <td class="text-center previa">{{ number_format($producto['costo'], 2, '.' , '.') }}</td>
+                                    <td class="text-center previa">{{$producto['cantidad']}}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 

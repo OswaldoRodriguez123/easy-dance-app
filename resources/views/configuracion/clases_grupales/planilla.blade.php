@@ -189,7 +189,8 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="costo">Inasistencias Maximas</label>
+                                    <div style="text-align: center"><label for="" >Estado de Alumno</label><hr></div>
+                                    <label for="costo">Estado de Inactividad</label>
                                     <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_roja" data-mask="00000000" placeholder="Ej. 5" value="{{$clasegrupal->asistencia_rojo}}">
                                  </div>
                                  <div class="has-error" id="error-asistencia_rojas">
@@ -201,7 +202,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="costo">Inasistencias Minimas</label>
+                                    <label for="costo">Riesgo de Ausencia</label>
                                     <input type="text" class="form-control input-sm input-mask" name="asistencia_amarillas" id="asistencia_amarilla" data-mask="00000000" placeholder="Ej. 2" value="{{$clasegrupal->asistencia_amarilla}}">
                                  </div>
                                  <div class="has-error" id="error-asistencias_amarillas">
@@ -564,7 +565,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-asistencia_rojas" class="zmdi {{ empty($clasegrupal->asistencia_rojo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
-                               <span class="f-14"> Asistencia Max/Min </span>
+                               <span class="f-14"> Estatus de Alumno </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-asistencia_rojas">{{$clasegrupal->asistencia_rojo}}</span> / 
                              <span id="clasegrupal-asistencia_amarillas">{{$clasegrupal->asistencia_amarilla}}</span>

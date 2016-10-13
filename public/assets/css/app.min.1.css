@@ -58,6 +58,11 @@ a {
   background-color: transparent;
 }
 
+
+.disponibilidad_productos_no{
+    display: none;
+}
+
 a:active,
 a:hover {
   outline: 0;

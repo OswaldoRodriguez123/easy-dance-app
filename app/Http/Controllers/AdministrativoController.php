@@ -250,7 +250,7 @@ class AdministrativoController extends BaseController {
         foreach($config_producto as $items){
 
             $iva = $items['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp2[]=array('id' => $items['id'], 'nombre' => $items['nombre'] , 'costo' => $items['costo'], 'iva' => $iva, 'incluye_iva' => $items['incluye_iva']);
+            $tmp2[]=array('id' => $items['id'], 'nombre' => $items['nombre'] , 'costo' => $items['costo'], 'iva' => $iva, 'incluye_iva' => $items['incluye_iva'], 'disponibilidad' => $items['cantidad']);
 
             $collection2=collect($tmp2);
             $grouped2 = $collection2->groupBy('id');     
@@ -786,6 +786,17 @@ class AdministrativoController extends BaseController {
                         $item_factura->item_id = $item_proforma->item_id;
                         $item_factura->nombre = $item_proforma->nombre;
                         $item_factura->tipo = $item_proforma->tipo;
+                        if ($item_proforma->tipo == 2) {
+
+                            $inventario=ConfigProductos::find($item_proforma->item_id);
+
+                            $cantidad_actual=$inventario->cantidad;
+                            $cantidad_vendida=$item_proforma->cantidad;
+
+                            $inventario->cantidad=$cantidad_actual-$cantidad_vendida;
+
+                            $inventario->save();
+                        }
                         $item_factura->cantidad = $item_proforma->cantidad;
                         $item_factura->precio_neto = $item_proforma->precio_neto;
                         $item_factura->impuesto = $item_proforma->impuesto;

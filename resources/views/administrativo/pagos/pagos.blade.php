@@ -7,7 +7,8 @@
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet"> 
+<link href="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/app.min.1.css">
 @stop
 
 @section('js_vendor')
@@ -297,6 +298,11 @@
                                    <span class="f-16 c-morado" id="id-cantidad">Cantidad</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="se refiere a la cantidad de productos o servicios que deseas agregar al cliente para la venta" title="" data-original-title="Ayuda"></i>
 
                                    </div>
+                                   <div class="col-sm-2 text-center" id="disponibilidad_productos">
+
+                                   <span class="f-16 c-morado" id="id-cantidad">Disponibilidad</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="se refiere a la cantidad de productos disponibles en estos momentos" title="" data-original-title="Ayuda"></i>
+
+                                   </div>
                                    <div class="col-sm-2 text-center" id ="id-linea">
 
                                    <span class="f-16 c-morado">Precio (Neto)</span>
@@ -328,7 +334,11 @@
 
                               <div class="col-sm-2 text-center">
                                 <!-- <input type="text" class="form-control input-sm" name="cantidad" id="cantidad" placeholder="Ej. 1"> -->
-                                <input autocomplete="off" name="cantidad" id="cantidad" maxlength="5" class="form-control input-mask" data-mask="00000" placeholder="Ej. 10" type="text">
+                                <input autocomplete="off" name="cantidad" id="cantidad" maxlength="5" class="form-control input-mask" data-mask="00000" placeholder="Ej. 10" type="text" >
+                              </div>
+
+                              <div class="col-sm-2 text-center" id="disponibilidad_productos_campo">
+                                <input type="text" class="form-control input-sm text-center" name="campo_disponibilidad" id="campo_disponibilidad" readonly="readonly" placeholder="Ej. 1" value="0">
                               </div>
 
                               <div class="col-sm-2 text-center">
@@ -517,6 +527,8 @@
     $('#alumno_id').selectpicker('render');
 
     id = "{{{ $id or 'Default' }}}";
+    $('#disponibilidad_productos').toggleClass("disponibilidad_productos_no");
+    $('#disponibilidad_productos_campo').toggleClass("disponibilidad_productos_no");
 
     if(id != 'Default'){
 
@@ -797,7 +809,7 @@
           error:function(msj){
             setTimeout(function(){ 
               if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
+                //window.location = "{{url('/')}}/error";
               }
               if(msj.responseJSON.status=="ERROR"){
                 console.log(msj.responseJSON.errores);
@@ -861,7 +873,6 @@
 
     $('input[name="importe_neto"]').val(0)
     $('input[name="precio_neto"]').val(0)
-
     } 
 
     $('input[name="tipo"]').on('change', function(){
@@ -870,10 +881,14 @@
           tipo = 'servicio';
           $('#combo').empty();
           rechargeServicio();
+          $('#disponibilidad_productos').toggleClass("disponibilidad_productos_no");
+          $('#disponibilidad_productos_campo').toggleClass("disponibilidad_productos_no");
     } else  {
           tipo = 'producto';
           $('#combo').empty();
           rechargeProducto();
+          $('#disponibilidad_productos').toggleClass("disponibilidad_productos_no");
+          $('#disponibilidad_productos_campo').toggleClass("disponibilidad_productos_no");
     }
       $('input[name="cantidad"]').val(1)
     });
@@ -908,6 +923,7 @@
 
         var producto = <?php echo json_encode($producto);?>;
         incluye_iva = producto[index][0]['incluye_iva'];
+        var disponible = producto[index][0]['disponibilidad'];
         console.log(incluye_iva);
 
         if(incluye_iva != 0){
@@ -934,7 +950,7 @@
 
       $('input[name="importe_neto"]').val(formatmoney(total))
       $('input[name="cantidad"]').val(1)
-
+      $('input[name="campo_disponibilidad"]').val(disponible)
     });
 
     $("#cantidad").change(function(){

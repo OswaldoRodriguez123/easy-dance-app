@@ -13,7 +13,6 @@ use Image;
 
 class ConfigProductosController extends BaseController {
 
-
 	public function principalproductos()
 	{
 		return view('configuracion.productos.principal')->with('productos', ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
@@ -35,6 +34,7 @@ class ConfigProductosController extends BaseController {
 
         'nombre' => 'required',
         'costo' => 'required|numeric',
+        'cantidad' => 'required|numeric',
 
     ];
 
@@ -42,7 +42,9 @@ class ConfigProductosController extends BaseController {
 
         'nombre.required' => 'Ups! El Nombre  es requerido',
         'costo.required' => 'Ups! El costo de la inscripción es requerido',
-        'costo.numeric' => 'Ups! El campo del costo de la inscripcion en inválido , debe contener sólo números',      
+        'costo.numeric' => 'Ups! El campo del costo de la inscripcion en inválido , debe contener sólo números',
+        'cantidad.required' => 'Ups! El cantidad de la inscripción es requerido',
+        'cantidad.numeric' => 'Ups! El campo del costo de la inscripcion en inválido , debe contener sólo números',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -57,15 +59,34 @@ class ConfigProductosController extends BaseController {
 
         $nombre = title_case($request->nombre);
         $descripcion = title_case($request->descripcion);
+        //$existente=ConfigProductos::where('nombre',$request->nombre)->first();
 
-        $producto = new ConfigProductos;
+        /*if($existente){
+            $existente->costo = $request->costo;
+
+            $cantidad_actual=$existente->cantidad;
+            $cantidad_nueva=$request->cantidad;
+            $existente->cantidad = $cantidad_nueva+$cantidad_actual;
+
+            if(!empty($request->imagen)){
+                $existente->imagen = $request->imagen;
+            }
+            if(!empty($request->descripcion)){
+                $existente->descripcion = $descripcion;;
+            }
+            
+            $producto->incluye_iva = $request->incluye_iva;
+        }else{*/
+            $producto = new ConfigProductos;
         
-        $producto->academia_id = Auth::user()->academia_id;
-        $producto->nombre = $nombre;
-        $producto->costo = $request->costo;
-        $producto->imagen = $request->imagen;
-        $producto->descripcion = $descripcion;
-        $producto->incluye_iva = $request->incluye_iva;
+            $producto->academia_id = Auth::user()->academia_id;
+            $producto->nombre = $nombre;
+            $producto->costo = $request->costo;
+            $producto->cantidad = $request->cantidad;
+            $producto->imagen = $request->imagen;
+            $producto->descripcion = $descripcion;
+            $producto->incluye_iva = $request->incluye_iva;
+        //}
 
         if($producto->save()){
 
@@ -166,6 +187,33 @@ class ConfigProductosController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
         // return redirect("alumno/edit/{$request->id}");
+        }
+    }
+
+    public function updateCantidad(Request $request){
+
+    $rules = [
+        'cantidad' => 'required|numeric',
+    ];
+
+    $messages = [
+        'cantidad.required' => 'Ups! El cantidad es requerido',
+        'cantidad.numeric' => 'Ups! El campo de cantidad es inválido , debe contener sólo números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+    }
+    else{
+        $producto = ConfigProductos::find($request->id);
+        $producto->cantidad = $request->cantidad;
+        if($producto->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 

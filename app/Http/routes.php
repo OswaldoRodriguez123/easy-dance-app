@@ -197,6 +197,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::put('configuracion/productos/update/nombre', 'ConfigProductosController@updateNombre');
 			Route::put('configuracion/productos/update/costo', 'ConfigProductosController@updateCosto');
+			Route::put('configuracion/productos/update/cantidad', 'ConfigProductosController@updateCantidad');
 			Route::put('configuracion/productos/update/descripcion', 'ConfigProductosController@updateDescripcion');
 			Route::put('configuracion/productos/update/impuesto', 'ConfigProductosController@updateImpuesto');
 			Route::put('configuracion/productos/update/imagen', 'ConfigProductosController@updateImagen');

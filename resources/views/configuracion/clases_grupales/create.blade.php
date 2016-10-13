@@ -119,29 +119,11 @@
                                </div>
 
                                <div class="col-sm-12">
+                               <label for="" id="">Estatus de Alumno</label>
+                               <br><hr>
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Inasistencias Maximas*</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de las inasistencias maximas permitidas" title="" data-original-title="Ayuda"></i>
-                                        
-                                      <div class="input-group">
-                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
-                                        <div class="fg-line">
-                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_rojas" data-mask="00000000" placeholder="Ej. 5">
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-asistencia_rojas">
-                                      <span >
-                                          <small id="error-asistencia_rojas_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Inasistencias Minimas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de las inasistencias minimas permitidas" title="" data-original-title="Ayuda"></i>
+                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Riesgo de Ausencia*</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno esta en riesgo de ausencia" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
@@ -157,7 +139,28 @@
                                     </div>
                                 </div>
                                </div>
-                               
+
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Estado de Inactividad*</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno pase a tener un status de inactivo" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_rojas" data-mask="00000000" placeholder="Ej. 5">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-asistencia_rojas">
+                                      <span >
+                                          <small id="error-asistencia_rojas_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                                <br><hr>
+                               </div>
+
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">

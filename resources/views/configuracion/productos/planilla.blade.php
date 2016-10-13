@@ -123,6 +123,55 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalCantidad-Producto" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Producto<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_cantidad_producto" id="edit_cantidad_producto">
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="cantidad">Cantidad</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="00000000" placeholder="Ej. 50" value="{{$producto->cantidad}}">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$producto->id}}"></input>
+                              
+                               <div class="clearfix"></div> 
+
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cantidad_producto" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalImagen-Producto" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -378,6 +427,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="producto-costo"><span>{{ number_format($producto->costo, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCantidad-Producto">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi {{ empty($producto->cantidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
+                               <span class="f-14"> Cantidad </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="producto-cantidad"><span>{{$producto->cantidad}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImagen-Producto">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($producto->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -457,7 +514,6 @@
               var newimage = canvas.toDataURL("image/jpeg", 0.8);
               var image64 = $("input:hidden[name=imageBase64]").val(newimage);
             },500);
-
         });
 
       if("{{$producto->incluye_iva}}" == 1){
@@ -506,7 +562,7 @@
 
 
     function limpiarMensaje(){
-        var campo = ["nombre", "costo", "descripcion", "imagen"];
+        var campo = ["nombre", "costo", "descripcion", "imagen", "cantidad"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -515,7 +571,7 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["nombre", "costo", "descripcion", "imagen"];
+        var campo = ["nombre", "costo", "descripcion", "imagen", "cantidad"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -541,6 +597,8 @@
             }
           }else if(c.name==='costo'){
              $("#producto-"+c.name).text(formatmoney(parseFloat(c.value)));
+          }else if(c.name==='cantidad'){
+             $("#producto-"+c.name).text(c.value);
           }else{
             $("#producto-"+c.name).text(c.value.toLowerCase());
           }
