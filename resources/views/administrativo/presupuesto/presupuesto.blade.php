@@ -304,7 +304,7 @@
 
                                     <div class="clearfix p-b-35"></div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-12">
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
@@ -485,28 +485,25 @@
                               </div>
                             </div>
                             
-                            <div class="col-sm-4 text-left"> 
-                          
-                            </div>
 
-                            <div class="col-sm-4 text-center">
-                             
+                            <div class="col-sm-12"> 
                               <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
-                              <a href="{{url('/')}}/administrativo/presupuestos"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
 
-                              <br>
+                              <div class="text-center">
+                                <a href="{{url('/')}}/administrativo/presupuestos"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
 
-                              <span class="f-700 opaco-0-8 f-16">Sección Presupuesto</span>
+                                <br>
+
+                                <span class="f-700 opaco-0-8 f-16">Sección Presupuesto</span>
+                              </div>
+
+                              <div class="text-right">                           
+                                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" >Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+
+                                <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
+                              </div>
                               
                                
-                            </div>
-
-
-                            <div class="col-sm-4 text-right">                          
-
-                              <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" >Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
-
-                              <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
                             </div>
                             </div>
                         </div></form>
