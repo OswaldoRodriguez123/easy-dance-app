@@ -22,6 +22,7 @@ use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\ItemsFactura;
 
 class ReporteController extends BaseController
 {
@@ -570,6 +571,97 @@ public function PresencialesFiltros(Request $request)
             }
 
         }
+    }
+
+    public function Administrativo()
+    {
+        
+        
+        $array = array();
+
+        $factura_join = DB::table('facturas')
+            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
+            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+            ->where('alumnos.deleted_at' , '=' , null)
+            ->OrderBy('facturas.created_at')
+        ->get();
+
+        foreach($factura_join as $factura){
+
+
+            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+            $collection=collect($factura);     
+            $factura_array = $collection->toArray();
+            
+            $factura_array['total']=$total;
+            $array[$factura->id] = $factura_array;
+
+        }
+
+        return view('reportes.administrativo')->with(['facturas'=> $array]);
+    }
+
+    public function AdministrativoFiltros(Request $request)
+    {
+        # code...
+        //dd($request->all());
+        if($request->mesActual){
+            $start = Carbon::now()->startOfMonth()->toDateString();
+            $end = Carbon::now()->endOfMonth()->toDateString();  
+        }
+        if($request->mesPasado){
+            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+
+        }
+        if($request->today){
+            $start = Carbon::now()->toDateString();
+            $end = Carbon::now()->toDateString();  
+        }
+        if($request->rango){
+            //$fechas = explode(' - ', $request->dateRange);
+            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
+        }
+
+        if($request->Fecha){
+            $fechas = explode('-', $request->Fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
+        }
+
+        $array = array();
+
+        $factura_join = DB::table('facturas')
+            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
+            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+            ->where('alumnos.deleted_at' , '=' , null)
+            ->whereBetween('facturas.fecha', [$start,$end])
+            ->OrderBy('facturas.created_at')
+        ->get();
+
+        foreach($factura_join as $factura){
+
+
+            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+            $collection=collect($factura);     
+            $factura_array = $collection->toArray();
+            
+            $factura_array['total']=$total;
+            $array[$factura->id] = $factura_array;
+
+        }
+
+        
+        
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 200]);
+
     }
 
 }
