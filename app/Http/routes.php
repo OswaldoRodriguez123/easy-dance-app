@@ -304,6 +304,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('administrativo/pagos/pendiente/{id}', 'AdministrativoController@pagospendientes');
 			Route::post('administrativo/acuerdo/guardar', 'AdministrativoController@storeAcuerdo');
 			Route::delete('administrativo/acuerdo/eliminar/{id}', 'AdministrativoController@eliminaracuerdo');
+			Route::post('administrativo/acuerdo/actualizar', 'AdministrativoController@updateAcuerdo');
 
 			//PRESUPUESTOS
 

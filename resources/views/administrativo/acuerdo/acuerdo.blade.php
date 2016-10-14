@@ -52,8 +52,62 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalFecha-Acuerdo" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Acuerdo de Pago<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_fecha" id="edit_fecha"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                    <label for="fecha" id="id-fecha_actualizada">Fecha</label>
+                                    <div class="fg-line">
+                                        <input name="fecha_actualizada" id="fecha_actualizada" class="form-control date-picker pointer" placeholder="Seleciona" type="text">
+                                    </div>
+                                 </div>
+                                    <div class="has-error" id="error-fecha_actualizada">
+                                      <span >
+                                          <small id="error-fecha_actualizada_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
 
-  
+                               <input type="hidden" name="id" value=""></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 pointer" id="actualizar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+            <!-- END -->
+
             <section id="content">
                 <div class="container">
                 
@@ -240,6 +294,7 @@
                                     <th class="text-center" data-column-id="id" data-type="forma_pago">No</th>
                                     <th class="text-center" data-column-id="fecha">Fecha de frecuencia <span id="span_frecuencia"></span></th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad de <span id="span_partes"></span> partes</th>
+                                    <th class="text-center" data-column-id="operaciones" data-type="operaciones">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -405,6 +460,7 @@
 <script type="text/javascript">
 
   var route_agregar="{{url('/')}}/administrativo/acuerdo/guardar";
+  var route_actualizar="{{url('/')}}/administrativo/acuerdo/actualizar";
   var route_pendientes="{{url('/')}}/administrativo/pagos/pendiente/";
   var router_generar_acuerdo="{{url('/')}}/administrativo/acuerdo/generar";
   var route_principal="{{url('/')}}/participante/alumno/deuda/";
@@ -540,7 +596,6 @@
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -771,6 +826,81 @@
                 });
             });
 
+    $("#actualizar").click(function(){
+
+
+        var route = route_actualizar;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = $( "#edit_fecha" ).serialize();         
+        limpiarMensaje();
+        procesando();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                finprocesado();
+                if(respuesta.status=="OK"){
+
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+
+                  $('#'+respuesta.i).find('td:eq(1)').text(respuesta.fecha);
+                  $('.modal').modal('hide');
+
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                $("#guardar").removeAttr("disabled");
+                $(".cancelar").removeAttr("disabled");
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                  window.location = "{{url('/')}}/error";
+                }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                $("#guardar").removeAttr("disabled");
+                finprocesado();
+                $(".cancelar").removeAttr("disabled");
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+    });
+
       function limpiarMensaje(){
         var campo = ["alumno_id", "linea", "fecha", "frecuencia", "partes"];
         fLen = campo.length;
@@ -854,11 +984,12 @@
       var numero = acuerdo_fechas[n].numero;
       var fecha_frecuencia = acuerdo_fechas[n].fecha_frecuencia;
       var cantidad = acuerdo_fechas[n].cantidad;
-      var rowId=acuerdo_fechas.numero;
+      var rowId=numero;
         var rowNode=t.row.add( [
         ''+numero+'',
         ''+fecha_frecuencia+'',
-        ''+cantidad+''
+        ''+cantidad+'',
+        '<i class="zmdi zmdi-edit m-r-5 f-20"></i>'
         ] ).draw(false).node();
         $( rowNode )
         .attr('id',rowId)       
@@ -987,6 +1118,14 @@
       //   $("#guardar").removeAttr("disabled");
       //   $("#guardar").css({"opacity": ("1")});
       // })
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-edit', function () {
+    var padre=$(this).parents('tr');
+    var td_fecha = $(padre).find('td:eq(1)').text();
+    var fecha = td_fecha.split("-")
+    $('#fecha_actualizada').val(fecha[0]+'/'+fecha[1]+'/'+fecha[2]);
+    $('input[name=id]').val($(this).closest('tr').attr('id'));
+    $('#modalFecha-Acuerdo').modal('show');
+  });
 
 </script> 
 @stop

@@ -1801,6 +1801,65 @@ class AdministrativoController extends BaseController {
         }
     }
 
+    public function updateAcuerdo(Request $request)
+    {
+        //dd($request->fecha);
+
+
+        $rules = [        
+        
+            'fecha_actualizada' => 'required',
+
+        ];
+
+        $messages = [
+
+            'fecha_actualizada.required' => 'Ups! La Fecha es requerida ',
+        ];    
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $i = $request->id - 1;
+            $acuerdo = Session::get('acuerdos');
+            $fecha_actualizada = Carbon::createFromFormat('d/m/Y', $request->fecha_actualizada);
+
+            if($i == 0){
+                $tmp = $acuerdo['fechas_acuerdo'][$i + 1]['fecha_frecuencia'];
+                $fecha = Carbon::createFromFormat('d-m-Y', $tmp);
+                if($fecha_actualizada > $fecha){
+                    return response()->json(['errores' => ['fecha_actualizada' => [0, 'Ups! Debes ingresar una fecha menor a la segunda fecha']], 'status' => 'ERROR'],422);
+                }
+            }else if($i == count($acuerdo['fechas_acuerdo']) - 1){
+                $tmp = $acuerdo['fechas_acuerdo'][$i - 1]['fecha_frecuencia'];
+                $fecha = Carbon::createFromFormat('d-m-Y', $tmp);
+                if($fecha_actualizada < $fecha){
+                    return response()->json(['errores' => ['fecha_actualizada' => [0, 'Ups! Debes ingresar una fecha mayor a la penultima fecha']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                $tmp1 = $acuerdo['fechas_acuerdo'][$i - 1]['fecha_frecuencia'];
+                $tmp2 = $acuerdo['fechas_acuerdo'][$i + 1]['fecha_frecuencia'];
+                $fecha_min = Carbon::createFromFormat('d-m-Y', $tmp1);
+                $fecha_max = Carbon::createFromFormat('d-m-Y', $tmp2);
+
+                if(!$fecha_actualizada->between($fecha_min, $fecha_max)){
+                    return response()->json(['errores' => ['fecha_actualizada' => [0, 'Ups! Debes ingresar una fecha menor a la siguiente fecha y mayor a la fecha anterior']], 'status' => 'ERROR'],422);
+                }
+            }
+
+            $fecha = $fecha_actualizada->format('d-m-Y');
+            $acuerdo['fechas_acuerdo'][$i]['fecha_frecuencia'] = $fecha;
+            Session::put('acuerdos', $acuerdo); 
+
+            return response()->json(['mensaje' => '¡Excelente! Los acuerdos han sido actualizados', 'status' => 'OK', 200, 'fecha'=>$fecha, 'i' => $i + 1]);
+        }
+    }
+
     public function storeAcuerdo(Request $request)
     {
         
