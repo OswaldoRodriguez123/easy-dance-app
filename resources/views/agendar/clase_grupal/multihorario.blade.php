@@ -36,7 +36,7 @@
                             <div class="text-right">
                             <!--<a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>-->
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
+                            <br><br><p class="text-center opaco-0-8 f-22" id="id-clase"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
                             <p class="text-center"><span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span> <span class="f-14">Fecha Desde / Hasta: </span> {{\Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y')}} - {{\Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_final)->format('d/m/Y')}}</p>
                             <hr class="linea-morada">
 
@@ -234,73 +234,58 @@
 		                                </tr>
 		                            </thead>
 		                            <tbody class="text-center">
-		                                @foreach($arrayHorario as $horario)
+		                                <!-- foreach(arrayHorario as horario)
                                     
-                                    <tr id="{{$horario['id']}}" class="odd seleccion text-center" role="row">
+                                    <tr id="$horario['id']}}" class="odd seleccion text-center" role="row">
                                       <td onclick="previa(this)" class="text-center">
-                                        {{$horario['instructor']}}
+                                        $horario['instructor']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
-                                        {{$horario['especialidad']}}
+                                        $horario['especialidad']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
-                                        {{$horario['estudio']}}
+                                        $horario['estudio']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
-                                        {{$horario['dia_de_semana']}}
+                                        $horario['dia_de_semana']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
-                                        {{$horario['hora_inicio']}}
+                                        $horario['hora_inicio']}}
                                       </td>
                                       <td onclick="previa(this)" class="text-center">
-                                        {{$horario['hora_final']}}
+                                        $horario['hora_final']}}
                                       </td>
                                       <td class="text-center" width="50">
                                       <i class="zmdi zmdi-delete f-20 p-r-10"></i>
                                       </td>
                                     </tr>
 
-                                    @endforeach                          
+                                    endforeach         -->                  
 		                            </tbody>
 		                            </table>
                             	</div>
                             </div>
 
+                            <div class="col-sm-12"> 
+                              <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+
+                              <div class="clearfix p-b-35"></div>
+
+
+                              <div class="text-right">                           
+                                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "guardar" id="guardar" >Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+
+                                <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
+                              </div>
+                              
+                               
+                            </div>
+
+                            <div class="clearfix p-b-35"></div>
+
                         </div>
                         </form>
 
-                        {{-- 
-                        <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Balance E</th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            
-                            
-                            
-                                                           
-                            </tbody>
-                        </table>--}}
-                         </div>
-                        </div>
-                        <div class="card-body p-b-20">
-                            <div class="row">
-                              <div class="container">
-                               
-                              </div>
-                            </div>
-                        </div>
-                        
                         
                     </div>
                     
@@ -323,6 +308,8 @@
 
     	route_horario="{{url('/')}}/agendar/clases-grupales/multihorario/agregarhorario";
       route_eliminar="{{url('/')}}/agendar/clases-grupales/multihorario/eliminarhorario";
+      route_cancelar = "{{url('/')}}/agendar/clases-grupales/multihorario/cancelarhorarios";
+      route_guardar = "{{url('/')}}/agendar/clases-grupales/multihorario/guardarhorarios";
 
         var t=$('#tablelistar').DataTable({
         processing: true,
@@ -368,6 +355,11 @@
                 var datos = $( "#agregar_clase_grupal" ).serialize(); 
                 limpiarMensaje();
 
+                $("#add").attr("disabled","disabled");
+                $("#add").css({
+                  "opacity": ("0.2")
+                });
+
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -382,6 +374,12 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
+
+                          $("#agregar_clase_grupal")[0].reset();
+                          $('#instructor_acordeon_id').selectpicker('refresh');
+                          $('#especialidad_acordeon_id').selectpicker('refresh');
+                          $('#estudio_id').selectpicker('refresh');
+                          $('#dia_de_semana_id').selectpicker('refresh');
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
@@ -414,8 +412,8 @@
                         }                       
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $("#guardar").css({
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
                           "opacity": ("1")
                         });
                         $(".cancelar").removeAttr("disabled");
@@ -434,8 +432,8 @@
                           var nTitle="   Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        $("#guardar").removeAttr("disabled");
-                        $("#guardar").css({
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
                           "opacity": ("1")
                         });
                         $(".cancelar").removeAttr("disabled");
@@ -518,6 +516,99 @@
       }, 1500);          
 
   }
+
+  $( "#cancelar" ).click(function() {
+
+    var token = $('input:hidden[name=_token]').val();
+
+    $.ajax({
+         url: route_cancelar,
+         headers: {'X-CSRF-TOKEN': token},
+         type: 'POST',
+         dataType: 'json',                
+        success: function (data) {
+          if(data.status=='OK'){
+
+            $("#agregar_clase_grupal")[0].reset();
+            $('#instructor_acordeon_id').selectpicker('refresh');
+            $('#especialidad_acordeon_id').selectpicker('refresh');
+            $('#estudio_id').selectpicker('refresh');
+            $('#dia_de_semana_id').selectpicker('refresh');
+
+             t
+              .clear()
+              .draw();
+                               
+          }else{
+            swal(
+              'Solicitud no procesada',
+              'Ha ocurrido un error, intente nuevamente por favor',
+              'error'
+            );
+          }
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+        }
+      })
+
+        $('html,body').animate({
+        scrollTop: $("#id-clase").offset().top-90,
+        }, 1000);
+      });
+
+  $("#guardar").click(function(){
+
+      var route = route_guardar;
+      var token = $('input:hidden[name=_token]').val();
+      limpiarMensaje();
+      procesando();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data: "&id={{$id}}",
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                window.location = "{{$url}}";
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";  
+              finprocesado();                     
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
 
     </script>
 
