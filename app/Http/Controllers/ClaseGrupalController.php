@@ -1872,7 +1872,102 @@ class ClaseGrupalController extends BaseController {
             	);
         	}
 
-            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'grupales' => $array]);
+            $horario_clase_grupal=HorarioClaseGrupal::where('clase_grupal_id',$id)
+            ->join('config_especialidades', 
+                'horario_clase_grupales.especialidad_id',
+                '=', 
+                'config_especialidades.id'
+                )
+            ->join('instructores', 
+                'horario_clase_grupales.instructor_id',
+                '=',
+                'instructores.id'
+                 )
+            ->join('config_estudios', 
+                'horario_clase_grupales.estudio_id',
+                '=',
+                'config_estudios.id'
+                 )
+            ->select('horario_clase_grupales.*', 
+                'instructores.nombre as instructor_nombre',
+                'instructores.apellido as instructor_apellido',
+                'config_especialidades.nombre as especialidad_nombre', 
+                'config_estudios.nombre as estudio_nombre'
+                 )
+            ->get();
+
+        $arrayHorario= array();
+
+        foreach ($horario_clase_grupal as $horario) {
+            $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
+            $especialidad=$horario->especialidad_nombre;
+            $estudio = $horario->estudio_nombre;
+            $fecha=$horario->fecha;
+            $hora_inicio=$horario->hora_inicio;
+            $hora_final=$horario->hora_final;
+            $id_horario=$horario->id;
+
+            $fc=explode('-',$fecha);
+            $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
+            $dia_curso = $fecha_curso->format('l');
+
+            $dia_de_semana="";
+
+            $dia_curso=strtoupper($dia_curso);
+
+            if($dia_curso=="SUNDAY")
+            {
+                $dia="6";
+                $dia_de_semana="Domingo";
+            }
+            elseif($dia_curso=="MONDAY")
+            {
+                $dia="0";
+                $dia_de_semana="Lunes";
+            }
+            elseif($dia_curso=="TUESDAY")
+            {
+                $dia="1";
+                $dia_de_semana="Martes";
+
+            }
+            elseif($dia_curso=="WEDNESDAY")
+            {
+                $dia="2";
+                $dia_de_semana="Míercoles";                
+            }
+            elseif($dia_curso=="THURSDAY")
+            {
+                $dia="3";
+                $dia_de_semana="Jueves";                
+            }
+            elseif($dia_curso=="FRIDAY")
+            {
+                $dia="4";
+                $dia_de_semana="Viernes";
+            }
+            elseif($dia_curso=="SATURDAY")
+            {
+                $dia="5";
+                $dia_de_semana="Sábado";
+            }
+
+            $arrayHorario[$id_horario] = array(
+                    'instructor' => $instructor,
+                    'dia_de_semana' => $dia_de_semana,
+                    'new_dia_de_semama'=>$dia_curso,
+                    'especialidad' => $especialidad,
+                    'estudio' => $estudio,
+                    'hora_inicio' => $hora_inicio,
+                    'new_hora_inicio' => $hora_inicio,
+                    'hora_final' => $hora_final,
+                    'new_hora_final' => $hora_final,
+                    'fecha'=> $fecha,
+                    'id'=>$id_horario
+            );
+        }
+
+            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'grupales' => $array, 'arrayHorario' => $arrayHorario]);
 
         }else{
            return redirect("agendar/clases-grupales"); 
