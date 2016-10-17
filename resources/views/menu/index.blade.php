@@ -26,37 +26,6 @@
 
 @section('content')
   <!-- ENHORABUENA -->
-<div class="modal fade" id="modalConstruccion" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div class="text-center">
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div align="center"><i class="zmdi zmdi-wrench zmdi-hc-fw f-60 c-morado"></i></div>
-
-                        <div class="clearfix p-b-15"></div>
-                        
-                        <div class="col-md-12">
-                         <span class="f-20 opaco-0-8">¡ Modulo en construcción. !</span>
-                         </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
 <div class="myback2" style="margin-top:-30px;" >
 <section id="content">
     
@@ -184,7 +153,7 @@
                         <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a></li>
                         
                         <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Guía de contactos </h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a></li>
-                        <li data-hovercolor="#f44336"><a data-toggle="modal" href="#modalConstruccion"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a></li>
+                        <li data-hovercolor="#f44336"><a data-toggle="modal" href="{{url('/')}}/reportes/estatus_alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a></li>
 
                       </ul>
 
