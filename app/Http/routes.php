@@ -333,6 +333,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('reportes/contactos', 'ReporteController@Contactos');
 			Route::get('reportes/asistencias', 'ReporteController@asistencias');
 			Route::get('reportes/estatus_alumnos','ReporteController@estatus_alumnos');
+			Route::post('reportes/estatus_alumnos/filtrar','ReporteController@filtrar_estatus_alumnos');
 			Route::post('reportes/asistencias/filtrar', 'ReporteController@filtrarAsistencias');
 			Route::get('reportes/chart', 'ReporteController@charts');
 			Route::get('reportes/administrativo', 'ReporteController@Administrativo');

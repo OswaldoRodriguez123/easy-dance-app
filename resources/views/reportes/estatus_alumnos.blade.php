@@ -50,7 +50,7 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <label>Participantes</label>
 
-                                    <select name="participante_id" id="participante_id">
+                                    <select name="estatus_alumno_id" id="estatus_alumno_id">
                                       <option value="1">Activos</option>
                                       <option value="2">Riesgo de ausencia</option>
                                       <option value="3">Inactivos</option>
@@ -60,6 +60,15 @@
 
 
                                 <select name="clase_grupal_id" id="clase_grupal_id">
+                                    @foreach ($clases_grupales as $clase)
+                                        <?php $id = $clase['id']; ?>
+                                        <option value="{{$id}}">                       
+                                            {{$clase['nombre']}} - {{$clase['dia']}} - 
+                                            {{$clase['hora_inicio']}}/ 
+                                            {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
+                                            {{$clase['instructor_apellido']}}
+                                        </option>
+                                    @endforeach                                
                                 </select> 
                                 
                                  <div class="clearfix m-b-10"></div>
@@ -85,14 +94,12 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
                                     <th class="text-center" data-column-id="estatus_e">Estatus de Alumno</th>
                                     <th class="text-center" data-column-id="clase_grupal" data-order="desc">Clase Grupal</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,15 +107,12 @@
                             @foreach ($alumnos as $alumno)
                                 <?php $id = $alumno->inscripcion_id; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa"></td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_nombre']}} {{$reporte_datos[$id]['alumno_apellido']}}</td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_identificacion']}}</td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_nacimiento']}}</td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$alumno[$id]['estatus_alumno']}}"></i></label></td>
+                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$reporte_datos[$id]['estatus_alumno']}}"></i></label></td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['clase_grupal']}}</td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_celular']}}</td>
-
-                                    <td class="text-center previa">
                                 </tr>
                             @endforeach  
                                                            
@@ -118,16 +122,11 @@
                         </div>
                         <div class="card-body p-b-20">
                             <div class="row">
-                              <div class="container">
-                                
+                              <div class="container">   
                               </div>
                             </div>
                         </div>
-                        
-                        
                     </div>
-                    
-                    
                 </div>
             </section>
 @stop
@@ -136,26 +135,14 @@
             
         <script type="text/javascript">
 
-        var clases_grupales = <?php echo json_encode($clases_grupales);?>;
-        var instructores = <?php echo json_encode($instructores);?>;
-        var clase_grupal_array = [];
-
-        route_filtrar="{{url('/')}}/reportes/asistencias/filtrar";
-
-        $(document).ready(function(){
-
-        var hoy = moment().format('DD/MM/YYYY');
-
-        $("#formFiltro")[0].reset();
-        $('#clase_grupal_id').empty();
-        $('#instructor_id').empty();
+        route_filtrar="{{url('/')}}/reportes/estatus_alumnos/filtrar";
 
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
         pageLength: 50, 
         // paging:false, 
-        order: [[7, 'desc'], [8, 'desc']],
+        order: [[0, 'desc']],
         fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 50) {
               $('.dataTables_paginate').hide();
@@ -192,49 +179,6 @@
                         }
                     }
         });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-
-                rechargeClase()
-            });
-
-        function rechargeClase(){
-
-            $('#clase_grupal_id').empty();
-            clase_grupal_array = [];
-                     
-            $.each(clases_grupales, function (index, array) {
-                clase_grupal_array.push(array); 
-                   
-                $('#clase_grupal_id').append( new Option(array.clase_grupal_nombre +'  -  '+array.hora_inicio+' / '+array.hora_final + '  -  ' + array.instructor_nombre + ' ' + array.instructor_apellido,array.clase_grupal_id));
-            });
-        }
 
         $("#guardar").click(function(){
 
@@ -244,10 +188,9 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            procesando(); 
+            procesando();
 
             t.clear().draw();
-
 
             $.ajax({
                 url: route,
@@ -268,37 +211,16 @@
                       var nTitle="Ups! ";
                       var nMensaje=respuesta.mensaje;
 
-                        
-                    $.each(respuesta.array, function (index, array) {
-
-                        if(array.sexo=='F'){
-                            sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i>'
-                        }
-                        else{
-                            sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i>'
-                        }
-
-
-                        if (typeof array.fecha === "undefined") {
-                            fecha = '';
-                            hora = '';
-                        }else{
-                            fecha = array.fecha;
-                            hora = array.hora;
-                        }
-
+                      $.each(respuesta.reporte_datos, function (index, array) {
 
                         var rowId=array.id;
                         var rowNode=t.row.add( [
-                        ''+array.pertenece+'',
-                        ''+array.nombre+ ' '+array.apellido+ '',
-                        ''+array.identificacion+'',
-                        ''+array.fecha_nacimiento+'',
-                        ''+array.deuda+'',
-                        ''+array.celular+'',
-                        ''+sexo+'',
-                        ''+fecha+'',
-                        ''+hora+'',
+                        ''+array.alumno_nombre+ ' '+array.alumno_apellido+ '',
+                        ''+array.alumno_identificacion+'',
+                        ''+array.alumno_nacimiento+'',
+                        ''+"<i data-toggle='modal' href='#' class='zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal "+array.estatus_alumno+"'></i>",
+                        ''+array.clase_grupal+'',
+                        ''+array.alumno_celular+'',
                         ] ).draw(false).node();
                         $( rowNode )
                           .attr('id',rowId)
@@ -307,55 +229,6 @@
 
                     datos = JSON.parse(JSON.stringify(respuesta));
 
-                    $("#mujeres").text(datos.mujeres);
-                    $("#hombres").text(datos.hombres);
-
-                    var data1 = ''
-                    data1 += '[';
-                    $.each( datos.sexos, function( i, item ) {
-                        var edad = item[0];
-                        var cant = item[1];
-                        data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                    });
-
-                    data1 = data1.substring(0, data1.length -1);
-                    data1 += ']';
-                        //GRAFICO FILTRO MES ACTUAL
-                        $("#pie-chart-procesos").html('');
-                        $(".flc-pie").html('');
-                        $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                            series: {
-                                pie: {
-                                    show: true,
-                                    stroke: { 
-                                        width: 2,
-                                    },
-                                },
-                            },
-                            legend: {
-                                container: '.flc-pie',
-                                backgroundOpacity: 0.5,
-                                noColumns: 0,
-                                backgroundColor: "white",
-                                lineWidth: 0
-                            },
-                            grid: {
-                                hoverable: true,
-                                clickable: true
-                            },
-                            tooltip: true,
-                            tooltipOpts: {
-                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                shifts: {
-                                    x: 20,
-                                    y: 0
-                                },
-                                defaultTheme: false,
-                                cssClass: 'flot-tooltip'
-                            }
-                            
-                        });
-                
                     }else{
                       var nTitle="Ups! ";
                       var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -413,67 +286,6 @@
         });       
 
     }
-
-    //PLOTS
-        var pieData1 = [
-                @foreach ($sexos as $sexo)
-                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-                @endforeach
-            ];
-        
-        var values = [
-            @foreach ($sexos as $sexo)        
-                   {{$sexo->CantSex}} ,
-            @endforeach                    
-            ];
-
-
-        $.plot('#pie-chart-procesos', pieData1, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: { 
-                        width: 2,
-                    },
-                },
-            },
-            legend: {
-                container: '.flc-pie',
-                backgroundOpacity: 0.5,
-                noColumns: 0,
-                backgroundColor: "white",
-                lineWidth: 0
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: false,
-                cssClass: 'flot-tooltip'
-            }
-            
-        });
-
-    // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
-
-    //     function sparklinePie(id, values, width, height, sliceColors) {
-    //         $('.'+id).sparkline(values, {
-    //             type: 'pie',
-    //             width: width,
-    //             height: height,
-    //             sliceColors: sliceColors,
-    //             offset: 0,
-    //             borderWidth: 0
-    //         });
-    //     }    
-
 </script>
 
 @stop
