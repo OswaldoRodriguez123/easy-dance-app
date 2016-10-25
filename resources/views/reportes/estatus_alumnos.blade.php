@@ -94,7 +94,6 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
@@ -108,7 +107,6 @@
                             @foreach ($alumnos as $alumno)
                                 <?php $id = $alumno->inscripcion_id; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa"></td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_nombre']}} {{$reporte_datos[$id]['alumno_apellido']}}</td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_identificacion']}}</td>
                                     <td class="text-center previa">{{$reporte_datos[$id]['alumno_nacimiento']}}</td>
@@ -217,12 +215,10 @@
 
                         var rowId=array.id;
                         var rowNode=t.row.add( [
-                        ''+array.pertenece+'',
                         ''+array.alumno_nombre+ ' '+array.alumno_apellido+ '',
                         ''+array.alumno_identificacion+'',
                         ''+array.alumno_nacimiento+'',
                         ''+"<i data-toggle='modal' href='#' class='zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal "+array.estatus_alumno+"'></i>",
-                        ''+array.estatus_alumno+'',
                         ''+array.clase_grupal+'',
                         ''+array.alumno_celular+'',
                         ] ).draw(false).node();
