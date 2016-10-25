@@ -150,7 +150,7 @@ class ConfigClasePersonalizadaController extends BaseController {
         if($clase_personalizada)
         {
 
-            return view('agendar.clase_personalizada.operacion')->with(['id' => $id, 'clase_personalizada' => $clase_personalizada]); 
+            return view('configuracion.clase_personalizada.operacion')->with(['id' => $id, 'clase_personalizada' => $clase_personalizada]); 
 
         }else{
             return redirect("agendar/clases-personalizadas"); 

@@ -135,7 +135,7 @@
                               </div>
 
                                 
-                                <div class="col-md-2">
+                                <div class="col-md-2 text-left pull-left">
                                   <button type="button" class="btn btn-blanco m-r-8 f-10 guardar" name= "add" id="add" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
                                 </div>
 
@@ -188,7 +188,7 @@
                                     </p>
                                     <p><span class="f-15 text-right c-morado">Impuesto</span>
                                     <span class="f-15 c-morado" id = "impuestototal"></span></p> -->
-                                    <p><span class="f-15 text-right c-morado">Total</span>
+                                    <p><span class="f-15 text-right c-morado">Resta Total</span>
                                     <span class="f-15 c-morado" id = "total"></span></p>
                                     </div>
 
@@ -211,14 +211,16 @@
                             </div>
 
 
-                            <div class="col-sm-6 text-right">  
+                            <div class="col-sm-6 text-right pull-right" style="padding-right: 0px">  
                               
                               <!--<a href="{{-- $datos['response']['init_point'] --}}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>-->
                               <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "guardar" id="guardar" >Pagar Ya <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
                               <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
+
                             </div>
-                            </div>
+
+                          </div>
                         </div></form>
                     </div>
                 </div>
@@ -244,6 +246,10 @@
   route_imprimir="{{url('/')}}/administrativo/factura/";
   //route_mercadopago="{{url('/')}}/administrativo/pagos/facturamercadopago/";
 
+  function formatmoney(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  }
+
   $( document ).ready(function() {
 
      acuerdo = "{{{ $acuerdo or 'Default' }}}";
@@ -263,10 +269,6 @@
      $("#total2").text(formatmoney(totalglobal));
 
   });
-
-  function formatmoney(n) {
-    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  }
   
   $("#forma_pago_id").change(function(){
 
@@ -510,7 +512,7 @@
                             ''+forma_pago+'',
                             ''+banco+'',
                             ''+referencia+'',
-                            ''+monto+'',
+                            ''+formatmoney(parseFloat(monto))+'',
                             '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                             ] ).draw(false).node();
                             $( rowNode )
@@ -534,7 +536,9 @@
                             // // console.log(subtotalglobal);
                             // $("#subtotal").text(formatmoney(subtotalglobal));
                             // $("#impuestototal").text(formatmoney(impuestoglobal));
+                            $('#forma_pago_id').val('');
                             $('#forma_pago_id').selectpicker('deselectAll');
+                            $('#forma_pago_id').selectpicker('render');
                             $('#forma_pago_id').selectpicker('refresh');
                             $('#monto').val('');
                             $('#banco').val('');

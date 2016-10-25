@@ -34,8 +34,7 @@
                     @if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4)
 
                       <div class="block-header">
-                         <?php $url = "/participante/alumno/detalle/$perfil->alumno_id" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$perfil->alumno_id}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                       </div> 
 
                     @endif

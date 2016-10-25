@@ -269,7 +269,7 @@
 
                                     <div class="clearfix p-b-35"></div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-12">
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
@@ -477,7 +477,7 @@
                             </div>
 
 
-                            <div class="col-sm-4 text-right">                          
+                            <div class="col-sm-4 text-right pull-right" style="padding-right: 0px">                          
 
                               <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" >Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
@@ -1060,9 +1060,9 @@
                           ''+respuesta.array[0].id+'',
                           ''+respuesta.array[0].nombre+'',
                           ''+respuesta.array[0].cantidad+'',
-                          ''+respuesta.array[0].precio_neto+'',
+                          ''+formatmoney(respuesta.array[0].precio_neto)+'',
                           ''+respuesta.array[0].impuesto+'',
-                          ''+respuesta.array[0].importe_neto+'',
+                          ''+formatmoney(respuesta.array[0].importe_neto)+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
@@ -1344,9 +1344,9 @@
                           ''+array[0].id+'',
                           ''+array[0].nombre+'',
                           ''+array[0].cantidad+'',
-                          ''+array[0].precio_neto+'',
+                          ''+formatmoney(array[0].precio_neto)+'',
                           ''+array[0].impuesto+'',
-                          ''+array[0].importe_neto+'',
+                          ''+formatmoney(array[0].importe_neto)+'',
                           ''+ ' ' +''
                           ] ).draw(false).node();
                           $( rowNode )

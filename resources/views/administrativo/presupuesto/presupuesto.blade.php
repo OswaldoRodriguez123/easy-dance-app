@@ -534,7 +534,12 @@
   route_agregar="{{url('/')}}/administrativo/presupuestos/agregaritem";
   route_eliminar="{{url('/')}}/administrativo/presupuestos/eliminaritem";
   route_factura="{{url('/')}}/administrativo/presupuestos/generar";
-  route_cancelar = "{{url('/')}}/administrativo/pagos/sesion"
+  route_cancelar = "{{url('/')}}/administrativo/pagos/cancelarpago"
+
+
+  function formatmoney(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  }
 
   $( document ).ready(function() {
 
@@ -576,10 +581,6 @@
       }, 1000);
 
   });
-
-  function formatmoney(n) {
-    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  }
 
   var t=$('#tablelistar').DataTable({
         processing: true,
@@ -964,9 +965,9 @@
                           var rowNode=t.row.add( [
                           ''+nombre+'',
                           ''+cantidad+'',
-                          ''+precio_neto+'',
+                          ''+formatmoney(parseFloat(precio_neto))+'',
                           ''+impuesto+'',
-                          ''+importe_neto+'',
+                          ''+formatmoney(parseFloat(importe_neto))+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
@@ -1204,7 +1205,7 @@
               })
 
         $('html,body').animate({
-        scrollTop: $("#id-alumno_id").offset().top-90,
+        scrollTop: $("#id-cliente").offset().top-90,
         }, 1000);
       });
 

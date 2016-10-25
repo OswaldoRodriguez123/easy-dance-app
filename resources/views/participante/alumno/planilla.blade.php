@@ -709,7 +709,7 @@
 
                     <div class="block-header">
                        <?php $url = "/participante/alumno" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                     </div> 
                     
                     <div class="card">
@@ -718,11 +718,17 @@
                       <div class="card-header">
                             
                         <a href="" class="pull-right">
+                        @if($imagen)
+                          <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}" alt="" width="70px" height="auto"> 
+                        @else
                            @if($alumno->sexo=='F')
                               <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
                            @else
                               <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
                            @endif
+                        @endif
+
+                       
 
                         </a>
                       </div>
@@ -785,7 +791,6 @@
                                   <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a href="{{url('/')}}/participante/alumno/perfil-evaluativo/{{$id}}"><i class="icon_a-alumnos f-20 m-r-5 boton blue sa-warning" data-original-title="Perfil Evaluativo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -873,7 +878,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Alumno">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class=icon_d-ficha-medica f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_d-ficha-medica f-22"></i> </span>
                                <span class="f-14"> Ficha Médica </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -881,11 +886,23 @@
                             <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Alumno">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class=icon_a-clases-grupales f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
                                <span class="f-14"> Clases Grupales</span>
                              </td>
                              <td id="alumno-clase_grupal" class="f-14 m-l-15 capitalize" >{{ str_limit($descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle perfil">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-perfil" class="zmdi {{ empty($perfil) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-alumnos f-22"></i> </span>
+                               <span class="f-14"> Perfil Evaluativo </span>
+                             </td>
+                             <td id="alumno-perfil" class="f-14 m-l-15 capitalize"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
+
+
+                           
                            </table>
                           </div>
                           
@@ -1507,6 +1524,10 @@
               }
             });
         });
+
+    $('.perfil').click(function(){
+      window.location = "{{url('/')}}/participante/alumno/perfil-evaluativo/{{$id}}"
+    });
 
    </script> 
 

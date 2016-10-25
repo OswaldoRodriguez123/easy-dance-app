@@ -1772,7 +1772,7 @@ class AdministrativoController extends BaseController {
             $arrayAcuerdoFecha=array();
             $arrayAcuerdo=array();
             $ff =Carbon::createFromFormat('Y-m-d', $dt->toDateString())->format('d-m-Y');
-            $arrayAcuerdoFecha[]=array("numero"=>1, "fecha_frecuencia"=>$ff, "cantidad"=>number_format($cantidad, 2,'.','') );
+            $arrayAcuerdoFecha[]=array("numero"=>1, "fecha_frecuencia"=>$ff, "cantidad"=>number_format($cantidad, 2, '.' , '.') );
 
             for($i=1; $i<$partes; $i++) {
                 
@@ -1787,7 +1787,7 @@ class AdministrativoController extends BaseController {
                
                $ff = Carbon::createFromFormat('Y-m-d', $dt->toDateString())->format('d-m-Y');
                 
-                $arrayAcuerdoFecha[]=array("numero"=>$i+1, "fecha_frecuencia"=>$ff, "cantidad"=>number_format($cantidad, 2,'.','') );
+                $arrayAcuerdoFecha[]=array("numero"=>$i+1, "fecha_frecuencia"=>$ff, "cantidad"=>number_format($cantidad, 2, '.' , '.') );
 
             }
 

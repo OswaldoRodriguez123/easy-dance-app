@@ -352,7 +352,32 @@ class AlumnoController extends BaseController
                     
             }
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion]);
+            $perfil = DB::table('perfil_evaluativo')
+                ->join('users', 'perfil_evaluativo.usuario_id', '=', 'users.id')
+                ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+                ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
+                ->where('alumnos.id', $id)
+            ->first();
+
+            $usuario = DB::table('users')
+                ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+                ->select('users.imagen')
+                ->where('alumnos.id', $id)
+            ->first();
+
+            if($perfil){
+                $tiene_perfil = 1;
+            }else{
+                $tiene_perfil = 0;
+            }
+
+            if($usuario){
+                $imagen = $usuario->imagen;
+            }else{
+                $imagen = '';
+            }
+
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen]);
         }else{
            return redirect("participante/alumno"); 
         }
