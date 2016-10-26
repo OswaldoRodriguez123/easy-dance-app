@@ -519,7 +519,28 @@
   route_pendientes="{{url('/')}}/administrativo/pagos/itemspendientes/";
   route_alumno="{{url('/')}}/participante/alumno/deuda/";
 
+  function formatmoney(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  }
+
+
   $( document ).ready(function() {
+
+    
+    $('body,html').animate({scrollTop : 0}, 2000);
+        var animation = 'fadeInUpBig';
+        if (animation === "hinge") {
+        animationDuration = 3100;
+        }
+        else {
+        animationDuration = 3200;
+        }
+        //$("h1").removeAttr('class');
+        $(".container").addClass('animated '+animation);
+
+        setTimeout(function(){
+                $(".card-body").removeClass(animation);
+        }, animationDuration);
 
     $("#agregar_item")[0].reset();
     $('#alumno_id').val('');
@@ -694,21 +715,6 @@
     $("#agregar_item")[0].reset();
     rechargeServicio();
 
-    $('body,html').animate({scrollTop : 0}, 2000);
-        var animation = 'fadeInUpBig';
-        if (animation === "hinge") {
-        animationDuration = 3100;
-        }
-        else {
-        animationDuration = 3200;
-        }
-        //$("h1").removeAttr('class');
-        $(".container").addClass('animated '+animation);
-
-        setTimeout(function(){
-                $(".card-body").removeClass(animation);
-        }, animationDuration);
-
       // $("#impuesto").val($("#impuesto option:first").val());
       // $("#combo").val($("#combo option:first").val());
       // $('input[name="cantidad"]').val(1)
@@ -722,10 +728,6 @@
     subtotalglobal = 0;
 
   });
-
-  function formatmoney(n) {
-    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  }
 
   function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -1060,9 +1062,9 @@
                           ''+respuesta.array[0].id+'',
                           ''+respuesta.array[0].nombre+'',
                           ''+respuesta.array[0].cantidad+'',
-                          ''+formatmoney(respuesta.array[0].precio_neto)+'',
+                          ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
                           ''+respuesta.array[0].impuesto+'',
-                          ''+formatmoney(respuesta.array[0].importe_neto)+'',
+                          ''+formatmoney(parseFloat(respuesta.array[0].importe_neto))+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
