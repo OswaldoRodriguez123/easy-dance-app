@@ -1316,7 +1316,7 @@ class AdministrativoController extends BaseController {
                         
             $item_factura->save();
 
-            $array = array(['id' =>  $item_factura->id, 'item_id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+            $array = array(['id' =>  $item_factura->id, 'item_id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
 
             }else if($request->tipo == "producto"){
 
@@ -1347,7 +1347,7 @@ class AdministrativoController extends BaseController {
                             
                 $item_factura->save();
 
-                $array = array(['id' => $item_factura->id, 'item_id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto , 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+                $array = array(['id' => $item_factura->id, 'item_id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto , 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
                 }
 
                  $last_proforma = DB::table('items_factura_proforma')
