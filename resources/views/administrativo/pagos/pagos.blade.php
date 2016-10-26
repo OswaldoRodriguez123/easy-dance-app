@@ -581,9 +581,9 @@
                           ''+array[0].id+'',
                           ''+array[0].nombre+'',
                           ''+array[0].cantidad+'',
-                          ''+array[0].precio_neto+'',
+                          ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                           ''+array[0].impuesto+'',
-                          ''+array[0].importe_neto+'',
+                          ''+formatmoney(parseFloat(array[0].importe_neto))+'',
                           ''+ ' ' +''
                           ] ).draw(false).node();
                           $( rowNode )
