@@ -526,7 +526,7 @@
 
   $( document ).ready(function() {
 
-    
+
     $('body,html').animate({scrollTop : 0}, 2000);
         var animation = 'fadeInUpBig';
         if (animation === "hinge") {
@@ -1346,9 +1346,9 @@
                           ''+array[0].id+'',
                           ''+array[0].nombre+'',
                           ''+array[0].cantidad+'',
-                          ''+formatmoney(array[0].precio_neto)+'',
+                          ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                           ''+array[0].impuesto+'',
-                          ''+formatmoney(array[0].importe_neto)+'',
+                          ''+formatmoney(parseFloat(array[0].importe_neto))+'',
                           ''+ ' ' +''
                           ] ).draw(false).node();
                           $( rowNode )
