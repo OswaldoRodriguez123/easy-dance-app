@@ -2320,7 +2320,7 @@ class AdministrativoController extends BaseController {
             $array = array();
             foreach($items_factura as $item_factura){
 
-                $array[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => $item_factura->impuesto, 'importe_neto' => $item_factura->importe_neto]);
+                $array[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => intval($item_factura->impuesto), 'importe_neto' => $item_factura->importe_neto]);
 
                 $total = $total + $item_factura['importe_neto'];
                 $i = $i + 1;
