@@ -605,6 +605,7 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -1127,14 +1128,17 @@
       //   $("#guardar").removeAttr("disabled");
       //   $("#guardar").css({"opacity": ("1")});
       // })
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-edit', function () {
-    var padre=$(this).parents('tr');
-    var td_fecha = $(padre).find('td:eq(1)').text();
-    var fecha = td_fecha.split("-")
-    $('#fecha_actualizada').val(fecha[0]+'/'+fecha[1]+'/'+fecha[2]);
-    $('input[name=id]').val($(this).closest('tr').attr('id'));
-    $('#modalFecha-Acuerdo').modal('show');
-  });
+      function previa(t){
+        //$('#tablelistar tbody').on( 'click', 'i.zmdi-edit', function () {
+        var padre=$(t).closest('tr');
+        console.log(padre);
+        var td_fecha = $(padre).find('td:eq(1)').text();
+        var fecha = td_fecha.split("-")
+        $('#fecha_actualizada').val(fecha[0]+'/'+fecha[1]+'/'+fecha[2]);
+        $('input[name=id]').val($(t).closest('tr').attr('id'));
+        $('#modalFecha-Acuerdo').modal('show');
+        //});
+      }
 
 </script> 
 @stop

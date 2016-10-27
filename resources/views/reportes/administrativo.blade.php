@@ -202,16 +202,21 @@
                         </div>
                         <div class="card-body p-b-20">
                             <div class="row">
-                              <div class="container">
-                                
+                                <div class="container">
+                                    <div class="clearfix p-b-15"></div>
+                                    <div class="col-sm-12 text-right">
+                                    <span id = "totales" class="f-30 text-center c-morado">Total</span>
+                                </div></div>
+
+                                <br>
+                                <div class="col-sm-12 text-right">
+                                    <p><span class="f-15 text-right c-morado">Total</span>
+                                    <span class="f-15 c-morado" id = "total">{{$total}}</span></p>
+                                </div>
                               </div>
                             </div>
-                        </div>
-                        
-                        
+                        </div>  
                     </div>
-                    
-                    
                 </div>
             </section>
 

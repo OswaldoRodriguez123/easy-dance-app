@@ -880,6 +880,8 @@ public function PresencialesFiltros(Request $request)
             ->OrderBy('facturas.created_at')
         ->get();
 
+        $total_de_informe=0;
+
         foreach($factura_join as $factura){
 
 
@@ -888,11 +890,12 @@ public function PresencialesFiltros(Request $request)
             $factura_array = $collection->toArray();
             
             $factura_array['total']=$total;
+            $total_de_informe+=$total;
             $array[$factura->id] = $factura_array;
 
         }
 
-        return view('reportes.administrativo')->with(['facturas'=> $array]);
+        return view('reportes.administrativo')->with(['facturas'=> $array, 'total'=>$total_de_informe]);
     }
 
     public function AdministrativoFiltros(Request $request)
