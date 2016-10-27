@@ -608,9 +608,12 @@ class FamiliaController extends BaseController {
                     // $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
                     // $sms = $this->sendAlumno($data, $msg);
 
-                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
+                    
                 }
             }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
+            
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
         }
