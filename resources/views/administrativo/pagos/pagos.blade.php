@@ -191,7 +191,7 @@
                                     <li class="waves-effect active"><a href="{{url('/')}}/administrativo/pagos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-pagar f-30"></div><p style=" margin-bottom: -2px;">Pagos</p></a></li>
                                     <li class="waves-effect"><a href="{{url('/')}}/administrativo/acuerdos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-acuerdo-de-pago f-30"></div><p style=" margin-bottom: -2px;">Acuerdos</p></a></li>
                                     <li class="waves-effect"><a href="{{url('/')}}/administrativo/presupuestos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-presupuesto f-30"></div><p style=" margin-bottom: -2px;">Presupuestos</p></a></li>
-                                    <li class="waves-effect"><a data-toggle="modal" href="#modalConstruccion"><div class="icon_d icon_d-reporte f-30"></div><p style=" margin-bottom: -2px;">Reportes</p></a></li>
+                                    <li class="waves-effect"><a data-toggle="modal" href="{{url('/')}}/reportes/administrativo"><div class="icon_d icon_d-reporte f-30"></div><p style=" margin-bottom: -2px;">Reportes</p></a></li>
                                     
                             </ul>
                             </div>
@@ -349,8 +349,8 @@
                                     <div class="fg-line">
                                       <div class="select text-center">
                                         <select class="form-control" name="impuesto" id="impuesto">
+                                          <option value="0">0 %</option>
                                           <option value = "{{ $impuesto }}">{{$impuesto}} %</option>
-                                          <option value="0">0%</option>
                                         </select>
                                       </div>
                                     </div>
@@ -668,10 +668,9 @@
           "orderable": false
         } ],
         processing: true,
-        serverSide: false,   
-        order: [[1, 'desc']],
-        paging:false,
+        serverSide: false,
         pageLength: 25,
+        order: [[1, 'desc']],
         language: {
               searchPlaceholder: "Buscar"
         },
@@ -1025,7 +1024,8 @@
     // LINEA AGREGAR
 
     $("#add").click(function(){
-
+      $('#disponibilidad_productos').addClass("disponibilidad_productos_no");
+      $('#disponibilidad_productos_campo').addClass("disponibilidad_productos_no");
 
       $("#add").attr("disabled","disabled");
         $("#add").css({

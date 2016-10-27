@@ -126,20 +126,15 @@
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-        } 
+        }
 
-        $(document).ready(function(){
-
-
-            $("#pagadas").prop("checked", true);
-
-            t=$('#tablelistar').DataTable({
+        t=$('#tablelistar').DataTable({
             processing: true,
             serverSide: false,
-            pageLength: 50, 
+            pageLength: 25, 
             order: [[0, 'desc']],
             fnDrawCallback: function() {
-            if ("{{count($proforma)}}" < 50) {
+            if ("{{count($proforma)}}" < 25) {
                   $('.dataTables_paginate').hide();
                   $('#tablelistar_length').hide();
               }
@@ -171,11 +166,13 @@
                                 sortDescending: ": habilitado para ordenar la columna en orden descendente"
                             }
                         }
-
             });
-    
-           document.getElementById('fecha').innerHTML = 'Fecha'; 
 
+        $(document).ready(function(){
+
+           $("#pagadas").prop("checked", true);
+            
+           document.getElementById('fecha').innerHTML = 'Fecha';
         });
 
         function previa(t){
@@ -428,5 +425,4 @@
     }
 
         </script>
-
 @stop
