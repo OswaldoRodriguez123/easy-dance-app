@@ -130,8 +130,8 @@
                                 
                                 <div class="col-xs-3">
                                     <div class="bgm-red brd-2 p-15">
-                                        <div class="c-white m-b-5">Total VEF</div>
-                                        <h4 class="m-0 c-white f-300">Bs {{ number_format($total,2,",",".") }} </h4>
+                                        <div class="c-white m-b-5">Total {{$academia->pais_abreviatura}}</div>
+                                        <h4 class="m-0 c-white f-300">{{$academia->pais_moneda}} {{ number_format($total,2,",",".") }} </h4>
                                     </div>
                                 </div>
                             </div>
@@ -159,9 +159,9 @@
                                             <td class="text-center disabled">{{ $detalle->item_id }}</td>
                                             <td class="disabled">{!! $detalle->nombre !!}</td>
                                             <td class="disabled">{{ $detalle->cantidad }}</td>
-                                            <td class="disabled">Bs {{ number_format($detalle->importe_neto,2,",",".") }}</td>
+                                            <td class="disabled">{{$academia->pais_moneda}} {{ number_format($detalle->importe_neto,2,",",".") }}</td>
                                             <td class="disabled">% {{$detalle->impuesto}} </td>
-                                            <td class="highlight disabled">Bs {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
+                                            <td class="highlight disabled">{{$academia->pais_moneda}} {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
                                             <!--<td class="text-center previa"><label class="label label-success f-13">Activo</label></td>
                                             <td class="text-center previa"><label class="label label-success f-13">Bien</label></td>-->
                                             <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-wrench f-20 p-r-10 operacionModal"></i></td>-->
@@ -171,7 +171,7 @@
                                         <tr>
                                             <td colspan="4"></td>
                                             <td> TOTAL FACTURA </td>
-                                            <td class="highlight">Bs {{ number_format($total,2,",",".") }}</td>
+                                            <td class="highlight">{{$academia->pais_moneda}} {{ number_format($total,2,",",".") }}</td>
                                         </tr>
                                     </thead>
 
