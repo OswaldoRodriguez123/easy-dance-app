@@ -264,7 +264,7 @@ class AdministrativoController extends BaseController {
             ->where('alumnos.deleted_at' , '=' , null)
         ->get();
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
         foreach($alumnos as $alumno)
         {
@@ -2419,6 +2419,123 @@ class AdministrativoController extends BaseController {
         return 'No se genero ningun Registro en Base de Datos';
 
     }
+
+    public function AgregarCliente(Request $request)
+    {
+        $request->merge(array('correo' => trim($request->correo)));
+
+    $rules = [
+        'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
+        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        'fecha_nacimiento' => 'required',
+        'sexo' => 'required',
+        'correo' => 'required|email|max:255|unique:users,email',
+        'rol' => 'required'
+    ];
+
+    $messages = [
+
+        'identificacion.required' => 'Ups! El identificador es requerido',
+        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
+        'identificacion.max' => 'El maximo de numeros permitidos son 20',
+        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
+        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
+        'nombre.required' => 'Ups! El Nombre  es requerido ',
+        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+        'nombre.max' => 'El máximo de caracteres permitidos son 20',
+        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+        'apellido.required' => 'Ups! El Apellido  es requerido ',
+        'apellido.min' => 'El mínimo de caracteres permitidos son 3',
+        'apellido.max' => 'El máximo de caracteres permitidos son 20',
+        'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
+        'sexo.required' => 'Ups! El Sexo  es requerido ',
+        'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
+        'correo.required' => 'Ups! El correo  es requerido ',
+        'correo.email' => 'Ups! El correo tiene una dirección inválida',
+        'correo.max' => 'El máximo de caracteres permitidos son 255',
+        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        'rol.required' => 'Ups! El Rol del representante es requerido ',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+        if($edad < 1){
+            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+        }
+
+        $nombre = title_case($request->nombre);
+        $apellido = title_case($request->apellido);
+        $direccion = title_case($request->direccion);
+        $correo = strtolower($request->correo);
+        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
+        $alumno = new Alumno;
+
+        $alumno->academia_id = Auth::user()->academia_id;
+        $alumno->identificacion = $request->identificacion;
+        $alumno->nombre = $nombre;
+        $alumno->apellido = $apellido;
+        $alumno->sexo = $request->sexo;
+        $alumno->fecha_nacimiento = $fecha_nacimiento;
+        $alumno->correo = $correo;
+        $alumno->telefono = $request->telefono;
+        $alumno->celular = $request->celular;
+        $alumno->direccion = $direccion;
+        $alumno->alergia = 0;
+        $alumno->asma = 0;
+        $alumno->convulsiones = 0;
+        $alumno->cefalea = 0;
+        $alumno->hipertension = 0;
+        $alumno->lesiones = 0;
+
+        if($request->rol == "0"){
+
+            $alumno->deleted_at = Carbon::now();
+
+        }
+
+        if($alumno->save()){
+
+            $usuario = new User;
+
+            $usuario->academia_id = Auth::user()->academia_id;
+            $usuario->nombre = $nombre;
+            $usuario->apellido = $apellido;
+            $usuario->telefono = $request->telefono;
+            $usuario->celular = $request->celular;
+            $usuario->sexo = $request->sexo;
+            $usuario->email = $correo;
+            $usuario->como_nos_conociste_id = 1;
+            $usuario->direccion = $direccion;
+            // $usuario->confirmation_token = str_random(40);
+            $usuario->password = bcrypt(str_random(8));
+            $usuario->usuario_tipo = 2;
+            $usuario->usuario_id = $alumno->id;
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
+      
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+    }
+
+    }
+
 
     
 }
