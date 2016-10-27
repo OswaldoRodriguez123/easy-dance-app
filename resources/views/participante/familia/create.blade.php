@@ -531,12 +531,12 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="rol" id="representante" value="0" type="radio">
                                         <i class="input-helper"></i>  
-                                        Sólo representante  <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                        Sólo representante  <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="rol" id="alumno" value="1" type="radio">
                                         <i class="input-helper"></i>  
-                                        También participa como alumno activo <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                        También participa como alumno activo <i class="icon_a-instructor p-l-5 f-20"></i>
                                     </label>
                                     </div>
                                     </div>

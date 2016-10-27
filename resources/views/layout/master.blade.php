@@ -951,7 +951,14 @@
           dataType: 'json',
           success:function(respuesta){
             $.each(respuesta.inscripciones, function (index, array) { 
-              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + '</p>')
+              if(array.diferencia > 1){
+                restan = 'Restan '
+                dias = ' dias'
+              }else{
+                restan = 'Resta '
+                dias = ' dia'
+              }
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
             });
             
             console.log(respuesta.clases_grupales); 

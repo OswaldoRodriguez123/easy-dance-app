@@ -587,40 +587,35 @@
                         <div>
                         <div class="clearfix p-b-15"></div>
 
-                        <div class="row p-t-20 p-b-0" style="padding-left: 2%">
+                        <div class="row p-t-20 p-b-0" style="padding: 2%">
 
                         @if(!$clases_grupales)
 
-                        <div class="col-sm-10 col-sm-offset-1 error_clase_grupal">
+                          <div class="col-sm-10 col-sm-offset-1 error_clase_grupal">
 
 
-                          <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
-                          <div class="c-morado f-30 text-center"> No se encontraron resultados </div>
+                            <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                            <div class="c-morado f-30 text-center"> No se encontraron resultados </div>
 
 
-                         </div>
+                          </div>
 
-                         @else
+                        @else
             
-
-                        
                         <div class="show_clase_grupal">
-                        
-                        @foreach($clases_grupales as $clase_grupal)
+                          
+                          @foreach($clases_grupales as $clase_grupal)
 
-                        <div class="col-sm-12">
+                            <div class="col-sm-12">
 
-                        <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}</span></span>
+                              <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span>
 
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
+                              <div class="clearfix p-b-15"></div>
+                              <div class="clearfix p-b-15"></div>
 
-                        </div>
+                            </div>
 
-
-
-
-                        @endforeach
+                          @endforeach
 
                         </div>
 

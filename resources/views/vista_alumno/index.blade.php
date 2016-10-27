@@ -185,6 +185,14 @@
                         
                         </div>
 
+                        <div class ="detalle">
+                         
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> Dias de Vencimiento : {{\Carbon\Carbon::createFromFormat('Y-m-d',$proforma['fecha_vencimiento'])->diffInDays(\Carbon\Carbon::now())}}</a>
+                        
+                        </div>
+
+                        <div class="clearfix p-b-15"></div>
+
                         @endforeach
 
                           <div class="clearfix p-b-15"></div>

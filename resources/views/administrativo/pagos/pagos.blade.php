@@ -235,7 +235,7 @@
                                         <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
                                           <option value="">Selecciona</option>
                                           @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          <option data-content = "{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion']}} - Debe: {{ number_format($alumno['total'], 2, '.' , '.')}} <i class='zmdi zmdi-money {{ empty($alumno['total']) ? 'c-verde ' : 'c-youtube' }} f-20'></i>" value = "{{ $alumno['id'] }}"></option>
                                           @endforeach
                                         </select>
                                       </div>

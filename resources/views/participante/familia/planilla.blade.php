@@ -578,12 +578,12 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="rol" id="representante" value="0" type="radio">
                                         <i class="input-helper"></i>  
-                                        Sólo representante  <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                        Sólo representante  <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="rol" id="alumno" value="1" type="radio">
                                         <i class="input-helper"></i>  
-                                        También participa como alumno activo <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                        También participa como alumno activo <i class="icon_a-instructor p-l-5 f-20"></i>
                                     </label>
                                     </div>
                                     
@@ -649,7 +649,7 @@
                                     <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          @foreach ( $alumno as $alum )
+                                          @foreach ( $familia as $alum )
                                           <option value = "{{ $alum['id'] }}">{{ $alum['nombre'] }} {{ $alum['apellido'] }} {{ $alum['identificacion'] }}</option>
                                           @endforeach
                                         </select>
@@ -659,7 +659,7 @@
 
                         <div class="col-sm-6">
                           <a href="" class="pull-right">
-                             @if($alumno[0]['sexo']=='F')
+                             @if($familia[0]['sexo']=='F')
                                 <img class="img-responsive img-circle imagen_mostrar" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
                              @else
                                 <img class="img-responsive img-circle imagen_mostrar" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
@@ -698,7 +698,7 @@
                                   <table class="table table-striped table-bordered historial">
                                    <tr class="detalle historial">
                                    <td class = "historial"></td>
-                                   <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700 historial">Balance E: </span><span class = "f-12 f-700 historial" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($alumno[0]['total']) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5 historial estatus_e"></i></td>
+                                   <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700 historial">Balance E: </span><span class = "f-12 f-700 historial" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($familia[0]['total']) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5 historial estatus_e"></i></td>
                                   </tr>
                                   </table>
 
@@ -741,36 +741,36 @@
                            <table class="table table-striped table-bordered">
                             <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($alumno[0]['identificacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($familia[0]['identificacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-account-box f-22"></i> </span>
                               <span class="f-14">Id / pasaporte </span>
                              </td>
-                             <td class="f-14 m-l-15" id="alumno-identificacion">{{$alumno[0]['identificacion']}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                             <td class="f-14 m-l-15" id="alumno-identificacion">{{$familia[0]['identificacion']}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalNombre-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($alumno[0]['nombre']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($familia[0]['nombre']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-nombre" class="capitalize">{{$alumno[0]['nombre']}}</span> <span id="alumno-apellido" class="capitalize">{{$alumno[0]['apellido']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-nombre" class="capitalize">{{$familia[0]['nombre']}}</span> <span id="alumno-apellido" class="capitalize">{{$familia[0]['apellido']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($alumno[0]['fecha_nacimiento']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($familia[0]['fecha_nacimiento']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
                                <span class="f-14"> Fecha de nacimiento  </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="alumno-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$alumno[0]['fecha_nacimiento'])->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15" id="alumno-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$familia[0]['fecha_nacimiento'])->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              <tr class="detalle" data-toggle="modal" href="#modalSexo-Alumno">
                              <td> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($alumno[0]['sexo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($familia[0]['sexo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
                               <span class="f-14"> Sexo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-sexo" data-valor="{{$alumno[0]['sexo']}}">
-                               @if($alumno[0]['sexo']=='F')
+                             <td class="f-14 m-l-15" ><span id="alumno-sexo" data-valor="{{$familia[0]['sexo']}}">
+                               @if($familia[0]['sexo']=='F')
                                   <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                @else
                                   <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
@@ -779,27 +779,27 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCorreo-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($alumno[0]['correo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($familia[0]['correo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
                                <span class="f-14"> Correo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$alumno[0]['correo']}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$familia[0]['correo']}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalTelefono-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($alumno[0]['telefono']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($familia[0]['telefono']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
                                <span class="f-14"> Contacto </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-telefono">{{$alumno[0]['telefono']}}</span> / <span id="alumno-celular">{{$alumno[0]['celular']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-telefono">{{$familia[0]['telefono']}}</span> / <span id="alumno-celular">{{$familia[0]['celular']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDireccion-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($alumno[0]->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($familia[0]->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="alumno-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$alumno[0]['direccion']}}" >{{ str_limit($alumno[0]['direccion'], $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="alumno-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$familia[0]['direccion']}}" >{{ str_limit($familia[0]['direccion'], $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Alumno">
                              <td>
@@ -815,8 +815,8 @@
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
                               <span class="f-14"> Rol del representante dentro de la academia </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$alumno[0]['deleted_at']}}">
-                               @if($alumno[0]['deleted_at']==null)
+                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$familia[0]['deleted_at']}}">
+                               @if($familia[0]['deleted_at']==null)
                                   También participa como alumno activo </span>
                                @else
                                   Sólo representante </span>
@@ -854,8 +854,8 @@
     route_historial = "{{url('/')}}/participante/alumno/historial/";
     route_email="{{url('/')}}/correo/sesion/";
 
-    total = "{{$alumno[0]['total']}}";
-    id = "{{$alumno[0]['id']}}";
+    total = "{{$familia[0]['total']}}";
+    id = "{{$familia[0]['id']}}";
 
     // $(document).on("click", function () {
     //    var clickedBtnID = this; // or var clickedBtnID = this.id
@@ -869,7 +869,7 @@
     $(document).ready(function(){
 
     
-      $("#alumno_id").val("{{$alumno[0]['id']}}");
+      $("#alumno_id").val("{{$familia[0]['id']}}");
 
       if(total){
         $("#total").text(formatmoney(parseFloat(total)));
@@ -878,32 +878,32 @@
         $("#total").text(formatmoney(0));
       }
       
-      if("{{$alumno[0]['alergia']}}" == 1){
+      if("{{$familia[0]['alergia']}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
           $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$alumno[0]['asma']}}" == 1){
+        if("{{$familia[0]['asma']}}" == 1){
           $("#asma").val('1');  //VALOR POR DEFECTO
           $("#asma-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$alumno[0]['convulsiones']}}" == 1){
+        if("{{$familia[0]['convulsiones']}}" == 1){
           $("#convulsiones").val('1');  //VALOR POR DEFECTO
           $("#convulsiones-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$alumno[0]['cefalea']}}" == 1){
+        if("{{$familia[0]['cefalea']}}" == 1){
           $("#cefalea").val('1');  //VALOR POR DEFECTO
           $("#cefalea-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$alumno[0]['hipertension']}}" == 1){
+        if("{{$familia[0]['hipertension']}}" == 1){
           $("#hipertension").val('1');  //VALOR POR DEFECTO
           $("#hipertension-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$alumno[0]['lesiones']}}" == 1){
+        if("{{$familia[0]['lesiones']}}" == 1){
           $("#lesiones").val('1');  //VALOR POR DEFECTO
           $("#lesiones-switch").attr("checked", true); //VALOR POR DEFECTO
         }
@@ -1351,7 +1351,7 @@
 
         id = $(this).val();
 
-        var alumnos = <?php echo json_encode($alumno);?>;
+        var alumnos = <?php echo json_encode($familia);?>;
 
         var alumno = $.grep(alumnos, function(e){ return e.id == id; });
 

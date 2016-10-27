@@ -257,7 +257,29 @@ class AdministrativoController extends BaseController {
             $producto = $grouped2->toArray();
         }
 
-		return view('administrativo.pagos.pagos')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto]);
+        $proforma_join = DB::table('items_factura_proforma')
+            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
+            ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
+            ->where('alumnos.deleted_at' , '=' , null)
+        ->get();
+
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($alumnos as $alumno)
+        {
+            $total = ItemsFacturaProforma::where('alumno_id', $alumno->id)->sum('importe_neto');
+            if(!$total){
+                $total = 0;
+            }
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            
+            $alumno_array['total']=$total;
+            $array[$alumno->id] = $alumno_array;
+        }
+
+		return view('administrativo.pagos.pagos')->with(['alumnos' => $array, 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto]);
 	}
 
     // public function gestion($id)

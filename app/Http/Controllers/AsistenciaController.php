@@ -254,7 +254,7 @@ class AsistenciaController extends BaseController
          $inscripciones = DB::table('inscripcion_clase_grupal')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id')
+                ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
                 ->where('inscripcion_clase_grupal.alumno_id', '=', $id_alumno)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
           ->get();
@@ -297,10 +297,13 @@ class AsistenciaController extends BaseController
 
         }
 
+        $diferencia = Carbon::createFromFormat('Y-m-d',$inscripcion->fecha_pago)->diffInDays(Carbon::now());
+
         $collection=collect($inscripcion);     
         $inscripcion_array = $collection->toArray();
             
         $inscripcion_array['dia']=$dia;
+        $inscripcion_array['diferencia']=$diferencia;
         $array[$inscripcion->id] = $inscripcion_array;
       }
 

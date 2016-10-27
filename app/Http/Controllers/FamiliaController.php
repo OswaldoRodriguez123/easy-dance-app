@@ -48,7 +48,7 @@ class FamiliaController extends BaseController {
 
         foreach($familias as $familia){
 
-            $total = Alumno::where('familia_id', '=' ,  $familia->id)->count();
+            $total = Alumno::withTrashed()->where('familia_id', '=' ,  $familia->id)->count();
             $collection=collect($familia);     
             $familia_array = $collection->toArray();
             
@@ -508,7 +508,7 @@ class FamiliaController extends BaseController {
 
         $familia = Familia::find($request->familia_id);     
         $representante_usuario = User::find($familia->representante_id);
-        $representante = Alumno::find($representante_usuario->usuario_id);
+        $representante = Alumno::withTrashed()->find($representante_usuario->usuario_id);
         
         if($request->telefono)
         {
@@ -650,7 +650,7 @@ class FamiliaController extends BaseController {
 
         if($alumnos){
 
-           return view('participante.familia.planilla')->with(['alumno' => $array , 'id' => $id]);
+           return view('participante.familia.planilla')->with(['familia' => $array , 'id' => $id]);
 
         }else{
            return redirect("participante/familia"); 
@@ -668,7 +668,7 @@ class FamiliaController extends BaseController {
     public function participantes($id)
     {
 
-        $participantes = Alumno::where('familia_id', $id)->get();
+        $participantes = Alumno::withTrashed()->where('familia_id', $id)->get();
 
         $familia = Familia::find($id);
 

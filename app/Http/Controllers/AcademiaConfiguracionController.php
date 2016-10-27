@@ -288,7 +288,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                     }
 
-                }       
+                }  
 
                 if (Session::has('fecha_sesion')) {                
                    
