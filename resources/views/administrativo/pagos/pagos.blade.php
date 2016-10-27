@@ -144,6 +144,215 @@
                 </div>
             </div>
  -->
+
+          <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Agregar <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_agregar" id="form_agregar"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" id="editar" name="editar" value="">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                        <label for="id" id="id-identificacion">Id - Pasaporte</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de cédula o pasaporte del participante" title="" data-original-title="Ayuda"></i>
+                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" data-mask="00000000000000000000" placeholder="Ej. 16234987">
+                                    </div>
+                                    <div class="has-error" id="error-identificacion">
+                                      <span >
+                                          <small id="error-identificacion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+                               <div class="col-sm-6">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante" title="" data-original-title="Ayuda"></i>
+                                    <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Valeria">
+                                 </div>
+                                 <div class="has-error" id="error-nombre">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+
+                               <div class="col-sm-6">
+                                 <div class="form-group fg-line">
+                                    <label for="id-apellido" id="id-apellido">Apellido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el apellido del participante" title="" data-original-title="Ayuda"></i> 
+                                    <input type="text" class="form-control input-sm" name="apellido" id="apellido" placeholder="Ej. Sánchez">
+                                 </div>
+                                 <div class="has-error" id="error-apellido">
+                                      <span >
+                                          <small class="help-block error-span" id="error-apellido_mensaje"  ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="col-sm-6">
+                                    <div class="form-group fg-line">
+                                    <label for="apellido" id="id-fecha_nacimiento">Fecha de Nacimiento</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
+                                            <div class="dtp-container fg-line">
+                                            <input name="fecha_nacimiento" id="fecha_nacimiento" class="form-control date-picker" placeholder="Seleciona" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="has-error" id="error-fecha_nacimiento">
+                                      <span >
+                                          <small class="help-block error-span" id="error-fecha_nacimiento_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+
+                                 <div class="clearfix"></div> 
+           
+                                                               
+                               <div class="col-sm-6">
+                                 <div class="form-group fg-line ">
+                                    <label for="sexo p-t-10" id="id-sexo">Sexo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el sexo del participante" title="" data-original-title="Ayuda"></i>
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="sexo" id="mujer" value="F" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="sexo" id="hombre" value="M" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                 </div>
+                                 <div class="has-error" id="error-sexo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="col-sm-6">
+
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
+                                      </div>
+                                 <div class="has-error" id="error-correo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+                               <div class="col-sm-6">
+                                 
+                                    <label for="apellido" id="id-celular">Teléfono Móvil</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número del teléfono movil del participante" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm input-mask" name="celular" id="celular" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894">
+                                      </div>
+                                 <div class="has-error" id="error-celular">
+                                      <span >
+                                          <small class="help-block error-span" id="error-celular_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="col-sm-6">
+                                 
+                                    <label for="apellido" id="id-telefono">Teléfono Local</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número del teléfono local del participante" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm input-mask" name="telefono" id="telefono" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894">
+                                      </div>
+                                 <div class="has-error" id="error-telefono">
+                                      <span >
+                                          <small class="help-block error-span" id="error-telefono_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+                               <div class="col-sm-12">
+                                 <div class="form-group">
+                                    <label for="direccion" id="id-direccion">Dirección</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la dirección del participante" title="" data-original-title="Ayuda"></i>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="direccion" id="direccion" placeholder="Calle santa marta, Av 23">
+                                    </div>
+                                 <div class="has-error" id="error-direccion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-direccion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="clearfix"></div> 
+                               <br>
+
+
+                          <div class="col-sm-12">
+                                 
+                                    <label for="rol" id="id-rol">Rol del cliente dentro de la academia</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indícanos si el cliente será exclusivamente el responsable de la cuenta o también tendrá participación como alumno dentro de las clases de baile" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="rol" id="representante" value="0" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Sólo cliente  <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="rol" id="alumno" value="1" type="radio">
+                                        <i class="input-helper"></i>  
+                                        También participa como alumno activo <i class="icon_a-instructor p-l-5 f-20"></i>
+                                    </label>
+                                    </div>
+                                    </div>
+                                 <div class="has-error" id="error-rol">
+                                      <span >
+                                          <small class="help-block error-span" id="error-rol_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               
+
+                            </div>
+                        </div>
+
+                              
+ 
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-7 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-5">                            
+                              <button type="button" class="btn btn-blanco m-r-5 f-16 agregar" id="agregar" >Guardar</button>
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
           <div class="modal fade" id="modalConstruccion" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -199,11 +408,6 @@
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
 
-                            <!-- <p class="text-right">
-                            
-                              <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Cliente <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
-
-                            </p> -->
 
                         </div>
                         
@@ -214,10 +418,21 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
-
                                     <div class="col-sm-12">
+
+  
+                                    <div class="col-sm-6" style="padding-left: 0px">
                                  
-                                    <span class="f-30 text-center c-morado" id="id-cliente"> Cliente</span>
+                                    <span class="f-30 text-center c-morado"> Cliente</span>
+
+                                    </div>
+
+                                    <div class="col-sm-6 text-right">
+
+                                      <a  id="id-cliente" class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Cliente <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
+
+                                    </div>
+
                                 
 
                                     <hr></hr>
@@ -518,6 +733,7 @@
   route_proforma="{{url('/')}}/administrativo/pagos/pendiente/";
   route_pendientes="{{url('/')}}/administrativo/pagos/itemspendientes/";
   route_alumno="{{url('/')}}/participante/alumno/deuda/";
+  route_agregar_cliente="{{url('/')}}/administrativo/pagos/agregarcliente";
 
   function formatmoney(n) {
     return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -525,6 +741,20 @@
 
 
   $( document ).ready(function() {
+
+    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+        }
+
+      });
+
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+        }
+
+      });
 
 
     $('body,html').animate({scrollTop : 0}, 2000);
@@ -1400,6 +1630,80 @@
        }
      });
   });
+
+  $("#agregar").click(function(){
+
+      var route = route_agregar_cliente;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_agregar" ).serialize(); 
+      limpiarMensaje();
+      procesando();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+
+                $('#alumno_id').prepend( new Option(respuesta.alumno.nombre + ' ' + respuesta.alumno.apellido + ' ' + respuesta.alumno.identificacion + ' - Debe: 0',respuesta.alumno.id));
+                $('#alumno_id').val(respuesta.alumno.id);
+                $('#alumno_id').selectpicker('render');
+                $('#alumno_id').selectpicker('refresh');
+
+                $('.modal').modal('hide');
+             
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+
+              finprocesado();
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                    
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              finprocesado();
+                      
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
 
 </script> 
 @stop

@@ -288,6 +288,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('administrativo/pagos/cancelargestion', 'AdministrativoController@CancelarGestion');
 
 			Route::post('administrativo/pagos/factura/{id}', 'AdministrativoController@storeFactura');
+			Route::post('administrativo/pagos/agregarcliente', 'AdministrativoController@AgregarCliente');
 
 			//PAGO CON MERCADOPAGO
 			Route::post('administrativo/pagos/facturamercadopago', 'AdministrativoController@storeMercadopago');
