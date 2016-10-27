@@ -313,8 +313,9 @@
 
         var t=$('#tablelistar').DataTable({
         processing: true,
-        serverSide: false, 
-        bPaginate: false, 
+        serverSide: false,
+        pageLength: 25,
+        //bPaginate: false, 
         bFilter:false, 
         bSort:false, 
         bInfo:true,

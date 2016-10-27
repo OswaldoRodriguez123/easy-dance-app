@@ -643,7 +643,8 @@
   var t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false, 
-        bPaginate: false, 
+        pageLength: 25,
+        //bPaginate: false, 
         bFilter:false, 
         bSort:false, 
         order: [[0, 'asc']],

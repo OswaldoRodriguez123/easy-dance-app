@@ -141,7 +141,8 @@
 
         t=$('#tablelistar').DataTable({
         processing: true,
-        serverSide: false,    
+        serverSide: false,
+        pageLength: 25,   
         order: [[3, 'asc']],
        fnDrawCallback: function() {
         if ("{{count($clase_grupal_join)}}" < 25) {

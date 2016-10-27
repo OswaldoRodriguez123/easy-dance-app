@@ -287,7 +287,8 @@
 
         t=$('#tablelistar').DataTable({
         processing: true,
-        serverSide: false,    
+        serverSide: false,
+        pageLength: 25,    
         order: [[1, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($clases_personalizadas)}}" < 25) {
