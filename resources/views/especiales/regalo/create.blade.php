@@ -31,7 +31,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-tarjeta-de-regalo f-25"></i> Personaliza tu Regalo </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-tarjeta-de-regalo f-25" id="id-clase_grupal_id"></i> Personaliza tu Regalo </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -426,9 +426,9 @@
         $("#agregar_regalo")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-nombre").offset().top-90,
-        }, 800);
-        document.getElementById("nombre").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#nombre").focus();
       });
 
 </script> 

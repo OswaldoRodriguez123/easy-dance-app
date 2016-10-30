@@ -32,7 +32,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-fiesta f-25"></i> Crea tu Fiesta o Evento </span>                                                         
+                            <span class="f-25 c-morado" id="id-clase_grupal_id"><i class="icon_a-fiesta f-25"></i> Crea tu Fiesta o Evento </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -648,6 +648,15 @@
         bFilter:false, 
         bSort:false, 
         order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').show();
+          /*if ($('#tablelistar tr').length < 25) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }*/
+        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -1142,9 +1151,9 @@
         $("#agregar_fiesta")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-nombre").offset().top-90,
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
         }, 1000);
-        document.getElementById("nombre").focus();
+        $("#id-nombre").focus();
       });
 
        function countChar(val) {

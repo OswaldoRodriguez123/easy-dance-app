@@ -117,7 +117,8 @@
 
                 t=$('#tablelistar').DataTable({
                     processing: true,
-                    serverSide: false,    
+                    serverSide: false,
+                    pageLength: 25,  
                     order: [[0, 'desc'], [4, 'desc']],
                     fnDrawCallback: function() {
                     if ("{{count($alumnos_asistencia)}}" < 25) {

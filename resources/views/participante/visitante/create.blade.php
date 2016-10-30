@@ -32,7 +32,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-visitante-presencial f-25"></i> Agregar Visitante</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-visitante-presencial f-25" id="id-clase_grupal_id"></i> Agregar Visitante</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -586,9 +586,9 @@
         $('#dias_clase_id').selectpicker('render');
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-identificacion").offset().top-90,
-        }, 1000);
-        document.getElementById("identificacion").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#nombre").focus();
 });
 
        function countChar(val) {

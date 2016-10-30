@@ -536,7 +536,8 @@
     var asistencia=$('#tablelistar_asistencia').DataTable({
         
         processing: true,
-        serverSide: false,    
+        serverSide: false,
+        //pageLength: 25,   
         order: [[0, 'asc']],
         paging: false,  
         fnDrawCallback: function() {

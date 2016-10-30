@@ -452,9 +452,9 @@
     route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
     route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
 
-    var ver;
+    var ver = 0;
     $( document ).ready(function() {
-      ver = {{$sin_ver}};
+      //ver = { { sin_ver } };
     });
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
@@ -512,7 +512,8 @@
     var asistencia=$('#tablelistar_asistencia').DataTable({
         
         processing: true,
-        serverSide: false,    
+        serverSide: false,
+        //pageLength: 25,
         order: [[0, 'asc']],
         paging: false,  
         fnDrawCallback: function() {
@@ -1147,7 +1148,7 @@
                   var notificaciones=respuesta.notificaciones;
                   var nMensaje=respuesta.mensaje;
                   
-                  if(respuesta.sin_ver>ver){
+                  if(respuesta.sin_ver> ver){
                     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                     ver = respuesta.sin_ver;
                   }

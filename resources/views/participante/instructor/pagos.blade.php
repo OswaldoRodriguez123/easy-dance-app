@@ -326,6 +326,8 @@
           if ("{{count($por_pagar)}}" < 50) {
                 $('.dataTables_paginate').hide();
                 $('#tablelistar_length').hide();
+            }else{
+             $('.dataTables_paginate').show();
             }
           },
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {

@@ -95,7 +95,10 @@
         if ("{{count($fiesta)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
+          }else{
+             $('.dataTables_paginate').show();
           }
+        },
         },
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {

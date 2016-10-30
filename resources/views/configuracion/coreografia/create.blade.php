@@ -31,7 +31,7 @@
                     
                       <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-30 c-morado"><i class="icon_d-coreografia f-25"></i> Crea tu coreografía </span>     
+                            <span class="f-30 c-morado"><i class="icon_d-coreografia f-25" id="id-clase_grupal_id"></i> Crea tu coreografía </span>     
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -559,6 +559,15 @@
         bFilter:false, 
         bSort:false, 
         order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').show();
+          /*if ($('#tablelistar tr').length < 25) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }*/
+        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -877,9 +886,9 @@
         $("#agregar_coreografia")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-nombre_evento").offset().top-90,
-        }, 1000);
-        document.getElementById("nombre_evento").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#nombre_evento").focus();
       });
 
 </script> 

@@ -130,7 +130,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-clase-personalizada f-25"></i> Agendar clase personalizada </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-clase-personalizada f-25" id="id-clase_grupal_id"></i> Agendar clase personalizada </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -689,8 +689,9 @@
         $('#instructor_id').selectpicker('render');
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-fecha_inicio").offset().top-90,
-        }, 1000);
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        //$("#nombre").focus();
       });
 
        $("#condiciones").on('change', function(){

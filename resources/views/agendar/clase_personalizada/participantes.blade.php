@@ -422,9 +422,10 @@
         pageLength: 25,  
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
+          $('.dataTables_paginate').show();
+        /*if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
-          }
+          }*/
         },
         pageLength: 25,
         paging: false,

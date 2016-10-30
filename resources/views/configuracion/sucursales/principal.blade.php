@@ -108,6 +108,8 @@
        fnDrawCallback: function() {
         if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
+          }else{
+             $('.dataTables_paginate').show();
           }
         },
         pageLength: 25,

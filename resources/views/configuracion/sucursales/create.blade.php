@@ -33,7 +33,7 @@
                     <div class="card">
 
                       <div class="card-header text-center">
-                        <span class="f-25 c-morado"> Agregar a una Sucursal</span>
+                        <span class="f-25 c-morado" id="id-clase_grupal_id"> Agregar a una Sucursal</span>
                       </div>
 
                       <div class="card-body p-b-20 m-l-20 m-r-20">
@@ -438,9 +438,9 @@
         $("#agregar_usuario_sucursal")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#email").offset().top-90,
-        }, 500);
-        document.getElementById("email").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#email").focus();
       });
 
 

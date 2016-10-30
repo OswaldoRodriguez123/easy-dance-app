@@ -32,7 +32,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-alumnos f-25"></i> Agregar Alumno</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-alumnos f-25" id="id-clase_grupal_id"></i> Agregar Alumno</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -695,9 +695,9 @@
         $("#agregar_alumno")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-identificacion").offset().top-90,
-        }, 1000);
-        document.getElementById("identificacion").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#identificacion").focus();
       });
 
     function addFieldText(newLat, newLng){

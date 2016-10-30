@@ -320,6 +320,15 @@
         bSort:false, 
         bInfo:true,
         order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').show();
+        /*if ($('#tablelistar tr').length < 25) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }*/
+        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );

@@ -32,7 +32,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="zmdi zmdi-truck f-25"></i> Agregar Proveedor</span>                                                         
+                            <span class="f-25 c-morado"><i class="zmdi zmdi-truck f-25" id="id-clase_grupal_id"></i> Agregar Proveedor</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -535,9 +535,9 @@
         $("#agregar_proveedor")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-nombre").offset().top-90,
-        }, 1000);
-        document.getElementById("nombre").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#nombre").focus();
       });
 
        function countChar(val) {

@@ -724,6 +724,7 @@
   var alumno_id = '';
   var tipo = 'servicio';
   var checked = [];
+  var itemlist= 0;
 
   route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
   route_factura="{{url('/')}}/administrativo/pagos/gestion";
@@ -806,6 +807,7 @@
               $.each(respuesta.items, function (index, array) {
 
                   var rowId=array[0].id;
+                  itemlist=array.length;
                           var rowNode=t.row.add( [
                           ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
                           ''+array[0].id+'',
@@ -903,6 +905,15 @@
         order: [[1, 'desc']],
         language: {
               searchPlaceholder: "Buscar"
+        },
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').show();
+        /*if ($('#tablelistar tr').length < 25) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }*/
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );

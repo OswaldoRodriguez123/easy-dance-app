@@ -32,7 +32,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-examen f-25"></i> Crea un Examen </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-examen f-25" id="id-clase_grupal_id"></i> Crea un Examen </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -1050,19 +1050,29 @@
         $('#instructor_id').selectpicker('render');
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-nombre").offset().top-90,
-        }, 800);
-        document.getElementById("nombre").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#nombre").focus();
       });
 
        var t=$('#tablelistar').DataTable({
         processing: true,
-        serverSide: false, 
-        bPaginate: false, 
+        serverSide: false,
+        pageLength: 25, 
+        //bPaginate: false, 
         bFilter:false, 
         bSort:false, 
         bInfo:false,
         order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').show();
+          /*if ($('#tablelistar tr').length < 25) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }*/
+        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
         },

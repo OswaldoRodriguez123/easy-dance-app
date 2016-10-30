@@ -103,9 +103,10 @@
         if ("{{count($acuerdos)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
+          }else{
+             $('.dataTables_paginate').show();
           }
         },
-        pageLength: 25,
         language: {
               searchPlaceholder: "Buscar"
         },

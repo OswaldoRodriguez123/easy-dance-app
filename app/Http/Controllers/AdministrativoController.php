@@ -2356,7 +2356,7 @@ class AdministrativoController extends BaseController {
                 $i = $i + 1;
             }
 
-            // dd($array);
+            //dd($array);
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 'items' => $array , 200]);
 

@@ -137,6 +137,8 @@
             if ("{{count($proforma)}}" < 25) {
                   $('.dataTables_paginate').hide();
                   $('#tablelistar_length').hide();
+              }else{
+                  $('.dataTables_paginate').show();
               }
             },
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {

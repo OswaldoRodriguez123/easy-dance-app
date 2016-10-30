@@ -125,12 +125,15 @@
 
         t=$('#tablelistar').DataTable({
         processing: true,
-        serverSide: false,    
+        serverSide: false,
+        pageLength: 25,    
         order: [[3, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($alumnos)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
+          }else{
+             $('.dataTables_paginate').show();
           }
         },
         pageLength: 25,

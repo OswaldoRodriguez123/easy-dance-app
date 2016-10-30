@@ -258,12 +258,13 @@
         // paging:false, 
         order: [[7, 'desc'], [8, 'desc']],
         fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 50) {
+          $('.dataTables_paginate').show();
+          /*if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
              $('.dataTables_paginate').show();
-          }
+          }*/
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );

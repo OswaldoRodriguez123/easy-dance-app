@@ -320,7 +320,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-instructor f-25"></i> Agregar Familia</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-instructor f-25" id="id-clase_grupal_id"></i> Agregar Familia</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -1045,9 +1045,9 @@
         $("#agregar_familia")[0].reset();
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-apellido_familia").offset().top-90,
-        }, 1000);
-        document.getElementById("apellido_familia").focus();
+        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        }, 1500);
+        $("#apellido_familia").focus();
       });
 
       $('#modalAgregar').on('hidden.bs.modal', function (e) {

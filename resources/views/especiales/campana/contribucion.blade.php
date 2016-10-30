@@ -123,12 +123,15 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        bPaginate: false,    
+        pageLength: 25,
+        //bPaginate: false,    
         order: [[0, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($contribuciones)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
+          }else{
+             $('.dataTables_paginate').show();
           }
         },
         pageLength: 25,

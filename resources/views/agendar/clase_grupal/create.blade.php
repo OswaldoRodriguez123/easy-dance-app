@@ -35,7 +35,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-clases-grupales f-25"></i> Agregar clase grupal </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-clases-grupales f-25" id="id-clase_grupal_id"></i> Agregar clase grupal </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -46,7 +46,7 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-clase_grupal_id">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" aria-describedby="popoverclase" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase grupal, en caso de no haberla registrado o deseas crear un nuevo registro, debes dirigirte al área de configuración general en la sección de clases grupales y procede a crear el registro. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" aria-describedby="popoverclase" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase grupal, en caso de no haberla registrado o deseas crear un nuevo registro, debes dirigirte al área de configuración general en la sección de clases grupales y procede a crear el registro. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
 
    
                                   <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
@@ -843,6 +843,15 @@
         bSort:false, 
         bInfo:false,
         order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').show();
+          /*if ($('#tablelistar tr').length < 25) {
+              $('.dataTables_paginate').hide();
+          }
+          else{
+             $('.dataTables_paginate').show();
+          }*/
+        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -1180,6 +1189,7 @@
         $('html,body').animate({
         scrollTop: $("#id-clase_grupal_id").offset().top-90,
         }, 1500);
+        $("#pop-nombre_clase").focus();
       });
 
       $('#pop-nombre_clase').popover({
