@@ -42,10 +42,7 @@
                                     <div class="text-center">
                                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul">
                                            
-                                            <li class="active" >
-                      
-                      
-                      <a href="#participantes" class="azul" aria-controls="participantes" role="tab" data-toggle="tab"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;  " ></div><p style=" margin-bottom: -2px ; color:#2196f3;">Participantes</p></a></li>
+                                            <li class="active"><a href="#participantes" class="azul" aria-controls="participantes" role="tab" data-toggle="tab"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;  " ></div><p style=" margin-bottom: -2px ; color:#2196f3;">Participantes</p></a></li>
                                             
                                             <li role="presentation" name="agendar"><a class="amarillo" href="#agendar" aria-controls="agendar" role="tab" data-toggle="tab"><div class="icon_a icon_a-agendar f-30" style="color:#FFD700;  " ></div><p style=" margin-bottom: -2px; color:#FFD700;">Agendar</p></a></li>
                                             

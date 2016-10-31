@@ -24,6 +24,18 @@
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
+                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 30%;">
+                            <li class="active"><a href="#participantes" class="azul" aria-controls="participantes" role="tab" data-toggle="tab" style="padding-top: 0; padding-bottom: 0;"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;" ></div></a></li>
+                                            
+                            <li role="presentation" name="agendar"><a class="amarillo" href="#agendar" aria-controls="agendar" role="tab" data-toggle="tab" style="padding-top: 0; padding-bottom: 0;"><div class="icon_a icon_a-agendar f-30" style="color:#FFD700;" ></div></a></li>
+                                            
+                            <li role="presentation"><a href="#especiales" class="rosa" aria-controls="especiales" role="tab" data-toggle="tab" style="padding-top: 0; padding-bottom: 0;"><div class="icon_a icon_a-especiales f-30" style="color:#e91e63;" ></div></a></li>
+                                            
+                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding-top: 0; padding-bottom: 0;"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;"></div></a></li>
+                                           
+                            <li role="presentation"><a class="rojo" href="#reportes" aria-controls="reportes" role="tab" data-toggle="tab" style="padding-top: 0; padding-bottom: 0;"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;"></div></a></li>
+                        </ul>
                     </div> 
                     
                     <div class="card">

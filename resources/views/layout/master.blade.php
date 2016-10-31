@@ -129,7 +129,7 @@
                                               <div class="form-group fg-line">
                                                 <label for="asistencia-horario" class="f-16">Horario</label>
                                                 <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-horario"> --</span>
+                                                <span class="text-center" id="asistencia-horario"> </span>
                                              </div> -->
                                              
                                            </div>
@@ -389,6 +389,31 @@
       </div></p>
       </div>
     </div>
+
+  <div class="modal fade" id="modalConstruccion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+          </div>
+        <div class="text-center">
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div align="center"><i class="zmdi zmdi-wrench zmdi-hc-fw f-60 c-morado"></i></div>
+          <div class="clearfix p-b-15"></div>                        
+          <div class="col-md-12">
+            <span class="f-20 opaco-0-8">¡ Modulo en construcción. !</span>
+          </div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+        </div>                 
+      </div>
+    </div>
+  </div>
 <!-- Procesando -->
 		
         <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
