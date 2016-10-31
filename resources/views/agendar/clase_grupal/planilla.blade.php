@@ -1098,7 +1098,7 @@
 
                                       @foreach($arrayHorario as $horario)
                                       
-                                        <tr id="$horario['id']}}" class="odd seleccion text-center" role="row">
+                                        <tr id="{{$horario['id']}}" class="odd seleccion text-center" role="row">
                                           <td onclick="previa(this)" class="text-center">
                                             {{$horario['instructor']}}
                                           </td>
@@ -1407,6 +1407,7 @@
     route_principal="{{url('/')}}/agendar/clases-grupales";
     route_progreso="{{url('/')}}/agendar/clases-grupales/progreso/";
     route_trasladar="{{url('/')}}/agendar/clases-grupales/trasladar";
+    route_detalle="{{url('/')}}/agendar/multihorario/detalle";
 
     $(document).ready(function(){
 
@@ -1982,6 +1983,13 @@
               }, 1000);             
             }
         });
+      }
+
+      function previa(t){
+        var row = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+row;
+        
+        window.location=route;
       }
 
    </script> 
