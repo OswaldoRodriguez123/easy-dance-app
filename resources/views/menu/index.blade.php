@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('css_vendor')
- <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
+<link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
 <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
 <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/easy_dance_ico_0.css" />
 <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/easy_dance_ico_1.css" />

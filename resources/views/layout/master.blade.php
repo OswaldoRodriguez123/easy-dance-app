@@ -12,7 +12,10 @@
 			<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
-			<link href="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet">	
+			<link href="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
+      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
+      <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 			
 			@yield('css_vendor')
 				
@@ -390,7 +393,175 @@
       </div>
     </div>
 
-  <div class="modal fade" id="modalConstruccion" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="modalParticipantes" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 75%">
+      <div class="modal-content">
+        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+          </div>
+
+        <div role="tabpanel" class="tab">
+
+                                        <div class="tab-content ">
+                     
+                                        <div role="tabpanel" class="tab-pane  animated active fadeInRight in" id="participantes">
+                    
+                    <div class="text-center icon_a icon_a-participantes f-40" style="color:#2196f3;  margin-bottom: -20px;"><p class="f-18">Gestiona el tipo de participante que desees </p></div>
+                    <ul id="sti-menu" class="sti-menu roww" style="padding-left: 0">
+                               
+                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/alumno"><h2 data-type="mText" class="sti-item">Alumno </h2><span data-type="icon" class="sti-icon sti-icon-alumno sti-item"></span></a></li>
+                              
+                      <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/instructor"><h2 data-type="mText" class="sti-item" align="center">Instructor </h2><span data-type="icon" class="sti-icon sti-icon-instructores sti-item"></span></a></li>
+                               
+                      <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/visitante"><h2 data-type="mText" class="sti-item ">Visitante Presencial </h2><span data-type="icon" class="sti-icon sti-icon-visitantes sti-item"></span></a></li>
+      
+                                  <li data-hovercolor="#2196f3"><a a href="{{url('/')}}/participante/familia"><h2 data-type="mText" class="sti-item">Familia </h2><span data-type="icon" class="sti-icon sti-icon-family sti-item"></span></a></li>
+                    
+                    </ul>
+                    
+                                        </div>
+                    
+                    
+                                         <div role="tabpanel" class="tab-pane  animated fadeInRight" name="agendar" style="!important;" id="agendar">
+        
+                                       <div class="text-center icon_a icon_a-agendar f-40" style="color:#FFD700;  margin-bottom: -20px;"><p class="f-18">Agendar</p></div>
+                                  
+                                         <ul id="sti-menu2" class="sti-menu roww">
+                     
+                                 <li data-hovercolor="#FFEB3B"> <a href="{{url('/')}}/agendar/clases-grupales"><h2 data-type="mText" class="sti-item">Clases Grupales </h2><span data-type="icon" class="sti-icon sti-icon-clases-grupales sti-item"></span></a></li>
+                     
+                     <li data-hovercolor="#FFEB3B"><a href="{{url('/')}}/agendar/clases-personalizadas"><h2 data-type="mText" class="sti-item">Clase Personalizada</h2><span data-type="icon" class="sti-icon sti-icon-clase_p sti-item"></span></a></li>
+        
+                                 <li data-hovercolor="#FFEB3B"><a href="{{url('/')}}/agendar/fiestas"><h2 data-type="mText" class="sti-item">Fiesta Eventos </h2><span data-type="icon" class="sti-icon sti-icon-fiesta_eventos sti-item"></span></a></li>
+        
+                                 <li data-hovercolor="#FFEB3B"><a href="{{url('/')}}/agendar/talleres"><h2 data-type="mText" class="sti-item">Talleres </h2><span data-type="icon" class="sti-icon sti-icon-talleres sti-item"></span></a></li>
+                                        
+                    </ul>
+
+
+                      </div>
+                                         <div role="tabpanel" class="tab-pane  animated fadeInRight" id="especiales">
+                      <div class="text-center">
+                      <div class="text-center icon_a icon_a-especiales f-40" style="color:#e91e63;  margin-bottom: -20px;"><p class="f-18">Especiales</p></div>
+                                  
+                        <ul id="sti-menu3" class="sti-menu roww">
+                    
+                                <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/regalos"><h2 data-type="mText" class="sti-item">Tarjeta de Regalo </h2><span data-type="icon" class="sti-icon sti-icon-tjregalo sti-item"></span></a></li>
+          
+                                <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/campañas"><h2 data-type="mText" class="sti-item">Campaña</h2><span data-type="icon" class="sti-icon sti-icon-campana sti-item"></span></a></li>
+                    
+                    <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/promociones"><h2 data-type="mText" class="sti-item">Promocion </h2><span data-type="icon" class="sti-icon sti-icon-promocion sti-item"></span></a></li>
+      
+                              <li data-hovercolor="#e91e63"><a data-toggle="modal" href="{{url('/')}}/especiales/examenes""><h2 data-type="mText" class="sti-item">Crear un examen</h2><span data-type="icon" class="sti-icon sti-icon-cexamen sti-item"></span></a></li>
+      
+                                  </ul>
+                       </div></div>
+                       
+                       
+                                            <div role="tabpanel" class="tab-pane animated fadeInRight" id="validar">
+                    <div class="text-center icon_a icon_a-checador f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Validar</p></div>
+                                    
+                                        <ul id="sti-menu4" class="sti-menu roww">    
+                         
+                               <p>Morbi mattis ullamcorper velit. Etiam rhoncus. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Cras id dui. Curabitur turpis.
+                    Etiam ut purus mattis mauris sodales aliquam. Aenean viverra rhoncus pede. Nulla sit amet est. Donec mi odio, faucibus.</p>
+                                  </ul>
+
+                      </div>
+                      
+                      
+                                        <div role="tabpanel" class="tab-pane animated fadeInRight" id="punto_venta">
+                      
+                      <div class="text-center icon_a icon_a-punto-de-venta f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Punto de Venta</p></div>
+                                    <ul id="sti-menu5" class="sti-menu roww">
+
+                               <p>Morbi mattis ullamcorper velit. Etiam rhoncus. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Cras id dui. Curabitur turpis.
+                    Etiam ut purus mattis mauris sodales aliquam. Aenean viverra rhoncus pede. Nulla sit amet est. Donec mi odio, faucibus.</p>
+                                  </ul>
+                  
+                      
+                      
+                                               
+                      
+                    </div>
+                                            <div role="tabpanel" class="tab-pane animated fadeInRight" id="reportes">
+                      
+                      <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
+                      
+                      
+                      <ul id="sti-menu6" class="sti-menu roww">
+
+                        <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/inscritos"><h2 data-type="mText" class="sti-item">Inscritos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a></li>
+                        
+                        
+                        <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a></li>
+                        
+                        <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Guía de contactos </h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a></li>
+                        <li data-hovercolor="#f44336"><a data-toggle="modal" href="{{url('/')}}/reportes/estatus_alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a></li>
+
+                      </ul>
+
+                      </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalAgendar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+          </div>
+        <div class="text-center">
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div align="center"><i class="zmdi zmdi-wrench zmdi-hc-fw f-60 c-morado"></i></div>
+          <div class="clearfix p-b-15"></div>                        
+          <div class="col-md-12">
+            <span class="f-20 opaco-0-8">¡ Modulo en construcción. !</span>
+          </div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+        </div>                 
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalEspeciales" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+          </div>
+        <div class="text-center">
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div align="center"><i class="zmdi zmdi-wrench zmdi-hc-fw f-60 c-morado"></i></div>
+          <div class="clearfix p-b-15"></div>                        
+          <div class="col-md-12">
+            <span class="f-20 opaco-0-8">¡ Modulo en construcción. !</span>
+          </div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+          <div class="clearfix p-b-15"></div>
+        </div>                 
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalReportes" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
           <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -462,6 +633,8 @@
         <script src="{{url('/')}}/assets/js/jquery.floating-social-share.js"></script>
         <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+        <script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script>
 
         <!-- <script src="{{url('/')}}/assets/js/loader.js" type="text/javascript"></script>
         <script src="{{url('/')}}/assets/js/loader2.js" type="text/javascript"></script>
@@ -1277,6 +1450,19 @@
             }
       });
     });
+
+    $('.sti-menu').iconmenu({
+              animMouseenter: {
+                  'mText': {speed: 500, easing: 'easeOutExpo', delay: 200, dir: -1},
+                  'sText': {speed: 500, easing: 'easeOutExpo', delay: 200, dir: -1},
+                  'icon': {speed: 700, easing: 'easeOutBounce', delay: 0, dir: 1}
+              },
+              animMouseleave: {
+                  'mText': {speed: 400, easing: 'easeInExpo', delay: 0, dir: -1},
+                  'sText': {speed: 400, easing: 'easeInExpo', delay: 0, dir: 1},
+                  'icon': {speed: 400, easing: 'easeInExpo', delay: 0, dir: -1}
+              }
+          });
 // fin de eliminar notificaciones
 
     </script>		
