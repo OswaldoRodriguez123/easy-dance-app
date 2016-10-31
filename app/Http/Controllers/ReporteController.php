@@ -673,6 +673,8 @@ public function PresencialesFiltros(Request $request)
             }
         }
 
+        
+
         return view('reportes.estatus_alumnos')->with(['alumnos' => $inscripciones, 'reporte_datos' => $reporte_estatus, 'clases_grupales' => $clases_grupales, 'sexos' => $sexo]);
         
         //return view('reportes.estatus_alumnos')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio]);

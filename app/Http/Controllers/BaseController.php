@@ -33,7 +33,7 @@ class BaseController extends Controller {
             ->join('users','notificacion_usuario.id_usuario','=','users.id')
             ->select('notificacion.*','notificacion_usuario.visto as visto')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->orderBy('created_at','desc')
+            ->orderBy('notificacion_usuario.created_at','desc')
         ->get();
 
         $numero_de_notificaciones = 0;
@@ -50,7 +50,7 @@ class BaseController extends Controller {
             ->join('academias','users.academia_id','=','academias.id')
             ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->orderBy('created_at','desc')
+            ->orderBy('notificacion_usuario.created_at','desc')
             ->limit(10)
         ->get();
 

@@ -17,6 +17,7 @@ use DB;
 use Illuminate\Support\Facades\Session;
 use App\ConfigPagosInstructor;
 use App\AsistenciaInstructor;
+use App\PagoInstructor;
 
 class InstructorController extends BaseController {
 
@@ -796,39 +797,37 @@ class InstructorController extends BaseController {
         if($instructor)
         {
 
-            $pagadas = DB::table('asistencias_instructor')
-                ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $pagadas = DB::table('pagos_instructor')
+                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida', 'asistencias_instructor.monto')
+                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
                 ->where('instructores.id', $id)
-                ->where('asistencias_instructor.boolean_clase_pagada', 1)
+                ->where('pagos_instructor.boolean_clase_pagada', 1)
             ->get();
 
 
-            $por_pagar = DB::table('asistencias_instructor')
-                ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $por_pagar = DB::table('pagos_instructor')
+                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida', 'asistencias_instructor.monto', 'asistencias_instructor.id')
+                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor',  'pagos_instructor.monto', 'pagos_instructor.id', 'pagos_instructor.tipo')
                 ->where('instructores.id', $id)
-                ->where('asistencias_instructor.boolean_clase_pagada', 0)
-                ->where('asistencias_instructor.monto', '>', 0)
+                ->where('pagos_instructor.boolean_clase_pagada', 0)
+                ->where('pagos_instructor.monto', '>', 0)
             ->get();
 
-            $total = DB::table('asistencias_instructor')
-                ->select('asistencias.*')
-                ->where('asistencias_instructor.instructor_id', $id)
-                ->where('asistencias_instructor.boolean_clase_pagada', 0)
-            ->sum('asistencias_instructor.monto');
+            $total = DB::table('pagos_instructor')
+                ->select('pagos_instructor.*')
+                ->where('pagos_instructor.instructor_id', $id)
+                ->where('pagos_instructor.boolean_clase_pagada', 0)
+            ->sum('pagos_instructor.monto');
 
             $pagos_instructor = DB::table('configuracion_pagos_instructor')
                 ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id')
+                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
                 ->where('instructores.id', $id)
             ->get();
 
@@ -851,6 +850,7 @@ class InstructorController extends BaseController {
         
         $rules = [
             'cantidad' => 'required|numeric',
+            'tipo_pago' => 'required'
         ];
 
         $messages = [
@@ -898,7 +898,7 @@ class InstructorController extends BaseController {
 
                         $config_pagos->clase_grupal_id = $clase_grupal;
                         $config_pagos->instructor_id = $request->id;
-                        $config_pagos->tipo = $request->tipo;
+                        $config_pagos->tipo = $request->tipo_pago;
                         $config_pagos->monto = $request->cantidad;
 
                         $config_pagos->save();
@@ -940,7 +940,7 @@ class InstructorController extends BaseController {
 
                         $config_pagos->clase_grupal_id = $clase_grupal->id;
                         $config_pagos->instructor_id = $request->id;
-                        $config_pagos->tipo = $request->tipo;
+                        $config_pagos->tipo = $request->tipo_pago;
                         $config_pagos->monto = $request->cantidad;
 
                         $config_pagos->save();
@@ -1009,8 +1009,8 @@ class InstructorController extends BaseController {
             {
                 if($asistencia != ''){
 
-                    $pago = AsistenciaInstructor::find($asistencia);
-                    // $pago->boolean_clase_pagada = 1;
+                    $pago = PagoInstructor::find($asistencia);
+                    $pago->boolean_clase_pagada = 1;
 
                     $pago->save();
 
@@ -1020,7 +1020,7 @@ class InstructorController extends BaseController {
             }
 
 
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+            return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
 
         }
     }

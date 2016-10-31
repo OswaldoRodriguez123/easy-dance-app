@@ -24,6 +24,8 @@ use App\Alumno;
 
 use App\HorarioClaseGrupal;
 
+use App\PagoInstructor;
+
 use Carbon\Carbon;
 
 use DB;
@@ -586,7 +588,7 @@ class AsistenciaController extends BaseController
               
              if($estatu=="asociado") {
 
-                $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
+                $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
 
                   $actual = Carbon::now();
                   // $actual->tz = 'America/Caracas';
@@ -600,10 +602,10 @@ class AsistenciaController extends BaseController
                   $fecha_actual=$actual->toDateString();
                   $hora_actual=$actual->toTimeString();
 
-                  if($check)
+                  if($asistencia)
                   {
-                    $check->hora_salida = $hora_actual;
-                    $check->save();
+                    $asistencia->hora_salida = $hora_actual;
+                    $asistencia->save();
                   }
                   else{
 
@@ -614,17 +616,25 @@ class AsistenciaController extends BaseController
                   $asistencia->instructor_id=$id_instructor;
                   $asistencia->academia_id=Auth::user()->academia_id;
 
+                  $asistencia->save();
+
                   $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
 
                   if($config_pago){
                     if($config_pago->tipo == 1)
                     {
-                      $asistencia->monto = $config_pago->monto;
+
+                      $pago = new PagoInstructor;
+
+                      $pago->instructor_id=$id_instructor;
+                      $pago->tipo=$config_pago->tipo;
+                      $pago->monto=$config_pago->monto;
+                      $pago->clase_grupal_id=$clase_id[0];
+                      $pago->asistencia_id=$asistencia->id;
+
+                      $pago->save();
                     }
                   }
-
-                  $asistencia->save();
-
                 }
 
 
@@ -676,12 +686,12 @@ class AsistenciaController extends BaseController
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
 
-                $check = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
+                $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
 
-                if($check)
+                if($asistencia)
                 {
-                  $check->hora_salida = $hora_actual;
-                  $check->save();
+                  $asistencia->hora_salida = $hora_actual;
+                  $asistencia->save();
                 }
                 else{
 
@@ -692,17 +702,25 @@ class AsistenciaController extends BaseController
                   $asistencia->instructor_id=$id_instructor;
                   $asistencia->academia_id=Auth::user()->academia_id;
 
+                  $asistencia->save();
+
                   $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
 
                   if($config_pago){
                     if($config_pago->tipo == 1)
                     {
-                      $asistencia->monto = $config_pago->monto;
+
+                      $pago = new PagoInstructor;
+
+                      $pago->instructor_id=$id_instructor;
+                      $pago->tipo=$config_pago->tipo;
+                      $pago->monto=$config_pago->monto;
+                      $pago->clase_grupal_id=$clase_id[0];
+                      $pago->asistencia_id=$asistencia->id;
+
+                      $pago->save();
                     }
                   }
-
-                  $asistencia->save();
-
                 }
 
                 return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);

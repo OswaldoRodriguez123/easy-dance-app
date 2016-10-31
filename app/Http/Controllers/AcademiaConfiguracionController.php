@@ -28,6 +28,8 @@ use App\User;
 use App\Factura;
 use App\Pago;
 use App\ItemsFactura;
+use App\ConfigPagosInstructor;
+use App\PagoInstructor;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -48,6 +50,7 @@ class AcademiaConfiguracionController extends BaseController {
 	public function index()
 	{
         $academia = Academia::find(Auth::user()->academia_id);
+
 
         // $array = array(2, 4);
 
@@ -118,8 +121,26 @@ class AcademiaConfiguracionController extends BaseController {
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
             $fecha_comprobacion = Carbon::createFromFormat('Y-m-d', $academia->fecha_comprobacion);
+            $hoy = Carbon::now();
 
-            if($fecha_comprobacion < Carbon::now()){
+            if($fecha_comprobacion < $hoy){
+                if($hoy == $hoy->lastOfMonth()){
+
+                    $config_pagos = ConfigPagosInstructor::where('tipo', 2)->get();
+
+                    foreach($config_pagos as $config_pago){
+                        $pago = new PagoInstructor;
+
+                        $pago->instructor_id=$config_pago->instructor_id;
+                        $pago->tipo=$config_pago->tipo;
+                        $pago->monto=$config_pago->monto;
+                        $pago->clase_grupal_id=$config_pago->clase_grupal_id;
+
+                        $pago->save();
+                    }
+
+                }
+
                 return $this->pagorecurrente();
             }
 

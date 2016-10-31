@@ -69,19 +69,18 @@
                                
                                   <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
 
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span>
+                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
-                                  <label class="radio radio-inline m-r-20">
-                                      <input name="sexo" id="monto" value="1" type="radio">
-                                      <i class="input-helper"></i>  
-                                      Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
-                                  </label>
-                                  <label class="radio radio-inline m-r-20 ">
-                                      <input name="tipo" id="porcentaje" value="2" type="radio">
-                                      <i class="input-helper"></i>  
-                                      Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
-                                  </label>
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="tipo_pago" id="monto" value="1" type="radio" checked>
+                                          <i class="input-helper"></i>  
+                                          Por Clase 
+                                      </label>
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipo_pago" id="porcentaje" value="2" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Mensual 
+                                      </label>
                                   </div>
                                   </div>
                                <div class="has-error" id="error-tipo">
@@ -123,9 +122,10 @@
                                     <thead>
                                         <tr>
                                             
-                                            <th class="text-center" data-column-id="clase_grupal"></th>
-                                            <th class="text-center" data-column-id="monto" data-type="numeric"></th>
-                                            <th class="text-center" data-column-id="operaciones"></th>
+                                            <th class="text-center" data-column-id="clase_grupal">Clase Grupal</th>
+                                            <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
+                                            <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                            <th class="text-center" data-column-id="operaciones">Operaciones</th>
 
                                         </tr>
                                     </thead>
@@ -135,6 +135,19 @@
                                         <?php $id = $pagos->id; ?>
                                         <tr id="{{$id}}" class="seleccion" >
                                             <td class="text-center">{{$pagos->nombre}}</td>
+                                            <td class="text-center">
+
+                                            @if($pagos->tipo == 1)
+
+                                              Por Clase
+                                            @else
+
+                                              Mensual
+
+                                            @endif
+
+    
+                                            </td>
                                             <td class="text-center">{{$pagos->monto}}</td>
                                             <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                           </tr>
@@ -241,8 +254,6 @@
                                     <th style="width:7%;"><input style="margin-left:49%; display: none" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="clase">Clase</th>
-                                    <th class="text-center" data-column-id="hora_entrada">Hora Entrada</th>
-                                    <th class="text-center" data-column-id="hora_salida">Hora Salida</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
                             </thead>
@@ -421,8 +432,6 @@
                 ''+ ' ' +'',
                 ''+array.fecha+'',
                 ''+array.clase+'',
-                ''+array.hora+'',
-                ''+array.hora_salida+'',
                 ''+array.monto+'',
                 // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
@@ -443,8 +452,6 @@
                 ''+'<input name="select_check" id="select_check" type="checkbox" />'+'', 
                 ''+array.fecha+'',
                 ''+array.clase+'',
-                ''+array.hora+'',
-                ''+array.hora_salida+'',
                 ''+array.monto+'',
                 // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                 ] ).draw(false).node();
@@ -656,9 +663,16 @@
 
                 $.each(respuesta.array, function (index, array) {
 
+                  if(array.tipo == 1){
+                    tipo = 'Por Clase'
+                  }else{
+                    tipo = 'Mensual'
+                  }
+
                   var rowId=array.id;
                   var rowNode=h.row.add( [
                   ''+array.nombre+'',
+                  ''+tipo+'',
                   ''+array.monto+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
