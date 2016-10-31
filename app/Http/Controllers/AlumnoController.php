@@ -240,51 +240,60 @@ class AlumnoController extends BaseController
 
             if($usuario->save()){
             
-                if($request->correo){
+                // if($request->correo){
 
-                    $academia = Academia::find(Auth::user()->academia_id);
-                    $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-                    $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
+                //     $academia = Academia::find(Auth::user()->academia_id);
+                //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                //     $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 
-                    $array = [
-                       'nombre' => $request->nombre,
-                       'academia' => $academia->nombre,
-                       'usuario' => $request->correo,
-                       'contrasena' => $password,
-                       'subj' => $subj,
-                       'link' => $link
-                    ];
+                //     $array = [
+                //        'nombre' => $request->nombre,
+                //        'academia' => $academia->nombre,
+                //        'usuario' => $request->correo,
+                //        'contrasena' => $password,
+                //        'subj' => $subj,
+                //        'link' => $link
+                //     ];
 
 
-                    Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-                            $msj->subject($array['subj']);
-                            $msj->to($array['usuario']);
-                        });
-                }
+                //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                //             $msj->subject($array['subj']);
+                //             $msj->to($array['usuario']);
+                //         });
+                // }
 
                 //Envio de Sms
 
                 if($request->celular)
                 {
-                    $array_prefix = array('424', '414', '426', '416', '412');
-                    $prefix = substr($request->celular, 1, 3);
 
-                    if (in_array($prefix, $array_prefix)) {
+                    $celular = getLimpiarNumero($request->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
+
+                    $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=57".$celular."&SMSText=".$msg;
+
+
+                    // $array_prefix = array('424', '414', '426', '416', '412');
+                    // $prefix = substr($request->celular, 1, 3);
+
+                    // if (in_array($prefix, $array_prefix)) {
               
-                        $data = collect([
-                            'nombre' => $request->nombre,
-                            'apellido' => $request->apellido,
-                            'celular' => $request->celular
-                        ]);
+                    //     $data = collect([
+                    //         'nombre' => $request->nombre,
+                    //         'apellido' => $request->apellido,
+                    //         'celular' => $request->celular
+                    //     ]);
                         
-                        $academia = Academia::find(Auth::user()->academia_id);
-                        $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
-                        $sms = $this->sendAlumno($data, $msg);
+                        
+                        // $sms = $this->sendAlumno($data, $msg);
 
-                    }
-                } 
+                    // }
+                }else{
+                    $route = '';
+                }
 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'route' => $route, 'alumno' => $alumno, 200]);
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

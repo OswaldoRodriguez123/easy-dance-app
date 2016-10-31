@@ -741,6 +741,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/multihorario/eliminarhorario/{id}', 'MultihorarioController@eliminar');
 			Route::post('agendar/clases-grupales/multihorario/cancelarhorarios', 'MultihorarioController@CancelarHorarios');
 			Route::post('agendar/clases-grupales/multihorario/guardarhorarios', 'MultihorarioController@GuardarHorarios');
+			Route::get('agendar/multihorario/detalle/{id}', 'MultihorarioController@edit');
+			Route::put('agendar/multihorario/update/especialidad', 'MultihorarioController@updateEspecialidad');
+			Route::put('agendar/multihorario/update/instructor', 'MultihorarioController@updateInstructor');
+			Route::put('agendar/multihorario/update/dia', 'MultihorarioController@updateDia');
+			Route::put('agendar/multihorario/update/horario', 'MultihorarioController@updateHorario');
+			Route::put('agendar/multihorario/update/estudio', 'MultihorarioController@updateEstudio');
 
 		});// EN MIDDLEWARE RECEPCIONISTA
 		/*--------------------------------------------------------

@@ -138,7 +138,7 @@ class MultihorarioController extends BaseController
         // }
 
         return view(
-        	'agendar.clase_grupal.multihorario', 
+        	'agendar.multihorario.multihorario', 
         	compact('id','clasegrupal',
         		    'dias_de_semana',
         		    'config_especialidades',
@@ -482,6 +482,165 @@ class MultihorarioController extends BaseController
         }else{
             return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un horario']], 'status' => 'ERROR'],422);
         }
+    }
+
+    public function edit($id)
+    {
+
+        $clase_grupal_join = DB::table('horario_clase_grupales')
+            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.id' , 'horario_clase_grupales.fecha', 'clases_grupales.id as clase_grupal_id')
+            ->where('horario_clase_grupales.id', '=', $id)
+        ->first();
+
+        if($clase_grupal_join){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal_join->fecha);
+
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            return view('agendar.multihorario.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'dia_de_semana' => $dia]);
+
+        }else{
+           return redirect("agendar/clases-grupales"); 
+        }
+
+    }
+
+    public function updateEspecialidad(Request $request){
+        $clasegrupal = HorarioClaseGrupal::find($request->id);
+        $clasegrupal->especialidad_id = $request->especialidad_id;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateDia(Request $request){
+        
+        $clasegrupal = HorarioClaseGrupal::find($request->id);
+
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha);
+        $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+        if(intval($request->dia_de_semana_id) >= $dia_de_semana){
+            $dias = intval($request->dia_de_semana_id) - intval($dia_de_semana);
+            $fecha_inicio->addDays($dias)->toDateString();
+        }else{
+            $dias = intval($dia_de_semana) - intval($request->dia_de_semana_id);
+            $fecha_inicio->addWeek();
+            $fecha_inicio->subDays($dias)->toDateString();
+            
+        }
+
+        $clasegrupal->fecha = $fecha_inicio;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateInstructor(Request $request){
+        $clasegrupal = HorarioClaseGrupal::find($request->id);
+        $clasegrupal->instructor_id = $request->instructor_id;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateEstudio(Request $request){
+        $clasegrupal = HorarioClaseGrupal::find($request->id);
+        $clasegrupal->estudio_id = $request->estudio_id;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateHorario(Request $request){
+
+    $rules = [
+        'hora_inicio' => 'required',
+        'hora_final' => 'required',
+    ];
+
+    $messages = [
+
+        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+        'hora_final.required' => 'Ups! La hora final es requerida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $clasegrupal = HorarioClaseGrupal::find($request->id);
+
+        $hora_inicio = strtotime($request->hora_inicio);
+        $hora_final = strtotime($request->hora_final);
+
+        if($hora_inicio > $hora_final)
+        {
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+        }
+
+        $clasegrupal->hora_inicio = $request->hora_inicio;
+        $clasegrupal->hora_final = $request->hora_final;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
     }
 
 }
