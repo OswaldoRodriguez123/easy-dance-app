@@ -454,7 +454,7 @@
 
     var ver = 0;
     $( document ).ready(function() {
-      //ver = { { sin_ver } };
+      ver = {{$sin_ver}};
     });
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){

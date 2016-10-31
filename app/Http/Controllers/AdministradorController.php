@@ -13,13 +13,8 @@ use Validator;
 use DB;
 use Mail;
 
-class AdministradorController extends Controller
+class AdministradorController extends BaseController
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function principal()
     {
