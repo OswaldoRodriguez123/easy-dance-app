@@ -117,14 +117,14 @@
                                 <div class="col-xs-3">
                                     <div class="bgm-blue brd-2 p-15">
                                         <div class="c-white m-b-5">Subtotal</div>
-                                        <h4 class="m-0 c-white f-300">Bs {{ number_format($subtotal,2,",",".") }}</h4>
+                                        <h4 class="m-0 c-white f-300">{{$academia->pais_moneda}} {{ number_format($subtotal,2,",",".") }}</h4>
                                     </div>
                                 </div>
                                 
                                 <div class="col-xs-3">
                                     <div class="bgm-green brd-2 p-15">
                                         <div class="c-white m-b-5">Porcentaje de IVA</div>
-                                        <h4 class="m-0 c-white f-300">Bs {{ number_format($iva,2,",",".") }} ({{ $porcentajeIVA }}%)</h4>
+                                        <h4 class="m-0 c-white f-300">{{$academia->pais_moneda}} {{ number_format($iva,2,",",".") }} ({{ $porcentajeIVA }}%)</h4>
                                     </div>
                                 </div>
                                 
