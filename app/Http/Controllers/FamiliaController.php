@@ -48,7 +48,7 @@ class FamiliaController extends BaseController {
 
         foreach($familias as $familia){
 
-            $total = Alumno::withTrashed()->where('familia_id', '=' ,  $familia->id)->count();
+            $total = Alumno::where('familia_id', '=' ,  $familia->id)->count();
             $collection=collect($familia);     
             $familia_array = $collection->toArray();
             
