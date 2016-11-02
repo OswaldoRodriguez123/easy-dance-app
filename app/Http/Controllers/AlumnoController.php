@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Visitante;
+use App\Paises;
 
 class AlumnoController extends BaseController
 {
@@ -269,9 +270,17 @@ class AlumnoController extends BaseController
 
                     $celular = getLimpiarNumero($request->celular);
                     $academia = Academia::find(Auth::user()->academia_id);
-                    $msg = 'Bienvenido a bordo '.$request->nombre.', '.$academia->nombre.' te brinda la bienvenida a nuestras clases de baile';
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                    $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=57".$celular."&SMSText=".$msg;
+                        $pais = Paises::find($academia->pais_id);
+                        $msg = 'Bienvenido '.$request->nombre.', estamos felices de tenerte a bordo, en '.$academia->nombre.' daremos lo mejor para enseñarte a bailar.';
+
+
+                        $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=".$pais->codigo."".$celular."&SMSText=".$msg;
+
+                    }else{
+                        $route = '';
+                    }
 
 
                     // $array_prefix = array('424', '414', '426', '416', '412');
@@ -362,8 +371,7 @@ class AlumnoController extends BaseController
             }
 
             $perfil = DB::table('perfil_evaluativo')
-                ->join('users', 'perfil_evaluativo.usuario_id', '=', 'users.id')
-                ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+                ->join('alumnos', 'perfil_evaluativo.usuario_id', '=', 'alumnos.id')
                 ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
                 ->where('alumnos.id', $id)
             ->first();
@@ -957,20 +965,17 @@ class AlumnoController extends BaseController
 
     public function perfil_evaluativo($id)
     {
-
-        $usuario = User::where('usuario_id', $id)->first();
         // $perfil = PerfilEvaluativo::where('usuario_id', $usuario->id)->first();
 
         $perfil = DB::table('perfil_evaluativo')
-            ->join('users', 'perfil_evaluativo.usuario_id', '=', 'users.id')
-            ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+            ->join('alumnos', 'perfil_evaluativo.usuario_id', '=', 'alumnos.id')
             ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
-            ->where('perfil_evaluativo.usuario_id', $usuario->id)
+            ->where('perfil_evaluativo.usuario_id', $id)
         ->first();
 
         if(!$perfil){
             $perfil = new PerfilEvaluativo;
-            $perfil->usuario_id = $usuario->id;
+            $perfil->usuario_id = $id;
             $perfil->save();
         }
 

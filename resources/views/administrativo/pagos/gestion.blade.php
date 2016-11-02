@@ -414,7 +414,31 @@
                             // var nTitle="Ups! ";
                             // var nMensaje=respuesta.mensaje;
                             // window.location = route_imprimir + respuesta.factura;
-                            window.location = route_principal;
+
+                            if(respuesta.route){
+
+                              $.ajax({
+                                url: respuesta.route,
+                                headers: {'X-CSRF-TOKEN': token},
+                                type: 'POST',
+                                dataType: 'json',
+                                success:function(respuesta){
+                           
+                                },
+                                error:function(msj){
+                                
+                                }
+                              }); 
+
+                              setTimeout(function(){ 
+
+                                window.location = route_principal;
+
+                              }, 2000);
+
+                            }else{
+                              window.location = route_principal;
+                            }
                           }else{
                             var nTitle="Ups! ";
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";

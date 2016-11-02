@@ -914,30 +914,47 @@ class AdministrativoController extends BaseController {
                     $es_representante = Familia::where('representante_id', $usuario->id)->first();
                     if($es_representante){
                         $correo = $usuario->email;
+                        $celular = getLimpiarNumero($usuario->celular);
                     }else{
                         $familia = Familia::find($usuario->familia_id);
                         $representante = User::find($familia->representante_id);
                         $correo = $representante->email;
+                        $celular = getLimpiarNumero($representante->celular);
                     }
                 }else{
                     $correo = $usuario->email;
+                    $celular = getLimpiarNumero($usuario->celular);
                 }
 
-                $subj = 'Pago realizado exitósamente';
+                if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                $array = [
+                    $alumno = Alumno::find($request->id);
 
-                   'correo_destino' => $correo,
-                   'nombre' => $academia->nombre,
-                   'correo' => $academia->correo,
-                   'telefono' => $academia->celular,
-                   'fecha' => Carbon::now()->toDateString(),
-                   'hora' => Carbon::now()->toTimeString(),
-                   'factura' => $numero_factura,
-                   'total' => $total_pago,
-                   'descripcion' => $descripcion,
-                   'subj' => $subj
-                ];
+                    $pais = Paises::find($academia->pais_id);
+                    $msg = $alumno->nombre . ', hemos registrado satisfactoriamente el pago de tus servicios. Gracias.';
+
+
+                    $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=".$pais->codigo."".$celular."&SMSText=".$msg;
+
+                }else{
+                    $route = '';
+                }
+
+                // $subj = 'Pago realizado exitósamente';
+
+                // $array = [
+
+                //    'correo_destino' => $correo,
+                //    'nombre' => $academia->nombre,
+                //    'correo' => $academia->correo,
+                //    'telefono' => $academia->celular,
+                //    'fecha' => Carbon::now()->toDateString(),
+                //    'hora' => Carbon::now()->toTimeString(),
+                //    'factura' => $numero_factura,
+                //    'total' => $total_pago,
+                //    'descripcion' => $descripcion,
+                //    'subj' => $subj
+                // ];
 
                 // Mail::send('correo.factura', $array, function($msj) use ($array){
                 //         $msj->subject($array['subj']);
@@ -953,7 +970,7 @@ class AdministrativoController extends BaseController {
             Session::forget('gestion');
             Session::forget('pendientes');
 
-            return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 200]);
+            return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 'route' => $route, 200]);
 
      }
         return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar una linea de pago']], 'status' => 'ERROR'],422);

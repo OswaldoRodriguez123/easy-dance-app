@@ -29,11 +29,11 @@ class UsuarioController extends BaseController {
 
     public function perfil_evaluativo()
     {
-        $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
+        $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
 
         if(!$perfil){
             $perfil = new PerfilEvaluativo;
-            $perfil->usuario_id = Auth::user()->id;
+            $perfil->usuario_id = Auth::user()->usuario_id;
             $perfil->save();
         }
 
