@@ -28,8 +28,8 @@
                     <div class="card">
                         <div class="card-header text-center">
 
-                        <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-25"></i> Sección de Facturas</p>
-                        <hr class="linea-morada">
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-25"></i> Sección de Facturas</p>
+                            <hr class="linea-morada">
                                                               
                         </div>
 
@@ -53,58 +53,49 @@
 
                                 <div class="clearfix"></div>
                                 
-                                <div class="col-md-12">
-                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
-                                </div>
-                                <br><br>
+                        <div class="col-md-12">
+                            <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
+                        
+                        </div>
+                        <br><br>
                                 <!-- <div class="clearfix"></div> -->
 
                         <div class="table-responsive row">
                            <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="factura" data-order="asc">&nbsp;&nbsp;#&nbsp;&nbsp;</th>
-                                    <th class="text-center" data-column-id="cliente">Cliente</th>
-                                    <th class="text-center" data-column-id="concepto">Concepto</th>
-                                    <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
-                                    <th class="text-center" data-column-id="total">Total</th>
-                                    <th class="text-center" data-column-id="operacion">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                                    <thead>
+                                        <tr>
+                                            <th id="factura" class="text-center" data-column-id="factura" data-order="asc">Factura</th>
+                                            <th class="text-center" data-column-id="cliente">Cliente</th>
+                                            <th class="text-center" data-column-id="concepto">Concepto</th>
+                                            <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
+                                            <th class="text-center" data-column-id="total">Total</th>
+                                            <th class="text-center" data-column-id="operacion">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                @foreach($facturas as $factura)
-                                    <?php $id = $factura['id']; ?>
+                                        @foreach($facturas as $factura)
+                                            <?php $id = $factura['id']; ?>
 
-                                    <tr id="{{$id}}" class="seleccion">
-                                        <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
-                                        <td class="text-center previa">{{$factura['nombre']}}</td>
-                                        <td class="text-center previa">{{$factura['concepto']}}</td>
-                                        <td class="text-center previa">{{$factura['fecha']}}</td>
-                                        <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
-                                        <td class="text-center previa"><i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i></td>
-                                      
-                                    </tr>
+                                            <tr id="{{$id}}" class="seleccion">
+                                                <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
+                                                <td class="text-center previa">{{$factura['nombre']}}</td>
+                                                <td class="text-center previa">
+                                                {{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}</td>
+                                                <td class="text-center previa">{{$factura['fecha']}}</td>
+                                                <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
+                                                <td class="text-center previa"><i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i></td>
+                                              
+                                            </tr>
 
-                                @endforeach
-                                                           
-                            </tbody>
-                        </table>
-                         </div>
-                        </div>
-                        <div class="card-body p-b-20">
-                            <div class="row">
-                              <div class="container">
-                                
-                              </div>
+                                        @endforeach
+                                                               
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        
-                        
                     </div>
-                    
-                    
                 </div>
             </section>
 @stop
@@ -174,7 +165,8 @@
 
            $("#pagadas").prop("checked", true);
             
-           document.getElementById('fecha').innerHTML = 'Fecha';
+            document.getElementById('fecha').innerHTML = 'Fecha';
+            document.getElementById('factura').innerHTML = '#'; 
         });
 
         function previa(t){
