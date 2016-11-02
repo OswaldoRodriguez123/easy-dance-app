@@ -162,7 +162,7 @@
                                     </div>
                               </div>
 
-                              <div class="clearfix p-b-35"></div>
+                              <div class="clearfix"></div>
 
                               <div class="col-sm-2 text-center">
                                 <div class="has-error" id="error-instructor_acordeon_id">
@@ -212,8 +212,7 @@
                                 </div>
                               </div>
 
-                            <div class="clearfix p-b-35"></div>
-                            <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-15"></div>
 
                             <div class="card-header text-left">
                                 <button type="button" class="btn btn-blanco m-r-10 f-12 guardar" id="add" >Agregar Linea</button>
@@ -315,19 +314,19 @@
         processing: true,
         serverSide: false,
         pageLength: 25,
-        //bPaginate: false, 
+        bPaginate: false, 
         bFilter:false, 
         bSort:false, 
-        bInfo:true,
+        bInfo:false,
         order: [[0, 'asc']],
         fnDrawCallback: function() {
           $('.dataTables_paginate').show();
-        /*if ($('#tablelistar tr').length < 25) {
+        if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
              $('.dataTables_paginate').show();
-          }*/
+          }
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
