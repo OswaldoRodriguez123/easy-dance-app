@@ -120,7 +120,7 @@
                                 @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
                                     <li class="hidden-xs">
-                                        <a href="{{url('/')}}/agendar"><i class="zmdi zmdi-calendar-check"></i> Calendario</a>
+                                        <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
                                     </li>
 
                                      {{-- <li class="hidden-xs">
