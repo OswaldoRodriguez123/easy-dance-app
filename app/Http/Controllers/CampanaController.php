@@ -2259,10 +2259,10 @@ public function todos_con_robert()
 
                 ];
 
-                // Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
-                //     $msj->subject($array['subj']);
-                //     $msj->to($array['correo']);
-                // });
+                Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
 
                 return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
 
