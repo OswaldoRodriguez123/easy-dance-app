@@ -901,20 +901,20 @@
         } ],
         processing: true,
         serverSide: false,
-        pageLength: 25,
+        //pageLength: 25,
         order: [[1, 'desc']],
         language: {
               searchPlaceholder: "Buscar"
         },
-        fnDrawCallback: function() {
+        /*fnDrawCallback: function() {
           $('.dataTables_paginate').show();
-        /*if ($('#tablelistar tr').length < 25) {
+        if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
              $('.dataTables_paginate').show();
-          }*/
-        },
+          }
+        },*/
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
           $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled");
