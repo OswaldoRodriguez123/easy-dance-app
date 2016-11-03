@@ -268,9 +268,9 @@
         <br>
         <div class="row">
           <div class="chat-search">
-              <div class="fg-line">
+              <!-- <div class="fg-line"> -->
                   <input type="text" id="buscar" class="form-control" placeholder="Buscar Alumno e Instructor">
-              </div>
+              <!-- </div> -->
           </div>
           <div class="well p-b-35">
             <!--Ver listado-->     
