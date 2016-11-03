@@ -66,7 +66,7 @@
       </tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b>{{$nombre}}</b>, Estamos muy felices por el aporte que has realizado en pro a la campaña <b>“TODOS CON ROBERT”</b> te has convertido en uno de nuestros  <a href="{{$link}}">“PATROCINADORES  ANGÉLES”</a> Has demostrado tener un gran corazón, ahora puedes invitar a otros amigos a sumarse a esta genial campaña.
+                                    Hola <b>{{$nombre}}</b>, Estamos muy felices por el aporte que has realizado en pro a la campaña <b>“{{$campaña}}”</b> te has convertido en uno de nuestros  <a href="{{$link}}">“PATROCINADORES  ANGÉLES”</a> Has demostrado tener un gran corazón, ahora puedes invitar a otros amigos a sumarse a esta genial campaña.
 
                                     </font>
                                 </td>
@@ -89,7 +89,7 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-                                  <a href="http://app.easydancelatino.com/especiales/campañas/invitar/{{$id}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Invitar</a>
+                                  <a href="{{$link_invitar}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Invitar</a>
                                 </td>
                                                   
 

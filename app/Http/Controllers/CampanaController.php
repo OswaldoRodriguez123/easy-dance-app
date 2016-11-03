@@ -926,16 +926,18 @@ public function todos_con_robert()
 
                     if($request->correo)
                     {
+                        $campaña = Campana::find($transferencia->campana_id);
 
                         $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
 
                         $array = [
 
                            'nombre' => $request->nombre,
-                           'link' => "http://app.easydancelatino.com/todos-con-robert",
-                           'correo' => $transferencia->correo = $request->correo,
+                           'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
+                           'correo' => $transferencia->correo,
                            'subj' => $subj,
-                           'id' => $transferencia->id
+                           'id' => $transferencia->id,
+                           'campaña' => $campaña->nombre
 
                         ];
 
@@ -1949,6 +1951,7 @@ public function todos_con_robert()
             $patrocinador->tipo_id = 1;
             $patrocinador->tipo_moneda = $contribucion->tipo_moneda;
             $patrocinador->monto = $contribucion->monto;
+            $patrocinador->transferencia_id = $contribucion->id;
 
             $patrocinador->save();
 
@@ -2073,14 +2076,18 @@ public function todos_con_robert()
 
                 foreach($invitaciones as $invitacion){
 
-                    $subj =  $nombre . ' te invita a contribuir con la campaña “TODOS CON ROBERT”';
+                    $campaña = Campana::find($campana_id);
+
+                    $subj =  $nombre . ' te invita a contribuir con la campaña “'.$campaña->nombre.'”';
                     
                     $array = [
                        'correo' => $invitacion[0]['email'],
                        'nombre_envio' => $nombre,
                        'nombre_destino' => $invitacion[0]['nombre'],
                        'id' => $campana_id,
-                       'subj' => $subj
+                       'subj' => $subj,
+                       'campaña' => $campaña->nombre,
+                       'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$campana_id
                     ];
 
                      Mail::send('correo.invitacion_campana', $array , function($msj) use ($array){
@@ -2216,6 +2223,56 @@ public function todos_con_robert()
         $datos->delete();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function ReenviarCorreoPatrocinador($id){
+            
+        $patrocinador = DB::table('patrocinadores')
+             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+             ->join('campanas','patrocinadores.campana_id', '=', 'campanas.id')
+             //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+             ->select('patrocinadores.*', 'usuario_externos.nombre', 'usuario_externos.correo', 'campanas.nombre as campana_nombre')
+             ->where('patrocinadores.id', '=', $id)
+         ->first();
+
+        if($patrocinador){
+
+            if($patrocinador->correo){
+
+                if($patrocinador->transferencia_id){
+                    $link = 'http://app.easydancelatino.com/especiales/campañas/invitar/'.$patrocinador->transferencia_id;
+                }else{
+                    $link = "http://app.easydancelatino.com/especiales/campañas/progreso/".$patrocinador->campana_id;
+                }
+                
+                $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
+
+                $array = [
+
+                   'nombre' => $patrocinador->nombre,
+                   'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$patrocinador->campana_id,
+                   'correo' => $patrocinador->correo,
+                   'subj' => $subj,
+                   'link_invitar' => $link,
+                   'campaña' => $patrocinador->campana_nombre
+
+                ];
+
+                // Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
+                //     $msj->subject($array['subj']);
+                //     $msj->to($array['correo']);
+                // });
+
+                return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+                }else{
+                    return response()->json(['error_mensaje'=> 'Ups! Este patrocinador no posee correo electrónico', 'status' => 'ERROR-ENVIO'],422);
+                }
+
+            }else{
+                return response()->json(['error_mensaje'=> 'Ups! ha ocurrido un error', 'status' => 'ERROR-ENVIO'],422);
+            }
 
     }
 

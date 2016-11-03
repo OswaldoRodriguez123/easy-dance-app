@@ -49,7 +49,7 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$patrocinador->nombre}}</td>
                                     <td class="text-center previa">{{$patrocinador->monto}}</td>
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td>
 
                                   </tr>
                             @endforeach 
@@ -81,6 +81,7 @@
 
         route_eliminar="{{url('/')}}/especiales/campañas/patrocinadores/eliminar/";
         route_detalle="{{url('/')}}/especiales/campañas/patrocinadores/detalle";
+        route_enviar="{{url('/')}}/especiales/campañas/patrocinadores/enviar/";
 
         $(document).ready(function(){
 
@@ -236,6 +237,66 @@
                                 }
                 });
       }
+
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-email', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        element = this;
+
+        swal({   
+            title: "Desea re-enviar el correo de confirmación?",   
+            text: "Confirmar re-envio!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Re-Enviar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: false 
+        }, function(isConfirm){   
+          if (isConfirm) {
+
+            procesando();
+
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+            $(".sweet-alert").hide();
+        
+            var route = route_enviar + id;
+            var token = "{{ csrf_token() }}";
+                
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+                        
+                        swal("Exito!","El correo ha sido enviado!","success");
+                    
+                    }
+                },
+                error:function(msj){
+                    swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                }
+            });
+            
+            finprocesado();
+            }
+        });
+    });
+      
+
 
       function previa(t){
         var row = $(t).closest('tr').attr('id');

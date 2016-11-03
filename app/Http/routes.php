@@ -623,6 +623,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/campañas/patrocinadores/update/nombre', 'CampanaController@updateNombrePatrocinador');
 			Route::put('especiales/campañas/patrocinadores/update/monto', 'CampanaController@updateMontoPatrocinador');
 			Route::delete('especiales/campañas/patrocinadores/eliminar/{id}', 'CampanaController@eliminarpatrocinador');
+			Route::post('especiales/campañas/patrocinadores/enviar/{id}', 'CampanaController@ReenviarCorreoPatrocinador');
 
 
 			//CONTRIBUCIONES

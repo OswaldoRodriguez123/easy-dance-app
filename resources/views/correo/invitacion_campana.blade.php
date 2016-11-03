@@ -54,7 +54,7 @@
                                 <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="http://easydancelatino.com/img/correos/logo.png" width="120">
                                 </td>
                               </tr>
-                              <tr>
+<!--                               <tr>
                                 <td valign="top" style="text-align:center;">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> La aplicación web para el gremio del baile. <br><br>
                                   </font>
@@ -63,7 +63,7 @@
                               <tr>
                                 <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="http://oi64.tinypic.com/ion4si.jpg" height="300" width="570">
                                 </td>
-                              </tr>
+                              </tr> -->
                               <tr>
                                 <td style="font-size:2px" height="30">
                                 </td>
@@ -77,7 +77,7 @@
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
 
-                                    Saludos <b>{{$nombre_destino}}</b>, has recibido este correo por que <b>{{$nombre_envio}}</b> te ha invitado a unirte a la campaña <b>“TODOS CON ROBERT”</b> te invitamos a que veas de que se trata.
+                                    Saludos <b>{{$nombre_destino}}</b>, has recibido este correo por que <b>{{$nombre_envio}}</b> te ha invitado a unirte a la campaña <b>“{{$campaña}}”</b> te invitamos a que veas de que se trata.
                                     </font>
                                 </td>
 
@@ -98,7 +98,7 @@
                                 
                                 <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
             
-                                  <a href="http://app.easydancelatino.com/todos-con-robert" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Ver campaña</a>
+                                  <a href="{{$link}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Ver campaña</a>
                                 </td>
                                                   
 
