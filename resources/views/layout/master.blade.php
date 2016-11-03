@@ -263,97 +263,95 @@
 
     
     <aside id="chat" class="sidebar c-overflow">
+      
+      <div class="row">
+        <div class="col-md-12">
+          <br>
+            <div class="chat-search">
+                    <input type="text" id="buscar" class="form-control" style="width:30%" placeholder="Buscar Alumno e Instructor">
+            </div>
+            <div class="well p-b-35">
+              <!--Ver listado-->     
 
-      <div class="col-md-12">
-        <br>
-        <div class="row">
-          <div class="chat-search">
-              <div class="fg-line">
-                  <input type="text" id="buscar" class="form-control" placeholder="Buscar Alumno e Instructor">
-              </div>
-          </div>
-          <div class="well p-b-35">
-            <!--Ver listado-->     
+              <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:10%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
 
-            <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:30%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>             
-          </div>
-        </div>
-        
+            </div>
 
-        <table class="table" id="tablelistar_asistencia" >
+            <table class="table" id="tablelistar_asistencia" >
 
-          <thead>
-            <tr class="hidden">    
-              <th class="text-center" >Nombres</th>                                    
-            </tr>
-          </thead>
-          <tbody>
-          
-            @if(isset($alumnosacademia))      
-                                 
-              @foreach ($alumnosacademia as $alumno)
-                  
-                <?php $id = $alumno->id ?>
-                <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
-                  <td class="p-10" >
-                      <div class="listview">
-                        <a class="lv-item" href="javascript:void(0)"  >
-                          <div class="media">
-                              <div class="pull-left p-relative">
-
-                              @if($alumno->imagen)
-                              
-                                <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
-
-                              @else
-
-                                  @if($alumno->sexo == 'M')
-                                    <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                  @else
-                                    <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                  @endif
-                              @endif
-                                  <i class="chat-status-busy"></i>
-                              </div>
-                              <div class="media-body">
-                                  <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
-                                  <small class="lv-small">{{$alumno->identificacion}}</small>
-                              </div>
-                          </div>
-                        </a>
-                      </div>
-                  </td>
+              <thead>
+                <tr class="hidden">    
+                  <th class="text-center" >Nombres</th>                                    
                 </tr>
-              @endforeach 
-            @endif
-            
-            @if(isset($instructores))                            
-              @foreach ($instructores as $instructor)
-                  
-                  <?php $id = $instructor['id']; ?>
-                  <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
+              </thead>
+              <tbody>
+              
+                @if(isset($alumnosacademia))      
+                                     
+                  @foreach ($alumnosacademia as $alumno)
+                      
+                    <?php $id = $alumno->id ?>
+                    <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
                       <td class="p-10" >
-                        <div class="listview">
-                        <a class="lv-item" href="javascript:void(0)"  >
-                          <div class="media">
-                              <div class="pull-left p-relative">
-                                  <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                                  <i class="chat-status-busy"></i>
+                          <div class="listview">
+                            <a class="lv-item" href="javascript:void(0)"  >
+                              <div class="media">
+                                  <div class="pull-left p-relative">
+
+                                  @if($alumno->imagen)
+                                  
+                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
+
+                                  @else
+
+                                      @if($alumno->sexo == 'M')
+                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                      @else
+                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                      @endif
+                                  @endif
+                                      <i class="chat-status-busy"></i>
+                                  </div>
+                                  <div class="media-body">
+                                      <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
+                                      <small class="lv-small">{{$alumno->identificacion}}</small>
+                                  </div>
                               </div>
-                              <div class="media-body">
-                                  <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
-                                  <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
-                              </div>
-                            </div>
-                          </a>
-                        </div>
+                            </a>
+                          </div>
                       </td>
                     </tr>
-              @endforeach 
-            @endif
-                                           
-          </tbody>
-        </table>
+                  @endforeach 
+                @endif
+                
+                @if(isset($instructores))                            
+                  @foreach ($instructores as $instructor)
+                      
+                      <?php $id = $instructor['id']; ?>
+                      <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
+                          <td class="p-10" >
+                            <div class="listview">
+                            <a class="lv-item" href="javascript:void(0)"  >
+                              <div class="media">
+                                  <div class="pull-left p-relative">
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                                      <i class="chat-status-busy"></i>
+                                  </div>
+                                  <div class="media-body">
+                                      <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
+                                      <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                  @endforeach 
+                @endif
+                                               
+              </tbody>
+            </table>
+          </div>
       </div>
     </aside>
 		

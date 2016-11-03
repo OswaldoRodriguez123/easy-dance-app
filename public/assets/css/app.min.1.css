@@ -3335,7 +3335,7 @@ output {
 
 .form-control:focus {
   border-color: #b4b4b4;
-  outline: 0;
+/*  outline: 0;*/
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(180, 180, 180, 0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(180, 180, 180, 0.6);
 }
@@ -11394,7 +11394,7 @@ a.lv-footer:hover {
   padding: 20px 20px 15px 20px;
 }
 
-/*#chat .chat-search .form-control {
+#chat .chat-search .form-control {
   background-image: url("../img/icons/search-2.png");
   background-repeat: no-repeat;
   background-position: left center;
@@ -11404,7 +11404,7 @@ a.lv-footer:hover {
   transition: all;
   -webkit-transition-duration: 300ms;
   transition-duration: 300ms;
-}*/
+}
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   #chat .chat-search .form-control {
@@ -13738,7 +13738,7 @@ input:focus {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding: 0;
+/*  padding: 0;*/
 }
 
 .form-control:not(.fc-alt).auto-size {
