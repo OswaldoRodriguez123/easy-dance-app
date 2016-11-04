@@ -459,20 +459,6 @@
 
     var target = $('#mCSB_1_container')[0];
 
-    //   var observer = new MutationObserver(function(mutations) {
-    //     mutations.forEach(function(mutation) {
-    //       console.log(mutation.type
-    //       console.log('entro')
-          
-    //         // $('#mCSB_1_container').css('width', '');
-    //         // $('#mCSB_1_container').css('left', '');
-          
-    //     });    
-    // });
-
-    // var config = { attributes: true, childList: true, characterData: true };
-    // observer.observe(target, config);
-
     var observer = new MutationObserver(styleChangedCallback);
     observer.observe(target, {
         attributes: true,
@@ -485,7 +471,6 @@
         var newIndex = mutations[0].target.style.left;
         console.log(newIndex)
         if (newIndex == '-20px') {
-            console.log('new:'+newIndex+ 'old:'+ oldIndex);
             $('#mCSB_1_container').css('width', '');
             $('#mCSB_1_container').css('left', '');
         }
