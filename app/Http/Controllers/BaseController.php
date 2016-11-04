@@ -27,10 +27,12 @@ class BaseController extends Controller {
             ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-            ->where('clases_grupales.fecha_final', '<=', Carbon::now())
+            ->where('clases_grupales.fecha_final', '=>', Carbon::now())
             ->whereIn('users.usuario_tipo', $array)
             ->orWhere('users.usuario_tipo', null)
         ->get();
+
+        dd($alumnos)
 
         $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
