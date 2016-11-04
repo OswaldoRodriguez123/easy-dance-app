@@ -21,13 +21,10 @@ class BaseController extends Controller {
 	   $array = array(2, 4);
 
         $alumnos = DB::table('alumnos')
-            ->join('inscripcion_clase_grupal', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-            ->join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
             ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-            // ->where('clases_grupales.fecha_final', '=>', Carbon::now())
             ->whereIn('users.usuario_tipo', $array)
             ->orWhere('users.usuario_tipo', null)
         ->get();
