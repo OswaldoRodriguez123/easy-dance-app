@@ -1184,8 +1184,6 @@
             $.each(alumnos_aside, function (index, array) {
 
               id = array.id
-              cuerpo += '<tr id="asistencia_alumno_row_'+id+'" class="" data-imagen ="'+array.imagen+'" data-id-participante="'+id+'" data-nombre-participante="'+array.nombre+' '+array.apellido+'" data-identificacion-participante="'+array.identificacion+'" data-tipo-participante="alumno" data-sexo="'+array.sexo+'">'
-              cuerpo += '<td class="p-10" >'
               cuerpo += '<div class="listview">'
               cuerpo += '<a class="lv-item" href="javascript:void(0)"  >'
               cuerpo += '<div class="media">'
@@ -1207,7 +1205,19 @@
               cuerpo += '<div class="media-body">'
               cuerpo += '<div class="lv-title">'+array.nombre+' '+array.apellido+'</div>'
               cuerpo += '<small class="lv-small">'+array.identificacion+'</small>'
-              cuerpo += '</div></div></a></div></td></tr>'
+              cuerpo += '</div></div></a></div>'
+
+              var rowNode=asistencia.row.add( [
+                ''+cuerpo+''
+              ] ).draw(false).node();
+              $( rowNode )
+                .attr('id','asistencia_alumno_row_'+id)
+                .attr('data-imagen',array.imagen)
+                .attr('data-id-participante',array.id)
+                .attr('data-nombre-participante',array.nombre+' '+array.apellido)
+                .attr('data-identificacion-participante',array.identificacion)
+                .attr('data-tipo-participante',"alumno")
+                .attr('data-sexo',array.sexo)
               
 
               $('#aside_body').append(cuerpo)
@@ -1217,10 +1227,7 @@
             }); 
 
             $.each(instructores_aside, function (index, array) {
-
-              id = array.id
-              cuerpo += '<tr id="asistencia_alumno_row_'+id+'" class="" data-imagen ="'+array.imagen+'" data-id-participante="'+id+'" data-nombre-participante="'+array.nombre+' '+array.apellido+'" data-identificacion-participante="'+array.identificacion+'" data-tipo-participante="insctructor">'
-              cuerpo += '<td class="p-10" >'
+   
               cuerpo += '<div class="listview">'
               cuerpo += '<a class="lv-item" href="javascript:void(0)"  >'
               cuerpo += '<div class="media">'
@@ -1233,10 +1240,20 @@
               cuerpo += '<div class="media-body">'
               cuerpo += '<div class="lv-title">'+array.nombre+' '+array.apellido+'</div>'
               cuerpo += '<small class="lv-small">'+array.identificacion+' <i class="icon_a-instructor"></i></small>'
-              cuerpo += '</div></div></a></div></td></tr>'
-              
+              cuerpo += '</div></div></a></div>'
 
-              $('#aside_body').append(cuerpo)
+              id = array.id
+              var rowNode=asistencia.row.add( [
+                ''+cuerpo+''
+              ] ).draw(false).node();
+              $( rowNode )
+                .attr('id','asistencia_alumno_row_'+id)
+                .attr('data-imagen',array.imagen)
+                .attr('data-id-participante',array.id)
+                .attr('data-nombre-participante',array.nombre+' '+array.apellido)
+                .attr('data-identificacion-participante',array.identificacion)
+                .attr('data-tipo-participante',"insctructor")
+              
 
               cuerpo = '';
                 
@@ -1256,18 +1273,17 @@
             
         });
 
-    $('#tablelistar_asistencia tbody').on( 'click', 'tr', function () {
+    function buscar(t){
 
-        var row = $(this);
+        var row = $(t).closest('tr');
         var tipo= $(row).data('tipo-participante');
         if(tipo=="alumno"){
-          buscarAlumno(this);
+          buscarAlumno(t);
         }else if(tipo=="insctructor"){
-          buscarInstructor(this);
+          buscarInstructor(t);
         }
 
-    });
-
+    }
 
        
     </script>
