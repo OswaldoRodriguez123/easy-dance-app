@@ -225,7 +225,7 @@
                             <div class="col-md-12">
                               <br>
                                 <div class="chat-search">
-                                        <input type="text" id="buscar" class="form-control" style="width:30%" placeholder="Buscar Alumno e Instructor">
+                                        <input type="text" id="buscar" class="form-control" placeholder="Buscar Alumno e Instructor">
                                 </div>
                                 <div class="well p-b-35">
                                   <!--Ver listado-->     
@@ -1219,12 +1219,28 @@
                 
             }); 
 
-            aside_loaded = 1;    
+            aside_loaded = 1;   
+            $('#mCSB_1_container').css('width', '');
+            $('#mCSB_1_container').css('left', '');
             finprocesado();                                  
             
           }
+
+        
             
         });
+
+    var target = $('.mCSB_container');
+
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        
+          $('#mCSB_1_container').css('width', '');
+          $('#mCSB_1_container').css('left', '');
+        
+      });    
+    });
+
 
     $('#tablelistar_asistencia tbody').on( 'click', 'tr', function () {
 
