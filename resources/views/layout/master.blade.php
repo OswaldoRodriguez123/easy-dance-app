@@ -465,12 +465,12 @@
         attributeFilter: ['style'],
     });
 
-    var oldIndex = target.style.width;
+    var oldIndex = target.style.left;
 
     function styleChangedCallback(mutations) {
-        var newIndex = mutations[0].target.style.width;
-        console.log(newIndex)
+        var newIndex = mutations[0].target.style.left;
         if (newIndex == '-20px') {
+            console.log(newIndex)
             $('#mCSB_1_container').css('width', '');
             $('#mCSB_1_container').css('left', '');
         }
