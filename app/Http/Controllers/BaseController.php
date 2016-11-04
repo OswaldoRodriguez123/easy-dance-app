@@ -27,6 +27,7 @@ class BaseController extends Controller {
             ->where('alumnos.deleted_at', '=', null)
             ->whereIn('users.usuario_tipo', $array)
             ->orWhere('users.usuario_tipo', null)
+            ->orderBy('alumnos.nombre')
         ->get();
 
         $alumno_array = array();
