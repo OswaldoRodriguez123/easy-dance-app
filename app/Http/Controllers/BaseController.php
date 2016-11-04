@@ -42,13 +42,13 @@ class BaseController extends Controller {
                 ->where('clases_grupales.fecha_final','>=', Carbon::now())
             ->first();
 
-            // if($clase_grupal){
+            if($clase_grupal){
 
                 $collection=collect($alumno);     
                 $array = $collection->toArray();
                 $alumno_array[$alumno->id] = $array;
 
-            // }
+            }
 
         }
 
