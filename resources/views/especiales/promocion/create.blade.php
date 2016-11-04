@@ -75,6 +75,24 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-nombre">¿Cuál es el numero de canjes que tendra la promocion?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de veces que el codigo podra ser reclamado" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-promocion f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="numero_de_canjeos" id="numero_de_canjeos" placeholder="Ej. 100">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-numero_de_canjeos">
+                                      <span >
+                                          <small class="help-block error-span" id="error-numero_de_canjeos_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="nombre" id="id-porcentaje_descuento">¿Cuál es el porcentaje de descuento que le asignarás?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el porcentaje de descuento que ofreces como promoción" title="" data-original-title="Ayuda"></i>
 
@@ -395,7 +413,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
+    var campo = ["nombre", "numero", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -564,7 +582,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["nombre", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
+        var campo = ["nombre", "numero_de_canjeos", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -572,7 +590,7 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
+      var campo = ["nombre", "numero_de_canjeos", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
