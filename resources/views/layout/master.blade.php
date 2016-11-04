@@ -451,6 +451,9 @@
 
       $( document ).ready(function() {
 
+        $('#mCSB_1_container').css('width', '');
+        $('#mCSB_1_container').css('left', '');
+
         if(usuario_tipo == 2 || usuario_tipo == 4){
 
           window.setInterval(notificacion,500000);
@@ -1240,8 +1243,11 @@
             }); 
 
             aside_loaded = 1;   
-            $('#mCSB_1_container').css('width', '');
-            $('#mCSB_1_container').css('left', '');
+
+            setTimeout(function() {
+              $('#mCSB_1_container').css('width', '');
+              $('#mCSB_1_container').css('left', '');
+            },2000);
             finprocesado();                                  
             
           }
