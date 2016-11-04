@@ -241,70 +241,9 @@
                                       <th class="text-center" >Nombres</th>                                    
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <tbody id="aside_body">
                                   
-                                    @if(isset($alumnosacademia))      
-                                                         
-                                      @foreach ($alumnosacademia as $alumno)
-                                          
-                                        <?php $id = $alumno->id ?>
-                                        <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
-                                          <td class="p-10" >
-                                              <div class="listview">
-                                                <a class="lv-item" href="javascript:void(0)"  >
-                                                  <div class="media">
-                                                      <div class="pull-left p-relative">
 
-                                                      @if($alumno->imagen)
-                                                      
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
-
-                                                      @else
-
-                                                          @if($alumno->sexo == 'M')
-                                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                                          @else
-                                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                                          @endif
-                                                      @endif
-                                                          <i class="chat-status-busy"></i>
-                                                      </div>
-                                                      <div class="media-body">
-                                                          <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
-                                                          <small class="lv-small">{{$alumno->identificacion}}</small>
-                                                      </div>
-                                                  </div>
-                                                </a>
-                                              </div>
-                                          </td>
-                                        </tr>
-                                      @endforeach 
-                                    @endif
-                                    
-                                    @if(isset($instructores))                            
-                                      @foreach ($instructores as $instructor)
-                                          
-                                          <?php $id = $instructor['id']; ?>
-                                          <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
-                                              <td class="p-10" >
-                                                <div class="listview">
-                                                <a class="lv-item" href="javascript:void(0)"  >
-                                                  <div class="media">
-                                                      <div class="pull-left p-relative">
-                                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                                                          <i class="chat-status-busy"></i>
-                                                      </div>
-                                                      <div class="media-body">
-                                                          <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
-                                                          <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
-                                                      </div>
-                                                    </div>
-                                                  </a>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                      @endforeach 
-                                    @endif
                                                                    
                                   </tbody>
                                 </table>
@@ -453,7 +392,7 @@
         <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         
-        
+
         <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
         <script src="{{url('/')}}/assets/js/functions.js"></script>
@@ -506,6 +445,9 @@
       route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
 
       var ver = "{{{ $sin_ver or '0' }}}";
+      var alumnos_aside = <?php echo json_encode($alumnosacademia);?>;
+      var instructores_aside = <?php echo json_encode($instructores);?>;
+      var aside_loaded = 0
 
       $( document ).ready(function() {
 
@@ -1001,26 +943,15 @@
     });
 
 
-      function buscar(t){
-        var row = $(t).closest('tr');
-        var tipo= $(row).data('tipo-participante');
-        if(tipo=="alumno"){
-          buscarAlumno(t);
-        }else if(tipo=="insctructor"){
-          buscarInstructor(t);
-        }
-      }
+      
 
       function buscarInstructor(t){
         procesando();
 
         var row = $(t).closest('tr');
-        console.log(row);
 
         var id_instructor = $(row).data('id-participante');
         var nombre_instructor = $(row).data('nombre-participante');
-
-        console.log(nombre_instructor);
 
         $('#asistencia_id_instructor').val(id_instructor);
         $('#asistencia-nombre-instructor').text(nombre_instructor);
@@ -1035,7 +966,6 @@
           dataType: 'json',
           success:function(respuesta){
             
-            console.log(respuesta.clases_grupales);  
             $('#asistencia-clase_grupal_id_instructor').empty();        
             $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) {                     
@@ -1072,7 +1002,6 @@
           if(sexo == 'M'){
             $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
           }else{
-            console.log(sexo);
             $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
           }
         }
@@ -1101,7 +1030,6 @@
               $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
             });
             
-            console.log(respuesta.clases_grupales); 
             $('#asistencia-clase_grupal_id').empty();        
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) {                   
@@ -1215,12 +1143,101 @@
             }
 
         });
-        $('body').on('change', '#menu-trigger.open', function(e){
+        // $('body').on('change', '#menu-trigger.open', function(e){
 
-            $("#content").addClass("opacity-content");
-            $("footer").addClass("opacity-content");
-            $("header").addClass("abierto");
+        //     $("#content").addClass("opacity-content");
+        //     $("footer").addClass("opacity-content");
+        //     $("header").addClass("abierto");
+        //     console.log('aside');
+        // });
+
+
+        $('body').on('click', '#chat-trigger', function(e){
+
+          var cuerpo = '';
+          
+          if(!$('#chat').hasClass('toggled') && aside_loaded == 0){
+
+            $.each(alumnos_aside, function (index, array) {
+
+              id = array.id
+              cuerpo += '<tr id="asistencia_alumno_row_'+id+'" class="" data-imagen ="'+array.imagen+'" data-id-participante="'+id+'" data-nombre-participante="'+array.nombre+' '+array.apellido+'" data-identificacion-participante="'+array.identificacion+'" data-tipo-participante="alumno" data-sexo="'+array.sexo+'">'
+              cuerpo += '<td class="p-10" >'
+              cuerpo += '<div class="listview">'
+              cuerpo += '<a class="lv-item" href="javascript:void(0)"  >'
+              cuerpo += '<div class="media">'
+              cuerpo += '<div class="pull-left p-relative">'
+
+              if(array.imagen){
+                cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/'+array.imagen+'" alt="">'
+              }else{
+                if(array.sexo == 'M')
+                {
+                  cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">'
+                }else{
+                  cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">'
+                }
+              }
+
+              cuerpo += '<i class="chat-status-busy"></i>'
+              cuerpo += '</div>'
+              cuerpo += '<div class="media-body">'
+              cuerpo += '<div class="lv-title">'+array.nombre+' '+array.apellido+'</div>'
+              cuerpo += '<small class="lv-small">'+array.identificacion+'</small>'
+              cuerpo += '</div></div></a></div></td></tr>'
+              
+
+              $('#aside_body').append(cuerpo)
+
+              cuerpo = '';
+                
+            }); 
+
+            $.each(instructores_aside, function (index, array) {
+
+              id = array.id
+              cuerpo += '<tr id="asistencia_alumno_row_'+id+'" class="" data-imagen ="'+array.imagen+'" data-id-participante="'+id+'" data-nombre-participante="'+array.nombre+' '+array.apellido+'" data-identificacion-participante="'+array.identificacion+'" data-tipo-participante="insctructor">'
+              cuerpo += '<td class="p-10" >'
+              cuerpo += '<div class="listview">'
+              cuerpo += '<a class="lv-item" href="javascript:void(0)"  >'
+              cuerpo += '<div class="media">'
+              cuerpo += '<div class="pull-left p-relative">'
+              cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">'
+               
+
+              cuerpo += '<i class="chat-status-busy"></i>'
+              cuerpo += '</div>'
+              cuerpo += '<div class="media-body">'
+              cuerpo += '<div class="lv-title">'+array.nombre+' '+array.apellido+'</div>'
+              cuerpo += '<small class="lv-small">'+array.identificacion+' <i class="icon_a-instructor"></i></small>'
+              cuerpo += '</div></div></a></div></td></tr>'
+              
+
+              $('#aside_body').append(cuerpo)
+
+              cuerpo = '';
+                
+            }); 
+
+            aside_loaded = 1;    
+            finprocesado();                                  
+            
+          }
+            
         });
+
+    $('#tablelistar_asistencia tbody').on( 'click', 'tr', function () {
+
+        var row = $(this);
+        var tipo= $(row).data('tipo-participante');
+        if(tipo=="alumno"){
+          buscarAlumno(this);
+        }else if(tipo=="insctructor"){
+          buscarInstructor(this);
+        }
+
+    });
+
 
        
     </script>
