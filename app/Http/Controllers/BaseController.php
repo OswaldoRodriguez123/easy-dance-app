@@ -32,8 +32,6 @@ class BaseController extends Controller {
             ->orWhere('users.usuario_tipo', null)
         ->get();
 
-        dd($alumnos)
-
         $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
         if (in_array(Auth::user()->usuario_tipo, $array))
