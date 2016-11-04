@@ -389,6 +389,17 @@
                 
                     <div class="block-header">
                       <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                      <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                            
+                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                            
+                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                            
+                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                           
+                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                        </ul>
                       <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                       </div> 
                     
@@ -888,8 +899,10 @@
         setTimeout(function(){ 
 
         $('html,body').animate({
-            scrollTop: $("#id-cliente").offset().top-90,
+            scrollTop: $("#content").offset().top-90,
             }, 1000);
+            // scrollTop: $("#id-cliente").offset().top-90,
+            // }, 1000);
 
         }, 1000);
     }
@@ -902,6 +915,8 @@
         processing: true,
         serverSide: false,
         //pageLength: 25,
+        bPaginate: false,
+        bInfo:false,
         order: [[1, 'desc']],
         language: {
               searchPlaceholder: "Buscar"
@@ -1168,7 +1183,7 @@
         var disponible = producto[index][0]['disponibilidad'];
         console.log(incluye_iva);
 
-        if(incluye_iva != 0){
+        if(incluye_iva == 0){
           $("#impuesto").val($('#impuesto option').first().val());
         }
         else{
