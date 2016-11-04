@@ -17,7 +17,7 @@ class BaseController extends Controller {
 
     if (Auth::check()) { 
 
-	       $array = array(2, 4);
+	   $array = array(2, 4);
 
         $alumnos = DB::table('alumnos')
             ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
@@ -28,56 +28,66 @@ class BaseController extends Controller {
             ->orWhere('users.usuario_tipo', null)
         ->get();
 
-        $notificaciones = DB::table('notificacion_usuario')
-            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
-            ->join('users','notificacion_usuario.id_usuario','=','users.id')
-            ->select('notificacion.*','notificacion_usuario.visto as visto')
-            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->orderBy('notificacion_usuario.created_at','desc')
-        ->get();
+        $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        $numero_de_notificaciones = 0;
+        if (in_array(Auth::user()->usuario_tipo, $array))
+        {
 
-        foreach( $notificaciones as $notificacion){
-            if($notificacion->visto == 0){
-                $numero_de_notificaciones++;
+            $notificaciones = DB::table('notificacion_usuario')
+                ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
+                ->join('users','notificacion_usuario.id_usuario','=','users.id')
+                ->select('notificacion.*','notificacion_usuario.visto as visto')
+                ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+                ->orderBy('notificacion_usuario.created_at','desc')
+            ->get();
+
+
+
+
+            $numero_de_notificaciones = 0;
+
+            foreach( $notificaciones as $notificacion){
+                if($notificacion->visto == 0){
+                    $numero_de_notificaciones++;
+                }
             }
-        }
 
-        $notificaciones = DB::table('notificacion_usuario')
-            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
-            ->join('users','notificacion_usuario.id_usuario','=','users.id')
-            ->join('academias','users.academia_id','=','academias.id')
-            ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen')
-            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->orderBy('notificacion_usuario.created_at','desc')
-            ->limit(10)
-        ->get();
+            $notificaciones = DB::table('notificacion_usuario')
+                ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
+                ->join('users','notificacion_usuario.id_usuario','=','users.id')
+                ->join('academias','users.academia_id','=','academias.id')
+                ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen')
+                ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+                ->orderBy('notificacion_usuario.created_at','desc')
+                ->limit(10)
+            ->get();
 
-        $array = array();
+            $array = array();
 
-        foreach ($notificaciones as $notificacion) {
-            $collection=collect($notificacion);     
-            $notificacion_imagen_array = $collection->toArray();
+            foreach ($notificaciones as $notificacion) {
+                $collection=collect($notificacion);     
+                $notificacion_imagen_array = $collection->toArray();
+                    
+                    $imagen = DB::table('config_clases_grupales')
+                        ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                        ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
+                        ->select('config_clases_grupales.imagen')
+                        ->where('notificacion.evento_id','=',$notificacion->evento_id)
+                    ->first();
+
+                if($imagen->imagen){
+                    $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
+                }else{
+                    $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                }
                 
-                $imagen = DB::table('config_clases_grupales')
-                    ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
-                    ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
-                    ->select('config_clases_grupales.imagen')
-                    ->where('notificacion.evento_id','=',$notificacion->evento_id)
-                ->first();
-
-            if($imagen->imagen){
-                $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
-            }else{
-                $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                $array[$notificacion->id] = $notificacion_imagen_array;
             }
-            
-            $array[$notificacion->id] = $notificacion_imagen_array;
-        }
 
-	       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-           // dd($array);
+            }else{
+                $array = array();
+                $numero_de_notificaciones = 0;
+            }
 
 	       View::share ( 'alumnosacademia', $alumnos  );
 	       View::share ( 'instructores', $instructor );

@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html>
     <head>
+      
+      @if(Auth::check())
+
+        <script>var usuario_tipo = {{ Auth::user()->usuario_tipo or 'undefined' }}</script>
+      @else
+
+        <script>var usuario_tipo = 0 </script>
+
+      @endif
+
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<title>Easy Dance</title>
 			
 			<!-- Vendor CSS -->
-			<link href="{{url('/')}}/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
-			<link href="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
       <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
       <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
+<!--  <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
+      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
+      <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet"> -->
 			
 			@yield('css_vendor')
 				
 			<!-- CSS -->
+      <!--  <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css">
+      <link href="{{url('/')}}/assets/css/ripple.css" rel="stylesheet"> -->
 			<link href="{{url('/')}}/assets/css/app.min.1.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/app.min.2.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_0.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_1.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_2.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/easy_dance_ico_4.css" rel="stylesheet">
-			<!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
-			<link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css">	 -->
-      <link href="{{url('/')}}/assets/css/ripple.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
@@ -38,19 +49,13 @@
 			@yield('css')
 		
 	</head>
-    <body>
-	   
-
+  <body>
 
 		@include('layout.header') 
 
 
-		
-
 		<section id="main" data-layout="layout-1">
 	
-
-			
 			@yield('content')
 		 
 		</section>
@@ -88,9 +93,6 @@
 
                                            <div class="col-sm-5">
                                              <div class="form-group fg-line">
-                                                <!-- <label for="asistencia-estado_economico">Estado económico</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-estado_economico"> --</span> -->
 
                                                 <table class="table table-striped table-bordered historial">
                                                  <tr class="detalle historial">
@@ -99,48 +101,18 @@
                                                 </tr>
                                                 </table>
                                               </div>
-
-                                               <!-- <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
-                                               <div class="fg-line">
-                                                  <div class="select">
-                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
-
-                                                      <option value="">Selecciona</option>
-                                                      
-                                                    
-                                                    </select>
-                                                  </div>
-                                                </div>
- -->
-
                                            </div>
 
                                            <div class="col-sm-4">
-
                                              <div class="form-group fg-line">
                                                 <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
                                                 <div class="clearfix p-b-15"></div>
                                                 <span class="text-center" id="asistencia-estado_ausencia"> --</span>
                                              </div>
-
-                                              <!--  <div class="clearfix"></div> 
-
-                                              <div class="form-group fg-line">
-                                                <label for="asistencia-horario" class="f-16">Horario</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-horario"> </span>
-                                             </div> -->
-                                             
                                            </div>
                                            
 
                                            <div class="col-sm-9">
-
-
                                                <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
                                                <div class="fg-line">
                                                   <div class="select">
@@ -148,7 +120,6 @@
 
                                                       <option value="">Selecciona</option>
                                                       
-                                                    
                                                     </select>
                                                   </div>
                                                 </div>
@@ -158,8 +129,6 @@
 
                                            <div class="clearfix"></div> 
 
-                                           
-                                           
                                        </div>
                                        
                                     </div>
@@ -218,19 +187,7 @@
                                                     </select>
                                                   </div>
                                                 </div>
-
-
-                                           </div>
-
-                                           <!-- <div class="col-sm-4">
-
-                                            <div class="form-group fg-line">
-                                                <label for="asistencia-horario" class="f-16">Horario</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-horario-instructor"> --</span>
-                                             </div>
-                                             
-                                           </div> -->
+                                            </div>
                                            
 
                                            <div class="clearfix"></div> 
@@ -262,132 +219,132 @@
                         </div>
 
     
-    <aside id="chat" class="sidebar c-overflow">
-      
-      <div class="row">
-        <div class="col-md-12">
-          <br>
-            <div class="chat-search">
-                    <input type="text" id="buscar" class="form-control" style="width:30%" placeholder="Buscar Alumno e Instructor">
-            </div>
-            <div class="well p-b-35">
-              <!--Ver listado-->     
-
-              <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:10%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
-
-            </div>
-
-            <table class="table" id="tablelistar_asistencia" >
-
-              <thead>
-                <tr class="hidden">    
-                  <th class="text-center" >Nombres</th>                                    
-                </tr>
-              </thead>
-              <tbody>
-              
-                @if(isset($alumnosacademia))      
-                                     
-                  @foreach ($alumnosacademia as $alumno)
-                      
-                    <?php $id = $alumno->id ?>
-                    <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
-                      <td class="p-10" >
-                          <div class="listview">
-                            <a class="lv-item" href="javascript:void(0)"  >
-                              <div class="media">
-                                  <div class="pull-left p-relative">
-
-                                  @if($alumno->imagen)
-                                  
-                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
-
-                                  @else
-
-                                      @if($alumno->sexo == 'M')
-                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                      @else
-                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                      @endif
-                                  @endif
-                                      <i class="chat-status-busy"></i>
-                                  </div>
-                                  <div class="media-body">
-                                      <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
-                                      <small class="lv-small">{{$alumno->identificacion}}</small>
-                                  </div>
-                              </div>
-                            </a>
-                          </div>
-                      </td>
-                    </tr>
-                  @endforeach 
-                @endif
-                
-                @if(isset($instructores))                            
-                  @foreach ($instructores as $instructor)
-                      
-                      <?php $id = $instructor['id']; ?>
-                      <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
-                          <td class="p-10" >
-                            <div class="listview">
-                            <a class="lv-item" href="javascript:void(0)"  >
-                              <div class="media">
-                                  <div class="pull-left p-relative">
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                                      <i class="chat-status-busy"></i>
-                                  </div>
-                                  <div class="media-body">
-                                      <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
-                                      <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
-                                  </div>
+                        <aside id="chat" class="sidebar c-overflow">
+                          
+                          <div class="row">
+                            <div class="col-md-12">
+                              <br>
+                                <div class="chat-search">
+                                        <input type="text" id="buscar" class="form-control" style="width:30%" placeholder="Buscar Alumno e Instructor">
                                 </div>
-                              </a>
+                                <div class="well p-b-35">
+                                  <!--Ver listado-->     
+
+                                  <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:10%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
+
+                                </div>
+
+                                <table class="table" id="tablelistar_asistencia" >
+
+                                  <thead>
+                                    <tr class="hidden">    
+                                      <th class="text-center" >Nombres</th>                                    
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                    @if(isset($alumnosacademia))      
+                                                         
+                                      @foreach ($alumnosacademia as $alumno)
+                                          
+                                        <?php $id = $alumno->id ?>
+                                        <tr id="asistencia_alumno_row_{{$id}}" class="" data-imagen ="{{$alumno->imagen}}" data-id-participante="{{$id}}" data-nombre-participante="{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante="{{$alumno->identificacion}}" data-tipo-participante="alumno" data-sexo="{{$alumno->sexo}}">
+                                          <td class="p-10" >
+                                              <div class="listview">
+                                                <a class="lv-item" href="javascript:void(0)"  >
+                                                  <div class="media">
+                                                      <div class="pull-left p-relative">
+
+                                                      @if($alumno->imagen)
+                                                      
+                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
+
+                                                      @else
+
+                                                          @if($alumno->sexo == 'M')
+                                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                                          @else
+                                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                                          @endif
+                                                      @endif
+                                                          <i class="chat-status-busy"></i>
+                                                      </div>
+                                                      <div class="media-body">
+                                                          <div class="lv-title">{{$alumno->nombre}} {{$alumno->apellido}}</div>
+                                                          <small class="lv-small">{{$alumno->identificacion}}</small>
+                                                      </div>
+                                                  </div>
+                                                </a>
+                                              </div>
+                                          </td>
+                                        </tr>
+                                      @endforeach 
+                                    @endif
+                                    
+                                    @if(isset($instructores))                            
+                                      @foreach ($instructores as $instructor)
+                                          
+                                          <?php $id = $instructor['id']; ?>
+                                          <tr id="asistencia_instructor_row_{{$id}}" class="" data-id-participante="{{$id}}" data-nombre-participante="{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante="{{$instructor['identificacion']}}" data-tipo-participante="insctructor" >
+                                              <td class="p-10" >
+                                                <div class="listview">
+                                                <a class="lv-item" href="javascript:void(0)"  >
+                                                  <div class="media">
+                                                      <div class="pull-left p-relative">
+                                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                                                          <i class="chat-status-busy"></i>
+                                                      </div>
+                                                      <div class="media-body">
+                                                          <div class="lv-title">{{$instructor['nombre']}} {{$instructor['apellido']}}</div>
+                                                          <small class="lv-small">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></small>
+                                                      </div>
+                                                    </div>
+                                                  </a>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                      @endforeach 
+                                    @endif
+                                                                   
+                                  </tbody>
+                                </table>
+                              </div>
+                          </div>
+                        </aside>
+		
+		
+		
+                		<!-- Page Loader -->
+                        <div class="page-loader">
+                            <div class="preloader pls-blue">
+                                <svg class="pl-circular" viewBox="25 25 50 50">
+                                    <circle class="plc-path" cx="50" cy="50" r="20" />
+                                </svg>
+
+                                <p>Cargando...</p>
                             </div>
-                          </td>
-                        </tr>
-                  @endforeach 
-                @endif
-                                               
-              </tbody>
-            </table>
-          </div>
-      </div>
-    </aside>
-		
-		
-		
-		<!-- Page Loader -->
-        <div class="page-loader">
-            <div class="preloader pls-blue">
-                <svg class="pl-circular" viewBox="25 25 50 50">
-                    <circle class="plc-path" cx="50" cy="50" r="20" />
-                </svg>
+                        </div>
+                		
+                		<!-- Javascript Libraries -->
 
-                <p>Cargando...</p>
-            </div>
-        </div>
-		
-		<!-- Javascript Libraries -->
+                    <!-- Procesando -->
+                    <div id="loader-procesando" tg-loader="" class="loader">
+                      <div class="progress progress-striped active">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 8px;">
+                        <span class="sr-only">45% Complete</span>
+                        </div>
+                      </div>
 
-    <!-- Procesando -->
-    <div id="loader-procesando" tg-loader="" class="loader">
-      <div class="progress progress-striped active">
-        <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 8px;">
-        <span class="sr-only">45% Complete</span>
-        </div>
-      </div>
-
-    <div class="container">
-      <p class="f-25"><div class="clearfix"></div>
-      <div class="preloader pl-xl">
-        <span class="f-16">Procesando...</span>
-        <svg class="pl-circular" viewBox="25 25 50 50">
-        <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-        </svg>
-      </div></p>
-      </div>
-    </div>
+                    <div class="container">
+                      <p class="f-25"><div class="clearfix"></div>
+                      <div class="preloader pl-xl">
+                        <span class="f-16">Procesando...</span>
+                        <svg class="pl-circular" viewBox="25 25 50 50">
+                        <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                        </svg>
+                      </div></p>
+                      </div>
+                    </div>
 
   <div class="modal fade" id="modalParticipantes" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 75%">
@@ -496,20 +453,27 @@
         <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         
-        <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.js"></script>
+        
+        <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
+        <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+        <script src="{{url('/')}}/assets/js/functions.js"></script>
+
+        
+<!--         <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.resize.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
         <script src="{{url('/')}}/assets/vendors/sparklines/jquery.sparkline.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
-        
+        <script src="{{url('/')}}/assets/vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script> -->
+
+   <!--      <script src="{{url('/')}}/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js"></script> -->
+        <!-- <script src="{{url('/')}}/assets/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js"></script> -->
         <script src="{{url('/')}}/assets/vendors/bower_components/moment/min/moment.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js"></script>
+       
+ 
         <script src="{{url('/')}}/assets/vendors/bower_components/Waves/dist/waves.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-    		<script src="{{url('/')}}/assets/vendors/bootgrid/jquery.bootgrid.min.js"></script>
     		<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
@@ -523,85 +487,195 @@
 
         
         
-        <script src="{{url('/')}}/assets/js/flot-charts/curved-line-chart.js"></script>
+<!--    <script src="{{url('/')}}/assets/js/flot-charts/curved-line-chart.js"></script>
         <script src="{{url('/')}}/assets/js/flot-charts/line-chart.js"></script>
-        <script src="{{url('/')}}/assets/js/charts.js"></script>
+        <script src="{{url('/')}}/assets/js/charts.js"></script> -->
         
-        <script src="{{url('/')}}/assets/js/charts.js"></script>
         @yield('js_vendor')
-
-        <script type="text/javascript">
-        	
-
-        </script>
-
-        <script src="{{url('/')}}/assets/js/functions.js"></script>
-        <script src="{{url('/')}}/assets/js/jquery.floating-social-share.js"></script>
-        <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-        <script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script>
-
-        <!-- <script src="{{url('/')}}/assets/js/loader.js" type="text/javascript"></script>
-        <script src="{{url('/')}}/assets/js/loader2.js" type="text/javascript"></script>
-        <script type="text/javascript" src="{{url('/')}}/assets/js/materialize.js"></script>
-         <script type="text/javascript" src="{{url('/')}}/assets/js/materialize.min.js"></script> -->
+    <!--     <script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script> -->
 
 		
 		<script> 
 
-    route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
-    route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
-    route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
-    route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
-    route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
+      route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
+      route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
+      route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
+      route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
+      route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
+      route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
 
-    var ver = 0;
-    $( document ).ready(function() {
-      ver = {{$sin_ver}};
+      var ver = "{{{ $sin_ver or '0' }}}";
+
+      $( document ).ready(function() {
+
+        if(usuario_tipo == 2 || usuario_tipo == 4){
+
+          window.setInterval(notificacion,500000);
+
+        }
+
+      });
+
+      function notificacion(){
+        
+        var route = route_consultar_notificacion;
+        var token = $('input:hidden[name=_token]').val();
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          success: function (respuesta) {
+              setTimeout(function() {
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";
+                if(respuesta.status=='OK'){
+                  finprocesado();        
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var notificaciones=respuesta.notificaciones;
+                  var nMensaje=respuesta.mensaje;
+                  
+                  if(respuesta.sin_ver> ver){
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    ver = respuesta.sin_ver;
+                  }
+                  nuevas_notificaciones(notificaciones, respuesta.sin_ver);
+                }
+            }, 1000);
+          },
+          error:function(msj){
+            console.log("algo salio mal");
+          }
+        });
+      }
+
+      function nuevas_notificaciones(notificaciones, sin_ver){
+        var img;
+        var tipo_de_notificacion;
+        var mensaje;
+        var link;
+        var etiqueta_de_contenido;
+        var etiqueta_de_img;
+        var etiqueta_de_cuerpo;
+        var seccion_notifcacion;
+                
+        etiqueta_de_contenido = '<div class="media">';
+        etiqueta_de_img = '<div class="pull-left">';
+        etiqueta_de_cuerpo = '<div class="media-body">';
+
+        if(notificaciones){
+          $(".lv-body").empty();
+          $("#notifications").removeClass("empty");
+          for (var i = 0; i < notificaciones.length; i++) {
+            if(notificaciones[i]["imagen"]){
+              img = '<img class="img-circle" src="{{url('/')}}/assets/uploads/'+notificaciones[i]["imagen"]+'" alt="" width="45px" height="auto">';
+            }else{
+              img = '<img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">';
+            }
+
+            link = '<a class="lv-item notificacion->visto) ? "bgm_notificacion_sin_ver" : "" }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+notificaciones[i]["evento_id"]+'">';
+
+            if(notificaciones[i]["tipo_evento"] == 1){
+              tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
+              mensaje = '<small class="lv-small">'+notificaciones[i]["mensaje"]+'</small>';
+            }else{
+
+            }
+            seccion_notifcacion = link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
+            $(".lv-body").append(seccion_notifcacion);
+          }
+        }else{
+          seccion_notifcacion = '';
+        }
+        $("#numero_actual").html(sin_ver);
+      }     
+      
+      var route_edit_notificacion="{{url('/')}}/notificacion_revisado";
+
+      $('#numero_de_notificaciones').on('click', function(e){
+          $("#numero_actual").text(0);
+          var route = route_edit_notificacion;
+          var token = $('input:hidden[name=_token]').val();
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){  
+                console.log(respuesta);             
+            },
+            error:function(msj){
+                console.log(msj);              
+            }
+          });
+      });
+
+    //eliminar notificaciones
+    route_eliminar="{{url('/')}}/notificacion_eliminadas";
+    
+    $("#limpiar_notificaciones").on('click', function(e){
+      var route = route_eliminar;
+      var token = $('input:hidden[name=_token]').val();
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+          success:function(respuesta){
+              window.location=route_principal; 
+          },
+          error:function(msj){
+            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+            }
+      });
     });
 
     function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
+        $.growl({
+            icon: icon,
+            title: titulo,
+            message: mensaje,
+            url: ''
+        },{
+                element: 'body',
+                type: type,
+                allow_dismiss: true,
+                placement: {
+                        from: from,
+                        align: align
+                },
+                offset: {
+                    x: 20,
+                    y: 85
+                },
+                spacing: 10,
+                z_index: 1070,
+                delay: 2500,
+                timer: 2000,
+                url_target: '_blank',
+                mouse_over: false,
+                animate: {
+                        enter: animIn,
+                        exit: animOut
+                },
+                icon_type: 'class',
+                template: '<div data-growl="container" class="alert" role="alert">' +
+                                '<button type="button" class="close" data-growl="dismiss">' +
+                                    '<span aria-hidden="true">&times;</span>' +
+                                    '<span class="sr-only">Close</span>' +
+                                '</button>' +
+                                '<span data-growl="icon"></span>' +
+                                '<span data-growl="title"></span>' +
+                                '<span data-growl="message"></span>' +
+                                '<a href="#" data-growl="url"></a>' +
+                            '</div>'
+        });
+    };
 
     function procesando(){
       $("body").addClass('loader-active');
@@ -654,26 +728,18 @@
                     }
         });
 
-        $('#buscar').on( 'keyup', function () {
-          asistencia.search( this.value ).draw();
-      } );
+    $('#buscar').on( 'keyup', function () {
+      asistencia.search( this.value ).draw();
+    });
 
     $("#listado").on('click',function(){
       window.location = "{{url('/')}}/asistencia";
     });
+
     $("#permitir").on('click',function(){
       var route = route_agregar_asistencia;
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_asistencia" ).serialize(); 
-      //$("#permitir").attr("disabled","disabled");
-      /*$("#permitir").css({
-        "opacity": ("0.2")
-      });*/
-      //$(".cancelar").attr("disabled","disabled");
-      //$(".procesando").removeClass('hidden');
-      //$(".procesando").addClass('show');         
-      //limpiarMensaje();
-      //procesando();
       $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -692,15 +758,6 @@
               var nAnimOut = "animated flipOutY"; 
               var nTitle="Ups! ";
               var nMensaje=respuesta.mensaje;
-              //$('#modalAsistencia').modal('hidden');
-              // $('#modalAsistencia').modal('hide');
-              // //console.log(repuesta);
-              // $("#content").toggleClass("opacity-content");
-              // $("header").toggleClass("abierto");
-              // $("footer").toggleClass("opacity-content");
-              // $("#buscar").val(' ');
-              // $("#chat-trigger").click();
-              // $("#buscar").focus();
 
               $('#modalAsistencia').modal('hide');
               swal("Permitido!", respuesta.mensaje, "success");
@@ -714,8 +771,7 @@
               var nTitle="Ups! ";
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
               var nType = 'danger';
-              //console.log(msj);
-              // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }
             
           },
@@ -764,8 +820,7 @@
                             var nTitle="Ups! ";
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                             var nType = 'danger';
-                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                            //console.log(msj);
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                           }
                           
                         },
@@ -777,14 +832,8 @@
                           var nAnimIn = "animated flipInY";
                           var nAnimOut = "animated flipOutY"; 
                           var nTitle="Ups! ";
-                          if(msj.responseJSON.status=="ERROR"){
-                            var nTitle="    Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-                          }else{
-
-                           
-                          }
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
                           
                         }
                         
@@ -829,10 +878,6 @@
               var nAnimOut = "animated flipOutY"; 
               var nTitle="Ups! ";
               var nMensaje=respuesta.mensaje;
-              //$('#modalAsistencia').modal('hidden');
-              // $('#modalAsistenciaInstructor').modal('hide');
-              //console.log(repuesta);
-
               $('#modalAsistenciaInstructor').modal('hide');
               swal("Permitido!", respuesta.mensaje, "success");
               $("#content").toggleClass("opacity-content");
@@ -843,9 +888,9 @@
               var nTitle="Ups! ";
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
               var nType = 'danger';
-              //console.log(msj);
+              console.log(msj);
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }
-            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
           },
           error:function(msj){
             var nType = 'danger';
@@ -858,7 +903,7 @@
             if(msj.responseJSON.status=="ERROR"){
               var nTitle="    Ups! "; 
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-              // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
             }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
 
               swal({   
@@ -958,7 +1003,6 @@
 
       function buscar(t){
         var row = $(t).closest('tr');
-        //console.log(row.data());
         var tipo= $(row).data('tipo-participante');
         if(tipo=="alumno"){
           buscarAlumno(t);
@@ -971,7 +1015,6 @@
         procesando();
 
         var row = $(t).closest('tr');
-        //console.log(row.data());
         console.log(row);
 
         var id_instructor = $(row).data('id-participante');
@@ -992,12 +1035,10 @@
           dataType: 'json',
           success:function(respuesta){
             
-            console.log(respuesta.clases_grupales); 
-            //$('#asistencia-clase_grupal_id').selectpicker('refresh');  
+            console.log(respuesta.clases_grupales);  
             $('#asistencia-clase_grupal_id_instructor').empty();        
             $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
-            $.each(respuesta.clases_grupales, function (index, array) { 
-              // console.log(array);                      
+            $.each(respuesta.clases_grupales, function (index, array) {                     
               $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
 
             });
@@ -1019,8 +1060,6 @@
         $('#clases_grupales_alumno').empty();
 
         var row = $(t).closest('tr');
-        //console.log(row.data());
-        console.log(row);
 
         var id_alumno = $(row).data('id-participante');
         var nombre_alumno = $(row).data('nombre-participante');
@@ -1039,14 +1078,10 @@
         }
 
         $('#asistencia_id_alumno').val(id_alumno);
-        //$("#buscar").val("");
         $('#asistencia-nombre-alumno').text(nombre_alumno);
         $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+id_alumno);
 
         $("#asistencia-horario").text("---");
-        //var route =route_verificar+"/"+id_alumno[1];
-        //window.location=route;
-        //alert(id_alumno);
         var route = route_consultar_cg;
         var token = $('input:hidden[name=_token]').val();
         $.ajax({
@@ -1067,7 +1102,6 @@
             });
             
             console.log(respuesta.clases_grupales); 
-            //$('#asistencia-clase_grupal_id').selectpicker('refresh');  
             $('#asistencia-clase_grupal_id').empty();        
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
             $.each(respuesta.clases_grupales, function (index, array) {                   
@@ -1098,8 +1132,6 @@
           } 
         });
 
-        //$('#modalAsistencia').modal('show');
-        //$('#asistencia-estado_economico').text('--');
       }
 
 
@@ -1116,17 +1148,6 @@
             success:function(respuesta){  
               console.log(respuesta)          
               if(respuesta.status=="OK"){
-                /*var nType = 'success';
-                $("#agregar_asistencia_instructor")[0].reset();
-                $("#asistencia-horario-instructor").text("---");
-                var nFrom = $(this).attr('data-from');
-                var nAlign = $(this).attr('data-align');
-                var nIcons = $(this).attr('data-icon');
-                var nAnimIn = "animated flipInY";
-                var nAnimOut = "animated flipOutY"; 
-                var nTitle="Ups! ";
-                var nMensaje=respuesta.mensaje;
-                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);*/
                 $('#modalAsistencia').modal('hidden');
                 
               }else{
@@ -1135,7 +1156,6 @@
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                //console.log(msj);
               }
               
             },
@@ -1194,184 +1214,16 @@
               asistencia.search('').draw();
             }
 
-            //$("footer").toggleClass("opacity-content");
-            //$("header").toggleClass("abierto");
-
-
-            //$("#content").removeClass("opacity-content");
-            //$("footer").removeClass("opacity-content");
-
         });
         $('body').on('change', '#menu-trigger.open', function(e){
 
             $("#content").addClass("opacity-content");
             $("footer").addClass("opacity-content");
             $("header").addClass("abierto");
-
-            //$("footer").toggleClass("opacity-content");
-            //$("header").toggleClass("abierto");
-
-
-            //$("#content").removeClass("opacity-content");
-            //$("footer").removeClass("opacity-content");
-            //
         });
 
        
     </script>
-
-    <script>
-
-      //setInterval(notificacion, 240000);
-
-      var route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
-
-      window.setInterval(notificacion,500000);
-
-      function notificacion(){
-        
-        var route = route_consultar_notificacion;
-        var token = $('input:hidden[name=_token]').val();
-        $.ajax({
-          url: route,
-          headers: {'X-CSRF-TOKEN': token},
-          type: 'POST',
-          dataType: 'json',
-          success: function (respuesta) {
-              setTimeout(function() {
-                var nFrom = $(this).attr('data-from');
-                var nAlign = $(this).attr('data-align');
-                var nIcons = $(this).attr('data-icon');
-                var nAnimIn = "animated flipInY";
-                var nAnimOut = "animated flipOutY";
-                if(respuesta.status=='OK'){
-                  finprocesado(); 
-                  //campoValor(datos_array);            
-                  var nType = 'success';
-                  var nTitle="Ups! ";
-                  var notificaciones=respuesta.notificaciones;
-                  var nMensaje=respuesta.mensaje;
-                  
-                  if(respuesta.sin_ver> ver){
-                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    ver = respuesta.sin_ver;
-                  }
-                  nuevas_notificaciones(notificaciones, respuesta.sin_ver);
-                }
-            }, 1000);
-          },
-          error:function(msj){
-            console.log("algo salio mal");
-          }
-        });
-      }
-
-      function nuevas_notificaciones(notificaciones, sin_ver){
-        var img;
-        var tipo_de_notificacion;
-        var mensaje;
-        var link;
-        var etiqueta_de_contenido;
-        var etiqueta_de_img;
-        var etiqueta_de_cuerpo;
-        var seccion_notifcacion;
-                
-        etiqueta_de_contenido = '<div class="media">';
-        etiqueta_de_img = '<div class="pull-left">';
-        etiqueta_de_cuerpo = '<div class="media-body">';
-
-        if(notificaciones){
-          $(".lv-body").empty();
-          $("#notifications").removeClass("empty");
-          for (var i = 0; i < notificaciones.length; i++) {
-            if(notificaciones[i]["imagen"]){
-              img = '<img class="img-circle" src="{{url('/')}}/assets/uploads/'+notificaciones[i]["imagen"]+'" alt="" width="45px" height="auto">';
-            }else{
-              img = '<img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">';
-            }
-
-            link = '<a class="lv-item notificacion->visto) ? "bgm_notificacion_sin_ver" : "" }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+notificaciones[i]["evento_id"]+'">';
-
-            if(notificaciones[i]["tipo_evento"] == 1){
-              tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
-              mensaje = '<small class="lv-small">'+notificaciones[i]["mensaje"]+'</small>';
-            }else{
-
-            }
-            seccion_notifcacion = link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
-            $(".lv-body").append(seccion_notifcacion);
-          }
-        }else{
-          seccion_notifcacion = '';
-        }
-        $("#numero_actual").html(sin_ver);
-      }     
-      
-      var route_edit_notificacion="{{url('/')}}/notificacion_revisado";
-
-      $('#numero_de_notificaciones').on('click', function(e){
-          $("#numero_actual").text(0);
-          var route = route_edit_notificacion;
-          var token = $('input:hidden[name=_token]').val();
-          $.ajax({
-            url: route,
-            headers: {'X-CSRF-TOKEN': token},
-            type: 'POST',
-            dataType: 'json',
-            success:function(respuesta){  
-                console.log(respuesta);             
-            },
-            error:function(msj){
-                console.log(msj);              
-            }
-          });
-      });
-
-//eliminar notificaciones
-    route_eliminar="{{url('/')}}/notificacion_eliminadas";
-    
-    $("#limpiar_notificaciones").on('click', function(e){
-      var route = route_eliminar;
-      var token = $('input:hidden[name=_token]').val();
-        $.ajax({
-            url: route,
-            headers: {'X-CSRF-TOKEN': token},
-            type: 'POST',
-            dataType: 'json',
-          success:function(respuesta){
-              window.location=route_principal; 
-          },
-          error:function(msj){
-            // $("#msj-danger").fadeIn(); 
-            // var text="";
-            // console.log(msj);
-            // var merror=msj.responseJSON;
-            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-            // $("#msj-error").html(text);
-            // setTimeout(function(){
-            //          $("#msj-danger").fadeOut();
-            //         }, 3000);
-            //         
-            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-            }
-      });
-    });
-
-    // $('.sti-menu').iconmenu({
-    //   animMouseenter: {
-    //     'mText': {speed: 500, easing: 'easeOutExpo', delay: 200, dir: -1},
-    //     'sText': {speed: 0, easing: 'easeOutExpo', delay: 0, dir: -1},
-    //     'icon': {speed: 700, easing: 'easeOutBounce', delay: 200, dir: 1}
-    //   },
-    //   animMouseleave: {
-    //     'mText': {speed: 400, easing: 'easeInExpo', delay: 200, dir: -5},
-    //     'sText': {speed: 0, easing: 'easeInExpo', delay: 0, dir: 1},
-    //     'icon': {speed: 400, easing: 'easeInExpo', delay: 200, dir: -5}
-    //   }
-    // });
-// fin de eliminar notificaciones
-
-    </script>		
 		
 		@yield('js')
 		

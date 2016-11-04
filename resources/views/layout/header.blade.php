@@ -24,7 +24,7 @@
 
                 <li class="pull-right m-r-5">
                     <ul class="top-menu">
-                        @if(Auth::user()->usuario_tipo == 2)
+                        @if(Auth::check() && Auth::user()->usuario_tipo == 2)
                         <li class="dropdown">
                             <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
                                 <i class="tm-icon zmdi zmdi-notifications"></i>
