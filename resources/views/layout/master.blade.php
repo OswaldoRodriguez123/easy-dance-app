@@ -465,10 +465,10 @@
         attributeFilter: ['style'],
     });
 
-    var oldIndex = target.style.left;
+    var oldIndex = target.style.width;
 
     function styleChangedCallback(mutations) {
-        var newIndex = mutations[0].target.style.left;
+        var newIndex = mutations[0].target.style.width;
         console.log(newIndex)
         if (newIndex == '-20px') {
             $('#mCSB_1_container').css('width', '');
