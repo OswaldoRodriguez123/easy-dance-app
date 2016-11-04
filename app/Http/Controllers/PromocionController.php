@@ -66,6 +66,7 @@ class PromocionController extends BaseController {
 
     $rules = [
         'nombre' => 'required|min:3|max:80',
+        'numero_de_canjeos' => 'required',
         'porcentaje_descuento' => 'required|numeric',
         'fecha' => 'required',
         'descripcion' => 'min:3|max:500',
@@ -79,6 +80,7 @@ class PromocionController extends BaseController {
         'nombre.required' => 'Ups! El Nombre es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
         'nombre.max' => 'El máximo de caracteres permitidos son 80',
+        'numero_de_canjeos.required' => 'Ups! El Numero de veces de canjeos permitidos por esta promocion es requerido ',
         'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
         'descripcion.max' => 'El máximo de caracteres permitidos son 500',
         'porcentaje_descuento.required' => 'Ups! El porcentaje de descuento es requerido',
@@ -93,7 +95,6 @@ class PromocionController extends BaseController {
     if ($validator->fails()){
 
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
     }
 
     else{
@@ -107,6 +108,11 @@ class PromocionController extends BaseController {
         // {
         //      return response()->json(['errores' => ['edad_inicio' => [0, 'Ups! Edad inválida, la edad de inicio no debe ser mayor a la edad final']],  'status' => 'ERROR'],422);
         // }
+
+        do{
+            $codigo_validacion = str_random(8);
+            $find = Codigo::where('codigo_validacion', $codigo_validacion)->first();
+        }while ($find);
 
         $promocion = new Promocion;
 
@@ -125,6 +131,16 @@ class PromocionController extends BaseController {
         $promocion->condiciones = $request->condiciones;
 
         if($promocion->save()){
+
+            $codigo = New Codigo;
+
+            $codigo->academia_id = $promocion->academia_id;
+            $codigo->item_id = $promocion->id;
+            $codigo->tipo = 2;
+            $codigo->codigo_validacion = $codigo_validacion;
+            $codigo->estatus = 0;
+            $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
+            $codigo->numero_canjeos = $request->numero_de_canjeos;
 
             if($request->imageBase64){
 
