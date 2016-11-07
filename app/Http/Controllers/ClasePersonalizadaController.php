@@ -48,6 +48,7 @@ class ClasePersonalizadaController extends BaseController {
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
             ->where('inscripcion_clase_personalizada.estatus','=', 1)
+            ->orderBy('id', 'desc')->take(20)
         ->get();
 
 
@@ -60,6 +61,7 @@ class ClasePersonalizadaController extends BaseController {
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.fecha_inicio', '<', Carbon::now()->format('Y-m-d'))
             ->where('inscripcion_clase_personalizada.estatus','=', 1)
+            ->orderBy('id', 'desc')->take(20)
         ->get();
 
         
@@ -71,6 +73,7 @@ class ClasePersonalizadaController extends BaseController {
             ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion')
             ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.estatus','=', 0)
+            ->orderBy('id', 'desc')->take(20)
         ->get();
 
 
