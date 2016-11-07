@@ -31,20 +31,40 @@
 
             <div class = "col-sm-4"></div>
 
-            <ul class="ca-menu-c col-sm-4" style="width: 720px;">
 
-                    <li data-ripplecator class ="dark-ripples">
-                        <a class="participantes">
-                            <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+            <ul class="ca-menu-c" style="width: 900px;">
+                <li data-ripplecator class ="dark-ripples">
+                        <a class = "pagar">
+                            <span class="ca-icon-c"><i class="icon_a-pagar f-35 boton blue sa-warning" data-original-title="Pagar" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
-                                <h2 class="ca-main-c f-20">Participantes</h2>
+                                <h2 class="ca-main-c">Pagar</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class="email" id="{{$id}}">
+                            <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" 
+                                   data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Enviar Correo</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class = "transferir">
+                            <span class="ca-icon-c"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-35 boton blue sa-warning" 
+                                   data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Transferir</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
                     </li>
 
                     <li data-ripplecator class ="dark-ripples">
-                        <a href="#" class="eliminar">
+                        <a href="#" class="eliminar" id = "{{$id}}">
                             <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Eliminar</h2>

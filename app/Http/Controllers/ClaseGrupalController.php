@@ -29,6 +29,7 @@ use Image;
 use App\Asistencia;
 use App\Notificacion;
 use App\NotificacionUsuario;
+use PulkitJalan\GeoIP\GeoIP;
 
 
 class ClaseGrupalController extends BaseController {
@@ -39,7 +40,7 @@ class ClaseGrupalController extends BaseController {
      * @return Response
      */
 
-    public function principal(){
+    public function principal(Request $request){
 
         $clase_grupal_join = DB::table('clases_grupales')
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
@@ -107,7 +108,11 @@ class ClaseGrupalController extends BaseController {
                 $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
             }
 
-            $hoy = Carbon::now()->dayOfWeek;
+            $actual = Carbon::now();
+            $geoip = new GeoIP();
+            $geoip->setIp($request->ip());
+            $actual->tz = $geoip->getTimezone();
+            $hoy = $actual->dayOfWeek;
 
             return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
 
