@@ -62,10 +62,24 @@ class AlumnoController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        $alumno = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        $array = array();
+
+        foreach($alumnos as $alumno){
+
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            
+            $alumno_array['edad']=$edad;
+            $array[$alumno->id] = $alumno_array;
+
+        }
+
         $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-		return view('participante.alumno.principal')->with(['alumnos' => $alumno, 'instructor' => $instructor,'deuda' => $deuda, 'activacion' => $activacion]);
+		return view('participante.alumno.principal')->with(['alumnos' => $array, 'instructor' => $instructor,'deuda' => $deuda, 'activacion' => $activacion, 'edad' => '']);
 	}
 
 

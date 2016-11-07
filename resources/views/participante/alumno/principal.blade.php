@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -74,23 +75,31 @@
                             <tbody>
 
                             @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno->id; ?>
-                                @can('view-alumnos', $alumno)
+                                <?php $id = $alumno['id']; ?>
+                                <!-- can('view-alumnos', $alumno) -->
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
-                                    <td class="text-center previa">{{$alumno->identificacion}}</td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                     <td class="text-center previa">
-                                    @if($alumno->sexo=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
-                                    @endif
+                                        @if($alumno['edad'] >= 18)
+                                            @if($alumno['sexo']=='F')
+                                                <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                            @else
+                                                <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                            @endif
+                                        @else
+                                            @if($alumno['sexo']=='F')
+                                                <i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                            @else
+                                                <i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                            @endif
+                                        @endif
                                     </td>
 
-                                    <?php $tmp = explode(" ", $alumno->nombre);
+                                    <?php $tmp = explode(" ", $alumno['nombre']);
                                     $nombre_alumno = $tmp[0];
 
-                                    $tmp = explode(" ", $alumno->apellido);
+                                    $tmp = explode(" ", $alumno['apellido']);
                                     $apellido_alumno = $tmp[0];
 
                                     ?>
@@ -103,7 +112,7 @@
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
-                                @endcan
+                                <!-- endcan -->
                             @endforeach 
                                                            
                             </tbody>
@@ -178,34 +187,8 @@
                     }
         });
     
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-            });
+          
+        });
 
         function previa(t){
 
