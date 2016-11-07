@@ -74,7 +74,7 @@ class TallerController extends BaseController {
             Session::forget('horario'); 
         }
 
-        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     /**
