@@ -48,28 +48,28 @@
                             <tbody>
 
                             @foreach ($alumnosacademia as $alumno)
-                                <?php $id = $alumno['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}">
+                                <?php $id = $alumno->id; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "alumno">
                                     <td class="text-center previa">
-                                    @if($alumno['imagen'])
-                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
-                                    @else
-                                        @if($alumno['sexo'] == 'M')
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                        @if($alumno->imagen)
+                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
                                         @else
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                    @endif
-                                  @endif
-                                  </td>
-                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
-                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                            @if($alumno->sexo == 'M')
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            @else
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+                                      @endif
+                                    </td>
+                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}}</td>
+                                    <td class="text-center previa">{{$alumno->identificacion}}</td>
 
                                 </tr>
                             @endforeach 
 
                             @foreach ($instructores as $alumno)
-                                <?php $id = $alumno['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "insctructor">
+                                <?php $id = $alumno->id; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "insctructor">
                                     <td class="text-center previa">
                                         <!-- if($alumno['imagen'])
                                             <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/instructor/{{$alumno['imagen']}}" alt="">
@@ -77,8 +77,8 @@
                                             <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
                                         <!-- endif -->
                                     </td>
-                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
-                                    <td class="text-center previa">{{$alumno['identificacion']}} <i class="icon_a-instructor"></i></td>
+                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}}</td>
+                                    <td class="text-center previa">{{$alumno->identificacion}} <i class="icon_a-instructor"></i></td>
 
                                 </tr>
                             @endforeach 
@@ -155,6 +155,595 @@
                         }
             });
         });
+
+    // $('#buscar').on( 'keyup', function () {
+    //   asistencia.search( this.value ).draw();
+    // });
+
+    $("#listado").on('click',function(){
+      window.location = "{{url('/')}}/asistencia";
+    });
+
+    $("#permitir").on('click',function(){
+      var route = route_agregar_asistencia;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_asistencia" ).serialize(); 
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data:datos,
+          success:function(respuesta){            
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              $("#agregar_asistencia")[0].reset();
+              $("#asistencia-horario").text("---");
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
+
+              $('#modalAsistencia').modal('hide');
+              swal("Permitido!", respuesta.mensaje, "success");
+              $("#content").toggleClass("opacity-content");
+              $("header").toggleClass("abierto");
+              $("footer").toggleClass("opacity-content");
+
+
+            }else{
+              var nType = 'danger';
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }
+            
+          },
+          error:function(msj){
+            var nType = 'danger';
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            var nTitle="Ups! ";
+            if(msj.responseJSON.status=="ERROR"){
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
+              swal({   
+                    title: "¿Desea permitir la entrada?",   
+                    text: "El alumno no se encuentra asociado a esta clase!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Permitir!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+                if (isConfirm) {
+                    var route = route_agregar_asistencia_permitir;
+                    var token = $('input:hidden[name=_token]').val();
+                    var datos = $( "#agregar_asistencia" ).serialize(); 
+                    $.ajax({
+                      url: route,
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
+                      dataType: 'json',
+                      data:datos,
+                        success:function(respuesta){  
+                          console.log(respuesta)          
+                          if(respuesta.status=="OK"){
+                            $('#modalAsistencia').modal('hide');
+                            swal("Permitido!", respuesta.mensaje, "success");
+                            $("#content").toggleClass("opacity-content");
+                            $("header").toggleClass("abierto");
+                            $("footer").toggleClass("opacity-content");                                              
+                          }else{
+                            var nType = 'danger';
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                          }
+                          
+                        },
+                        error:function(msj){
+                          var nType = 'danger';
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+                          
+                        }
+                        
+                      });
+                  
+                  
+                }
+              });
+
+            }else if(msj.responseJSON.status=="ERROR_REGISTRADO"){
+              var nType = 'info';
+              var nTitle="    Ups! "; 
+              var nMensaje="El alumno no ha formalizado su inscripción"; 
+            } 
+            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }
+          
+        });
+    });
+
+
+    $("#permitir_instructor").on('click',function(){
+      var route = route_agregar_asistencia_instructor;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_asistencia_instructor" ).serialize(); 
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data:datos,
+          success:function(respuesta){  
+            console.log(respuesta)          
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              $("#agregar_asistencia_instructor")[0].reset();
+              $("#asistencia-horario-instructor").text("---");
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
+              $('#modalAsistenciaInstructor').modal('hide');
+              swal("Permitido!", respuesta.mensaje, "success");
+              $("#content").toggleClass("opacity-content");
+              $("header").toggleClass("abierto");
+              $("footer").toggleClass("opacity-content"); 
+            }else{
+              var nType = 'danger';
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+              console.log(msj);
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }
+          },
+          error:function(msj){
+            var nType = 'danger';
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            var nTitle="Ups! ";
+            if(msj.responseJSON.status=="ERROR"){
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+            }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
+
+              swal({   
+                    title: "¿Desea permitir la entrada como suplente?",   
+                    text: "El instructor no se encuentra asociado a esta clase!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Permitir!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+                if (isConfirm) {
+                    var route = route_agregar_asistencia_instructor_permitir;
+                    var token = $('input:hidden[name=_token]').val();
+                    var datos = $( "#agregar_asistencia_instructor" ).serialize(); 
+                    $.ajax({
+                      url: route,
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
+                      dataType: 'json',
+                      data:datos,
+                        success:function(respuesta){  
+                          console.log(respuesta)          
+                          if(respuesta.status=="OK"){
+                            $('#modalAsistenciaInstructor').modal('hide');
+                            swal("Permitido!", respuesta.mensaje, "success");
+                            $("#content").toggleClass("opacity-content");
+                            $("header").toggleClass("abierto");
+                            $("footer").toggleClass("opacity-content");                                              
+                          }else{
+                            var nType = 'danger';
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                            //console.log(msj);
+                          }
+                          
+                        },
+                        error:function(msj){
+                          var nType = 'danger';
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nTitle="Ups! ";
+                          if(msj.responseJSON.status=="ERROR"){
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+                          }else{
+
+                           
+                          }
+                          
+                        }
+                        
+                      });
+                  
+                  
+                }
+              });
+              /*
+              var nType = 'warning';
+              var nTitle="    Ups! "; 
+              var nMensaje="El instructor no se encuentra asociado a la clase"; 
+              */
+            }
+            //notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }
+          
+        });
+    });
+    
+
+    $('#asistencia-clase_grupal_id').on('change', function(){
+      if ($(this).val()=='') {
+        $("#asistencia-horario").text("---");           
+      }else{
+        $var = valor=$(this).val().split('-');
+        $("#asistencia-horario").text(valor[1]);
+      }
+    });
+
+
+     $('#asistencia-clase_grupal_id_instructor').on('change', function(){
+      if ($(this).val()=='') {
+        $("#asistencia-horario-instructor").text("---");           
+      }else{
+        $var = valor=$(this).val().split('-');
+        $("#asistencia-horario-instructor").text(valor[1]);
+      }
+    });
+
+      function buscarInstructor(t){
+        procesando();
+
+        var row = $(t).closest('tr');
+
+        var id_instructor = $(row).data('id-participante');
+        var nombre_instructor = $(row).data('nombre-participante');
+
+        $('#asistencia_id_instructor').val(id_instructor);
+        $('#asistencia-nombre-instructor').text(nombre_instructor);
+        $("#asistencia-horario-instructor").text("---");
+
+        var route = route_consultar_cg;
+        var token = $('input:hidden[name=_token]').val();
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'GET',
+          dataType: 'json',
+          success:function(respuesta){
+            
+            $('#asistencia-clase_grupal_id_instructor').empty();        
+            $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
+            $.each(respuesta.clases_grupales, function (index, array) {                     
+              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
+
+            });
+
+            finprocesado();
+            $('#modalAsistenciaInstructor').modal('show');
+          },
+          error:function(msj){
+            finprocesado();
+            console.log(msj);
+
+          } 
+        });
+      }
+
+
+      function buscarAlumno(t){
+        procesando();
+        $('#clases_grupales_alumno').empty();
+
+        var row = $(t).closest('tr');
+
+        var id_alumno = $(row).data('id-participante');
+        var nombre_alumno = $(row).data('nombre-participante');
+        var imagen = $(row).data('imagen');
+        var sexo = $(row).data('sexo');
+
+        if(imagen){
+          $('#alumno_imagen').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+        }else{
+          if(sexo == 'M'){
+            $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+          }else{
+            $('#alumno_imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+          }
+        }
+
+        $('#asistencia_id_alumno').val(id_alumno);
+        $('#asistencia-nombre-alumno').text(nombre_alumno);
+        $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+id_alumno);
+
+        $("#asistencia-horario").text("---");
+        var route = route_consultar_cg;
+        var token = $('input:hidden[name=_token]').val();
+        $.ajax({
+          url: route+"/"+id_alumno,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'GET',
+          dataType: 'json',
+          success:function(respuesta){
+            $.each(respuesta.inscripciones, function (index, array) { 
+              if(array.diferencia > 1){
+                restan = 'Restan '
+                dias = ' dias'
+              }else{
+                restan = 'Resta '
+                dias = ' dia'
+              }
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
+            });
+            
+            $('#asistencia-clase_grupal_id').empty();        
+            $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
+            $.each(respuesta.clases_grupales, function (index, array) {                   
+              $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
+            });
+
+            $('#asistencia-estado_economico').text(respuesta.deuda);
+            if(respuesta.deuda > 0){
+              $( "#url_pagar" ).show();
+              $( "#acciones" ).show();
+              $( "#acciones_linea" ).show();
+              $("#status_economico").removeClass("c-verde");
+              $("#status_economico").addClass("c-youtube");
+            }else{
+              $( "#url_pagar" ).hide();
+              $( "#acciones" ).hide();
+              $( "#acciones_linea" ).hide();
+              $("#status_economico").removeClass("c-youtube");
+              $("#status_economico").addClass("c-verde");
+            }
+            finprocesado();
+            $('#modalAsistencia').modal('show');
+          },
+          error:function(msj){
+            finprocesado();
+            console.log(msj);
+
+          } 
+        });
+
+      }
+
+
+      function permitir_instructor(){
+        var route = route_agregar_asistencia_instructor_permitir;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = $( "#agregar_asistencia_instructor" ).serialize(); 
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          data:datos,
+            success:function(respuesta){  
+              console.log(respuesta)          
+              if(respuesta.status=="OK"){
+                $('#modalAsistencia').modal('hidden');
+                
+              }else{
+                var nType = 'danger';
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }
+              
+            },
+            error:function(msj){
+              var nType = 'danger';
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              var nTitle="Ups! ";
+              if(msj.responseJSON.status=="ERROR"){
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+              }else{
+
+               
+              }
+              
+            }
+            
+          });
+      }
+
+      $('#modalAsistencia').on('hidden.bs.modal', function (e) {
+        $("#content").removeClass("opacity-content");
+        $("header").removeClass("abierto");
+        $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
+      })
+
+      $('#modalAsistenciaInstructor').on('hidden.bs.modal', function (e) {
+        $("#content").removeClass("opacity-content");
+        $("header").removeClass("abierto");
+        $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
+      })
+
+
+    $('body').on('click', '#what_we_do, #menuTopConfig, #main,#content, footer, header.abierto', function(e){
+
+            $("#content").removeClass("opacity-content");
+            $("footer").removeClass("opacity-content");
+            $("header").removeClass("abierto");
+            $("#main").removeClass("opacity-content");
+            $("#chat").removeClass("toggled");
+            $("#what_we_do").removeClass("opacity-content");
+            if($("#buscar").val() != '')
+            {
+              $("#buscar").val('');
+              asistencia.search('').draw();
+            }
+
+        });
+        // $('body').on('change', '#menu-trigger.open', function(e){
+
+        //     $("#content").addClass("opacity-content");
+        //     $("footer").addClass("opacity-content");
+        //     $("header").addClass("abierto");
+        //     console.log('aside');
+        // });
+
+
+        // $('body').on('click', '#chat-trigger', function(e){
+
+        //   var cuerpo = '';
+          
+        //   if(!$('#chat').hasClass('toggled') && aside_loaded == 0){
+
+        //     $.each(alumnos_aside, function (index, array) {
+
+        //       id = array.id
+        //       cuerpo += '<div class="listview">'
+        //       cuerpo += '<a class="lv-item" href="javascript:void(0)"  >'
+        //       cuerpo += '<div class="media">'
+        //       cuerpo += '<div class="pull-left p-relative">'
+
+        //       if(array.imagen){
+        //         cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/'+array.imagen+'" alt="">'
+        //       }else{
+        //         if(array.sexo == 'M')
+        //         {
+        //           cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">'
+        //         }else{
+        //           cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">'
+        //         }
+        //       }
+
+        //       cuerpo += '<i class="chat-status-busy"></i>'
+        //       cuerpo += '</div>'
+        //       cuerpo += '<div class="media-body">'
+        //       cuerpo += '<div class="lv-title">'+array.nombre+' '+array.apellido+'</div>'
+        //       cuerpo += '<small class="lv-small">'+array.identificacion+'</small>'
+        //       cuerpo += '</div></div></a></div>'
+
+        //       var rowNode=asistencia.row.add( [
+        //         ''+cuerpo+''
+        //       ] ).draw(false).node();
+        //       $( rowNode )
+        //         .attr('id','asistencia_alumno_row_'+id)
+        //         .attr('data-imagen',array.imagen)
+        //         .attr('data-id-participante',array.id)
+        //         .attr('data-nombre-participante',array.nombre+' '+array.apellido)
+        //         .attr('data-identificacion-participante',array.identificacion)
+        //         .attr('data-tipo-participante',"alumno")
+        //         .attr('data-sexo',array.sexo)
+              
+
+        //       $('#aside_body').append(cuerpo)
+
+        //       cuerpo = '';
+                
+        //     }); 
+
+        //     $.each(instructores_aside, function (index, array) {
+   
+        //       cuerpo += '<div class="listview">'
+        //       cuerpo += '<a class="lv-item" href="javascript:void(0)"  >'
+        //       cuerpo += '<div class="media">'
+        //       cuerpo += '<div class="pull-left p-relative">'
+        //       cuerpo += '<img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">'
+               
+
+        //       cuerpo += '<i class="chat-status-busy"></i>'
+        //       cuerpo += '</div>'
+        //       cuerpo += '<div class="media-body">'
+        //       cuerpo += '<div class="lv-title">'+array.nombre+' '+array.apellido+'</div>'
+        //       cuerpo += '<small class="lv-small">'+array.identificacion+' <i class="icon_a-instructor"></i></small>'
+        //       cuerpo += '</div></div></a></div>'
+
+        //       id = array.id
+        //       var rowNode=asistencia.row.add( [
+        //         ''+cuerpo+''
+        //       ] ).draw(false).node();
+        //       $( rowNode )
+        //         .attr('id','asistencia_alumno_row_'+id)
+        //         .attr('data-imagen',array.imagen)
+        //         .attr('data-id-participante',array.id)
+        //         .attr('data-nombre-participante',array.nombre+' '+array.apellido)
+        //         .attr('data-identificacion-participante',array.identificacion)
+        //         .attr('data-tipo-participante',"insctructor")
+              
+
+        //       cuerpo = '';
+                
+        //     }); 
+
+        //     aside_loaded = 1;   
+
+        //     setTimeout(function() {
+        //       $('#mCSB_1_container').css('width', '');
+        //       $('#mCSB_1_container').css('left', '');
+        //     },2000);
+        //     finprocesado();                                  
+            
+        //   }
+
+        
+            
+        // });
+
+    function buscar(t){
+
+        var row = $(t).closest('tr');
+        var tipo= $(row).data('tipo-participante');
+        if(tipo=="alumno"){
+          buscarAlumno(t);
+        }else if(tipo=="insctructor"){
+          buscarInstructor(t);
+        }
+
+    }
 
     </script>
 
