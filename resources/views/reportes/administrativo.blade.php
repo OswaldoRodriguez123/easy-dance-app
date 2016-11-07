@@ -184,7 +184,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="factura" data-order="asc">&nbsp;&nbsp;#&nbsp;&nbsp;</th>
+                                    <th class="text-center" data-column-id="factura" data-order="asc" id="factura">Factura</th>
                                     <th class="text-center" data-column-id="cliente">Cliente</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
@@ -199,7 +199,7 @@
                                     <tr id="{{$id}}" class="seleccion">
                                         <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
                                         <td class="text-center previa">{{$factura['nombre']}}</td>
-                                        <td class="text-center previa">{{$factura['concepto']}}</td>
+                                        <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}</td>
                                         <td class="text-center previa">{{$factura['fecha']}}</td>
                                         <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
                                       
@@ -250,13 +250,7 @@
 
     $(document).ready(function(){
 
-        $('input[type=checkbox]').change(function()
-        {
-            if (this.checked)
-            {
-                $('input[type=checkbox]').not(this).attr('checked',false);
-            }
-        });
+        document.getElementById('factura').innerHTML = '#'; 
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -304,33 +298,6 @@
                     }
         });
 
-
-        /*if($('.chosen')[0]) {
-            $('.chosen').chosen({
-                width: '100%',
-                allow_single_deselect: true
-            });
-        }
-        if ($('.date-time-picker')[0]) {
-           $('.date-time-picker').datetimepicker();
-        }
-
-        if ($('.date-picker')[0]) {
-            $('.date-picker').datetimepicker({
-                format: 'DD/MM/YYYY'
-            });
-        }*/
-
-            //Basic Example
-            $("#data-table-basica").bootgrid({
-                css: {
-                    icon: 'zmdi icon',
-                    iconColumns: 'zmdi-view-module',
-                    iconDown: 'zmdi-expand-more',
-                    iconRefresh: 'zmdi-refresh',
-                    iconUp: 'zmdi-expand-less'
-                }
-            });
             //DateRangePicker
             $('#personalizar').daterangepicker({
                 "autoApply" : false,
