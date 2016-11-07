@@ -94,7 +94,7 @@ class AsistenciaController extends BaseController
 
 
 
-        return view('inicio.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores]);   
+        return view('asistencia.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores]);   
         }  
 
         if(Auth::user()->usuario_tipo == 2)

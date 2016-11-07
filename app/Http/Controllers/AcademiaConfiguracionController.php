@@ -266,7 +266,7 @@ class AcademiaConfiguracionController extends BaseController {
             $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
             $clase_personalizada_contador = ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->count();
 
-                $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
+                $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
 
                 if($perfil){
                     $tiene_perfil = 1;
@@ -1610,7 +1610,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                                     }
 
-                                    $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->id)->first();
+                                    $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
                                     $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
                                     $clase_personalizada_contador = ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->count();
 
