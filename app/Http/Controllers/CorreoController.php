@@ -287,6 +287,10 @@ class CorreoController extends BaseController {
 			{
 				$usuario = Alumno::withTrashed()->find($id);
 				$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 2)->where('confirmation_token', null)->count();
+
+				if(!$tiene_cuenta){
+					$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 4)->where('confirmation_token', null)->count();
+				}
 			}
 
 			if($tipo == 2)
