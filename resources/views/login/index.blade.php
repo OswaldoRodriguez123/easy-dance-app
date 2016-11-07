@@ -80,8 +80,12 @@
 
                 <div class="col-sm-6 ">
 
-                    <label class="m-b-30 p-t-5 f-14">
+                    <!-- <label class="m-b-30 p-t-5 f-14">
                         <a href="{{url('/')}}/activar">Deseas activar tu cuenta?</a> 
+                    </label> -->
+
+                    <label class="m-b-30 p-t-5 f-14">
+                        <a href="{{url('/')}}/registro">Crear una cuenta</a> 
                     </label>
 
                 </div>
