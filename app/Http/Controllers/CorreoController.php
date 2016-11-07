@@ -332,7 +332,7 @@ class CorreoController extends BaseController {
 
 			if($tipo == 1)
 			{
-				$alumno = Alumno::find($request->id);
+				$alumno = Alumno::withTrashed()->find($request->id);
 
 				    $subj = 'Feliz cumpleaños';
 
@@ -445,7 +445,7 @@ class CorreoController extends BaseController {
 	 			if($id != '')
 	 			{
 
-		 			$alumno = Alumno::find($id);
+		 			$alumno = Alumno::withTrashed()->find($id);
 
 				    $subj = 'Feliz cumpleaños';
 
@@ -519,7 +519,7 @@ class CorreoController extends BaseController {
 
 			if($tipo == 1)
 			{
-				$alumno = Alumno::find($request->id);
+				$alumno = Alumno::withTrashed()->find($request->id);
 
 				    $subj = 'Riesgo de ausencia';
 
@@ -631,7 +631,7 @@ class CorreoController extends BaseController {
 
 	 			if($id != '')
 	 			{
-		 			$alumno = Alumno::find($id);
+		 			$alumno = Alumno::withTrashed()->find($id);
 
 				    $subj = 'Riesgo de ausencia';
 
@@ -693,7 +693,7 @@ class CorreoController extends BaseController {
 
 			if($tipo == 1)
 			{
-				$alumno = Alumno::find($request->id);
+				$alumno = Alumno::withTrashed()->find($request->id);
 
 				    $subj = 'Aviso de cobro';
 
@@ -804,7 +804,7 @@ class CorreoController extends BaseController {
 
 	 			if($id != '')
 	 			{
-		 			$alumno = Alumno::find($id);
+		 			$alumno = Alumno::withTrashed()->find($id);
 
 				    $subj = 'Aviso de cobro';
 
@@ -880,7 +880,7 @@ class CorreoController extends BaseController {
 
 			if($tipo == 1)
 			{
-				$alumno = Alumno::find($request->id);
+				$alumno = Alumno::withTrashed()->find($request->id);
 
 				    $subj = 'Suspensión de clases';
 
@@ -991,7 +991,7 @@ class CorreoController extends BaseController {
 
 	 			if($id != '')
 	 			{
-		 			$alumno = Alumno::find($id);
+		 			$alumno = Alumno::withTrashed()->find($id);
 
 				    $subj = 'Suspensión de clases';
 
@@ -1052,7 +1052,7 @@ class CorreoController extends BaseController {
 
 			if($tipo == 1)
 			{
-				$alumno = Alumno::find($request->id);
+				$alumno = Alumno::withTrashed()->find($request->id);
 
 				    $subj = 'Adelanto de nuevas aperturas';
 
@@ -1163,7 +1163,7 @@ class CorreoController extends BaseController {
 
 	 			if($id != '')
 	 			{
-		 			$alumno = Alumno::find($id);
+		 			$alumno = Alumno::withTrashed()->find($id);
 
 				    $subj = 'Adelanto de nuevas aperturas';
 
