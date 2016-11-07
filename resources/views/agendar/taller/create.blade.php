@@ -56,6 +56,7 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
+
                                 <div class="col-sm-12">
                                  
                                     <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre que deseas asignarle al taller" title="" data-original-title="Ayuda"></i>
@@ -204,7 +205,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nivel_baile" id="id-nivel_id">Nivel de Baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                    <label for="nivel_baile" id="id-nivel_id">Nivel de Baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/academia' class='redirect pointer'> Llévame <i class='icon_a-niveles f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -230,7 +231,7 @@
 
                                     <div class="col-sm-12">
                                  
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -256,7 +257,7 @@
                                 
                                     <div class="col-sm-12">
                                  
-                                    <label for="estudio" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                    <label for="estudio" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/academia' class='redirect pointer'> Llévame <i class='icon_a-estudio-salon f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-estudio-salon f-22"></i></span>
@@ -1102,54 +1103,30 @@
           $('#pop-instructor').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-instructor f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/participante/instructor/agregar";
-                    });
+                    
                     e.preventDefault();
           });
 
           $('#pop-salon').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-estudio-salon f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/configuracion/academia";
-                    });
+
                     e.preventDefault();
           });
 
           $('#pop-nivel').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-niveles f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/configuracion/academia";
-                    });
+
                     e.preventDefault();
           });
 
@@ -1162,6 +1139,17 @@
                 }
             });
         });
+
+      //   $(document).on('click', function (e) {
+      //     $('[data-toggle="popover"],[data-original-title]').each(function () {
+      //         //the 'is' for buttons that trigger popups
+      //         //the 'has' for icons within a button that triggers a popup
+      //         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {                
+      //             (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
+      //         }
+
+      //     });
+      // });
 
       function countChar(val) {
         var len = val.value.length;
