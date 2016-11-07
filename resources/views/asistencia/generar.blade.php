@@ -17,8 +17,6 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/productos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
-
             <section id="content">
                 <div class="container">
                 
@@ -27,7 +25,10 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-center">
+                        <div class="card-header">
+
+
+                        <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:2%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
 
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-shield-check zmdi-hc-fw f-25"></i> Registro de asistencia</p>
                         <hr class="linea-morada">
@@ -48,12 +49,12 @@
 
                             @foreach ($alumnosacademia as $alumno)
                                 <?php $id = $alumno['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$alumno->id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno->sexo}}">
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}">
                                     <td class="text-center previa">
-                                    @if($alumno->imagen){
-                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/'+array.imagen+'" alt="">
+                                    @if($alumno['imagen'])
+                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                     @else
-                                        @if($alumno->sexo == 'M')
+                                        @if($alumno['sexo'] == 'M')
                                           <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                         @else
                                           <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
@@ -65,11 +66,35 @@
 
                                 </tr>
                             @endforeach 
+
+                            @foreach ($instructores as $alumno)
+                                <?php $id = $alumno['id']; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "insctructor">
+                                    <td class="text-center previa">
+                                        <!-- if($alumno['imagen'])
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/instructor/{{$alumno['imagen']}}" alt="">
+                                        else -->
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                                        <!-- endif -->
+                                    </td>
+                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}} <i class="icon_a-instructor"></i></td>
+
+                                </tr>
+                            @endforeach 
                                                            
                             </tbody>
                         </table>
                          </div>
                         </div>
+                        <div class="card-body p-b-20">
+                            <div class="row">
+                              <div class="container">
+                                
+                              </div>
+                            </div>
+                        </div>
+                        
                         
                     </div>
                     
@@ -88,7 +113,7 @@
             processing: true,
             serverSide: false,
             pageLength: 25,  
-            order: [[0, 'asc']],
+            order: [[1, 'asc']],
             fnDrawCallback: function() {
             if ("{{count($alumnosacademia)}}" < 25) {
                   $('.dataTables_paginate').hide();

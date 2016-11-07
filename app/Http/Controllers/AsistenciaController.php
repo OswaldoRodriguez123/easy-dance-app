@@ -115,6 +115,12 @@ class AsistenciaController extends BaseController
         }        
     }
 
+    public function generarAsistencia(){
+
+      return view('asistencia.generar');
+
+    }
+
     private function deuda($id){
         $alumnod = DB::table('alumnos')
             ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
