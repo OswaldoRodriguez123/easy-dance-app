@@ -2037,7 +2037,8 @@ class ClaseGrupalController extends BaseController {
 
         if(!$exist)
         {
-           $clasegrupal = ClaseGrupal::find($id);
+            $horario_clase_grupal = HorarioClaseGrupal::where('clase_grupal_id', $id)->delete();
+            $clasegrupal = ClaseGrupal::find($id);
         
             if($clasegrupal->delete()){
                 return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
