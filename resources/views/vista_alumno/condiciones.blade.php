@@ -155,17 +155,14 @@
 
                                 <div class="clearfix"></div> 
 
-                                <div class="col-sm-3" style="margin-left: 40%">
+                                <div class="col-sm-12 text-center">
 
-                                <input type="checkbox" id="condiciones" name="condiciones">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
 
-                                <div class="text-center">
+                                  <input type="checkbox" id="condiciones" name="condiciones" style="width: 5%">  <span class="f-16 f-700 opaco-0-8">  Acepto los  términos</span> <br><br>
                        
                                   <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Guardar</button>
 
                                 </div>
-
-                              </div>
 
                               <div class="clearfix p-b-15"></div>
 
