@@ -111,7 +111,6 @@
              $('.dataTables_paginate').show();
           }
         },
-        },
         pageLength: 25,
         language: {
               searchPlaceholder: "Buscar"

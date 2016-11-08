@@ -178,7 +178,7 @@
             </div>
 
             <div class="modal fade" id="modalasistencia-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
@@ -190,17 +190,28 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <div style="text-align: center"><label for="" >Estado de Alumno</label><hr></div>
+
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    <div class="form-group fg-line">
                                     <label for="costo">Estado de Inactividad</label>
                                     <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_roja" data-mask="00000000" placeholder="Ej. 5" value="{{$clasegrupal->asistencia_rojo}}">
-                                 </div>
+                                    </div>
                                  <div class="has-error" id="error-asistencia_rojas">
                                       <span >
                                           <small class="help-block error-span" id="error-asistencia_rojas_mensaje" ></small>                              
                                       </span>
                                   </div>
-                               </div>
 
-                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="costo">Riesgo de Ausencia</label>
                                     <input type="text" class="form-control input-sm input-mask" name="asistencia_amarillas" id="asistencia_amarilla" data-mask="00000000" placeholder="Ej. 2" value="{{$clasegrupal->asistencia_amarilla}}">
@@ -210,7 +221,21 @@
                                           <small class="help-block error-span" id="error-asistencia_amarillas_mensaje" ></small>                              
                                       </span>
                                   </div>
-                               </div>
+
+                                  <div class="clearfix p-b-35"></div>
+                                  <div class="clearfix p-b-35"></div>
+                                      
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+
+                            
+                              </div>
+                          </div>
+                          </div>
+                          </div>
+                       </div>
+                       </div>
                                <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
                               
 
@@ -964,6 +989,10 @@
           $('#charNum').text(2000 - len);
         }
       };
+
+      function collapse_minus(collaps){
+       $('#'+collaps).collapse('hide');
+      }
     
    </script> 
 
