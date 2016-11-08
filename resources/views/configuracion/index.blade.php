@@ -153,26 +153,26 @@
                     
                         <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">  
                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeAcademia}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeAcademia}}%;"></div>
+                                    <div id="personaliza_tu_academia" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeAcademia}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeAcademia}}%;"></div>
                                 </div>
                                 <p class="text-center f-700" >{{$porcentajeAcademia}} %</p>
                                 </li>
 
                                 <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">
                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeGrupales}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeGrupales}}%;"></div>
+                                    <div id="crea_tus_clases_grupales" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeGrupales}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeGrupales}}%;"></div>
                                 </div>
                                 <p class="text-center f-700" >{{$porcentajeGrupales}} %</p>
                                     </li>
                                     <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">
                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajePersonalizado}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajePersonalizado}}%;"></div>
+                                    <div id="crea_tus_clases_personalizadas" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajePersonalizado}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajePersonalizado}}%;"></div>
                                 </div>
                                 <p class="text-center f-700" >{{$porcentajePersonalizado}} %</p>
                                     </li>
                             <li style="height: 50px; width: 230px; -moz-transform: none; background-color: white; border: 0px; box-shadow: none">
                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                    <div class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeServicios}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeServicios}}%;"></div>
+                                    <div id="incluye_servicios" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="{{$porcentajeServicios}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentajeServicios}}%;"></div>
                                 </div>
                                 <p class="text-center f-700" >{{$porcentajeServicios}} %</p>
                     </li>
@@ -199,6 +199,25 @@
 @section('js') 
 
 <script>
+
+$(document).ready(function(){
+    if({{$porcentajeAcademia}}==100){
+        $("#personaliza_tu_academia").removeClass('progress-bar-morado');
+        $("#personaliza_tu_academia").addClass('progress-bar-success');
+    }
+    if({{$porcentajeGrupales}}==100){
+        $("#crea_tus_clases_grupales").removeClass('progress-bar-morado');
+        $("#crea_tus_clases_grupales").addClass('progress-bar-success');
+    }
+    if({{$porcentajePersonalizado}}==100){
+        $("#crea_tus_clases_personalizadas").removeClass('progress-bar-morado');
+        $("#crea_tus_clases_personalizadas").addClass('progress-bar-success');
+    }
+    if({{$porcentajeServicios}}>=100){
+        $("#incluye_servicios").removeClass('progress-bar-morado');
+        $("#incluye_servicios").addClass('progress-bar-success');
+    }
+});
 
     $(".volver").click(function(){
 

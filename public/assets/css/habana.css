@@ -199,6 +199,15 @@ button.btn-blanco:hover{
     padding-bottom: 15px;
 }
 
+/*@media (max-width: @screen-xs-min){
+    #modalParticipantes ul { width: @modal-sm; }
+    #modalParticipantes li { width: 50%; }
+    #modalAgendar li { width: 50%; }
+    #modalEspeciales li { width: 50%; }
+    #modalReportes li { width: 50%; }
+}*/
+
+
 .login-content {
     text-align: center;
 }

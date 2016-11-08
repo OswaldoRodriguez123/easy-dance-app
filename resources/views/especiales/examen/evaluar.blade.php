@@ -58,8 +58,8 @@
 				                    <div class="select">
 				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
 				                        <option value="">Seleccione</option>
-				                        @foreach ( $alumnosacademia as $alumnos )
-				                        <option value = "{!! $alumnos->id !!}">{!! $alumnos->nombre !!} {!! $alumnos->apellido !!}</option>
+				                        @foreach ( $alumnos as $alumno )
+				                        <option value = "{!! $alumno->id !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!}</option>
 				                        @endforeach 
 				                        </select>
 				                    </div>
@@ -449,7 +449,7 @@ $(document).ready(function() {
 			});
 
 			$("#alumno_id").change(function(){
-				var alumnos = <?php echo json_encode($alumnosacademia);?>;
+				var alumnos = <?php echo json_encode($alumnos);?>;
 
 				id = $(this).val();
 

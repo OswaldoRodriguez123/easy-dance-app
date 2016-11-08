@@ -196,8 +196,8 @@
 
                                       <div class="select">
                                         <select class="form-control" id="instructor_id" name="instructor_id">
-                                        @foreach ( $instructores as $instructor )
-                                        <option value = "{!! $instructor['id'] !!}">{!! $instructor['nombre'] !!} {!! $instructor['apellido'] !!}</option>
+                                        @foreach ( $instructor as $instruct )
+                                        <option value = "{!! $instruct['id'] !!}">{!! $instruct['nombre'] !!} {!! $instruct['apellido'] !!}</option>
                                         @endforeach 
                                         </select>
                                       </div> 
@@ -1561,7 +1561,6 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
                  $(".procesando").removeClass('show');
                  $(".procesando").addClass('hidden');
                  $(".guardar").removeAttr("disabled");
-                 finprocesado();
                 $("#guardar").css({
                   "opacity": ("1")
                 });

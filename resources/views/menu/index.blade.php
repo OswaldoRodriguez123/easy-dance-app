@@ -52,7 +52,7 @@
                                             
                                             <li role="presentation"><a href="#especiales" class="rosa" aria-controls="especiales" role="tab" data-toggle="tab"><div class="icon_a icon_a-especiales f-30" style="color:#e91e63;  " ></div><p style=" margin-bottom: -2px; color:#e91e63;">Especiales</p></a></li>
                                            
-                                            <!-- <li role="presentation"><a class="gris" href="{{url('/')}}/invitar" aria-controls="invitar" ><div class="icon_d-invitar f-30" style="color:#b4a9a4; " ></div><p style=" margin-bottom: -2px; color:#b4a9a4;">Invitar</p></a></li> -->
+                                            <li role="presentation"><a class="gris" href="{{url('/')}}/invitar" aria-controls="invitar" ><div class="icon_d-invitar f-30" style="color:#b4a9a4; " ></div><p style=" margin-bottom: -2px; color:#b4a9a4;">Invitar</p></a></li>
                                             
                                             <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;  "></div><p style=" margin-bottom: -2px; color:#4caf50;">Punto de Venta</p></a></li>
                                            

@@ -161,12 +161,6 @@ class ExamenController extends BaseController {
 
     public function updateNombre(Request $request){
 
-        $examen = Examen::find($request->id);
-
-        $nombre = title_case($request->nombre);
-
-        $examen->nombre = $nombre;
-
         $rules = [
             'nombre' => 'required|min:3|max:50',
         ];
@@ -183,10 +177,13 @@ class ExamenController extends BaseController {
         if ($validator->fails()){
 
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
         }
 
         else{
+
+            $examen = Examen::find($request->id);
+            $nombre = title_case($request->nombre);
+            $examen->nombre = $nombre;
 
             if($examen->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -337,7 +334,31 @@ class ExamenController extends BaseController {
 
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo','examenes.genero as generos','examenes.tipo as tipos')
+            ->select('instructores.nombre as instructor_nombre',
+                'instructores.apellido as instructor_apellido',
+                'examenes.id as id',
+                'examenes.nombre as nombre',
+                'examenes.fecha as fecha',
+                'examenes.descripcion as descripcion',
+                'examenes.color_etiqueta as etiqueta',
+                'examenes.tiempos_musicales as tiempos_musicales',
+                'examenes.compromiso as compromiso',
+                'examenes.condicion as condicion',
+                'examenes.habilidades as habilidades',
+                'examenes.disciplina as disciplina',
+                'examenes.expresion_corporal as expresion_corporal',
+                'examenes.expresion_facial as expresion_facial',
+                'examenes.destreza as destreza',
+                'examenes.dedicacion as dedicacion',
+                'examenes.oido_musical as oido_musical',
+                'examenes.postura as postura',
+                'examenes.respeto as respeto',
+                'examenes.elasticidad as elasticidad',
+                'examenes.complejidad_de_movimientos as complejidad_de_movimientos',
+                'examenes.asistencia as asistencia',
+                'examenes.estilo as estilo',
+                'examenes.genero as generos',
+                'examenes.tipo as tipos')
             ->where('examenes.id', '=', $id)
         ->first();
 
@@ -463,7 +484,7 @@ class ExamenController extends BaseController {
         //dd($arrays_de_items);
 
         return view('especiales.examen.evaluar')
-               ->with(['alumno' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $tipo_de_evaluacion, 'numero_de_items'=>$i]);
+               ->with(['alumnos' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $tipo_de_evaluacion, 'numero_de_items'=>$i]);
     }
 
     public function actualizar_item(Request $request){
