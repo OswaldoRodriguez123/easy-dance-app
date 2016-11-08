@@ -571,6 +571,74 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalImagen-Usuario" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Usuario<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_imagen_usuario" id="edit_imagen_usuario"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+
+                          
+                              <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Cargar Imagen</label>
+                                        <div class="clearfix p-b-15"></div>
+                                        <input type="hidden" name="imageBase64" id="imageBase64">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if(Auth::user()->imagen)
+                                            <img src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" style="line-height: 150px;">
+                                          @endif
+                                        </div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen" id="imagen" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="has-error" id="error-imagen">
+                                      <span >
+                                          <small id="error-imagen_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                           <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_usuario" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             
      
             <section id="content">
@@ -579,19 +647,20 @@
                     <div class="block-header">
                       @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
-                          <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
-                          <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
                                             
-                          <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
                                             
-                          <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
                                            
-                          <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                      @endif                                           
-                        
-                    </div 
+
+                         <br><br>
+                        @endif
+                    </div>
                     
                     <div class="card">
                       <div class="card-header">
@@ -624,58 +693,33 @@
                               <div class="row p-b-15 ">
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
                                   <div class="text-center col-md-offset-2">
-                                    <!-- <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt=""> -->
-                                    <!-- <img class="img-responsive mCS_img_loaded" src="/assets/img/peggy.png" alt=""> -->
-                                    <!-- @if(Auth::user()->sexo=='F')
-                                      <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/1.jpg" style="height: 220px; width: 220px;" alt="">        
-                                    @else
-                                      <img class="img-responsive" src="{{url('/')}}/assets/img/profile-pics/2.jpg" style="height: 220px; width: 220px;" alt="">
-                                    @endif
-                                    <div class="pmo-stat" style="background:#4E1E43">
 
-                                      <h2 class="m-0 c-white">1562</h2>
-                                            Total Connections
-                                    </div> -->
-                     
-                                    <form name="form_imagen" id="form_imagen">
-                                    <input type="hidden" name="imageBase64" id="imageBase64">
-                                      <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
-                                          @if(Auth::user()->imagen)
-                                          <img src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" style="line-height: 150px;">
-                                          @endif
-                                        </div>
-                                        <div>
-                                            <span class="btn btn-info btn-file">
-                                                <span class="fileinput-new">Seleccionar Imagen</span>
-                                                <span class="fileinput-exists">Cambiar</span>
-                                                <input type="file" name="imagen" id="imagen" >
-                                            </span>
-                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                        </div>
-                                    </div>
-                                    </form>
+
+                                      @if(Auth::user()->imagen)
+                                        <img id="imagen_perfil" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" class="img-responsive">
+                                      @else
+                                        @if(Auth::user()->sexo =='F')
+
+                                        <img id="imagen_perfil" src="{{url('/')}}/assets/img/profile-pics/1.jpg" height="300" width="300" class="img-responsive">
+                                        @else
+                                        <img id="imagen_perfil" src="{{url('/')}}/assets/img/profile-pics/2.jpg" height="300" width="300" class="img-responsive">
+                                        @endif
+                                      @endif
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                      <div class="text-center">
+                                        <a data-toggle="modal" href="#modalImagen-Usuario" class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas">Cambiar Imagen</a>
+                                      </div>
+              
                                   </div>
 
-                                  <!-- <ul class="ca-menu-planilla">
-                                    <li>
-                                        <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="zmdi zmdi-truck zmdi-hc-fw"></i></span>
-                                            <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Proveedor</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo proveedor</h3>
-                                            </div>
-                                        </a>
-                                    </li>
-                                  </ul> -->
+                              </div>                
+                            </div>
+                          </div>
+                        </div>
 
-
-                                </div>                
-                              </div>
-                              </div>
-                              </div>
-
-					           	<div class="col-sm-9">
+                      <div class="col-sm-9">
 
                          <div class="col-sm-12">
                               <p class="text-center opaco-0-8 f-22">Datos del Usuario</p>
@@ -753,12 +797,13 @@
                
            
                           </div>
+                          </div>
 
                     
             
 
 
-					                   </div>
+                             </div>
                           </div>
                       </div>                       
                     </div>                   
@@ -946,141 +991,163 @@
     };
 
     // OBSERVER: ESTE OBSERVER SE HACE CON LA FINALIDAD DE DETECTAR CUANDO SE CAMBIA LA IMAGEN, ESTE MODIFIQUE EL IMAGEBASE64
-    var target = $('#imagena')[0];
+    // var target = $('#imagena')[0];
 
-    var observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        if(mutation.type == 'childList' && mutation.addedNodes.length > 0)
-        {
-          procesando();
+    // var observer = new MutationObserver(function(mutations) {
+    //   mutations.forEach(function(mutation) {
+    //     if(mutation.type == 'childList' && mutation.addedNodes.length > 0)
+    //     {
+    //       procesando();
           
-          setTimeout(function(){ 
-            var imagen = $("#imagena img").attr('src');
-            var canvas = document.createElement("canvas");
+    //       setTimeout(function(){ 
+    //         var imagen = $("#imagena img").attr('src');
+    //         var canvas = document.createElement("canvas");
 
-            var context=canvas.getContext("2d");
-            var img = new Image();
-            img.src = imagen;
+    //         var context=canvas.getContext("2d");
+    //         var img = new Image();
+    //         img.src = imagen;
             
-            canvas.width  = img.width;
-            canvas.height = img.height;
+    //         canvas.width  = img.width;
+    //         canvas.height = img.height;
 
-            context.drawImage(img, 0, 0);
+    //         context.drawImage(img, 0, 0);
      
-            var newimage = canvas.toDataURL("image/jpeg", 0.8);
-            var image64 = $("input:hidden[name=imageBase64]").val(newimage).trigger('change');
+    //         var newimage = canvas.toDataURL("image/jpeg", 0.8);
+    //         var image64 = $("input:hidden[name=imageBase64]").val(newimage).trigger('change');
 
-          }, 1000);
+    //       }, 1000);
 
-        }
-      });    
-    });
+    //     }
+    //   });    
+    // });
      
-    var config = { attributes: true, childList: true, characterData: true };
-    observer.observe(target, config);
+    // var config = { attributes: true, childList: true, characterData: true };
+    // observer.observe(target, config);
 
     //FIN OBSERVER
   
-     $('#imageBase64').change(function(){
+    //  $('#imageBase64').change(function(){
           
-      var route = route_update + "/imagen";
-      var token = $('input:hidden[name=_token]').val();
-      var datos = $( "#form_imagen" ).serialize();
-      $("#guardar").attr("disabled","disabled");
-      $("#guardar").css({
-        "opacity": ("0.2")
-      });
-      $(".cancelar").attr("disabled","disabled");
-      $(".procesando").removeClass('hidden');
-      $(".procesando").addClass('show');         
-      limpiarMensaje();
-      $.ajax({
-          url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'PUT',
-              dataType: 'json',
-              data:datos,
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-                finprocesado();
-                var nType = 'success';
-                var nTitle="Ups! ";
-                var nMensaje=respuesta.mensaje;
+    //   var route = route_update + "/imagen";
+    //   var token = $('input:hidden[name=_token]').val();
+    //   var datos = $( "#form_imagen" ).serialize();
+    //   $("#guardar").attr("disabled","disabled");
+    //   $("#guardar").css({
+    //     "opacity": ("0.2")
+    //   });
+    //   $(".cancelar").attr("disabled","disabled");
+    //   $(".procesando").removeClass('hidden');
+    //   $(".procesando").addClass('show');         
+    //   limpiarMensaje();
+    //   $.ajax({
+    //       url: route,
+    //           headers: {'X-CSRF-TOKEN': token},
+    //           type: 'PUT',
+    //           dataType: 'json',
+    //           data:datos,
+    //       success:function(respuesta){
+    //         setTimeout(function(){ 
+    //           var nFrom = $(this).attr('data-from');
+    //           var nAlign = $(this).attr('data-align');
+    //           var nIcons = $(this).attr('data-icon');
+    //           var nAnimIn = "animated flipInY";
+    //           var nAnimOut = "animated flipOutY"; 
+    //           if(respuesta.status=="OK"){
+    //             finprocesado();
+    //             var nType = 'success';
+    //             var nTitle="Ups! ";
+    //             var nMensaje=respuesta.mensaje;
 
-                console.log(respuesta.imagen)
-                if(respuesta.imagen != '')
-                {
-                  $('#foto_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
-                }            
-                else
-                {
-                    if('{{Auth::user()->sexo}}' =='F')
-                    {
-                      $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
-                    }              
-                    else{
-                      $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
-                    } 
-                }
+    //             console.log(respuesta.imagen)
+    //             if(respuesta.imagen != '')
+    //             {
+    //               $('#foto_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+    //             }            
+    //             else
+    //             {
+    //                 if('{{Auth::user()->sexo}}' =='F')
+    //                 {
+    //                   $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+    //                 }              
+    //                 else{
+    //                   $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+    //                 } 
+    //             }
                 
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
+    //           }else{
+    //             var nTitle="Ups! ";
+    //             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+    //             var nType = 'danger';
 
-                $(".procesando").removeClass('show');
-                $(".procesando").addClass('hidden');
-                $("#guardar").removeAttr("disabled");
-                finprocesado();
-                $("#guardar").css({
-                  "opacity": ("1")
-                });
-                $(".cancelar").removeAttr("disabled");
+    //             $(".procesando").removeClass('show');
+    //             $(".procesando").addClass('hidden');
+    //             $("#guardar").removeAttr("disabled");
+    //             finprocesado();
+    //             $("#guardar").css({
+    //               "opacity": ("1")
+    //             });
+    //             $(".cancelar").removeAttr("disabled");
 
-              } 
+    //           } 
 
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+    //           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
               
-            }, 3000);
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
-              if(msj.responseJSON.status=="ERROR"){
-                console.log(msj.responseJSON.errores);
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
-              $("#guardar").removeAttr("disabled");
-              finprocesado();
-              $("#guardar").css({
-                "opacity": ("1")
-              });
-              $(".cancelar").removeAttr("disabled");
-              $(".procesando").removeClass('show');
-              $(".procesando").addClass('hidden');
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
-          }
-      });      
+    //         }, 3000);
+    //       },
+    //       error:function(msj){
+    //         setTimeout(function(){ 
+    //           if (typeof msj.responseJSON === "undefined") {
+    //             window.location = "{{url('/')}}/error";
+    //           }
+    //           if(msj.responseJSON.status=="ERROR"){
+    //             console.log(msj.responseJSON.errores);
+    //             errores(msj.responseJSON.errores);
+    //             var nTitle="    Ups! "; 
+    //             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+    //           }else{
+    //             var nTitle="   Ups! "; 
+    //             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+    //           }                        
+    //           $("#guardar").removeAttr("disabled");
+    //           finprocesado();
+    //           $("#guardar").css({
+    //             "opacity": ("1")
+    //           });
+    //           $(".cancelar").removeAttr("disabled");
+    //           $(".procesando").removeClass('show');
+    //           $(".procesando").addClass('hidden');
+    //           var nFrom = $(this).attr('data-from');
+    //           var nAlign = $(this).attr('data-align');
+    //           var nIcons = $(this).attr('data-icon');
+    //           var nType = 'danger';
+    //           var nAnimIn = "animated flipInY";
+    //           var nAnimOut = "animated flipOutY";                       
+    //           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+    //         }, 1000);
+    //       }
+    //   });      
+    // });
+
+    $("#imagen").bind("change", function() {
+            //alert('algo cambio');
+            
+      setTimeout(function(){
+        var imagen = $("#imagena img").attr('src');
+        var canvas = document.createElement("canvas");
+
+        var context=canvas.getContext("2d");
+        var img = new Image();
+        img.src = imagen;
+        
+        canvas.width  = img.width;
+        canvas.height = img.height;
+
+        context.drawImage(img, 0, 0);
+ 
+        var newimage = canvas.toDataURL("image/jpeg", 0.8);
+        var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+      },500);
+
     });
 
     $(".guardar").click(function(){
@@ -1120,7 +1187,27 @@
                   campoValor(datos_array);            
                   var nType = 'success';
                   var nTitle="Ups! ";
-                  var nMensaje=respuesta.mensaje;                                      
+                  var nMensaje=respuesta.mensaje;
+
+                  if(update == 'imagen'){
+                    if(respuesta.imagen != '')
+                    {
+                      $('#foto_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+                      $('#imagen_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+                    }            
+                    else
+                    {
+                        if('{{Auth::user()->sexo}}' =='F')
+                        {
+                          $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+                          $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+                        }              
+                        else{
+                          $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+                          $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+                        } 
+                    }
+                  }                                      
                 }else{
                   var nTitle="Ups! ";
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -1179,5 +1266,5 @@
       };
     
    </script>   
-		
+    
 @stop
