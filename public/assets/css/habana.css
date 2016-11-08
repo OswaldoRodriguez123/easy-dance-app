@@ -1515,6 +1515,17 @@ color: #4E1E43;
     opacity: 0.5;
 }
 
+.modal-menu{
+    position:relative;
+    display:inline-block;
+    overflow:hidden;
+}
+
+.modal-menu-item{
+    position:absolute;
+    display:block;
+}
+
 .tab-menu li.active, .tab-menu > li:hover {
     opacity: 1;
 }
