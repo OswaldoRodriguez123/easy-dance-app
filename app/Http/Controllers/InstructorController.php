@@ -33,13 +33,13 @@ class InstructorController extends BaseController {
 
         if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
 
-            return view('participante.instructor.principal')->with('instructor', Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+            return view('participante.instructor.principal')->with('instructores', Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
         }else{
 
              $academia = Academia::find(Auth::user()->academia_id);
              $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
 
-            return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructor]);
+            return view('participante.instructor.principal_alumno')->with([/*'instructor_reserva'*/'instructores' => $instructor]);
 
         }
 

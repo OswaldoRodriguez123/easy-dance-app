@@ -284,12 +284,12 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($instructor as $instructores)
-                                <?php $id = $instructores['id']; ?>
+                            @foreach ($instructores as $instructor)
+                                <?php $id = $instructor['id']; ?>
                                 <tr>
-                                    <td>{{$instructores['identificacion']}}</td>
-                                    <td>{{$instructores['sexo']}}</td>
-                                    <td>{{$instructores['nombre']}} {{$instructores['apellido']}} </td>
+                                    <td>{{$instructor['identificacion']}}</td>
+                                    <td>{{$instructor['sexo']}}</td>
+                                    <td>{{$instructor['nombre']}} {{$instructor['apellido']}} </td>
                                     <td class="text-center"><label class="label label-success f-13">Activo</label></td>
                                     <td class="text-center"><label class="label label-success f-13">Bien</label></td>
                                     <td class="text-center"> <i data-toggle="modal" href="#modalNivel" class="zmdi zmdi-filter-list f-20 p-r-10"></i> <i id = "<?= $id ?>" class="zmdi zmdi-delete f-20 sa-warning"></i></td>

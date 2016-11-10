@@ -284,30 +284,57 @@
                       </div>
                     </div>
 
-  <div class="modal fade" id="modalParticipantes" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="modalParticipantes" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+        </div>
+        <div class="modal-body">
+          <div class="text-center icon_a icon_a-participantes f-40" style="color:#2196f3;  margin-bottom: -20px;"><p class="f-18">Gestiona el tipo de participante que desees </p></div>
+          <ul id="sti-menu"  class="sti-menu">
+            <li class="menu_boton">
+              <a href="{{url('/')}}/participante/alumno"><h2 data-type="mText" class="sti-item">Alumno </h2><span data-type="icon" class="sti-icon sti-icon-alumno sti-item menu_boton"></span></a>
+            </li>
+            
+            <li class="menu_boton">
+              <a href="{{url('/')}}/participante/instructor"><h2 data-type="mText" class="sti-item" align="center">Instructor </h2><span data-type="icon" class="sti-icon sti-icon-instructores sti-item menu_boton"></span></a>
+            </li>
+
+            <li class="menu_boton">
+              <a href="{{url('/')}}/participante/visitante"><h2 data-type="mText" class="sti-item ">Visitante Presencial </h2><span data-type="icon" class="sti-icon sti-icon-visitantes sti-item menu_boton"></span></a>
+            </li>
+
+            <li class="menu_boton">
+              <a a href="{{url('/')}}/participante/familia"><h2 data-type="mText" class="sti-item">Familia </h2><span data-type="icon" class="sti-icon sti-icon-family sti-item menu_boton"></span></a>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<div class="modal fade" id="modalParticipantes" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 75%">
       <div class="modal-content">
         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
             <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
           </div>
-              <div role="tabpanel" class="tab-pane  animated active fadeInRight in" id="participantes">
-                    
-                <div class="text-center icon_a icon_a-participantes f-40" style="color:#2196f3;  margin-bottom: -20px;"><p class="f-18">Gestiona el tipo de participante que desees </p></div>
-                    <ul id="sti-menu"  class="sti-menu roww" style="padding-left: 0">
-                      <div class="responsive">
-                        <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/alumno"><h2 data-type="mText" class="sti-item">Alumno </h2><span data-type="icon" class="sti-icon sti-icon-alumno sti-item"></span></a></li>
-                              
-                        <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/instructor"><h2 data-type="mText" class="sti-item" align="center">Instructor </h2><span data-type="icon" class="sti-icon sti-icon-instructores sti-item"></span></a></li>
-                               
-                        <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/visitante"><h2 data-type="mText" class="sti-item ">Visitante Presencial </h2><span data-type="icon" class="sti-icon sti-icon-visitantes sti-item"></span></a></li>
-      
-                        <li data-hovercolor="#2196f3"><a a href="{{url('/')}}/participante/familia"><h2 data-type="mText" class="sti-item">Familia </h2><span data-type="icon" class="sti-icon sti-icon-family sti-item"></span></a></li>
-                      </div>
-                    </ul>
-                </div>
-        </div>
+            <div class="text-center icon_a icon_a-participantes f-40" style="color:#2196f3;  margin-bottom: -20px;"><p class="f-18">Gestiona el tipo de participante que desees </p></div>
+                <ul id="sti-menu"  class="sti-menu roww">
+                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/alumno"><h2 data-type="mText" class="sti-item">Alumno </h2><span data-type="icon" class="sti-icon sti-icon-alumno sti-item"></span></a></li>
+                          
+                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/instructor"><h2 data-type="mText" class="sti-item" align="center">Instructor </h2><span data-type="icon" class="sti-icon sti-icon-instructores sti-item"></span></a></li>
+                           
+                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/visitante"><h2 data-type="mText" class="sti-item ">Visitante Presencial </h2><span data-type="icon" class="sti-icon sti-icon-visitantes sti-item"></span></a></li>
+  
+                    <li data-hovercolor="#2196f3"><a a href="{{url('/')}}/participante/familia"><h2 data-type="mText" class="sti-item">Familia </h2><span data-type="icon" class="sti-icon sti-icon-family sti-item"></span></a></li>
+                </ul>
+          </div>
       </div>
-  </div>
+  </div>-->
 
   <div class="modal fade" id="modalAgendar" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 75%">
@@ -379,8 +406,7 @@
                         
                         <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Guía de contactos </h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a></li>
                         <li data-hovercolor="#f44336"><a data-toggle="modal" href="{{url('/')}}/reportes/estatus_alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a></li>
-
-                      </ul>
+                    </ul>
         </div>                 
       </div>
     </div>

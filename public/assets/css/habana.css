@@ -205,8 +205,11 @@ button.btn-blanco:hover{
     #modalAgendar li { width: 50%; }
     #modalEspeciales li { width: 50%; }
     #modalReportes li { width: 50%; }
-}*/
+}
 
+.menu_boton{
+    display: block;
+}*/
 
 .login-content {
     text-align: center;
