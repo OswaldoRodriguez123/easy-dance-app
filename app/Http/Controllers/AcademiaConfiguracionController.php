@@ -334,13 +334,13 @@ class AcademiaConfiguracionController extends BaseController {
         //            ->get();
 
         $academiaGrupales= ConfigClasesGrupales::where('academia_id',Auth::user()->academia_id)
-                   ->get();
+                   ->count();
         
         $academiaServicios= ConfigServicios::where('academia_id',Auth::user()->academia_id)
-                   ->get();
+                   ->count();
 
         $clasepersonalizada= ClasePersonalizada::where('academia_id',Auth::user()->academia_id)
-                   ->get();
+                   ->count();
 
 
         // $collection = collect($academia[0]);
@@ -423,16 +423,17 @@ class AcademiaConfiguracionController extends BaseController {
         $porcentajeAcademia=0;
         $campos_ocupados=0;
 
-         $academias_datos = Academia::where('id',Auth::user()->id)->get();
-         $info_de_academias=DB::getSchemaBuilder()->getColumnListing('academias');
+        $academias_datos = Academia::find(Auth::user()->academia_id);
 
-         for ($i=0; $i < count($info_de_academias); $i++) {
+        $info_de_academias=DB::getSchemaBuilder()->getColumnListing('academias');
+
+        for ($i=0; $i < count($info_de_academias); $i++) {
 
              for ($j=0; $j < count($campos_array); $j++) { 
 
                  if($info_de_academias[$i]==$campos_array[$j]){
 
-                    if($academias_datos[0]['attributes'][$info_de_academias[$i]])
+                    if($academias_datos['attributes'][$info_de_academias[$i]])
                     {
                         $campos_ocupados++;
                     }
@@ -458,7 +459,7 @@ class AcademiaConfiguracionController extends BaseController {
              $porcentajeServicios=100;
         }else{
              $porcentajeServicios=0;
-        } 
+        }
         
         return view('configuracion.index',compact('porcentajeGrupales','porcentajeServicios','porcentajePersonalizado','porcentajeAcademia'));                  
     }

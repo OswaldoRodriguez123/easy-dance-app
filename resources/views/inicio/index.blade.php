@@ -260,7 +260,7 @@
 
     $(document).ready(function(){
     
-    if(!"{{$academia->nombre}}")
+    if(!"{{$academia->pais_id}}")
 
     {
       setTimeout(function(){ 
