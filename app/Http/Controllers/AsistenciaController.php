@@ -131,7 +131,21 @@ class AsistenciaController extends BaseController
 
       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-      return view('asistencia.generar')->with(['alumnosacademia' => $alumnos, 'instructores' => $instructor]);
+      $alumnoc = DB::table('alumnos')
+        ->join('users', 'users.usuario_id', '=', 'alumnos.id')
+        ->select('alumnos.id as id')
+        ->where('users.academia_id','=', Auth::user()->academia_id)
+        ->where('alumnos.deleted_at', '=', null)
+        ->where('users.usuario_tipo', '=', 2)
+        ->where('users.confirmation_token', '!=', null)
+      ->get();
+
+      $collection=collect($alumnoc);
+      $grouped = $collection->groupBy('id');     
+      $activacion = $grouped->toArray();
+
+
+      return view('asistencia.generar')->with(['alumnosacademia' => $alumnos, 'instructores' => $instructor, 'activacion' => $activacion]);
 
     }
 

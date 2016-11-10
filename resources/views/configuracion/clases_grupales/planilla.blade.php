@@ -191,17 +191,6 @@
                                  <div class="form-group fg-line">
                                     <div style="text-align: center"><label for="" >Estado de Alumno</label><hr></div>
 
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
                                     <div class="form-group fg-line">
                                     <label for="costo">Estado de Inactividad</label>
                                     <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_roja" data-mask="00000000" placeholder="Ej. 5" value="{{$clasegrupal->asistencia_rojo}}">
@@ -222,20 +211,8 @@
                                       </span>
                                   </div>
 
-                                  <div class="clearfix p-b-35"></div>
-                                  <div class="clearfix p-b-35"></div>
-                                      
-                                  <div class="clearfix p-b-35"></div>
-
-                                  <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
-
-                            
-                              </div>
-                          </div>
-                          </div>
-                          </div>
-                       </div>
-                       </div>
+                             </div>
+                             </div>
                                <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
                               
 
@@ -332,7 +309,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="edad">Condiciones y Normativas</label>
-                                    <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="250 Caracteres"></textarea>
+                                    <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="2500 Caracteres"></textarea>
                                  </div>
                                  <div class="has-error" id="error-condiciones">
                                       <span >
@@ -500,6 +477,79 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalAvanzada-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_avanzado_clase_grupal" id="edit_avanzado_clase_grupal"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                           
+                              <div class="col-sm-12">
+                                    <label for="id" id="id-porcentaje_retraso">Porcentaje de retraso de pago</label> 
+                                           <div class="fg-line"> 
+                                            
+                                            <input type="text" class="form-control input-sm input-mask" name="porcentaje_retraso" id="porcentaje_retraso" data-mask="00" placeholder="Ej. 20" value="{{$clasegrupal->porcentaje_retraso}}">
+
+                                            </div>
+                                        <div class="has-error" id="error-porcentaje_retraso">
+                                          <span >
+                                              <small id="error-porcentaje_retraso_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+                                    
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                    <label for="id" id="id-tiempo_tolerancia">Tiempo de Tolerancia</label>
+                                           <div class="fg-line"> 
+                                            <input type="text" class="form-control input-sm input-mask" name="tiempo_tolerancia" id="tiempo_tolerancia" data-mask="00" placeholder="Ej. 20" value="{{$clasegrupal->tiempo_tolerancia}}">
+                                            </div>
+                                        <div class="has-error" id="error-tiempo_tolerancia">
+                                          <span >
+                                              <small id="error-tiempo_tolerancia_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+                                    
+                                </div>
+
+
+                               <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_avanzado_clase_grupal" data-update="avanzado" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -586,16 +636,6 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad"><span>{{ number_format($clasegrupal->costo_mensualidad, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalasistencia-ClaseGrupal">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-asistencia_rojas" class="zmdi {{ empty($clasegrupal->asistencia_rojo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
-                               <span class="f-14"> Estatus de Alumno </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-asistencia_rojas">{{$clasegrupal->asistencia_rojo}}</span> / 
-                             <span id="clasegrupal-asistencia_amarillas">{{$clasegrupal->asistencia_amarilla}}</span>
-                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDescripcion-ClaseGrupal">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($clasegrupal->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -632,6 +672,24 @@
                              @else
                                   No </span>
                              @endif</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalasistencia-ClaseGrupal">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-asistencia_rojas" class="zmdi {{ empty($clasegrupal->asistencia_rojo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-label-alt-outline f-22"></i> </span>
+                               <span class="f-14"> Estatus de Alumno </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-asistencia_rojas">{{$clasegrupal->asistencia_rojo}}</span> / 
+                             <span id="clasegrupal-asistencia_amarillas">{{$clasegrupal->asistencia_amarilla}}</span>
+                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalAvanzada-ClaseGrupal">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-porcentaje_retraso" class="zmdi {{ empty($clasegrupal->porcentaje_retraso) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-item-1 f-22"></i> </span>
+                               <span class="f-14"> Opciones Avanzadas </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-avanzado"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 
                            </table>

@@ -233,6 +233,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/condiciones', 'ConfigClasesGrupalesController@updateCondiciones');
 			Route::put('configuracion/clases-grupales/update/imagen', 'ConfigClasesGrupalesController@updateImagen');
 			Route::put('configuracion/clases-grupales/update/inasistencias','ConfigClasesGrupalesController@updateAsistencias');
+			Route::put('configuracion/clases-grupales/update/avanzado','ConfigClasesGrupalesController@updateAvanzado');
 
 			//CLASES PERSONALIZADAS
 

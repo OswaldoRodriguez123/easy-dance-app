@@ -407,6 +407,55 @@ class ConfigClasesGrupalesController extends BaseController {
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function updateAvanzado(Request $request){
+
+    $rules = [
+
+        'porcentaje_retraso' => 'numeric',
+        'tiempo_tolerancia' => 'numeric',
+    ];
+
+    $messages = [
+
+        'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
+        'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $clasegrupal = ConfigClasesGrupales::find($request->id);
+
+        $porcentaje_retraso = $request->porcentaje_retraso;
+        $tiempo_tolerancia = $request->tiempo_tolerancia;
+
+        if(trim($porcentaje_retraso) == ''){
+            $porcentaje_retraso = 0;
+        }
+
+        if(trim($tiempo_tolerancia) == ''){
+            $tiempo_tolerancia = 0;
+        }
+
+        $clasegrupal->porcentaje_retraso = $porcentaje_retraso;
+        $clasegrupal->tiempo_tolerancia = $tiempo_tolerancia;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+        // return redirect("alumno/edit/{$request->id}");
+    }
+
     public function destroy($id)
     {
 

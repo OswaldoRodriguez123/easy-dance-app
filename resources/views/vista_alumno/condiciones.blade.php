@@ -127,7 +127,7 @@
 
                                       <p>Usted acepta pagar por todo el Contenido de Tu clase de baile que no se obtenga por medio de un código de promoción o que la Compañía no le haya ofrecido en forma gratuita. </p>
 
-                                      <p>Usted deberá realizar su cancelación 15/ o último según corresponda su fecha de pago, en el caso de no realizarla en el tiempo establecido, la administración brindará 6 días de tolerancia, en caso de superar los días de tolerancia, es decir, que arribe al día quinto (5) día sin haber ejecutado el pago, el sistema administrativo de manera automática generará una mora del 10%.</p>
+                                      <p>Usted deberá realizar su cancelación 15/ o último según corresponda su fecha de pago, en el caso de no realizarla en el tiempo establecido, la administración brindará 5 días de tolerancia, en caso de superar los días de tolerancia, es decir, que arribe al día quinto (5) día sin haber ejecutado el pago, el sistema administrativo de manera automática generará una mora del 10%.</p>
 
                                       <p>El participante entiende que los propietarios / directores, empleados y profesores de la academia  "Tu clase de baile" tienen el derecho de negar la entrada al salón de clases en el caso que se encuentre retrasado por más de una semana en concepto de su mensualidad.</p>
 

@@ -129,49 +129,6 @@
                                   </div>
                                </div>
 
-                               <div class="col-sm-12">
-                               <label for="" id="">Estatus de Alumno</label>
-                               <br><hr>
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Riesgo de Ausencia*</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno esta en riesgo de ausencia" title="" data-original-title="Ayuda"></i>
-                                        
-                                      <div class="input-group">
-                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
-                                        <div class="fg-line">
-                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_amarillas" id="asistencia_amarillas" data-mask="00000000" placeholder="Ej. 2">
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-asistencia_amarillas">
-                                      <span >
-                                          <small id="error-asistencia_amarillas_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Estado de Inactividad*</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno pase a tener un status de inactivo" title="" data-original-title="Ayuda"></i>
-                                        
-                                      <div class="input-group">
-                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
-                                        <div class="fg-line">
-                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_rojas" data-mask="00000000" placeholder="Ej. 5">
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-asistencia_rojas">
-                                      <span >
-                                          <small id="error-asistencia_rojas_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                                <br><hr>
-                               </div>
-
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
@@ -180,7 +137,7 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres"></textarea>
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="2500 Caracteres"></textarea>
                                       </div>
                                     <div class="has-error" id="error-condiciones">
                                       <span >
@@ -245,6 +202,90 @@
                                             </span>
                                         </div>
                                      </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+
+                              <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Estatus de Alumno</label>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEstatus" aria-expanded="false" aria-controls="collapseEstatus">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseEstatus" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+
+
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Riesgo de Ausencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno esta en riesgo de ausencia" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_amarillas" id="asistencia_amarillas" data-mask="00000000" placeholder="Ej. 2">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-asistencia_amarillas">
+                                      <span >
+                                          <small id="error-asistencia_amarillas_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Estado de Inactividad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno pase a tener un status de inactivo" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_rojas" data-mask="00000000" placeholder="Ej. 5">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-asistencia_rojas">
+                                      <span >
+                                          <small id="error-asistencia_rojas_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                                           <div class="clearfix p-b-20"></div>
+
+
+                            <div class="clearfix p-b-35"></div>
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseEstatus')" ></i></div>
+                            
+                            <div class="clearfix p-b-35"></div>
+                               <hr></hr>
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
 
                                <div class="clearfix p-b-35"></div>
 

@@ -40,6 +40,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="confirmacion" data-type="numeric"></th>
                                     <th class="text-center" data-column-id="descripcion">Imagen</th>
                                     <th class="text-center" data-column-id="costo" data-type="numeric">Nombre</th>
                                     <th class="text-center" data-column-id="costo" data-type="numeric">Identificacion</th>
@@ -50,6 +51,8 @@
                             @foreach ($alumnosacademia as $alumno)
                                 <?php $id = $alumno->id; ?>
                                 <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "alumno">
+
+                                    <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
                                         @if($alumno->imagen)
                                         <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
@@ -70,6 +73,7 @@
                             @foreach ($instructores as $alumno)
                                 <?php $id = $alumno->id; ?>
                                 <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "insctructor">
+                                    <td class="text-center previa"></td>
                                     <td class="text-center previa">
                                         <!-- if($alumno['imagen'])
                                             <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/instructor/{{$alumno['imagen']}}" alt="">
