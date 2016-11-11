@@ -27,51 +27,54 @@
 
                         @if(Auth::check())
 
-                            <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 55%">
-                                <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
-                                   <span class="f-20 text-header f-700">INICIO</span>
-                                </a>
-                            </li>
+                            @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
-                            <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 50%">
-                                <a href="#" id="menuTopConfig">
-                                   <span class="f-20 f-700 text-header">HERRAMIENTAS</span>
-                                </a>
-                                <ul class="dropdown-menu dm-icon pull-right">
-                                    <li class="hidden-xs">
-                                        <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
-                                    </li>
+                                <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 55%">
+                                    <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
+                                       <span class="f-20 text-header f-700">INICIO</span>
+                                    </a>
+                                </li>
 
-                                    <li class="hidden-xs">
-                                        <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text f-16"></i> Productos</a>
-                                    </li>
+                                <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 50%">
+                                    <a href="#" id="menuTopConfig">
+                                       <span class="f-20 f-700 text-header">HERRAMIENTAS</span>
+                                    </a>
+                                    <ul class="dropdown-menu dm-icon pull-right">
+                                        <li class="hidden-xs">
+                                            <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
+                                        </li>
 
-                                    <li class="hidden-xs">
-                                        <a href="{{url('staff')}}"><i class="zmdi zmdi-city f-16"></i> Staff</a>
-                                    </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text f-16"></i> Productos</a>
+                                        </li>
 
-                                    <li class="hidden-xs">
-                                        <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-city f-16"></i> Administradores</a>
-                                    </li>
-                                </ul>
-                            </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('staff')}}"><i class="zmdi zmdi-city f-16"></i> Staff</a>
+                                        </li>
 
-                             <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 45%">
-                                <a href="#" id="menuTopConfig">
-                                   <span class="f-20 f-700 text-header">ACCIONES</span>
-                                </a>
-                                <ul class="dropdown-menu dm-icon pull-right">
-                                    <li class="hidden-xs">
-                                        <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
-                                    </li>
-                                    <li class="hidden-xs">
-                                        <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
-                                    </li>
-                                    <li class="hidden-xs">
-                                        <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Generar Incidencias</a>
-                                    </li>
-                                </ul>
-                            </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-city f-16"></i> Administradores</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                 <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 45%">
+                                    <a href="#" id="menuTopConfig">
+                                       <span class="f-20 f-700 text-header">ACCIONES</span>
+                                    </a>
+                                    <ul class="dropdown-menu dm-icon pull-right">
+                                        <li class="hidden-xs">
+                                            <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
+                                        </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
+                                        </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Generar Incidencias</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
 
                       
 
