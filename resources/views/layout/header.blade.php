@@ -24,66 +24,122 @@
 
                 <li class="pull-right m-r-5">
                     <ul class="top-menu">
-                        @if(Auth::check() && Auth::user()->usuario_tipo == 2)
-                        <li class="dropdown">
-                            <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
-                                <i class="tm-icon zmdi zmdi-notifications"></i>
-                                <i class="tmn-counts" id="numero_actual">{{$sin_ver}}</i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg pull-right">
-                                @if(!empty($notificaciones))
-                                    <div class="listview" id="notifications">
-                                        <div class="lv-header">Notificaciones
-                                            <ul class="actions">
-                                                <li class="dropdown">
-                                                    <a href="#" data-clear="notification" id="limpiar_notificaciones">
-                                                        <i class="zmdi zmdi-check-all"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="lv-body">
-                                            @foreach( $notificaciones as $notificacion)
-                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
-                                                    <div class="media">
-                                                        <div class="pull-left">
-                                                            <!-- if($notificacion->imagen) -->
-                                                                <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
-                                                           <!--  else
-                                                                <img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">
-                                                            endif -->
-                                                        </div>
-                                                        <div class="media-body">
-                                                            @if ($notificacion['tipo_evento'] == 1)
-                                                                <div class="lv-title">Nueva Clase Grupal</div>
-                                                                <small class="lv-small">{{$notificacion['mensaje']}}</small>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                        <!-- <a class="lv-footer" href="#">View Previous</a> -->
-                                    </div>
-                                @else
-                                    <div class="listview empty" id="notifications">
-                                        <div class="lv-header">Notificaciones
-                                            <ul class="actions">
-                                                <li class="dropdown"></li>
-                                            </ul>
-                                        </div>
-                                        <div class="lv-body"></div>
-                                        <!-- <a class="lv-footer" href="#">View Previous</a> -->
-                                    </div>
-                                @endif
-                            </div>
-                        </li>
-                        @endif
 
                         @if(Auth::check())
+
+                            <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 55%">
+                                <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
+                                   <span class="f-20 text-header f-700">INICIO</span>
+                                </a>
+                            </li>
+
+                            <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 50%">
+                                <a href="#" id="menuTopConfig">
+                                   <span class="f-20 f-700 text-header">HERRAMIENTAS</span>
+                                </a>
+                                <ul class="dropdown-menu dm-icon pull-right">
+                                    <li class="hidden-xs">
+                                        <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
+                                    </li>
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text f-16"></i> Productos</a>
+                                    </li>
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('staff')}}"><i class="zmdi zmdi-city f-16"></i> Staff</a>
+                                    </li>
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-city f-16"></i> Administradores</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                             <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 45%">
+                                <a href="#" id="menuTopConfig">
+                                   <span class="f-20 f-700 text-header">ACCIONES</span>
+                                </a>
+                                <ul class="dropdown-menu dm-icon pull-right">
+                                    <li class="hidden-xs">
+                                        <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
+                                    </li>
+                                    <li class="hidden-xs">
+                                        <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
+                                    </li>
+                                    <li class="hidden-xs">
+                                        <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Generar Incidencias</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                      
+
+
+                            <li class="dropdown">
+                                <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
+                                    <i class="tm-icon zmdi zmdi-notifications"></i>
+                                    <i class="tmn-counts" id="numero_actual">{{$sin_ver}}</i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-lg pull-right">
+                                    @if(!empty($notificaciones))
+                                        <div class="listview" id="notifications">
+                                            <div class="lv-header">Notificaciones
+                                                <ul class="actions">
+                                                    <li class="dropdown">
+                                                        <a href="#" data-clear="notification" id="limpiar_notificaciones">
+                                                            <i class="zmdi zmdi-check-all"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="lv-body">
+                                                @foreach( $notificaciones as $notificacion)
+                                                    @if ($notificacion['tipo_evento'] == 1)
+                                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
+                                                    @else
+
+                                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/sugerencias/detalle/{{$notificacion['evento_id']}}">
+            
+                                                    @endif
+                                                        <div class="media">
+                                                            <div class="pull-left">
+                                                                <!-- if($notificacion->imagen) -->
+                                                                    <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
+                                                               <!--  else
+                                                                    <img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">
+                                                                endif -->
+                                                            </div>
+                                                            <div class="media-body">
+                                                                @if ($notificacion['tipo_evento'] == 1)
+                                                                    <div class="lv-title">Nueva Clase Grupal</div>
+                                                                @else
+                                                                    <div class="lv-title">Nueva Sugerencia</div>
+                                                                @endif
+                                                                <small class="lv-small">{{$notificacion['mensaje']}}</small>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                            <!-- <a class="lv-footer" href="#">View Previous</a> -->
+                                        </div>
+                                    @else
+                                        <div class="listview empty" id="notifications">
+                                            <div class="lv-header">Notificaciones
+                                                <ul class="actions">
+                                                    <li class="dropdown"></li>
+                                                </ul>
+                                            </div>
+                                            <div class="lv-body"></div>
+                                            <!-- <a class="lv-footer" href="#">View Previous</a> -->
+                                        </div>
+                                    @endif
+                                </div>
+                            </li>
               
                             <li class="dropdown" data-original-title="" data-toggle="popover" data-placement="bottom" title="" type="button" data-animation="fadeInLeft,fadeOutLeft,600">
-                            <a data-toggle="dropdown" href="#" id="menuTopConfig" style="color:white">
+                            <a href="#" style="color:white">
 
                                     @if(Auth::user()->imagen)
                                         <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  
@@ -119,36 +175,44 @@
 
                                 @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
-                                    <li class="hidden-xs">
+                                    <!-- <li class="hidden-xs">
                                         <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
                                     </li>
 
-                                     {{-- <li class="hidden-xs">
+                                     <li class="hidden-xs">
                                         <a href=""><i class="zmdi zmdi-help"></i> Ayuda</a>
-                                    </li> --}}
+                                    </li> -->
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
                                     </li>
-                                    <li class="hidden-xs">
+                                    <!-- <li class="hidden-xs">
                                         <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
-                                    </li>
-                                    {{-- <li class="hidden-xs">
+                                    </li> -->
+                                   <!--  <li class="hidden-xs">
                                         <a href="{{url('configuracion/coreografias')}}"><i class="icon_d-coreografia f-16"></i>&nbsp;&nbsp;&nbsp;&nbsp; Coreografías</a>
-                                    </li> --}}
-
+                                    </li> -->
+<!-- 
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text f-16"></i> Productos</a>
                                     </li>
 
                                     <li class="hidden-xs">
                                         <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
-                                    </li>
+                                    </li> -->
                                 @endif 
 
-                                @if(Auth::user()->usuario_tipo == 1)
+                                <!-- if(Auth::user()->usuario_tipo == 1)
         
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-city f-16"></i> Administradores</a>
+                                    </li>
+
+                                endif -->
+
+                                @if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4)
+        
+                                    <li class="hidden-xs">
+                                        <a href="{{url('sugerencias/generar')}}"><i class="zmdi zmdi-email f-16"></i> Buzón de Sugerencia</a>
                                     </li>
                                 @endif
 
@@ -163,9 +227,9 @@
 
                         @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
-                        <li data-content="Asistencia" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
-                                <a class="tm-config" href="{{url('/')}}/asistencia/generar" target="_blank"><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
-                        </li>  
+                            <li data-content="Asistencia" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
+                                    <a class="tm-config" href="{{url('/')}}/asistencia/generar" target="_blank"><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>
+                            </li>  
 
                         @endif
 
@@ -612,7 +676,6 @@
             </ul>-->
 
             </ul>
-
 
             <!-- Top Search Content -->
             <div id="top-search-wrap">

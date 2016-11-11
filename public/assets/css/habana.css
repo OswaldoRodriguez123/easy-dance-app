@@ -1781,4 +1781,17 @@ align-items: center;
     box-shadow: none !IMPORTANT;
 }
 
+.text-header{
+    color: #D3D3D3;
+}
+
+.text-header:hover{
+    color: #fff;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; // remove the gap so it doesn't close
+ }
+
 

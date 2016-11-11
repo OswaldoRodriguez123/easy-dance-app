@@ -129,7 +129,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		//RUTAS QUE SOLAMENTE PODRA TENER ACCESO EL ROL ADMIN
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
-
+			
 			//EXAMENES
 
 			Route::get('especiales/examenes', 'ExamenController@principal');
@@ -751,12 +751,42 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/multihorario/update/horario', 'MultihorarioController@updateHorario');
 			Route::put('agendar/multihorario/update/estudio', 'MultihorarioController@updateEstudio');
 
+			//STAFF
+
+
+			Route::get('staff', 'StaffController@principal');
+			Route::post('staff/agregar', 'StaffController@store');
+			Route::get('staff/agregar', 'StaffController@create');
+			Route::delete('staff/eliminar/{id}', 'StaffController@destroy');
+			Route::get('staff/detalle/{id}', 'StaffController@edit');
+			Route::get('staff/operaciones/{id}', 'StaffController@operar');
+			Route::put('staff/update/identificacion','StaffController@updateID');
+			Route::put('staff/update/nombre','StaffController@updateNombre');
+			Route::put('staff/update/fecha_nacimiento','StaffController@updateFecha');
+			Route::put('staff/update/sexo','StaffController@updateSexo');
+			Route::put('staff/update/telefono','StaffController@updateTelefono');
+			Route::put('staff/update/direccion','StaffController@updateDireccion');
+			Route::put('staff/update/cargo','StaffController@updateCargo');
+			Route::put('staff/update/horario','StaffController@updateHorario');
+
+			//INCIDENCIAS
+
+			Route::get('incidencias/generar/{id}', 'IncidenciaController@create');
+			Route::post('incidencias/generar', 'IncidenciaController@store');
+			Route::get('incidencias/detalle/{id}', 'SugerenciaController@planilla');
+
 		});// EN MIDDLEWARE RECEPCIONISTA
 		/*--------------------------------------------------------
 		MIDDLEWARE ALUMNO
 		//SOLO RUTAS A LAS QUE TENDRA ACCESO EL PERFIL ALUMNO
 		--------------------------------------------------------*/
 		Route::group(['middleware' => ['alumno']], function() {
+
+			//SUGERENCIAS
+
+			Route::get('sugerencias/generar', 'SugerenciaController@create');
+			Route::post('sugerencias/generar', 'SugerenciaController@store');
+			Route::get('sugerencias/detalle/{id}', 'SugerenciaController@planilla');
 
 		    // PRINCIPAL
 		    

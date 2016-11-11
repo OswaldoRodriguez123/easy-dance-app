@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-      
-      @if(Auth::check())
-
-        <script>var usuario_tipo = {{ Auth::user()->usuario_tipo or 'undefined' }}</script>
-      @else
-
-        <script>var usuario_tipo = 0 </script>
-
-      @endif
 
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -547,14 +538,16 @@
               img = '<img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">';
             }
 
-            link = '<a class="lv-item notificacion->visto) ? "bgm_notificacion_sin_ver" : "" }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+notificaciones[i]["evento_id"]+'">';
-
             if(notificaciones[i]["tipo_evento"] == 1){
+              link = '<a class="lv-item notificacion->visto) ? "bgm_notificacion_sin_ver" : "" }}" href="{{url('/')}}/agendar/clases-grupales/progreso/'+notificaciones[i]["evento_id"]+'">';
               tipo_de_notificacion = '<div class="lv-title">Nueva Clase Grupal</div>';
-              mensaje = '<small class="lv-small">'+notificaciones[i]["mensaje"]+'</small>';
+              
             }else{
-
+              link = '<a class="lv-item notificacion->visto) ? "bgm_notificacion_sin_ver" : "" }}" href="{{url('/')}}/sugerencias/detalle/'+notificaciones[i]["evento_id"]+'">';
+              tipo_de_notificacion = '<div class="lv-title">Nueva Sugerencia</div>';
             }
+
+            mensaje = '<small class="lv-small">'+notificaciones[i]["mensaje"]+'</small>';
             seccion_notifcacion = link+etiqueta_de_contenido+etiqueta_de_img+img+'</div>'+etiqueta_de_cuerpo+tipo_de_notificacion+mensaje+'</div>'+'</div>'+'</a>';
             $(".lv-body").append(seccion_notifcacion);
           }
