@@ -701,7 +701,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			// ASISTENCIA
 
 			Route::get('/asistencia/generar', 'AsistenciaController@generarAsistencia');
-			Route::get('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales_alumno');
+			Route::post('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales_alumno');
 			Route::get('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales');
 			Route::post('asistencia/agregar', 'AsistenciaController@store');
 			Route::post('asistencia/agregar/permitir', 'AsistenciaController@storePermitir');

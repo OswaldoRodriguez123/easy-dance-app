@@ -264,7 +264,7 @@ class AsistenciaController extends BaseController
 
     }
 
-    public function consulta_clase_grupales_alumno($id_alumno)
+    public function consulta_clase_grupales_alumno(Request $request)
     {
     	
         $clases_grupales= DB::table('clases_grupales')
@@ -292,7 +292,7 @@ class AsistenciaController extends BaseController
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
-                ->where('inscripcion_clase_grupal.alumno_id', '=', $id_alumno)
+                ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
           ->get();
 
@@ -404,7 +404,7 @@ class AsistenciaController extends BaseController
         
     }
 
-    $deuda=$this->deuda($id_alumno);
+    $deuda=$this->deuda($request->id);
 
 		return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 'inscripciones' => $array, 200]);
 

@@ -509,7 +509,7 @@
         $.ajax({
           url: route,
           headers: {'X-CSRF-TOKEN': token},
-          type: 'GET',
+          type: 'POST',
           dataType: 'json',
           data: "&id="+id_alumno,
           success:function(respuesta){
