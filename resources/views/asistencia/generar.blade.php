@@ -111,6 +111,12 @@
             
     <script type="text/javascript">
 
+      route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
+      route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
+      route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
+      route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
+      route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
+
         $(document).ready(function(){
 
             t=$('#tablelistar').DataTable({
@@ -501,10 +507,11 @@
         var route = route_consultar_cg;
         var token = $('input:hidden[name=_token]').val();
         $.ajax({
-          url: route+"/"+id_alumno,
+          url: route,
           headers: {'X-CSRF-TOKEN': token},
           type: 'GET',
           dataType: 'json',
+          data: "&id="+id_alumno,
           success:function(respuesta){
             $.each(respuesta.inscripciones, function (index, array) { 
               if(array.diferencia > 1){

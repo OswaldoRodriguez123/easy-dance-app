@@ -467,12 +467,7 @@
 
 		
 		<script> 
-
-      route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
-      route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
-      route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
-      route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
-      route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
+    
       route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
 
       var ver = "{{{ $sin_ver or '0' }}}";
