@@ -168,7 +168,7 @@ class AsistenciaController extends BaseController
 
     }
 
-    public function consulta_clase_grupales()
+    public function consulta_clase_grupales(Request $request)
     {
       //$ClaseGrupal=ClaseGrupal::all();
 
@@ -200,6 +200,9 @@ class AsistenciaController extends BaseController
       $arrayClaseGrupal=array();
 
       $fechaActual = Carbon::now();
+      $geoip = new GeoIP();
+      $geoip->setIp($request->ip());
+      $fechaActual->tz = $geoip->getTimezone();
       $diaActual = $fechaActual->dayOfWeek;
 
       $collection = collect($claseGrupal);
@@ -346,6 +349,9 @@ class AsistenciaController extends BaseController
 	    $arrayClases=array();
 
       $fechaActual = Carbon::now();
+      $geoip = new GeoIP();
+      $geoip->setIp($request->ip());
+      $fechaActual->tz = $geoip->getTimezone();
       $diaActual = $fechaActual->dayOfWeek;
 
       $collection = collect($clases_grupales);
