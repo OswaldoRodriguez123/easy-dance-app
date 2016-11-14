@@ -29,15 +29,15 @@
 
                             @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
-                                <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 55%">
+                                <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 26px; right: 60%">
                                     <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
-                                       <span class="f-20 text-header f-700">INICIO</span>
+                                       <span class="f-15 text-header f-700">INICIO</span>
                                     </a>
                                 </li>
 
-                                <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 50%">
-                                    <a href="#" id="menuTopConfig">
-                                       <span class="f-20 f-700 text-header">HERRAMIENTAS</span>
+                                <li class="dropdown" style="margin-top: 26px; right: 55%">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                       <span class="f-15 f-700 text-header">HERRAMIENTAS</span>
                                     </a>
                                     <ul class="dropdown-menu dm-icon pull-right">
                                         <li class="hidden-xs">
@@ -58,9 +58,9 @@
                                     </ul>
                                 </li>
 
-                                 <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 20px; right: 45%">
-                                    <a href="#" id="menuTopConfig">
-                                       <span class="f-20 f-700 text-header">ACCIONES</span>
+                                 <li class="dropdown" style="margin-top: 26px; right: 50%">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                       <span class="f-15 f-700 text-header">ACCIONES</span>
                                     </a>
                                     <ul class="dropdown-menu dm-icon pull-right">
                                         <li class="hidden-xs">
@@ -70,10 +70,12 @@
                                             <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
                                         </li>
                                         <li class="hidden-xs">
-                                            <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Generar Incidencias</a>
+                                            <a href="{{url('incidencias/generar')}}"><i class="zmdi zmdi-check f-16"></i> Generar Incidencias</a>
                                         </li>
                                     </ul>
                                 </li>
+
+
                             @endif
 
                       
@@ -141,8 +143,8 @@
                                 </div>
                             </li>
               
-                            <li class="dropdown" data-original-title="" data-toggle="popover" data-placement="bottom" title="" type="button" data-animation="fadeInLeft,fadeOutLeft,600">
-                            <a href="#" style="color:white">
+                            <li class="dropdown">
+                            <a href="#" style="color:white" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
 
                                     @if(Auth::user()->imagen)
                                         <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  

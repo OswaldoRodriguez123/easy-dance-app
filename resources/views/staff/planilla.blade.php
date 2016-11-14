@@ -377,69 +377,6 @@
                 </div>
             </div>
 
-             <div class="modal fade" id="modalHorario-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Staff<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_horario_alumno" id="edit_horario_alumno"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="telefono">Hora de Inicio</label>
-                                    <input type="text" class="form-control time-picker input-sm" name="hora_inicio" id="hora_inicio" placeholder="Ej. 00:00">
-                                 </div>
-                                  <div class="has-error" id="error-hora_inicio">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                                 <div class="form-group fg-line">
-                                    <label for="telefono">Hora Final</label>
-                                    <input type="text" class="form-control time-picker input-sm" name="hora_final" id="hora_final" placeholder="Ej. 00:00">
-                                 </div>                                 
-                                 <div class="has-error" id="error-hora_final">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
-
-
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-                              
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_horario_alumno" data-update="horario" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
             <div class="modal fade" id="modalCargo-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -490,6 +427,142 @@
                               <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cargo_alumno" data-update="cargo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalMultihorario-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Staff<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_multihorario" id="form_multihorario"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                           <div class="col-sm-12">
+                           <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                    <label for="fecha_inicio">Día de semana</label>
+                                    <div class="select">
+                                          <select class="form-control" id="dia_de_semana_id" name="dia_de_semana_id">
+                                          @foreach ( $dias_de_semana as $dia )
+                                          <option value = "{{ $dia->id}}">{{ $dia->nombre }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+                                    </div>
+                                    <div class="has-error" id="error-dia_de_semana_id">
+                                      <span >
+                                          <small id="error-dia_de_semana_id_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                                <div class="clearfix p-b-15"></div>
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="telefono">Hora de Inicio</label>
+                                    <input type="text" class="form-control time-picker input-sm" name="hora_inicio" id="hora_inicio" placeholder="Ej. 00:00">
+                                 </div>
+                                  <div class="has-error" id="error-hora_inicio">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+
+                                   <div class="clearfix p-b-15"></div>
+
+                                 <div class="form-group fg-line">
+                                    <label for="telefono">Hora Final</label>
+                                    <input type="text" class="form-control time-picker input-sm" name="hora_final" id="hora_final" placeholder="Ej. 00:00">
+                                 </div>                                 
+                                 <div class="has-error" id="error-hora_final">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               
+
+                              <div class="card-header text-left">
+                              <div class="clearfix p-b-15"></div>
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" id="add" name="add" >Agregar Linea</button>
+                              </div>
+
+                             <div class="clearfix p-b-15"></div>
+
+                               <div class="table-responsive row">
+                                   <div class="col-md-12">
+                                    <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                                    <thead>
+                                        <tr>
+                                          <th class="text-center" data-column-id="nombre" data-order="desc">Día</th>
+                                          <th class="text-center" data-column-id="estatu_c" data-order="desc">Hora Inicio</th>
+                                          <th class="text-center" data-column-id="estatu_e" data-order="desc">Hora Final</th>
+                                          <th class="text-center" data-column-id="operacion" data-order="desc" >Acción</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+
+                                      @foreach($horarios as $horario)
+                                      
+                                        <tr id="{{$horario['id']}}" class="odd seleccion text-center" role="row">
+                                          <td class="text-center">
+                                            {{$horario->dia}}
+                                          </td>
+                                          <td class="text-center">
+                                            {{$horario->hora_inicio}}
+                                          </td>
+                                          <td class="text-center">
+                                            {{$horario->hora_final}}
+                                          </td>
+
+                                          <td class="text-center" width="50">
+                                          <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                          </td>
+                                        </tr>
+
+                                      @endforeach                          
+                                                                   
+                                    </tbody>
+                                </table>
+                                 </div>
+                                </div>
+                                </div>
+
+
+                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 dismiss" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                            
                         </div></form>
                     </div>
                 </div>
@@ -653,13 +726,13 @@
                              </td>
                              <td class="f-14 m-l-15" id="alumno-cargo">{{$alumno->cargo}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Alumno">
+                            <tr class="detalle" data-toggle="modal" href="#modalMultihorario-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi  {{ empty($alumno->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw""></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-horario" class="zmdi  {{ empty($horarios) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw""></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
                                <span class="f-14"> Horario </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-hora_inicio">{{$alumno->hora_inicio}}</span> - <span id="alumno-hora_final">{{$alumno->hora_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-horario"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             
 
@@ -693,6 +766,8 @@
     route_eliminar="{{url('/')}}/staff/eliminar/";
     route_principal="{{url('/')}}/staff";
     route_email="{{url('/')}}/correo/sesion/";
+    route_eliminarhorario="{{url('/')}}/staff/eliminarhorariofijo";
+    route_agregarhorario="{{url('/')}}/staff/agregarhorariofijo/";
 
     $(document).ready(function(){
 
@@ -1060,6 +1135,176 @@
           $('#charNum').text(180 - len);
         }
       };
+
+      $("#add").click(function(){
+
+                $("#add").attr("disabled","disabled");
+                $("#add").css({
+                    "opacity": ("0.2")
+                }); 
+
+                var route = route_agregarhorario;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#form_multihorario" ).serialize(); 
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          $("#add").removeAttr("disabled");
+                          $("#add").css({
+                              "opacity": ("1")
+                          });
+
+                          $("#form_multihorario")[0].reset();
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var dia_de_semana_id = respuesta.array.dia_de_semana;
+                          var hora_inicio = respuesta.array.hora_inicio;
+                          var hora_final = respuesta.array.hora_final;
+
+                          var rowId=respuesta.id;
+                          var rowNode=t.row.add( [
+                          ''+dia_de_semana_id+'',
+                          ''+hora_inicio+'',
+                          ''+hora_final+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }   
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
+                          "opacity": ("1")
+                        });                     
+  
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = $('input:hidden[name=_token]').val();
+        var id = $(this).closest('tr').attr('id');
+              $.ajax({
+                   url: route_eliminarhorario+"/"+id,
+                   headers: {'X-CSRF-TOKEN': token},
+                   type: 'POST',
+                   dataType: 'json',                
+                  success: function (data) {
+                    if(data.status=='OK'){
+                        
+                      
+                                         
+                    }else{
+                      swal(
+                        'Solicitud no procesada',
+                        'Ha ocurrido un error, intente nuevamente por favor',
+                        'error'
+                      );
+                    }
+                  },
+                  error:function (xhr, ajaxOptions, thrownError){
+                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                  }
+                })
+
+                t.row( $(this).parents('tr') )
+                  .remove()
+                  .draw();
+            });
+
+
+  var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25,
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').hide();
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+  $(".dismiss").click(function(){
+            $('.modal').modal('hide');
+          });
 
    </script> 
 

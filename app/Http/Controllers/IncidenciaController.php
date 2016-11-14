@@ -18,11 +18,18 @@ use DB;
 class IncidenciaController extends BaseController {
 
 
-    public function create($id)
+    public function createconid($id)
     {
         $staff = Staff::find($id);
 
         return view('incidencia.create')->with('staff', $staff);
+    }
+
+    public function create()
+    {
+        $staff = Staff::where('academia_id' , Auth::user()->academia_id)->get();
+
+        return view('incidencia.create')->with('staffs', $staff);
     }
 
 
@@ -30,11 +37,13 @@ class IncidenciaController extends BaseController {
     {
 
         $rules = [
+            'staff_id' => 'required',
             'fecha' => 'required',
             'mensaje' => 'required',
         ];
 
         $messages = [
+            'staff_id.required' => 'Ups! El staff es requerido',
             'fecha.required' => 'Ups! La fecha es requerida',
             'mensaje.required' => 'Ups! El mensaje es requerido',
 

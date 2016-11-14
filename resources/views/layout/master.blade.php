@@ -9,6 +9,7 @@
 			
 			<!-- Vendor CSS -->
 			<link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
@@ -51,163 +52,6 @@
 		 
 		</section>
 
-     <div class="modal fade" id="modalAsistencia" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Registrar asistencia - Alumno (a) <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="agregar_asistencia" id="agregar_asistencia"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img name = "alumno_imagen" id ="alumno_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <p class="p-l-10" id="asistencia-nombre-alumno"> </p>
-
-                                                <p class="p-l-10">Participa en :  </p>
-
-                                                <p class="p-l-10" id = "clases_grupales_alumno"></p>
-
-                                                <span class="f-16 f-700" id="acciones" name="acciones">Acciones</span>
-
-                                                <hr id="acciones_linea" name ="acciones_linea"></hr>
-                                                
-                                                <a id="url_pagar" name="url_pagar"><i class="icon_a-pagar f-25 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-5">
-                                             <div class="form-group fg-line">
-
-                                                <table class="table table-striped table-bordered historial">
-                                                 <tr class="detalle historial">
-                                                 <td class = "historial"></td>
-                                                 <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-16 f-700 historial">Balance Económico: </span><span class = "f-16 f-700 historial" id="asistencia-estado_economico" name="asistencia-estado_economico"></span> <i class="zmdi zmdi-money f-20 m-r-5 historial" name="status_economico" id="status_economico"></i></td>
-                                                </tr>
-                                                </table>
-                                              </div>
-                                           </div>
-
-                                           <div class="col-sm-4">
-                                             <div class="form-group fg-line">
-                                                <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
-                                                <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-estado_ausencia"> --</span>
-                                             </div>
-                                           </div>
-                                           
-
-                                           <div class="col-sm-9">
-                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
-                                               <div class="fg-line">
-                                                  <div class="select">
-                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
-
-                                                      <option value="">Selecciona</option>
-                                                      
-                                                    </select>
-                                                  </div>
-                                                </div>
-
-
-                                           </div>
-
-                                           <div class="clearfix"></div> 
-
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-7 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-5">  
-                                          <input type="hidden" id="asistencia_id_alumno" name="asistencia_id_alumno" ></input>                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16" id="permitir" name="permitir" > Permitir <i class="zmdi zmdi-check"></i></button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
-
-
-    <div class="modal fade" id="modalAsistenciaInstructor" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Registrar asistencia - Instructor (a) <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="agregar_asistencia_instructor" id="agregar_asistencia_instructor"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <p class="p-l-10" id="asistencia-nombre-instructor"> </p>
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-9">
-                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
-                                               <div class="fg-line">
-                                                  <div class="select">
-                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id_instructor" id="asistencia-clase_grupal_id_instructor" data-live-search="true">
-
-                                                      <option value="">Selecciona</option>
-                                                      
-                                                    
-                                                    </select>
-                                                  </div>
-                                                </div>
-                                            </div>
-                                           
-
-                                           <div class="clearfix"></div> 
-
-                                           
-                                           
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-7 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-5">  
-                                          <input type="hidden" id="asistencia_id_instructor" name="asistencia_id_instructor" ></input>                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16" id="permitir_instructor" name="permitir_instructor" > Permitir <i class="zmdi zmdi-check"></i></button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
 
     
      <!--                    <aside id="chat" class="sidebar c-overflow">
@@ -422,6 +266,7 @@
 		
         <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="{{url('/')}}/assets/js/bootstrap-dropdownhover.min.js"></script>
         
 
         <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>

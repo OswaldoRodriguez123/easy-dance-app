@@ -40,13 +40,16 @@
                         <div class="card-body p-b-20">
                           <form name="agregar_incidencia" id="agregar_incidencia">
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <input type="hidden" name="staff_id" value="{{ $staff->id }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                    <label for="nombre">Nombre</label>
+                                    <label for="nombre" id="id-staff_id">Nombre</label>
+
+
+                                    @if(isset($staff))
+                                    <input type="hidden" name="staff_id" value="{{ $staff->id }}">
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
@@ -54,6 +57,28 @@
                                       <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Valeria" value="{{$staff->nombre}} {{$staff->apellido}}" disabled>
                                       </div>
                                     </div>
+
+                                    @else
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <div class="select">
+                                          <select class="selectpicker" name="staff_id" id="staff_id" data-live-search="true">
+
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $staffs as $staf )
+                                              <option value = "{{ $staf['id'] }}">{{ $staf['nombre'] }} {{ $staf['apellido'] }}</option>
+                                            @endforeach
+                                          
+                                          </select>
+                                      </div>
+                                    </div>
+                                  @endif
+                                  <div class="has-error" id="error-staff_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-staff_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
                                  
                                </div>
 
@@ -261,7 +286,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["mensaje"];
+      var campo = ["mensaje", "staff_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

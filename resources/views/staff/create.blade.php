@@ -45,7 +45,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-alumnos f-25" id="id-clase_grupal_id"></i> Agregar Staff</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-alumnos f-25" id="id-staff"></i> Agregar Staff</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -167,39 +167,6 @@
                                       </span>
                                   </div>
                                </div>
-                               <div class="clearfix p-b-35"></div>
-
-                                  <div class="col-xs-6">
-                                 
-                                      <label for="fecha_inicio" id="id-hora_inicio">Horario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define el horario del participante" title="" data-original-title="Ayuda"></i>
-
-                                      <div class="input-group col-xs-12">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_inicio" id="hora_inicio" class="form-control time-picker" placeholder="Desde" type="text">
-                                          </div>
-                                    </div>
-                                 <div class="has-error" id="error-hora_inicio">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="col-xs-6">
-                                      <label for="fecha_inicio" id="id-hora_final">&nbsp;</label>
-                                      <div class="input-group col-xs-12">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_final" id="hora_final" class="form-control time-picker" placeholder="Hasta" type="text">
-                                          </div>
-                                    </div>
-                                 <div class="has-error" id="error-hora_final">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
 
                                <div class="clearfix p-b-35"></div>
 
@@ -260,6 +227,124 @@
                                
 
                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Horario</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase grupal" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-4 text-center">
+                                    
+                                    <span class="f-16 c-morado">Dia de Semana</span>
+
+                                   </div>
+                                   <div class="col-sm-4 text-center">
+
+                                   <span class="f-16 c-morado">Hora Desde</span>
+
+                                   </div>
+                                   <div class="col-sm-4 text-center">
+
+                                   <span class="f-16 c-morado">Hora Hasta</span>
+
+                                   </div>
+                                   
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-4 text-center">
+                                <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="dia_de_semana_id" id="dia_de_semana_id" data-live-search="true">
+
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $dias_de_semana as $dias )
+                                          <option value = "{{ $dias['id'] }}">{{ $dias['nombre'] }}</option>
+                                          @endforeach
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                              </div>
+
+                              <div class="col-sm-4 text-center">
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                      <div class="dtp-container fg-line">
+                                              <input name="hora_inicio" id="hora_inicio" class="form-control time-picker" placeholder="Desde" type="text">
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="col-sm-4 text-center">
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                      <div class="dtp-container fg-line">
+                                              <input name="hora_final" id="hora_final" class="form-control time-picker" placeholder="Hasta" type="text">
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="card-header text-left">
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-12 guardar" id="add" >Agregar Linea</button>
+                              
+                              </div>
+
+                              <br>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="id" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="dia_de_semana_id" data-order="desc"></th>
+                                    <th class="text-center" data-column-id="hora_inicio" data-order="desc"></th>
+                                    <th class="text-center" data-column-id="hora_final_acordeon" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                                           
+                            </tbody>
+                            </table>
+
+                            </div>
+                            </div>
+
+                            <div class="clearfix p-b-35"></div>
+                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+
+                            <div class="clearfix p-b-35"></div>
+                                      <hr></hr>
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
+
+
+                        <div class="clearfix p-b-35"></div>
+
+                    
   
 
                           <div class="modal-footer p-b-20 m-b-20">
@@ -313,6 +398,8 @@
 
   route_agregar="{{url('/')}}/staff/agregar";
   route_enhorabuena="{{url('/')}}/staff";
+  route_horario="{{url('/')}}/staff/agregarhorario";
+  route_eliminar="{{url('/')}}/staff/eliminarhorario";
   
   $(document).ready(function(){
 
@@ -570,6 +657,193 @@
           $('#charNum').text(180 - len);
         }
       };
+
+      $( "#cancelar" ).click(function() {
+        $("#agregar_staff")[0].reset();
+        limpiarMensaje();
+        $('html,body').animate({
+        scrollTop: $("#id-staff").offset().top-90,
+        }, 1500);
+        $("#id-identificacion").focus();
+      });
+
+      $("#add").click(function(){
+
+                $("#add").attr("disabled","disabled");
+                $("#add").css({
+                    "opacity": ("0.2")
+                }); 
+
+                var route = route_horario;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#agregar_staff" ).serialize(); 
+
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          $("#add").removeAttr("disabled");
+                          $("#add").css({
+                              "opacity": ("1")
+                          });
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var dia_de_semana_id = respuesta.array.dia_de_semana;
+                          var hora_inicio = respuesta.array.hora_inicio;
+                          var hora_final = respuesta.array.hora_final;
+
+                          var rowId=respuesta.id;
+                          var rowNode=t.row.add( [
+                          ''+dia_de_semana_id+'',
+                          ''+hora_inicio+'',
+                          ''+hora_final+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $("#guardar").css({
+                          "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#add").removeAttr("disabled");
+                        $("#add").css({
+                            "opacity": ("1")
+                        });
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = $('input:hidden[name=_token]').val();
+        var id = $(this).closest('tr').attr('id');
+              $.ajax({
+                   url: route_eliminar+"/"+id,
+                   headers: {'X-CSRF-TOKEN': token},
+                   type: 'POST',
+                   dataType: 'json',                
+                  success: function (data) {
+                    if(data.status=='OK'){
+                        
+                      
+                                         
+                    }else{
+                      swal(
+                        'Solicitud no procesada',
+                        'Ha ocurrido un error, intente nuevamente por favor',
+                        'error'
+                      );
+                    }
+                  },
+                  error:function (xhr, ajaxOptions, thrownError){
+                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                  }
+                })
+
+                t.row( $(this).parents('tr') )
+                  .remove()
+                  .draw();
+            });
+
+
+  var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25,
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').hide();
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
 
 </script> 
 @stop

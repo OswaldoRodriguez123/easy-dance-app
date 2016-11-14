@@ -385,7 +385,7 @@ public function PresencialesFiltros(Request $request)
         }
 
         //dd($asistencia);
-        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres]);
+        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     public function charts()

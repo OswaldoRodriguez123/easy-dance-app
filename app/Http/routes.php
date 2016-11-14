@@ -756,6 +756,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('staff', 'StaffController@principal');
 			Route::post('staff/agregar', 'StaffController@store');
+			Route::post('staff/agregarhorario', 'StaffController@agregar_horario');
+			Route::post('staff/eliminarhorario/{id}', 'StaffController@eliminar_horario');
+			Route::post('staff/agregarhorariofijo', 'StaffController@agregar_horario_fijo');
+			Route::post('staff/eliminarhorariofijo/{id}', 'StaffController@eliminar_horario_fijo');
 			Route::get('staff/agregar', 'StaffController@create');
 			Route::delete('staff/eliminar/{id}', 'StaffController@destroy');
 			Route::get('staff/detalle/{id}', 'StaffController@edit');
@@ -771,7 +775,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//INCIDENCIAS
 
-			Route::get('incidencias/generar/{id}', 'IncidenciaController@create');
+			Route::get('incidencias/generar/{id}', 'IncidenciaController@createconid');
+			Route::get('incidencias/generar', 'IncidenciaController@create');
 			Route::post('incidencias/generar', 'IncidenciaController@store');
 			Route::get('incidencias/detalle/{id}', 'SugerenciaController@planilla');
 
