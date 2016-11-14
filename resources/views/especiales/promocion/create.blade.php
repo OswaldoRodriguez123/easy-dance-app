@@ -76,17 +76,17 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-nombre">¿Cuál es el numero de canjes que tendra la promocion?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de veces que el codigo podra ser reclamado" title="" data-original-title="Ayuda"></i>
+                                    <label for="numero" id="id-numero">¿Cuál es el numero de canjes que tendra la promocion?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de veces que el codigo podra ser reclamado" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-promocion f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="numero_de_canjeos" id="numero_de_canjeos" placeholder="Ej. 100">
+                                      <input type="text" class="form-control input-sm proceso" name="numero" id="numero" placeholder="Ej. 100">
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-numero_de_canjeos">
+                                 <div class="has-error" id="error-numero">
                                       <span >
-                                          <small class="help-block error-span" id="error-numero_de_canjeos_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-numero_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -405,12 +405,12 @@
               //alert(fileinput);
               var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
             },500);
-
         });
-
       }); 
 
   setInterval(porcentaje, 1000);
+
+  var valor="";
 
   function porcentaje(){
     var campo = ["nombre", "numero", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
@@ -419,21 +419,11 @@
     var cantidad =0;
     var porciento= fLen / fLen;
     for (i = 0; i < fLen; i++) {
-      var valor="";
       valor=$("#"+campo[i]).val();
       valor=valor.trim();
-      if(campo[i]=="color_etiqueta"){
-        if ( valor.length > 6 ){        
+      if ( valor.length > 0 ){        
           cantidad=cantidad+1;
-        }else if (valor.length == 0){
-          $("#"+campo[i]).val('#');
-        }
-      }else{
-        if ( valor.length > 0 ){        
-          cantidad=cantidad+1;
-        }
       }
-      
     }
 
     porcetaje=(cantidad/fLen)*100;
@@ -582,7 +572,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["nombre", "numero_de_canjeos", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
+        var campo = ["nombre", "numero", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -590,7 +580,7 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "numero_de_canjeos", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
+      var campo = ["nombre", "numero", "porcentaje_descuento", "descripcion", "fecha", "imagen", "edad_inicio", "edad_final", "video_promocional","condiciones"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

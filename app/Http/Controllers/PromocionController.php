@@ -8,6 +8,7 @@ use App\Promocion;
 use App\Alumno;
 use App\ConfigServicios;
 use App\CodigoPromocion;
+use App\Codigo;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -66,7 +67,7 @@ class PromocionController extends BaseController {
 
     $rules = [
         'nombre' => 'required|min:3|max:80',
-        'numero_de_canjeos' => 'required',
+        'numero' => 'required',
         'porcentaje_descuento' => 'required|numeric',
         'fecha' => 'required',
         'descripcion' => 'min:3|max:500',
@@ -80,7 +81,7 @@ class PromocionController extends BaseController {
         'nombre.required' => 'Ups! El Nombre es requerido ',
         'nombre.min' => 'El mínimo de caracteres permitidos son 3',
         'nombre.max' => 'El máximo de caracteres permitidos son 80',
-        'numero_de_canjeos.required' => 'Ups! El Numero de veces de canjeos permitidos por esta promocion es requerido ',
+        'numero.required' => 'Ups! El Numero de veces de canjeos permitidos por esta promocion es requerido ',
         'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
         'descripcion.max' => 'El máximo de caracteres permitidos son 500',
         'porcentaje_descuento.required' => 'Ups! El porcentaje de descuento es requerido',
@@ -114,6 +115,12 @@ class PromocionController extends BaseController {
             $find = Codigo::where('codigo_validacion', $codigo_validacion)->first();
         }while ($find);
 
+        $fecha = explode(" - ", $request->fecha);
+
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fechatmp = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+
         $promocion = new Promocion;
 
         $nombre = title_case($request->nombre);
@@ -123,8 +130,8 @@ class PromocionController extends BaseController {
         // $promocion->config_servicios_id = $request->config_servicios_id;
         $promocion->descripcion = $request->descripcion;
         $promocion->porcentaje_descuento = $request->porcentaje_descuento;
-        $promocion->fecha_inicio = $request->fecha_inicio;
-        $promocion->fecha_final = $request->fecha_final;
+        $promocion->fecha_inicio = $fecha_inicio;
+        $promocion->fecha_final = $fecha_final;
         $promocion->sexo = $request->sexo;
         $promocion->edad_inicio = $request->edad_inicio;
         $promocion->edad_final = $request->edad_final;
@@ -140,7 +147,7 @@ class PromocionController extends BaseController {
             $codigo->codigo_validacion = $codigo_validacion;
             $codigo->estatus = 0;
             $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
-            $codigo->numero_canjeos = $request->numero_de_canjeos;
+            $codigo->numero_canjeos = $request->numero;
 
             if($request->imageBase64){
 

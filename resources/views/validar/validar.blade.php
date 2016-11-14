@@ -43,16 +43,18 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
               <div align="center"><i class="zmdi zmdi-check zmdi-hc-5x c-morado"></i></div>
-              <div class="c-morado f-50 text-center"> Validar </div>
-              <div class="text-center f-18">Te invitamos a ingresar el código que deseas  validar, como por ejemplo, el de alguna  reservación, tarjeta de regalo, campaña, promoción o examen, de esta forma confirmarás cualquier operación que desees realizar.  </div>
-              <div class="clearfix"></div><br><br>
-              <div class="text-center f-30 c-morado">Ingresa el Serial y valida</div>
-              <div class="clearfix m-20 m-b-25"></div>
-              <div class="block-header text-center">
-                <input type="text" class="form-control caja" name="codigo" id="codigo"></input>
+              <form>
+                <div class="c-morado f-50 text-center"> Validar </div>
+                <div class="text-center f-18">Te invitamos a ingresar el código que deseas  validar, como por ejemplo, el de alguna  reservación, tarjeta de regalo, campaña, promoción o examen, de esta forma confirmarás cualquier operación que desees realizar.  </div>
+                <div class="clearfix"></div><br><br>
+                <div class="text-center f-30 c-morado">Ingresa el Serial y valida</div>
                 <div class="clearfix m-20 m-b-25"></div>
-                <a class="btn-blanco m-r-10 f-20 guardar pointer" > Validar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i> </a>
-              </div> 
+                <div class="block-header text-center">
+                  <input type="text" class="form-control caja" name="codigo" id="codigo"></input>
+                  <div class="clearfix m-20 m-b-25"></div>
+                  <a class="btn-blanco m-r-10 f-20 guardar pointer" > Validar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i> </a>
+                </div> 
+              </form>
             </div>
             <div class="col-md-2"></div>
             
@@ -82,7 +84,7 @@
                 
                 var route = route_validar;
                 var token = "{{ csrf_token() }}";
-
+                var datos = $( "#agregar_examen" ).serialize();
                 var codigo = $("#codigo").val();
                 procesando();
            
@@ -91,12 +93,11 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&codigo_validacion="+codigo,
+                        data: datos,
                     success:function(respuesta){
                       setTimeout(function(){ 
 
                         window.location = route_exitoso;
-
                      
                       }, 1000);
                     },
