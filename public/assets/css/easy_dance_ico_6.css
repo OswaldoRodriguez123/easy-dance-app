@@ -1,0 +1,43 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 14/11/2016 17:40
+  	*/
+
+@font-face {
+  font-family: "Easy-Icon_6";
+  src: url("../../assets/fonts/easy_dance_ico_6/easy_ico_6.eot");
+  src: url("../../assets/fonts/easy_dance_ico_6/easy_ico_6.eot?#iefix") format("embedded-opentype"),
+       url("../../assets/fonts/easy_dance_ico_6/easy_ico_6.woff") format("woff"),
+       url("../../assets/fonts/easy_dance_ico_6/easy_ico_6.ttf") format("truetype"),
+       url("../../assets/fonts/easy_dance_ico_6/easy_ico_6.svg#easy_ico_6") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Easy-Icon_6";
+    src: url("../../assets/fonts/easy_dance_ico_5/easy_ico_6.svg#easy_ico_6") format("svg");
+  }
+}
+
+[class^="icon_f-"]:before, [class*=" icon_f-"]:before,
+[class^="icon_f-"]:after, [class*=" icon_f-"]:after {   
+  font-family: "Easy-Icon_6";
+        /*font-size: 20px;*/
+font-style: normal;
+/*margin-left: 20px;*/
+}
+
+.icon_f-1-una-clase:before { content: "\f100"; }
+.icon_f-administradores:before { content: "\f101"; }
+.icon_f-barra-de-progreso:before { content: "\f102"; }
+.icon_f-consultarle-al-instructor:before { content: "\f103"; }
+.icon_f-eliminar-todas:before { content: "\f104"; }
+.icon_f-incidencias:before { content: "\f105"; }
+.icon_f-productos:before { content: "\f106"; }
+.icon_f-recomendar:before { content: "\f107"; }
+.icon_f-servicios:before { content: "\f108"; }
+.icon_f-staff:before { content: "\f109"; }
+.icon_f-suspender:before { content: "\f10a"; }
+.icon_f-varias-clases:before { content: "\f10b"; }

@@ -41,7 +41,7 @@
                     <div class="card">
                         <div class="card-header text-center">
 
-                        <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-25"></i> Área de Productos</p>
+                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-productos zmdi-hc-fw p-r-5 f-25"></i> Área de Productos</p>
                         <hr class="linea-morada">
                         <br>
                                                               

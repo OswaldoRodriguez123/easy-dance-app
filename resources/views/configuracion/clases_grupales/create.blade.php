@@ -208,7 +208,7 @@
 
                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Estatus de Alumno</label>
+                                    <label for="nombre">Estatus de Alumno</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás asignar el estatus de los alumnos en cuanto a la recurrencia o deserción que puede presentar un alumno en relación a sus actividades de clases asignadas" title="" data-original-title="Ayuda"></i> 
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -229,7 +229,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Riesgo de Ausencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno esta en riesgo de ausencia" title="" data-original-title="Ayuda"></i>
+                                        <label for="asistencia_amarillas" id="id-asistencia_amarillas">Riesgo de Ausencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece la cantidad de inasistencias a partir de el cual se comenzará a considerar que el alumno esta en riesgo de ausencia" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>
@@ -251,7 +251,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Estado de Inactividad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece el numero de inasistencias apartir de la cual se comenzara a considerar que el alumno pase a tener un status de inactivo" title="" data-original-title="Ayuda"></i>
+                                        <label for="asistencia_rojas" id="id-asistencia_rojas">Estado de Inactividad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En este campo se establece la cantidad de inasistencias a partir de el cual se comenzará a considerar que el alumno pase a tener un status de inactivo" title="" data-original-title="Ayuda"></i>
                                         
                                       <div class="input-group">
                                         <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>

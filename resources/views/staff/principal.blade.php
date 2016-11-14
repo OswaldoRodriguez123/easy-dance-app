@@ -50,7 +50,7 @@
 
                             </div>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-alumnos f-25"></i> Sección de Staff</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Staff</p>
                             <hr class="linea-morada">
                                                          
                         </div>

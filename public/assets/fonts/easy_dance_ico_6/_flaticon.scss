@@ -1,0 +1,63 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 14/11/2016 17:40
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-1-una-clase:before { content: "\f100"; }
+.flaticon-administradores:before { content: "\f101"; }
+.flaticon-barra-de-progreso:before { content: "\f102"; }
+.flaticon-consultarle-al-instructor:before { content: "\f103"; }
+.flaticon-eliminar-todas:before { content: "\f104"; }
+.flaticon-incidencias:before { content: "\f105"; }
+.flaticon-productos:before { content: "\f106"; }
+.flaticon-recomendar:before { content: "\f107"; }
+.flaticon-servicios:before { content: "\f108"; }
+.flaticon-staff:before { content: "\f109"; }
+.flaticon-suspender:before { content: "\f10a"; }
+.flaticon-varias-clases:before { content: "\f10b"; }
+    
+    $font-Flaticon-1-una-clase: "\f100";
+    $font-Flaticon-administradores: "\f101";
+    $font-Flaticon-barra-de-progreso: "\f102";
+    $font-Flaticon-consultarle-al-instructor: "\f103";
+    $font-Flaticon-eliminar-todas: "\f104";
+    $font-Flaticon-incidencias: "\f105";
+    $font-Flaticon-productos: "\f106";
+    $font-Flaticon-recomendar: "\f107";
+    $font-Flaticon-servicios: "\f108";
+    $font-Flaticon-staff: "\f109";
+    $font-Flaticon-suspender: "\f10a";
+    $font-Flaticon-varias-clases: "\f10b";

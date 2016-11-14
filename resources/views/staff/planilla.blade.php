@@ -604,7 +604,7 @@
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="mousehand disabled">
-                                            <span class="ca-icon-planilla"><i class="icon_a-alumnos"></i></span>
+                                            <span class="ca-icon-planilla"><i class="icon_f-staff"></i></span>
                                             <div class="ca-content-planilla">
                                                 <h2 class="ca-main-planilla">Vista Staff</h2>
                                                 <h3 class="ca-sub-planilla">Personaliza el campo staff</h3>

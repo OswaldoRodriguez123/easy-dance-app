@@ -43,7 +43,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-producto f-25" id="id-clase_grupal_id"></i> Agregar Producto</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_f-productos f-25" id="id-clase_grupal_id"></i> Agregar Producto</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -95,7 +95,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="cantidad" id="id-cantidad">Cantidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de unidades disponibles del producto" title="" data-original-title="Ayuda"></i>
+                                        <label for="cantidad" id="id-cantidad">Cantidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de unidades disponibles del producto" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                         <div class="fg-line">

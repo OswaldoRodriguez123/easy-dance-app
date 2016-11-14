@@ -41,7 +41,7 @@
                     <div class="card">
                         <div class="card-header text-center">
 
-                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_d-servicios-1"></i> Área de Servicios</p>
+                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-servicios"></i> Área de Servicios</p>
                         <hr class="linea-morada">
                         <br>
                                                               
@@ -107,7 +107,6 @@
           }else{
              $('.dataTables_paginate').show();
           }
-        },
         },
         pageLength: 25,
         paging: false,

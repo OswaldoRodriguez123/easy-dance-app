@@ -501,12 +501,12 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="tipo" id="servicio" value="servicio" type="radio" checked >
                                         <i class="input-helper"></i>  
-                                        Servicio <i id="servicio2" class="icon_a-instructor c-verde f-20"></i>
+                                        Servicio <i id="servicio2" class="icon_f-servicios c-verde f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
                                         <input name="tipo" id="producto" value="producto" type="radio">
                                         <i class="input-helper"></i>  
-                                        Producto <i id="producto2" class="icon_a-precios-y-servicios f-20"></i>
+                                        Producto <i id="producto2" class="icon_f-productos f-20"></i>
                                     </label>
                                     </div>
                                     

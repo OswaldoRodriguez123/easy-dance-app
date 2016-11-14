@@ -28,7 +28,7 @@
 
                             <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="telefono">Telefono Local</label>
+                                    <label for="telefono">Teléfono Local</label>
                                     <div class="input-group">
                                               <span class="input-group-addon">
                                               <i class="icon_b icon_b-telefono f-20"></i>
@@ -50,7 +50,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="celular">Telefono Celular</label>
+                                    <label for="celular">Teléfono Móvil</label>
                                     <div class="input-group">
                                               <span class="input-group-addon">
                                               <i class="icon_b icon_b-telefono f-20"></i>
@@ -68,7 +68,7 @@
                                </div>
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="correo">Correo</label>
+                                    <label for="correo">Correo electrónico</label>
                                     
                                     <div class="input-group">
                                               <span class="input-group-addon">
@@ -681,7 +681,7 @@
 
                                     <div class="clearfix p-b-35"></div>
                                     
-                                    <label for="nombre_nivel" id="id-nombre_nivel">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la fiesta o evento" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre_nivel" id="id-nombre_nivel">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del nivel que deseas asignar" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>

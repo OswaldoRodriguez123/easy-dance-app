@@ -58,7 +58,7 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                    <label for="nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" aria-describedby="popoverclase" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase grupal, en caso de no haberla registrado o deseas crear un nuevo registro, debes dirigirte al área de configuración general en la sección de clases grupales y procede a crear el registro. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase grupal, en caso de no haberla registrado o deseas crear un nuevo registro, debes dirigirte al área de configuración general en la sección de clases grupales y procede a crear el registro. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/clasesgrupales' class='redirect pointer'> Llévame <i class='icon_b icon_b-nombres f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
    
                                   <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
@@ -219,7 +219,7 @@
                                <div class="clearfix p-b-35"></div>
                                 <div class="col-sm-12">
                                  
-                                     <label for="nivel_baile" id="id-nivel_baile_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-nivel_baile_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/academia' class='redirect pointer'> Llévame <i class='icon_a-niveles f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -246,7 +246,7 @@
                                <div class="clearfix p-b-35"></div>
                                 <div class="col-sm-12">
                                  
-                                     <label for="nivel_baile" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -274,7 +274,7 @@
                                <div class="clearfix p-b-35"></div>
                                 <div class="col-sm-12">
                                  
-                                     <label for="nivel_baile" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/academia' class='redirect pointer'> Llévame <i class='icon_a-estudio-salon f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-estudio-salon f-22"></i></span>
@@ -539,28 +539,6 @@
                     
                                <div class="clearfix p-b-35"></div> -->
 
-                               <div class="col-sm-12">
-                                  <label for="id" id="id-titulo_video">Ingresa titulo del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-                                  
-                                    <div class="input-group">
-                                    <span class="input-group-addon">
-                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
-                                    </span>  
-
-                                    <div class="fg-line">                       
-                                      <input type="text" class="form-control input-sm" name="titulo_video" id="titulo_video" placeholder="Ingresa el titulo">
-                                    </div>
-                                   </div>
-                                   
-                                   <div class="has-error" id="error-titulo_video">
-                                    <span >
-                                     <small id="error-titulo_video_mensaje" class="help-block error-span" ></small>                                           
-                                    </span>
-                                    </div>                                          
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>    
-
                                  <div class="col-sm-12">
                                   <label for="id" id="id-link_video">Ingresa el link del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
                                   
@@ -581,7 +559,29 @@
                                     </div>                                          
                                 </div>
 
-                                <div class="clearfix p-b-35"></div>   
+                                <div class="clearfix p-b-35"></div>  
+
+                                <div class="col-sm-12">
+                                  <label for="id" id="id-titulo_video">Ingresa un título al video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el título del video promocional" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-edit f-20"></i>
+                                    </span>  
+
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control input-sm" name="titulo_video" id="titulo_video" placeholder="Ingresa el título">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-titulo_video">
+                                    <span >
+                                     <small id="error-titulo_video_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>     
 
                               <div class="col-xs-12">
                                 <label for="nombre" id="id-cantidad_hombres">Cantidad de Participantes</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de participantes permitidos en la clase grupal" title="" data-original-title="Ayuda"></i>
@@ -644,7 +644,7 @@
 
                                 <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Dias de prorroga</label id="id-dias_prorroga"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de dias de prorroga que tendra la clase grupal en la web luego de iniciar" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Días de prórroga</label id="id-dias_prorroga"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de días de prórroga que tendrá la clase grupal en la web luego de iniciar" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" class="form-control input-sm input-mask" name="dias_prorroga" id="dias_prorroga" data-mask="000" placeholder="Ej. 7">
@@ -1207,72 +1207,40 @@
       $('#pop-nombre_clase').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-clases-grupales f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/configuracion/clases-grupales/agregar";
-                    });
+                    
                     e.preventDefault();
           });
 
-          $('#pop-instructor').popover({
+      $('#pop-instructor').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-instructor f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/participante/instructor/agregar";
-                    });
+                    
                     e.preventDefault();
           });
 
           $('#pop-salon').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-estudio-salon f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/configuracion/academia";
-                    });
+
                     e.preventDefault();
           });
 
           $('#pop-nivel').popover({
                     html: true,
                     trigger: 'manual'
-                }).click(function(e) {
+                }).on( "mouseenter", function(e) {
 
-                  if($('.popover').hasClass('in')){
-                     $(this).popover('hide');
-                  } else {
                     $(this).popover('show');
-                    $('.popover-content').append('<br> <a class="redirect pointer"> Llévame <i class="icon_a-niveles f-22"></i></a>');
-                  }
-            
-                    $('.redirect').click(function(e){
-                        window.location = "{{url('/')}}/configuracion/academia";
-                    });
+
                     e.preventDefault();
           });
 

@@ -418,7 +418,7 @@
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="icon_d-servicios-1"></i></span>
+                                            <span class="ca-icon-planilla"><i class="icon_f-servicios"></i></span>
                                             <div class="ca-content-planilla">
                                                 <h2 class="ca-main-planilla">Vista Servicio</h2>
                                                 <h3 class="ca-sub-planilla">Personaliza el campo servicio</h3>

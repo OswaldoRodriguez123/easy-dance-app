@@ -72,7 +72,7 @@
                                     <form name="formComparte" id="formComparte" class="">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="col-sm-6">
-                                            <label id="id-nombre">Ingresa el nombre </label>
+                                            <label id="id-nombre">Ingresa el nombre </label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del director de  academia o productor de eventos al que deseas recomendar la aplicación Easy Dance" title="" data-original-title="Ayuda"></i>   
                                             <div class="input-group input-group-lg">
 
                                                 <span class="input-group-addon"><i class="icon_b icon_b-nombres"></i></span>
@@ -88,7 +88,7 @@
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <label id="id-correo">Ingresa su correo electrónico </label>
+                                            <label id="id-correo">Ingresa su correo electrónico </label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico  del director de  academia o productor de eventos al que deseas recomendar la aplicación Easy Dance" title="" data-original-title="Ayuda"></i>   
                                             <div class="input-group input-group-lg">
 
                                                 <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>

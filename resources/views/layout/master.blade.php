@@ -32,6 +32,7 @@
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_1.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_2.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/easy_dance_ico_4.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/easy_dance_ico_6.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">

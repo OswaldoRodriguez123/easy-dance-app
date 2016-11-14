@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Sugerencia;
 use App\Notificacion;
+use App\Instructor;
 use App\NotificacionUsuario;
 use DB;
 
@@ -19,7 +20,8 @@ class SugerenciaController extends BaseController {
 
     public function create()
     {
-        return view('sugerencia.create');
+        $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
+        return view('sugerencia.create')->with('instructores', $instructores);
     }
 
 

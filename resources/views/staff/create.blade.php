@@ -45,7 +45,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-alumnos f-25" id="id-staff"></i> Agregar Staff</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_f-staff f-25" id="id-staff"></i> Agregar Staff</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">

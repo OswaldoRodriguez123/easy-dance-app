@@ -45,15 +45,15 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('configuracion/productos')}}"><i class="zmdi zmdi-file-text f-16"></i> Productos</a>
+                                            <a href="{{url('configuracion/productos')}}"><i class="zmdi icon_f-productos f-16"></i> Productos</a>
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('staff')}}"><i class="zmdi zmdi-city f-16"></i> Staff</a>
+                                            <a href="{{url('staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-city f-16"></i> Administradores</a>
+                                            <a href="{{url('configuracion/administradores')}}"><i class="zmdi icon_f-administradores f-16"></i> Administradores</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -70,7 +70,7 @@
                                             <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
                                         </li>
                                         <li class="hidden-xs">
-                                            <a href="{{url('incidencias/generar')}}"><i class="zmdi zmdi-check f-16"></i> Generar Incidencias</a>
+                                            <a href="{{url('incidencias/generar')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
                                         </li>
                                     </ul>
                                 </li>

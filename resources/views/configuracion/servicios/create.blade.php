@@ -43,7 +43,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_d-servicios-1 f-25" id="id-clase_grupal_id"></i> Agregar Servicio</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_f-servicios f-25" id="id-clase_grupal_id"></i> Agregar Servicio</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">

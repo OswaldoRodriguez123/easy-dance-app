@@ -34,7 +34,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="zmdi zmdi-email f-25" id="id-clase_grupal_id"></i> Buzón de sugerencias </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_f-consultarle-al-instructor f-25" id="id-clase_grupal_id"></i> Consultarle al profesor </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -74,12 +74,42 @@
                                       </span>
                                   </div>
                                </div>
+
+
+                               <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+                                 
+                                     <label for="nivel_baile" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{$instructor['id'] }}">{{$instructor['nombre'] }} {{$instructor['apellido'] }}</option>
+                                          @endforeach 
+                                          
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-instructor_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
     
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
                                  
-                                    <label for="mensaje" id="id-mensaje">Sugerencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+                                    <label for="mensaje" id="id-mensaje">Consulta a tu instructor</label> <span class="c-morado f-700 f-16">*</span>  <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar consultas o dudas en relación a los niveles de baile, pasos o coreografías" title="" data-original-title="Ayuda"></i>
                                     <br></br>
 
                                     <div class="fg-line">

@@ -385,7 +385,7 @@
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="icon_d-servicios"></i></span>
+                                            <span class="ca-icon-planilla"><i class="icon_f-productos"></i></span>
                                             <div class="ca-content-planilla">
                                                 <h2 class="ca-main-planilla">Vista Producto</h2>
                                                 <h3 class="ca-sub-planilla">Personaliza el campo producto</h3>

@@ -105,7 +105,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="mensaje" id="id-mensaje">Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+                                    <label for="mensaje" id="id-mensaje">Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar amonestaciones, notificaciones o avisos al personal que labora y que usa cuenta de Easy Dance" title="" data-original-title="Ayuda"></i>
                                     <br></br>
 
                                     <div class="fg-line">
