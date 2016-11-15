@@ -126,7 +126,7 @@
                                   
 					   <li>
                         <a href="{{url('/')}}/configuracion/servicios">
-                            <span class="ca-icon-j" style=""><i class="demo-icon-j">&#xe802;</i></span>
+                            <span class="ca-icon-j" style=""><i class="icon_f-servicios"></i></span>
                             <div class="ca-content-j">
                                 <h2 class="ca-main-j">Incluye  servicios</h2>
                                 <h3 class="ca-sub-j">Paso 4</h3>

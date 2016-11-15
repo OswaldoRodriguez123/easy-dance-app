@@ -47,13 +47,13 @@
                         <span class="f-25 c-morado" id="id-clase_grupal_id"> <i class="icon_f-administradores f-25"></i> Agregar un nuevo Administrador</span>
                       </div>
 
-                      <div class="card-body p-b-20 m-l-20 m-r-20">
-                        <div class="clearfix m-20 m-b-25"></div>
+                      <div class="card-body p-b-20">
                
                         <form name="agregar_usuario_sucursal" id="agregar_usuario_sucursal"  >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <!--<input type="hidden" name="nombre" value= "Prueba" >-->
-                                <div class="row">
+                                <div class="row p-l-10 p-r-10">
+                                <hr>
                                     <div class="col-sm-6">
                                          <div class="form-group">
 
@@ -86,11 +86,9 @@
                                             </span>
                                             </div>
                                        </div>
-                                       </div>
 
-                                       <br>
+                                       <div class="clearfix p-b-35"></div>
 
-                                        <div class="row">
                                      <div class="col-sm-6 ">
                                          <div class="form-group">
                                             <label for="correo" id="id-password">Contraseña</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa una contraseña que contenga un mínimo de seis (6) caracteres , esta podrá ser números o letras, mayúsculas o minúscula" title="" data-original-title="Ayuda"></i>
@@ -123,11 +121,9 @@
                                             </span>
                                             </div>
                                        </div>
-                                    </div>
 
-                                    <br>
+                                    <div class="clearfix p-b-35"></div>
                                 
-                                <div class="row">
                                    <div class="col-sm-6">
                                          <div class="form-group">
                                             <label for="correo" id="id-responsable">Administrador</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante que recibirá la invitación para usar la cuenta de invitación" title="" data-original-title="Ayuda"></i>
@@ -168,10 +164,9 @@
                                           </span>
                                           </div>
                                     </div>
-                                 </div>
 
                                        </div>
-                                       <br><br><br><br>        
+                                       <div class="clearfix p-b-35"></div>      
                             <div class="text-center">
                                <!-- <a class="btn-blanco2 m-r-6 f-22 guardar" id="guardar"  style=" margin-top: 60px; " >  Llévame </a> -->
 

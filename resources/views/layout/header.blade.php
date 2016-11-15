@@ -53,7 +53,7 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('configuracion/administradores')}}"><i class="zmdi icon_f-administradores f-16"></i> Administradores</a>
+                                            <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -213,13 +213,6 @@
                                     </li>
 
                                 endif -->
-
-                                @if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4)
-        
-                                    <li class="hidden-xs">
-                                        <a href="{{url('sugerencias/generar')}}"><i class="zmdi zmdi-email f-16"></i> Buzón de Sugerencia</a>
-                                    </li>
-                                @endif
 
                                 <li>
                                     <a href="{{url('/')}}/logout"><i class="zmdi zmdi-time-restore"></i> Cerrar Sesión</a>
