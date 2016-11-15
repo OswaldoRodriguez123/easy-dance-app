@@ -1689,6 +1689,11 @@
                 $('#alumno_id').selectpicker('refresh');
 
                 $('.modal').modal('hide');
+
+                $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });
              
 
               }else{
