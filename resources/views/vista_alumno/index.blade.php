@@ -76,8 +76,8 @@
                  
               <div class="pmo-block pmo-contact hidden-xs">
                   
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Agendar</div>
+                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Agendar</div>
                         
                         <div class ="detalle">
                           @if($clases_grupales != 1)
@@ -130,8 +130,8 @@
 
                     <div class="clearfix p-b-15"></div>
 
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Especiales</div>
+                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff ">
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Especiales</div>
 
                         <div class ="detalle">
                           
@@ -168,8 +168,8 @@
 
                     <div class="clearfix p-b-15"></div>
 
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Proximas fecha de pago</div>
+                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Proximas fecha de pago</div>
 
                        @foreach($proformas as $proforma)
 
@@ -208,8 +208,8 @@
 
                     <div class="clearfix p-b-15"></div>
 
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-                      <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Evaluacion / Diagnostico</div>
+                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
+                      <div class="text-left f-16 f-700 header_cuadro_alumno_borde_morado">Evaluacion / Diagnostico</div>
 
                        @foreach($alumno_examenes as $examenes)
                         <div class ="detalle">
@@ -400,7 +400,55 @@
                         @endif
                     </ul>
 
+                    <div class="clearfix p-b-15"></div>
+
+                    <div style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
+                      <div class="header_cuadro_alumno_borde_morado text-center f-16">Consultarle al profesor</div>
+
+                      
+                      <div class="col-sm-12">
+
+                          <div class="clearfix p-b-15"></div>
+                          <div class="text-center">
+                          <i class="icon_f-consultarle-al-instructor f-50"></i>
+                          </div>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+
+                      </div>
+
+                      <span class="text-center">
+
+                          <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 consulta_instructor" style="width:100%; padding:5px"> </i> Consultar </button> 
+                      </span>
+
                     </div>
+
+                  <!-- <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Consultarle al profesor</div>
+
+
+
+                          <div class="col-sm-12">
+
+                          <div class="clearfix p-b-15"></div>
+                          <div class="text-center">
+                          <i class="icon_a-pagar f-50"></i>
+                          </div>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+
+                          </div>
+
+                      <span class="text-center">
+
+                          <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 consulta_instructor" style="width:100%; padding:5px"> </i> Consultar </button> 
+                      </span>
+
+
+                    </div> 
+ -->
+                  </div>
 
                     <div class="clearfix p-b-15"></div>
                   </div>
@@ -428,6 +476,11 @@
         function configuracion(){
           window.location = "{{url('/')}}/perfil-evaluativo";
           }
+
+          $(".consulta_instructor").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/sugerencias/generar";
+          });
          
          function atras(){
           $("#modalConfiguracion").modal('hide');

@@ -163,7 +163,6 @@ class AdministrativoController extends BaseController {
             // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
             ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
             ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->where('alumnos.deleted_at' , '=' , null)
             ->OrderBy('facturas.created_at')
         ->get();
 
@@ -192,7 +191,6 @@ class AdministrativoController extends BaseController {
             ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
             ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
-            ->where('alumnos.deleted_at' , '=' , null)
         ->get();
 
         $total = DB::table('items_factura_proforma')
@@ -488,7 +486,7 @@ class AdministrativoController extends BaseController {
             $arreglo = Session::get('gestion');
 
             $alumno_id = $arreglo[0]['alumno_id'];
-            $alumno = Alumno::where('id', '=', $alumno_id)->first();
+            $alumno = Alumno::withTrashed()->where('id', '=', $alumno_id)->first();
             $total = $arreglo[0]['total'];
 
             $acuerdos_pendientes = DB::table('items_factura_proforma')
@@ -567,7 +565,7 @@ class AdministrativoController extends BaseController {
             $factura_proforma = ItemsFacturaProforma::find($id);
 
             $alumno_id = $factura_proforma->alumno_id;
-            $alumno = Alumno::where('id', '=', $alumno_id)->first();
+            $alumno = Alumno::withTrashed()->where('id', '=', $alumno_id)->first();
             $total = $factura_proforma->importe_neto;
             Session::push('id_proforma', $id);
 
@@ -908,27 +906,35 @@ class AdministrativoController extends BaseController {
                 //FINAL
 
                 $academia = Academia::find(Auth::user()->academia_id);
+                $alumno = Alumno::withTrashed()->find($request->id);
                 $usuario = User::where('usuario_id', $request->id)->first();
 
-                if($usuario->familia_id){
-                    $es_representante = Familia::where('representante_id', $usuario->id)->first();
-                    if($es_representante){
+                if($usuario){
+
+                    if($usuario->familia_id){
+                        $es_representante = Familia::where('representante_id', $usuario->id)->first();
+                        if($es_representante){
+                            $correo = $usuario->email;
+                            $celular = getLimpiarNumero($usuario->celular);
+                        }else{
+                            $familia = Familia::find($usuario->familia_id);
+                            $representante = User::find($familia->representante_id);
+                            $correo = $representante->email;
+                            $celular = getLimpiarNumero($representante->celular);
+                        }
+                    }else{
                         $correo = $usuario->email;
                         $celular = getLimpiarNumero($usuario->celular);
-                    }else{
-                        $familia = Familia::find($usuario->familia_id);
-                        $representante = User::find($familia->representante_id);
-                        $correo = $representante->email;
-                        $celular = getLimpiarNumero($representante->celular);
                     }
+
                 }else{
-                    $correo = $usuario->email;
-                    $celular = getLimpiarNumero($usuario->celular);
+                    $correo = $alumno->correo;
+                    $celular = getLimpiarNumero($alumno->celular);
                 }
 
                 if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                    $alumno = Alumno::find($request->id);
+                    
 
                     $pais = Paises::find($academia->pais_id);
                     $msg = $alumno->nombre . ', hemos registrado satisfactoriamente el pago de tus servicios. Gracias.';
@@ -2453,9 +2459,7 @@ class AdministrativoController extends BaseController {
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255|unique:users,email',
         'rol' => 'required'
     ];
 
@@ -2475,11 +2479,6 @@ class AdministrativoController extends BaseController {
         'apellido.max' => 'El máximo de caracteres permitidos son 20',
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo.required' => 'Ups! El Sexo  es requerido ',
-        'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
-        'correo.required' => 'Ups! El correo  es requerido ',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
         'rol.required' => 'Ups! El Rol del representante es requerido ',
     ];
 
@@ -2493,17 +2492,25 @@ class AdministrativoController extends BaseController {
 
     else{
 
-        $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+        if($request->fecha_nacimiento){
 
-        if($edad < 1){
-            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+            $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+            if($edad < 1){
+                return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+            }
+
+            $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
+        }else{
+            $fecha_nacimiento = '';
         }
 
         $nombre = title_case($request->nombre);
         $apellido = title_case($request->apellido);
         $direccion = title_case($request->direccion);
         $correo = strtolower($request->correo);
-        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+        
 
         $alumno = new Alumno;
 
@@ -2532,26 +2539,32 @@ class AdministrativoController extends BaseController {
 
         if($alumno->save()){
 
-            $usuario = new User;
+            if($correo){
 
-            $usuario->academia_id = Auth::user()->academia_id;
-            $usuario->nombre = $nombre;
-            $usuario->apellido = $apellido;
-            $usuario->telefono = $request->telefono;
-            $usuario->celular = $request->celular;
-            $usuario->sexo = $request->sexo;
-            $usuario->email = $correo;
-            $usuario->como_nos_conociste_id = 1;
-            $usuario->direccion = $direccion;
-            // $usuario->confirmation_token = str_random(40);
-            $usuario->password = bcrypt(str_random(8));
-            $usuario->usuario_tipo = 2;
-            $usuario->usuario_id = $alumno->id;
+                $usuario = new User;
 
-            if($usuario->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
+                $usuario->academia_id = Auth::user()->academia_id;
+                $usuario->nombre = $nombre;
+                $usuario->apellido = $apellido;
+                $usuario->telefono = $request->telefono;
+                $usuario->celular = $request->celular;
+                $usuario->sexo = $request->sexo;
+                $usuario->email = $correo;
+                $usuario->como_nos_conociste_id = 1;
+                $usuario->direccion = $direccion;
+                // $usuario->confirmation_token = str_random(40);
+                $usuario->password = bcrypt(str_random(8));
+                $usuario->usuario_tipo = 2;
+                $usuario->usuario_id = $alumno->id;
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                }
+
             }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
             }
       
         }else{

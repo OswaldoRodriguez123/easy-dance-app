@@ -198,7 +198,7 @@
 
                                <div class="col-sm-6">
                                     <div class="form-group fg-line">
-                                    <label for="apellido" id="id-fecha_nacimiento">Fecha de Nacimiento</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="apellido" id="id-fecha_nacimiento">Fecha de Nacimiento</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de nacimiento del participante" title="" data-original-title="Ayuda"></i>
                                             <div class="dtp-container fg-line">
                                             <input name="fecha_nacimiento" id="fecha_nacimiento" class="form-control date-picker" placeholder="Seleciona" type="text">
                                         </div>
@@ -239,7 +239,7 @@
 
                                <div class="col-sm-6">
 
-                               <label for="apellido" id="id-correo">Correo Electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
 
                                     <div class="form-group fg-line ">
                                       <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com">
@@ -630,7 +630,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th style="width:7%"><input style="margin-left:49%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                    <th style="width:7%"><input style="margin-left:2%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="id" data-identifier="true" data-order="desc">#</th>
                                     <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
                                     <th class="text-center" data-column-id="cantidad">Cantidad</th>
@@ -1293,6 +1293,8 @@
                 var datos = $( "#agregar_item" ).serialize(); 
                 limpiarMensaje();
 
+                alumno_id = $("#alumno_id").val();
+
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -1369,9 +1371,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -1605,7 +1607,7 @@
                           ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                           ''+array[0].impuesto+'',
                           ''+formatmoney(parseFloat(array[0].importe_neto))+'',
-                          ''+ ' ' +''
+                          ''+'<i class="zmdi zmdi-delete f-20 p-r-10"></i>'+''
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1689,6 +1691,11 @@
                 $('#alumno_id').selectpicker('refresh');
 
                 $('.modal').modal('hide');
+
+                $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });
              
 
               }else{
@@ -1704,9 +1711,9 @@
           },
           error:function(msj){
             setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
               if(msj.responseJSON.status=="ERROR"){
                 console.log(msj.responseJSON.errores);
                 errores(msj.responseJSON.errores);

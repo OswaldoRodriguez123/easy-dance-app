@@ -293,13 +293,13 @@
         processing: true,
         serverSide: false,
         pageLength: 25, 
-        //bPaginate: false, 
+        bPaginate: false, 
         bFilter:false, 
         bSort:false, 
         bInfo:false,
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
+          $('.dataTables_paginate').hide();
           /*if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }else{
