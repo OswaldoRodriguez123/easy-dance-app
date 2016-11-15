@@ -215,7 +215,7 @@ class CorreoController extends BaseController {
 
         if($correo_informacion->save())
         {
-			if($request->imageBase64){
+			if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
 
 	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
 	                $path = storage_path();

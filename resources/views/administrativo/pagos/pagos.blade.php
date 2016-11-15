@@ -630,7 +630,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th style="width:7%"><input style="margin-left:49%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                    <th style="width:7%"><input style="margin-left:2%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="id" data-identifier="true" data-order="desc">#</th>
                                     <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
                                     <th class="text-center" data-column-id="cantidad">Cantidad</th>
@@ -1605,7 +1605,7 @@
                           ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                           ''+array[0].impuesto+'',
                           ''+formatmoney(parseFloat(array[0].importe_neto))+'',
-                          ''+ ' ' +''
+                          ''+'<i class="zmdi zmdi-delete f-20 p-r-10"></i>'+''
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)

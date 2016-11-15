@@ -58,7 +58,7 @@
 
 <div class="f-18 f-700"> 5. Dinámica </div><br>
 
-<p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantesen una misma sección u hora de clases. </p>
+<p>Usted comprende que el instructor podrá realizar una clase personalizada, con dos partipantes en una misma sección u hora de clases. </p>
 
               
 

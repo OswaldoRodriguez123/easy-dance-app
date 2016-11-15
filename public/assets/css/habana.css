@@ -1789,6 +1789,13 @@ align-items: center;
     color: #fff;
 }
 
+.header_cuadro_alumno_borde_morado{
+    width:100%; 
+    padding:5px; 
+    border: 1px solid #4E1E43;
+    color:#4E1E43
+}
+
 /*.dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0; // remove the gap so it doesn't close

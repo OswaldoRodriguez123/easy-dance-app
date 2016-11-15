@@ -77,7 +77,7 @@
               <div class="pmo-block pmo-contact hidden-xs">
                   
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1); background-color:#4E1E43;color:#fff" class="text-left f-16 f-700">Agendar</div>
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Agendar</div>
                         
                         <div class ="detalle">
                           @if($clases_grupales != 1)
@@ -131,7 +131,7 @@
                     <div class="clearfix p-b-15"></div>
 
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff ">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1); background-color:#4E1E43;color:#fff" class="text-left f-16 f-700">Especiales</div>
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Especiales</div>
 
                         <div class ="detalle">
                           
@@ -169,7 +169,7 @@
                     <div class="clearfix p-b-15"></div>
 
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1);background-color:#4E1E43;color:#fff" class="text-left f-16 f-700">Proximas fecha de pago</div>
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Proximas fecha de pago</div>
 
                        @foreach($proformas as $proforma)
 
@@ -209,7 +209,7 @@
                     <div class="clearfix p-b-15"></div>
 
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                      <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1); background-color:#4E1E43;color:#fff" class="text-left f-16 f-700">Evaluacion / Diagnostico</div>
+                      <div class="text-left f-16 f-700 header_cuadro_alumno_borde_morado">Evaluacion / Diagnostico</div>
 
                        @foreach($alumno_examenes as $examenes)
                         <div class ="detalle">
@@ -402,8 +402,8 @@
 
                     <div class="clearfix p-b-15"></div>
 
-                    <div style="border: 1px solid; background-color:#fff">
-                      <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Consultarle al profesor</div>
+                    <div style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
+                      <div class="header_cuadro_alumno_borde_morado text-center f-16">Consultarle al profesor</div>
 
                       
                       <div class="col-sm-12">

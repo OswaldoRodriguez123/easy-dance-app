@@ -153,7 +153,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,  
-        order: [[4, 'desc'], [5, 'desc']],
+        order: [[4, 'desc'], [5, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($activas)}}" < 25) {
               $('.dataTables_paginate').hide();
