@@ -34,6 +34,57 @@
 
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+
+                    <div class="col-sm-12">
+                      <div class="form-group fg-line ">
+                        <label for="tipo p-t-10" id="id-tipo">Tipo de envio</label> <span class="c-morado f-700 f-16">*</span>
+                        <br><br>
+                        <label class="radio radio-inline m-r-20" style="margin-top:0px">
+                            <input name="tipo" id="todos" value="1" type="radio" checked>
+                            <i class="input-helper"></i>  
+                            Todos los visitantes 
+                        </label>
+                        <label class="radio radio-inline m-r-20 ">
+                            <input name="tipo" id="particular" value="2" type="radio">
+                            <i class="input-helper"></i>  
+                            Particular
+                        </label>
+                        
+                      </div>
+                     <div class="has-error" id="error-tipo">
+                          <span >
+                              <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                           
+                          </span>
+                      </div>
+                   </div>
+
+                  <div class="clearfix p-b-35"></div>
+
+                  <div class="col-sm-12 interesados" style="display: none"> 
+                    <label for="nombre" id="id-visitante_id">Visitante</label> <span class="c-morado f-700 f-16">*</span>
+                    <br><br>
+                      <div class="fg-line">
+                      <div class="select">
+                        <select class="selectpicker" name="visitante_id" id="visitante_id" data-live-search="true">
+
+                          <option value="">Selecciona</option>
+                          @foreach ( $visitantes as $visitante )
+                          <option value = "{{ $visitante['id'] }}">{{ $visitante['nombre'] }} {{ $visitante['apellido'] }} - {{ $visitante['correo'] }}</option>
+                          @endforeach
+                        
+                        </select>
+                      </div>
+                    </div>
+                 <div class="has-error" id="error-visitante_id">
+                      <span >
+                          <small class="help-block error-span" id="error-visitante_id_mensaje" ></small>                                
+                      </span>
+                  </div>
+                  <div class="clearfix p-b-35"></div>
+               </div>
+
+
+
                               <div class="col-sm-12">
                                   <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
 
@@ -54,8 +105,6 @@
                                 <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12">
-
-                                <br><br>
                                  
                                     <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
 
@@ -177,23 +226,23 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($visitante as $visitantes)
-                                <?php $id = $visitantes['id']; ?>
+                            @foreach ($visitantes as $visitante)
+                                <?php $id = $visitante['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> @if($visitantes['cliente'])<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
-                                    <td class="text-center previa">{{$visitantes['fecha_registro']}}</td>
+                                    <td class="text-center previa"> @if($visitante['cliente'])<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
                                     <td class="text-center previa">
-                                    @if($visitantes['sexo']=='F')
+                                    @if($visitante['sexo']=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
                                     <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
 
-                                    <?php $tmp = explode(" ", $visitantes['nombre']);
+                                    <?php $tmp = explode(" ", $visitante['nombre']);
                                     $nombre_visitante = $tmp[0];
 
-                                    $tmp = explode(" ", $visitantes['apellido']);
+                                    $tmp = explode(" ", $visitante['apellido']);
                                     $apellido_visitante= $tmp[0];
 
                                     ?>
@@ -233,6 +282,8 @@
         route_personalizado="{{url('/')}}/correo/personalizadovisitante";
             
         $(document).ready(function(){
+
+          $("#correo_personalizado")[0].reset();
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -277,33 +328,6 @@
                     }
         });
     
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
       });
 
 
@@ -363,6 +387,8 @@
 
                 procesando();
 
+                limpiarMensaje();
+
                 var datos = $( "#correo_personalizado" ).serialize();
                 var html = $('#html-personalizado').summernote('code');
                 var token = $('input:hidden[name=_token]').val();
@@ -412,28 +438,42 @@
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
                           var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nType = 'danger';
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY";                       
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);          
+                        }else if(msj.responseJSON.status=="ERROR-CORREO"){
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                         }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
                         finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
                       }, 1000);
                     }
                 });
                         
             });
+
+      $('input[name=tipo]').change(function() {
+        val = $(this).val();
+
+        if(val == 1)
+        {
+          $(".interesados").hide();
+        }else{
+          $(".interesados").show();
+        }
+    });
+
+      function limpiarMensaje(){
+        var campo = ["visitante_id", "tipo", "url", "imagen", "titulo"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
+      }
 
 
 

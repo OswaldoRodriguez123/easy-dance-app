@@ -26,7 +26,7 @@ class VisitanteController extends BaseController {
     public function index()
     {
 
-        return view('participante.visitante.principal')->with(['visitante' => Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('participante.visitante.principal')->with(['visitantes' => Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     /**
