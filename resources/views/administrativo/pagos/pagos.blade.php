@@ -1293,6 +1293,8 @@
                 var datos = $( "#agregar_item" ).serialize(); 
                 limpiarMensaje();
 
+                alumno_id = $("#alumno_id").val();
+
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -1369,9 +1371,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -1709,9 +1711,9 @@
           },
           error:function(msj){
             setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
               if(msj.responseJSON.status=="ERROR"){
                 console.log(msj.responseJSON.errores);
                 errores(msj.responseJSON.errores);
