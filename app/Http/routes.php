@@ -703,6 +703,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('/asistencia/generar', 'AsistenciaController@generarAsistencia');
 			Route::post('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales_alumno');
+			Route::post('asistencia/consulta/clases-personalizadas', 'AsistenciaController@consulta_clase_personalizadas_alumno');
 			Route::get('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales');
 			Route::post('asistencia/agregar', 'AsistenciaController@store');
 			Route::post('asistencia/agregar/permitir', 'AsistenciaController@storePermitir');
@@ -751,7 +752,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/multihorario/update/dia', 'MultihorarioController@updateDia');
 			Route::put('agendar/multihorario/update/horario', 'MultihorarioController@updateHorario');
 			Route::put('agendar/multihorario/update/estudio', 'MultihorarioController@updateEstudio');
-
+			Route::put('agendar/multihorario/update/etiqueta', 'MultihorarioController@updateEtiqueta');
 			//STAFF
 
 

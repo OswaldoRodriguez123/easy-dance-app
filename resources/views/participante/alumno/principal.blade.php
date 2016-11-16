@@ -77,7 +77,11 @@
                             @foreach ($alumnos as $alumno)
                                 <?php $id = $alumno['id']; ?>
                                 <!-- can('view-alumnos', $alumno) -->
-                                <tr id="row_{{$id}}" class="seleccion" >
+                                @if($alumno['deleted_at'] == null)
+                                    <tr id="row_{{$id}}" class="seleccion" data-tipo = "$alumno['deleted_at']">
+                                @else
+                                    <tr id="row_{{$id}}" class="seleccion seleccion_deleted" data-tipo = "$alumno['deleted_at']">
+                                @endif
                                     <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                     <td class="text-center previa">
@@ -110,7 +114,11 @@
                                     </td>
                                     <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    @if($alumno['deleted_at'] == null)
+                                        <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 </tr>
                                 <!-- endcan -->
                             @endforeach 
@@ -191,11 +199,14 @@
         });
 
         function previa(t){
-
-            var row = $(t).closest('tr').attr('id');
-            var id_alumno = row.split('_');
-            var route =route_detalle+"/"+id_alumno[1];
-            window.location=route;
+            var row = $(t).closest('tr');
+            var tipo = row.data('tipo');
+            if(tipo == ''){
+                var tmp = row.attr('id');
+                var tmp = tmp.split('_');
+                var route =route_detalle+"/"+id_alumno[1];
+                window.location=route;
+            }
         }
 
         

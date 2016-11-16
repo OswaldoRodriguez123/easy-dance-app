@@ -826,8 +826,8 @@
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
                               <span class="f-14"> Rol del representante dentro de la academia </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$familia[0]['deleted_at']}}">
-                               @if($familia[0]['deleted_at']==null)
+                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$familia[0]['tipo']}}">
+                               @if($familia[0]['tipo']==1)
                                   También participa como alumno activo </span>
                                @else
                                   Sólo representante </span>

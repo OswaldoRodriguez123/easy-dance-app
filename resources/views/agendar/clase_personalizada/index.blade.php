@@ -18,6 +18,64 @@
 
 @section('content')
 
+ <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Clase Cancelada <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_clase" id="cancelar_clase"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <div class="modal-body">                           
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="f-15 f-700 span_instructor"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-9">
+                                             
+                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                                            <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                       <hr style="margin-top:5px">
+
+                                       <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelación</label>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" disabled></textarea>
+                                          </div>
+                                      </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
             <a href="{{url('/')}}/agendar/clases-personalizadas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
@@ -131,6 +189,8 @@
         route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
 
         tipo = 'activas';
+
+
             
         $(document).ready(function(){
 
@@ -198,9 +258,22 @@
 			});
         
       function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+row;
-        window.location=route;
+      if(tipo == 'canceladas'){
+          var row = $(t).closest('tr');
+          var fecha = $(row).find('td').eq(4).html();
+          var hora = $(row).find('td').eq(5).html();
+          var instructor = $(row).find('td').eq(3).html();
+          var cancelacion = row.data('cancelacion');
+          $('.span_fecha').text(fecha)
+          $('.span_hora').text(hora)
+          $('.span_instructor').text(instructor)
+          $('#razon_cancelacion').text(cancelacion)
+          $("#modalCancelar" ).modal('show');
+
+          console.log(instructor)
+          // window.location=route;
+
+        }
       }
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
@@ -463,10 +536,10 @@
 
             $.each(finalizadas, function (index, array) {
 
-              if(array.boolean_alumno_aceptacion == 1){
+              if(array.asistencia_id){
                 acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
               }else{
-                acepto = '';
+                acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
               }
 
                 var rowNode=t.row.add( [
@@ -476,7 +549,7 @@
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ''
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -505,6 +578,7 @@
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
+                    .attr('data-cancelacion',array.razon_cancelacion)
                     .addClass('seleccion');
             });
         }

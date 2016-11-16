@@ -193,6 +193,27 @@
                         <br>
                                                               
                         </div>
+
+                            <div class="col-sm-12">
+                               <div class="form-group fg-line ">
+                                  <div class="p-t-10">
+                                  <label class="radio radio-inline m-r-20">
+                                      <input name="tipo" id="clases_grupales" value="clases_grupales" type="radio" checked >
+                                      <i class="input-helper"></i>  
+                                      Clases Grupales <i id="clases_grupales2" name="clases_grupales2" class="icon_a-clases-grupales c-verde f-20"></i>
+                                  </label>
+                                  <label class="radio radio-inline m-r-20">
+                                      <input name="tipo" id="clases_personalizadas" value="clases_personalizadas" type="radio">
+                                      <i class="input-helper"></i>  
+                                      Clases Personalizadas <i id="clases_personalizadas2" name="clases_personalizadas2" class="icon_a-clase-personalizada f-20"></i>
+                                  </label>
+                                  </div>
+                                  
+                               </div>
+                              </div> 
+
+                        <div class="clearfix p-b-15"></div>
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -270,12 +291,17 @@
     <script type="text/javascript">
 
       route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
+      route_consultar_cp="{{url('/')}}/asistencia/consulta/clases-personalizadas";
       route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
       route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
       route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
 
+      var tipo = 1;
+
         $(document).ready(function(){
+
+          $("#clases_grupales").prop("checked", true);
 
             t=$('#tablelistar').DataTable({
             processing: true,
@@ -333,7 +359,11 @@
     });
 
     $("#permitir").on('click',function(){
-      var route = route_agregar_asistencia;
+      if(tipo == 1){
+        var route = route_agregar_asistencia;
+      }else{
+        var route = route_agregar_asistencia_permitir
+      }
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_asistencia" ).serialize(); 
       $.ajax({
@@ -662,7 +692,15 @@
         $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+id_alumno);
 
         $("#asistencia-horario").text("---");
-        var route = route_consultar_cg;
+
+        if(tipo == 1){
+          var route = route_consultar_cg;
+        }else{
+          var route = route_consultar_cp;
+        }
+
+        console.log(route);
+        
         var token = $('input:hidden[name=_token]').val();
         $.ajax({
           url: route,
@@ -671,6 +709,7 @@
           dataType: 'json',
           data: "&id="+id_alumno,
           success:function(respuesta){
+            console.log(respuesta);
             $.each(respuesta.inscripciones, function (index, array) { 
               if(array.diferencia > 1){
                 restan = 'Restan '
@@ -679,7 +718,12 @@
                 restan = 'Resta '
                 dias = ' dia'
               }
-              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia)
+              if(array.fecha_pago){
+                $('#clases_grupales_alumno').append(' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
+              }else{
+                $('#clases_grupales_alumno').append('</p>')
+              }
             });
             
             $('#asistencia-clase_grupal_id').empty();        
@@ -913,6 +957,18 @@
         }
 
     }
+
+     $("#clases_grupales").click(function(){
+          $( "#clases_personalizadas2" ).removeClass( "c-verde" );
+          $( "#clases_grupales2" ).addClass( "c-verde" );
+          tipo = 1;
+      });
+
+      $("#clases_personalizadas").click(function(){
+          $( "#clases_grupales2" ).removeClass( "c-verde" );
+          $( "#clases_personalizadas2" ).addClass( "c-verde" );
+          tipo = 2;
+      });
 
     </script>
 

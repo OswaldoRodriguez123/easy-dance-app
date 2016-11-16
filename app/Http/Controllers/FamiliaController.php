@@ -48,7 +48,7 @@ class FamiliaController extends BaseController {
 
         foreach($familias as $familia){
 
-            $total = Alumno::where('familia_id', '=' ,  $familia->id)->count();
+            $total = Alumno::where('familia_id', '=' ,  $familia->id)->where('tipo', 1)->count();
             $collection=collect($familia);     
             $familia_array = $collection->toArray();
             
@@ -238,7 +238,7 @@ class FamiliaController extends BaseController {
 
                 if($request->rol == "0"){
 
-                    $alumno->deleted_at = Carbon::now();
+                    $alumno->tipo = 2;
                     $alumno->save();
 
                 }

@@ -35,7 +35,7 @@
                                                               
                         </div>
 
-                        <div class="col-sm-5">
+                        <div class="col-sm-12">
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">

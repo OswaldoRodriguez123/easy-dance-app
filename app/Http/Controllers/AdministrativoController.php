@@ -2533,7 +2533,7 @@ class AdministrativoController extends BaseController {
 
         if($request->rol == "0"){
 
-            $alumno->deleted_at = Carbon::now();
+            $alumno->tipo = 2;
 
         }
 

@@ -1802,3 +1802,26 @@ align-items: center;
  }
 */
 
+.seleccion_deleted{
+  /*background: rgba(78,30,67,0.3) !important;  
+  cursor:pointer;
+  color: #4E1E43;
+  font-weight: bold; */
+/*  
+  background: rgba(151,82,135,0.1) !important;  */
+  cursor:not-allowed;
+  color: #C0C0C0;
+}
+
+.seleccion_deleted:hover{
+  /*background: rgba(78,30,67,0.3) !important;  
+  cursor:pointer;
+  color: #4E1E43;
+  font-weight: bold; */
+  
+  background: rgba(151,82,135,0.1) !important;  
+  cursor:not-allowed;
+  color: #4E1E43;
+  font-weight: bold; 
+}
+

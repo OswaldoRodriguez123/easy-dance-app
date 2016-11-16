@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -14,6 +15,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 @stop
 @section('content')
 
@@ -213,6 +215,35 @@
                               </div>
 
                               <div class="clearfix p-b-15"></div>
+
+                              <div class="col-sm-2 text-center">
+                                    <div class="cp-container">
+                                        <span id="id-color_etiqueta" class="f-16 c-morado">Color de etiqueta</span>
+
+                                        <div class="input-group form-group">
+
+                                        <br>
+
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="#de87b4"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            <div class="clearfix p-b-15"></div>
+
 
                             <div class="card-header text-left">
                                 <button type="button" class="btn btn-blanco m-r-10 f-12 guardar" id="add" >Agregar Linea</button>

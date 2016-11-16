@@ -380,7 +380,7 @@ class MultihorarioController extends BaseController
                
 
 
-                $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon]);
+                $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta]);
 
 
                 Session::push('horarios', $array);
@@ -470,6 +470,7 @@ class MultihorarioController extends BaseController
                     $horario_clase_grupal->instructor_id=$horario['instructor'];
                     $horario_clase_grupal->especialidad_id=$horario['especialidad'];
                     $horario_clase_grupal->estudio_id=$horario['estudio'];
+                    $horario_clase_grupal->color_etiqueta=$horario['color_etiqueta'];
                     $horario_clase_grupal->clase_grupal_id=$request->id;
 
                     $horario_clase_grupal->save();
@@ -492,7 +493,7 @@ class MultihorarioController extends BaseController
             ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.id' , 'horario_clase_grupales.fecha', 'clases_grupales.id as clase_grupal_id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.id' , 'horario_clase_grupales.fecha', 'clases_grupales.id as clase_grupal_id', 'horario_clase_grupales.color_etiqueta')
             ->where('horario_clase_grupales.id', '=', $id)
         ->first();
 
@@ -591,6 +592,17 @@ class MultihorarioController extends BaseController
     public function updateEstudio(Request $request){
         $clasegrupal = HorarioClaseGrupal::find($request->id);
         $clasegrupal->estudio_id = $request->estudio_id;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateEtiqueta(Request $request){
+        $clasegrupal = HorarioClaseGrupal::find($request->id);
+        $clasegrupal->color_etiqueta = $request->color_etiqueta;
 
         if($clasegrupal->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

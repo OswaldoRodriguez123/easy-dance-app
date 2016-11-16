@@ -62,7 +62,7 @@ class AlumnoController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->where('tipo', 1)->get();
 
         $array = array();
 
@@ -846,10 +846,10 @@ class AlumnoController extends BaseController
         $alumno = Alumno::withTrashed()->find($request->id);
 
         if($request->rol == 0){
-            $alumno->deleted_at = Carbon::now();
+            $alumno->tipo = 2;
         }
         else{
-            $alumno->deleted_at = null;
+            $alumno->tipo = 1;
         }
         
         // return redirect("alumno/edit/{$request->id}");

@@ -73,7 +73,7 @@ class AgendarController extends BaseController
             $horarios_clasegrupal = DB::table('config_clases_grupales')
                     ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                     ->join('horario_clase_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
-                    ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id')
+                    ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id')
                     ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('horario_clase_grupales.deleted_at', '=', null)
             ->get();
@@ -86,7 +86,11 @@ class AgendarController extends BaseController
         		$descripcion=$clase->descripcion;
         		$hora_inicio=$clase->hora_inicio;
         		$hora_final=$clase->hora_final;
-        		$etiqueta=$clase->color_etiqueta;
+                if($clase->color_etiqueta){
+                    $etiqueta=$clase->color_etiqueta;
+                }else{
+                    $etiqueta=$clase->clase_etiqueta;
+                }
 
         		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 

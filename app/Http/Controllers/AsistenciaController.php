@@ -24,6 +24,10 @@ use App\Alumno;
 
 use App\HorarioClaseGrupal;
 
+use App\InscripcionClasePersonalizada;
+
+use App\ClasePersonalizada;
+
 use App\PagoInstructor;
 
 use Carbon\Carbon;
@@ -52,6 +56,15 @@ class AsistenciaController extends BaseController
             ->join('academias', 'asistencias.academia_id', '=', 'academias.id')
             ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id', 'asistencias.id')
             ->where('academias.id','=',Auth::user()->academia_id)
+        ->get();
+
+        $clases_personalizadas = DB::table('alumnos')
+            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->join('inscripcion_clase_personalizada', 'asistencias.tipo_id', '=', 'inscripcion_clase_personalizada.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->select('asistencias.fecha', 'asistencias.hora', 'clases_personalizadas.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.id', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
+            ->where('clases_personalizadas.academia_id','=',Auth::user()->academia_id)
         ->get();
 
         $instructores = DB::table('asistencias_instructor')
@@ -90,6 +103,12 @@ class AsistenciaController extends BaseController
             $asistencia_array['apellido_instructor']=$instructor->apellido;
             $array[$asistencia->id] = $asistencia_array;
           }
+        }
+
+        foreach($clases_personalizadas as $asistencia){
+          $collection=collect($asistencia);     
+          $asistencia_array = $collection->toArray();
+          $array[$asistencia->id] = $asistencia_array;
         }
 
 
@@ -412,6 +431,106 @@ class AsistenciaController extends BaseController
 
     	//return ['talleres' => $arrayTalleres];
     	
+    }
+
+    public function consulta_clase_personalizadas_alumno(Request $request)
+    {
+      
+
+    $inscripciones = DB::table('inscripcion_clase_personalizada')
+      ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+      ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+      ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+      ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
+      ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
+      ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
+      ->where('inscripcion_clase_personalizada.estatus','=', 1)
+    ->get();
+
+      $array = array();
+
+      foreach($inscripciones as $inscripcion){
+
+      $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
+      
+        $i = $fecha->dayOfWeek;
+
+        if($i == 1){
+
+          $dia = 'Lunes';
+
+        }else if($i == 2){
+
+          $dia = 'Martes';
+
+        }else if($i == 3){
+
+          $dia = 'Miercoles';
+
+        }else if($i == 4){
+
+          $dia = 'Jueves';
+
+        }else if($i == 5){
+
+          $dia = 'Viernes';
+
+        }else if($i == 6){
+
+          $dia = 'Sabado';
+
+        }else if($i == 0){
+
+          $dia = 'Domingo';
+
+        }
+
+        $collection=collect($inscripcion);     
+        $inscripcion_array = $collection->toArray();
+            
+        $inscripcion_array['dia']=$dia;
+        $array[$inscripcion->id] = $inscripcion_array;
+      }
+  
+      $arrayClases=array();
+
+      $fechaActual = Carbon::now();
+      $geoip = new GeoIP();
+      $geoip->setIp($request->ip());
+      $fechaActual->tz = $geoip->getTimezone();
+      $diaActual = $fechaActual;
+
+      $collection = collect($inscripciones);
+
+      foreach ($inscripciones as $grupal) {
+
+        $fecha_start=explode('-',$grupal->fecha_inicio);
+        $fecha_end=explode('-',$grupal->fecha_inicio);
+        $id=$grupal->id;
+        $nombre=$grupal->nombre;
+        $descripcion=$grupal->descripcion;
+        $hora_inicio=$grupal->hora_inicio;
+        $hora_final=$grupal->hora_final;
+        $etiqueta=$grupal->color_etiqueta;
+        $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
+
+
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
+        $dia_de_semana = $fecha_inicio;
+
+        if($diaActual==$dia_de_semana){       
+
+          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_inicio, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 3, 'tipo_id' => $id);
+
+        }
+        
+    }
+        
+
+    $deuda=$this->deuda($request->id);
+
+    return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 'inscripciones' => $array, 200]);
+      
     }
 
 
