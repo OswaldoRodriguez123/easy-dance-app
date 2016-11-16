@@ -185,8 +185,10 @@
                     <div class="card">
                         <div class="card-header">
 
+                        <div class="pull-right">
+                          <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button> <span class="f-14 p-t-20 text-success"><i class="p-l-5 zmdi zmdi-arrow-left zmdi-hc-fw f-16 "></i> Ver listado</span>
 
-                        <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:2%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
+                        </div>
 
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-shield-check zmdi-hc-fw f-25"></i> Registro de asistencia</p>
                         <hr class="linea-morada">
