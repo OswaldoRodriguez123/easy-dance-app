@@ -528,6 +528,10 @@ class AcademiaConfiguracionController extends BaseController {
 	 * @return Response
 	 */
 
+    public function updateReferido(){
+
+    }
+
     public function error(){
         return view('errors.error_sistema');
     }

@@ -760,6 +760,73 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalReferir-Academia" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                      <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Academia<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                    </div>
+                    <form name="edit_referido_academia" id="edit_referido_academia">
+                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="modal-body">                           
+                          <div class="row p-t-20 p-b-0">
+                            <div class="col-sm-12">
+                              <div class="form-group fg-line">
+                                <label for="id">Beneficios de referidos</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="escriba cuantos puntos ganaran los alumnos registrados en la academia y aquellos que se registraran con un codigo de referencia" title="" data-original-title="Ayuda"></i>
+                                <div class="clearfix p-b-35"></div>
+                                  <label for="propietario" id="id-propietario">alumno registrado</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno registrado cuando una persona sin registrar use su codigo" title="" data-original-title="Ayuda"></i>
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
+                                    <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="propietario" id="propietario" placeholder="Ej. 10000">
+                                    </div>
+                                  </div>
+                                  <div class="has-error" id="error-propietario">
+                                    <span >
+                                      <small class="help-block error-span" id="error-propietario_mensaje"></small>
+                                    </span>
+                                  </div>
+                                  <div class="clearfix p-b-35"></div>
+                                  <label for="sin_registrar" id="id-sin_registrar">alumno sin registrar</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno que se va a registrar el cual gfue referido por alguien y usara su codigo" title="" data-original-title="Ayuda"></i>
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
+                                    <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="sin_registrar" id="sin_registrar" placeholder="Ej. 5000">
+                                    </div>
+                                  </div>
+                                  <div class="has-error" id="error-sin_registrar">
+                                    <span >
+                                      <small class="help-block error-span" id="error-sin_registrar_mensaje"></small>
+                                    </span>
+                                  </div>
+                                </div>
+                                <br>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="clearfix p-b-35"></div>
+                        <div class="clearfix"></div> 
+                        <div class="modal-footer p-b-20 m-b-20">
+                          <div class="col-sm-12 text-left">
+                            <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                <svg class="pl-circular" viewBox="25 25 50 50">
+                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12">                            
+                            <a class="btn-blanco m-r-5 f-12 dismiss" href="#" id="dismiss" name="dismiss" data-formulario="edit_referido_academia" data-update="referido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                            <div class="clearfix p-b-35"></div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
 
             <section id="content">
                 <div class="container">
@@ -876,7 +943,15 @@
                                <span class="f-14"> Niveles de baile </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr> 
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalReferir-Academia">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="icon_a-niveles f-22"></i> </span>
+                               <span class="f-14"> Beneficios por referir </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="academia-administrativo"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                            </table>
                           </div>
                           

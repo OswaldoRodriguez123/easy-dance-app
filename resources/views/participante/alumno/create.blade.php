@@ -72,7 +72,7 @@
                                   </div>
                                </div>
                                <div class="clearfix p-b-35"></div>
-                              <div class="col-sm-12">
+                               <div class="col-sm-12">
                                  
                                     <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante" title="" data-original-title="Ayuda"></i>
 
@@ -149,6 +149,23 @@
                                       </span>
                                   </div>
                                </div>
+                               <div class="clearfix p-b-35"></div>
+                               <div class="col-sm-12">
+                                    <label for="codigo" id="id-codigo">codigo de referencia</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el codigo del alumno que te informo de nosotros para obtener beneficios" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm proceso" name="codigo" id="codigo" placeholder="Ej. Valeria" value="">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-codigo">
+                                      <span>
+                                          <small class="help-block error-span" id="error-codigo_mensaje" ></small>
+                                      </span>
+                                  </div>
+                               </div>
+
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
@@ -618,7 +635,7 @@
                       setTimeout(function(){ 
 
                         if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
+                          //window.location = "{{url('/')}}/error";
                         }
 
                         if(msj.responseJSON.status=="ERROR"){

@@ -186,6 +186,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
 			Route::post('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
 			Route::put('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
+			Route::put('configuracion/academia/update/referido', 'AcademiaConfiguracionController@updateReferido');
 
 			// PRODUCTOS
 
