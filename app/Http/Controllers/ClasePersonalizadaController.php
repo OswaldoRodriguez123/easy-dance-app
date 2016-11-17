@@ -46,24 +46,28 @@ class ClasePersonalizadaController extends BaseController {
         $geoip->setIp($request->ip());
         $fechaActual->tz = $geoip->getTimezone();
 
-        $activas = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-                ->where('academia_id', Auth::user()->academia_id)
+        $activas = ClasePersonalizada::join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+                ->where('clases_personalizadas.academia_id', Auth::user()->academia_id)
+                ->where('inscripcion_clase_personalizada.estatus', 1)
         ->get();
+
 
         foreach($activas as $activa){
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $activa->fecha_inicio);
-            if($fecha_inicio <= Carbon::now()->format('Y-m-d')){
+            if($fecha_inicio <= $fechaActual->format('Y-m-d')){
 
-                if($fecha_inicio < Carbon::now()->format('Y-m-d')){
-                    $activa->estatus = '2';
-                    $activa->save();
+                if($fecha_inicio < $fechaActual->format('Y-m-d')){
+                    $clase_personalizada = InscripcionClasePersonalizada::find($activa->id);
+                    $clase_personalizada->estatus = 2;
+                    $clase_personalizada->save();
                 }else{
 
                     $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
 
-                    if($hora_final <= Carbon::now()->format('H:i:s')){
-                        $activa->estatus = '2';
-                        $activa->save();
+                    if($hora_final <= $fechaActual->format('H:i:s')){
+                        $clase_personalizada = InscripcionClasePersonalizada::find($activa->id);
+                        $clase_personalizada->estatus = 2;
+                        $clase_personalizada->save();
                     }
 
                 }
