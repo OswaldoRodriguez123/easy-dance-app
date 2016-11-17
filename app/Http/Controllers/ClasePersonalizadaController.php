@@ -52,16 +52,16 @@ class ClasePersonalizadaController extends BaseController {
 
         foreach($activas as $activa){
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $activa->fecha_inicio);
-            if($fecha_inicio <= $fechaActual->format('Y-m-d')){
+            if($fecha_inicio <= Carbon::now()->format('Y-m-d')){
 
-                if($fecha_inicio < $fechaActual->format('Y-m-d')){
+                if($fecha_inicio < Carbon::now()->format('Y-m-d')){
                     $activa->estatus = '2';
                     $activa->save();
                 }else{
 
                     $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
 
-                    if($hora_final <= $fechaActual->format('H:i:s')){
+                    if($hora_final <= Carbon::now()->format('H:i:s')){
                         $activa->estatus = '2';
                         $activa->save();
                     }
