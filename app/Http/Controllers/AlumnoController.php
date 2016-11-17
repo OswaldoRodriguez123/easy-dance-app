@@ -201,6 +201,17 @@ class AlumnoController extends BaseController
 
         $correo = strtolower($request->correo);
 
+        if($request->codigo)
+        {
+            $referido=Alumno::where('codigo_referido', $request->codigo)->get();
+            if($referido){
+                $remuneracion = new AlumnoRemuneracion;
+                $remuneracion->alumno_id = $referido[0]['id'];
+                $remuneracion->remuneracion = 20000;
+                $remuneracion->save();
+            }
+        }
+
         if($request->telefono)
         {
             $telefono = $request->telefono;
@@ -232,6 +243,11 @@ class AlumnoController extends BaseController
         $alumno->cefalea = $request->cefalea;
         $alumno->hipertension = $request->hipertension;
         $alumno->lesiones = $request->lesiones;
+        do{
+            $codigo_referido = str_random(8);
+            $find = Alumno::where('codigo_referido', $codigo_referido)->first();
+        }while ($find);
+        $alumno->codigo_referido = $codigo_referido;
 
         if($alumno->save()){
 

@@ -12,12 +12,6 @@ use App\Codigo;
 
 class ValidacionController extends BaseController {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-
     public function principal()
     {
 
