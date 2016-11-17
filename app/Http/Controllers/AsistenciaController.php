@@ -447,6 +447,8 @@ class AsistenciaController extends BaseController
       ->where('inscripcion_clase_personalizada.estatus','=', 1)
     ->get();
 
+
+
       $array = array();
 
       foreach($inscripciones as $inscripcion){
@@ -498,7 +500,6 @@ class AsistenciaController extends BaseController
       $geoip = new GeoIP();
       $geoip->setIp($request->ip());
       $fechaActual->tz = $geoip->getTimezone();
-      $diaActual = $fechaActual;
 
       $collection = collect($inscripciones);
 
@@ -515,10 +516,9 @@ class AsistenciaController extends BaseController
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
 
-        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
-        $dia_de_semana = $fecha_inicio;
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio)->format('Y-m-d');
 
-        if($diaActual==$dia_de_semana){       
+        if($fechaActual->format('Y-m-d')==$fecha_inicio){       
 
           $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_inicio, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 3, 'tipo_id' => $id);
 
@@ -690,9 +690,20 @@ class AsistenciaController extends BaseController
                 $asistencia->tipo = $clase_id[2];
                 $asistencia->tipo_id = $clase_id[3];
 
-                $asistencia->save();
+                if($asistencia->save()){
 
-                return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+                  if($clase_id[2] == '3'){
+                    $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
+                    $clase_personalizada->estatus = '2';
+                    $clase_personalizada->save();
+                    
+                  }
+
+                  return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                }
               
        }
 

@@ -188,6 +188,11 @@
         route_operacion="{{url('/')}}/agendar/clases-personalizadas/operaciones"
         route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
 
+        var finalizadas = <?php echo json_encode($finalizadas);?>;
+        var activas = <?php echo json_encode($activas);?>;
+        var canceladas = <?php echo json_encode($canceladas);?>;
+        var asistencias = <?php echo json_encode($asistencias);?>;
+
         tipo = 'activas';
 
 
@@ -270,7 +275,6 @@
           $('#razon_cancelacion').text(cancelacion)
           $("#modalCancelar" ).modal('show');
 
-          console.log(instructor)
           // window.location=route;
 
         }
@@ -492,7 +496,6 @@
 
          $('input[name="tipo"]').on('change', function(){
             clear();
-            console.log($(this).val());
             if ($(this).val()=='activas') {
                   tipo = 'activas';
                   rechargeActivas();
@@ -506,7 +509,6 @@
          });
 
          function rechargeActivas(){
-            var activas = <?php echo json_encode($activas);?>;
 
             $.each(activas, function (index, array) {
 
@@ -532,11 +534,10 @@
         }
 
         function rechargeFinalizadas(){
-            var finalizadas = <?php echo json_encode($finalizadas);?>;
 
             $.each(finalizadas, function (index, array) {
 
-              if(array.asistencia_id){
+              if(asistencias[array.id]){
                 acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
               }else{
                 acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
@@ -558,8 +559,7 @@
         }
 
         function rechargeCanceladas(){
-            var canceladas = <?php echo json_encode($canceladas);?>;
-
+    
             $.each(canceladas, function (index, array) {
 
                 if(array.boolean_alumno_aceptacion == 1){
