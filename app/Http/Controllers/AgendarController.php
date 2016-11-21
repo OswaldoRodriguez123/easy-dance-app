@@ -163,7 +163,7 @@ class AgendarController extends BaseController
 
         	foreach ($clasespersonalizadas as $clasepersonalizada) {
         		$fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
-        		$fecha_end=explode('-',$clasepersonalizada->fecha_final);
+        		$fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
         		$id=$clasepersonalizada->id;
         		$nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
         		$descripcion=$config_clases_personalizadas->descripcion;
@@ -190,7 +190,7 @@ class AgendarController extends BaseController
 
             foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
                 $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
-                $fecha_end=explode('-',$clasepersonalizada->fecha_final);
+                $fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
                 $id=$clasepersonalizada->id;
                 $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
                 $descripcion=$config_clases_personalizadas->descripcion;
