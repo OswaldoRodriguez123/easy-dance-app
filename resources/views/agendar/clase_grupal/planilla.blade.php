@@ -1418,7 +1418,7 @@
     route_principal="{{url('/')}}/agendar/clases-grupales";
     route_progreso="{{url('/')}}/agendar/clases-grupales/progreso/";
     route_trasladar="{{url('/')}}/agendar/clases-grupales/trasladar";
-    route_detalle="{{url('/')}}/agendar/multihorario/detalle";
+    route_detalle="{{url('/')}}/agendar/clases-grupales/multihorario/detalle";
 
     $(document).ready(function(){
 

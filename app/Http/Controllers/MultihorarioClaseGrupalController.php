@@ -17,7 +17,7 @@ use Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class MultihorarioController extends BaseController
+class MultihorarioClaseGrupalController extends BaseController
 {
 
 
@@ -138,7 +138,7 @@ class MultihorarioController extends BaseController
         // }
 
         return view(
-        	'agendar.multihorario.multihorario', 
+        	'agendar.clase_grupal.multihorario.multihorario', 
         	compact('id','clasegrupal',
         		    'dias_de_semana',
         		    'config_especialidades',
@@ -533,7 +533,7 @@ class MultihorarioController extends BaseController
 
             }
 
-            return view('agendar.multihorario.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'dia_de_semana' => $dia]);
+            return view('agendar.clase_grupal.multihorario.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'dia_de_semana' => $dia]);
 
         }else{
            return redirect("agendar/clases-grupales"); 

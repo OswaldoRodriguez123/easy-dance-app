@@ -18,6 +18,7 @@ use App\ItemsFacturaProforma;
 use App\InscripcionClasePersonalizada;
 use App\User;
 use App\Asistencia;
+use App\HorarioClasePersonalizada;
 use Mail;
 use Validator;
 use DB;
@@ -509,12 +510,12 @@ class ClasePersonalizadaController extends BaseController {
     $request->merge(array('fecha_inicio' => trim($request->fecha_inicio)));
 
     $rules = [
-        'fecha_inicio' => 'required',
+        'fecha' => 'required',
     ];
 
     $messages = [
 
-        'fecha_inicio.required' => 'Ups! La fecha es requerida',
+        'fecha.required' => 'Ups! La fecha es requerida',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -527,7 +528,10 @@ class ClasePersonalizadaController extends BaseController {
 
     else{
 
-            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio);
+            $fecha = explode(" - ", $request->fecha);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
             if($fecha_inicio < Carbon::now()){
 
@@ -537,8 +541,10 @@ class ClasePersonalizadaController extends BaseController {
             $clasepersonalizada = InscripcionClasePersonalizada::find($request->id);
 
             $fecha_inicio = $fecha_inicio->toDateString();
+            $fecha_final = $fecha_final->toDateString();
 
             $clasepersonalizada->fecha_inicio = $fecha_inicio;
+            $clasepersonalizada->fecha_final = $fecha_final;
 
             if($clasepersonalizada->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -681,7 +687,102 @@ class ClasePersonalizadaController extends BaseController {
                 $cancelacion = 'Cancelación Temprana';
             }
 
-            return view('agendar.clase_personalizada.planilla')->with(['clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $clase_personalizada_join]);
+            $horario_clase_grupal=HorarioClasePersonalizada::where('clase_personalizada_id',$id)
+            ->join('config_especialidades', 
+                'horarios_clases_personalizadas.especialidad_id',
+                '=', 
+                'config_especialidades.id'
+                )
+            ->join('instructores', 
+                'horarios_clases_personalizadas.instructor_id',
+                '=',
+                'instructores.id'
+                 )
+            ->join('config_estudios', 
+                'horarios_clases_personalizadas.estudio_id',
+                '=',
+                'config_estudios.id'
+                 )
+            ->select('horarios_clases_personalizadas.*', 
+                'instructores.nombre as instructor_nombre',
+                'instructores.apellido as instructor_apellido',
+                'config_especialidades.nombre as especialidad_nombre', 
+                'config_estudios.nombre as estudio_nombre'
+                 )
+            ->get();
+
+        $arrayHorario= array();
+
+        foreach ($horario_clase_grupal as $horario) {
+            $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
+            $especialidad=$horario->especialidad_nombre;
+            $estudio = $horario->estudio_nombre;
+            $fecha=$horario->fecha;
+            $hora_inicio=$horario->hora_inicio;
+            $hora_final=$horario->hora_final;
+            $id_horario=$horario->id;
+
+            $fc=explode('-',$fecha);
+            $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
+            $dia_curso = $fecha_curso->format('l');
+
+            $dia_de_semana="";
+
+            $dia_curso=strtoupper($dia_curso);
+
+            if($dia_curso=="SUNDAY")
+            {
+                $dia="6";
+                $dia_de_semana="Domingo";
+            }
+            elseif($dia_curso=="MONDAY")
+            {
+                $dia="0";
+                $dia_de_semana="Lunes";
+            }
+            elseif($dia_curso=="TUESDAY")
+            {
+                $dia="1";
+                $dia_de_semana="Martes";
+
+            }
+            elseif($dia_curso=="WEDNESDAY")
+            {
+                $dia="2";
+                $dia_de_semana="Míercoles";                
+            }
+            elseif($dia_curso=="THURSDAY")
+            {
+                $dia="3";
+                $dia_de_semana="Jueves";                
+            }
+            elseif($dia_curso=="FRIDAY")
+            {
+                $dia="4";
+                $dia_de_semana="Viernes";
+            }
+            elseif($dia_curso=="SATURDAY")
+            {
+                $dia="5";
+                $dia_de_semana="Sábado";
+            }
+
+            $arrayHorario[$id_horario] = array(
+                    'instructor' => $instructor,
+                    'dia_de_semana' => $dia_de_semana,
+                    'new_dia_de_semama'=>$dia_curso,
+                    'especialidad' => $especialidad,
+                    'estudio' => $estudio,
+                    'hora_inicio' => $hora_inicio,
+                    'new_hora_inicio' => $hora_inicio,
+                    'hora_final' => $hora_final,
+                    'new_hora_final' => $hora_final,
+                    'fecha'=> $fecha,
+                    'id'=>$id_horario
+            );
+        }
+
+            return view('agendar.clase_personalizada.planilla')->with(['clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $clase_personalizada_join, 'arrayHorario' => $arrayHorario]);
 
         }else{
            return redirect("agendar/clases-personalizadas"); 
@@ -706,7 +807,7 @@ class ClasePersonalizadaController extends BaseController {
 
         'clase_personalizada_id' => 'required',
         'alumno_id' => 'required',
-        'fecha_inicio' => 'required',
+        'fecha' => 'required',
         'hora_inicio' => 'required',
         'hora_final' => 'required',
         'especialidad_id' => 'required',
@@ -718,7 +819,7 @@ class ClasePersonalizadaController extends BaseController {
     $messages = [
         'clase_personalizada_id.required' => 'Ups! El Nombre es requerido',
         'alumno_id.required' => 'Ups! El Alumno es requerido',
-        'fecha_inicio.required' => 'Ups! La fecha es requerida',
+        'fecha.required' => 'Ups! La fecha es requerida',
         'instructor_id.required' => 'Ups! El instructor es requerido',
         'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
         'hora_final.required' => 'Ups! La hora final es requerida',
@@ -738,7 +839,10 @@ class ClasePersonalizadaController extends BaseController {
 
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio);
+        $fecha = explode(" - ", $request->fecha);
+
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
         if($hora_inicio > $hora_final)
         {
@@ -754,10 +858,11 @@ class ClasePersonalizadaController extends BaseController {
         $clasepersonalizada = new InscripcionClasePersonalizada;
         
         $fecha_inicio = $fecha_inicio->toDateString();
+        $fecha_final = $fecha_final->toDateString();
 
         $clasepersonalizada->clase_personalizada_id =  $request->clase_personalizada_id;
         $clasepersonalizada->fecha_inicio = $fecha_inicio;
-        $clasepersonalizada->fecha_final = $fecha_inicio;
+        $clasepersonalizada->fecha_final = $fecha_final;
         $clasepersonalizada->instructor_id = $request->instructor_id;
         $clasepersonalizada->hora_inicio = $request->hora_inicio;
         $clasepersonalizada->hora_final = $request->hora_final;

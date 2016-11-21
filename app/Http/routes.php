@@ -256,7 +256,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('configuracion/clases-personalizadas/configurar', 'ConfigClasePersonalizadaController@configuracion');
 			Route::get('configuracion/clases-personalizadas/participantes/{id}', 'ConfigClasePersonalizadaController@participantes');
-			Route::post('configuracion/clases-personalizadas/inscribir', 'ConfigClasePersonalizadaController@storeInscripcion');
+
 
 			// COREOGRAFIA
 
@@ -504,8 +504,25 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');
 
+
+			//MULTIHORARIO CLASES GRUPALES
+
+			Route::get('agendar/clases-grupales/multihorario/{id}', 'MultihorarioClaseGrupalController@principal');
+			Route::post('agendar/clases-grupales/multihorario/agregarhorario', 'MultihorarioClaseGrupalController@agregar');
+			Route::post('agendar/clases-grupales/multihorario/eliminarhorario/{id}', 'MultihorarioClaseGrupalController@eliminar');
+			Route::post('agendar/clases-grupales/multihorario/cancelarhorarios', 'MultihorarioClaseGrupalController@CancelarHorarios');
+			Route::post('agendar/clases-grupales/multihorario/guardarhorarios', 'MultihorarioClaseGrupalController@GuardarHorarios');
+			Route::get('agendar/clases-grupales/multihorario/detalle/{id}', 'MultihorarioClaseGrupalController@edit');
+			Route::put('agendar/clases-grupales/multihorario/update/especialidad', 'MultihorarioClaseGrupalController@updateEspecialidad');
+			Route::put('agendar/clases-grupales/multihorario/update/instructor', 'MultihorarioClaseGrupalController@updateInstructor');
+			Route::put('agendar/clases-grupales/multihorario/update/dia', 'MultihorarioClaseGrupalController@updateDia');
+			Route::put('agendar/clases-grupales/multihorario/update/horario', 'MultihorarioClaseGrupalController@updateHorario');
+			Route::put('agendar/clases-grupales/multihorario/update/estudio', 'MultihorarioClaseGrupalController@updateEstudio');
+			Route::put('agendar/clases-grupales/multihorario/update/etiqueta', 'MultihorarioClaseGrupalController@updateEtiqueta');
+
 			//CLASES PERSONALIZADAS
 
+			Route::post('agendar/clases-personalizadas/inscribir', 'ClasePersonalizadaController@storeInscripcion');
 			Route::get('agendar/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');
 			Route::get('agendar/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
 			Route::delete('agendar/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
@@ -516,6 +533,21 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/clases-personalizadas/update/especialidad', 'ClasePersonalizadaController@updateEspecialidad');
 			Route::put('agendar/clases-personalizadas/update/instructor', 'ClasePersonalizadaController@updateInstructor');
 			Route::put('agendar/clases-personalizadas/update/horario', 'ClasePersonalizadaController@updateHorario');
+
+			//MULTIHORARIO CLASES GRUPALES
+
+			Route::get('agendar/clases-personalizadas/multihorario/{id}', 'MultihorarioClasePersonalizadaController@principal');
+			Route::post('agendar/clases-personalizadas/multihorario/agregarhorario', 'MultihorarioClasePersonalizadaController@agregar');
+			Route::post('agendar/clases-personalizadas/multihorario/eliminarhorario/{id}', 'MultihorarioClasePersonalizadaController@eliminar');
+			Route::post('agendar/clases-personalizadas/multihorario/cancelarhorarios', 'MultihorarioClasePersonalizadaController@CancelarHorarios');
+			Route::post('agendar/clases-personalizadas/multihorario/guardarhorarios', 'MultihorarioClasePersonalizadaController@GuardarHorarios');
+			Route::get('agendar/clases-personalizadas/multihorario/detalle/{id}', 'MultihorarioClasePersonalizadaController@edit');
+			Route::put('agendar/clases-personalizadas/multihorario/update/especialidad', 'MultihorarioClasePersonalizadaController@updateEspecialidad');
+			Route::put('agendar/clases-personalizadas/multihorario/update/instructor', 'MultihorarioClasePersonalizadaController@updateInstructor');
+			Route::put('agendar/clases-personalizadas/multihorario/update/dia', 'MultihorarioClasePersonalizadaController@updateDia');
+			Route::put('agendar/clases-personalizadas/multihorario/update/horario', 'MultihorarioClasePersonalizadaController@updateHorario');
+			Route::put('agendar/clases-personalizadas/multihorario/update/estudio', 'MultihorarioClasePersonalizadaController@updateEstudio');
+			Route::put('agendar/clases-personalizadas/multihorario/update/etiqueta', 'MultihorarioClasePersonalizadaController@updateEtiqueta');
 
 
 			//TALLERES
@@ -668,7 +700,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('participante/alumno/enhorabuena/{id}', 'AlumnoController@enhorabuena');
 
 			Route::get('agendar/clases-grupales/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
-			Route::get('configuracion/clases-personalizadas/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
+			Route::get('agendar/clases-personalizadas/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 			Route::get('agendar/talleres/enhorabuena/{id}', 'ClaseGrupalController@enhorabuena');
 
 
@@ -731,29 +763,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//Route::get('/inicio', 'AcademiaConfiguracionController@index');
 
-			
-
-
 			//SMS
 
 			Route::get('sms', 'SmsController@send');
 			Route::get('mercadopago', 'MercadopagoController@mercadopago');
 
-
-			/* Multihorario */
-
-			Route::get('agendar/clases-grupales/multihorario/{id}', 'MultihorarioController@principal');
-			Route::post('agendar/clases-grupales/multihorario/agregarhorario', 'MultihorarioController@agregar');
-			Route::post('agendar/clases-grupales/multihorario/eliminarhorario/{id}', 'MultihorarioController@eliminar');
-			Route::post('agendar/clases-grupales/multihorario/cancelarhorarios', 'MultihorarioController@CancelarHorarios');
-			Route::post('agendar/clases-grupales/multihorario/guardarhorarios', 'MultihorarioController@GuardarHorarios');
-			Route::get('agendar/multihorario/detalle/{id}', 'MultihorarioController@edit');
-			Route::put('agendar/multihorario/update/especialidad', 'MultihorarioController@updateEspecialidad');
-			Route::put('agendar/multihorario/update/instructor', 'MultihorarioController@updateInstructor');
-			Route::put('agendar/multihorario/update/dia', 'MultihorarioController@updateDia');
-			Route::put('agendar/multihorario/update/horario', 'MultihorarioController@updateHorario');
-			Route::put('agendar/multihorario/update/estudio', 'MultihorarioController@updateEstudio');
-			Route::put('agendar/multihorario/update/etiqueta', 'MultihorarioController@updateEtiqueta');
 			//STAFF
 
 

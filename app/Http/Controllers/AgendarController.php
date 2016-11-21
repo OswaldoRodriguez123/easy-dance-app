@@ -149,6 +149,18 @@ class AgendarController extends BaseController
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
             ->get();
 
+            $horarios_clasespersonalizadas = DB::table('clases_personalizadas')
+                    ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+                    ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
+                    ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
+                    ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.fecha')
+                       ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido')
+                    ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_personalizadas.deleted_at', '=', null)
+                    ->where('inscripcion_clase_personalizada.estatus', '=', 1)
+            ->get();
+
+
         	foreach ($clasespersonalizadas as $clasepersonalizada) {
         		$fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
         		$fecha_end=explode('-',$clasepersonalizada->fecha_final);
@@ -175,6 +187,37 @@ class AgendarController extends BaseController
     			}
 
     		}
+
+            foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
+                $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
+                $fecha_end=explode('-',$clasepersonalizada->fecha_final);
+                $id=$clasepersonalizada->id;
+                $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
+                $descripcion=$config_clases_personalizadas->descripcion;
+                $hora_inicio=$clasepersonalizada->hora_inicio;
+                $hora_final=$clasepersonalizada->hora_final;
+                if($clasepersonalizada->color_etiqueta){
+                    $etiqueta=$clasepersonalizada->color_etiqueta;
+                }else{
+                    $etiqueta=$clasepersonalizada->clase_etiqueta;
+                }
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
+
+                $c=0;
+                
+                while($dt->timestamp<$df->timestamp){
+                    $fecha="";
+                    $fecha=$dt->addWeek()->toDateString();
+                    $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
+                    $c++;
+                }
+
+            }
 
     		$fiestas = DB::table('fiestas')
                     ->select('fiestas.*')
@@ -212,6 +255,8 @@ class AgendarController extends BaseController
             return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas]);
 
         }
+
+        // ALUMNO AGENDAR
         else{
 
 
@@ -253,16 +298,53 @@ class AgendarController extends BaseController
 
             // $clases_grupales=ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
+            
             $clasegrupal = DB::table('config_clases_grupales')
-                ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                // ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-                ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion')
-                // ->where('inscripcion_clase_grupal.alumno_id', Auth::user()->usuario_id)
-                ->where('clases_grupales.deleted_at', '=', null)
+                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion')
+                    ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
             ->get();
+
+            $horarios_clasegrupal = DB::table('config_clases_grupales')
+                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->join('horario_clase_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
+                    ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id')
+                    ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->get();
+
 
             foreach ($clasegrupal as $clase) {
 
+                $fecha_start=explode('-',$clase->fecha_inicio);
+                $fecha_end=explode('-',$clase->fecha_final);
+                $id=$clase->id;
+                $nombre=$clase->nombre;
+                $descripcion=$clase->descripcion;
+                $hora_inicio=$clase->hora_inicio;
+                $hora_final=$clase->hora_final;
+                $etiqueta=$clase->color_etiqueta;
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/progreso/".$id);
+
+                $c=0;
+
+                
+                while($dt->timestamp<$df->timestamp){
+                    $fecha="";
+                    $fecha=$dt->addWeek()->toDateString();
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/progreso/".$id);
+                    $c++;
+                }
+
+            }
+
+             foreach ($horarios_clasegrupal as $clase) {
                 $fecha_start=explode('-',$clase->fecha_inicio);
                 $fecha_end=explode('-',$clase->fecha_final);
                 $id=$clase->id;
@@ -301,6 +383,17 @@ class AgendarController extends BaseController
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
             ->get();
 
+            $horarios_clasespersonalizadas = DB::table('clases_personalizadas')
+                ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+                ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
+                ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
+                ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.fecha')
+                   ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido')
+                ->where('inscripcion_clase_personalizada.alumno_id', '=' ,  Auth::user()->usuario_id)
+                ->where('clases_personalizadas.deleted_at', '=', null)
+                ->where('inscripcion_clase_personalizada.estatus', '=', 1)
+            ->get();
+
             foreach ($clasespersonalizadas as $clasepersonalizada) {
                 $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
                 $fecha_end=explode('-',$clasepersonalizada->fecha_final);
@@ -310,6 +403,37 @@ class AgendarController extends BaseController
                 $hora_inicio=$clasepersonalizada->hora_inicio;
                 $hora_final=$clasepersonalizada->hora_final;
                 $etiqueta=$clasepersonalizada->color_etiqueta;
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id);
+
+                $c=0;
+                
+                while($dt->timestamp<$df->timestamp){
+                    $fecha="";
+                    $fecha=$dt->addWeek()->toDateString();
+                    $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id);
+                    $c++;
+                }
+
+            }
+
+                        foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
+                $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
+                $fecha_end=explode('-',$clasepersonalizada->fecha_final);
+                $id=$clasepersonalizada->id;
+                $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
+                $descripcion=$config_clases_personalizadas->descripcion;
+                $hora_inicio=$clasepersonalizada->hora_inicio;
+                $hora_final=$clasepersonalizada->hora_final;
+                if($clasepersonalizada->color_etiqueta){
+                    $etiqueta=$clasepersonalizada->color_etiqueta;
+                }else{
+                    $etiqueta=$clasepersonalizada->clase_etiqueta;
+                }
 
                 $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
 

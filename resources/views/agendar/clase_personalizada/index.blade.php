@@ -263,8 +263,17 @@
 			});
         
       function previa(t){
-      if(tipo == 'canceladas'){
-          var row = $(t).closest('tr');
+        var row = $(t).closest('tr');
+        if(tipo == 'activas')
+        {
+
+          var id = $(row).attr('id');
+          var route =route_detalle+"/"+id;
+          window.location=route;
+
+
+        }else if(tipo == 'canceladas'){
+
           var fecha = $(row).find('td').eq(4).html();
           var hora = $(row).find('td').eq(5).html();
           var instructor = $(row).find('td').eq(3).html();
@@ -274,8 +283,6 @@
           $('.span_instructor').text(instructor)
           $('#razon_cancelacion').text(cancelacion)
           $("#modalCancelar" ).modal('show');
-
-          // window.location=route;
 
         }
       }
@@ -574,7 +581,7 @@
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ''
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)

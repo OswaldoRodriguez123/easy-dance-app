@@ -353,6 +353,94 @@
                             </div>
                         </div>
 
+
+            <div class="modal fade" id="modalMultihorario-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_multihorario" id="form_multihorario"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="table-responsive row">
+                                   <div class="col-md-12">
+                                    <table class="table table-striped table-bordered text-center " id="tablehorario" >
+                                    <thead>
+                                        <tr>
+                                          <th class="text-center" data-column-id="id" data-type="numeric">Instructor</th>
+                                          <th class="text-center" data-column-id="sexo">Especialidad</th>
+                                          <th class="text-center" data-column-id="sexo">Estudio</th>
+                                          <th class="text-center" data-column-id="nombre" data-order="desc">Día</th>
+                                          <th class="text-center" data-column-id="estatu_c" data-order="desc">Hora Inicio</th>
+                                          <th class="text-center" data-column-id="estatu_e" data-order="desc">Hora Final</th>
+                                          <!-- <th class="text-center" data-column-id="operacion" data-order="desc" >Acción</th> -->
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+
+                                      @foreach($arrayHorario as $horario)
+                                      
+                                        <tr id="{{$horario['id']}}" class="odd seleccion text-center" role="row">
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['instructor']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['especialidad']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['estudio']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['dia_de_semana']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['hora_inicio']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['hora_final']}}
+                                          </td>
+                                          <!-- <td class="text-center" width="50">
+                                          <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                          </td> -->
+                                        </tr>
+
+                                      @endforeach                          
+                                                                   
+                                    </tbody>
+                                </table>
+                                 </div>
+                                </div>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <!-- <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div> -->
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+
            
 
 
@@ -408,7 +496,8 @@
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-
+                                  
+                                  <a href="{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   '<i data-toggle="modal" href="#modalCancelar" name="operacion" class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
@@ -480,6 +569,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-hora_inicio">{{$clasepersonalizada->hora_inicio}}</span> - <span id="clasepersonalizada-hora_final">{{$clasepersonalizada->hora_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalMultihorario-ClasePersonalizada">
+                             <td width="50%"> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-multihorarios" class="zmdi {{ empty($arrayHorario) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
+                              <span class="f-14">Multihorarios </span>
+                             </td>
+                             <td class="f-14 m-l-15" id="clasegrupal-multihorarios" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
 
                            </table>
 
@@ -505,6 +603,7 @@
     route_principal="{{url('/')}}/agendar/clases-personalizadas";
     route_cancelar="{{url('/')}}/configuracion/clases-personalizadas/cancelar/";
     route_cancelarpermitir="{{url('/')}}/configuracion/clases-personalizadas/cancelarpermitir/";
+    route_detalle="{{url('/')}}/agendar/clases-personalizadas/multihorario/detalle";
 
     $(document).ready(function(){
 
@@ -941,6 +1040,48 @@
         }
       });
     });
+
+    var h=$('#tablehorario').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+      function previa(t){
+        var row = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+row;
+        
+        window.location=route;
+      }
     
    </script> 
 

@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -17,6 +18,8 @@
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/moment.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 @stop
 @section('content')
@@ -220,26 +223,23 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                    
-                                      <label for="fecha_inicio" id="id-fecha_inicio">Fecha de la Clase</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de inicio de la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                     <div class="col-sm-12">
+                                 
+                                      <label for="fecha_inicio" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la fecha de inicio y final de la clase personalizada" title="" data-original-title="Ayuda"></i>
+
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha_inicio" id="fecha_inicio" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text"
-                                                @if (session('fecha_inicio'))
-                                                  value="{{session('fecha_inicio')}} - {{session('fecha_inicio')}}"
-                                                @endif
-                                              >
-                                          </div>
-
-                                    <div class="has-error" id="error-fecha_inicio">
-                                        <span >
-                                            <small class="help-block error-span" id="error-fecha_inicio_mensaje" ></small>                                           
-                                        </span>
+                                      <div class="fg-line">
+                                              <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha" >
+                                      </div>
                                     </div>
-                                    </div>
-                                </div>
+                                 <div class="has-error" id="error-fecha">
+                                      <span >
+                                          <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+    
                                 <div class="clearfix p-b-35"></div>
 
                                     <div class="col-sm-12">
@@ -412,12 +412,46 @@
 <script type="text/javascript">
 
   route_agregar="{{url('/')}}/agendar/clases-personalizadas/reservar";
-  route_inscribir="{{url('/')}}/configuracion/clases-personalizadas/inscribir";
+  route_inscribir="{{url('/')}}/agendar/clases-personalizadas/inscribir";
   route_completado="{{url('/')}}/agendar/clases-personalizadas/completado";
-  route_enhorabuena="{{url('/')}}/configuracion/clases-personalizadas/enhorabuena/";
+  route_enhorabuena="{{url('/')}}/agendar/clases-personalizadas/enhorabuena/";
   route_principal="{{url('/')}}/agendar/clases-personalizadas";
 
   $(document).ready(function(){
+
+        $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "left",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+        });
 
       instructor_id = "{{{ $instructor_id or 'Default' }}}";
       clase_personalizada_id = "{{{ $clase_personalizada_id or 'Default' }}}";
@@ -465,7 +499,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["fecha_inicio", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
+    var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -665,7 +699,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["fecha_inicio", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
+        var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -673,7 +707,6 @@
       }
 
     function errores(merror){
-      var campo = ["fecha_inicio", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

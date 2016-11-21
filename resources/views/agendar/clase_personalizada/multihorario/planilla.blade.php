@@ -420,7 +420,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$clasegrupal->clase_grupal_id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Clases Grupales</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-personalizadas/detalle/{{$clasegrupal->clase_personalizada_id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Clases Personalizadas</a>
                     </div> 
                     
                     <div class="card">
@@ -563,7 +563,7 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/agendar/multihorario/update";
+    route_update="{{url('/')}}/agendar/clases-personalizadas/multihorario/update";
 
     $(document).ready(function(){
 
