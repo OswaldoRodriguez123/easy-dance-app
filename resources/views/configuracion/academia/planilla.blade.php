@@ -818,7 +818,7 @@
                             </div>
                           </div>
                           <div class="col-sm-12">                            
-                            <a class="btn-blanco m-r-5 f-12 dismiss" href="#" id="dismiss" name="dismiss" data-formulario="edit_referido_academia" data-update="referido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                            <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_referido_academia" data-update="referido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
                             <div class="clearfix p-b-35"></div>
                           </div>
                         </div>

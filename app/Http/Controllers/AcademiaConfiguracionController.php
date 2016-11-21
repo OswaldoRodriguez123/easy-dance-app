@@ -528,8 +528,39 @@ class AcademiaConfiguracionController extends BaseController {
 	 * @return Response
 	 */
 
-    public function updateReferido(){
+    public function updateReferido(Request $request){
+        $rules = [
 
+        'sin_registrar' => 'required|numeric',
+        'propietario' => 'required|numeric',
+    ];
+
+    $messages = [
+
+        'sin_registrar.required' => 'Ups! El numero es requerido',
+        'propietario.required' => 'Ups! El numero es requerido',
+        'sin_registrar.numeric' => 'Ups! Solo se aceptan numeros',
+        'propietario.numeric' => 'Ups! Solo se aceptan numeros',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->puntos_referencia = $request->propietario;
+        $academia->puntos_referidos = $request->sin_registrar;
+
+        $academia->save();
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        
+        }
     }
 
     public function error(){
@@ -642,6 +673,8 @@ class AcademiaConfiguracionController extends BaseController {
             $academia->manual = $request->manual;
             $academia->numero_factura = $numero_factura;
             $academia->incluye_iva = $request->incluye_iva;
+            $academia->puntos_referidos = $request->sin_registrar;
+            $academia->puntos_referencias = $request->propietario;
             
             if($academia->save()){
 

@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Visitante;
 use App\Paises;
+use App\AlumnoRemuneracion;
+
 
 class AlumnoController extends BaseController
 {
@@ -45,8 +47,8 @@ class AlumnoController extends BaseController
             ->where('alumnos.deleted_at', '=', null)
         ->get();
 
-        $alumnoc = DB::table('alumnos')
-            ->join('users', 'users.usuario_id', '=', 'alumnos.id')
+        $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
             ->select('alumnos.id as id')
             ->where('users.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
@@ -201,17 +203,6 @@ class AlumnoController extends BaseController
 
         $correo = strtolower($request->correo);
 
-        if($request->codigo)
-        {
-            $referido=Alumno::where('codigo_referido', $request->codigo)->get();
-            if($referido){
-                $remuneracion = new AlumnoRemuneracion;
-                $remuneracion->alumno_id = $referido[0]['id'];
-                $remuneracion->remuneracion = 20000;
-                $remuneracion->save();
-            }
-        }
-
         if($request->telefono)
         {
             $telefono = $request->telefono;
@@ -250,6 +241,37 @@ class AlumnoController extends BaseController
         $alumno->codigo_referido = $codigo_referido;
 
         if($alumno->save()){
+
+            if($request->codigo){
+                $referido=Alumno::where('codigo_referido', $request->codigo)->get();
+                if($referido){
+                    $remuneracion = new AlumnoRemuneracion;
+                    $academia=Academia::where('id', Auth::user()->academia_id)->first();
+
+                    $remuneracion->alumno_id = $alumno->id;
+                    $remuneracion->remuneracion = $academia->puntos_referidos;
+                    $remuneracion->save();
+                    
+                    $remuneracion_codigo=DB::table('alumnos_remuneracion')
+                        ->where('alumno_id', $referido[0]['id'])
+                    ->get();
+                    if($remuneracion_codigo){
+                        $suma = $remuneracion_codigo[0]->remuneracion;
+                        $suma += $academia->puntos_referencia;
+                        $remuneracion_codigo[0]->remuneracion = $suma;
+                        $remuneracion_codigo->save();
+                    }else{
+                        $remuneracion = new AlumnoRemuneracion;
+                        do{
+                            $codigo_validacion = str_random(8);
+                            $find = Alumno::where('codigo_referido', $codigo_validacion)->first();
+                        }while ($find);
+                        $remuneracion->alumno_id = $referido[0]['id'];
+                        $remuneracion->remuneracion = $academia->puntos_referencia;
+                        $remuneracion->save();
+                    }
+                }
+            }
 
             $password = str_random(8);
 

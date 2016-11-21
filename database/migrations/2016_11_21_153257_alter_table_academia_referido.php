@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterAlumnosAddTipoTable extends Migration
+class AlterTableAcademiaReferido extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,10 @@ class AlterAlumnosAddTipoTable extends Migration
      */
     public function up()
     {
-        Schema::table('alumnos', function (Blueprint $table) {
+        Schema::table('academias', function (Blueprint $table) {
             
-            $table->tinyinteger('tipo')->default(1);
+            $table->integer('puntos_referidos');
+            $table->integer('puntos_referencia');
 
         });
     }
@@ -28,8 +29,9 @@ class AlterAlumnosAddTipoTable extends Migration
     {
         Schema::table('alumnos', function (Blueprint $table) {
             
-            $table->dropColumn('tipo');
-            
+            $table->dropColumn('puntos_referidos');
+            $table->dropColumn('puntos_referencia');
+
         });
     }
 }
