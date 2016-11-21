@@ -5,6 +5,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -12,6 +13,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 @stop
 
 @section('content')
@@ -26,15 +28,17 @@
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
+                           <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group fg-line">
-                                    <label for="fecha">Fecha</label>
-                                    <input type="text" class="form-control date-picker input-sm" name="fecha_inicio" id="fecha_inicio" placeholder="Ej. 00/00/0000" value="{{$clasepersonalizada->fecha_inicio}}">
+                                    <label for="fecha_inicio">Fecha</label>
+                                    <div class="fg-line">
+                                        <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha">
+                                    </div>
                                  </div>
-                                    <div class="has-error" id="error-fecha_inicio">
+                                    <div class="has-error" id="error-fecha">
                                       <span >
-                                          <small id="error-fecha_inicio_mensaje" class="help-block error-span" ></small>                                           
+                                          <small id="error-fecha_mensaje" class="help-block error-span" ></small>                                           
                                       </span>
                                     </div>
                                 </div>
@@ -537,13 +541,13 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-nombre" class="capitalize">{{$clasepersonalizada->alumno_nombre}} {{$clasepersonalizada->alumno_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                             <tr class="detalle" data-toggle="modal" href="#modalFecha-ClasePersonalizada">
+                            <tr class="detalle" data-toggle="modal" href="#modalFecha-ClasePersonalizada">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi  {{ empty($clasepersonalizada->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
-                              <span class="f-14">Fecha</span>
+                              <span class="f-14">Fecha Desde / Hasta</span>
                              </td>
-                             <td class="f-14 m-l-15" id="clasepersonalizada-fecha" ><span id="clasepersonalizada-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasepersonalizada->fecha_inicio)->format('d/m/Y')}}</span></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" id="clasegrupal-fecha" ><span id="clasepersonalizada-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasepersonalizada->fecha_inicio)->format('d/m/Y')}}</span> - <span id="clasepersonalizada-fecha_final">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasepersonalizada->fecha_final)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalEspecialidades-ClasePersonalizada">
                              <td>
@@ -625,15 +629,49 @@
 
       });
 
+      $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "left",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+        });
+
     $('#modalHorario-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#hora_inicio").val($("#clasepersonalizada-hora_inicio").text());
       $("#hora_final").val($("#clasepersonalizada-hora_final").text());
     })
 
-    $('#modalFecha-ClasePersonalizada').on('show.bs.modal', function (event) {
+    $('#modalFechaInicio-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha_inicio").val($("#clasepersonalizada-fecha_inicio").text()); 
+      $("#fecha").val($("#clasepersonalizada-fecha_inicio").text() + '-' + $("#clasepersonalizada-fecha_final").text()); 
     })
 
 
@@ -676,6 +714,13 @@
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name=='tiempo_expiracion'){
              $("#clasepersonalizada-"+c.name).text(c.value + " Horas");
+          }else if(c.name==  'fecha')
+          {
+            var tmp = c.value;
+            var fecha = tmp.split(' - ');
+
+            $("#clasepersonalizada-fecha_inicio").text(fecha[0]);
+            $("#clasepersonalizada-fecha_final").text(fecha[1]);
           }else{
             $("#clasepersonalizada-"+c.name).text(c.value);
           }
