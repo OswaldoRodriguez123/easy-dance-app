@@ -767,6 +767,8 @@ class ClasePersonalizadaController extends BaseController {
                 $dia_de_semana="Sábado";
             }
 
+            $dia_de_semana = $fecha;
+
             $arrayHorario[$id_horario] = array(
                     'instructor' => $instructor,
                     'dia_de_semana' => $dia_de_semana,

@@ -12,6 +12,7 @@ use App\ConfigEstudios;
 use App\Instructor;
 use App\ClasePersonalizada;
 use App\HorarioClasePersonalizada;
+use App\InscripcionClasePersonalizada;
 use Validator;
 use Session;
 use Carbon\Carbon;
@@ -53,7 +54,8 @@ class MultihorarioClasePersonalizadaController extends BaseController
             'instructor_acordeon_id' => 'required',
             'especialidad_acordeon_id' => 'required',
             'estudio_id' => 'required',
-            'dia_de_semana_id' => 'required',
+            'fecha' => 'required',
+            // 'dia_de_semana_id' => 'required',
             'hora_inicio_acordeon' => 'required',
             'hora_final_acordeon' => 'required',
         ];
@@ -61,7 +63,8 @@ class MultihorarioClasePersonalizadaController extends BaseController
         $messages = [
 
             'instructor_acordeon_id.required' => 'Ups! El Instructor es requerido',
-            'dia_de_semana_id.required' => 'Ups! El Dia es requerido',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            // 'dia_de_semana_id.required' => 'Ups! El Dia es requerido',
             'especialidad_acordeon_id.required' => 'Ups! La Especialidad es requerida',
             'estudio_id.required' => 'Ups! El Estudio es requerido',
             'hora_inicio_acordeon.required' => 'Ups! La hora de inicio es requerida',
@@ -232,52 +235,68 @@ class MultihorarioClasePersonalizadaController extends BaseController
                 //     }
                 // }
 
-                $fecha_inicio = Carbon::now();
-                $dia_de_semana = $fecha_inicio->dayOfWeek;
 
-                if(intval($request->dia_de_semana_id) >= $dia_de_semana){
-                    $dias = intval($request->dia_de_semana_id) - intval($dia_de_semana);
-                    $fecha_inicio->addDays($dias)->toDateString();
-                }else{
-                    $dias = intval($dia_de_semana) - intval($request->dia_de_semana_id);
-                    $fecha_inicio->addWeek();
-                    $fecha_inicio->subDays($dias)->toDateString();
+                //FECHA
+
+                // $fecha_inicio = Carbon::now();
+                // $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+                // if(intval($request->dia_de_semana_id) >= $dia_de_semana){
+                //     $dias = intval($request->dia_de_semana_id) - intval($dia_de_semana);
+                //     $fecha_inicio->addDays($dias)->toDateString();
+                // }else{
+                //     $dias = intval($dia_de_semana) - intval($request->dia_de_semana_id);
+                //     $fecha_inicio->addWeek();
+                //     $fecha_inicio->subDays($dias)->toDateString();
                     
-                }
+                // }
 
-                $find = Instructor::find($request->instructor_acordeon_id);
-                $instructor = $find->nombre . " " . $find->apellido;
+                $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha);
 
-                $find = DiasDeSemana::find($request->dia_de_semana_id);
-                $dia_de_semana = $find->nombre;
+                $comparacion_clase = InscripcionClasePersonalizada::find($request->id);
 
-                $find = ConfigEspecialidades::find($request->especialidad_acordeon_id);
-                $especialidad = $find->nombre;
+                $fecha_inicio_clase = Carbon::createFromFormat('Y-m-d', $comparacion_clase->fecha_inicio);
+                $fecha_final_clase = Carbon::createFromFormat('Y-m-d', $comparacion_clase->fecha_final);
 
-                $find = ConfigEstudios::find($request->estudio_id);
-                $estudio = $find->nombre;
+                if($fecha_inicio->between($fecha_inicio_clase, $fecha_final_clase)){
 
-                $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta]);
+                    $find = Instructor::find($request->instructor_acordeon_id);
+                    $instructor = $find->nombre . " " . $find->apellido;
+
+                    // $find = DiasDeSemana::find($request->dia_de_semana_id);
+                    // $dia_de_semana = $find->nombre;
+                    $dia_de_semana = $fecha_inicio->toDateString();
+
+                    $find = ConfigEspecialidades::find($request->especialidad_acordeon_id);
+                    $especialidad = $find->nombre;
+
+                    $find = ConfigEstudios::find($request->estudio_id);
+                    $estudio = $find->nombre;
+
+                    $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta]);
 
 
-                Session::push('horarios', $array);
+                    Session::push('horarios', $array);
 
 
-                $items = Session::get('horarios');
-                end( $items );
-                $contador = key( $items );
+                    $items = Session::get('horarios');
+                    end( $items );
+                    $contador = key( $items );
 
-                $array=array(
-                    'instructor' => $instructor, 
-                    'dia_de_semana' => $dia_de_semana,
-                    'especialidad' => $especialidad,
-                    'estudio' => $estudio,
-                    'hora_inicio' => $request->hora_inicio_acordeon,
-                    'hora_final' => $request->hora_final_acordeon,
-                    'id'=>$contador
-                );                                  
+                    $array=array(
+                        'instructor' => $instructor, 
+                        'dia_de_semana' => $dia_de_semana,
+                        'especialidad' => $especialidad,
+                        'estudio' => $estudio,
+                        'hora_inicio' => $request->hora_inicio_acordeon,
+                        'hora_final' => $request->hora_final_acordeon,
+                        'id'=>$contador
+                    );                                  
 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+            }else{
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! Esta fecha no esta dentro del rango']], 'status' => 'ERROR'],422);
+            }
         }
     }
 
@@ -387,6 +406,8 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
             }
 
+            $dia = $clase_personalizada_join->fecha;
+
             return view('agendar.clase_personalizada.multihorario.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_personalizada_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'dia_de_semana' => $dia]);
 
         }else{
@@ -407,28 +428,57 @@ class MultihorarioClasePersonalizadaController extends BaseController
     }
 
     public function updateDia(Request $request){
+
+        $rules = [
+            'fecha' => 'required',
+        ];
+
+        $messages = [
+
+            'fecha.required' => 'Ups! La fecha es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
         
-        $clasegrupal = HorarioClasePersonalizada::find($request->id);
+            $clasegrupal = HorarioClasePersonalizada::find($request->id);
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha);
 
-        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha);
-        $dia_de_semana = $fecha_inicio->dayOfWeek;
+            $comparacion_clase = InscripcionClasePersonalizada::find($clasegrupal->clase_personalizada_id);
 
-        if(intval($request->dia_de_semana_id) >= $dia_de_semana){
-            $dias = intval($request->dia_de_semana_id) - intval($dia_de_semana);
-            $fecha_inicio->addDays($dias)->toDateString();
-        }else{
-            $dias = intval($dia_de_semana) - intval($request->dia_de_semana_id);
-            $fecha_inicio->addWeek();
-            $fecha_inicio->subDays($dias)->toDateString();
-            
-        }
+            $fecha_inicio_clase = Carbon::createFromFormat('Y-m-d', $comparacion_clase->fecha_inicio);
+            $fecha_final_clase = Carbon::createFromFormat('Y-m-d', $comparacion_clase->fecha_final);
 
-        $clasegrupal->fecha = $fecha_inicio;
+            if($fecha_inicio->between($fecha_inicio_clase, $fecha_final_clase)){
 
-        if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                // $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha);
+                // $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+                // if(intval($request->dia_de_semana_id) >= $dia_de_semana){
+                //     $dias = intval($request->dia_de_semana_id) - intval($dia_de_semana);
+                //     $fecha_inicio->addDays($dias)->toDateString();
+                // }else{
+                //     $dias = intval($dia_de_semana) - intval($request->dia_de_semana_id);
+                //     $fecha_inicio->addWeek();
+                //     $fecha_inicio->subDays($dias)->toDateString();
+                    
+                // }
+
+                $clasegrupal->fecha = $fecha_inicio;
+
+                if($clasegrupal->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+            }else{
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! Esta fecha no esta dentro del rango']], 'status' => 'ERROR'],422);
+            }
         }
     }
 

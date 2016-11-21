@@ -299,7 +299,7 @@
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
+                             <!--   <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Día de la semana</label>
 
@@ -317,6 +317,20 @@
                                           <small class="help-block error-span" id="error-dia_de_semana_id_mensaje" ></small>                                
                                       </span>
                                   </div>
+                               </div>
+ -->
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                    <label for="fecha">Fecha</label>
+                                    <input type="text" class="form-control date-picker input-sm" name="fecha" id="fecha" placeholder="Ej. 00/00/0000">
+                                 </div>
+                                    <div class="has-error" id="error-fecha">
+                                      <span >
+                                          <small id="error-fecha_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
                                </div>
 
 
@@ -514,13 +528,21 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-estudio_id"><span>{{$clasegrupal->estudio_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalDia-ClaseGrupal">
+                            <!-- <tr class="detalle" data-toggle="modal" href="#modalDia-ClaseGrupal">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-dia_de_semana_id" class="zmdi  {{ empty($clasegrupal->fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-agendar-1 f-22"></i> </span>
                                <span class="f-14"> Día de la semana </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-dia_de_semana_id"><span>{{$dia_de_semana}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr> -->
+                            <tr class="detalle" data-toggle="modal" href="#modalDia-ClaseGrupal">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha" class="zmdi {{ empty($clasegrupal->fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
+                               <span class="f-14"> Fecha </span>
+                             </td>
+                             <td class="f-14 m-l-15"><span id="clasegrupal-fecha">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalHorario-ClaseGrupal">
                              <td>
@@ -720,19 +742,6 @@
                 $("#clasegrupal-"+c.name).text(texto);
 
                 break;
-            case 'fecha':
-
-                if(n == 1)
-                {
-                  var tmp = c.value;
-                  var fecha = tmp.split(' - ');
-
-                  $("#clasegrupal-fecha_inicio").text(fecha[0]);
-                  $("#clasegrupal-fecha_final").text(fecha[1]);
-                }
-
-                break;
-
                 case 'boolean_promocionar':
                 if(c.value==1){              
                   var valor='<i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i>';                              
@@ -1051,6 +1060,12 @@
         
         window.location=route;
       }
+
+    $('#modalDia-ClaseGrupal').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      fecha = $("#clasegrupal-fecha").text()
+      $("#fecha").val(fecha.trim()); 
+    })
 
    </script> 
 

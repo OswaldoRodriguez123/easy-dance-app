@@ -70,7 +70,8 @@
                             </div>
                                    
                             <div class="col-sm-2 text-center">
-                                <span class="f-16 c-morado">Día de la semana</span>
+                                <!-- <span class="f-16 c-morado">Día de la semana</span> -->
+                                <span class="f-16 c-morado">Fecha</span>
                             </div>
 
                             <div class="col-sm-2 text-center">
@@ -131,7 +132,7 @@
                               </div>
 
                               <div class="col-sm-2 text-center">
-                                <div class="fg-line">
+                                <!-- <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="dia_de_semana_id" id="dia_de_semana_id" data-live-search="true">
 
@@ -142,6 +143,9 @@
                                         
                                         </select>
                                       </div>
+                                    </div> -->
+                                    <div class="dtp-container fg-line">
+                                        <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text">
                                     </div>
                               </div>
 
@@ -190,9 +194,14 @@
                               </div>
 
                               <div class="col-sm-2 text-center">
-                                <div class="has-error" id="error-dia_de_semana_id">
+                                <!-- <div class="has-error" id="error-dia_de_semana_id">
                                   <span>
                                        <small id="error-dia_de_semana_id_mensaje" class="help-block error-span" ></small>                                           
+                                  </span>
+                                </div> -->
+                                <div class="has-error" id="error-fecha">
+                                  <span>
+                                       <small id="error-fecha_mensaje" class="help-block error-span" ></small>                                           
                                   </span>
                                 </div>
                               </div>
