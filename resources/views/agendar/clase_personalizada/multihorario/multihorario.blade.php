@@ -38,7 +38,7 @@
                             <div class="text-right">
                             <!--<a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>-->
 
-                            <br><br><p class="text-center opaco-0-8 f-22" id="id-clase"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasepersonalizada->nombre}}</p>
+                            <br><br><p class="text-center opaco-0-8 f-22" id="id-clase"><i class="icon_a-clase-personalizada p-r-5"></i> Clase: {{$clasepersonalizada->nombre}}</p>
                             <hr class="linea-morada">
 
                             </div>                                                        
@@ -50,7 +50,7 @@
                         <div class="card-body p-b-20">
 	                        <div class="col-md-12">
 	                        	<div class="form-group fg-line">
-                                    <label for="nombre">Multihorarios</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase grupal" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Multihorarios</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
 
                                 </div>
 	                        </div>

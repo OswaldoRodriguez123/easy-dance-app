@@ -559,7 +559,7 @@
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
                                <td  class="f-14 m-l-15">
-                                <span id="clasegrupal-color_etiqueta">{{$clasegrupal->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                                <span id="clasegrupal-color_etiqueta">{{$clasegrupal->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="cp-value color_etiqueta_container" style="background-color: {{$clasegrupal->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr>
@@ -728,6 +728,11 @@
                 
                 $("#clasegrupal-"+c.name).data('valor',c.value);
                 $("#clasegrupal-"+c.name).html(valor);
+                break;
+
+            case 'color_etiqueta':
+                $("#clasegrupal-"+c.name).text(c.value);
+                $("#color_etiqueta_container").css('background-color',c.value);
                 break;
 
             case 'nivel_baile_id':

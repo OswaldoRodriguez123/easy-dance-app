@@ -1824,4 +1824,9 @@ align-items: center;
   color: #4E1E43;
   font-weight: bold; 
 }
+.color_etiqueta_container{
+    width: 25px; height: 25px;
+    border-radius: 2px;
+    position: absolute;
+}
 

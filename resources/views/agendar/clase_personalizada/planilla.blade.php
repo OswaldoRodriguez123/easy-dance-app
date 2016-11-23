@@ -579,7 +579,22 @@
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
                               <span class="f-14">Multihorarios </span>
                              </td>
-                             <td class="f-14 m-l-15" id="clasegrupal-multihorarios" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-multihorarios">
+                               
+                              @if(count($arrayHorario) > 1)
+
+                                Varios
+                              @elseif(count($arrayHorario) == 1)
+
+                                Ver
+
+                              @else
+
+                                Ninguno
+
+                              @endif
+
+                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 
 

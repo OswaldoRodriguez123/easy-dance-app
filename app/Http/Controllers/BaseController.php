@@ -49,19 +49,46 @@ class BaseController extends Controller {
         foreach ($notificaciones as $notificacion) {
             $collection=collect($notificacion);     
             $notificacion_imagen_array = $collection->toArray();
-                
-                $imagen = DB::table('config_clases_grupales')
-                    ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
-                    ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
-                    ->select('config_clases_grupales.imagen')
-                    ->where('notificacion.evento_id','=',$notificacion->evento_id)
-                ->first();
 
-            if($imagen->imagen){
-                $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
-            }else{
-                $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
-            }
+                if($notificacion->tipo_evento == 5)
+                {
+                    $usuario = DB::table('sugerencias')
+                        ->join('users','users.id','=','sugerencias.usuario_id')
+                        ->select('users.imagen')
+                        ->where('sugerencias.id','=',$notificacion->evento_id)
+                    ->first();
+
+                     if($usuario->imagen){
+                        $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".$usuario->imagen;
+                    }else{
+                        $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                        if($usuario->sexo == 'F'){
+
+                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
+                        }else{
+                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
+                        }
+                    }
+
+                }else{
+
+                    
+                    $imagen = DB::table('config_clases_grupales')
+                        ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                        ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
+                        ->select('config_clases_grupales.imagen')
+                        ->where('notificacion.evento_id','=',$notificacion->evento_id)
+                    ->first();
+
+                     if($imagen->imagen){
+                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
+                    }else{
+                        $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                    }
+
+                }
+
+           
             
             $array[$notificacion->id] = $notificacion_imagen_array;
         }

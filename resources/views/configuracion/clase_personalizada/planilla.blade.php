@@ -483,7 +483,7 @@
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
                                <td  class="f-14 m-l-15">
-                                <span id="clasepersonalizada-color_etiqueta">{{$clasepersonalizada->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                                <span id="clasepersonalizada-color_etiqueta">{{$clasepersonalizada->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$clasegrupal->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr> 
@@ -621,6 +621,9 @@
             }
             $("#clasepersonalizada-"+c.name).data('valor',c.value);
             $("#clasepersonalizada-"+c.name).html(valor);
+          }else if(c.name== 'color_etiqueta'){
+              $("#clasepersonalizada-"+c.name).text(c.value);
+              $("#color_etiqueta_container").css('background-color',c.value);
           }else if(c.name=='especialidad_id' || c.name=='estudio_id' || c.name=='instructor_id' || c.name=='alumno_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";

@@ -1308,7 +1308,7 @@
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
                                <td  class="f-14 m-l-15">
-                                <span id="clasegrupal-color_etiqueta">{{$clasegrupal->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                                <span id="clasegrupal-color_etiqueta">{{$clasegrupal->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$clasegrupal->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr>
@@ -1389,10 +1389,23 @@
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
                               <span class="f-14">Multihorarios </span>
                              </td>
-                             <td class="f-14 m-l-15" id="clasegrupal-multihorarios" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-multihorarios">
+                               
+                              @if(count($arrayHorario) > 1)
+
+                                Varios
+                              @elseif(count($arrayHorario) == 1)
+
+                                Ver
+
+                              @else
+
+                                Ninguno
+
+                              @endif
+
+                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-
-
 
                            </table>
 
@@ -1679,6 +1692,12 @@
                 
                 $("#clasegrupal-"+c.name).data('valor',c.value);
                 $("#clasegrupal-"+c.name).html(valor);
+                break;
+
+            case 'color_etiqueta':
+                $("#clasegrupal-"+c.name).text(c.value);
+                $("#color_etiqueta_container").css('background-color',c.value);
+                console.log('etiqueta');
                 break;
 
             case 'nivel_baile_id':
