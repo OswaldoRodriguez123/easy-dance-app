@@ -243,8 +243,17 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             if($request->codigo){
-                $referido=Alumno::where('codigo_referido', $request->codigo)->get();
+                $referido=DB::table('alumnos')
+                    ->select('alumnos.*')
+                    ->where('alumnos.codigo_referido','=',$request->codigo)
+                ->first();
                 if($referido){
+                    /*$referido=DB::table('alumnos')
+                        ->join('alumnos_remuneracion','alumnos.id','=','alumnos_remuneracion.alumno_id')
+                        ->select('alumnos.id as id', 'alumnos.codigo_referido as codigo','alumnos_remuneracion.remuneracion')
+                        ->where('alumnos.codigo_referido','=',$request->codigo)
+                    ->first();*/
+
                     $remuneracion = new AlumnoRemuneracion;
                     $academia=Academia::where('id', Auth::user()->academia_id)->first();
 
@@ -252,13 +261,12 @@ class AlumnoController extends BaseController
                     $remuneracion->remuneracion = $academia->puntos_referidos;
                     $remuneracion->save();
                     
-                    $remuneracion_codigo=DB::table('alumnos_remuneracion')
-                        ->where('alumno_id', $referido[0]['id'])
-                    ->get();
+                    $remuneracion_codigo=AlumnoRemuneracion::where('alumno_id', $referido->id)->first();
+
                     if($remuneracion_codigo){
-                        $suma = $remuneracion_codigo[0]->remuneracion;
+                        $suma = $remuneracion_codigo->remuneracion;
                         $suma += $academia->puntos_referencia;
-                        $remuneracion_codigo[0]->remuneracion = $suma;
+                        $remuneracion_codigo->remuneracion = $suma;
                         $remuneracion_codigo->save();
                     }else{
                         $remuneracion = new AlumnoRemuneracion;
@@ -266,7 +274,7 @@ class AlumnoController extends BaseController
                             $codigo_validacion = str_random(8);
                             $find = Alumno::where('codigo_referido', $codigo_validacion)->first();
                         }while ($find);
-                        $remuneracion->alumno_id = $referido[0]['id'];
+                        $remuneracion->alumno_id = $referido->id;
                         $remuneracion->remuneracion = $academia->puntos_referencia;
                         $remuneracion->save();
                     }

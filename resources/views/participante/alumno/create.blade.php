@@ -156,7 +156,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
-                                        <input type="text" class="form-control input-sm proceso" name="codigo" id="codigo" placeholder="Ej. Valeria" value="">
+                                        <input type="text" class="form-control input-sm proceso" name="codigo" id="codigo" placeholder="Ej. xD2mdF1p" value="">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-codigo">
