@@ -39,7 +39,7 @@ class InstructorController extends BaseController {
              $academia = Academia::find(Auth::user()->academia_id);
              $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
 
-            return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructor]);
+            return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructor, 'academia' => $academia]);
 
         }
 
