@@ -29,6 +29,8 @@ use Image;
 use App\Asistencia;
 use App\Notificacion;
 use App\NotificacionUsuario;
+use App\HorarioBloqueado;
+use App\Progreso;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -1730,11 +1732,14 @@ class ClaseGrupalController extends BaseController {
     {   
         $clasegrupal = DB::table('clases_grupales')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_clases_grupales.nombre as nombre')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
             ->where('clases_grupales.id', '=', $id)
             ->first();
         if($clasegrupal)
        	{
+            $fecha_inicio = Session::get('fecha_inicio');
+
        		$clases_grupales = ClaseGrupal::join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
 		        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
 		        ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
@@ -1792,7 +1797,7 @@ class ClaseGrupalController extends BaseController {
             	);
         	}
 
-        	return view('agendar.clase_grupal.operacion')->with(['id' => $id, 'clasegrupal' => $clasegrupal, 'grupales' => $array]);
+        	return view('agendar.clase_grupal.operacion')->with(['id' => $id, 'clasegrupal' => $clasegrupal, 'grupales' => $array, 'fecha_inicio' => $fecha_inicio]);
        	}else{
        		return redirect("agendar/clases-grupales"); 
        	}
@@ -2111,4 +2116,332 @@ class ClaseGrupalController extends BaseController {
 		    }
 	    }
 	}
+
+    public function nivelaciones($id)
+    {
+        $progreso = Progreso::where('clase_grupal_id',$id)->first();
+
+        if($progreso){
+
+            $clase_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
+            $clase_2 = Progreso::where('clase_grupal_id',$id)->where('tipo',2)->first();
+            $clase_3 = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
+            $clase_4 = Progreso::where('clase_grupal_id',$id)->where('tipo',4)->first();
+            $clase_5 = Progreso::where('clase_grupal_id',$id)->where('tipo',5)->first();
+            $clase_6 = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
+            $clase_7 = Progreso::where('clase_grupal_id',$id)->where('tipo',7)->first();
+            $clase_8 = Progreso::where('clase_grupal_id',$id)->where('tipo',8)->first();
+            $clase_9 = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
+            $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
+            $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
+            $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
+            $clase_13 = Progreso::where('clase_grupal_id',$id)->where('tipo',13)->first();
+            $clase_14 = Progreso::where('clase_grupal_id',$id)->where('tipo',14)->first();
+            $clase_15 = Progreso::where('clase_grupal_id',$id)->where('tipo',15)->first();
+            $clase_16 = Progreso::where('clase_grupal_id',$id)->where('tipo',16)->first();
+        }else{
+            $clase_1 = new Progreso;
+            $clase_1->clase_grupal_id = $id;
+            $clase_1->tipo = 1;
+            $clase_1->save();
+
+            $clase_2 = new Progreso;
+            $clase_2->clase_grupal_id = $id;
+            $clase_2->tipo = 2;
+            $clase_2->save();
+
+            $clase_3 = new Progreso;
+            $clase_3->clase_grupal_id = $id;
+            $clase_3->tipo = 3;
+            $clase_3->save();
+
+            $clase_4 = new Progreso;
+            $clase_4->clase_grupal_id = $id;
+            $clase_4->tipo = 4;
+            $clase_4->save();
+
+            $clase_5 = new Progreso;
+            $clase_5->clase_grupal_id = $id;
+            $clase_5->tipo = 5;
+            $clase_5->save();
+
+            $clase_6 = new Progreso;
+            $clase_6->clase_grupal_id = $id;
+            $clase_6->tipo = 6;
+            $clase_6->save();
+
+            $clase_7 = new Progreso;
+            $clase_7->clase_grupal_id = $id;
+            $clase_7->tipo = 7;
+            $clase_7->save();
+
+            $clase_8 = new Progreso;
+            $clase_8->clase_grupal_id = $id;
+            $clase_8->tipo = 8;
+            $clase_8->save();
+
+            $clase_9 = new Progreso;
+            $clase_9->clase_grupal_id = $id;
+            $clase_9->tipo = 9;
+            $clase_9->save();
+
+            $clase_10 = new Progreso;
+            $clase_10->clase_grupal_id = $id;
+            $clase_10->tipo = 10;
+            $clase_10->save();
+
+            $clase_11 = new Progreso;
+            $clase_11->clase_grupal_id = $id;
+            $clase_11->tipo = 11;
+            $clase_11->save();
+
+            $clase_12 = new Progreso;
+            $clase_12->clase_grupal_id = $id;
+            $clase_12->tipo = 12;
+            $clase_12->save();
+
+            $clase_13 = new Progreso;
+            $clase_13->clase_grupal_id = $id;
+            $clase_13->tipo = 13;
+            $clase_13->save();
+
+            $clase_14 = new Progreso;
+            $clase_14->clase_grupal_id = $id;
+            $clase_14->tipo = 14;
+            $clase_14->save();
+
+            $clase_15 = new Progreso;
+            $clase_15->clase_grupal_id = $id;
+            $clase_15->tipo = 15;
+            $clase_15->save();
+
+            $clase_16 = new Progreso;
+            $clase_16->clase_grupal_id = $id;
+            $clase_16->tipo = 16;
+            $clase_16->save();
+        }
+
+        return view('agendar.clase_grupal.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'clase_13' => $clase_13, 'clase_14' => $clase_14, 'clase_15' => $clase_15, 'clase_16' => $clase_16, 'id' => $id]);
+    }
+
+    public function storeNivelaciones(Request $request)
+    {
+        $id = $request->id;
+
+        $clase_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
+        $clase_2 = Progreso::where('clase_grupal_id',$id)->where('tipo',2)->first();
+        $clase_3 = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
+        $clase_4 = Progreso::where('clase_grupal_id',$id)->where('tipo',4)->first();
+        $clase_5 = Progreso::where('clase_grupal_id',$id)->where('tipo',5)->first();
+        $clase_6 = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
+        $clase_7 = Progreso::where('clase_grupal_id',$id)->where('tipo',7)->first();
+        $clase_8 = Progreso::where('clase_grupal_id',$id)->where('tipo',8)->first();
+        $clase_9 = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
+        $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
+        $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
+        $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
+        $clase_13 = Progreso::where('clase_grupal_id',$id)->where('tipo',13)->first();
+        $clase_14 = Progreso::where('clase_grupal_id',$id)->where('tipo',14)->first();
+        $clase_15 = Progreso::where('clase_grupal_id',$id)->where('tipo',15)->first();
+        $clase_16 = Progreso::where('clase_grupal_id',$id)->where('tipo',16)->first();
+
+
+        $clase_1->clase_1 = $request->b1c1;
+        $clase_1->clase_2 = $request->b1c2;
+        $clase_1->clase_3 = $request->b1c3;
+        $clase_1->clase_4 = $request->b1c4;
+        $clase_1->save();
+
+
+        $clase_2->clase_1 = $request->b2c1;
+        $clase_2->clase_2 = $request->b2c2;
+        $clase_2->clase_3 = $request->b2c3;
+        $clase_2->clase_4 = $request->b2c4;
+        $clase_2->save();
+
+
+        $clase_3->clase_1 = $request->b3c1;
+        $clase_3->clase_2 = $request->b3c2;
+        $clase_3->clase_3 = $request->b3c3;
+        $clase_3->clase_4 = $request->b3c4;
+        $clase_3->save();
+
+
+        $clase_4->clase_1 = $request->b4c1;
+        $clase_4->clase_2 = $request->b4c2;
+        $clase_4->clase_3 = $request->b4c3;
+        $clase_4->clase_4 = $request->b4c4;
+        $clase_4->save();
+
+
+        $clase_5->clase_1 = $request->i1c1;
+        $clase_5->clase_2 = $request->i1c2;
+        $clase_5->clase_3 = $request->i1c3;
+        $clase_5->clase_4 = $request->i1c4;
+        $clase_5->save();
+
+
+        $clase_6->clase_1 = $request->i2c1;
+        $clase_6->clase_2 = $request->i2c2;
+        $clase_6->clase_3 = $request->i2c3;
+        $clase_6->clase_4 = $request->i2c4;
+        $clase_6->save();
+
+
+        $clase_7->clase_1 = $request->i3c1;
+        $clase_7->clase_2 = $request->i3c2;
+        $clase_7->clase_3 = $request->i3c3;
+        $clase_7->clase_4 = $request->i3c4;
+        $clase_7->save();
+
+
+        $clase_8->clase_1 = $request->i4c1;
+        $clase_8->clase_2 = $request->i4c2;
+        $clase_8->clase_3 = $request->i4c3;
+        $clase_8->clase_4 = $request->i4c4;
+        $clase_8->save();
+
+
+
+        $clase_9->clase_1 = $request->a1c1;
+        $clase_9->clase_2 = $request->a1c2;
+        $clase_9->clase_3 = $request->a1c3;
+        $clase_9->clase_4 = $request->a1c4;
+        $clase_9->save();
+
+
+        $clase_10->clase_1 = $request->a2c1;
+        $clase_10->clase_2 = $request->a2c2;
+        $clase_10->clase_3 = $request->a2c3;
+        $clase_10->clase_4 = $request->a2c4;
+        $clase_10->save();
+
+
+        $clase_11->clase_1 = $request->a3c1;
+        $clase_11->clase_2 = $request->a3c2;
+        $clase_11->clase_3 = $request->a3c3;
+        $clase_11->clase_4 = $request->a3c4;
+        $clase_11->save();
+
+        $clase_12->clase_1 = $request->a4c1;
+        $clase_12->clase_2 = $request->a4c2;
+        $clase_12->clase_3 = $request->a4c3;
+        $clase_12->clase_4 = $request->a4c4;
+        $clase_12->save();
+
+
+        $clase_13->clase_1 = $request->m1c1;
+        $clase_13->clase_2 = $request->m1c2;
+        $clase_13->clase_3 = $request->m1c3;
+        $clase_13->clase_4 = $request->m1c4;
+        $clase_13->save();
+
+
+        $clase_14->clase_1 = $request->m2c1;
+        $clase_14->clase_2 = $request->m2c2;
+        $clase_14->clase_3 = $request->m2c3;
+        $clase_14->clase_4 = $request->m2c4;
+        $clase_14->save();
+
+
+        $clase_15->clase_1 = $request->m3c1;
+        $clase_15->clase_2 = $request->m3c2;
+        $clase_15->clase_3 = $request->m3c3;
+        $clase_15->clase_4 = $request->m3c4;
+        $clase_15->save();
+
+
+        $clase_16->clase_1 = $request->m4c1;
+        $clase_16->clase_2 = $request->m4c2;
+        $clase_16->clase_3 = $request->m4c3;
+        $clase_16->clase_4 = $request->m4c4;
+        $clase_16->save();
+
+        return response()->json(['mensaje' => '¡Excelente! El Alumno se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+    
+    }
+
+    public function cancelarClase(Request $request){
+
+        if($request->tipo == 1)
+        {
+
+            $rules = [
+
+                'fecha' => 'required',
+
+            ];
+
+            $messages = [
+
+                'fecha.required' => 'Ups! La fecha es requerida',
+
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()){
+
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            }
+
+            $fecha = explode(" - ", $request->fecha);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha);
+            $fecha_final = $fecha_inicio;
+            
+
+        }else if($request->tipo == 2){
+
+            $rules = [
+
+                'fecha2' => 'required',
+
+            ];
+
+            $messages = [
+
+                'fecha2.required' => 'Ups! La fecha es requerida',
+
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()){
+
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            }
+
+            $fecha = explode(" - ", $request->fecha2);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+            
+        }else{
+
+            $fecha_inicio = "1969-01-31";
+            $fecha_final = "1969-01-31";
+
+            $horario_clase_grupal = HorarioClaseGrupal::where('clase_grupal_id', $request->id)->delete();
+            $clasegrupal = ClaseGrupal::find($request->id)->delete();
+        }
+
+        $clasegrupal = new HorarioBloqueado;
+        $clasegrupal->tipo_id = $request->id;
+        $clasegrupal->tipo = 1;
+        $clasegrupal->fecha_inicio = $fecha_inicio;
+        $clasegrupal->fecha_final = $fecha_final;
+        $clasegrupal->razon_cancelacion = $request->razon_cancelacion;
+        $clasegrupal->boolean_mostrar = $request->boolean_mostrar;
+
+        if($clasegrupal->save()){
+            Session::forget('fecha_inicio');
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
 }

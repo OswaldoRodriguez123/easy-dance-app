@@ -21,6 +21,64 @@
 
 @section('content')
 
+<div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Clase Cancelada <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_clase" id="cancelar_clase"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <div class="modal-body">                           
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="f-15 f-700 span_instructor"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-9">
+                                             
+                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                                            <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                       <hr style="margin-top:5px">
+
+                                       <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelación</label>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" disabled></textarea>
+                                          </div>
+                                      </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
             <section id="content">
                 <div class="container">
@@ -40,7 +98,11 @@
                                 <div class="modal-body m-b-20">
                                     <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}. Que bueno tenerte aquí... </p> 
                                     <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para agendar? Empieza yaaa...</p>
-                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
+
+                                    <form id="frm_fecha" name="frm_fecha" class="addFecha" role="form" method="POST" action="guardar-fecha">
+                                        <input type="hidden" id="fecha_inicio" name="fecha_inicio" />
+                                    </form>
+                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="{{url('/')}}/agendar">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
@@ -327,7 +389,7 @@
                             allDay: false,
                             backgroundColor:'{{$clase['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$clase['url']}}'
+                            url: '{{$clase['url']}}'
                             },
                         @endforeach
 
@@ -388,13 +450,45 @@
                            $('#modalFechaPasada').modal('show');                            
                         }
 
-                        console.log(n);
-
                         
                     },
                     eventClick: function(calEvent, jsEvent, view) {
 
-                        console.log(calEvent.id);
+                        // console.log(calEvent.start);
+                        // 
+                        // 
+                        var check = calEvent.url
+                        var tmp = check.split("!"); 
+                        console.log(tmp)
+
+                        if(!tmp[1]){
+
+                            $('#fecha_inicio').val(calEvent.start);
+                            var token = $('input:hidden[name=_token]').val();
+
+                            $.ajax({
+                                url: "{{url('/')}}/guardar-fecha",
+                                    headers: {'X-CSRF-TOKEN': token},
+                                    type: 'POST',
+                                dataType: 'json',
+                                data:"fecha_inicio="+$('#fecha_inicio').val(),
+                                success:function(respuesta){
+
+                                    window.location = calEvent.url
+
+                                }
+                            });
+                        }else{
+                            var fecha = tmp[3]
+                            var hora = tmp[4]
+                            var instructor = tmp[2]
+                            var cancelacion = tmp[1]
+                            $('.span_fecha').text(fecha)
+                            $('.span_hora').text(hora)
+                            $('.span_instructor').text(instructor)
+                            $('#razon_cancelacion').text(cancelacion)
+                            $("#modalCancelar" ).modal('show');
+                        }
                         //console.log(jsEvent);
                         //console.log(view);
 
@@ -483,7 +577,14 @@
                      
                 });
 
+                $('.actividad').on('click', function(e){
+                    e.preventDefault();
+                     
+                });
 
-            });                        
+
+            });   
+
+                  
         </script>
 @stop

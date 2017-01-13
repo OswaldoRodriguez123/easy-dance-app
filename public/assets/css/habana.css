@@ -1830,3 +1830,12 @@ align-items: center;
     position: absolute;
 }
 
+.circulo_nivelacion{
+    border-radius: 50%; 
+    background:#4E1E43; 
+    width:6%; 
+    height: 25px;
+    margin-left: 1%;
+    float:left;
+}
+

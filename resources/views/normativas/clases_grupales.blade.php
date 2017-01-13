@@ -60,11 +60,11 @@
 
 <div class="f-18 f-700"> 5-  Teléfonos  </div><br>
 
-<p>Se prohíbe el uso de dispositivos celulares dentro de las clases, los teléfonos deben permanecer apagados o en silencio.</p>
+<p>Se prohíbe el uso de dispositivos celulares o aparatos  tecnológicos  dentro de las clases, los teléfonos deben permanecer apagados o en silencio.</p>
 
 <div class="f-18 f-700"> 6-  Calzados   </div><br>
 
-<p>El calzado debe ser gomas deportivas, prohibido el uso de tacones, pantuflas, zapatos de vestir, descalzo u otros.</p>
+<p>El calzado debe ser tenis, prohibido el uso de tacones, pantuflas, zapatos de vestir, descalzo u otros.</p>
 
 <div class="f-18 f-700"> 7-  Visitantes  </div><br>
 

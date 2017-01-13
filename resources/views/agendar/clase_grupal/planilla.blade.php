@@ -1220,7 +1220,7 @@
 
                               <hr></hr>
 
-                              
+                              <a href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$clasegrupal->id}}"><i class="icon_a-niveles f-16 m-r-5 boton blue"  data-original-title="Nivelaciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal"><i class="zmdi zmdi-trending-up f-16 m-r-5 boton blue"  data-original-title="Trasladar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               <a href="{{url('/')}}/agendar/clases-grupales/participantes/{{$clasegrupal->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>

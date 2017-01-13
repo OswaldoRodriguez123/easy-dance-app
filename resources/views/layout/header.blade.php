@@ -206,6 +206,15 @@
                                     </li> -->
                                 @endif 
 
+                                @if(Auth::check() && (Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4))
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('/')}}/progreso"><i class="zmdi zmdi-account"></i> Mi progreso</a>
+                                    </li>
+
+
+                                @endif
+
                                 <!-- if(Auth::user()->usuario_tipo == 1)
         
                                     <li class="hidden-xs">

@@ -504,6 +504,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');
 
+			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
+
+			Route::get('agendar/clases-grupales/nivelaciones/{id}', 'ClaseGrupalController@nivelaciones');
+			Route::post('agendar/clases-grupales/nivelaciones/agregar', 'ClaseGrupalController@storeNivelaciones');
+
 
 			//MULTIHORARIO CLASES GRUPALES
 
@@ -820,6 +825,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('agendar','AgendarController@index');
 			Route::post('agendar','AgendarController@store');
+			Route::post('guardar-fecha','AgendarController@guardarFecha');
 
 			//CLASES PERSONALIZADAS
 
@@ -884,9 +890,19 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//EVALUACIONES
 			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
+
+			//NOTIFICACIONES
+		
 			Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
 			Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
 			Route::post('notificacion_nueva', 'NotificacionController@nuevaNotificaion');
+
+			//PROGRESO TU CLASE DE BAILE
+			
+			Route::get('progreso','ProgresoController@index');
+			Route::get('progreso/{id}','ProgresoController@progreso');
+			Route::get('programacion','ProgresoController@programacion');
+
 		});//END MIDDLEWARE ALUMNO
 
 });
