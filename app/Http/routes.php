@@ -434,6 +434,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
 			Route::post('participante/visitante/enviar', 'VisitanteController@enviar');
 
+
+			Route::get('participante/visitante/llamadas/{id}', 'VisitanteController@indexLlamada');
+			Route::get('participante/visitante/llamadas/agregar/{id}', 'VisitanteController@createLlamada');
+			Route::post('participante/visitante/llamadas/agregar', 'VisitanteController@storeLlamada');
+
 			//FAMILIA
 
 			Route::get('participante/familia', 'FamiliaController@principal');

@@ -29,8 +29,8 @@
             <div class="card-body p-b-20">
             <div>
             
-            <div class = "col-sm-3"></div>
-            <ul class="ca-menu-c col-sm-5" style="width: 720px;">
+            <div class = "col-sm-1"></div>
+            <ul class="ca-menu-c col-sm-7" style="width: 900px;">
                 <li data-ripplecator class ="dark-ripples">
                         <a class="informacion">
                             <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" data-original-title="Enviar Correo" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
@@ -57,6 +57,16 @@
                             <span class="ca-icon-c"><i  class="zmdi zmdi-trending-up f-35 boton blue sa-warning" name="eliminar" id="{{$id}}" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Transferir</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a href="{{url('/')}}/participante/visitante/llamadas/{{$id}}">
+                            <span class="ca-icon-c"><i  class="zmdi zmdi-phone f-35 boton blue sa-warning" name="eliminar" id="{{$id}}" data-original-title="Llamadas" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Llamadas</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
