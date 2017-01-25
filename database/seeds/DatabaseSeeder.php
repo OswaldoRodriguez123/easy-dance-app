@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ImpuestoTableSeeder::class);
         $this->call(FormasPagoSeeder::class);
         $this->call(RolesTableSeeder::class);
+        $this->call(ConfigTipoItemsSeeder::class);
     }
 }

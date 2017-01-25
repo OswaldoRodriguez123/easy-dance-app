@@ -31,8 +31,8 @@ class AlterClasesPersonalizadasTable extends Migration
             $table->dropForeign('clases_personalizadas_estudio_id_foreign');
             $table->dropColumn('estudio_id');
 
-            $table->dropColumn('estatus');
-            $table->dropColumn('razon_cancelacion');
+            //$table->dropColumn('estatus');
+            //$table->dropColumn('razon_cancelacion');
 
         });
     }
@@ -64,8 +64,8 @@ class AlterClasesPersonalizadasTable extends Migration
             $table->integer('estudio_id')->unsigned();
             $table->foreign('estudio_id')->references('id')->on('config_estudios');
 
-            $table->boolean('estatus')->default(1);
-            $table->string('razon_cancelacion')->nullable()->default(null);
+            //$table->boolean('estatus')->default(1);
+            //$table->string('razon_cancelacion')->nullable()->default(null);
             
         });
 
