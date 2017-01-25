@@ -182,10 +182,10 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
-                                    <div class="col-sm-3 text-left">
+                                     <div class="col-sm-3 text-left">
 
                                       <span class="f-20 f-700">Clase 1</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="b1c1-switch" type="checkbox" hidden="hidden">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="b2c1-switch" type="checkbox" hidden="hidden">
                                           <label for="b2c1-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
 
@@ -320,86 +320,6 @@
                                 </div>
                              </div>
                            </div>
-
-                           <div class="col-sm-12">
-                                 <div class="form-group">
-                                    <label for="nombre">Basico 4</label>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseBasico4" aria-expanded="false" aria-controls="collapseBasico4">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseBasico4" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 1</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="b4c1-switch" type="checkbox" hidden="hidden">
-                                          <label for="b4c1-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="b4c1" name="b4c1" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 2</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="b4c2-switch" type="checkbox" hidden="hidden">
-                                          <label for="b4c2-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="b4c2" name="b4c2" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 3</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="b4c3-switch" type="checkbox" hidden="hidden">
-                                          <label for="b4c3-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="b4c3" name="b4c3" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 4</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="b4c4-switch" type="checkbox" hidden="hidden">
-                                          <label for="b4c4-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="b4c4" name="b4c4" value="" hidden="hidden">
-
-                                      </div>
-
-
-                        
-
-                                <div class="clearfix p-b-35"></div>
-                                <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseBasico4')" ></i></div>
-
-                                <div class="clearfix p-b-35"></div>
-                                          <hr></hr>
-
-
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                             </div>
-                           </div>
-
                         
 
                                 <div class="clearfix p-b-35"></div>
@@ -677,85 +597,6 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
-                                 <div class="form-group">
-                                    <label for="nombre">Intermedio 4</label>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseIntermedio4" aria-expanded="false" aria-controls="collapseIntermedio4">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseIntermedio4" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 1</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="i4c1-switch" type="checkbox" hidden="hidden">
-                                          <label for="i4c1-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="i4c1" name="i4c1" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 2</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="i4c2-switch" type="checkbox" hidden="hidden">
-                                          <label for="i4c2-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="i4c2" name="i4c2" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 3</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="i4c3-switch" type="checkbox" hidden="hidden">
-                                          <label for="i4c3-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="i4c3" name="i4c3" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 4</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="i4c4-switch" type="checkbox" hidden="hidden">
-                                          <label for="i4c4-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="i4c4" name="i4c4" value="" hidden="hidden">
-
-                                      </div>
-
-                        
-
-                                <div class="clearfix p-b-35"></div>
-                                <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseIntermedio4')" ></i></div>
-
-                                <div class="clearfix p-b-35"></div>
-                                          <hr></hr>
-
-
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                             </div>
-                           </div>
-
-                        
 
                                 <div class="clearfix p-b-35"></div>
                                 <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseIntermedio')" ></i></div>
@@ -1021,87 +862,6 @@
 
                                 <div class="clearfix p-b-35"></div>
                                 <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseAvanzado3')" ></i></div>
-
-                                <div class="clearfix p-b-35"></div>
-                                          <hr></hr>
-
-
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                             </div>
-                           </div>
-
-                           <div class="col-sm-12">
-                                 <div class="form-group">
-                                    <label for="nombre">Avanzado 4</label>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAvanzado4" aria-expanded="false" aria-controls="collapseAvanzado4">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseAvanzado4" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 1</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="a4c1-switch" type="checkbox" hidden="hidden">
-                                          <label for="a4c1-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="a4c1" name="a4c1" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 2</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="a4c2-switch" type="checkbox" hidden="hidden">
-                                          <label for="a4c2-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="a4c2" name="a4c2" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 3</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="a4c3-switch" type="checkbox" hidden="hidden">
-                                          <label for="a4c3-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="a4c3" name="a4c3" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 4</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="a4c4-switch" type="checkbox" hidden="hidden">
-                                          <label for="a4c4-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="a4c4" name="a4c4" value="" hidden="hidden">
-
-                                      </div>
-
-
-
-                        
-
-                                <div class="clearfix p-b-35"></div>
-                                <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseAvanzado4')" ></i></div>
 
                                 <div class="clearfix p-b-35"></div>
                                           <hr></hr>
@@ -1393,86 +1153,7 @@
                            </div>
 
 
-                           <div class="col-sm-12">
-                                 <div class="form-group">
-                                    <label for="nombre">Master 4</label>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMaster4" aria-expanded="false" aria-controls="collapseMaster4">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseMaster4" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-
-                                     <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 1</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="m4c1-switch" type="checkbox" hidden="hidden">
-                                          <label for="m4c1-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="m4c1" name="m4c1" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 2</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="m4c2-switch" type="checkbox" hidden="hidden">
-                                          <label for="m4c2-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="m4c2" name="m4c2" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 3</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="m4c3-switch" type="checkbox" hidden="hidden">
-                                          <label for="m4c3-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="m4c3" name="m4c3" value="" hidden="hidden">
-
-                                      </div>
-
-                                      <div class="col-sm-3 text-left">
-
-                                      <span class="f-20 f-700">Clase 4</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i> <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="m4c4-switch" type="checkbox" hidden="hidden">
-                                          <label for="m4c4-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-
-                                      <input type="text" id="m4c4" name="m4c4" value="" hidden="hidden">
-
-                                      </div>
-
-                                    
-                        
-
-                                <div class="clearfix p-b-35"></div>
-                                <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseMaster4')" ></i></div>
-
-                                <div class="clearfix p-b-35"></div>
-                                          <hr></hr>
-
-
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                             </div>
-                           </div>
-
+                           
                         
 
                                 <div class="clearfix p-b-35"></div>
@@ -1605,56 +1286,34 @@
     }
 
 
+
     if("{{$clase_4->clase_1}}" == 1){
-      $("#b4c1").val('1');  //VALOR POR DEFECTO
-      $("#b4c1-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_4->clase_2}}" == 1){
-      $("#b4c2").val('1');  //VALOR POR DEFECTO
-      $("#b4c2-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_4->clase_3}}" == 1){
-      $("#b4c3").val('1');  //VALOR POR DEFECTO
-      $("#b4c3-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_4->clase_4}}" == 1){
-      $("#b4c4").val('1');  //VALOR POR DEFECTO
-      $("#b4c4-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-
-
-
-    if("{{$clase_5->clase_1}}" == 1){
       $("#i1c1").val('1');  //VALOR POR DEFECTO
       $("#i1c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_5->clase_2}}" == 1){
+    if("{{$clase_4->clase_2}}" == 1){
       $("#i1c2").val('1');  //VALOR POR DEFECTO
       $("#i1c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_5->clase_3}}" == 1){
+    if("{{$clase_4->clase_3}}" == 1){
       $("#i1c3").val('1');  //VALOR POR DEFECTO
       $("#i1c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_5->clase_4}}" == 1){
+    if("{{$clase_4->clase_4}}" == 1){
       $("#i1c4").val('1');  //VALOR POR DEFECTO
       $("#i1c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
 
-    if("{{$clase_6->clase_1}}" == 1){
+    if("{{$clase_5->clase_1}}" == 1){
       $("#i2c1").val('1');  //VALOR POR DEFECTO
       $("#i2c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_6->clase_2}}" == 1){
+    if("{{$clase_5->clase_2}}" == 1){
       $("#i2c2").val('1');  //VALOR POR DEFECTO
       $("#i2c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
@@ -1664,219 +1323,156 @@
       $("#i2c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_6->clase_4}}" == 1){
+    if("{{$clase_5->clase_4}}" == 1){
       $("#i2c4").val('1');  //VALOR POR DEFECTO
       $("#i2c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
 
-    if("{{$clase_7->clase_1}}" == 1){
+    if("{{$clase_6->clase_1}}" == 1){
       $("#i3c1").val('1');  //VALOR POR DEFECTO
       $("#i2c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_7->clase_2}}" == 1){
+    if("{{$clase_6->clase_2}}" == 1){
       $("#i3c2").val('1');  //VALOR POR DEFECTO
       $("#i2c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_7->clase_7}}" == 1){
+    if("{{$clase_6->clase_7}}" == 1){
       $("#i3c3").val('1');  //VALOR POR DEFECTO
       $("#i2c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_7->clase_4}}" == 1){
+    if("{{$clase_6->clase_4}}" == 1){
       $("#i3c4").val('1');  //VALOR POR DEFECTO
       $("#i3c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
 
-    if("{{$clase_8->clase_1}}" == 1){
-      $("#i4c1").val('1');  //VALOR POR DEFECTO
-      $("#i4c1-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
 
-    if("{{$clase_8->clase_2}}" == 1){
-      $("#i4c2").val('1');  //VALOR POR DEFECTO
-      $("#i4c2-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_8->clase_3}}" == 1){
-      $("#i4c3").val('1');  //VALOR POR DEFECTO
-      $("#i4c3-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_8->clase_4}}" == 1){
-      $("#i4c4").val('1');  //VALOR POR DEFECTO
-      $("#i4c4-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-
-
-
-    if("{{$clase_9->clase_1}}" == 1){
+    if("{{$clase_7->clase_1}}" == 1){
       $("#a1c1").val('1');  //VALOR POR DEFECTO
       $("#a1c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_9->clase_2}}" == 1){
+    if("{{$clase_7->clase_2}}" == 1){
       $("#a1c2").val('1');  //VALOR POR DEFECTO
       $("#a1c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_9->clase_3}}" == 1){
+    if("{{$clase_7->clase_3}}" == 1){
       $("#a1c3").val('1');  //VALOR POR DEFECTO
       $("#a1c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_9->clase_4}}" == 1){
+    if("{{$clase_7->clase_4}}" == 1){
       $("#a1c4").val('1');  //VALOR POR DEFECTO
       $("#a1c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
 
-    if("{{$clase_10->clase_1}}" == 1){
+    if("{{$clase_8->clase_1}}" == 1){
       $("#a2c1").val('1');  //VALOR POR DEFECTO
       $("#a2c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_10->clase_2}}" == 1){
+    if("{{$clase_8->clase_2}}" == 1){
       $("#a2c2").val('1');  //VALOR POR DEFECTO
       $("#a2c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_10->clase_3}}" == 1){
+    if("{{$clase_8->clase_3}}" == 1){
       $("#a2c3").val('1');  //VALOR POR DEFECTO
       $("#a2c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_10->clase_4}}" == 1){
+    if("{{$clase_8->clase_4}}" == 1){
       $("#a2c4").val('1');  //VALOR POR DEFECTO
       $("#a2c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
 
-    if("{{$clase_11->clase_1}}" == 1){
+    if("{{$clase_9->clase_1}}" == 1){
       $("#a3c1").val('1');  //VALOR POR DEFECTO
       $("#a3c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_11->clase_2}}" == 1){
+    if("{{$clase_9->clase_2}}" == 1){
       $("#a3c2").val('1');  //VALOR POR DEFECTO
       $("#a3c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_11->clase_3}}" == 1){
+    if("{{$clase_9->clase_3}}" == 1){
       $("#a3c3").val('1');  //VALOR POR DEFECTO
       $("#a3c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_11->clase_4}}" == 1){
+    if("{{$clase_9->clase_4}}" == 1){
       $("#a3c4").val('1');  //VALOR POR DEFECTO
       $("#a3c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
 
-    if("{{$clase_12->clase_1}}" == 1){
-      $("#a4c1").val('1');  //VALOR POR DEFECTO
-      $("#a4c1-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
 
-    if("{{$clase_12->clase_2}}" == 1){
-      $("#a4c2").val('1');  //VALOR POR DEFECTO
-      $("#a4c2-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_12->clase_3}}" == 1){
-      $("#a4c3").val('1');  //VALOR POR DEFECTO
-      $("#a4c3-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_12->clase_4}}" == 1){
-      $("#a4c4").val('1');  //VALOR POR DEFECTO
-      $("#a4c4-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-
-
-    if("{{$clase_13->clase_1}}" == 1){
+    if("{{$clase_10->clase_1}}" == 1){
       $("#m1c1").val('1');  //VALOR POR DEFECTO
       $("#m1c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_13->clase_2}}" == 1){
+    if("{{$clase_10->clase_2}}" == 1){
       $("#m1c2").val('1');  //VALOR POR DEFECTO
       $("#m1c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_13->clase_3}}" == 1){
+    if("{{$clase_10->clase_3}}" == 1){
       $("#m1c3").val('1');  //VALOR POR DEFECTO
       $("#m1c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_13->clase_4}}" == 1){
+    if("{{$clase_10->clase_4}}" == 1){
       $("#m1c4").val('1');  //VALOR POR DEFECTO
       $("#m1c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_14->clase_1}}" == 1){
+    if("{{$clase_11->clase_1}}" == 1){
       $("#m2c1").val('1');  //VALOR POR DEFECTO
       $("#m2c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_14->clase_2}}" == 1){
+    if("{{$clase_11->clase_2}}" == 1){
       $("#m2c2").val('1');  //VALOR POR DEFECTO
       $("#m2c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_14->clase_3}}" == 1){
+    if("{{$clase_11->clase_3}}" == 1){
       $("#m2c3").val('1');  //VALOR POR DEFECTO
       $("#m2c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_14->clase_4}}" == 1){
+    if("{{$clase_11->clase_4}}" == 1){
       $("#m2c4").val('1');  //VALOR POR DEFECTO
       $("#m2c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_15->clase_1}}" == 1){
+    if("{{$clase_12->clase_1}}" == 1){
       $("#m3c1").val('1');  //VALOR POR DEFECTO
       $("#m3c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_15->clase_2}}" == 1){
+    if("{{$clase_12->clase_2}}" == 1){
       $("#m3c2").val('1');  //VALOR POR DEFECTO
       $("#m3c2-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_15->clase_3}}" == 1){
+    if("{{$clase_12->clase_3}}" == 1){
       $("#m3c3").val('1');  //VALOR POR DEFECTO
       $("#m3c3-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
-    if("{{$clase_15->clase_4}}" == 1){
+    if("{{$clase_12->clase_4}}" == 1){
       $("#m3c4").val('1');  //VALOR POR DEFECTO
       $("#m3c4-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_16->clase_1}}" == 1){
-      $("#m4c1").val('1');  //VALOR POR DEFECTO
-      $("#m4c1-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_16->clase_2}}" == 1){
-      $("#m4c2").val('1');  //VALOR POR DEFECTO
-      $("#m4c2-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_16->clase_3}}" == 1){
-      $("#m4c3").val('1');  //VALOR POR DEFECTO
-      $("#m4c3-switch").attr("checked", true); //VALOR POR DEFECTO
-    }
-
-    if("{{$clase_16->clase_4}}" == 1){
-      $("#m4c4").val('1');  //VALOR POR DEFECTO
-      $("#m4c4-switch").attr("checked", true); //VALOR POR DEFECTO
     }
 
     $("#b1c1-switch").on('change', function(){
@@ -1977,39 +1573,6 @@
       }     
     });
 
-    $("#b4c1-switch").on('change', function(){
-      if ($("#b4c1-switch").is(":checked")){
-        $("#b4c1").val('1');
-      }else{
-        $("#b4c1").val('0');
-      }     
-    });
-
-    $("#b4c2-switch").on('change', function(){
-      if ($("#b4c2-switch").is(":checked")){
-        $("#b4c2").val('1');
-      }else{
-        $("#b4c2").val('0');
-      }     
-    });
-
-    $("#b4c3-switch").on('change', function(){
-      if ($("#b4c3-switch").is(":checked")){
-        $("#b4c3").val('1');
-      }else{
-        $("#b4c3").val('0');
-      }     
-    });
-
-    $("#b4c4-switch").on('change', function(){
-      if ($("#b4c4-switch").is(":checked")){
-        $("#b4c4").val('1');
-      }else{
-        $("#b4c4").val('0');
-      }     
-    });
-
-
 
 
      $("#i1c1-switch").on('change', function(){
@@ -2108,37 +1671,6 @@
       }     
     });
 
-    $("#i4c1-switch").on('change', function(){
-      if ($("#i4c1-switch").is(":checked")){
-        $("#i4c1").val('1');
-      }else{
-        $("#i4c1").val('0');
-      }     
-    });
-
-    $("#i4c2-switch").on('change', function(){
-      if ($("#i4c2-switch").is(":checked")){
-        $("#i4c2").val('1');
-      }else{
-        $("#i4c2").val('0');
-      }     
-    });
-
-    $("#i4c3-switch").on('change', function(){
-      if ($("#i4c3-switch").is(":checked")){
-        $("#i4c3").val('1');
-      }else{
-        $("#i4c3").val('0');
-      }     
-    });
-
-    $("#i4c4-switch").on('change', function(){
-      if ($("#i4c4-switch").is(":checked")){
-        $("#i4c4").val('1');
-      }else{
-        $("#i4c4").val('0');
-      }     
-    });
 
 
 
@@ -2240,38 +1772,6 @@
       }     
     });
 
-    $("#a4c1-switch").on('change', function(){
-      if ($("#a4c1-switch").is(":checked")){
-        $("#a4c1").val('1');
-      }else{
-        $("#a4c1").val('0');
-      }     
-    });
-
-    $("#a4c2-switch").on('change', function(){
-      if ($("#a4c2-switch").is(":checked")){
-        $("#a4c2").val('1');
-      }else{
-        $("#a4c2").val('0');
-      }     
-    });
-
-    $("#a4c3-switch").on('change', function(){
-      if ($("#a4c3-switch").is(":checked")){
-        $("#a4c3").val('1');
-      }else{
-        $("#a4c3").val('0');
-      }     
-    });
-
-    $("#a4c4-switch").on('change', function(){
-      if ($("#a4c4-switch").is(":checked")){
-        $("#a4c4").val('1');
-      }else{
-        $("#a4c4").val('0');
-      }     
-    });
-
 
 
     $("#m1c1-switch").on('change', function(){
@@ -2367,38 +1867,6 @@
         $("#m3c4").val('1');
       }else{
         $("#m3c4").val('0');
-      }     
-    });
-
-    $("#m4c1-switch").on('change', function(){
-      if ($("#m4c1-switch").is(":checked")){
-        $("#m4c1").val('1');
-      }else{
-        $("#m4c1").val('0');
-      }     
-    });
-
-    $("#m4c2-switch").on('change', function(){
-      if ($("#m4c2-switch").is(":checked")){
-        $("#m4c2").val('1');
-      }else{
-        $("#m4c2").val('0');
-      }     
-    });
-
-    $("#m4c3-switch").on('change', function(){
-      if ($("#m4c3-switch").is(":checked")){
-        $("#m4c3").val('1');
-      }else{
-        $("#m4c3").val('0');
-      }     
-    });
-
-    $("#m4c4-switch").on('change', function(){
-      if ($("#m4c4-switch").is(":checked")){
-        $("#m4c4").val('1');
-      }else{
-        $("#m4c4").val('0');
       }     
     });
 

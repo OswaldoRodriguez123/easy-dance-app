@@ -100,15 +100,6 @@
                                                 <a href="#">Menu 2-2</a>
                                               </li>
                                             </div>
-                                            <div class="eos-group-title">BASICO 4 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
-                                            <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-1</a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-2</a>
-                                              </li>
-                                            </div>
                                           </div>
                                         </div>
                                     </div>
@@ -141,15 +132,6 @@
                                               </li>
                                             </div>
                                             <div class="eos-group-title">INTERMEDIO 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
-                                            <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-1</a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-2</a>
-                                              </li>
-                                            </div>
-                                            <div class="eos-group-title">INTERMEDIO 4 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
                                                 <a href="#">Menu 2-1</a>
@@ -199,15 +181,6 @@
                                                 <a href="#">Menu 2-2</a>
                                               </li>
                                             </div>
-                                            <div class="eos-group-title">AVANZADO 4 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
-                                            <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-1</a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-2</a>
-                                              </li>
-                                            </div>
                                           </div>
                                         </div>
                                     </div>
@@ -241,15 +214,6 @@
                                               </li>
                                             </div>
                                             <div class="eos-group-title">MASTER 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
-                                            <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-1</a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a href="#">Menu 2-2</a>
-                                              </li>
-                                            </div>
-                                            <div class="eos-group-title">MASTER 4 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
                                                 <a href="#">Menu 2-1</a>

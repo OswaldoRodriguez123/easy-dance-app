@@ -14,14 +14,10 @@ use Validator;
 use DB;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
-class EvaluacionController extends Controller
+class EvaluacionController extends BaseController
 {
-
-    function __construct(Route $route)
-    {
-        $this->route = $route;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +35,19 @@ class EvaluacionController extends Controller
         ->get();
 
         return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion]);
+    }
+
+    public function evaluaciones($id)
+    {
+        $evaluacion_join = DB::table('evaluaciones')
+            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+            ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+            ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->where('evaluaciones.examen_id', '=' , $id)
+        ->get();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id]);
     }
 
     /**
@@ -118,7 +127,7 @@ class EvaluacionController extends Controller
         
         $alumno = DB::table('evaluaciones')
                             ->join('alumnos', 'evaluaciones.alumno_id','=','alumnos.id')
-                            ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido')
+                            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.correo', 'alumnos.telefono', 'alumnos.celular', 'alumnos.sexo', 'alumnos.direccion', 'alumnos.fecha_nacimiento', 'alumnos.identificacion', 'alumnos.id', 'alumnos.created_at')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
@@ -130,20 +139,69 @@ class EvaluacionController extends Controller
 
         $academia = DB::table('evaluaciones')
                             ->join('academias', 'evaluaciones.academia_id','=','academias.id')
-                            ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia')
+                            ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia', 'academias.identificacion')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
-        $genero_examen = DB::table('evaluaciones')
+        $examen = DB::table('evaluaciones')
                             ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
-                            ->select('examenes.genero','evaluaciones.porcentaje')
+                            ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
+                            ->select('examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'evaluaciones.created_at')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
+
+        $clase_grupal = DB::table('alumnos')
+                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+                ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                ->where('inscripcion_clase_grupal.deleted_at', null)
+                ->where('clases_grupales.fecha_final', '<=', Carbon::now())
+            ->first();
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $fecha_ingreso = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at)->format('Y-m-d');
+
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
 
         //DATOS DE DETALLE
         $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
                             ->where('evaluacion_id','=',$id)
                             ->get();
+        $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+        $fecha_siguiente = Carbon::createFromFormat('Y-m-d H:i:s', $examen->created_at)->addMonth(1)->format('Y-m-d');
         
         return view('especiales.evaluaciones.detalle')->with([
                 'instructor'       => $instructor, 
@@ -153,8 +211,13 @@ class EvaluacionController extends Controller
                 'nota_final'       => $nota_final->total,
                 'observacion'      => $nota_final->observacion,
                 'fecha'            => $nota_final->created_at,
-                'genero_examen'    => $genero_examen->genero,
-                'porcentaje'       => $genero_examen->porcentaje,
+                'genero_examen'    => $examen->genero,
+                'porcentaje'       => $examen->porcentaje,
+                'edad'             => $edad,
+                'clase_grupal'     => $clase_grupal,
+                'dia'              => $dia,
+                'fecha_ingreso'    => $fecha_ingreso,
+                'fecha_siguiente'  => $fecha_siguiente
                 ]);
     }
 
