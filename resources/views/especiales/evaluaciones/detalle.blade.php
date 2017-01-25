@@ -39,45 +39,73 @@
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             @if ($academia->imagen_academia)
-                            <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+                                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+                            @else
+                                <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                             @endif
+
+
+                            
+                            <br>
+                            <span class="f-22 f-700">Academia {{$academia->academia_nombre}}</span>
+
+                            <div class="clearfix"></div>
+
+                            <span class="f-16 f-700 pull-right">R: {{$academia->identificacion}}</span>
+
+                            <div class="clearfix"></div>
+
+                            <hr class="linea-morada">   
                         </div>
                         
                         <div class="card-body card-padding">
                             <div class="row m-b-25">
-                                <div class="col-xs-6">
-                                    <div class="text-right">
-                                        <p class="c-gray">Instructor</p>
-                                        <h4>{{ $instructor->instructor_nombre }} {{ $instructor->instructor_apellido }}</h4>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-xs-6">
-                                    <div class="i-to">
-                                        <p class="c-gray">Alumno</p>
-                                        <h4>{{ $alumno->alumno_nombre }} {{ $alumno->alumno_apellido }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row m-b-25">
-                                <div class="col-xs-6">
-                                    <div class="text-right">
-                                        <p class="c-gray">Fecha de la realizacion de la evaluacion</p>
-                                        <h4>{{$fecha}}</h4>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="">
-                                        <p class="c-gray">Generos musicales evaluados</p>
-                                        <h4>{{$genero_examen}}</h4>
-                                    </div>
-                                </div>
-                            </div>
+                                <div class="col-sm-12 f-16 f-700">
+
+                                <span class="f-18 text-center c-morado"> DATOS PERSONALES </span>
+
+
+                                <hr class="linea-morada">
+
+                                ✔   Nombre : {{$alumno->nombre}} {{$alumno->apellido}} <br> 
+                                ✔   Identificación : {{$alumno->identificacion}} <br>
+                                ✔   Correo electrónico : {{$alumno->correo}} <br>
+                                ✔   Número telefónico : {{$alumno->telefono}} {{$alumno->celular}} <br>
+                                ✔   Sexo : {{$alumno->sexo}} <br>
+                                ✔   Fecha de nacimiento : {{$alumno->fecha_nacimiento}} <br>
+                                ✔   Dirección : {{$alumno->direccion}} <br>
+                                ✔   Edad :  {{$edad}} años de edad <br>
+
+                                <br>
+
+                                <span class="f-18 text-center c-morado"> DATOS ACADÉMICOS </span>
+
+
+                                <hr class="linea-morada">
+
+                                ✔   Fecha de ingreso : {{$fecha_ingreso}} <br> 
+                                ✔   Clase Actual : {{$clase_grupal->nombre}} <br>
+                                ✔   Instructor : {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}}<br>
+                                ✔   Días y horarios de clases  : {{$dia}} de {{$clase_grupal->hora_inicio}} a {{$clase_grupal->hora_final}}<br>
+
+                             
+
                             <div class="clearfix"></div>
                             
 
                             
                             <div class="clearfix"></div>
+
+                            <br>
+
+
+
+                            <span class="f-18 f-700 text-center c-morado"> RESULTADOS </span>
+
+
+                            <hr class="linea-morada">
+
+                        
                             
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -108,24 +136,28 @@
 
                                 </tbody>
 
-                                <thead class="text-uppercase">
-
-                                <tr>
-                            
-                                            <td> NOTA FINAL </td>
-                                            <td class="highlight">{{$nota_final}}</td>
-                                    </tr>
-
-                                    </thead>
                             </table>
                             </div>
                             </div>
                             
                             <div class="clearfix"></div><hr />
-                            <label for="observacion" id="id-observacion">Observaciones</label>
-                            <div>{{$observacion}}</div>
+
+                            <div class ="f-16 f-700 pull-right">
+
+                            Resultado final : {{$nota_final}} puntos <br>
+                            Nivel de progreso : {{$porcentaje}} <br>
+                            Fecha próxima evaluación : {{$fecha_siguiente}} <br>
+
+                            </div>
+
+                            <label for="observacion" id="id-observacion">Fórmula de éxito</label>
+                            <div class="fg-line">
+                              <textarea class="form-control" id="observacion" name="observacion" rows="2" disabled>{{$observacion}}</textarea>
+                            </div>
                             <div class="clearfix p-b-20"></div>
                             <div class="clearfix p-b-20"></div>
+
+                            </div>
 
                             <nav class="navbar navbar-default navbar-fixed-bottom">
                                 <div class="container">
@@ -151,6 +183,8 @@
                                 <p class="c-gray">Proin ac iaculis metus. Etiam nisi nulla, fermentum blandit consectetur sed, ornare non tortor. Nam quis ipsum vitae dolor porttitor interdum. Curabitur faucibus erat vel ante fermentum lacinia. Integer porttitor laoreet suscipit. Sed cursus cursus massa ut pellentesque. Phasellus vehicula dictum arcu, eu interdum massa bibendum sit amet.</p>
                             </div> -->
                         </div>
+
+
                         
                         <!-- <footer class="m-t-15 p-20">
                             <ul class="list-inline text-center list-unstyled">
@@ -180,6 +214,9 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
+        bPaginate: false,
+        bInfo:false,
+        bFilter:false,
         pageLength: 25,   
         order: [[0, 'desc']],
         fnDrawCallback: function() {

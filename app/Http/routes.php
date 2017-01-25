@@ -154,6 +154,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
 			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
+			Route::get('especiales/evaluaciones/{id}', 'EvaluacionController@evaluaciones');
 			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');
 
 			// ---- CONFIGURACION ----
@@ -612,6 +613,21 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/fiestas/update/imagen', 'FiestaController@updateImagen');
 			Route::put('agendar/fiestas/update/etiqueta', 'FiestaController@updateEtiqueta');
 
+			//CITAS
+
+			Route::get('agendar/citas', 'CitaController@principal');
+			Route::post('agendar/citas/agregar', 'CitaController@store');
+			Route::get('agendar/citas/agregar', 'CitaController@create');
+			Route::get('agendar/citas/detalle/{id}', 'CitaController@edit');
+			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
+			Route::delete('agendar/citas/eliminar/{id}', 'CitaController@destroy');
+
+			Route::put('agendar/citas/update/fecha', 'CitaController@updateFecha');
+			Route::put('agendar/citas/update/tipo', 'CitaController@updateTipo');
+			Route::put('agendar/citas/update/alumno', 'CitaController@updateAlumno');
+			Route::put('agendar/citas/update/instructor', 'CitaController@updateInstructor');
+			Route::put('agendar/citas/update/horario', 'CitaController@updateHorario');
+
 			//PROMOCIONES
 
 			Route::get('especiales/promociones', 'PromocionController@principal');
@@ -806,6 +822,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('incidencias/generar', 'IncidenciaController@create');
 			Route::post('incidencias/generar', 'IncidenciaController@store');
 			Route::get('incidencias/detalle/{id}', 'SugerenciaController@planilla');
+
+			//BUSCADOR
+
+			Route::get('perfil/{id}', 'BuscadorController@perfil');
+			Route::get('buscador', 'BuscadorController@index');
+			Route::post('buscador', 'BuscadorController@buscarAlumno');
 
 		});// EN MIDDLEWARE RECEPCIONISTA
 		/*--------------------------------------------------------

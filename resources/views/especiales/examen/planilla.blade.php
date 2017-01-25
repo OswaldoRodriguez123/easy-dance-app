@@ -316,28 +316,28 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                   <div class="form-group fg-line">
-                                      <label for="fecha_cobro" id="id-tipo_de_evaluacion">Tipo de evaluacion:</label>
+                                      <label for="fecha_cobro" id="id-tipos_de_evaluacion">Tipo de evaluacion:</label>
                                       <div class="clearfix"></div>
                                       <div class="input-group">
                                       <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                       <div class="p-t-10">
                                       <label class="radio radio-inline m-r-20">
-                                          <input name="tipos_de_evaluacion" id="tipo_de_evaluacion" value="1" type="radio">
+                                          <input name="tipos_de_evaluacion" id="evaluacion" value="1" type="radio">
                                           <i class="input-helper"></i>  
                                           Evaluacion 
                                       </label><br />
                                       <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="tipos_de_evaluacion" value="2" type="radio">
+                                          <input name="tipos_de_evaluacion" id="clase" value="2" type="radio">
                                           <i class="input-helper"></i>  
                                           Clase personalizada
                                       </label><br />
                                       <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="tipos_de_evaluacion" value="3" type="radio">
+                                          <input name="tipos_de_evaluacion" id="casting" value="3" type="radio">
                                           <i class="input-helper"></i>  
                                           Casting
                                       </label><br />
                                       <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="tipos_de_evaluacion" value="4" type="radio">
+                                          <input name="tipos_de_evaluacion" id="otros" value="4" type="radio">
                                           <i class="input-helper"></i>  
                                           Otros
                                       </label><br />
@@ -845,6 +845,7 @@
                                   <hr></hr>
                                   
                                   <a class="" href="{{url('/')}}/especiales/examenes/evaluar/{{$examen->id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="" href="{{url('/')}}/especiales/evaluaciones/{{$examen->id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$examen->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -933,7 +934,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-generos" class="zmdi {{ empty($examen->generos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
-                               <span class="f-14"> generos musicales </span>
+                               <span class="f-14"> Generos Musicales </span>
                              </td>
                              <td  class="f-14 m-l-15" id="examen-generos_selector" >{{$examen->generos}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -942,7 +943,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipos_de_evaluacion" class="zmdi {{ empty($examen->tipos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
-                               <span class="f-14"> tipo de evaluacion </span>
+                               <span class="f-14"> Tipo de Evaluación </span>
                              </td>
                              <td  class="f-14 m-l-15" id="examen-tipos_de_evaluacion"  data-valor="{{$examen->tipos}}">
                                 @if($examen->tipos==1)
@@ -1098,7 +1099,22 @@
 
     $('#modalTiposDeEvaluacion').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#tipos_de_evaluacion option:selected").val($("#examen-generos").data('valor')); 
+      $("#tipos_de_evaluacion option:selected").val($("#examen-tipos_de_evaluacion").data('valor')); 
+    })
+
+    $('#modalTiposDeEvaluacion').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var tipo=$("#examen-tipos_de_evaluacion").data('valor');
+      if(tipo=="1"){
+        $("#evaluacion").prop("checked", true);
+      }else if(tipo=="2"){
+        $("#clase").prop("checked", true);
+      }else if(tipo=="3"){
+        $("#casting").prop("checked", true);
+      }else{
+        $("#otros").prop("checked", true);
+      }
+      
     })
 
     $("#tiempos-switch").on('change', function(){
@@ -1308,20 +1324,11 @@
       var t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 25,
-        //bPaginate: false, 
-        bFilter:false, 
-        bSort:false, 
+        bPaginate: false,
         bInfo:false,
-        order: [[0, 'asc']],fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
+        bFilter:false,
+        pageLength: 25,   
+        order: [[0, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
         },

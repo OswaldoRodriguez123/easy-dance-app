@@ -31,12 +31,12 @@
                         <div class="card-header">
 
                             <!-- <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Selecciona la clase grupal</p> -->
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <span class="f-22 opaco-0-8">Mi Progreso</span>
                             </div>
 
-                            <div class="col-sm-6">
-                                <span class="f-16 opaco-0-8" style="margin-right: 8%; padding-top: 5px; float:left">Nivel <span id="nivel">1</span> de 16</span> 
+                            <div class="col-sm-7">
+                                <span class="f-16 opaco-0-8" style="margin-right: 4%; padding-top: 5px; float:left">Nivel <span id="nivel">1</span> de 12</span> 
 
    
 
@@ -48,16 +48,10 @@
                                 <div id="nivel_6" class="circulo_nivelacion"></div>
                                 <div id="nivel_7" class="circulo_nivelacion"></div>
                                 <div id="nivel_8" class="circulo_nivelacion"></div>
-                                <div class="clearfix"></div>
-                                <div id="nivel_9" class="circulo_nivelacion" style="margin-left: 26.7%"></div>
+                                <div id="nivel_9" class="circulo_nivelacion"></div>
                                 <div id="nivel_10" class="circulo_nivelacion"></div>
                                 <div id="nivel_11" class="circulo_nivelacion"></div>
                                 <div id="nivel_12" class="circulo_nivelacion"></div>
-                                <div id="nivel_13" class="circulo_nivelacion"></div>
-                                <div id="nivel_14" class="circulo_nivelacion"></div>
-                                <div id="nivel_15" class="circulo_nivelacion"></div>
-                                <div id="nivel_16" class="circulo_nivelacion"></div>
-
                             </div>
 
                             <div class="col-sm-3 text-right">
@@ -97,31 +91,6 @@
                                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
                                             <div id="barra_1" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
-    
-                                        <br>
-
-                                        <span class="f-14 opaco-0-8 f-700"><span id="barra_2_span">0</span> % COMPLETADA</span>
-                                         
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43;height: 25px">
-                                            <div id="barra_2" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                                        </div>
-
-                                        <br>
-
-                                        <span class="f-14 opaco-0-8 f-700"><span id="barra_3_span">0</span> % COMPLETADA</span>
-
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43;height: 25px">
-                                            <div id="barra_3" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                                        </div>
-
-                                        <br>
-
-                                        <span class="f-14 opaco-0-8 f-700"><span id="barra_4_span">0</span> % COMPLETADA</span>
-
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43;height: 25px">
-                                            <div id="barra_4" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                                        </div>
-                                    </div>
 
                                   
                                 <div class="col-sm-4"></div>
@@ -162,6 +131,7 @@
     var clase_16 = <?php echo json_encode($clase_16);?>;
 
     $(document).ready(function() {
+        var total = 0;
         if(clase_1['clase_4'] == 1){
             $('#nivel_1').css('background', '#67bd6a');
             i++;
@@ -217,29 +187,9 @@
             i++;
 
         }
+
         if(clase_12['clase_4'] == 1){
             $('#nivel_12').css('background', '#67bd6a');
-            i++;
-
-        }
-        if(clase_13['clase_4'] == 1){
-            $('#nivel_13').css('background', '#67bd6a');
-            i++;
-
-        }
-        if(clase_14['clase_4'] == 1){
-            $('#nivel_14').css('background', '#67bd6a');
-            i++;
-
-        }
-        if(clase_15['clase_4'] == 1){
-            $('#nivel_15').css('background', '#67bd6a');
-            i++;
-
-        }
-        if(clase_16['clase_4'] == 1){
-            $('#nivel_16').css('background', '#67bd6a');
-            i++;
 
         }
 
@@ -248,31 +198,28 @@
 
         if(window["clase_"+i]['clase_1'] == 1){
 
-            $('#barra_1').css('width', '100%')
-            $('#barra_1').css('background', '#67bd6a')
-            $('#barra_1_span').text(100);
+            total = total + 25;
         }
 
         if(window["clase_"+i]['clase_2'] == 1){
 
-            $('#barra_2').css('width', '100%')
-            $('#barra_2').css('background', '#67bd6a')
-            $('#barra_2_span').text(100);
+            total = total + 25;
         }
 
         if(window["clase_"+i]['clase_3'] == 1){
 
-            $('#barra_3').css('width', '100%')
-            $('#barra_3').css('background', '#67bd6a')
-            $('#barra_3_span').text(100);
+            total = total + 25;
         }
 
         if(window["clase_"+i]['clase_4'] == 1){
 
-            $('#barra_4').css('width', '100%')
-            $('#barra_4').css('background', '#67bd6a')
-            $('#barra_4_span').text(100);
+            total = total + 25;
         }
+
+        $('#barra_1').css('width', total+'%')
+        // $('#barra_1').css('background', '#67bd6a')
+        $('#barra_1_span').text(total);
+
     });
 
     route_progreso="{{url('/')}}/progreso";

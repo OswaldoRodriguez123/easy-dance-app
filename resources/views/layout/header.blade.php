@@ -72,6 +72,9 @@
                                         <li class="hidden-xs">
                                             <a href="{{url('incidencias/generar')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
                                         </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('agendar/citas')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Citas</a>
+                                        </li>
                                     </ul>
                                 </li>
 

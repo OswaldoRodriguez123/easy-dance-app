@@ -52,7 +52,7 @@ class ExamenController extends BaseController {
         if (Session::has('nuevo_item')) {
             Session::forget('nuevo_item'); 
         }
-		return view('especiales.examen.create')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales]);
+		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales]);
 	}
 
     public function store(Request $request)

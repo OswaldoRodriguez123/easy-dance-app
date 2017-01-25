@@ -2135,10 +2135,7 @@ class ClaseGrupalController extends BaseController {
             $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
             $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
             $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
-            $clase_13 = Progreso::where('clase_grupal_id',$id)->where('tipo',13)->first();
-            $clase_14 = Progreso::where('clase_grupal_id',$id)->where('tipo',14)->first();
-            $clase_15 = Progreso::where('clase_grupal_id',$id)->where('tipo',15)->first();
-            $clase_16 = Progreso::where('clase_grupal_id',$id)->where('tipo',16)->first();
+
         }else{
             $clase_1 = new Progreso;
             $clase_1->clase_grupal_id = $id;
@@ -2200,28 +2197,10 @@ class ClaseGrupalController extends BaseController {
             $clase_12->tipo = 12;
             $clase_12->save();
 
-            $clase_13 = new Progreso;
-            $clase_13->clase_grupal_id = $id;
-            $clase_13->tipo = 13;
-            $clase_13->save();
 
-            $clase_14 = new Progreso;
-            $clase_14->clase_grupal_id = $id;
-            $clase_14->tipo = 14;
-            $clase_14->save();
-
-            $clase_15 = new Progreso;
-            $clase_15->clase_grupal_id = $id;
-            $clase_15->tipo = 15;
-            $clase_15->save();
-
-            $clase_16 = new Progreso;
-            $clase_16->clase_grupal_id = $id;
-            $clase_16->tipo = 16;
-            $clase_16->save();
         }
 
-        return view('agendar.clase_grupal.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'clase_13' => $clase_13, 'clase_14' => $clase_14, 'clase_15' => $clase_15, 'clase_16' => $clase_16, 'id' => $id]);
+        return view('agendar.clase_grupal.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id]);
     }
 
     public function storeNivelaciones(Request $request)
@@ -2240,10 +2219,7 @@ class ClaseGrupalController extends BaseController {
         $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
         $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
         $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
-        $clase_13 = Progreso::where('clase_grupal_id',$id)->where('tipo',13)->first();
-        $clase_14 = Progreso::where('clase_grupal_id',$id)->where('tipo',14)->first();
-        $clase_15 = Progreso::where('clase_grupal_id',$id)->where('tipo',15)->first();
-        $clase_16 = Progreso::where('clase_grupal_id',$id)->where('tipo',16)->first();
+
 
 
         $clase_1->clase_1 = $request->b1c1;
@@ -2266,96 +2242,65 @@ class ClaseGrupalController extends BaseController {
         $clase_3->clase_4 = $request->b3c4;
         $clase_3->save();
 
-
-        $clase_4->clase_1 = $request->b4c1;
-        $clase_4->clase_2 = $request->b4c2;
-        $clase_4->clase_3 = $request->b4c3;
-        $clase_4->clase_4 = $request->b4c4;
+        $clase_4->clase_1 = $request->i1c1;
+        $clase_4->clase_2 = $request->i1c2;
+        $clase_4->clase_3 = $request->i1c3;
+        $clase_4->clase_4 = $request->i1c4;
         $clase_4->save();
 
 
-        $clase_5->clase_1 = $request->i1c1;
-        $clase_5->clase_2 = $request->i1c2;
-        $clase_5->clase_3 = $request->i1c3;
-        $clase_5->clase_4 = $request->i1c4;
+        $clase_5->clase_1 = $request->i2c1;
+        $clase_5->clase_2 = $request->i2c2;
+        $clase_5->clase_3 = $request->i2c3;
+        $clase_5->clase_4 = $request->i2c4;
         $clase_5->save();
 
 
-        $clase_6->clase_1 = $request->i2c1;
-        $clase_6->clase_2 = $request->i2c2;
-        $clase_6->clase_3 = $request->i2c3;
-        $clase_6->clase_4 = $request->i2c4;
+        $clase_6->clase_1 = $request->i3c1;
+        $clase_6->clase_2 = $request->i3c2;
+        $clase_6->clase_3 = $request->i3c3;
+        $clase_6->clase_4 = $request->i3c4;
         $clase_6->save();
 
 
-        $clase_7->clase_1 = $request->i3c1;
-        $clase_7->clase_2 = $request->i3c2;
-        $clase_7->clase_3 = $request->i3c3;
-        $clase_7->clase_4 = $request->i3c4;
+
+        $clase_7->clase_1 = $request->a1c1;
+        $clase_7->clase_2 = $request->a1c2;
+        $clase_7->clase_3 = $request->a1c3;
+        $clase_7->clase_4 = $request->a1c4;
         $clase_7->save();
 
 
-        $clase_8->clase_1 = $request->i4c1;
-        $clase_8->clase_2 = $request->i4c2;
-        $clase_8->clase_3 = $request->i4c3;
-        $clase_8->clase_4 = $request->i4c4;
+        $clase_8->clase_1 = $request->a2c1;
+        $clase_8->clase_2 = $request->a2c2;
+        $clase_8->clase_3 = $request->a2c3;
+        $clase_8->clase_4 = $request->a2c4;
         $clase_8->save();
 
 
-
-        $clase_9->clase_1 = $request->a1c1;
-        $clase_9->clase_2 = $request->a1c2;
-        $clase_9->clase_3 = $request->a1c3;
-        $clase_9->clase_4 = $request->a1c4;
+        $clase_9->clase_1 = $request->a3c1;
+        $clase_9->clase_2 = $request->a3c2;
+        $clase_9->clase_3 = $request->a3c3;
+        $clase_9->clase_4 = $request->a3c4;
         $clase_9->save();
 
-
-        $clase_10->clase_1 = $request->a2c1;
-        $clase_10->clase_2 = $request->a2c2;
-        $clase_10->clase_3 = $request->a2c3;
-        $clase_10->clase_4 = $request->a2c4;
+        $clase_10->clase_1 = $request->m1c1;
+        $clase_10->clase_2 = $request->m1c2;
+        $clase_10->clase_3 = $request->m1c3;
+        $clase_10->clase_4 = $request->m1c4;
         $clase_10->save();
 
-
-        $clase_11->clase_1 = $request->a3c1;
-        $clase_11->clase_2 = $request->a3c2;
-        $clase_11->clase_3 = $request->a3c3;
-        $clase_11->clase_4 = $request->a3c4;
+        $clase_11->clase_1 = $request->m2c1;
+        $clase_11->clase_2 = $request->m2c2;
+        $clase_11->clase_3 = $request->m2c3;
+        $clase_11->clase_4 = $request->m2c4;
         $clase_11->save();
 
-        $clase_12->clase_1 = $request->a4c1;
-        $clase_12->clase_2 = $request->a4c2;
-        $clase_12->clase_3 = $request->a4c3;
-        $clase_12->clase_4 = $request->a4c4;
+        $clase_12->clase_1 = $request->m3c1;
+        $clase_12->clase_2 = $request->m3c2;
+        $clase_12->clase_3 = $request->m3c3;
+        $clase_12->clase_4 = $request->m3c4;
         $clase_12->save();
-
-
-        $clase_13->clase_1 = $request->m1c1;
-        $clase_13->clase_2 = $request->m1c2;
-        $clase_13->clase_3 = $request->m1c3;
-        $clase_13->clase_4 = $request->m1c4;
-        $clase_13->save();
-
-
-        $clase_14->clase_1 = $request->m2c1;
-        $clase_14->clase_2 = $request->m2c2;
-        $clase_14->clase_3 = $request->m2c3;
-        $clase_14->clase_4 = $request->m2c4;
-        $clase_14->save();
-
-
-        $clase_15->clase_1 = $request->m3c1;
-        $clase_15->clase_2 = $request->m3c2;
-        $clase_15->clase_3 = $request->m3c3;
-        $clase_15->clase_4 = $request->m3c4;
-        $clase_15->save();
-
-
-        $clase_16->clase_1 = $request->m4c1;
-        $clase_16->clase_2 = $request->m4c2;
-        $clase_16->clase_3 = $request->m4c3;
-        $clase_16->clase_4 = $request->m4c4;
-        $clase_16->save();
 
         return response()->json(['mensaje' => '¡Excelente! El Alumno se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
     
