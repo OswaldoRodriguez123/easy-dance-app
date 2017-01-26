@@ -291,7 +291,7 @@
         pageLength: 25,   
         order: [[1, 'desc']],
         fnDrawCallback: function() {
-        if ("{{count($visitante)}}" < 25) {
+        if ("{{count($visitantes)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
           }else{

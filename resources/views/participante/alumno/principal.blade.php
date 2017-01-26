@@ -78,9 +78,9 @@
                                 <?php $id = $alumno['id']; ?>
                                 <!-- can('view-alumnos', $alumno) -->
                                 @if($alumno['deleted_at'] == null)
-                                    <tr id="row_{{$id}}" class="seleccion" data-tipo = "$alumno['deleted_at']">
+                                    <tr id="row_{{$id}}" class="seleccion" data-tipo = "1">
                                 @else
-                                    <tr id="row_{{$id}}" class="seleccion seleccion_deleted" data-tipo = "$alumno['deleted_at']">
+                                    <tr id="row_{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
                                 @endif
                                     <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$alumno['identificacion']}}</td>
@@ -201,9 +201,9 @@
         function previa(t){
             var row = $(t).closest('tr');
             var tipo = row.data('tipo');
-            if(tipo == ''){
+            if(tipo == '1'){
                 var tmp = row.attr('id');
-                var tmp = tmp.split('_');
+                var id_alumno = tmp.split('_');
                 var route =route_detalle+"/"+id_alumno[1];
                 window.location=route;
             }

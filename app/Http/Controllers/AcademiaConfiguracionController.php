@@ -529,18 +529,17 @@ class AcademiaConfiguracionController extends BaseController {
 	 */
 
     public function updateReferido(Request $request){
-        $rules = [
+    
+    $rules = [
 
-        'sin_registrar' => 'required|numeric',
-        'propietario' => 'required|numeric',
+        'puntos_referencia' => 'numeric',
+        'puntos_referidos' => 'numeric',
     ];
 
     $messages = [
 
-        'sin_registrar.required' => 'Ups! El numero es requerido',
-        'propietario.required' => 'Ups! El numero es requerido',
-        'sin_registrar.numeric' => 'Ups! Solo se aceptan numeros',
-        'propietario.numeric' => 'Ups! Solo se aceptan numeros',
+        'puntos_referencia.numeric' => 'Ups! El campo de “ Promotor ” es inválido, debe contener sólo  números',
+        'puntos_referidos.numeric' => 'Ups! El campo de “ Receptor ” es inválido, debe contener sólo  números',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -554,11 +553,15 @@ class AcademiaConfiguracionController extends BaseController {
     else{
 
         $academia = Academia::find(Auth::user()->academia_id);
-        $academia->puntos_referencia = $request->propietario;
-        $academia->puntos_referidos = $request->sin_registrar;
+        $academia->puntos_referencia = $request->puntos_referencia;
+        $academia->puntos_referidos = $request->puntos_referidos;
 
-        $academia->save();
-        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        if($academia->save()){
+       
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         
         }
     }
@@ -577,6 +580,8 @@ class AcademiaConfiguracionController extends BaseController {
             // 'telefono' => 'required',
             'celular' => 'required',
             'numero_factura' => 'numeric',
+            'puntos_referencia' => 'numeric',
+            'puntos_referidos' => 'numeric',
         ];
 
 
@@ -589,60 +594,34 @@ class AcademiaConfiguracionController extends BaseController {
             'telefono.required' => 'Ups! El Teléfono Local es requerido',
             'celular.required' => 'Ups! El Teléfono Móvil es requerido',
             'numero_factura.numeric' => 'Ups! El campo de “ Próximo número de factura ” es inválido, debe contener sólo  números',
+            'puntos_referencia.numeric' => 'Ups! El campo de “ Promotor ” es inválido, debe contener sólo  números',
+            'puntos_referidos.numeric' => 'Ups! El campo de “ Receptor ” es inválido, debe contener sólo  números',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()){
 
-            // return redirect("/home")
-
-            // ->withErrors($validator)
-            // ->withInput();
-
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-            //dd($validator);
 
         }
 
         else{
-    
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            // $arreglo = Session::get('academia');
-
-            // $correo = $arreglo[0]['correo'];
-            // $telefono = $arreglo[0]['telefono'];
-            // $celular = $arreglo[0]['celular'];
-            // $direccion = $arreglo[0]['direccion'];
-            // $facebook = $arreglo[0]['facebook'];
-            // $twitter = $arreglo[0]['twitter'];
-            // $linkedin = $arreglo[0]['linkedin'];
-            // $instagram = $arreglo[0]['instagram'];
-            // $pagina_web = $arreglo[0]['pagina_web'];
-            // $youtube = $arreglo[0]['youtube'];
-            // $normativa = $arreglo[0]['normativa'];
-            // $manual = $arreglo[0]['manual'];
-            // $programacion = $arreglo[0]['programacion'];
-            // $numero_factura = $arreglo[0]['numero_factura'];
-            // $incluye_iva = $arreglo[0]['incluye_iva'];
 
             if($request->link_video){
 
-            $parts = parse_url($request->link_video);
+                $parts = parse_url($request->link_video);
 
-            if(isset($parts['host']))
-            {
-                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+                if(isset($parts['host']))
+                {
+                    if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
 
-                
+                    
+                    }else{
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
                 }else{
-                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
-                }
-            }else{
-                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
                 }
             
             }
@@ -655,8 +634,9 @@ class AcademiaConfiguracionController extends BaseController {
             }
 
             $correo = strtolower($request->correo);
-
             $direccion = title_case($request->direccion);
+
+            $academia = Academia::find(Auth::user()->academia_id);
 
             $academia->correo = $correo;
             $academia->telefono = $request->telefono;
@@ -673,8 +653,8 @@ class AcademiaConfiguracionController extends BaseController {
             $academia->manual = $request->manual;
             $academia->numero_factura = $numero_factura;
             $academia->incluye_iva = $request->incluye_iva;
-            $academia->puntos_referidos = $request->sin_registrar;
-            $academia->puntos_referencias = $request->propietario;
+            $academia->puntos_referencia = $request->puntos_referencia;
+            $academia->puntos_referidos = $request->puntos_referidos;
             
             if($academia->save()){
 

@@ -772,31 +772,29 @@
                           <div class="row p-t-20 p-b-0">
                             <div class="col-sm-12">
                               <div class="form-group fg-line">
-                                <label for="id">Beneficios de referidos</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="escriba cuantos puntos ganaran los alumnos registrados en la academia y aquellos que se registraran con un codigo de referencia" title="" data-original-title="Ayuda"></i>
-                                <div class="clearfix p-b-35"></div>
-                                  <label for="propietario" id="id-propietario">alumno registrado</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno registrado cuando una persona sin registrar use su codigo" title="" data-original-title="Ayuda"></i>
+                                  <label for="puntos_referencia" id="id-puntos_referencia">Promotor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno registrado cuando una persona sin registrar use su codigo" title="" data-original-title="Ayuda"></i>
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
                                     <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="propietario" id="propietario" placeholder="Ej. 10000">
+                                      <input type="text" class="form-control input-sm proceso" name="puntos_referencia" id="puntos_referencia" placeholder="Ej. 10000" value="{{$academia->puntos_referencia}}" data-mask="00000000000">
                                     </div>
                                   </div>
-                                  <div class="has-error" id="error-propietario">
+                                  <div class="has-error" id="error-puntos_referencia">
                                     <span >
-                                      <small class="help-block error-span" id="error-propietario_mensaje"></small>
+                                      <small class="help-block error-span" id="error-puntos_referencia_mensaje"></small>
                                     </span>
                                   </div>
                                   <div class="clearfix p-b-35"></div>
-                                  <label for="sin_registrar" id="id-sin_registrar">alumno sin registrar</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno que se va a registrar el cual gfue referido por alguien y usara su codigo" title="" data-original-title="Ayuda"></i>
+                                  <label for="puntos_referidos" id="id-puntos_referidos">Receptor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno que se va a registrar el cual fue referido por alguien y usara su codigo" title="" data-original-title="Ayuda"></i>
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
                                     <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="sin_registrar" id="sin_registrar" placeholder="Ej. 5000">
+                                      <input type="text" class="form-control input-sm proceso" name="puntos_referidos" id="puntos_referidos" placeholder="Ej. 5000" value="{{$academia->puntos_referidos}}" data-mask="00000000000">
                                     </div>
                                   </div>
-                                  <div class="has-error" id="error-sin_registrar">
+                                  <div class="has-error" id="error-puntos_referidos">
                                     <span >
-                                      <small class="help-block error-span" id="error-sin_registrar_mensaje"></small>
+                                      <small class="help-block error-span" id="error-puntos_referidos_mensaje"></small>
                                     </span>
                                   </div>
                                 </div>
@@ -948,7 +946,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="icon_a-niveles f-22"></i> </span>
-                               <span class="f-14"> Beneficios por referir </span>
+                               <span class="f-14"> Sección de Referidos </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>

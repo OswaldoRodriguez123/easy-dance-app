@@ -418,7 +418,7 @@
                                                 <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
                                                  <div class="fg-line"> 
                                                   
-                                                  <input type="text" class="form-control input-sm" name="numero_factura" id="numero_factura" placeholder="" value=1>
+                                                  <input type="text" class="form-control input-sm" name="numero_factura" id="numero_factura" placeholder="" value="1" data-mask="00000000000">
                                                   </div>
                                                 </div>
                                               <div class="has-error" id="error-numero_factura">
@@ -617,9 +617,67 @@
                                     </div>
                                  </div>
                                </div>
-                            </div>
+
+
+
 
                               <div class="clearfix p-b-35"></div>
+
+
+                              <div class="col-sm-12">
+
+                                <span class="f-30 text-center c-morado">Sección de Referidos</span>
+                                    
+                                <hr></hr>
+
+                                <div class="clearfix p-b-15"></div>
+
+
+                                <div class="col-sm-12">                                         
+                                              
+                                    <label for="id" id="id-puntos_referencia">Promotor</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno registrado cuando una persona sin registrar use su codigo" title="" data-original-title="Ayuda"></i>
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm" name="puntos_referencia" id="puntos_referencia" placeholder="Ej: 2000" data-mask="00000000000">
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-puntos_referencia">
+                                      <span >
+                                          <small id="error-puntos_referencia_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+
+                               <div class="clearfix p-b-15"></div>
+
+                               <div class="col-sm-12">                                         
+                                              
+                                    <label for="id" id="id-puntos_referidos">Receptor</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno que se va a registrar el cual fue referido por alguien y usara su codigo" title="" data-original-title="Ayuda"></i>
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm" name="puntos_referidos" id="puntos_referidos" placeholder="Ej: 2000" data-mask="00000000000">
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-puntos_referidos">
+                                      <span >
+                                          <small id="error-puntos_referidos_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+
+                                <div class="clearfix p-b-15"></div>
+
+                              </div>
+
+
+                            </div>
+
+
+
                             
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -668,7 +726,6 @@
 
 @section('js') 
 <script type="text/javascript">
-  //$('.input-mask').mask();
 
   $(document).ready(function(){
 
@@ -685,7 +742,6 @@
       });
 
       $("#imagen").bind("change", function() {
-            //alert('algo cambio');
             
             setTimeout(function(){
               var imagen = $("#imagena img").attr('src');
@@ -715,7 +771,6 @@
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
-          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -750,7 +805,6 @@
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
-          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -779,7 +833,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "link_video" , "normativa", "manual", "programacion", "numero_factura"];
+    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "link_video" , "normativa", "manual", "programacion", "numero_factura", 'puntos_referencia', 'puntos_referidos'];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -804,7 +858,6 @@
 
     porcetaje=(cantidad/fLen)*100;
     porcetaje=porcetaje.toFixed(2);
-    //console.log(porcetaje);
     $("#text-progreso").text(porcetaje+"%");
     $("#barra-progreso").css({
       "width": (porcetaje + "%")
@@ -818,27 +871,15 @@
       $("#barra-progreso").removeClass('progress-bar-success');
       $("#barra-progreso").addClass('progress-bar-morado');
     }
-    //$("#barra-progreso").s
 
   }
 
   $(".guardar").click(function(){
 
-                proceso=$(this).data('proceso');
-                siguiente=$(this).data('siguiente');
-
                 var route = "{{url('/')}}/configuracion/academia/completar";
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#configurar_academia" ).serialize(); 
-                // $("#guardar").attr("disabled","disabled");
-                // procesando();
-                // $("#guardar").css({
-                //   "opacity": ("0.2")
-                // });
-                $(".cancelar").attr("disabled","disabled");
-                procesando();
-                // $(".procesando").removeClass('hidden');
-                // $(".procesando").addClass('show');         
+                procesando();      
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -855,22 +896,13 @@
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
 
-                            window.location="{{url('/')}}/configuracion";
+                          window.location="{{url('/')}}/configuracion";
 
-                            
 
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
-
-                          // $(".procesando").removeClass('show');
-                          // $(".procesando").addClass('hidden');
-                          // $("#guardar").removeAttr("disabled");
-                          // $("#guardar").css({
-                          //   "opacity": ("1")
-                          // });
-                          $(".cancelar").removeAttr("disabled");
                           finprocesado();
                           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                         }                       
@@ -880,21 +912,14 @@
                     error:function(msj){
                       setTimeout(function(){ 
 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";                                 
-                        // $("#guardar").removeAttr("disabled");
+                        errores(msj.responseJSON.errores);
+                        var nTitle="    Ups! "; 
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";                  
                         finprocesado();
-                        // $("#guardar").css({
-                        //   "opacity": ("1")
-                        // });
-                        $(".cancelar").removeAttr("disabled");
-                        // $(".procesando").removeClass('show');
-                        // $(".procesando").addClass('hidden');
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
@@ -950,8 +975,6 @@
 
                           $('#nombre_estudio').val('');
                           $('#cantidad_estudio').val('');
-                          // $("#agregar_item")[0].reset();
-                          // rechargeServicio();
 
                         }else{
                           var nTitle="Ups! ";
@@ -1036,9 +1059,6 @@
                           .addClass('seleccion');
 
                           $('#nombre_nivel').val('');
-
-                          // $("#agregar_item")[0].reset();
-                          // rechargeServicio();
 
                         }else{
                           var nTitle="Ups! ";
@@ -1148,7 +1168,7 @@
 
   
   function limpiarMensaje(){
-      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia", "link_video", "imagen"];
+      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia", "link_video", "imagen", , 'puntos_referencia', 'puntos_referidos'];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1156,7 +1176,6 @@
       }
 
       function errores(merror){
-      var campo = ["correo", "telefono", "celular", "numero_factura", "porcentaje_retraso", "tiempo_tolerancia", "link_video", "imagen"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -1176,46 +1195,6 @@
       }, 1500);          
 
   }
-
-  $(".add").click(function(){
-    nivel=$("#nivel_baile").val();
-    var rowNode=t.row.add( [
-      ''+nivel+'',
-      '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-    ] ).draw(false).node();
-      $( rowNode )
-      //.attr('id',rowId)
-      .addClass('seleccion');
-  });
-
-  $(".eliminar").click(function(){
-    //var i = $(this).closest('tr');
-    //$(i).remove();
-
-    console.log("a");
-  }); 
-
-  function eliminara(el){
-   console.log("a"); 
-   var row = t.row( $(el).closest('tr') );
-   
-   row.remove();
-   /*var rowNode = row.node();
-   var i = $(el).closest('tr');
-   $(i).remove();
-   */
-  }
-
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-    /*var row = t.row( $(this).parents('tr') );
-    var rowNode = row.node();
-    row.remove();*/
-    t.row( $(this).parents('tr') )
-        .remove()
-        .draw();
-    console.log("entre");
-    
-  });
 
   function collapse_minus(collaps){
        $('#'+collaps).collapse('hide');
