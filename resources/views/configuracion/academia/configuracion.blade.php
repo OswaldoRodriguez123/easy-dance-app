@@ -277,7 +277,7 @@
                                          <div class="clearfix p-b-35"></div>
 
                                          <div class="col-sm-12">
-                                             <label for="id">Ingresa url del video promocional</label>
+                                             <label for="id"  id="id-link_video">Ingresa url del video promocional</label>
                                              <div class="input-group">
                                               <span class="input-group-addon">
                                               <i class="zmdi zmdi-videocam f-20 c-morado"></i>
