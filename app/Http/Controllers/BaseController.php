@@ -54,7 +54,7 @@ class BaseController extends Controller {
                 {
                     $usuario = DB::table('sugerencias')
                         ->join('users','users.id','=','sugerencias.usuario_id')
-                        ->select('users.imagen')
+                        ->select('users.imagen', 'users.sexo')
                         ->where('sugerencias.id','=',$notificacion->evento_id)
                     ->first();
 
