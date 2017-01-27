@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CitaController extends BaseController {
 
-	public function principal(Request $request){
+	public function calendario(Request $request){
 
         $citas = DB::table('citas')
             ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
@@ -26,8 +26,21 @@ class CitaController extends BaseController {
             ->where('citas.academia_id','=', Auth::user()->academia_id)
         ->get();
 
-    	return view('agendar.cita.principal')->with(['citas' => $citas]);
+    	return view('agendar.cita.calendario')->with(['citas' => $citas]);
  	}
+
+    public function principal(Request $request){
+
+        $citas = DB::table('citas')
+            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->where('citas.academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+        return view('agendar.cita.principal')->with(['citas' => $citas]);
+    }
 
 	public function create()
     {

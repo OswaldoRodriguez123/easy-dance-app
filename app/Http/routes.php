@@ -616,6 +616,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//CITAS
 
 			Route::get('agendar/citas', 'CitaController@principal');
+			Route::get('agendar/citas/calendario', 'CitaController@calendario');
 			Route::post('agendar/citas/agregar', 'CitaController@store');
 			Route::get('agendar/citas/agregar', 'CitaController@create');
 			Route::get('agendar/citas/detalle/{id}', 'CitaController@edit');

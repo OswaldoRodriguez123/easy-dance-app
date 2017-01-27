@@ -564,7 +564,9 @@ class AgendarController extends BaseController
 	    	return redirect('agendar/talleres/agregar')->with(compact('fecha_inicio'));
 	    }elseif($request->agendar=="fiestas-eventos"){
 	    	return redirect('agendar/fiestas/agregar')->with(compact('fecha_inicio'));
-	    }else{
+	    }elseif($request->agendar=="citas"){
+            return redirect('agendar/citas/agregar')->with(compact('fecha_inicio'));
+        }else{
 	    	return redirect('agendar');
 	    }
 	}

@@ -21,64 +21,6 @@
 
 @section('content')
 
-<div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Clase Cancelada <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_clase" id="cancelar_clase"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor"></span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-9">
-                                             
-                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
-
-                                            <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                       <hr style="margin-top:5px">
-
-                                       <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelación</label>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" disabled></textarea>
-                                          </div>
-                                      </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
 
             <section id="content">
                 <div class="container">
@@ -98,11 +40,7 @@
                                 <div class="modal-body m-b-20">
                                     <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}. Que bueno tenerte aquí... </p> 
                                     <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para agendar? Empieza yaaa...</p>
-
-                                    <form id="frm_fecha" name="frm_fecha" class="addFecha" role="form" method="POST" action="guardar-fecha">
-                                        <input type="hidden" id="fecha_inicio" name="fecha_inicio" />
-                                    </form>
-                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="{{url('/')}}/agendar">
+                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
@@ -196,7 +134,7 @@
                                         
                                         <input type="hidden" id="getStart" name="getStart" />
                                         <input type="hidden" id="getEnd" name="getEnd" />
-                                        <input type="hidden" id="agendar" name="agendar" />
+                                        <input type="hidden" id="agendar" name="agendar" value ="citas"/>
                                     </form>
                                 </div>
                                 
@@ -208,8 +146,7 @@
                         </div>
                     </div>
 
-
-        <div class="modal fade" id="modalFechaPasada" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="modalFechaPasada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -248,13 +185,14 @@
 @section('js')
 <script type="text/javascript">
             $(document).ready(function() {
+
+
                 var date = new Date();
                 var d = date.getDate();
                 var m = date.getMonth();
                 var y = date.getFullYear();
 
                 
-
                 var cId = $('#calendar'); //Change the name if you want. I'm also using thsi add button for more actions
 
                 //Generate the Calendar
@@ -266,186 +204,61 @@
                         left: ''
                     },
 
-                    theme: true, //Do not remove this as it ruin the design
+                    theme: true, 
                     selectable: true,
                     selectHelper: true,
                     editable: false,
                     lang: 'es',
 
-                    //Add Events
-
-                    /*
+    
                     events: [
-                        {
-                            title: 'Hangout with friends',
-                            start: new Date(y, m, 1),
-                            allDay: true,
-                            className: 'bgm-cyan'
-                        },
-                        {
-                            title: 'Meeting with client',
-                            start: new Date(y, m, 10),
-                            allDay: true,
-                            className: 'bgm-orange'
-                        },
-                        {
-                            title: 'Repeat Event',
-                            start: new Date(y, m, 18),
-                            allDay: true,
-                            className: 'bgm-amber'
-                        },
-                        {
-                            title: 'Semester Exam',
-                            start: new Date(y, m, 20),
-                            allDay: true,
-                            className: 'bgm-green'
-                        },
-                        {
-                            title: 'Soccor match',
-                            start: new Date(y, m, 5),
-                            allDay: true,
-                            className: 'bgm-lightblue'
-                        },
-                        {
-                            title: 'Coffee time',
-                            start: new Date(y, m, 21),
-                            allDay: true,
-                            className: 'bgm-orange'
-                        },
-                        {
-                            title: 'Job Interview',
-                            start: new Date(y, m, 5),
-                            allDay: true,
-                            className: 'bgm-amber'
-                        },
-                        {
-                            title: 'IT Meeting',
-                            start: new Date(y, m, 5),
-                            allDay: true,
-                            className: 'bgm-green'
-                        },
-                        {
-                            title: 'Brunch at Beach',
-                            start: new Date(y, m, 1),
-                            allDay: true,
-                            className: 'bgm-lightblue'
-                        },
-                        {
-                            title: 'Live TV Show',
-                            start: new Date(y, m, 15),
-                            allDay: true,
-                            className: 'bgm-cyan'
-                        },
-                        {
-                            title: 'Software Conference',
-                            start: new Date(y, m, 25),
-                            allDay: true,
-                            className: 'bgm-lightblue'
-                        },
-                        {
-                            title: 'Coffee time',
-                            start: new Date(y, m, 30),
-                            allDay: true,
-                            className: 'bgm-orange'
-                        },
-                        {
-                            title: 'Job Interview',
-                            start: new Date(y, m, 30),
-                            allDay: true,
-                            className: 'bgm-green'
-                        },
-                    ],*/
-                    events: [
-                        @foreach ($talleres as $taller)
+
+                        @foreach ($citas as $cita)
                         {
                             <?php
-                            $fecha_start=explode('-',$taller['fecha_inicio']);
-                            $fecha_end=explode('-',$taller['fecha_final']);
-                            $hora_start=explode(':',$taller['hora_inicio']);
-                            $hora_end=explode(':',$taller['hora_final']);
+                            $fecha_start=explode('-',$cita->fecha);
+                            $fecha_end=explode('-',$cita->fecha);
+                            $hora_start=explode(':',$cita->hora_inicio);
+                            $hora_end=explode(':',$cita->hora_final);
+                            $titulo = $cita->alumno_nombre . ' ' . $cita->alumno_apellido; 
                             ?>
-                            id: 'taller-{{$taller['id']}}',
-                            title: '{{$taller['nombre']}}',
+                            id: 'cita-{{$cita->id}}',
+                            title: "{{$titulo}}" ,
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
                             allDay: false,
-                            backgroundColor:'{{$taller['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$taller['url']}}'
+                            backgroundColor:'#de87b4',
+                            className: '{{$cita->tipo_nombre}}',
+                            url: '{{url('/')}}/agendar/citas/detalle/{{$cita->id}}'
                             },
                         @endforeach
 
-                        @foreach ($clases_grupales as $clase)
-                            {
-                            <?php
-                            $fecha_start=explode('-',$clase['fecha_inicio']);
-                            $fecha_end=explode('-',$clase['fecha_final']);
-                            $hora_start=explode(':',$clase['hora_inicio']);
-                            $hora_end=explode(':',$clase['hora_final']);
-                            ?>
-                            id: 'clase-{{$clase['id']}}',
-                            title: '{{$clase['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$clase['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{$clase['url']}}'
-                            },
-                        @endforeach
-
-                        @foreach ($clases_personalizadas as $clasepersonalizada)
-                            {
-                            <?php
-                            $fecha_start=explode('-',$clasepersonalizada['fecha_inicio']);
-                            $fecha_end=explode('-',$clasepersonalizada['fecha_final']);
-                            $hora_start=explode(':',$clasepersonalizada['hora_inicio']);
-                            $hora_end=explode(':',$clasepersonalizada['hora_final']);
-                            ?>
-                            id: 'clasepersonalizada-{{$clasepersonalizada['id']}}',
-                            title: '{{$clasepersonalizada['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$clasepersonalizada['url']}}'
-                            },
-                        @endforeach
-
-                         @foreach ($fiestas as $fiesta)
-                            {
-                            <?php
-                            $fecha_start=explode('-',$fiesta['fecha_inicio']);
-                            $fecha_end=explode('-',$fiesta['fecha_final']);
-                            $hora_start=explode(':',$fiesta['hora_inicio']);
-                            $hora_end=explode(':',$fiesta['hora_final']);
-                            ?>
-                            id: 'fiesta-{{$fiesta['id']}}',
-                            title: '{{$fiesta['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$fiesta['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$fiesta['url']}}'
-                            },
-                        @endforeach
+                        
                     ],
-                     
+                                         
                     //On Day Select
                     select: function(start, end, allDay) {
-                        //console.log(start + ' --- ' + end);
 
                         var d = new Date();
                         var timestamp = d.getTime(); 
 
+
                         if(end>timestamp){
-                           $('#addNew-event').modal('show');   
-                           $('#addNew-event input:text').val('');
-                           $('#getStart').val(start);
-                           $('#getEnd').val(end);
-                           //console.log('bien');
+
+                            var token = $('input:hidden[name=_token]').val();
+
+                            $.ajax({
+                                url: "{{url('/')}}/guardar-fecha",
+                                    headers: {'X-CSRF-TOKEN': token},
+                                    type: 'POST',
+                                dataType: 'json',
+                                data:"fecha_inicio="+end._d,
+                                success:function(respuesta){
+
+                                    window.location = "{{url('/')}}/agendar/citas/agregar"
+
+                                }
+                            });
                         }else{
                            //console.log('error');
                            $('#modalFechaPasada').modal('show');                            
@@ -455,43 +268,25 @@
                     },
                     eventClick: function(calEvent, jsEvent, view) {
 
-                        // console.log(calEvent.start);
+                        // console.log(calEvent.id);
+                        // //console.log(jsEvent);
+                        // //console.log(view);
                         // 
-                        // 
-                        var check = calEvent.url
-                        var tmp = check.split("!"); 
-                        console.log(tmp)
+                        $('#fecha_inicio').val(calEvent.start);
+                        var token = $('input:hidden[name=_token]').val();
 
-                        if(!tmp[1]){
+                        $.ajax({
+                            url: "{{url('/')}}/guardar-fecha",
+                                headers: {'X-CSRF-TOKEN': token},
+                                type: 'POST',
+                            dataType: 'json',
+                            data:"fecha_inicio="+$('#fecha_inicio').val(),
+                            success:function(respuesta){
 
-                            $('#fecha_inicio').val(calEvent.start);
-                            var token = $('input:hidden[name=_token]').val();
+                                window.location = calEvent.url
 
-                            $.ajax({
-                                url: "{{url('/')}}/guardar-fecha",
-                                    headers: {'X-CSRF-TOKEN': token},
-                                    type: 'POST',
-                                dataType: 'json',
-                                data:"fecha_inicio="+$('#fecha_inicio').val(),
-                                success:function(respuesta){
-
-                                    window.location = calEvent.url
-
-                                }
-                            });
-                        }else{
-                            var fecha = tmp[3]
-                            var hora = tmp[4]
-                            var instructor = tmp[2]
-                            var cancelacion = tmp[1]
-                            $('.span_fecha').text(fecha)
-                            $('.span_hora').text(hora)
-                            $('.span_instructor').text(instructor)
-                            $('#razon_cancelacion').text(cancelacion)
-                            $("#modalCancelar" ).modal('show');
-                        }
-                        //console.log(jsEvent);
-                        //console.log(view);
+                            }
+                        });
 
                     }
                 });
@@ -519,6 +314,8 @@
                                         '</ul>' +
                                     '</div>' +
                                 '</li>';
+
+               
 
 
                 cId.find('.fc-toolbar').append(actionMenu);
@@ -569,10 +366,6 @@
 
                 $('.agendar').on('click', function(e){
                     e.preventDefault();
-                    console.log("estoy aqui");
-                    var agendar = $(this).data('agendar');
-
-                    $('#agendar').val(agendar);
 
                     $("#frm_agendar").submit();
                      
@@ -583,9 +376,17 @@
                      
                 });
 
+                function htmlEscape(s) {
+                    return (s + '').replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/'/g, '&#039;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/ì/g, '&igrave;')
+                        .replace(/\n/g, '<br />');
+                }
 
-            });   
 
-                  
+            });                        
         </script>
 @stop

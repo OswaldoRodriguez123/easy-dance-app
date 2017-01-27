@@ -207,6 +207,7 @@
                     selectable: true,
                     selectHelper: true,
                     editable: false,
+                    lang: 'es',
 
                     //Add Events
 
