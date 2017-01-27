@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Password;
 use App\PasswordResets;
 use Mail;
 
-class PasswordController extends Controller
+class PasswordController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
