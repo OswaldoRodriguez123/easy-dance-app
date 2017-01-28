@@ -16,7 +16,17 @@ class EmbajadorController extends BaseController {
 
         Session::forget('embajador');
 
-        return view('empresa.invitar');
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+
+            return view('empresa.invitar');
+
+        }
+        else{
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            return view('vista_alumno.invitar')->with('academia',$academia->nombre);
+        }
 
     }
 
@@ -28,7 +38,17 @@ class EmbajadorController extends BaseController {
 
     public function enhorabuena(){
 
-        return view('empresa.enhorabuena');
+        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+
+            return view('empresa.enhorabuena');
+        }
+
+        else{
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            return view('vista_alumno.enhorabuena')->with('academia',$academia->nombre);
+        }
 
     }
 
@@ -91,9 +111,18 @@ class EmbajadorController extends BaseController {
 
                 $academia = Academia::find(Auth::user()->academia_id);
 
-                foreach($embajadores as $embajador){
+                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
                     $subj =  Auth::user()->nombre . " de la academia " . $academia->nombre . " te recomienda usar Easy Dance por 30 días grátis";
+                }else{
+                    $subj =  Auth::user()->nombre . " te recomienda bailar en " . $academia->nombre;
+                    $alumno = Alumno::find(Auth::user()->usuario_id);
+                    $codigo = $alumno->codigo_referido;
+                }
+
+                foreach($embajadores as $embajador){
+
+                    if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
                     
                     $array = [
                        'correo' => $embajador[0]['email'],
@@ -102,6 +131,17 @@ class EmbajadorController extends BaseController {
                        'nombre_destino' => $embajador[0]['nombre'],
                        'subj' => $subj
                     ];
+
+                    }else{
+                       $array = [
+                       'correo' => $embajador[0]['email'],
+                       'academia' => $academia->nombre,
+                       'nombre_envio' => Auth::user()->nombre,
+                       'nombre_destino' => $embajador[0]['nombre'],
+                       'subj' => $subj,
+                       'codigo' => $codigo
+                    ]; 
+                    }
 
                      Mail::send('correo.embajador', $array , function($msj) use ($array){
                         $msj->subject($array['subj']);

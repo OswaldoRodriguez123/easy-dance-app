@@ -342,12 +342,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('reportes/chart', 'ReporteController@charts');
 			Route::get('reportes/administrativo', 'ReporteController@Administrativo');
 			Route::post('reportes/administrativo', 'ReporteController@AdministrativoFiltros');
-
-			//EMBAJADOR
-
-			Route::get('/invitar', 'EmbajadorController@index');
-			Route::post('/invitar', 'EmbajadorController@invitar');	
-			Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');		
 		
 		});	//END MIDDLEWARE ADMIN
 		/*----------------------------------------------------------
@@ -930,6 +924,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('progreso','ProgresoController@index');
 			Route::get('progreso/{id}','ProgresoController@progreso');
 			Route::get('programacion','ProgresoController@programacion');
+
+			//EMBAJADOR
+
+			Route::get('/invitar', 'EmbajadorController@index');
+			Route::post('/invitar', 'EmbajadorController@invitar');	
+			Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');		
 
 		});//END MIDDLEWARE ALUMNO
 

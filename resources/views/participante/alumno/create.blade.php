@@ -151,7 +151,7 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
                                <div class="col-sm-12">
-                                    <label for="codigo" id="id-codigo">codigo de referencia</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el codigo del alumno que te informo de nosotros para obtener beneficios" title="" data-original-title="Ayuda"></i>
+                                    <label for="codigo" id="id-codigo">Código de Referido</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el código de referido del alumno que te informo de nosotros para obtener beneficios" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>

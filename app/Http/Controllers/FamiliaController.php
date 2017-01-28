@@ -510,12 +510,12 @@ class FamiliaController extends BaseController {
         $representante_usuario = User::find($familia->representante_id);
         $representante = Alumno::withTrashed()->find($representante_usuario->usuario_id);
         
-        if($request->telefono)
+        if($request->celular)
         {
-            $telefono = $request->telefono;
+            $celular = $request->celular;
 
         }else{
-            $telefono = $representante->telefono;
+            $celular = $representante->celular;
         }
 
         if($request->direccion)
@@ -543,8 +543,8 @@ class FamiliaController extends BaseController {
         $alumno->sexo = $request->sexo;
         $alumno->fecha_nacimiento = $fecha_nacimiento;
         $alumno->correo = $correo;
-        $alumno->telefono = $telefono;
-        $alumno->celular = $request->celular;
+        $alumno->telefono = $representante_usuario->telefono;
+        $alumno->celular = $celular;
         $alumno->direccion = $direccion;
         $alumno->alergia = $request->alergia;
         $alumno->asma = $request->asma;
@@ -671,7 +671,8 @@ class FamiliaController extends BaseController {
     public function participantes($id)
     {
 
-        $participantes = Alumno::withTrashed()->where('familia_id', $id)->get();
+        // $participantes = Alumno::withTrashed()->where('familia_id', $id)->get();
+        $participantes = Alumno::where('familia_id', $id)->get();
 
         $familia = Familia::find($id);
 

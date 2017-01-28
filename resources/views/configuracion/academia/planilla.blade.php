@@ -772,7 +772,7 @@
                           <div class="row p-t-20 p-b-0">
                             <div class="col-sm-12">
                               <div class="form-group fg-line">
-                                  <label for="puntos_referencia" id="id-puntos_referencia">Promotor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno registrado cuando una persona sin registrar use su codigo" title="" data-original-title="Ayuda"></i>
+                                  <label for="puntos_referencia" id="id-puntos_referencia">Promotor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de puntos que obtendrá un alumno al referir su código para generar una inscripción. (El número de puntos equivale al valor monetario) es decir, si la moneda de uso es el peso, y el puntaje seleccionado son 10.000 puntos, el alumno recibirá el crédito equivalente a  10.000 pesos por generar la referencia." title="" data-original-title="Ayuda"></i>
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
                                     <div class="fg-line">
@@ -785,7 +785,7 @@
                                     </span>
                                   </div>
                                   <div class="clearfix p-b-35"></div>
-                                  <label for="puntos_referidos" id="id-puntos_referidos">Receptor</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el numero de puntos que ganara un alumno que se va a registrar el cual fue referido por alguien y usara su codigo" title="" data-original-title="Ayuda"></i>
+                                  <label for="puntos_referidos" id="id-puntos_referidos">Destinatario</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de puntos que obtendrá el nuevo participante que realizará el proceso de inscripción, gracias a la referencia obtenida de parte del código de un amigo. (El número de puntos equivale al valor monetario) es decir, si la moneda de uso es el peso, y el puntaje seleccionado son 10.000 puntos, el alumno recibirá el crédito equivalente a  10.000 pesos por generar la referencia." title="" data-original-title="Ayuda"></i>
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a icon_a-niveles f-22"></i></span>
                                     <div class="fg-line">

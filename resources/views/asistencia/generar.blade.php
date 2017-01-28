@@ -324,7 +324,7 @@
             },
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","buscar(this)" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","buscar(this)" );
             },
             language: {
                             processing:     "Procesando ...",

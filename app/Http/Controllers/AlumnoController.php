@@ -218,6 +218,11 @@ class AlumnoController extends BaseController
             $direccion = '';
         }
 
+        do{
+            $codigo_referido = str_random(8);
+            $find = Alumno::where('codigo_referido', $codigo_referido)->first();
+        }while ($find);
+
         $alumno->academia_id = Auth::user()->academia_id;
         $alumno->identificacion = $request->identificacion;
         $alumno->nombre = $nombre;
@@ -234,10 +239,6 @@ class AlumnoController extends BaseController
         $alumno->cefalea = $request->cefalea;
         $alumno->hipertension = $request->hipertension;
         $alumno->lesiones = $request->lesiones;
-        do{
-            $codigo_referido = str_random(8);
-            $find = Alumno::where('codigo_referido', $codigo_referido)->first();
-        }while ($find);
         $alumno->codigo_referido = $codigo_referido;
 
         if($alumno->save()){
@@ -248,11 +249,6 @@ class AlumnoController extends BaseController
                     ->where('alumnos.codigo_referido','=',$request->codigo)
                 ->first();
                 if($referido){
-                    /*$referido=DB::table('alumnos')
-                        ->join('alumnos_remuneracion','alumnos.id','=','alumnos_remuneracion.alumno_id')
-                        ->select('alumnos.id as id', 'alumnos.codigo_referido as codigo','alumnos_remuneracion.remuneracion')
-                        ->where('alumnos.codigo_referido','=',$request->codigo)
-                    ->first();*/
 
                     $remuneracion = new AlumnoRemuneracion;
                     $academia=Academia::where('id', Auth::user()->academia_id)->first();
@@ -301,27 +297,27 @@ class AlumnoController extends BaseController
 
             if($usuario->save()){
             
-                if($request->correo){
+                // if($request->correo){
 
-                    $academia = Academia::find(Auth::user()->academia_id);
-                    $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-                    $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
+                //     $academia = Academia::find(Auth::user()->academia_id);
+                //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                //     $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 
-                    $array = [
-                       'nombre' => $request->nombre,
-                       'academia' => $academia->nombre,
-                       'usuario' => $request->correo,
-                       'contrasena' => $password,
-                       'subj' => $subj,
-                       'link' => $link
-                    ];
+                //     $array = [
+                //        'nombre' => $request->nombre,
+                //        'academia' => $academia->nombre,
+                //        'usuario' => $request->correo,
+                //        'contrasena' => $password,
+                //        'subj' => $subj,
+                //        'link' => $link
+                //     ];
 
 
-                    Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-                            $msj->subject($array['subj']);
-                            $msj->to($array['usuario']);
-                        });
-                }
+                //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                //             $msj->subject($array['subj']);
+                //             $msj->to($array['usuario']);
+                //         });
+                // }
 
                 //Envio de Sms
 

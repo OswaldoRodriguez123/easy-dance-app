@@ -87,6 +87,10 @@ class AgendarController extends BaseController
         	foreach ($clasegrupal as $clase) {
         		$fecha_start=explode('-',$clase->fecha_inicio);
         		$fecha_end=explode('-',$clase->fecha_final);
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
         		$id=$clase->id;
         		$nombre=$clase->nombre;
         		$descripcion=$clase->descripcion;
@@ -100,10 +104,6 @@ class AgendarController extends BaseController
                 }else{
                     $etiqueta=$clase->clase_etiqueta;
                 }
-
-        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
         		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
 
@@ -138,6 +138,10 @@ class AgendarController extends BaseController
             foreach ($horarios_clasegrupal as $clase) {
                 $fecha_start=explode('-',$clase->fecha_inicio);
                 $fecha_end=explode('-',$clase->fecha_final);
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$clase->id;
                 $nombre=$clase->nombre;
                 $descripcion=$clase->descripcion;
@@ -148,9 +152,6 @@ class AgendarController extends BaseController
                 $etiqueta=$clase->color_etiqueta;
                 $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $fecha_inicio = $dt->toDateString();
                 $fecha_final = $df->toDateString();
@@ -210,16 +211,15 @@ class AgendarController extends BaseController
         	foreach ($clasespersonalizadas as $clasepersonalizada) {
         		$fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
         		$fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
         		$id=$clasepersonalizada->id;
         		$nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
         		$descripcion=$config_clases_personalizadas->descripcion;
         		$hora_inicio=$clasepersonalizada->hora_inicio;
         		$hora_final=$clasepersonalizada->hora_final;
         		$etiqueta=$clasepersonalizada->color_etiqueta;
-
-        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
         		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
 
@@ -237,6 +237,9 @@ class AgendarController extends BaseController
             foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
                 $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
                 $fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$clasepersonalizada->id;
                 $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
                 $descripcion=$config_clases_personalizadas->descripcion;
@@ -247,10 +250,6 @@ class AgendarController extends BaseController
                 }else{
                     $etiqueta=$clasepersonalizada->clase_etiqueta;
                 }
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$id);
 
@@ -274,16 +273,16 @@ class AgendarController extends BaseController
         	foreach ($fiestas as $fiesta) {
         		$fecha_start=explode('-',$fiesta->fecha_inicio);
         		$fecha_end=explode('-',$fiesta->fecha_final);
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
         		$id=$fiesta->id;
         		$nombre= $fiesta->nombre;
         		$descripcion=$fiesta->descripcion;
         		$hora_inicio=$fiesta->hora_inicio;
         		$hora_final=$fiesta->hora_final;
         		$etiqueta=$fiesta->color_etiqueta;
-
-        		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-        		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
         		$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/fiestas/operaciones/".$id);
 
@@ -317,16 +316,15 @@ class AgendarController extends BaseController
 
                 $fecha_start=explode('-',$taller->fecha_inicio);
                 $fecha_end=explode('-',$taller->fecha_final);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$taller->id;
                 $nombre=$taller->nombre;
                 $descripcion=$taller->descripcion;
                 $hora_inicio=$taller->hora_inicio;
                 $hora_final=$taller->hora_final;
                 $etiqueta=$taller->color_etiqueta;
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/progreso/".$id);
 
@@ -365,16 +363,15 @@ class AgendarController extends BaseController
 
                 $fecha_start=explode('-',$clase->fecha_inicio);
                 $fecha_end=explode('-',$clase->fecha_final);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$clase->id;
                 $nombre=$clase->nombre;
                 $descripcion=$clase->descripcion;
                 $hora_inicio=$clase->hora_inicio;
                 $hora_final=$clase->hora_final;
                 $etiqueta=$clase->color_etiqueta;
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/progreso/".$id);
 
@@ -393,16 +390,15 @@ class AgendarController extends BaseController
              foreach ($horarios_clasegrupal as $clase) {
                 $fecha_start=explode('-',$clase->fecha_inicio);
                 $fecha_end=explode('-',$clase->fecha_final);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$clase->id;
                 $nombre=$clase->nombre;
                 $descripcion=$clase->descripcion;
                 $hora_inicio=$clase->hora_inicio;
                 $hora_final=$clase->hora_final;
                 $etiqueta=$clase->color_etiqueta;
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/progreso/".$id);
 
@@ -443,16 +439,15 @@ class AgendarController extends BaseController
             foreach ($clasespersonalizadas as $clasepersonalizada) {
                 $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
                 $fecha_end=explode('-',$clasepersonalizada->fecha_final);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$clasepersonalizada->id;
                 $nombre= 'Clase Personalizada ' . $clasepersonalizada->nombre;
                 $descripcion=$config_clases_personalizadas->descripcion;
                 $hora_inicio=$clasepersonalizada->hora_inicio;
                 $hora_final=$clasepersonalizada->hora_final;
                 $etiqueta=$clasepersonalizada->color_etiqueta;
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id);
 
@@ -467,9 +462,12 @@ class AgendarController extends BaseController
 
             }
 
-                        foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
+            foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
                 $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
                 $fecha_end=explode('-',$clasepersonalizada->fecha_final);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$clasepersonalizada->id;
                 $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
                 $descripcion=$config_clases_personalizadas->descripcion;
@@ -480,10 +478,6 @@ class AgendarController extends BaseController
                 }else{
                     $etiqueta=$clasepersonalizada->clase_etiqueta;
                 }
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id);
 
@@ -507,16 +501,15 @@ class AgendarController extends BaseController
             foreach ($fiestas as $fiesta) {
                 $fecha_start=explode('-',$fiesta->fecha_inicio);
                 $fecha_end=explode('-',$fiesta->fecha_final);
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
                 $id=$fiesta->id;
                 $nombre= $fiesta->nombre;
                 $descripcion=$fiesta->descripcion;
                 $hora_inicio=$fiesta->hora_inicio;
                 $hora_final=$fiesta->hora_final;
                 $etiqueta=$fiesta->color_etiqueta;
-
-                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
                 $arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/fiestas/progreso/".$id);
 
