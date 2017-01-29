@@ -958,12 +958,12 @@
         $("#guardar").css({"opacity": ("1")});
       })
 
-      $('#collapseDireccion').on('show.bs.collapse', function () {
+      $('#collapseAvanzado').on('show.bs.collapse', function () {
         $("#guardar").attr("disabled","disabled");
         $("#guardar").css({"opacity": ("0.2")});
       })
 
-      $('#collapseDireccion').on('hide.bs.collapse', function () {
+      $('#collapseAvanzado').on('hide.bs.collapse', function () {
         $("#guardar").removeAttr("disabled");
         $("#guardar").css({"opacity": ("1")});
       })
