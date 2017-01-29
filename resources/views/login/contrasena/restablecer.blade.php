@@ -52,7 +52,7 @@
                             <div class="clearfix m-20 m-b-25"></div>
 
                             <div class="col-md-12">
-                                <input type="email" class="form-control caja" name="email" value="{{ old('email') }}">
+                                <input type="email" class="form-control caja" id="email" name="email" value="{{ old('email') }}">
 
                                 <div class="has-error" id="error-email">
                                       <span >
@@ -159,7 +159,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos,
+                        data:'&email='+$("#email").val(),
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');

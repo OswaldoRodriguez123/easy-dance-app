@@ -51,8 +51,8 @@ class ConfigClasesGrupalesController extends BaseController {
         'descripcion' => 'required',
         'porcentaje_retraso' => 'numeric',
         'tiempo_tolerancia' => 'numeric',
-        'asistencia_rojas' => 'required|numeric',
-        'asistencia_amarillas' => 'required|numeric',
+        'asistencia_rojas' => 'numeric',
+        'asistencia_amarillas' => 'numeric',
     ];
 
     $messages = [
@@ -63,9 +63,7 @@ class ConfigClasesGrupalesController extends BaseController {
         'descripcion.required' => 'Ups! La descripción es requerida',  
         'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
         'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',
-        'asistencia_rojas.required' => 'Ups! el campo de inasistencias maximas es requerido',
         'asistencia_rojas.numeric' => 'Ups! el campo de inasistencias maximas solo debe contener numeros',
-        'asistencia_amarillas.required' => 'Ups! el campo de inasistencias minimas es requerido',
         'asistencia_amarillas.numeric' => 'Ups! el campo de inasistencias minimas solo debe contener numeros',
     ];
 
@@ -237,14 +235,12 @@ class ConfigClasesGrupalesController extends BaseController {
     public function updateAsistencias(Request $request){
 
     $rules = [
-        'asistencia_rojas' => 'numeric|required',
-        'asistencia_amarillas' => 'numeric|required',
+        'asistencia_rojas' => 'numeric',
+        'asistencia_amarillas' => 'numeric',
     ];
 
     $messages = [
-        'asistencia_rojas.required' => 'Ups! El campo inasistencias maxima es requerida',
         'asistencia_rojas.numeric' => 'Ups! El campo inasistencias maxima debe contener sólo números',
-        'asistencia_amarillas.required' => 'Ups! El campo inasistencias minima es requerida',
         'asistencia_amarillas.numeric' => 'Ups! El campo inasistencias minima debe contener sólo números',
     ];
 

@@ -576,7 +576,7 @@ class AcademiaConfiguracionController extends BaseController {
         $request->merge(array('correo' => trim($request->correo)));
 
         $rules = [
-            'correo' => 'required|email|max:255|unique:academias,correo',
+            'correo' => 'required|email|max:255',
             // 'telefono' => 'required',
             'celular' => 'required',
             'numero_factura' => 'numeric',
@@ -590,7 +590,6 @@ class AcademiaConfiguracionController extends BaseController {
             'correo.required' => 'Ups! El correo es requerido',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
             'correo.max' => 'El máximo de caracteres permitidos son 255',
-            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
             'telefono.required' => 'Ups! El Teléfono Local es requerido',
             'celular.required' => 'Ups! El Teléfono Móvil es requerido',
             'numero_factura.numeric' => 'Ups! El campo de “ Próximo número de factura ” es inválido, debe contener sólo  números',
@@ -819,7 +818,7 @@ class AcademiaConfiguracionController extends BaseController {
     $request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
-        'correo' => 'required|email|max:255|unique:academias,correo',
+        'correo' => 'required|email|max:255',
         // 'telefono' => 'required',
         'celular' => 'required',
     ];
@@ -829,7 +828,6 @@ class AcademiaConfiguracionController extends BaseController {
         'correo.required' => 'Ups! El correo es requerido',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
         'telefono.required' => 'Ups! El Teléfono Local es requerido',
         'celular.required' => 'Ups! El Teléfono Móvil es requerido',
     ];
@@ -1235,16 +1233,17 @@ class AcademiaConfiguracionController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $academia->normativa = $request->normativa;
         $academia->manual = $request->manual;
+        $academia->programacion = $request->programacion;
 
-        if($request->programacion){
+        // if($request->programacion){
 
-            $extension = $request->programacion->getClientOriginalExtension();
-            $nombre_archivo = 'programacion-'.Auth::user()->academia_id.'.'.$extension;
+        //     $extension = $request->programacion->getClientOriginalExtension();
+        //     $nombre_archivo = 'programacion-'.Auth::user()->academia_id.'.'.$extension;
 
-            \Storage::disk('programacion')->put($nombre_archivo,  \File::get($request->programacion));
+        //     \Storage::disk('programacion')->put($nombre_archivo,  \File::get($request->programacion));
 
-            $academia->programacion = $nombre_archivo;
-        }
+        //     $academia->programacion = $nombre_archivo;
+        // }
         
         if($academia->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
