@@ -43,7 +43,7 @@
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
-                        <input type="hidden" name="email" value="{{ $email or old('email') }}">
+                        <input type="hidden" id="email" name="email" value="{{ $email or old('email') }}">
                         
                         <div class="col-md-7 col-md-offset-2">
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -119,6 +119,8 @@
 		<script type="text/javascript">
 
       $(document).ready(function(){
+
+        console.log($('#email').val())
 
         $('#password').bind("cut copy paste",function(e) {
             e.preventDefault();

@@ -550,7 +550,7 @@
                         if(respuesta.status=="OK"){
 
                             var nType = 'success';
-                            // $("#agregar_inscripcion")[0].reset();
+                            $("#agregar_participante")[0].reset();
                             var nTitle="Ups! ";
                             var nMensaje=respuesta.mensaje;
 
