@@ -1105,7 +1105,7 @@ class AcademiaConfiguracionController extends BaseController {
     public function updateContacto(Request $request){
 
     $rules = [
-        'correo' => 'required|email|max:255|unique:academias,correo, '.$request->id.'',
+        'correo' => 'required|email|max:255',
         'celular' => 'required',
     ];
 
@@ -1113,7 +1113,6 @@ class AcademiaConfiguracionController extends BaseController {
         'correo.required' => 'Ups! El correo es requerido',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
         'celular.required' => 'Ups! El Teléfono Móvil es requerido',
     ];
 
