@@ -120,7 +120,7 @@
 
       $(document).ready(function(){
 
-        console.log($('#email').val())
+        $('#email').val("{{$_GET['email']}}");
 
         $('#password').bind("cut copy paste",function(e) {
             e.preventDefault();
