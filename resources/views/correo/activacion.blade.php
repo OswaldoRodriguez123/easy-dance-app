@@ -66,7 +66,17 @@
 			</tr><tr>
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                    Hola <b>{{$nombre}}</b> para activar tu cuenta en Easy dance solo debes pulsar el siguiente enlace:</p>
+
+                                    Hola <b> {{$nombre}} </b> has recibido este correo por que en tu academia <b>{{$academia}}</b> están usando Easy Dance.
+
+                                    <p>Los datos para ingresar son los siguientes:</p>
+
+                                    Nombre de usuario: {{$usuario}} <br/>
+                                    Contraseña: {{$contrasena}}
+
+                                    <br><br> 
+
+                                    Para activar tu cuenta en Easy dance solo debes pulsar el siguiente enlace:</p>
 
                                     </font>
                                 </td>

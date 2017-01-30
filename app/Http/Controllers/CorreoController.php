@@ -1286,6 +1286,11 @@ class CorreoController extends BaseController {
 
 			 			$academia = Academia::find($usuario->academia_id);
 
+			 			$password = str_random(8);
+						$usuario->password = bcrypt($password);
+
+						$usuario->save();
+
 			            $subj = 'Activa tu cuenta en Easy Dance';
 			            $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 
@@ -1293,6 +1298,7 @@ class CorreoController extends BaseController {
 			            	'nombre' => $usuario->nombre,
 			                'academia' => $academia->nombre,
 			                'usuario' => $request->email,
+			                'contrasena' => $password,
 			                'subj' => $subj,
 			                'link' => $link
 			            ];

@@ -73,7 +73,7 @@
       <div class="row p-l-10 p-r-10">
       <div class="col-sm-12">
         
-        <a href="{{url('/')}}/invitar"> <img src="{{url('/')}}/assets/img/banner_referido.jpg" height="440" width="100%" alt=""></a>
+        <a href="{{url('/')}}/invitar"> <img class="opaco-0-8" src="{{url('/')}}/assets/img/banner_referido.jpg" height="440" width="100%" alt=""></a>
       </div>
           <div class="col-sm-3" style="background: #f8f8f8 ; margin-left: 5px; padding-left: 10px; padding-right: 10px; min-height: 600px">
               <div style="padding-top:10px">
