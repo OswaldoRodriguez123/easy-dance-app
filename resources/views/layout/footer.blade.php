@@ -145,8 +145,8 @@
 			</div>
         </footer>
 
-
-@section('js') 
+<!-- 
+section('js') 
 
 	<script type="text/javascript">
 		route_ayuda = "{{url('/')}}/correo/ayuda"
@@ -173,4 +173,4 @@
 
         });
     </script>
-@stop
+stop -->
