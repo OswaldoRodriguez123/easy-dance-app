@@ -687,7 +687,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-porcentaje_retraso" class="zmdi {{ empty($clasegrupal->porcentaje_retraso) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-item-1 f-22"></i> </span>
-                               <span class="f-14"> Opciones Avanzadas </span>
+                               <span class="f-14"> Retraso de Pago </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-avanzado"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>

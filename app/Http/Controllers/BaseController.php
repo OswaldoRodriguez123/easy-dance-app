@@ -61,7 +61,6 @@ class BaseController extends Controller {
                      if($usuario->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".$usuario->imagen;
                     }else{
-                        $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                         if($usuario->sexo == 'F'){
 
                             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
@@ -83,7 +82,13 @@ class BaseController extends Controller {
                      if($imagen->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
                     }else{
-                        $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                        if($notificacion->imagen)
+                        {
+                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$notificacion->imagen;
+                        }else{
+                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                        }
+                        
                     }
 
                 }

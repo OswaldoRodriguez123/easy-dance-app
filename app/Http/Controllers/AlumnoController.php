@@ -321,42 +321,44 @@ class AlumnoController extends BaseController
 
                 //Envio de Sms
 
-                if($request->celular)
-                {
+                // if($request->celular)
+                // {
 
-                    $celular = getLimpiarNumero($request->celular);
-                    $academia = Academia::find(Auth::user()->academia_id);
-                    if($academia->pais_id == 11 && strlen($celular) == 10){
+                //     $celular = getLimpiarNumero($request->celular);
+                //     $academia = Academia::find(Auth::user()->academia_id);
+                //     if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                        $pais = Paises::find($academia->pais_id);
-                        $msg = 'Bienvenido '.$request->nombre.', estamos felices de tenerte a bordo, en '.$academia->nombre.' daremos lo mejor para enseñarte a bailar.';
-
-
-                        $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=".$pais->codigo."".$celular."&SMSText=".$msg;
-
-                    }else{
-                        $route = '';
-                    }
+                //         $pais = Paises::find($academia->pais_id);
+                //         $msg = 'Bienvenido '.$request->nombre.', estamos felices de tenerte a bordo, en '.$academia->nombre.' daremos lo mejor para enseñarte a bailar.';
 
 
-                    // $array_prefix = array('424', '414', '426', '416', '412');
-                    // $prefix = substr($request->celular, 1, 3);
+                //         $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=".$pais->codigo."".$celular."&SMSText=".$msg;
 
-                    // if (in_array($prefix, $array_prefix)) {
+                //     }else{
+                //         $route = '';
+                //     }
+
+
+                //     // $array_prefix = array('424', '414', '426', '416', '412');
+                //     // $prefix = substr($request->celular, 1, 3);
+
+                //     // if (in_array($prefix, $array_prefix)) {
               
-                    //     $data = collect([
-                    //         'nombre' => $request->nombre,
-                    //         'apellido' => $request->apellido,
-                    //         'celular' => $request->celular
-                    //     ]);
+                //     //     $data = collect([
+                //     //         'nombre' => $request->nombre,
+                //     //         'apellido' => $request->apellido,
+                //     //         'celular' => $request->celular
+                //     //     ]);
                         
                         
-                        // $sms = $this->sendAlumno($data, $msg);
+                //         // $sms = $this->sendAlumno($data, $msg);
 
-                    // }
-                }else{
-                    $route = '';
-                }
+                //     // }
+                // }else{
+                //     $route = '';
+                // }
+
+                $route = '';
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'route' => $route, 'alumno' => $alumno, 200]);
             }

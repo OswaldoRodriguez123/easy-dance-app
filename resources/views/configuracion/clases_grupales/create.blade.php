@@ -292,7 +292,7 @@
 
                                    <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Opciones Avanzadas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección de opción avanzada podrás generar una mora por retraso de pago e incluir el porcentaje que consideres pertinente" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Retraso de Pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección de opción avanzada podrás generar una mora por retraso de pago e incluir el porcentaje que consideres pertinente" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -704,6 +704,16 @@
       })
 
       $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#guardar").removeAttr("disabled");
+        $("#guardar").css({"opacity": ("1")});
+      })
+
+      $('#collapseEstatus').on('show.bs.collapse', function () {
+        $("#guardar").attr("disabled","disabled");
+        $("#guardar").css({"opacity": ("0.2")});
+      })
+
+      $('#collapseEstatus').on('hide.bs.collapse', function () {
         $("#guardar").removeAttr("disabled");
         $("#guardar").css({"opacity": ("1")});
       })

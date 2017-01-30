@@ -364,15 +364,28 @@
                     <ul>
                         <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
                         @if($academia->facebook)
-                        <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">Facebook</a></li>
+                          @if (!filter_var($academia->facebook, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">Facebook</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$academia->facebook}}">Facebook</a></li>
+                          @endif
                         @endif
 
                         @if($academia->twitter)
-                        <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">Twitter</a></li>
+
+                          @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">Twitter</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">Twitter</a></li>
+                          @endif
                         @endif
 
                         @if($academia->instagram)
-                        <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">Instagram</a></li>
+                          @if (!filter_var($academia->instagram, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">Instagram</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">Instagram</a></li>
+                          @endif
                         @endif
 
                         @if($academia->linkedin)
