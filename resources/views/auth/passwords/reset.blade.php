@@ -121,9 +121,12 @@
       $(document).ready(function(){
 
         url = window.location.href;
-        email = url.split("=")
-      
-        $('#email').val(email[1]);
+        split = url.split("=")
+        email_tmp = split[1]
+        email_split = email_tmp.split("%40")
+        email = email_split[0] + "@" + email_split[1];
+        
+        $('#email').val(email);
 
         $('#password').bind("cut copy paste",function(e) {
             e.preventDefault();
