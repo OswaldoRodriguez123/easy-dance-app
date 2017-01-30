@@ -260,6 +260,8 @@
 
     $(document).ready(function(){
 
+    console.log("{{$academia->nombre}}")
+
     function empty(str)
     {
         if (typeof str == 'undefined' || !str || str.length === 0 || str === "" || !/[^\s]/.test(str) || /^\s*$/.test(str) || str.replace(/\s/g,"") === "")
