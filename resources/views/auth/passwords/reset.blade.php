@@ -125,7 +125,7 @@
         email_tmp = split[1]
         email_split = email_tmp.split("%40")
         email = email_split[0] + "@" + email_split[1];
-        
+
         $('#email').val(email);
 
         $('#password').bind("cut copy paste",function(e) {
@@ -227,7 +227,7 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
 
-                        window.location = "{{ url('/restablecer/completado') }}"                     
+                        window.location = "{{url('/')}}/restablecer/completado"                     
                         
                       // }, 1000);
                     },
