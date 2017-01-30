@@ -247,6 +247,7 @@ class AlumnoController extends BaseController
                 $referido=DB::table('alumnos')
                     ->select('alumnos.*')
                     ->where('alumnos.codigo_referido','=',$request->codigo)
+                    ->where('alumnos.academia_id','=',Auth::user()->academia_id)
                 ->first();
                 if($referido){
 
@@ -274,6 +275,8 @@ class AlumnoController extends BaseController
                         $remuneracion->remuneracion = $academia->puntos_referencia;
                         $remuneracion->save();
                     }
+                }else{
+                    return response()->json(['errores' => ['codigo' => [0, 'Ups! Este código no pertenece a ningun estudiante']], 'status' => 'ERROR'],422);
                 }
             }
 
@@ -452,7 +455,15 @@ class AlumnoController extends BaseController
                 $imagen = '';
             }
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen]);
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->first();
+
+            if($alumno_remuneracion){
+                $puntos_referidos = $alumno_remuneracion->remuneracion;
+            }else{
+                $puntos_referidos = 0;
+            }
+
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos]);
         }else{
            return redirect("participante/alumno"); 
         }

@@ -26,5 +26,9 @@ class FormasPagoSeeder extends Seeder
 	      'nombre' => 'Credito',
 	    ));
 
+	    FormasPago::create(array(
+	      'nombre' => 'Puntos Acumulados',
+	    ));
+
     }
 }

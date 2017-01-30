@@ -43,7 +43,13 @@
                             <div class="col-sm-4 c-morado text-right">
                             <span class="f-4 p-t-0">Número de Factura {{$numero_factura}}</span>
                             <div class="clearfix p-b-15"></div>
-                            <span class="f-16 p-t-0">Total a pagar </span><span class = "f-16" name ="total2" id = "total2"></div>
+                            <span class="f-16 p-t-0">Total a pagar </span><span class = "f-16" name ="total2" id = "total2"></span>
+
+                            <div class="clearfix p-b-15"></div>
+
+                            <span class="f-16 p-t-0">Puntos acumulados </span><span class = "f-16">{{$puntos_referidos}}</span>
+
+                            </div>
 
                             <br><br>
    
@@ -274,7 +280,7 @@
 
     $("#monto").val(totalglobal);
 
-      if($(this).val() == 1){
+      if($(this).val() == 1 || $(this).val() == 4){
         $('#banco').val('');
         $('#referencia').val('');
         $('#banco').prop('readonly', true);
@@ -519,7 +525,7 @@
                           headers: {'X-CSRF-TOKEN': token},
                           type: 'POST',
                           dataType: 'json',
-                          data:datos,
+                          data:datos + "&alumno_id={{$alumno->id}}",
                       success:function(respuesta){
                         setTimeout(function(){ 
                           var nFrom = $(this).attr('data-from');

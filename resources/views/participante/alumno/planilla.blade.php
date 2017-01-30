@@ -775,6 +775,13 @@
                                   </tr>
                                   </table>
 
+                                  <table class="table table-striped table-bordered">
+                                   <tr class="disabled">
+                                   <td class = ""></td>
+                                   <td class="f-14 m-l-15"><span class="f-12 f-700">Puntos Acumulados: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos"></span> <i class="zmdi zmdi-money {{ empty($puntos_referidos) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
+                                  </tr>
+                                  </table>
+
 
                                    <!-- <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                                   <a href="{{url('/')}}/participante/alumno/historial/{{$id}}">
@@ -952,6 +959,7 @@
 
 
     total = "{{$total}}";
+    puntos_referidos = "{{$puntos_referidos}}";
 
     // $(document).on("click", function () {
     //    var clickedBtnID = this; // or var clickedBtnID = this.id
@@ -996,6 +1004,14 @@
       }
       else{
         $("#total").text(formatmoney(0));
+      }
+
+
+      if(puntos_referidos){
+        $("#puntos_referidos").text(puntos_referidos);
+      }
+      else{
+        $("#puntos_referidos").text(0);
       }
       
       if("{{$alumno->alergia}}" == 1){

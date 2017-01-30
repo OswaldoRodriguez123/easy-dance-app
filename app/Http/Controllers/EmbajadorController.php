@@ -8,6 +8,7 @@ use Validator;
 use Mail;
 use Session;
 use App\Academia;
+use App\Alumno;
 use Illuminate\Support\Facades\Auth;
 
 class EmbajadorController extends BaseController {
@@ -124,32 +125,38 @@ class EmbajadorController extends BaseController {
 
                     if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
                     
-                    $array = [
-                       'correo' => $embajador[0]['email'],
-                       'academia' => $academia->nombre,
-                       'nombre_envio' => Auth::user()->nombre,
-                       'nombre_destino' => $embajador[0]['nombre'],
-                       'subj' => $subj
-                    ];
+                        $array = [
+                           'correo' => $embajador[0]['email'],
+                           'academia' => $academia->nombre,
+                           'nombre_envio' => Auth::user()->nombre,
+                           'nombre_destino' => $embajador[0]['nombre'],
+                           'subj' => $subj
+                        ];
+
+                        Mail::send('correo.embajador', $array , function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['correo']);
+                        });
 
                     }else{
                        $array = [
-                       'correo' => $embajador[0]['email'],
-                       'academia' => $academia->nombre,
-                       'nombre_envio' => Auth::user()->nombre,
-                       'nombre_destino' => $embajador[0]['nombre'],
-                       'subj' => $subj,
-                       'codigo' => $codigo
-                    ]; 
+                           'correo' => $embajador[0]['email'],
+                           'academia' => $academia->nombre,
+                           'nombre_envio' => Auth::user()->nombre,
+                           'nombre_destino' => $embajador[0]['nombre'],
+                           'subj' => $subj,
+                           'codigo' => $codigo
+                        ]; 
+
+                        Mail::send('correo.referido', $array , function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['correo']);
+                        });
                     }
 
-                     Mail::send('correo.embajador', $array , function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['correo']);
-                    });
                 }
                
-             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores' => ['linea' => [0, 'Ups! Debes agregar un correo electrónico primero']], 'status' => 'ERROR'],422);
             }

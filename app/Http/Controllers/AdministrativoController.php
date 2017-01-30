@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Alumno;
+use App\AlumnoRemuneracion;
 use App\Acuerdo;
 use App\Pago;
 use App\Academia;
@@ -459,6 +460,10 @@ class AdministrativoController extends BaseController {
             Session::forget('pagos'); 
         }
 
+        if (Session::has('puntos_referidos')) {
+            Session::forget('puntos_referidos'); 
+        }
+
         $academia = Academia::find(Auth::user()->academia_id);
 
         $factura = DB::table('facturas')->orderBy('created_at', 'desc')->where('academia_id', '=', Auth::user()->academia_id)->first();
@@ -488,6 +493,14 @@ class AdministrativoController extends BaseController {
             $alumno_id = $arreglo[0]['alumno_id'];
             $alumno = Alumno::withTrashed()->where('id', '=', $alumno_id)->first();
             $total = $arreglo[0]['total'];
+
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $alumno_id)->first();
+
+            if($alumno_remuneracion){
+                $puntos_referidos = $alumno_remuneracion->remuneracion;
+            }else{
+                $puntos_referidos = 0;
+            }
 
             $acuerdos_pendientes = DB::table('items_factura_proforma')
             ->select('items_factura_proforma.*')
@@ -525,7 +538,7 @@ class AdministrativoController extends BaseController {
         );
         $preference = MP::create_preference($preference_data);*/
 
-        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo/*, 'datos' => $preference*/]);
+        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo, 'puntos_referidos' => $puntos_referidos /*, 'datos' => $preference*/]);
 
     }
 
@@ -537,6 +550,10 @@ class AdministrativoController extends BaseController {
 
         if (Session::has('id_proforma')) {
             Session::forget('id_proforma'); 
+        }
+
+        if (Session::has('puntos_referidos')) {
+            Session::forget('puntos_referidos'); 
         }
         
         $academia = Academia::find(Auth::user()->academia_id);
@@ -567,9 +584,15 @@ class AdministrativoController extends BaseController {
             $alumno_id = $factura_proforma->alumno_id;
             $alumno = Alumno::withTrashed()->where('id', '=', $alumno_id)->first();
             $total = $factura_proforma->importe_neto;
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $alumno_id)->first();
+            if($alumno_remuneracion){
+                $puntos_referidos = $alumno_remuneracion->remuneracion;
+            }else{
+                $puntos_referidos = 0;
+            }
             Session::push('id_proforma', $id);
 
-        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto]);
+        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'puntos_referidos' => $puntos_referidos]);
 
     }
 
@@ -600,6 +623,22 @@ class AdministrativoController extends BaseController {
 
     else{
 
+        if($request->forma_pago_id == 4){
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$request->alumno_id)->first();
+            if($alumno_remuneracion){
+                $puntos_referidos = Session::get('puntos_referidos');
+                $puntos_totales = $alumno_remuneracion->remuneracion - $puntos_referidos;
+                if($puntos_totales >= $request->monto){
+                    $puntos_referidos = $puntos_referidos + $request->monto;
+                    Session::put('puntos_referidos', $puntos_referidos);
+                }else{
+                    return response()->json(['errores' => ['monto' => [0, 'Ups! No tienes suficientes puntos acumulados']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                return response()->json(['errores' => ['monto' => [0, 'Ups! No tienes suficientes puntos acumulados']], 'status' => 'ERROR'],422);
+            }
+        }
+
         $forma_pago = DB::table('formas_pago')
         ->where('id' , '=' , $request->forma_pago_id)
         ->first();
@@ -623,6 +662,14 @@ class AdministrativoController extends BaseController {
 
         $arreglo = Session::get('pagos');
         $monto = $arreglo[$id][0]['monto'];
+
+        if($arreglo[$id][0]['forma_pago'] == 4){
+
+            $puntos_referidos = Session::get('puntos_referidos');
+            $puntos_referidos = $puntos_referidos - $monto;
+            Session::put('puntos_referidos', $puntos_referidos);
+               
+        }
 
         unset($arreglo[$id]);
         Session::put('pagos', $arreglo);
@@ -726,13 +773,19 @@ class AdministrativoController extends BaseController {
 
 
             for($i = 0; $i < count($arreglo) ; $i++)
-            
             {
 
                 $forma_pago = $arreglo[$i][0]['forma_pago'];
                 $banco = $arreglo[$i][0]['banco'];
                 $referencia = $arreglo[$i][0]['referencia'];
                 $monto = $arreglo[$i][0]['monto'];
+
+
+                if($forma_pago == 4){
+                    $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $request->id)->first();
+                    $alumno_remuneracion->remuneracion = $alumno_remuneracion->remuneracion - $monto;
+                    $alumno_remuneracion->save();
+                }
             
                 $pago = new Pago;
 
