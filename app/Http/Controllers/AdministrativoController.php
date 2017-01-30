@@ -2070,19 +2070,19 @@ class AdministrativoController extends BaseController {
 
 
         $academia = DB::table('facturas')
-                            ->join('academias', 'facturas.academia_id','=','academias.id')
-                            ->join('paises', 'academias.pais_id','=','paises.id')
-                            ->select('academias.nombre AS academia_nombre',
-                                     'academias.direccion AS academia_direccion',
-                                     'academias.telefono AS academia_telefono',
-                                     'academias.correo AS academia_email',
-                                     'paises.nombre as academia_pais',
-                                     'paises.abreviatura as pais_abreviatura',
-                                     'paises.moneda as pais_moneda',
-                                     'academias.imagen as imagen_academia',
-                                     'academias.porcentaje_impuesto')
-                            ->where('facturas.id','=',$id)
-                            ->first();
+            ->join('academias', 'facturas.academia_id','=','academias.id')
+            ->Leftjoin('paises', 'academias.pais_id','=','paises.id')
+            ->select('academias.nombre AS academia_nombre',
+                     'academias.direccion AS academia_direccion',
+                     'academias.telefono AS academia_telefono',
+                     'academias.correo AS academia_email',
+                     'paises.nombre as academia_pais',
+                     'paises.abreviatura as pais_abreviatura',
+                     'paises.moneda as pais_moneda',
+                     'academias.imagen as imagen_academia',
+                     'academias.porcentaje_impuesto')
+            ->where('facturas.id','=',$id)
+        ->first();
 
         $PerctIVA = 0;
                             

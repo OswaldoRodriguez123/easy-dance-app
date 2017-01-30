@@ -61,7 +61,9 @@
                     <div class="card">
                         <div class="card-header ch-alt text-center">
                             @if ($academia->imagen_academia)
-                            <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+                                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+                            @else
+                                <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                             @endif
                         </div>
                         
