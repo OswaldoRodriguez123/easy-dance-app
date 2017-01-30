@@ -215,6 +215,10 @@
                                         <a href="{{url('/')}}/progreso"><i class="zmdi zmdi-account"></i> Mi progreso</a>
                                     </li>
 
+                                    <li class="hidden-xs">
+                                        <a data-content="{{$puntos_referidos}}" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="disabled" ><i class="zmdi zmdi-account"></i> Puntos Acumulados</a>
+                                    </li>
+
 
                                 @endif
 

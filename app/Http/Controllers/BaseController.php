@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use View;
 use App\Alumno;
+use App\AlumnoRemuneracion;
 use App\Instructor;
 use Illuminate\Support\Facades\Auth;
 use DB;
@@ -97,9 +98,21 @@ class BaseController extends Controller {
             
             $array[$notificacion->id] = $notificacion_imagen_array;
         }
-
-           View::share ( 'notificaciones', $array);
-           View::share ( 'sin_ver', $numero_de_notificaciones );
+            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+                $puntos_referidos = 0;
+            }else{
+                $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', Auth::user()->usuario_id)->first();
+                if($alumno_remuneracion){
+                    $puntos_referidos = $alumno_remuneracion->remuneracion;
+                }else{
+                   $puntos_referidos = 0; 
+                }
+                
+                View::share ( 'puntos_referidos', $puntos_referidos);
+            }
+            
+            View::share ( 'notificaciones', $array);
+            View::share ( 'sin_ver', $numero_de_notificaciones );
    		}
 
     }
