@@ -120,7 +120,10 @@
 
       $(document).ready(function(){
 
-        $('#email').val("{{$_GET['email']}}");
+        url = window.location.href;
+        email = url.split("=")
+      
+        $('#email').val(email[1]);
 
         $('#password').bind("cut copy paste",function(e) {
             e.preventDefault();

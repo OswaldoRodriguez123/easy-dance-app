@@ -14,6 +14,12 @@ use Mail;
 
 class PasswordController extends Controller
 {
+
+    public function __construct()
+    {
+       Auth::logout();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
