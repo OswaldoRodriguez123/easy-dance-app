@@ -117,7 +117,7 @@
                                                       <select class="form-control" id="pais_id" name="pais_id" placeholder="seleccione">
                                                       <option value="">Selecciona</option>
                                                       @foreach ( $paises as $pais )
-                                                      <option value = "{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>
+                                                        <option value = "{{ $pais['id'] }}">{{ $pais['nombre'] }}</option>
                                                       @endforeach
                                                       </select>
                                                   </div>
@@ -260,7 +260,7 @@
 
     $(document).ready(function(){
     
-    if(!"{{$academia->pais_id}}")
+    if("{{$academia->pais_id}}" == null)
 
     {
       setTimeout(function(){ 
