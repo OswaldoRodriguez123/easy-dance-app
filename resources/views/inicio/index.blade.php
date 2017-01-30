@@ -260,7 +260,7 @@
 
     $(document).ready(function(){
     
-    if("{{$academia->pais_id}}" == null)
+    if(!"{{$academia->nombre}}")
 
     {
       setTimeout(function(){ 
