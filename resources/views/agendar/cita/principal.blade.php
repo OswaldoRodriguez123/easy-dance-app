@@ -44,7 +44,7 @@
                         <div class="card-header text-right">
                             <span class="f-16 p-t-0 text-success">Agregar una Cita <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-fiesta f-25"></i> Sección de Citas</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-calendar-check f-25"></i> Sección de Citas</p>
                             <hr class="linea-morada">                                                           
                         </div>
                         <div class="table-responsive row">
@@ -121,7 +121,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

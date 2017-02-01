@@ -386,6 +386,8 @@
                         .replace(/\n/g, '<br />');
                 }
 
+                $('.fc-toolbar').css('background-image',"url('{{url('/')}}/assets/img/citas_header.jpg')");
+
 
             });                        
         </script>

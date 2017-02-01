@@ -679,8 +679,6 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->cantidad_hombres = $cantidad_hombres;
         $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
-        $notificacion = new Notificacion; 
-
         if($clasegrupal->save()){
             $nombre = DB::table('config_clases_grupales')
                 ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
@@ -688,9 +686,12 @@ class ClaseGrupalController extends BaseController {
                 ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
             ->get();
 
+            $notificacion = new Notificacion; 
+
             $notificacion->tipo_evento = 1;
             $notificacion->evento_id = $clasegrupal->id;
             $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$nombre[0]->nombre;
+            $notificacion->titulo = "Nueva Clase Grupal";
 
             if($notificacion->save()){
                 $alumnos_a_notificar = DB::table('users')

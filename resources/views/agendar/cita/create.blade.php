@@ -44,7 +44,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado" id="id-cita_id"><i class="icon_a-fiesta f-25"></i> Crea tu Cita </span>                                                         
+                            <span class="f-25 c-morado" id="id-cita_id"><i class="zmdi zmdi-calendar-check f-25"></i> Crea tu Cita </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">

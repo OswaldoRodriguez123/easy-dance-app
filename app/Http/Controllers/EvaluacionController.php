@@ -8,8 +8,12 @@ use Illuminate\Routing\Route;
 use App\Http\Requests;
 use App\ItemsExamenes;
 use App\Evaluacion;
+use App\User;
+use App\Familia;
 use App\DetalleEvaluacion;
 use App\Examen;
+use App\Notificacion;
+use App\NotificacionUsuario;
 use Validator;
 use DB;
 use Session;
@@ -48,6 +52,32 @@ class EvaluacionController extends BaseController
         ->get();
 
         return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id]);
+    }
+
+    public function evaluaciones_vista_alumno()
+    {
+        $evaluacion_join = DB::table('evaluaciones')
+            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+            ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+            ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->where('evaluaciones.alumno_id', '=' , Auth::user()->usuario_id)
+        ->get();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join]);
+    }
+
+    public function evaluaciones_alumno($id)
+    {
+        $evaluacion_join = DB::table('evaluaciones')
+            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+            ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+            ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->where('evaluaciones.alumno_id', '=' , $id)
+        ->get();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'id' => $id]);
     }
 
     /**
@@ -103,6 +133,12 @@ class EvaluacionController extends BaseController
             $evaluacion->observacion = $request->observacion;
             $evaluacion->porcentaje = $request->barra_de_progreso;
 
+            $evaluacion->cantidad_horas_practica = $request->cantidad_horas_practica;
+            $evaluacion->asistencia_taller = $request->asistencia_taller;
+            $evaluacion->practica_horas_personalizadas = $request->practica_horas_personalizadas;
+            $evaluacion->participacion_evento = $request->participacion_evento;
+            $evaluacion->participacion_fiesta_social = $request->participacion_fiesta_social;
+
             if($evaluacion->save()){
                 $items_examenes = ItemsExamenes::where('examen_id', '=' , $request->examen)->get();
                 for ($i=0; $i < count($detalle_nota)-1; $i++) {
@@ -112,6 +148,39 @@ class EvaluacionController extends BaseController
                     $detalles->nota = $detalle_nota[$i];
                     $detalles->evaluacion_id = $evaluacion->id;
                     $detalles->save();
+                }
+
+                $notificacion = new Notificacion; 
+
+                $notificacion->tipo_evento = 6;
+                $notificacion->evento_id = $evaluacion->id;
+                $notificacion->mensaje = "Has realizado una nueva evaluación";
+                $notificacion->titulo = "Nueva Evaluación";
+
+                if($notificacion->save()){
+
+                  $tmp = User::where('usuario_id', $request->alumno_id)->first();
+
+                  if($tmp){
+                    $es_representante = Familia::where('representante_id', $tmp->id)->first();
+
+                    if(!$es_representante){
+                        $usuario = User::where('usuario_id' , $request->alumno_id)->where('usuario_tipo', 2)->first();
+                    }
+                    else{
+                        $usuario = User::where('usuario_id' , $request->alumno_id)->where('usuario_tipo', 4)->first();
+                    }
+
+                    if($usuario){
+
+                      $usuarios_notificados = new NotificacionUsuario;
+                      $usuarios_notificados->id_usuario = $usuario->id;
+                      $usuarios_notificados->id_notificacion = $notificacion->id;
+                      $usuarios_notificados->visto = 0;
+                      $usuarios_notificados->save();
+                    }
+                  }
+                    
                 }
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
@@ -131,6 +200,8 @@ class EvaluacionController extends BaseController
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
+        $fecha_ingreso = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at)->format('Y-m-d');
+
         $instructor = DB::table('evaluaciones')
                             ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
                             ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido')
@@ -146,7 +217,7 @@ class EvaluacionController extends BaseController
         $examen = DB::table('evaluaciones')
                             ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
                             ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
-                            ->select('examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'evaluaciones.created_at')
+                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'evaluaciones.created_at')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
@@ -161,41 +232,55 @@ class EvaluacionController extends BaseController
                 ->where('clases_grupales.fecha_final', '<=', Carbon::now())
             ->first();
 
-            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-            $fecha_ingreso = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at)->format('Y-m-d');
+            if($clase_grupal)
+            {
 
-            $i = $fecha->dayOfWeek;
+              $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+              $i = $fecha->dayOfWeek;
 
-            if($i == 1){
+              if($i == 1){
 
-              $dia = 'Lunes';
+                $dia = 'Lunes';
 
-            }else if($i == 2){
+              }else if($i == 2){
 
-              $dia = 'Martes';
+                $dia = 'Martes';
 
-            }else if($i == 3){
+              }else if($i == 3){
 
-              $dia = 'Miercoles';
+                $dia = 'Miercoles';
 
-            }else if($i == 4){
+              }else if($i == 4){
 
-              $dia = 'Jueves';
+                $dia = 'Jueves';
 
-            }else if($i == 5){
+              }else if($i == 5){
 
-              $dia = 'Viernes';
+                $dia = 'Viernes';
 
-            }else if($i == 6){
+              }else if($i == 6){
 
-              $dia = 'Sabado';
+                $dia = 'Sabado';
 
-            }else if($i == 0){
+              }else if($i == 0){
 
-              $dia = 'Domingo';
+                $dia = 'Domingo';
+
+              }
+
+              $clase_grupal_nombre = $clase_grupal->nombre;
+              $instructor = $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido;
+              $horario = $dia . ' de ' . $clase_grupal->hora_inicio .' a '. $clase_grupal->hora_final;
+
+            }else{
+
+              $clase_grupal_nombre = '';
+              $instructor = '';
+              $horario = '';
 
             }
 
+            
         //DATOS DE DETALLE
         $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
                             ->where('evaluacion_id','=',$id)
@@ -204,7 +289,6 @@ class EvaluacionController extends BaseController
         $fecha_siguiente = Carbon::createFromFormat('Y-m-d H:i:s', $examen->created_at)->addMonth(1)->format('Y-m-d');
         
         return view('especiales.evaluaciones.detalle')->with([
-                'instructor'       => $instructor, 
                 'alumno'           => $alumno, 
                 'academia'         => $academia, 
                 'detalle_notas'    => $detalles_notas,
@@ -214,10 +298,12 @@ class EvaluacionController extends BaseController
                 'genero_examen'    => $examen->genero,
                 'porcentaje'       => $examen->porcentaje,
                 'edad'             => $edad,
-                'clase_grupal'     => $clase_grupal,
-                'dia'              => $dia,
+                'clase_grupal_nombre'     => $clase_grupal_nombre,
+                'instructor'              => $instructor,
+                'horario'          => $horario,
                 'fecha_ingreso'    => $fecha_ingreso,
-                'fecha_siguiente'  => $fecha_siguiente
+                'fecha_siguiente'  => $fecha_siguiente,
+                'examen' => $examen
                 ]);
     }
 

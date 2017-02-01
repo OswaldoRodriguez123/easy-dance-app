@@ -73,7 +73,7 @@
                                             <a href="{{url('incidencias/generar')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
                                         </li>
                                         <li class="hidden-xs">
-                                            <a href="{{url('agendar/citas')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Citas</a>
+                                            <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Generar Citas</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -105,9 +105,12 @@
                                                 @foreach( $notificaciones as $notificacion)
                                                     @if ($notificacion['tipo_evento'] == 1)
                                                         <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
-                                                    @else
+                                                    @elseif ($notificacion['tipo_evento'] == 5)
 
                                                         <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/sugerencias/detalle/{{$notificacion['evento_id']}}">
+                                                    @else
+
+                                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones/detalle/{{$notificacion['evento_id']}}">
             
                                                     @endif
                                                         <div class="media">
@@ -119,11 +122,7 @@
                                                                 endif -->
                                                             </div>
                                                             <div class="media-body">
-                                                                @if ($notificacion['tipo_evento'] == 1)
-                                                                    <div class="lv-title">Nueva Clase Grupal</div>
-                                                                @else
-                                                                    <div class="lv-title">Nueva Sugerencia</div>
-                                                                @endif
+                                                                <div class="lv-title">{{$notificacion['titulo']}}</div>
                                                                 <small class="lv-small">{{$notificacion['mensaje']}}</small>
                                                             </div>
                                                         </div>

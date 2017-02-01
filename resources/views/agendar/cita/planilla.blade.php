@@ -359,7 +359,7 @@
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="icon_a icon_a-fiesta"></i></span>
+                                            <span class="ca-icon-planilla"><i class="zmdi zmdi-calendar-check"></i></span>
                                             <div class="ca-content-planilla">
                                                 <h2 class="ca-main-planilla">Vista Citas</h2>
                                                 <h3 class="ca-sub-planilla">Personaliza el campo citas</h3>

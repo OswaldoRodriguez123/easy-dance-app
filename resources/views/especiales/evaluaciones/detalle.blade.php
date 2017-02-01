@@ -32,7 +32,7 @@
                         @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/evaluaciones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de evaluaciones</a>
                         @else
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/evaluaciones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de evaluaciones</a>
                         @endif
                     </div> 
                     
@@ -84,9 +84,9 @@
                                 <hr class="linea-morada">
 
                                 ✔   Fecha de ingreso : {{$fecha_ingreso}} <br> 
-                                ✔   Clase Actual : {{$clase_grupal->nombre}} <br>
-                                ✔   Instructor : {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}}<br>
-                                ✔   Días y horarios de clases  : {{$dia}} de {{$clase_grupal->hora_inicio}} a {{$clase_grupal->hora_final}}<br>
+                                ✔   Clase Actual : {{$clase_grupal_nombre}} <br>
+                                ✔   Instructor : {{$instructor}}<br>
+                                ✔   Días y horarios de clases  : {{$horario}}<br>
 
                              
 
@@ -150,12 +150,69 @@
 
                             </div>
 
-                            <label for="observacion" id="id-observacion">Fórmula de éxito</label>
+                            <label for="observacion" id="id-observacion">Observaciones</label>
                             <div class="fg-line">
                               <textarea class="form-control" id="observacion" name="observacion" rows="2" disabled>{{$observacion}}</textarea>
                             </div>
                             <div class="clearfix p-b-20"></div>
                             <div class="clearfix p-b-20"></div>
+
+                            <span class="f-18 f-700 text-center c-morado"> Fórmula de éxito </span>
+
+
+                            <hr class="linea-morada">
+
+                            ✔   Cantidad adicional de horas de práctica: {{$examen->cantidad_horas_practica}} Horas </br>
+
+
+                            ✔   Asistencia en taller de preparación especial:   
+
+                            @if($examen->asistencia_taller)
+
+                                <b>--Recomendado--</b></br>
+
+                            @else
+
+                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
+
+                            @endif
+                            ✔   Práctica de horas personalizadas: 
+
+                            @if($examen->practica_horas_personalizadas)
+
+                                <b>--Recomendado--</b></br>
+
+                            @else
+
+                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
+
+                            @endif
+
+
+                            ✔   Participación evento: 
+
+                            @if($examen->participacion_evento)
+
+                                <b>--Recomendado--</b></br>
+
+                            @else
+
+                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
+
+                            @endif
+
+                            ✔   Participación en fiesta social: 
+
+                            @if($examen->participacion_fiesta_social)
+
+                                <b>--Recomendado--</b></br>
+
+                            @else
+
+                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
+
+                            @endif
+
 
                             </div>
 

@@ -22,7 +22,16 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                     @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if(isset($id_evaluacion))
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @else
+
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @endif
+                    @else
+                        <a class="btn-blanco m-r-10 f-16" href="/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                    @endif
                     </div> 
                     
                     <div class="card">
@@ -89,6 +98,7 @@
 <script type="text/javascript">
 
         route_detalle="{{url('/')}}/especiales/evaluaciones/detalle";
+        route_detalle2="{{url('/')}}/evaluaciones/detalle";
         //route_operacion="{{url('/')}}/especiales/examenes/operaciones";
 
         $(document).ready(function(){
@@ -172,7 +182,14 @@
 
             var row = $(t).closest('tr').attr('id');
             var id_alumno = row.split('_');
-            var route =route_detalle+"/"+id_alumno[1];
+            if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
+            {
+                var route =route_detalle+"/"+id_alumno[1];
+            }else{
+                var route =route_detalle2+"/"+id_alumno[1];
+
+            }
+            
             window.location=route;
         }
 

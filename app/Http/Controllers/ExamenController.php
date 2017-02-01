@@ -381,7 +381,10 @@ class ExamenController extends BaseController {
 
     public function evaluar($id)
     {   
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
+            ->select('alumnos.*', 'users.imagen')
+            ->where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
         //dd($alumnos);
         Session::put('id_evaluar', $id);
         $examen_join = DB::table('examenes')
@@ -471,7 +474,7 @@ class ExamenController extends BaseController {
             $tipo_de_evaluacion="Otros";
         }
         
-        $hoy = Carbon::now()->format('m-d-Y');
+        $hoy = Carbon::now()->format('d-m-Y');
 
 
         $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();

@@ -64,6 +64,7 @@ class SugerenciaController extends BaseController {
                 $notificacion->tipo_evento = 5;
                 $notificacion->evento_id = $sugerencia->id;
                 $notificacion->mensaje = $usuario->nombre . " " . $usuario->apellido . " ha creado una nueva consulta";
+                $notificacion->titulo = "Nueva Sugerencia";
 
                 if($notificacion->save()){
 

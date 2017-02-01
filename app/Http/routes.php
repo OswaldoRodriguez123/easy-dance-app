@@ -155,7 +155,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
 			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
 			Route::get('especiales/evaluaciones/{id}', 'EvaluacionController@evaluaciones');
-			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');
+			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');			
 
 			// ---- CONFIGURACION ----
 
@@ -377,6 +377,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
 			Route::post('participante/alumno/update/mensualidad', 'AlumnoController@updateCostoMensualidad');
+
+			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
 
 			//INSTRUCTOR
 
@@ -911,6 +913,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/talleres', 'TallerController@index');
 
 			//EVALUACIONES
+			
+			Route::get('evaluaciones', 'EvaluacionController@evaluaciones_vista_alumno');
+			Route::get('evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 
 			//NOTIFICACIONES

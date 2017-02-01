@@ -73,7 +73,7 @@
       <div class="row p-l-10 p-r-10">
       <div class="col-sm-12">
         
-        <a href="{{url('/')}}/invitar"> <img class="opaco-0-8" src="{{url('/')}}/assets/img/banner_referido.jpg" height="440" width="100%" alt=""></a>
+        <a href="{{url('/')}}/invitar"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_tuclasedebaile.jpg" alt=""></a>
       </div>
           <div class="col-sm-3" style="background: #f8f8f8 ; margin-left: 5px; padding-left: 10px; padding-right: 10px; min-height: 600px">
               <div style="padding-top:10px">
@@ -217,7 +217,7 @@
 
                        @foreach($alumno_examenes as $examenes)
                         <div class ="detalle">
-                          <a href="especiales/evaluaciones/detalle/{{$examenes->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$examenes->nombre}} </a> 
+                          <a href="evaluaciones/detalle/{{$examenes->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$examenes->nombre}} </a> 
                         </div>
                         @endforeach
 
@@ -225,7 +225,13 @@
                           <div class="clearfix p-b-15"></div>
                           <div class="clearfix p-b-15"></div>
                           <div class="clearfix p-b-15"></div>
+
+                          <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 evaluaciones" style="width:100%; padding:5px"> </i>Sección Evaluaciones</button>
                     </div>
+
+                    <div class="clearfix p-b-15"></div>
+
+                    <a href="{{url('/')}}/invitar"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_referido.jpg" alt=""></a>
             
    
                 </div>
@@ -537,6 +543,11 @@
           url = $(this).data('url');
           window.location = "{{url('/')}}"+url;
         });
+
+        $(document).on( 'click', '.evaluaciones', function () {
+          window.location = "{{url('/')}}/evaluaciones";
+        });
+
 
 
         $(document).on( 'click', '.mostrar', function () {

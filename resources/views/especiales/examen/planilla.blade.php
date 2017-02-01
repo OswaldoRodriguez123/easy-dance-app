@@ -845,7 +845,7 @@
                                   <hr></hr>
                                   
                                   <a class="" href="{{url('/')}}/especiales/examenes/evaluar/{{$examen->id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="" href="{{url('/')}}/especiales/evaluaciones/{{$examen->id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="" href="{{url('/')}}/especiales/evaluaciones/{{$examen->id}}"><i class="zmdi zmdi-hourglass-alt f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$examen->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>

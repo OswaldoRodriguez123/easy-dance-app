@@ -70,7 +70,7 @@ class BaseController extends Controller {
                         }
                     }
 
-                }else{
+                }else if($notificacion->tipo_evento == 1){
 
                     
                     $imagen = DB::table('config_clases_grupales')
@@ -90,6 +90,15 @@ class BaseController extends Controller {
                             $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                         }
                         
+                    }
+
+                }else{
+
+                    if($notificacion->imagen)
+                    {
+                        $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$notificacion->imagen;
+                    }else{
+                        $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                     }
 
                 }

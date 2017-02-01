@@ -77,23 +77,11 @@
                                 <td valign="top">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
 
-                                    Saludos <b>{{$nombre_destino}}</b>, has recibido este correo por que <b>{{$nombre_envio}}</b> de la academia <b>{{$academia}}</b> te recomienda bailar, te invitamos a ingresar el código referido {{$codigo}} para que formes parte de esta nueva experiencia.
+                                    Saludos <b>{{$nombre_destino}}</b>, has recibido este correo por que <b>{{$nombre_envio}}</b> de la academia <b>{{$academia}}</b> te recomienda bailar, te invitamos a ingresar el código referido <b><span style="text-decoration: underline;"> {{$codigo}}</span></b> para que formes parte de esta nueva experiencia.
                                     </font>
                                 </td>
 
                                 </tr>
-
-                                <td style="font-size:2px" height="20"></td>
-                                
-                                <tr>
-                                <td valign="top">
-                                <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#000000">
-                                Somos una aplicación web exclusiva para las academias de baile y danza, a partir de ahora podrás recibir múltiples beneficios con la aplicación, sólo debes pulsar el enlace para iniciar tu prueba gratis.
-                                </font>
-                                </td>
-
-                              
-                              </tr>
 
                               
                               <tr>

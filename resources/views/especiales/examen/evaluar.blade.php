@@ -59,7 +59,7 @@
 				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
 				                        <option value="">Seleccione</option>
 				                        @foreach ( $alumnos as $alumno )
-				                        <option value = "{!! $alumno->id !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!}</option>
+				                        <option data-imagen = "{{$alumno->imagen}}" data-sexo = "{{$alumno->sexo}}" value = "{!! $alumno->id !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!}</option>
 				                        @endforeach 
 				                        </select>
 				                    </div>
@@ -76,7 +76,7 @@
 	                        <div class="col-xs-6">
 	                            <div class="i-to">
 	                                <h5>Fecha: {{ $fecha }}</h5>
-									 <img class="img-responsive img-circle" style="width:60px; height:60px" id="imagen_evaluar" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">
+									 <img class="img-responsive img-circle" style="width:60px; height:60px" id="imagen_evaluar" src="" alt="">
 	                            </div>
 	                        </div>
 	                    </div>
@@ -126,7 +126,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="observacion" id="id-observacion">Observaciones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las observaciones y detalles correspondientes a la evalucion del alumno, las cuales seran vistas por el al revisar los resultados de la prueba" title="" data-original-title="Ayuda"></i>
+                                    <label for="observacion" id="id-observacion">Observaciones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="ingresa las observaciones y detalles correspondientes a la evaluación del alumno" title="" data-original-title="Ayuda"></i>
                                     <br></br>
 
                                     <div class="fg-line">
@@ -138,6 +138,162 @@
                                       </span>
                                     </div>
                                   </div>
+
+
+                                  <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Fórmula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAvanzado" aria-expanded="false" aria-controls="collapseAvanzado">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseAvanzado" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
+
+                           
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label id="id-cantidad_horas_practica" for="">Cantidad adicional de horas de práctica</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+		                                      <div class="fg-line">
+		                                      <input type="text" class="form-control input-sm input-mask" name="cantidad_horas_practica" id="cantidad_horas_practica" data-mask="0000" placeholder="Ej: 3">
+		                                      </div>
+
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-cantidad_horas_practica">
+                                            <span >
+                                                <small class="help-block error-span" id="error-cantidad_horas_practica_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                                     <div class="clearfix p-b-35"></div>
+
+                                     <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label id="id-asistencia_taller" for="">Asistencia en taller de preparación especial</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="asistencia_taller" name="asistencia_taller" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="taller-switch" type="checkbox">
+                                            
+                                            <label for="taller-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-asistencia_taller">
+                                            <span >
+                                                <small class="help-block error-span" id="error-asistencia_taller_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                               
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label id="id-practica_horas_personalizadas">Práctica de horas personalizadas</label > <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="practica_horas_personalizadas" name="practica_horas_personalizadas" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="personalizada-switch" type="checkbox">
+                                            
+                                            <label for="personalizada-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-practica_horas_personalizadas">
+                                            <span >
+                                                <small class="help-block error-span" id="error-practica_horas_personalizadas_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                               
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label id="id-participacion_evento">Participación evento</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="participacion_evento" name="participacion_evento" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="evento-switch" type="checkbox">
+                                            
+                                            <label for="evento-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-participacion_evento">
+                                            <span >
+                                                <small class="help-block error-span" id="error-participacion_evento_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                               
+                            <div class="clearfix p-b-35"></div>
+
+
+                            <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label  id="id-participacion_fiesta_social">Participación en fiesta social</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="participacion_fiesta_social" name="participacion_fiesta_social" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="fiesta-switch" type="checkbox">
+                                            
+                                            <label for="fiesta-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-participacion_fiesta_social">
+                                            <span >
+                                                <small class="help-block error-span" id="error-participacion_fiesta_social_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                               
+                            <div class="clearfix p-b-35"></div>
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseAvanzado')" ></i></div>
+                            
+                            <div class="clearfix p-b-35"></div>
+                               <hr></hr>
+
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
 
 						<hr>
 						<!-- SECCION BOTONES --> 
@@ -449,18 +605,13 @@ $(document).ready(function() {
 			});
 
 			$("#alumno_id").change(function(){
-				var alumnos = <?php echo json_encode($alumnos);?>;
 
-				id = $(this).val();
-
-				var alumno = $.grep(alumnos, function(e){ return e.id == id; });
-
-				var imagen = alumno[0].imagen;
-		        var sexo = alumno[0].imagen;
+				imagen = $(this).find("option:selected").attr("data-imagen");
 
 		        if(imagen){
 		          $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
 		        }else{
+		        	sexo = $(this).find("option:selected").attr("data-sexo");
 		          if(sexo == 'M'){
 		            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
 		          }else{
@@ -468,6 +619,52 @@ $(document).ready(function() {
 		          }
 		        }
 			});
+
+	  $('#collapseAvanzado').on('show.bs.collapse', function () {
+        $("#guardar").attr("disabled","disabled");
+        $("#guardar").css({"opacity": ("0.2")});
+      })
+
+      $('#collapseAvanzado').on('hide.bs.collapse', function () {
+        $("#guardar").removeAttr("disabled");
+        $("#guardar").css({"opacity": ("1")});
+      })
+
+      $("#taller-switch").on('change', function(){
+	      if ($("#taller-switch").is(":checked")){
+	        $("#asistencia_taller").val('1');
+	      }else{
+	        $("#asistencia_taller").val('0');
+	      }     
+	    });
+
+      $("#personalizada-switch").on('change', function(){
+	      if ($("#personalizada-switch").is(":checked")){
+	        $("#practica_horas_personalizadas").val('1');
+	      }else{
+	        $("#practica_horas_personalizadas").val('0');
+	      }     
+	    });
+
+      $("#evento-switch").on('change', function(){
+	      if ($("#evento-switch").is(":checked")){
+	        $("#participacion_evento").val('1');
+	      }else{
+	        $("#participacion_evento").val('0');
+	      }     
+	    });
+
+      $("#fiesta-switch").on('change', function(){
+	      if ($("#fiesta-switch").is(":checked")){
+	        $("#participacion_fiesta_social").val('1');
+	      }else{
+	        $("#participacion_fiesta_social").val('0');
+	      }     
+	    });
+
+      function collapse_minus(collaps){
+       $('#'+collaps).collapse('hide');
+      }
 
 </script>
 
