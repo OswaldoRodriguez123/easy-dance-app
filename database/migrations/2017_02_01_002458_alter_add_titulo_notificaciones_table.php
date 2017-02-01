@@ -12,7 +12,7 @@ class AlterAddTituloNotificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::table('notificaciones', function (Blueprint $table) {
+        Schema::table('notificacion', function (Blueprint $table) {
             
             $table->string('titulo');
 
@@ -27,7 +27,7 @@ class AlterAddTituloNotificacionesTable extends Migration
     public function down()
     {
 
-        Schema::table('notificaciones', function (Blueprint $table) {
+        Schema::table('notificacion', function (Blueprint $table) {
             
             $table->dropColumn('titulo');
             
