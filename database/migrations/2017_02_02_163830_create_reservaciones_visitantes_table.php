@@ -18,8 +18,6 @@ class CreateReservacionesVisitantesTable extends Migration
 
             $table->integer('academia_id')->unsigned();
             $table->foreign('academia_id')->references('id')->on('academias');
-            $table->integer('visitante_id')->unsigned();
-            $table->foreign('visitante_id')->references('id')->on('visitantes_presenciales');
             $table->integer('tipo_reservacion')->unsigned();
             $table->integer('tipo_id')->unsigned();
             $table->date('fecha_vencimiento');
