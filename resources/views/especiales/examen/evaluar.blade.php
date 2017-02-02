@@ -108,16 +108,16 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-									<span class="f-30" id="eval_total">{{count($itemsExamenes)}}</span>
+									<span class="f-30" id="eval_total">{{count($itemsExamenes)}}</span> acumulados de <span class="f-30">{{(count($itemsExamenes))*10}}</span>
 									<div class="text-right" id="id-total"></div>
 									<input type="hidden" name="total_nota" id="total_nota" value="{{count($itemsExamenes)}}">
 								</div>
 
-                                 <div class="has-error" id="error-total_nota">
-                                      <span >
-                                          <small class="help-block error-span" id="error-total_nota_mensaje" ></small>                                
-                                      </span>
-                                  </div>
+               <div class="has-error" id="error-total_nota">
+                    <span >
+                        <small class="help-block error-span" id="error-total_nota_mensaje" ></small>                                
+                    </span>
+                </div>
 
 							</div>
 						</div>

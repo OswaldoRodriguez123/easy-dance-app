@@ -46,7 +46,7 @@
                     </li>
 
                     <li data-ripplecator class ="dark-ripples">
-                        <a class="evaluar">
+                        <a class="historial">
                             <span class="ca-icon-c"><i class="zmdi zmdi-hourglass-alt f-35 boton blue sa-warning" 
                                    data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
@@ -134,7 +134,7 @@
     window.location = "{{url('/')}}/especiales/examenes/evaluar/{{$id}}";
   });
 
-  $(".evaluar").click(function(){
+  $(".historial").click(function(){
     window.location = "{{url('/')}}/especiales/evaluaciones/{{$id}}";
   });
 

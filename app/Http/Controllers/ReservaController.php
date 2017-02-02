@@ -106,7 +106,7 @@ class ReservaController extends BaseController
                     $clase_grupal_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
 
                     if($clase_grupal_find->imagen){
-                        $clase_grupal_array['imagen'] = "/assets/uploads/clase_grupal/{$clase_grupal->imagen}";
+                        $clase_grupal_array['imagen'] = "/assets/uploads/clase_grupal/{$clase_grupal_find->imagen}";
                     }else{
                         $clase_grupal_array['imagen'] = "/assets/img/EASY_DANCE_3_.jpg";
                     }
@@ -173,7 +173,7 @@ class ReservaController extends BaseController
                     $taller_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
 
                     if($taller_find->imagen){
-                        $taller_array['imagen'] = "/assets/uploads/taller/{$taller->imagen}";
+                        $taller_array['imagen'] = "/assets/uploads/taller/{$taller_find->imagen}";
                     }else{
                         $taller_array['imagen'] = "/assets/img/EASY_DANCE_3_.jpg";
                     }
