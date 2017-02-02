@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Visitante;
+use App\Instructor;
 use App\ComoNosConociste;
 use App\ConfigEspecialidades;
 use App\DiasDeInteres;
@@ -39,7 +40,7 @@ class VisitanteController extends BaseController {
     public function create()
     {
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all()]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);;
     }
 
     public function operar($id)
@@ -67,6 +68,7 @@ class VisitanteController extends BaseController {
         'sexo' => 'required',
         'como_nos_conociste_id' => 'required',
         'correo' => 'email|max:255|unique:visitantes_presenciales,correo, '.$request->id.'',
+        'instructor_id' => 'required'
         
     ];
 
@@ -86,6 +88,7 @@ class VisitanteController extends BaseController {
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
         'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        'instructor_id.required' => 'Ups! El Promotor  es requerido ',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -127,6 +130,7 @@ class VisitanteController extends BaseController {
         $visitante->dias_clase_id = $request->dias_clase_id;
         $visitante->especialidad_id = $request->especialidad_id;
         $visitante->fecha_registro = Carbon::now();
+        $visitante->instructor_id = $request->instructor_id;
 
 
         if($visitante->save()){
@@ -362,7 +366,8 @@ class VisitanteController extends BaseController {
         $visitante_join = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion')
+            ->Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 

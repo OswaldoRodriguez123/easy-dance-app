@@ -53,6 +53,32 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
+
+                             <div class="col-sm-12">
+                                 
+                                    <label for="especialidad" id="id-instructor_id">Promotor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el promotor" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-instructor_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
                               <div class="col-sm-12">
                                  
                                     <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del visitante" title="" data-original-title="Ayuda"></i>
@@ -548,7 +574,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id"];
+      var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "especialidad_id", "dias_clase_id", "instructor_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

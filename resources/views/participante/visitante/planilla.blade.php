@@ -93,6 +93,14 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
+                           <tr class="disabled" data-toggle="modal" href="#modalNombre-Visitante">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($visitante->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
+                               <span class="f-14"> Promotor </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-nombre" class="capitalize">{{$visitante->instructor_nombre}}</span> <span id="visitante-apellido" class="capitalize">{{$visitante->instructor_apellido}}</span></td>
+                            </tr>
                             <tr class="disabled" data-toggle="modal" href="#modalNombre-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($visitante->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
