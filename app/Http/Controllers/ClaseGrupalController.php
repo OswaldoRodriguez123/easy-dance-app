@@ -257,26 +257,50 @@ class ClaseGrupalController extends BaseController {
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
 
-        $mujeres = DB::table('inscripcion_clase_grupal')
-                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id')
-                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
-                ->where('alumnos.sexo', '=', 'F')
-        ->count();
-
-        $hombres = DB::table('inscripcion_clase_grupal')
-                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*')
-                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
-                ->where('alumnos.sexo', '=', 'M')
-        ->count();
+        $reservaciones = DB::table('reservaciones_visitantes')
+                ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+                ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
+                ->where('reservaciones_visitantes.tipo_id', '=', $id)
+                ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+        ->get();
 
         $asistencias = DB::table('asistencias')
                 ->select('asistencias.*')
                 ->where('asistencias.clase_grupal_id', '=', $id)
         ->get();
+
+        $array = array();
+        $mujeres = 0;
+        $hombres = 0;
+
+
+        foreach($alumnos_inscritos as $alumno){
+            if($alumno->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+
+            $alumno_array['tipo'] = 1;
+            $array[$alumno->id] = $alumno_array;
+        }
+
+        foreach($reservaciones as $alumno){
+            if($alumno->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+
+            $alumno_array['tipo'] = 2;
+            $array[$alumno->id] = $alumno_array;
+        }
 
         $asistio = array();
         $numero_de_asistencias=0;
@@ -332,7 +356,7 @@ class ClaseGrupalController extends BaseController {
         //     }
         // }
         
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio]);
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio]);
     }
 
     public function eliminarinscripcion($id)

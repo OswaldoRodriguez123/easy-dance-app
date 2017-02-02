@@ -217,7 +217,7 @@
                                          @foreach ( $alumnos as $alumno )
                                           <?php $exist = false; ?>
                                           @foreach ( $alumnos_inscritos as $inscripcion)
-                                            @if ($inscripcion->alumno_id==$alumno['id'] )
+                                            @if ($inscripcion['alumno_id']==$alumno['id'] && $inscripcion['tipo'] == 1)
                                               <?php $exist = true; ?>
                                             @endif
                                           @endforeach
@@ -491,23 +491,42 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno->inscripcion_id; ?>
-                                <tr id="{{$id}}" class="seleccion" data-id="{{$alumno->id}}" data-fecha="{{$alumno->fecha_pago}}" data-mensualidad="{{$alumno->costo_mensualidad}}" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}" data-sexo="{{$alumno->sexo}}">
-                                    <td class="text-center previa">{{$alumno->identificacion}}</td>
-                                    <td class="text-center previa">
-                                    @if($alumno->sexo=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                    @endif
-                                    </td>
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$asistio[$alumno->alumno_id]}}"></i></label></td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                    <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                    <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
-                                </tr>
+                                <?php $id = $alumno['inscripcion_id']; ?>
+
+                                @if($alumno['tipo'] == 1)
+                                  <tr id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}">
+                                      <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                      <td class="text-center previa">
+                                      @if($alumno['sexo']=='F')
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      @else
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      @endif
+                                      </td>
+                                      <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
+                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$asistio[$alumno['alumno_id']]}}"></i></label></td>
+                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
+                                      <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
+                                      <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
+                                      <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                  </tr>
+                                @else
+                                  <tr id="{{$id}}" class="seleccion seleccion_deleted">
+                                      <td class="text-center previa"><span class="c-amarillo">R</span></td>
+                                      <td class="text-center previa">
+                                      @if($alumno['sexo']=='F')
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      @else
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      @endif
+                                      </td>
+                                      <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
+                                      <td class="text-center previa"></td>
+                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
+                                      <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
+                                      <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
+                                  </tr>
+                                @endif
                             @endforeach 
                                                            
                             </tbody>
