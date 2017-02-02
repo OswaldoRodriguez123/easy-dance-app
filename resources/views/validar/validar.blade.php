@@ -79,6 +79,7 @@
             route_validar="{{url('/')}}/validar";
             route_exitoso="{{url('/')}}/validar/exitoso";
             route_invalido="{{url('/')}}/validar/invalido";
+            route_deuda = "{{url('/')}}/participante/alumno/deuda/"
             
             $(".guardar").click(function(){
                 
@@ -96,14 +97,19 @@
                     success:function(respuesta){
                       setTimeout(function(){ 
 
-                        window.location = route_exitoso;
+                        if(respuesta.route == 1)
+                        {
+                          window.location = route_deuda + respuesta.alumno_id;
+                        }else{
+                          window.location = route_exitoso;
+                        }
                      
                       }, 1000);
                     },
                     error:function(msj){
                       setTimeout(function(){ 
                         
-                        window.location = route_invalido;
+                        // window.location = route_invalido;
 
                       }, 1000);
                     }

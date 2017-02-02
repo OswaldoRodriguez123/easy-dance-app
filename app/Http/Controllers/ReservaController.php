@@ -584,7 +584,7 @@ class ReservaController extends BaseController
         else{
 
             $id_explode=explode('-', $request->reservacion);
-            $find = ReservacionVisitante::where('tipo_id', $id_explode[1])->where('tipo_reservacion',$id_explode[0])->first();
+            $find = ReservacionVisitante::where('tipo_id', $id_explode[1])->where('tipo_reservacion',$id_explode[0])->where('visitante_id',$request->visitante_id)->first();
 
             if($find){
                 return response()->json(['error_mensaje'=> 'Ups! Este visitante ya posee una reservación en esta actividad', 'status' => 'ERROR-RESERVA'],422);
