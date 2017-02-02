@@ -634,6 +634,7 @@ class ClaseGrupalController extends BaseController {
         //                 return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! La fecha de primer cobro automático es mayor a la fecha final']], 'status' => 'ERROR'],422);
         //             }
         // }
+        // 
 
         if(trim($request->cantidad_hombres) == '')
         {
@@ -649,10 +650,22 @@ class ClaseGrupalController extends BaseController {
             $cantidad_mujeres = $request->cantidad_mujeres;
         }
 
+        $cupos = $cantidad_mujeres + $cantidad_hombres;
+
         if($request->cupo_minimo > $request->cupo_maximo)
         {
 
             return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
+        }
+
+        if($cupos < $request->cupo_minimo)
+        {
+            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo sobrepasa la suma de los cupos de hombres y mujeres']], 'status' => 'ERROR'],422);
+        }
+
+        if($cupos > $request->cupo_maximo)
+        {
+            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! La suma de los cupos de hombres y mujeres sobrepasa el cupo maximo']], 'status' => 'ERROR'],422);
         }
 
         $clasegrupal = new ClaseGrupal;

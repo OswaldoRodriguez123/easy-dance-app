@@ -33,14 +33,13 @@ class ValidacionController extends BaseController {
     public function validar(Request $request)
     {
 
-        $tmp = Codigo::where('codigo_validacion', $request->codigo_validacion)->first();
+        $codigo = Codigo::where('codigo_validacion', trim($request->codigo_validacion))->first();
 
-            if($tmp){
+            if($codigo){
 
-                $fecha_creacion = $tmp->created_at;
-                $hora_limite = $fecha_creacion->addHours(48);
+                $fecha_limite = $codigo->fecha_vencimiento;
 
-                if(Carbon::now() > $hora_limite){
+                if(Carbon::now() > $fecha_limite){
                     $valido = null;
                 }else{
                     $valido = 'Si';

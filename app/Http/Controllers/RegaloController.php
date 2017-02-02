@@ -556,7 +556,7 @@ class RegaloController extends BaseController {
 
             $codigo->academia_id = $regalo->academia_id;
             $codigo->item_id = $regalo->id;
-            $codigo->tipo = 2;
+            $codigo->tipo = 3;
             $codigo->codigo_validacion = $codigo_validacion;
             $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
 

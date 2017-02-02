@@ -84,7 +84,6 @@
                 
                 var route = route_validar;
                 var token = "{{ csrf_token() }}";
-                var datos = $( "#agregar_examen" ).serialize();
                 var codigo = $("#codigo").val();
                 procesando();
            
@@ -93,7 +92,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data: datos,
+                        data: "&codigo_validacion="+codigo,
                     success:function(respuesta){
                       setTimeout(function(){ 
 
