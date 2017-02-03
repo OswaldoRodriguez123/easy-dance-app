@@ -525,7 +525,7 @@
                                       <div class="clearfix p-b-35"></div>
                                       <div class="col-sm-3">
                                       <label for="nombre" id="id-item_nuevo">Nombre</label>
-                                      <input type="text" class="form-control input-sm" name="item_nuevo" id="item_nuevo" placeholder="Ej. ritmo" value="">
+                                      <input type="text" class="form-control input-sm" name="item_nuevo" id="item_nuevo" placeholder="Ej. Ritmo" value="">
                                       </div>
                                       <div class="clearfix p-b-35"></div>
                                       <div class="col-md-2">
@@ -1052,7 +1052,7 @@
             $("#estilo").val('0');
           }     
         });
-      /*$('#collapseTwo').on('show.bs.collapse', function () {
+      $('#collapseTwo').on('show.bs.collapse', function () {
         $("#guardar").attr("disabled","disabled");
         $("#guardar").css({"opacity": ("0.2")});
       })
@@ -1060,7 +1060,7 @@
       $('#collapseTwo').on('hide.bs.collapse', function () {
         $("#guardar").removeAttr("disabled");
         $("#guardar").css({"opacity": ("1")});
-      })*/
+      })
 
        $( "#cancelar" ).click(function() {
         $("#agregar_examen")[0].reset();
@@ -1076,13 +1076,13 @@
         processing: true,
         serverSide: false,
         pageLength: 25, 
-        //bPaginate: false, 
+        bPaginate: false, 
         bFilter:false, 
         bSort:false, 
         bInfo:false,
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
+          $('.dataTables_paginate').hide();
           /*if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }

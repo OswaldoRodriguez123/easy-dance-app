@@ -98,7 +98,9 @@ class ExamenController extends BaseController {
             }
 
             $items = json_decode($request->items);
+            $fechatmp = $fecha;
             $fecha = $fecha->toDateString();
+            $proxima_fecha = $fechatmp->addMonth()->toDateString();
             
             $examen = new Examen;
 
@@ -108,6 +110,7 @@ class ExamenController extends BaseController {
             $examen->nombre = $nombre;
             $examen->descripcion = $request->descripcion;
             $examen->fecha = $fecha;
+            $examen->proxima_fecha = $proxima_fecha;
             $examen->color_etiqueta = $request->color_etiqueta;
             $examen->instructor_id = $request->instructor_id;
             $examen->condiciones = $request->condiciones;
@@ -233,9 +236,43 @@ class ExamenController extends BaseController {
 
         $examen = Examen::find($request->id);
 
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
 
-        $examen->fecha = $fecha;
+        if($fecha < Carbon::now())
+        {
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha debe ser mayor a hoy']], 'status' => 'ERROR'],422);
+        }
+
+        $examen->fecha = $fecha->toDateString();
+
+        if($examen->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno/edit/{$request->id}");
+    }
+
+
+    public function updateProximaFecha(Request $request){
+
+        $examen = Examen::find($request->id);
+
+        $proxima_fecha = Carbon::createFromFormat('d/m/Y', $request->proxima_fecha);
+
+        if($proxima_fecha < Carbon::now())
+        {
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha debe ser mayor a hoy']], 'status' => 'ERROR'],422);
+        }
+
+        $fecha = Carbon::createFromFormat('Y-m-d', $examen->fecha);
+
+        if($proxima_fecha < $fecha)
+        {
+            return response()->json(['errores' => ['proxima_fecha' => [0, 'Ups! La fecha debe ser mayor a la fecha de la valoración']], 'status' => 'ERROR'],422);
+        }
+
+        $examen->proxima_fecha = $proxima_fecha->toDateString();
 
         if($examen->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -358,7 +395,8 @@ class ExamenController extends BaseController {
                 'examenes.asistencia as asistencia',
                 'examenes.estilo as estilo',
                 'examenes.genero as generos',
-                'examenes.tipo as tipos')
+                'examenes.tipo as tipos', 
+                'examenes.proxima_fecha')
             ->where('examenes.id', '=', $id)
         ->first();
 
@@ -389,7 +427,8 @@ class ExamenController extends BaseController {
         Session::put('id_evaluar', $id);
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos')
+            ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
+            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
             ->where('examenes.id', '=', $id)
         ->first();
         
@@ -460,19 +499,6 @@ class ExamenController extends BaseController {
             $arrays_de_items[$i]="Estilo";
             $i++;
         }
-
-        if($examen_join->tipos == 1){
-            $tipo_de_evaluacion="Evaluacion";
-        }
-        if($examen_join->tipos == 2){
-            $tipo_de_evaluacion="Clase Personalizada";
-        }
-        if($examen_join->tipos == 3){
-            $tipo_de_evaluacion="Casting";
-        }
-        if($examen_join->tipos == 4){
-            $tipo_de_evaluacion="Otros";
-        }
         
         $hoy = Carbon::now()->format('d-m-Y');
 
@@ -487,7 +513,7 @@ class ExamenController extends BaseController {
         //dd($arrays_de_items);
 
         return view('especiales.examen.evaluar')
-               ->with(['alumnos' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $tipo_de_evaluacion, 'numero_de_items'=>$i]);
+               ->with(['alumnos' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i]);
     }
 
     public function actualizar_item(Request $request){

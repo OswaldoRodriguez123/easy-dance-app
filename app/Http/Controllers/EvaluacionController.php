@@ -217,7 +217,7 @@ class EvaluacionController extends BaseController
         $examen = DB::table('evaluaciones')
                             ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
                             ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
-                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'evaluaciones.created_at')
+                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
@@ -286,7 +286,6 @@ class EvaluacionController extends BaseController
                             ->where('evaluacion_id','=',$id)
                             ->get();
         $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-        $fecha_siguiente = Carbon::createFromFormat('Y-m-d H:i:s', $examen->created_at)->addMonth(1)->format('Y-m-d');
         
         return view('especiales.evaluaciones.detalle')->with([
                 'alumno'           => $alumno, 
@@ -302,7 +301,7 @@ class EvaluacionController extends BaseController
                 'instructor'              => $instructor,
                 'horario'          => $horario,
                 'fecha_ingreso'    => $fecha_ingreso,
-                'fecha_siguiente'  => $fecha_siguiente,
+                'fecha_siguiente'  => $examen->proxima_fecha,
                 'examen' => $examen
                 ]);
     }

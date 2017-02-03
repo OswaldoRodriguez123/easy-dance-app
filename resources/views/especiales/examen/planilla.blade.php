@@ -176,6 +176,61 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalFechaProxima-Examen" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_proxima_fecha_examen" id="edit_proxima_fecha_examen"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group fg-line">
+                                    <label for="apellido">Proxima Fecha de Valoración</label>
+                                            <div class="dtp-container fg-line">
+                                            <input name="proxima_fecha" id="proxima_fecha" class="form-control date-picker" placeholder="Selecciona" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="has-error" id="error-proxima_fecha">
+                                      <span >
+                                          <small class="help-block error-span" id="error-proxima_fecha_mensaje" ></small>                                           
+                                      </span>
+                                 </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$examen->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                               <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_proxima_fecha_examen" data-update="proxima_fecha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <!--
               BEGIN
               MODAL EDITAR INSTRUCTOR
@@ -897,6 +952,14 @@
                              </td>
                              <td class="f-14 m-l-15"> <span id="examen-fecha">{{$examen->fecha}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalFechaProxima-Examen">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-proxima_fecha" class="zmdi {{ empty($examen->proxima_fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
+                               <span class="f-14"> Proxima Fecha de la Valoración  </span>
+                             </td>
+                             <td class="f-14 m-l-15"> <span id="examen-proxima_fecha">{{$examen->proxima_fecha}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            </tr>
                               <!-- <tr class="detalle" data-toggle="modal" href="#modalColor-Examen">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor" class="zmdi zmdi-dot-circle zmdi-hc-fw {{ empty($examen->instructor_nombre) ? 'c-amarillo' : 'c-verde' }}"></i></span>
@@ -1090,6 +1153,10 @@
     $('#modalFecha-Examen').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#fecha").val($("#examen-fecha").text()); 
+    })
+    $('#modalFechaProxima-Examen').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#proxima_fecha").val($("#examen-proxima_fecha").text()); 
     })
 
     $('#modalInstructor-Examen').on('show.bs.modal', function (event) {
