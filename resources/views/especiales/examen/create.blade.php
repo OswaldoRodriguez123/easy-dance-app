@@ -176,6 +176,11 @@
                                   <div class="input-group">
                                       <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                       <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="5" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Diagnóstico de ingreso
+                                      </label>
                                       <label class="radio radio-inline m-r-20">
                                           <input checked="checked" name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="1" type="radio">
                                           <i class="input-helper"></i>  

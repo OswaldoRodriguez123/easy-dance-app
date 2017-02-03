@@ -321,6 +321,11 @@
                                       <div class="input-group">
                                       <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                       <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input name="tipos_de_evaluacion" id="otros" value="5" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Diagnóstico de ingreso
+                                      </label><br />
                                       <label class="radio radio-inline m-r-20">
                                           <input name="tipos_de_evaluacion" id="evaluacion" value="1" type="radio">
                                           <i class="input-helper"></i>  
@@ -1307,6 +1312,8 @@
               nombre="Clase Personalizada";
             }else if(c.value==3){
               nombre="Casting";
+            }else if(c.value==5){
+              nombre="Diagnóstico de ingreso";
             }else{
               nombre="Otros";
             }
