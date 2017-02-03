@@ -374,7 +374,7 @@
                           @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
                             <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">https://www.twitter.com/{{$academia->twitter}}</a></li>
                           @else
-                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">@{{$academia->twitter}}</a></li>
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">@ {{$academia->twitter}}</a></li>
                           @endif
                         @endif
 
@@ -382,7 +382,7 @@
                           @if (!filter_var($academia->instagram, FILTER_VALIDATE_URL) === false) 
                             <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">{{$academia->instagram}}</a></li>
                           @else
-                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">@{{$academia->instagram}}</a></li>
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">@ {{$academia->instagram}}</a></li>
                           @endif
                         @endif
 
