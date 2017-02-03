@@ -14,6 +14,66 @@
 
 @section('content')
 
+          <div class="modal fade" id="modalPromotor-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_promotor_alumno" id="edit_promotor_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Promotor</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="instructor_id" name="instructor_id">
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-especialidades">
+                                      <span >
+                                          <small class="help-block error-span" id="error-edit_especialidades_clasegrupal" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_promotor_alumno" data-update="promotor" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
      
            <div class="modal fade" id="modalNombre-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
@@ -53,7 +113,7 @@
                                   </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -107,7 +167,7 @@
                                  </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -171,7 +231,7 @@
                                   </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -226,7 +286,7 @@
 
                                <div class="clearfix"></div> 
 
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
 
                                
                                
@@ -291,7 +351,7 @@
                                   </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -349,7 +409,7 @@
 
                                <div class="clearfix"></div> 
 
-                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
 
                                
                                
@@ -376,6 +436,187 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalEspecialidades-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_especialidades_alumno" id="edit_especialidades_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Especialidad de interés</label>
+
+                                      <div class="select">
+                                          <select class="selectpicker bs-select-hidden" id="especialidad_id" name="especialidad_id" multiple="" data-max-options="5" title="Selecciona">
+                                          @foreach ( $config_especialidades as $especialidad )
+                                          <option value = "{{ $especialidad['id'] }}">{{ $especialidad['nombre'] }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-especialidades">
+                                      <span >
+                                          <small class="help-block error-span" id="error-edit_especialidades_clasegrupal" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_especialidades_alumno" data-update="especialidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalComoseentero-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_como_se_entero_alumno" id="edit_como_se_entero_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">¿Cómo se enteró?</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="como_nos_conociste_id" name="como_nos_conociste_id">
+                                          @foreach ( $como_nos_conociste as $conociste )
+                                          <option value = "{{ $conociste['id'] }}">{{ $conociste['nombre'] }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-especialidades">
+                                      <span >
+                                          <small class="help-block error-span" id="error-edit_especialidades_clasegrupal" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_como_se_entero_alumno" data-update="como_se_entero" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalDias-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_dias_alumno" id="edit_dias_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Días de interés</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="dias_clase_id" name="dias_clase_id">
+                                          @foreach ( $dias_de_semana as $dia )
+                                            <option value = "{{ $dia['id'] }}">{{ $dia['nombre'] }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-especialidades">
+                                      <span >
+                                          <small class="help-block error-span" id="error-edit_especialidades_clasegrupal" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_dias_alumno" data-update="dias" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+    
     
             <section id="content">
                 <div class="container">
@@ -454,15 +695,15 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                           <tr class="disabled" data-toggle="modal" href="#modalPromotor-Visitante">
+                           <tr class="detalle" data-toggle="modal" href="#modalPromotor-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($visitante->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
                                <span class="f-14"> Promotor </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="visitante-nombre" class="capitalize">{{$visitante->instructor_nombre}}</span> <span id="visitante-apellido" class="capitalize">{{$visitante->instructor_apellido}}</span></td>
+                             <td class="f-14 m-l-15" ><span id="visitante-instructor_id" class="capitalize">{{$visitante->instructor_nombre}} {{$visitante->instructor_apellido}}</span></td>
                             </tr>
-                            <tr class="disabled" data-toggle="modal" href="#modalNombre-Visitante">
+                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($visitante->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
@@ -470,7 +711,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-nombre" class="capitalize">{{$visitante->nombre}}</span> <span id="visitante-apellido" class="capitalize">{{$visitante->apellido}}</span></td>
                             </tr>
-                            <tr class="disabled" data-toggle="modal" href="#modalFechaNacimiento-Visitante">
+                            <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($visitante->fecha_nacimiento) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
@@ -478,7 +719,7 @@
                              </td>
                              <td  class="f-14 m-l-15" id="visitante-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$visitante->fecha_nacimiento)->format('d/m/Y')}}</span></td>
                             </tr>
-                             <tr class="disabled" data-toggle="modal" href="#modalSexo-Visitante">
+                             <tr class="detalle" data-toggle="modal" href="#modalSexo-Visitante">
                              <td> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($visitante->sexo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
@@ -492,7 +733,7 @@
                                @endif
                              </span></td>
                             </tr>
-                            <tr class="disabled" data-toggle="modal" href="#modalCorreo-Visitante">
+                            <tr class="detalle" data-toggle="modal" href="#modalCorreo-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($visitante->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
@@ -500,7 +741,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-correo"><span>{{$visitante->correo}}</span></span> <span class="pull-right c-blanco"></td>
                             </tr>
-                            <tr class="disabled" data-toggle="modal" href="#modalTelefono-Visitante">
+                            <tr class="detalle" data-toggle="modal" href="#modalTelefono-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($visitante->telefono) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
@@ -508,7 +749,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-telefono">{{$visitante->telefono}}</span> / <span id="visitante-celular">{{$visitante->celular}}</span><span class="pull-right c-blanco"></td>
                             </tr>
-                              <tr class="disabled" data-toggle="modal" href="#modalComoseentero-Visitante">
+                              <tr class="detalle" data-toggle="modal" href="#modalComoseentero-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-como_nos_conociste_id" class="zmdi {{ empty($visitante->como_nos_conociste_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-como-se-entero f-22"></i> </span>
@@ -516,15 +757,23 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-como_nos_conociste_id"><span>{{$visitante->como_nos_conociste_nombre}}</span></span></td>
                             </tr>
-                            <tr class="disabled" data-toggle="modal" href="#modalEspecialidades-Visitante">
+                            <tr class="detalle" data-toggle="modal" href="#modalEspecialidades-Visitante">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidades" class="zmdi {{ empty($especialidades) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidad_id" class="zmdi {{ empty($especialidades) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Especialidad de Interés </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="visitante-especialidades"><span>{{$especialidades}}</span></span></td>
+                             <td class="f-14 m-l-15" ><span id="visitante-especialidad_id">{{$especialidades}}</span></td>
                             </tr>
-                            <tr class="disabled" data-toggle="modal" href="#modalDireccion-Visitante">
+                            <tr class="detalle" data-toggle="modal" href="#modalDias-Visitante">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-dias_clase_id" class="zmdi {{ empty($visitante->dia_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-agendar-1 f-22"></i> </span>
+                               <span class="f-14"> Días de Interés </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-dias_clase_id">{{$visitante->dia_nombre}}</span></td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalDireccion-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($visitante->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
@@ -680,7 +929,7 @@
              $("#visitante-"+c.name).data('valor',c.value);
              $("#visitante-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id'){
+          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' | c.name=='instructor_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
@@ -946,6 +1195,15 @@
                 }
             });
       });
+
+        function countChar(val) {
+        var len = val.value.length;
+        if (len >= 180) {
+          val.value = val.value.substring(0, 180);
+        } else {
+          $('#charNum').text(180 - len);
+        }
+      };
     
    </script> 
 
