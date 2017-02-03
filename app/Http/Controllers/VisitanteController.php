@@ -29,7 +29,12 @@ class VisitanteController extends BaseController {
     public function index()
     {
 
-        return view('participante.visitante.principal')->with(['visitantes' => Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        $visitantes = Visitante::Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
+            ->select('visitantes_presenciales.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->where('visitantes_presenciales.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
+
+        return view('participante.visitante.principal')->with(['visitantes' => $visitantes]);
     }
 
     /**
@@ -331,6 +336,17 @@ class VisitanteController extends BaseController {
     public function updateEspecialidad(Request $request){
         $visitante = Visitante::find($request->id);
         $visitante->especialidad_id = $request->especialidad_id;
+
+        if($visitante->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updatePromotor(Request $request){
+        $visitante = Visitante::find($request->id);
+        $visitante->instructor_id = $request->instructor_id;
 
         if($visitante->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

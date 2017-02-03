@@ -429,6 +429,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/visitante/update/direccion','VisitanteController@updateDireccion');
 			Route::put('participante/visitante/update/como_se_entero','VisitanteController@updateComoSeEntero');
 			Route::put('participante/visitante/update/especialidad','VisitanteController@updateEspecialidad');
+			Route::put('participante/visitante/update/promotor','VisitanteController@updatePromotor');
 
 			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 			Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');

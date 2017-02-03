@@ -198,6 +198,10 @@ class ValidacionController extends BaseController {
                             $item_factura->save();
 
                         }
+                        
+                        $codigo->delete();
+
+                        $reservacion->delete();
 
                         $alumno_id = $alumno->id;
                         $route = 1;

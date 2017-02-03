@@ -221,6 +221,7 @@
                                     <th class="text-center" data-column-id="fecha">Fecha de Registro</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Promotor</th>
                                     <th class="text-center" data-column-id="operaciones">Acción</th>
                                 </tr>
                             </thead>
@@ -248,6 +249,8 @@
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_visitante}} {{$apellido_visitante}} </td>
+                                    <td class="text-center previa">{{$visitante['instructor_nombre']}} {{$visitante['instructor_apellido']}}</td>
+
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                     
                                 </tr>
