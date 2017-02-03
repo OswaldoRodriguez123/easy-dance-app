@@ -210,7 +210,7 @@ class EvaluacionController extends BaseController
 
         $academia = DB::table('evaluaciones')
                             ->join('academias', 'evaluaciones.academia_id','=','academias.id')
-                            ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia', 'academias.identificacion')
+                            ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia', 'academias.identificacion', 'academias.telefono', 'academias.celular', 'academias.correo', 'academias.direccion')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 

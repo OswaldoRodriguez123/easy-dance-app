@@ -214,7 +214,28 @@
                             @endif
 
 
+                            <br><br>
+                            Realizado por : {{$instructor}}
+
+
                             </div>
+
+                             <div class="row m-b-25">
+                                <div class="col-sm-12 f-16 text-center" style="margin-top: 100px">
+
+                                 <hr class="linea-morada">
+
+                                <span class="f-16"> Academia <b>{{$academia->academia_nombre}}</b>, Dirección: {{$academia->direccion}}, Números telefónico ( {{$academia->telefono}} / {{$academia->celular}} )  </br>
+
+                                {{$academia->correo}} </br></br>
+
+                                <b>NOS ESCANTA VERTE BAILAR</b>
+
+
+                                </span>
+
+                                </div>
+                                </div>
 
                             <nav class="navbar navbar-default navbar-fixed-bottom">
                                 <div class="container">

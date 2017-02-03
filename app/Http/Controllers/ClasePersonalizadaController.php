@@ -367,7 +367,7 @@ class ClasePersonalizadaController extends BaseController {
     $rules = [
 
         'clase_personalizada_id' => 'required',
-        'fecha_inicio' => 'required',
+        'fecha' => 'required',
         'especialidad_id' => 'required',
         'instructor_id' => 'required',
         'hora_inicio' => 'required',
@@ -377,7 +377,7 @@ class ClasePersonalizadaController extends BaseController {
     $messages = [
 
         'clase_personalizada_id.required' => 'Ups! El nombre es requerido',
-        'fecha_inicio.required' => 'Ups! La fecha es requerida',
+        'fecha.required' => 'Ups! La fecha es requerida',
         'instructor_id.required' => 'Ups! El instructor es requerido',
         'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
         'hora_final.required' => 'Ups! La hora final es requerida',
@@ -394,9 +394,13 @@ class ClasePersonalizadaController extends BaseController {
 
     else{
 
+        $fecha = explode(" - ", $request->fecha);
+
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
+
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
         if($hora_inicio > $hora_final)
         {
@@ -406,8 +410,11 @@ class ClasePersonalizadaController extends BaseController {
 
         if($fecha_inicio < Carbon::now()){
 
-            return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
+
+        $fecha_inicio = $fecha_inicio->toDateString();
+        $fecha_final = $fecha_final->toDateString();
 
         $clasepersonalizada = new CitaClasePersonalizada;
         
