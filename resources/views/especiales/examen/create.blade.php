@@ -26,7 +26,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Examen</a><ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Valoración</a><ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -44,7 +44,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-examen f-25" id="id-clase_grupal_id"></i> Crea un Examen </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-examen f-25" id="id-clase_grupal_id"></i> Crea una Valoración </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -55,7 +55,7 @@
                             <div class="clearfix p-b-15"></div>
                                 <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-nombre"> ¿Cuál es el nombre del examen? </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del examen que deseas realizar" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre"> ¿Cuál es el nombre de la valoración? </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la valoración que deseas realizar" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-examen f-22"></i></span>
@@ -101,7 +101,7 @@
 
                                <div class="col-sm-12">
                                     
-                                      <label for="fecha_inicio" id="id-fecha"> ¿Cuándo será la fecha del examen?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de inicio del examen" title="" data-original-title="Ayuda"></i>
+                                      <label for="fecha_inicio" id="id-fecha"> ¿Cuándo será la fecha de la valoración?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de inicio de la valoración" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
                                       <div class="dtp-container fg-line">
@@ -580,7 +580,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-descripcion">Concepto General</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Reseña el concepto general, del desarrollo y objetivos del examen" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-descripcion">Concepto General</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Reseña el concepto general, del desarrollo y objetivos de la valoración" title="" data-original-title="Ayuda"></i>
 
                                     <br></br>
 
@@ -629,7 +629,7 @@
                             
                             <div class="col-sm-12 text-left">    
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Crear un Examen</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Crear una Valoración</button>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
 

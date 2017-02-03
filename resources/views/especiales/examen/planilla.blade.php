@@ -19,7 +19,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Examen<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_nombre_examen" id="edit_nombre_examen"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -73,7 +73,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Examen<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_descripcion_examen" id="edit_descripcion_examen"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -125,7 +125,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Examen<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_fecha_examen" id="edit_fecha_examen"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -133,7 +133,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                 <div class="form-group fg-line">
-                                    <label for="apellido">Fecha del Examen</label>
+                                    <label for="apellido">Fecha de la Valoración</label>
                                             <div class="dtp-container fg-line">
                                             <input name="fecha" id="fecha" class="form-control date-picker" placeholder="Selecciona" type="text">
                                         </div>
@@ -184,7 +184,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Examen<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_instructor_examen" id="edit_instructor_examen"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -246,7 +246,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar los generos musicales <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_generos_musicales" id="edit_generos_musicales"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -308,7 +308,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar el tipo de evaluacion <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_tipos_de_evaluacion" id="edit_tipos_de_evaluacion"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -387,7 +387,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title bg-gris-oscuro">Editar Examen<button type="button" data-dismiss="modal" class="close c-blanco f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title bg-gris-oscuro">Editar Valoración<button type="button" data-dismiss="modal" class="close c-blanco f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_items_examen" id="edit_items_examen"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -795,7 +795,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Examen</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Valoración</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -829,8 +829,8 @@
                                         <a href="#" class="disabled">
                                             <span class="ca-icon-planilla"><i class="icon_a-examen"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Examen</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo examen</h3>
+                                                <h2 class="ca-main-planilla">Vista Valoración</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo valoración</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -863,7 +863,7 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos del Examen</p>
+                              <p class="text-center opaco-0-8 f-22">Datos de la Valoración</p>
                           </div>
 
                           <div class="col-sm-12">
@@ -872,7 +872,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($examen->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-examen f-22"></i> </span>
-                               <span class="f-14"> Nombre del Examen </span>
+                               <span class="f-14"> Nombre de la Valoración </span>
                              </td>
                              <td id="examen-nombre" class="f-14 m-l-15" data-valor="{{$examen->nombre}}" ><span id="examen-nombre"><span>{{ str_limit($examen->nombre, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -880,7 +880,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($examen->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
-                               <span class="f-14"> Describe tu Examen </span>
+                               <span class="f-14"> Describe tu Valoración </span>
                              </td>
                              <td id="examen-descripcion" class="f-14 m-l-15" data-valor="{{$examen->descripcion}}" ><span id="examen-descripcion"><span>{{ str_limit($examen->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -888,7 +888,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha" class="zmdi {{ empty($examen->fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
-                               <span class="f-14"> Fecha del Examen  </span>
+                               <span class="f-14"> Fecha de la Valoración  </span>
                              </td>
                              <td class="f-14 m-l-15"> <span id="examen-fecha">{{$examen->fecha}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>

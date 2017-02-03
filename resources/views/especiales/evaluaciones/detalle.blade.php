@@ -162,7 +162,7 @@
 
                             <hr class="linea-morada">
 
-                            ✔   Cantidad adicional de horas de práctica: {{$examen->cantidad_horas_practica}} Horas </br>
+                            ✔   Cantidad adicional de horas de práctica semanales: {{$examen->cantidad_horas_practica}} Horas </br>
 
 
                             ✔   Asistencia en taller de preparación especial:   

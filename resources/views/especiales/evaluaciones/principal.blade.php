@@ -50,7 +50,7 @@
                                     <th class="text-center" data-column-id="identificacion">Identificación</th>
                                     <th class="text-center" data-column-id="nombre">Nombre</th>
                                     <th class="text-center" data-column-id="instructor">Instructor</th>
-                                    <th class="text-center" data-column-id="examen">Examen</th>
+                                    <th class="text-center" data-column-id="examen">Valoración</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nota">Nota</th>
 

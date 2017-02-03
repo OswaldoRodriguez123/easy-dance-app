@@ -12,7 +12,7 @@
         <div class="container">
             <div class="block-header">
             <div class="col-sm-6 text-left">
-                <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Examen</a>
+                <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Valoración</a>
             </div>
 
                 <div class="col-sm-6 text-right">
@@ -23,7 +23,7 @@
 
             <br>
             
-            <h4 class ="c-morado text-right">Examen: {{$examen->nombre}}</h4>
+            <h4 class ="c-morado text-right">Valoración: {{$examen->nombre}}</h4>
             <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
             <hr class="linea-morada">
             <br>

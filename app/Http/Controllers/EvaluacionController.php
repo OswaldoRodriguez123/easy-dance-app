@@ -154,8 +154,8 @@ class EvaluacionController extends BaseController
 
                 $notificacion->tipo_evento = 6;
                 $notificacion->evento_id = $evaluacion->id;
-                $notificacion->mensaje = "Has realizado una nueva evaluación";
-                $notificacion->titulo = "Nueva Evaluación";
+                $notificacion->mensaje = "Tienes una nueva valoración. Verifica los resultados";
+                $notificacion->titulo = "Nueva Valoración";
 
                 if($notificacion->save()){
 

@@ -109,7 +109,7 @@
                     
                           <li data-hovercolor="#e91e63"><a href="{{url('/')}}/especiales/promociones"><h2 data-type="mText" class="sti-item">Promocion </h2><span data-type="icon" class="sti-icon sti-icon-promocion sti-item"></span></a></li>
       
-                          <li data-hovercolor="#e91e63"><a data-toggle="modal" href="{{url('/')}}/especiales/examenes""><h2 data-type="mText" class="sti-item">Crear un examen</h2><span data-type="icon" class="sti-icon sti-icon-cexamen sti-item"></span></a></li>
+                          <li data-hovercolor="#e91e63"><a data-toggle="modal" href="{{url('/')}}/especiales/examenes""><h2 data-type="mText" class="sti-item">Valoración</h2><span data-type="icon" class="sti-icon sti-icon-cexamen sti-item"></span></a></li>
       
                         </ul>
                        </div></div>

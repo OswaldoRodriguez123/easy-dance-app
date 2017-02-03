@@ -147,6 +147,17 @@
                           @endif
                             </a> </div>
 
+
+                        <div class ="detalle">
+                          
+                          @if(count($alumno_examenes) != 1)
+                          <a href="{{url('/')}}/evaluaciones" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-examen f-20"></i> Valoración <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($alumno_examenes)}}</span>
+                            
+                          @else
+                            <a href="{{url('/')}}/evaluaciones" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-examen f-20"></i> Valoración <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($alumno_examenes)}}</span>
+                          @endif
+                            </a> </div>
+
                           <div class ="detalle">
 
                            @if($campanas != 1)
@@ -173,7 +184,7 @@
                     <div class="clearfix p-b-15"></div>
 
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Proximas fecha de pago</div>
+                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Próximas fecha de pago</div>
 
                        @foreach($proformas as $proforma)
 
@@ -209,25 +220,6 @@
 
 
                   </div> <!-- ESPECIALES -->
-
-                    <div class="clearfix p-b-15"></div>
-
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                      <div class="text-left f-16 f-700 header_cuadro_alumno_borde_morado">Evaluacion / Diagnostico</div>
-
-                       @foreach($alumno_examenes as $examenes)
-                        <div class ="detalle">
-                          <a href="evaluaciones/detalle/{{$examenes->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$examenes->nombre}} </a> 
-                        </div>
-                        @endforeach
-
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
-
-                          <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 evaluaciones" style="width:100%; padding:5px"> </i>Sección Evaluaciones</button>
-                    </div>
 
                     <div class="clearfix p-b-15"></div>
 
@@ -371,26 +363,26 @@
                         <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
                         @if($academia->facebook)
                           @if (!filter_var($academia->facebook, FILTER_VALIDATE_URL) === false) 
-                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">Facebook</a></li>
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">{{$academia->facebook}}</a></li>
                           @else
-                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$academia->facebook}}">Facebook</a></li>
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$academia->facebook}}">https://www.facebook.com/{{$academia->facebook}}</a></li>
                           @endif
                         @endif
 
                         @if($academia->twitter)
 
                           @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
-                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">Twitter</a></li>
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">https://www.twitter.com/{{$academia->twitter}}</a></li>
                           @else
-                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">Twitter</a></li>
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">@{{$academia->twitter}}</a></li>
                           @endif
                         @endif
 
                         @if($academia->instagram)
                           @if (!filter_var($academia->instagram, FILTER_VALIDATE_URL) === false) 
-                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">Instagram</a></li>
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">{{$academia->instagram}}</a></li>
                           @else
-                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">Instagram</a></li>
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">@{{$academia->instagram}}</a></li>
                           @endif
                         @endif
 
