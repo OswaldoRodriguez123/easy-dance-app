@@ -144,7 +144,7 @@
 
                             <div class ="f-16 f-700 pull-right">
 
-                            Resultado final : {{$nota_final}} puntos <br>
+                            Resultado final : {{$nota_final}} puntos de {{(count($detalle_notas))*10}}<br>
                             Nivel de progreso : {{$porcentaje}} <br>
                             Fecha próxima evaluación : {{$fecha_siguiente}} <br>
 
