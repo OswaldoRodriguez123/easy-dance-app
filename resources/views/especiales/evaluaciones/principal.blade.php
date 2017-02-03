@@ -68,7 +68,7 @@
                                     <td class="text-center previa">{{$evaluaciones->alumno_nombre}} {{$evaluaciones->alumno_apellido}}</td>
                                     <td class="text-center previa">{{$evaluaciones->instructor_nombre}} {{$evaluaciones->instructor_apellido}}</td>
                                     <td class="text-center previa">{{$evaluaciones->nombreExamen}}</td>
-                                    <td class="text-center previa">{{$evaluaciones->fecha}}</td>
+                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluaciones->fecha)->format('d-m-Y')}}</td>
                                     <td class="text-center previa">{{$evaluaciones->nota_total}}</td>
                                 </tr>
                             @endforeach  
