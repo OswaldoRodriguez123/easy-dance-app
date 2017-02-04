@@ -483,7 +483,7 @@
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
                                <td  class="f-14 m-l-15">
-                                <span id="clasepersonalizada-color_etiqueta">{{$clasepersonalizada->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$clasegrupal->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                                <span id="clasepersonalizada-color_etiqueta">{{$clasepersonalizada->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$clasepersonalizada->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr> 
