@@ -204,7 +204,7 @@ class EvaluacionController extends BaseController
 
         $instructor = DB::table('evaluaciones')
                             ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
-                            ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido')
+                            ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
@@ -216,8 +216,9 @@ class EvaluacionController extends BaseController
 
         $examen = DB::table('evaluaciones')
                             ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
+                            ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
                             ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
-                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha')
+                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha', 'instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 

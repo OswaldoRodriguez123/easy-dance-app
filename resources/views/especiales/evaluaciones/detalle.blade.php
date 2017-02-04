@@ -215,10 +215,37 @@
 
 
                             <br><br>
-                            Realizado por : {{$instructor}}
+                            Realizado por : {{$examen->instructor_nombre}} {{$examen->instructor_apellido}}
+
+                            @if($examen->telefono OR $examen->celular)
+
+                            <br><br>
+
+                            Telefonos : {{$examen->telefono}} / {{$examen->celular}}
+
+                            @endif
+
+                            <br><br>
 
 
-                            </div>
+                          @if (!filter_var($examen->facebook, FILTER_VALIDATE_URL) === false) 
+                            <a href="{{ empty($examen->facebook) ? '' : $examen->facebook}}" target="_blank"><i class="{{ empty($examen->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
+                          @else
+                            <a href="{{ empty($examen->facebook) ? '' : 'https://www.facebook.com/'.$examen->facebook}}" target="_blank"><i class="{{ empty($examen->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
+                          @endif
+
+                          @if (!filter_var($examen->instagram, FILTER_VALIDATE_URL) === false) 
+                            <a href="{{ empty($examen->instagram) ? '' : $examen->instagram}}" target="_blank"><i class="{{ empty($examen->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
+                          @else
+                            <a href="{{ empty($examen->instagram) ? '' : 'https://www.instagram.com/'.$examen->instagram}}" target="_blank"><i class="{{ empty($examen->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
+                          @endif
+
+                          @if (!filter_var($examen->twitter, FILTER_VALIDATE_URL) === false) 
+                            <a href="{{ empty($examen->twitter) ? '' : $examen->twitter}}" target="_blank"><i class="{{ empty($examen->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
+                          @else
+                            <a href="{{ empty($examen->twitter) ? '' : 'https://www.twitter.com/'.$examen->twitter}}" target="_blank"><i class="{{ empty($examen->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
+                          @endif
+
 
                              <div class="row m-b-25">
                                 <div class="col-sm-12 f-16 text-center" style="margin-top: 100px">
