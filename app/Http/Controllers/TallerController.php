@@ -1018,7 +1018,7 @@ class TallerController extends BaseController {
 
                 //dd($clase_grupal_join);
 
-            return view('agendar.taller.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'taller' => $taller_join]);
+            return view('agendar.taller.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'taller' => $taller_join]);
 
         }else{
            return redirect("agendar/talleres"); 
