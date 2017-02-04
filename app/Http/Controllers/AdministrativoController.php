@@ -79,7 +79,29 @@ class AdministrativoController extends BaseController {
             ->where('alumnos.deleted_at' , '=' , null)
             ->sum('.items_factura_proforma.importe_neto');
 
-            return view('vista_alumno.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total]); 
+            $fecha_vencimiento = null;
+            $primera_fecha = false;
+
+            foreach($proforma_join as $proforma){
+                $fecha = Carbon::createFromFormat('Y-m-d',$proforma->fecha_vencimiento);
+
+                if($fecha > Carbon::now() && $primera_fecha == false){
+                    $primera_fecha = true;
+                    $fecha_vencimiento = $fecha;
+                }
+
+                if($fecha < $fecha_vencimiento && $fecha > Carbon::now()){
+                    $fecha_vencimiento = $fecha;
+                }
+            }
+
+            if($fecha_vencimiento){
+                $fecha_vencimiento = $fecha_vencimiento->format('d-m-Y');
+            }
+
+
+
+            return view('vista_alumno.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total, 'fecha_vencimiento' => $fecha_vencimiento]); 
         }
         else{
             return redirect("/"); 

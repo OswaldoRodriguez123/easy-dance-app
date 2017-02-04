@@ -83,37 +83,24 @@
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
                         <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Agendar</div>
                         
-                        <div class ="detalle">
-                          @if($clases_grupales != 1)
-                            <a href="{{url('/')}}/agendar/clases-grupales/disponibles/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
-                              
-                            @else
-                              <a href="{{url('/')}}/agendar/clases-grupales/disponibles/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clase Grupal <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span>
-                            @endif
-                            </a> 
+                        <div class ="detalle clase_grupal" style="margin-top:10px">
+                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clases_grupales}}</span></a> 
+
                           </div>
                           
-                          <div class ="detalle">
-                            <a href="{{url('/')}}/agendar/clases-personalizadas/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Clases Personalizadas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clase_personalizada_contador}}</span>
+                          <div class ="detalle clase_personalizada">
+                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Clases Personalizadas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$clase_personalizada_contador}}</span>
 
 
                             </a>
                             </div>
 
-                          <div class ="detalle">
-                            @if($talleres != 1)
-                            <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span>
-                              
-                            @else
-                              <a href="{{url('/')}}/agendar/talleres" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Taller <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span>
-                            @endif
-
-
-                            </a>
+                          <div class ="detalle taller">
+                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span></a>
                             </div>
 
-                            <div class ="detalle">
-                            <a href="{{url('/')}}/instructores" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$instructor_contador}}</span>
+                            <div class ="detalle instructor">
+                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$instructor_contador}}</span>
 
                             </a>
                             </div>
@@ -137,37 +124,23 @@
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff ">
                         <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Especiales</div>
 
-                        <div class ="detalle">
+                        <div class ="detalle regalos" style="margin-top:10px">
                           
-                          @if(count($regalos) != 1)
-                          <a href="{{url('/')}}/especiales/regalos/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalos <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
-                            
-                          @else
-                            <a href="{{url('/')}}/especiales/regalos/progreso/{{$academia->id}}" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalo <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span>
-                          @endif
-                            </a> </div>
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-tarjeta-de-regalo f-20"></i> Regalos <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($regalos)}}</span></a> 
+
+                          </div>
 
 
-                        <div class ="detalle">
+                        <div class ="detalle evaluaciones">
                           
-                          @if(count($alumno_examenes) != 1)
-                          <a href="{{url('/')}}/evaluaciones" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-examen f-20"></i> Valoración <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($alumno_examenes)}}</span>
+
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-examen f-20"></i> Valoraciones <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($alumno_examenes)}}</span></a> 
                             
-                          @else
-                            <a href="{{url('/')}}/evaluaciones" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-examen f-20"></i> Valoración <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{count($alumno_examenes)}}</span>
-                          @endif
-                            </a> </div>
+                          </div>
 
-                          <div class ="detalle">
+                          <div class ="detalle campana">
 
-                           @if($campanas != 1)
-                          <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span>
-                            
-                          @else
-                            <a href="{{url('/')}}/especiales/campañas" class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campaña <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span>
-                          @endif
-
-                            </a> </div>
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span></a> </div>
 
                           <div class="clearfix p-b-15"></div>
 
@@ -181,46 +154,7 @@
                     </div> <!-- ESPECIALES -->
 
 
-                    <div class="clearfix p-b-15"></div>
-
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Próximas fecha de pago</div>
-
-                       @foreach($proformas as $proforma)
-
-                        <div class ="detalle">
-
-                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$proforma['nombre']}} </a> 
-                        
-                        </div>
-
-                        <div class ="detalle">
-                         
-                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> {{$proforma['fecha_vencimiento']}} - {{ number_format($proforma['monto'], 2, '.' , '.') }}</a>
-                        
-                        </div>
-
-                        <div class ="detalle">
-                         
-                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> Dias de Vencimiento : {{\Carbon\Carbon::createFromFormat('Y-m-d',$proforma['fecha_vencimiento'])->diffInDays(\Carbon\Carbon::now())}}</a>
-                        
-                        </div>
-
-                        <div class="clearfix p-b-15"></div>
-
-                        @endforeach
-
-                          <div class="clearfix p-b-15"></div>
-
-
-
-                            <div class="clearfix p-b-15"></div>
-                            <div class="clearfix p-b-15"></div>
-                            <div class="clearfix p-b-15"></div>
-
-
-                  </div> <!-- ESPECIALES -->
-
+                    
                     <div class="clearfix p-b-15"></div>
 
                     <a href="{{url('/')}}/invitar"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_referido.jpg" alt=""></a>
@@ -492,6 +426,42 @@
           window.location = "{{url('/')}}/perfil-evaluativo";
           }
 
+          $(".evaluaciones").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/evaluaciones";
+          });
+
+          $(".regalos").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/especiales/regalos/progreso/{{$academia->id}}";
+          });
+
+          $(".clase_grupal").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/agendar/clases-grupales/disponibles/{{$academia->id}}";
+          });
+
+          $(".clase_personalizada").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/agendar/clases-personalizadas/progreso/{{$academia->id}}";
+          });
+
+          $(".taller").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/agendar/talleres";
+          });
+
+          $(".instructor").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/instructores";
+          });
+
+          $(".campana").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/especiales/campañas";
+          });
+
+
           $(".consulta_instructor").click(function(){
             procesando();
             window.location = "{{url('/')}}/sugerencias/generar";
@@ -535,12 +505,6 @@
           url = $(this).data('url');
           window.location = "{{url('/')}}"+url;
         });
-
-        $(document).on( 'click', '.evaluaciones', function () {
-          window.location = "{{url('/')}}/evaluaciones";
-        });
-
-
 
         $(document).on( 'click', '.mostrar', function () {
 

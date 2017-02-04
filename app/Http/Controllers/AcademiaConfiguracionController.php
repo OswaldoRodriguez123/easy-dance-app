@@ -276,19 +276,19 @@ class AcademiaConfiguracionController extends BaseController {
 
                 $array_deuda = array();
 
-                $proformas = ItemsFacturaProforma::where('alumno_id', '=' ,  Auth::user()->usuario_id)->get();
+                // $proformas = ItemsFacturaProforma::where('alumno_id', '=' ,  Auth::user()->usuario_id)->get();
 
-                foreach($proformas as $proforma){
+                // foreach($proformas as $proforma){
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
+                // $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
 
-                if($fecha > Carbon::now()){
+                // if($fecha > Carbon::now()){
 
-                    $array_deuda[]=array('nombre' => $proforma->nombre , 'fecha_vencimiento' => $proforma->fecha_vencimiento ,'monto' => $proforma->importe_neto);
+                //     $array_deuda[]=array('nombre' => $proforma->nombre , 'fecha_vencimiento' => $proforma->fecha_vencimiento ,'monto' => $proforma->importe_neto);
 
-                    }
+                //     }
 
-                }  
+                // }  
 
                 if (Session::has('fecha_sesion')) {                
                    
@@ -298,7 +298,7 @@ class AcademiaConfiguracionController extends BaseController {
                 }
                 
 
-                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'proformas' => $array_deuda, 'alumno_examenes' => $alumno_examenes]);  
+                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes]);  
             
         }else{
             return view('vista_alumno.condiciones')->with('academia', $academia);

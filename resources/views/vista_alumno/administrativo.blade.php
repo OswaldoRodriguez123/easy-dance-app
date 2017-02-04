@@ -54,7 +54,13 @@
                                  <div class="clearfix"></div>
                                 
                                 <div class="col-md-12">
-                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por pagar : {{ number_format($total, 2) }}</span>
+                                <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por pagar : {{ number_format($total, 2) }} 
+                                @if($fecha_vencimiento)
+                                    y la siguente fecha de pago es el {{$fecha_vencimiento}}
+
+                                @endif
+
+                                </span>
                                 </div>
                                 <br><br>
                                 <!-- <div class="clearfix"></div> -->
@@ -170,17 +176,6 @@
                     format: 'DD/MM/YYYY'
                 });
             }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
 
                 rechargeProforma();
             });
