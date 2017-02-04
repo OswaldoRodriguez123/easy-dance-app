@@ -169,7 +169,7 @@
 
                             @if($examen->asistencia_taller)
 
-                                <b>--Recomendado--</b></br>
+                                <b class="text-success">--Recomendado--</b></br>
 
                             @else
 
@@ -180,7 +180,7 @@
 
                             @if($examen->practica_horas_personalizadas)
 
-                                <b>--Recomendado--</b></br>
+                                 <b class="text-success">--Recomendado--</b></br>
 
                             @else
 
@@ -193,7 +193,7 @@
 
                             @if($examen->participacion_evento)
 
-                                <b>--Recomendado--</b></br>
+                                 <b class="text-success">--Recomendado--</b></br>
 
                             @else
 
@@ -205,7 +205,7 @@
 
                             @if($examen->participacion_fiesta_social)
 
-                                <b>--Recomendado--</b></br>
+                                 <b class="text-success">--Recomendado--</b></br>
 
                             @else
 
@@ -228,23 +228,35 @@
                             <br><br>
 
 
+                          @if($examen->facebook)
                           @if (!filter_var($examen->facebook, FILTER_VALIDATE_URL) === false) 
-                            <a href="{{ empty($examen->facebook) ? '' : $examen->facebook}}" target="_blank"><i class="{{ empty($examen->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
+                            <i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$examen->facebook}}">{{$examen->facebook}}</a>
                           @else
-                            <a href="{{ empty($examen->facebook) ? '' : 'https://www.facebook.com/'.$examen->facebook}}" target="_blank"><i class="{{ empty($examen->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
+                            <i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$examen->facebook}}">https://www.facebook.com/{{$examen->facebook}}</a>
                           @endif
+                          <br>
+                        @endif
 
-                          @if (!filter_var($examen->instagram, FILTER_VALIDATE_URL) === false) 
-                            <a href="{{ empty($examen->instagram) ? '' : $examen->instagram}}" target="_blank"><i class="{{ empty($examen->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
-                          @else
-                            <a href="{{ empty($examen->instagram) ? '' : 'https://www.instagram.com/'.$examen->instagram}}" target="_blank"><i class="{{ empty($examen->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
-                          @endif
+                        @if($examen->twitter)
 
                           @if (!filter_var($examen->twitter, FILTER_VALIDATE_URL) === false) 
-                            <a href="{{ empty($examen->twitter) ? '' : $examen->twitter}}" target="_blank"><i class="{{ empty($examen->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
+                            <i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$examen->twitter}}">https://www.twitter.com/{{$examen->twitter}}</a><
                           @else
-                            <a href="{{ empty($examen->twitter) ? '' : 'https://www.twitter.com/'.$examen->twitter}}" target="_blank"><i class="{{ empty($examen->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
+                            <i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$examen->twitter}}">@ {{$examen->twitter}}</a>
                           @endif
+                          <br>
+                        @endif
+
+                        @if($examen->instagram)
+                          @if (!filter_var($examen->instagram, FILTER_VALIDATE_URL) === false) 
+                            <i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$examen->instagram}}">{{$examen->instagram}}</a>
+                          @else
+                            <i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$examen->instagram}}">@ {{$examen->instagram}}</a>
+                          @endif
+                          <br>
+                        @endif
+
+                        
 
 
                              <div class="row m-b-25">
