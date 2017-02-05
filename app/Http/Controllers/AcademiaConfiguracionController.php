@@ -30,6 +30,8 @@ use App\Pago;
 use App\ItemsFactura;
 use App\ConfigPagosInstructor;
 use App\PagoInstructor;
+use App\ReservacionVisitante;
+use App\Codigo;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -124,6 +126,39 @@ class AcademiaConfiguracionController extends BaseController {
             $hoy = Carbon::now();
 
             if($fecha_comprobacion < $hoy){
+
+                $reservaciones_clases_grupales = ReservacionVisitante::join('clases_grupales', 'reservaciones_visitantes.tipo_id', '=', 'clases_grupales.id')
+                    ->select('reservaciones_visitantes.id', 'reservaciones_visitantes.fecha_vencimiento')
+                    ->where('reservaciones_visitantes.tipo_reservacion', 1)
+                    ->where('clases_grupales.academia_id', Auth::user()->academia_id)
+                ->get();
+
+                foreach($reservaciones_clases_grupales as $reservacion){
+                    $fecha = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                    if($fecha > Carbon::now()){
+                        $reservacion_clase_grupal = ReservacionVisitante::find($reservacion->id);
+                        $codigo = Codigo::where('item_id', $reservacion_clase_grupal->id)->where('tipo',2)->delete();
+                        $reservacion_clase_grupal->delete();
+                    }
+
+                }
+
+                $reservaciones_talleress = ReservacionVisitante::join('talleres', 'reservaciones_visitantes.tipo_id', '=', 'talleres.id')
+                    ->select('reservaciones_visitantes.id', 'reservaciones_visitantes.fecha_vencimiento')
+                    ->where('reservaciones_visitantes.tipo_reservacion', 2)
+                    ->where('talleres.academia_id', Auth::user()->academia_id)
+                ->get();
+
+                foreach($reservaciones_talleress as $reservacion){
+                    $fecha = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                    if($fecha > Carbon::now()){
+                        $reservacion_taller = ReservacionVisitante::find($reservacion->id);
+                        $codigo = Codigo::where('item_id', $reservacion_taller->id)->where('tipo',2)->delete();
+                        $reservacion_taller->delete();
+                    }
+
+                }
+
                 if($hoy == $hoy->lastOfMonth()){
 
                     $config_pagos = ConfigPagosInstructor::where('tipo', 2)->get();

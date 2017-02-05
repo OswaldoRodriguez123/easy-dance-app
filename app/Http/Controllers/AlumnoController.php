@@ -1148,7 +1148,14 @@ class AlumnoController extends BaseController
                     $usuario = User::where('usuario_id', $hijo->id)->whereIn('usuario_tipo', $array)->first();
 
                     if($usuario){
-
+                        $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
+                        foreach($notificaciones_usuarios as $notificacion_usuario)
+                        {
+                            $notificacion = Notificacion::find($notificacion_usuario->id_notificacion);
+                            if($notificacion->tipo_evento == 5){
+                                $notificacion->delete();
+                            }
+                        }
                         $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
                         $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
                         $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
@@ -1167,6 +1174,15 @@ class AlumnoController extends BaseController
         $usuario = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->first();
 
         if($usuario){
+
+            $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
+            foreach($notificaciones_usuarios as $notificacion_usuario)
+            {
+                $notificacion = Notificacion::find($notificacion_usuario->id_notificacion);
+                if($notificacion->tipo_evento == 5){
+                    $notificacion->delete();
+                }
+            }
 
             $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
             $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
