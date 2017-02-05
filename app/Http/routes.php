@@ -364,6 +364,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('participante/alumno/agregar', 'AlumnoController@create');
 			Route::get('participante/alumno/agregar/{id}', 'AlumnoController@agregarvisitante');
 			Route::delete('participante/alumno/eliminar/{id}', 'AlumnoController@destroy');
+			Route::delete('participante/alumno/eliminar_permanentemente/{id}', 'AlumnoController@eliminar_permanentemente');
 			Route::post('participante/alumno/restablecer/{id}', 'AlumnoController@restore');
 			Route::get('participante/alumno/detalle/{id}', 'AlumnoController@edit');
 			Route::get('participante/alumno/perfil-evaluativo/{id}', 'AlumnoController@perfil_evaluativo');
@@ -508,6 +509,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/inscribir/{id}', 'ClaseGrupalController@inscribir');
 			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 			Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
+			Route::post('agendar/clases-grupales/eliminar_reserva/{id}', 'ClaseGrupalController@eliminar_reserva');
 			Route::post('agendar/clases-grupales/editarinscripcion', 'ClaseGrupalController@editarinscripcion');
 
 			Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');

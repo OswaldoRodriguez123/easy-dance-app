@@ -31,13 +31,13 @@ class ReservaController extends BaseController
 
         $clase_grupal_join = DB::table('clases_grupales')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_clases_grupales.nombre', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'clases_grupales.cantidad_hombres', 'clases_grupales.cantidad_mujeres')
+            ->select('config_clases_grupales.nombre', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'clases_grupales.cantidad_hombres', 'clases_grupales.cantidad_mujeres', 'clases_grupales.hora_inicio','clases_grupales.hora_final')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
         $talleres_join = DB::table('talleres')
-            ->select('talleres.nombre', 'talleres.id', 'talleres.fecha_inicio', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres')
+            ->select('talleres.nombre', 'talleres.id', 'talleres.fecha_inicio', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres', 'talleres.hora_inicio','talleres.hora_final')
             ->where('talleres.academia_id','=', Auth::user()->academia_id)
             ->where('talleres.deleted_at', '=', null)
         ->get();
@@ -96,10 +96,43 @@ class ReservaController extends BaseController
                         ->where('clases_grupales.id',$clase_grupal->id)
                     ->first();
 
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+
                     $collection=collect($clase_grupal);     
                     $clase_grupal_array = $collection->toArray();
                     $clase_grupal_array['cantidad_hombres'] = $cantidad_hombres;
                     $clase_grupal_array['cantidad_mujeres'] = $cantidad_mujeres;
+                    $clase_grupal_array['dia_de_semana']=$dia;
 
                     $clase_grupal_array['id'] = '1-'.$clase_grupal->id;
 
@@ -161,10 +194,45 @@ class ReservaController extends BaseController
 
                     $taller_find = Taller::find($taller->id);
 
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+
                     $collection=collect($taller);     
                     $taller_array = $collection->toArray();
                     $taller_array['cantidad_hombres'] = $cantidad_hombres;
                     $taller_array['cantidad_mujeres'] = $cantidad_mujeres;
+
+                    $taller_array['dia_de_semana'] = $dia;
+
 
                     $taller_array['id'] = '2-'.$taller->id;
 
@@ -631,28 +699,28 @@ class ReservaController extends BaseController
 
                     if($codigo->save()){
 
-                    if($id_explode[0] == 1){
-                        $actividad = 'una Clase Grupal';
+                        if($id_explode[0] == 1){
+                            $actividad = 'una Clase Grupal';
 
-                    }else{
-                        $actividad = 'un Taller';
-                    }
+                        }else{
+                            $actividad = 'un Taller';
+                        }
 
-                    $subj = 'Has realizado una reservación';
+                        $subj = 'Has realizado una reservación';
 
-                    $array = [
-                        'correo' => $visitante->correo,
-                        'nombre' => $visitante->nombre,
-                        'actividad' => $actividad,
-                        'academia' => $academia->nombre,
-                        'codigo' => $codigo_validacion,
-                        'correo_academia' => $academia->correo,
-                        'telefono' => $academia->telefono,
-                        'celular' => $academia->celular,
-                        'subj' => $subj
-                    ];
+                        $array = [
+                            'correo' => $visitante->correo,
+                            'nombre' => $visitante->nombre,
+                            'actividad' => $actividad,
+                            'academia' => $academia->nombre,
+                            'codigo' => $codigo_validacion,
+                            'correo_academia' => $academia->correo,
+                            'telefono' => $academia->telefono,
+                            'celular' => $academia->celular,
+                            'subj' => $subj
+                        ];
 
-                    Mail::send('correo.reservacion_alumno', $array, function($msj) use ($array){
+                        Mail::send('correo.reservacion_alumno', $array, function($msj) use ($array){
                             $msj->subject($array['subj']);
                             $msj->to($array['correo']);
                         });

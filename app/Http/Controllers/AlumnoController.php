@@ -11,6 +11,7 @@ use App\Instructor;
 use App\InscripcionTaller;
 use App\InscripcionClaseGrupal;
 use App\InscripcionCoreografia;
+use App\InscripcionClasePersonalizada;
 use App\ClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\Academia;
@@ -26,6 +27,19 @@ use Session;
 use App\Visitante;
 use App\Paises;
 use App\AlumnoRemuneracion;
+use App\Evaluacion;
+use App\DetalleEvaluacion;
+use App\Factura;
+use App\ItemsFactura;
+use App\Pago;
+use App\Acuerdo;
+use App\ItemsPresupuesto;
+use App\Presupuesto;
+use App\Asistencia;
+use App\Cita;
+use App\NotificacionUsuario;
+use App\Incidencia;
+use App\Sugerencia;
 
 
 class AlumnoController extends BaseController
@@ -964,41 +978,41 @@ class AlumnoController extends BaseController
 
     public function destroy($id)
     {
-        $total = 0;
+        // $total = 0;
 
         
-        $mensaje = 'Ups! Este alumno no puede ser eliminado ya que se encuentra registrado en alguna';
+        // $mensaje = 'Ups! Este alumno no puede ser eliminado ya que se encuentra registrado en alguna';
         
-        $exist = InscripcionClaseGrupal::where('alumno_id', $id)->first();
+        // $exist = InscripcionClaseGrupal::where('alumno_id', $id)->first();
 
-        if($exist)
-        {
-            $total = 1;
+        // if($exist)
+        // {
+        //     $total = 1;
 
-            $mensaje = $mensaje . ' clase grupal';
-        }
+        //     $mensaje = $mensaje . ' clase grupal';
+        // }
 
-        $exist = InscripcionTaller::where('alumno_id',$id)->first();
+        // $exist = InscripcionTaller::where('alumno_id',$id)->first();
         
-        if($exist)
-        {
-            $total = 1;
+        // if($exist)
+        // {
+        //     $total = 1;
 
-            $mensaje = $mensaje . ', taller';
-        }
+        //     $mensaje = $mensaje . ', taller';
+        // }
 
-        $exist = InscripcionCoreografia::where('alumno_id',$id)->first();
+        // $exist = InscripcionCoreografia::where('alumno_id',$id)->first();
         
-        if($exist)
-        {
-            $total = 1;
+        // if($exist)
+        // {
+        //     $total = 1;
 
-            $mensaje = $mensaje . ' o coreografia';
-        }
+        //     $mensaje = $mensaje . ' o coreografia';
+        // }
 
-        $mensaje = $mensaje . ', para deshabilitarlo debe eliminarlo de la actividad donde se encuentra registrado';
+        // $mensaje = $mensaje . ', para deshabilitarlo debe eliminarlo de la actividad donde se encuentra registrado';
 
-        if($total == 0){
+        // if($total == 0){
 
             $alumno = Alumno::find($id);
             
@@ -1007,11 +1021,11 @@ class AlumnoController extends BaseController
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-        }
-        else
-        {
-            return response()->json(['error_mensaje'=> $mensaje , 'status' => 'ERROR-INSCRIPCION'],422);
-        }
+        // }
+        // else
+        // {
+        //     return response()->json(['error_mensaje'=> $mensaje , 'status' => 'ERROR-INSCRIPCION'],422);
+        // }
 
         // return redirect("alumno");
     }
@@ -1060,4 +1074,113 @@ class AlumnoController extends BaseController
         Session::put('id_alumno', $id);
         return view('guia.index');
     }
+
+    public function eliminar_permanentemente($id){
+        $delete = ItemsFacturaProforma::where('alumno_id',$id)->forceDelete();
+        $evaluaciones = Evaluacion::where('alumno_id',$id)->get();
+        foreach($evaluaciones as $evaluacion){
+            $detalle_evaluacion = DetalleEvaluacion::where('evaluacion_id',$evaluacion->id)->forceDelete();
+        }
+        $delete = Evaluacion::where('alumno_id',$id)->forceDelete();
+        $facturas = Factura::where('alumno_id',$id)->get();
+        foreach($facturas as $factura)
+        {
+            $delete = ItemsFactura::where('factura_id',$factura->id)->forceDelete();
+            $delete = Pago::where('factura_id',$factura->id)->forceDelete();
+        }
+        $delete = AlumnoRemuneracion::where('alumno_id', $id)->forceDelete();
+        $delete = Factura::where('alumno_id',$id)->forceDelete();
+        $delete = Acuerdo::where('alumno_id',$id)->forceDelete();
+
+        $presupuestos = Factura::where('alumno_id',$id)->get();
+        foreach($presupuestos as $presupuesto)
+        {
+            $delete = ItemsPresupuesto::where('presupuesto_id',$presupuesto->id)->forceDelete();
+        }
+        $delete = Presupuesto::where('alumno_id',$id)->forceDelete();
+        $delete = InscripcionClaseGrupal::where('alumno_id',$id)->forceDelete();
+        $delete = InscripcionTaller::where('alumno_id',$id)->forceDelete();
+        $delete = InscripcionClasePersonalizada::where('alumno_id',$id)->forceDelete();
+        $delete = InscripcionCoreografia::where('alumno_id',$id)->forceDelete();
+        $delete = Asistencia::where('alumno_id',$id)->forceDelete();
+        $delete = Cita::where('alumno_id',$id)->forceDelete();
+        $array = array(2, 4);
+        $delete = PerfilEvaluativo::where('usuario_id', $id)->forceDelete();
+
+        $alumno = Alumno::withTrashed()->find($id);
+
+        if($alumno->familia_id){
+            $es_representante = Familia::where('representante_id', $alumno->id)->first();
+            if($es_representante){
+                $hijos = Alumno::where('familia_id',$alumno->familia_id)->get();
+                foreach($hijos as $hijo)
+                {
+                    $delete = ItemsFacturaProforma::where('alumno_id',$hijo->id)->forceDelete();
+                    $evaluaciones = Evaluacion::where('alumno_id',$hijo->id)->get();
+                    foreach($evaluaciones as $evaluacion){
+                        $detalle_evaluacion = DetalleEvaluacion::where('evaluacion_id',$evaluacion->id)->forceDelete();
+                    }
+                    $delete = Evaluacion::where('alumno_id',$hijo->id)->forceDelete();
+                    $facturas = Factura::where('alumno_id',$hijo->id)->get();
+                    foreach($facturas as $factura)
+                    {
+                        $delete = ItemsFactura::where('factura_id',$factura->id)->forceDelete();
+                        $delete = Pago::where('factura_id',$factura->id)->forceDelete();
+                    }
+                    $delete = AlumnoRemuneracion::where('alumno_id', $hijo->id)->forceDelete();
+                    $delete = Factura::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = Acuerdo::where('alumno_id',$hijo->id)->forceDelete();
+
+                    $presupuestos = Factura::where('alumno_id',$hijo->id)->get();
+                    foreach($presupuestos as $presupuesto)
+                    {
+                        $delete = ItemsPresupuesto::where('presupuesto_id',$presupuesto->id)->forceDelete();
+                    }
+                    $delete = Presupuesto::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = InscripcionClaseGrupal::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = InscripcionTaller::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = InscripcionClasePersonalizada::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = InscripcionCoreografia::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = Asistencia::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = Cita::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = PerfilEvaluativo::where('usuario_id', $hijo->id)->forceDelete();
+
+                    $usuario = User::where('usuario_id', $hijo->id)->whereIn('usuario_tipo', $array)->first();
+
+                    if($usuario){
+
+                        $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
+                        $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
+                        $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
+
+                        $delete = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->forceDelete();
+
+                    }
+
+                    $delete = User::where('usuario_id', $hijo->id)->whereIn('usuario_tipo', $array)->forceDelete();
+                    $delete = Alumno::withTrashed()->where('id',$hijo->id)->forceDelete();
+                }
+            }
+        }
+
+        $delete = Familia::where('representante_id',$id)->forceDelete();
+        $usuario = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->first();
+
+        if($usuario){
+
+            $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
+            $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
+
+        }
+
+        $delete = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->forceDelete();
+        $delete = Alumno::withTrashed()->where('id',$id)->forceDelete();
+
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        
+    }
+
+
 }

@@ -494,7 +494,7 @@
                                 <?php $id = $alumno['inscripcion_id']; ?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}">
+                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}">
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
@@ -511,7 +511,7 @@
                                       <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
                                   </tr>
                                 @else
-                                  <tr id="{{$id}}" class="seleccion seleccion_deleted">
+                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
                                       <td class="text-center previa"><span class="c-amarillo">R</span></td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
@@ -525,6 +525,7 @@
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
                                       <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                       <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
+                                      <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i></td>
                                   </tr>
                                 @endif
                             @endforeach 
@@ -555,6 +556,7 @@
 
         route_agregar="{{url('/')}}/agendar/clases-grupales/inscribir";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarinscripcion/";
+        route_eliminar_reserva="{{url('/')}}/agendar/clases-grupales/eliminar_reserva/";
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
@@ -641,17 +643,7 @@
                     format: 'DD/MM/YYYY'
                 });
             }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
+            
             });
 
         function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
@@ -1230,12 +1222,20 @@
         $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
                 var id = $(this).closest('tr').attr('id');
+
+                var tipo = $(this).closest('tr').data('tipo');
+                if(tipo == 1){
+                  titulo = 'Desea eliminar al alumno?'
+                 }else{
+                  titulo = 'Desea eliminar la reservación?'
+                 }
+
                 // var temp = row.split('_');
                 // var id = temp[1];
                 element = this;
 
                 swal({   
-                    title: "Desea eliminar al alumno?",   
+                    title: titulo,   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -1259,7 +1259,13 @@
             });
       
         function eliminar(id, element){
-         var route = route_eliminar + id;
+         var tipo = $(element).closest('tr').data('tipo');
+         if(tipo == 1){
+          var route = route_eliminar + id;
+         }else{
+          var route = route_eliminar_reserva + id;
+         }
+         
          var token = "{{ csrf_token() }}";
          var sexo = $(element).closest('tr').data('sexo');
                 

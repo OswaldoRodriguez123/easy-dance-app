@@ -67,7 +67,8 @@
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                     <td class="text-center disabled"> 
 
-                                    <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="operacion" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer" title="" data-original-title=""></i></td>
+                                    <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="restablecer" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer" title="" data-original-title=""></i> 
+                                    <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -96,6 +97,7 @@
         <script type="text/javascript">
             route_operacion="{{url('/')}}/participante/alumno/operaciones";
             route_restablecer="{{url('/')}}/participante/alumno/restablecer/";
+            route_eliminar="{{url('/')}}/participante/alumno/eliminar_permanentemente/";
 
         $(document).ready(function(){
 
@@ -172,7 +174,7 @@
                 });
             });
 
-         $("i[name=operacion").click(function(){
+         $("i[name=restablecer").click(function(){
                 id = this.id;
                 element = this;
                 var padre=$(this).parents('tr');
@@ -215,6 +217,66 @@
                             .remove()
                             .draw();
                         swal("Exito!","El alumno ha sido reestablecido!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      }
+
+      $("i[name=eliminar").click(function(){
+                id = this.id;
+                element = this;
+                var padre=$(this).parents('tr');
+                swal({   
+                    title: "Desea eliminar al alumno permanentemente?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: false 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // swal("Done!","It was succesfully deleted!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
+          }
+                });
+            });
+      function eliminar(id){
+         var route = route_eliminar + id;
+         var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+
+                        t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+                        swal("Exito!","El alumno ha sido eliminado permanentemente!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                     },
                     error:function(msj){

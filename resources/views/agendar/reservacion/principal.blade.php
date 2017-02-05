@@ -21,7 +21,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro" id="titulo"> Titulo <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                        <h4 class="modal-title c-negro"><span id="titulo">Titulo</span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                                     </div>
                                     <form name="form_reserva" id="form_reserva"  >
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -141,6 +141,8 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="fecha">Fecha de Inicio</th>
+                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
+                                    <th class="text-center" data-column-id="dia" data-order="desc">Día</th>
                                     <th class="text-center" data-column-id="cupos_disponibles" data-order="desc">Cupos Disponibles</th>
                                     <th class="text-center" data-column-id="disponible_mujer" data-order="desc">Disponible <i class="zmdi zmdi-female f-25 c-rosado"></i></th>
                                     <th class="text-center" data-column-id="disponible_hombre" data-order="desc">Disponible <i class="zmdi zmdi-male-alt f-25 c-azul"></i></th>
@@ -153,6 +155,8 @@
                                 <tr id="{{$id}}" data-imagen="{{$actividad['imagen']}}" class="seleccion"> 
                                     <td class="text-center previa">{{$actividad['nombre']}}</td>
                                     <td class="text-center previa">{{$actividad['fecha_inicio']}}</td>
+                                    <td class="text-center previa">{{$actividad['hora_inicio']}} - {{$actividad['hora_final']}}</td>
+                                    <td class="text-center previa">{{$actividad['dia_de_semana']}}</td>
                                     <td class="text-center previa">{{$actividad['disponible']}}</td>
                                     <td class="text-center previa">{{$actividad['cantidad_mujeres']}}</td>
                                     <td class="text-center previa">{{$actividad['cantidad_hombres']}}</td>
@@ -236,9 +240,9 @@
     var row = $(t).closest('tr');
 
 
-      var mujer = $(row).find('td').eq(3).html();
-      var hombre = $(row).find('td').eq(4).html();
-      var total = $(row).find('td').eq(2).html();
+      var mujer = $(row).find('td').eq(5).html();
+      var hombre = $(row).find('td').eq(6).html();
+      var total = $(row).find('td').eq(4).html();
       var titulo = $(row).find('td').eq(0).html();
       var imagen = row.data('imagen');
       var id = row.attr('id');
@@ -276,6 +280,7 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
+                        $('#dias_expiracion').val('');
                         $('#modalReserva').modal('hide');
                         finprocesado();
                           var nType = 'success';
@@ -289,19 +294,29 @@
 
                           if(sexo == 'F')
                           {
-                            valor = $(row).find('td').eq(3).html();
-                            valor = valor - 1;
-                            $(row).find('td').eq(3).html(valor);
+                            valor = $(row).find('td').eq(5).html();
+                            if(valor > 0)
+                            {
+                              valor_cambio = valor - 1;
+                              $(row).find('td').eq(5).html(valor_cambio);
+                            }
+                            
                           }else{
-                            valor = $(row).find('td').eq(4).html();
-                            valor = valor - 1;
-                            $(row).find('td').eq(4).html(valor);
+                            valor = $(row).find('td').eq(6).html();
+                            if(valor > 0)
+                            {
+                              valor_cambio = valor - 1;
+                              $(row).find('td').eq(6).html(valor_cambio);
+                            }
 
                           }
 
-                        valor = $(row).find('td').eq(2).html();
-                        valor = valor - 1;
-                        $(row).find('td').eq(2).html(valor);
+                          if(valor > 0)
+                          {
+                            valor = $(row).find('td').eq(4).html();
+                            valor = valor - 1;
+                            $(row).find('td').eq(4).html(valor);
+                          }
 
                         }else{
                           var nTitle="Ups! ";
@@ -353,6 +368,12 @@
             $("#error-"+campo[i]+"_mensaje").html('');
         }
       }
+
+
+    $('#modalReserva').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#dias_expiracion").val(''); 
+    })
 
     </script>
 @stop

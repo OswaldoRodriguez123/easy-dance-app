@@ -109,7 +109,7 @@
                     error:function(msj){
                       setTimeout(function(){ 
                         
-                        // window.location = route_invalido;
+                        window.location = route_invalido;
 
                       }, 1000);
                     }

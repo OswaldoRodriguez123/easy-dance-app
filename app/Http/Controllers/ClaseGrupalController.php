@@ -31,6 +31,8 @@ use App\Notificacion;
 use App\NotificacionUsuario;
 use App\HorarioBloqueado;
 use App\Progreso;
+use App\ReservacionVisitante;
+use App\Codigo;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -385,6 +387,30 @@ class ClaseGrupalController extends BaseController {
         }
 
     }
+
+    public function eliminar_reserva($id)
+    {
+        // $inscripcion = InscripcionClaseGrupal::find($id);
+        $reserva = ReservacionVisitante::find($id);
+        $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
+        $codigo_reservacion = $codigo->codigo_validacion;
+        
+        if($reserva->delete()){
+
+            if($codigo->delete())
+            {
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+            }else{
+
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
 
     public function progreso($id)
     {
