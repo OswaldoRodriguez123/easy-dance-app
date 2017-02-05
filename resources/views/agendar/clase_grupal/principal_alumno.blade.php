@@ -66,7 +66,9 @@
                                     
                                         <p class="f-15 f-700">{{ str_limit($clase_grupal['descripcion'], $limit = 250, $end = '...') }}</p>
 
-                                        <p class="f-15 f-700">{{ number_format($clase_grupal['costo_mensualidad'], 2, '.' , '.') }}</p>
+                                        <p class="f-15 f-700">Fecha de Inicio : {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_inicio'])->format('d-m-Y')}}</p>
+
+                                        <p class="f-15 f-700">Costo Mensualidad : {{ number_format($clase_grupal['costo_mensualidad'], 2, '.' , '.') }}</p>
 
                                         </div>
 
