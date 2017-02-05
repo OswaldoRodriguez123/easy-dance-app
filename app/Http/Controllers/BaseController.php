@@ -59,15 +59,19 @@ class BaseController extends Controller {
                         ->where('sugerencias.id','=',$notificacion->evento_id)
                     ->first();
 
-                     if($usuario->imagen){
-                        $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".$usuario->imagen;
-                    }else{
-                        if($usuario->sexo == 'F'){
+                    if($usuario){
 
-                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
+                        if($usuario->imagen){
+                            $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".$usuario->imagen;
                         }else{
-                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
+                            if($usuario->sexo == 'F'){
+
+                                $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
+                            }else{
+                                $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
+                            }
                         }
+
                     }
 
                 }else if($notificacion->tipo_evento == 1){
