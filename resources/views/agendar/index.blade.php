@@ -146,10 +146,10 @@
                                     <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
-		                                        <a href="#" class="agendar" data-agendar="fiestas-eventos">
-		                                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_a-fiesta"></i></span>
+		                                        <a href="#" class="agendar" data-agendar="citas">
+		                                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="zmdi zmdi-calendar-check"></i></span>
 		                                            <div class="ca-content" style="top: 35%;">
-		                                                <h2 class="ca-main f-20">Fiestas y Eventos</h2>
+		                                                <h2 class="ca-main f-20">Citas</h2>
 		                                                <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
 		                                            </div>
 		                                        </a>
@@ -429,6 +429,25 @@
                             backgroundColor:'{{$fiesta['etiqueta']}}',
                             className: 'actividad',
                             url: '{{url('/')}}{{$fiesta['url']}}'
+                            },
+                        @endforeach
+
+                        @foreach ($citas as $cita)
+                            {
+                            <?php
+                            $fecha_start=explode('-',$cita['fecha_inicio']);
+                            $fecha_end=explode('-',$cita['fecha_final']);
+                            $hora_start=explode(':',$cita['hora_inicio']);
+                            $hora_end=explode(':',$cita['hora_final']);
+                            ?>
+                            id: 'cita-{{$cita['id']}}',
+                            title: '{{$cita['nombre']}}',
+                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                            allDay: false,
+                            backgroundColor:'{{$cita['etiqueta']}}',
+                            className: 'actividad',
+                            url: '{{url('/')}}{{$cita['url']}}'
                             },
                         @endforeach
                     ],

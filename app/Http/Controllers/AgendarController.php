@@ -297,7 +297,35 @@ class AgendarController extends BaseController
 
     		}
 
-            return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas]);
+            $citas = DB::table('citas')
+                ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+                ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+                ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+                ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta')
+                ->where('citas.academia_id','=', Auth::user()->academia_id)
+                ->where('citas.estatus','=','1')
+                ->where('citas.boolean_mostrar','=','2')
+            ->get();
+
+            foreach ($citas as $cita) {
+                $fecha_start=explode('-',$cita->fecha);
+                $fecha_end=explode('-',$cita->fecha);
+
+                $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                $id=$cita->id;
+                $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido;
+                $descripcion=$cita->nombre;
+                $hora_inicio=$cita->hora_inicio;
+                $hora_final=$cita->hora_final;
+                $etiqueta=$cita->color_etiqueta;
+
+                $arrayCitas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/citas/operaciones/".$id);
+
+            }
+
+            return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas]);
 
         }
 
@@ -558,6 +586,7 @@ class AgendarController extends BaseController
 	    }elseif($request->agendar=="fiestas-eventos"){
 	    	return redirect('agendar/fiestas/agregar')->with(compact('fecha_inicio'));
 	    }elseif($request->agendar=="citas"){
+            Session::put('boolean_mostrar', 2);
             return redirect('agendar/citas/agregar')->with(compact('fecha_inicio'));
         }else{
 	    	return redirect('agendar');

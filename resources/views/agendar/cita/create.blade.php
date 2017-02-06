@@ -88,7 +88,7 @@
                                               <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" 
 
                                               @if (session('fecha_inicio'))
-                                                value="{{session('fecha_inicio')}} - {{session('fecha_inicio')}}"
+                                                value="{{session('fecha_inicio')}}"
                                               @endif
                                               >
                                           </div>

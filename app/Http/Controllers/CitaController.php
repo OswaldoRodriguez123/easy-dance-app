@@ -159,6 +159,11 @@ class CitaController extends BaseController {
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
+        $boolean_mostrar = Session::get('boolean_mostrar');
+        if(!$boolean_mostrar){
+            $boolean_mostrar = 1;
+        }
+
         $cita = new Cita;
         
         $cita->academia_id = Auth::user()->academia_id;
@@ -169,8 +174,10 @@ class CitaController extends BaseController {
         $cita->hora_inicio = $request->hora_inicio;
         $cita->hora_final = $request->hora_final;
         $cita->color_etiqueta = $request->color_etiqueta;
+        $cita->boolean_mostrar = $boolean_mostrar;
 
         if($cita->save()){
+            Session::forget('boolean_mostrar');
         	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
