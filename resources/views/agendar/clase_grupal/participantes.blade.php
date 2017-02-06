@@ -521,10 +521,14 @@
                                       @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
                                         <td class="text-center previa"><i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i></td>
                                       @else
-                                        @if($alumno['boolean_franela'])
-                                          <td class="text-center previa"><i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i></td>
+                                        @if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0)
+                                          <td class="text-center previa"><i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></td>
                                         @else
-                                          <td class="text-center previa"><i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></td>
+                                          @if($alumno['boolean_franela'])
+                                            <td class="text-center previa"><i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i></td>
+                                          @else
+                                            <td class="text-center previa"><i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></td>
+                                          @endif
                                         @endif
                                       @endif
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
@@ -800,17 +804,22 @@
                       
 
                             inscripcion = respuesta.inscripcion
-                            console.log(inscripcion);
+                            console.log(inscripcion.boolean_franela);
 
-                            if(inscripcion.boolean_franela && inscripcion.boolean_programacion){
+                            if(inscripcion.boolean_franela == 1 && inscripcion.boolean_programacion == 1){
 
                               iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
                               
                             }else{
-                              if(inscripcion.boolean_franela){
-                                iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
+                              if(inscripcion.boolean_franela == 0 && inscripcion.boolean_programacion == 0)
+                              {
+                                iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>' + ' ' + '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
                               }else{
-                                iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                                if(inscripcion.boolean_franela == 1){
+                                  iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
+                                }else{
+                                  iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                                }
                               }
                             }
 
@@ -818,17 +827,23 @@
                               
                               if(array.sexo=='F')
                               {
+                                valor = $('#span_mujeres').html()
+                                valor = parseInt(valor) + 1;
+                                $('#span_mujeres').html(valor)
                                 sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
                               }
                               else
                               {
+                                valor = $('#span_hombres').html()
+                                valor = parseInt(valor) + 1;
+                                $('#span_hombres').html(valor)
                                 sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
                               }
                              
                               var nombre = array.nombre;
                               var apellido = array.apellido;
 
-                              var rowId=array.id;
+                              var rowId=inscripcion.id;
                               var rowNode=t.row.add( [
                               ''+iconos+'',
                               ''+identificacion+'',
@@ -840,6 +855,7 @@
                               ] ).draw(false).node();
                               $( rowNode )
                               .attr('id',rowId)
+                              .data('tipo',1)
                               .addClass('seleccion');
 
                               // });
@@ -849,7 +865,7 @@
                             //SOLO UNA PERSONA
                             // else{
 
-                              // window.location = route_enhorabuena + respuesta.id;
+                              window.location = route_enhorabuena + respuesta.id;
 
                             // }
 
@@ -868,9 +884,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -885,10 +901,9 @@
                           confirmButtonColor: "#DD6B55",   
                           confirmButtonText: "Inscribir!",  
                           cancelButtonText: "Cancelar",         
-                          closeOnConfirm: false 
+                          closeOnConfirm: true 
                           }, function(isConfirm){   
                           if (isConfirm) {
-                            $(".sweet-alert").hide();
                             permitir = 1;
                             $('#agregar').click();
                                         
