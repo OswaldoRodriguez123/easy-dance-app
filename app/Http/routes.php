@@ -632,6 +632,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/citas/update/alumno', 'CitaController@updateAlumno');
 			Route::put('agendar/citas/update/instructor', 'CitaController@updateInstructor');
 			Route::put('agendar/citas/update/horario', 'CitaController@updateHorario');
+			Route::put('agendar/citas/update/etiqueta', 'CitaController@updateEtiqueta');
 
 			//PROMOCIONES
 
@@ -768,6 +769,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('/asistencia/generar', 'AsistenciaController@generarAsistencia');
 			Route::post('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales_alumno');
 			Route::post('asistencia/consulta/clases-personalizadas', 'AsistenciaController@consulta_clase_personalizadas_alumno');
+			Route::post('asistencia/consulta/citas', 'AsistenciaController@consulta_citas_alumno');
 			Route::get('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales');
 			Route::post('asistencia/agregar', 'AsistenciaController@store');
 			Route::post('asistencia/agregar/permitir', 'AsistenciaController@storePermitir');

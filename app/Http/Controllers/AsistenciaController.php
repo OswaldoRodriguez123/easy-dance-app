@@ -30,6 +30,8 @@ use App\ClasePersonalizada;
 
 use App\PagoInstructor;
 
+use App\Cita;
+
 use Carbon\Carbon;
 
 use DB;
@@ -435,7 +437,6 @@ class AsistenciaController extends BaseController
 
     public function consulta_clase_personalizadas_alumno(Request $request)
     {
-      
 
     $inscripciones = DB::table('inscripcion_clase_personalizada')
       ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
@@ -523,6 +524,105 @@ class AsistenciaController extends BaseController
           $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_inicio, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 3, 'tipo_id' => $id);
 
         }
+        
+    }
+        
+
+    $deuda=$this->deuda($request->id);
+
+    return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 'inscripciones' => $array, 200]);
+      
+    }
+
+    public function consulta_citas_alumno(Request $request)
+    {
+
+      $fechaActual = Carbon::now();
+      $geoip = new GeoIP();
+      $geoip->setIp($request->ip());
+      $fechaActual->tz = $geoip->getTimezone();
+      
+    $inscripciones = DB::table('citas')
+      ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+      ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+      ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+      ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta')
+      ->where('citas.alumno_id','=', $request->id)
+      ->where('citas.estatus', 1)
+      ->where('citas.fecha', '>=', $fechaActual->format('Y-m-d'))
+    ->get();
+
+      $array = array();
+
+      foreach($inscripciones as $inscripcion){
+
+      $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha);
+      
+        $i = $fecha->dayOfWeek;
+
+        if($i == 1){
+
+          $dia = 'Lunes';
+
+        }else if($i == 2){
+
+          $dia = 'Martes';
+
+        }else if($i == 3){
+
+          $dia = 'Miercoles';
+
+        }else if($i == 4){
+
+          $dia = 'Jueves';
+
+        }else if($i == 5){
+
+          $dia = 'Viernes';
+
+        }else if($i == 6){
+
+          $dia = 'Sabado';
+
+        }else if($i == 0){
+
+          $dia = 'Domingo';
+
+        }
+
+        $collection=collect($inscripcion);     
+        $inscripcion_array = $collection->toArray();
+            
+        $inscripcion_array['dia']=$dia;
+        $array[$inscripcion->id] = $inscripcion_array;
+      }
+  
+      $arrayClases=array();
+
+      $fechaActual = Carbon::now();
+      $geoip = new GeoIP();
+      $geoip->setIp($request->ip());
+      $fechaActual->tz = $geoip->getTimezone();
+
+      $collection = collect($inscripciones);
+
+      foreach ($inscripciones as $grupal) {
+
+        $fecha_start=explode('-',$grupal->fecha);
+        $fecha_end=explode('-',$grupal->fecha);
+        $id=$grupal->id;
+        $nombre=$grupal->nombre;
+        $descripcion=$grupal->nombre;
+        $hora_inicio=$grupal->hora_inicio;
+        $hora_final=$grupal->hora_final;
+        $etiqueta=$grupal->color_etiqueta;
+        $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
+
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha)->format('Y-m-d');
+   
+        $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha,"fecha_final"=>$grupal->fecha, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 4, 'tipo_id' => $id);
+
+        
         
     }
         
@@ -697,6 +797,10 @@ class AsistenciaController extends BaseController
                     $clase_personalizada->estatus = '2';
                     $clase_personalizada->save();
                     
+                  }else if($clase_id[2] == '4'){
+                    $clase_personalizada = Cita::find($clase_id[3]);
+                    $clase_personalizada->estatus = '2';
+                    $clase_personalizada->save();
                   }
 
                   return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);

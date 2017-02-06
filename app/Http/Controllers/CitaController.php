@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use App\Cita;
 use App\Alumno;
 use App\Instructor;
+use App\Asistencia;
 use Carbon\Carbon;
 use Validator;
 use DB;
 use Mail;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use PulkitJalan\GeoIP\GeoIP;
 
 class CitaController extends BaseController {
 
@@ -22,8 +24,9 @@ class CitaController extends BaseController {
             ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre', 'citas.color_etiqueta')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
+            ->where('citas.estatus','=','1')
         ->get();
 
     	return view('agendar.cita.calendario')->with(['citas' => $citas]);
@@ -31,15 +34,73 @@ class CitaController extends BaseController {
 
     public function principal(Request $request){
 
-        $citas = DB::table('citas')
+
+        $fechaActual = Carbon::now();
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+        $fechaActual->tz = $geoip->getTimezone();
+
+        $activas = Cita::where('estatus', 1)->where('academia_id','=', Auth::user()->academia_id)->get();
+
+        foreach($activas as $activa){
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $activa->fecha);
+            if($fecha_inicio <= $fechaActual->format('Y-m-d')){
+
+                if($fecha_inicio < $fechaActual->format('Y-m-d')){
+                    $cita = Cita::find($activa->id);
+                    $cita->estatus = 2;
+                    $cita->save();
+                }else{
+
+                    $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
+
+                    if($hora_final <= $fechaActual->format('H:i:s')){
+                        $cita = Cita::find($activa->id);
+                        $cita->estatus = 2;
+                        $cita->save();
+                    }
+
+                }
+            }
+        }
+     
+
+        $activas = DB::table('citas')
             ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
+            ->where('citas.estatus', 1)
         ->get();
 
-        return view('agendar.cita.principal')->with(['citas' => $citas]);
+        $finalizadas = DB::table('citas')
+            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->where('citas.academia_id','=', Auth::user()->academia_id)
+            ->where('citas.estatus', 2)
+        ->get();
+
+        $canceladas = DB::table('citas')
+            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->where('citas.academia_id','=', Auth::user()->academia_id)
+            ->where('citas.estatus', 0)
+        ->get();
+
+        $asistencias = Asistencia::where('tipo', '4')->where('academia_id', Auth::user()->academia_id)->get();
+
+        $collection=collect($asistencias);
+        $grouped = $collection->groupBy('tipo_id');     
+        $asistencias = $grouped->toArray();
+
+
+
+        return view('agendar.cita.principal')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'canceladas' => $canceladas, 'asistencias' => $asistencias]);
     }
 
 	public function create()
@@ -107,6 +168,7 @@ class CitaController extends BaseController {
         $cita->instructor_id = $request->instructor_id;
         $cita->hora_inicio = $request->hora_inicio;
         $cita->hora_final = $request->hora_final;
+        $cita->color_etiqueta = $request->color_etiqueta;
 
         if($cita->save()){
         	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -127,7 +189,7 @@ class CitaController extends BaseController {
                 ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
                 ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
                 ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
-                ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_citas.nombre as tipo_nombre', 'citas.fecha', 'citas.hora_inicio','citas.hora_final', 'citas.id')
+                ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_citas.nombre as tipo_nombre', 'citas.fecha', 'citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.color_etiqueta')
                 ->where('citas.id', '=', $id)
                 ->first();
 
@@ -163,6 +225,16 @@ class CitaController extends BaseController {
         }
     }
 
+    public function updateEtiqueta(Request $request){
+        $cita = Cita::find($request->id);
+        $cita->color_etiqueta = $request->color_etiqueta;
+
+        if($cita->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
     public function updateTipo(Request $request){
         $cita = Cita::find($request->id);
         $cita->tipo_id = $request->tipo_id;

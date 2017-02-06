@@ -45,13 +45,39 @@
                             <span class="f-16 p-t-0 text-success">Agregar una Cita <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-calendar-check f-25"></i> Sección de Citas</p>
-                            <hr class="linea-morada">                                                           
+                            <hr class="linea-morada">  
+
+                            <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="activas" value="activas" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="finalizadas" value="finalizadas" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="canceladas" value="canceladas" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Canceladas <i id="canceladas2" name="canceladas2" class="zmdi zmdi-close zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                 </div>
+                                </div> 
+
+                                 <div class="clearfix"></div>                                                         
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="acepto" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Cliente</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
@@ -62,18 +88,6 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($citas as $cita)
-                                <?php $id = $cita->id; ?>
-
-                                <tr id="{{$id}}" class="seleccion"> 
-                                    <td class="text-center previa">{{$cita->alumno_nombre}} {{$cita->alumno_apellido}}</td>
-                                    <td class="text-center previa">{{$cita->fecha}}</td>
-                                    <td class="text-center previa">{{$cita->hora_inicio}} - {{$cita->hora_final}}</td>
-                                    <td class="text-center previa">{{$cita->tipo_nombre}}</td>
-                                    <td class="text-center previa">{{$cita->instructor_nombre}} {{$cita->instructor_apellido}}</td>
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
-                                </tr>
-                            @endforeach  
                                                            
                             </tbody>
                         </table>
@@ -103,7 +117,16 @@
         route_operacion="{{url('/')}}/agendar/citas/operaciones";
         route_eliminar="{{url('/')}}/agendar/citas/eliminar/";
 
+        var finalizadas = <?php echo json_encode($finalizadas);?>;
+        var activas = <?php echo json_encode($activas);?>;
+        var canceladas = <?php echo json_encode($canceladas);?>;
+        var asistencias = <?php echo json_encode($asistencias);?>;
+
+        tipo = 'activas';
+
         $(document).ready(function(){
+
+        $("#activas").prop("checked", true);
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -111,7 +134,7 @@
         pageLength: 25,   
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-        if ("{{count($citas)}}" < 25) {
+        if ("{{count($activas)}}" < 25) {
               $('.dataTables_paginate').hide();
               $('#tablelistar_length').hide();
           }else{
@@ -165,24 +188,35 @@
                 });
             }
 
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
+            rechargeActivas();
+
 
             });
 
     function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_fiesta = row.split('_');
-        var route =route_detalle+"/"+row;
-        window.location=route;
+            var row = $(t).closest('tr');
+
+            if(tipo == 'activas')
+            {
+
+              var id = $(row).attr('id');
+              var route =route_detalle+"/"+id;
+              window.location=route;
+
+
+            }else if(tipo == 'canceladas'){
+
+              var fecha = $(row).find('td').eq(4).html();
+              var hora = $(row).find('td').eq(5).html();
+              var instructor = $(row).find('td').eq(3).html();
+              var cancelacion = row.data('cancelacion');
+              $('.span_fecha').text(fecha)
+              $('.span_hora').text(hora)
+              $('.span_instructor').text(instructor)
+              $('#razon_cancelacion').text(cancelacion)
+              $("#modalCancelar" ).modal('show');
+
+            }
       }
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
@@ -256,7 +290,110 @@
                                         }, 3000);
                                 }
                 });
+
+        $("#activas").click(function(){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#canceladas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).addClass( "c-verde" );
+        });
+
+        $("#finalizadas").click(function(){
+            $( "#finalizadas2" ).addClass( "c-verde" );
+            $( "#canceladas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
+        });
+
+        $("#canceladas").click(function(){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#canceladas2" ).addClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
+        });
       }
+
+
+      function clear(){
+
+            t.clear().draw();
+            // t.destroy();
+         }
+
+         $('input[name="tipo"]').on('change', function(){
+            clear();
+            if ($(this).val()=='activas') {
+                  tipo = 'activas';
+                  rechargeActivas();
+            } else if($(this).val()=='finalizadas')  {
+                  tipo= 'finalizadas';
+                  rechargeFinalizadas();
+            }else{
+                  tipo= 'canceladas';
+                  rechargeCanceladas();
+            }
+         });
+
+         function rechargeActivas(){
+
+            $.each(activas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                '',
+                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+array.fecha+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.tipo_nombre+'',
+                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
+                '<i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10">'
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+        }
+
+        function rechargeFinalizadas(){
+
+            $.each(finalizadas, function (index, array) {
+
+              if(asistencias[array.id]){
+                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
+              }else{
+                acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
+              }
+
+                var rowNode=t.row.add( [
+                ''+acepto+'' ,
+                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+array.fecha+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.tipo_nombre+'',
+                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
+                ''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+        }
+
+        function rechargeCanceladas(){
+    
+            $.each(canceladas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                '' ,
+                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+array.fecha+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.tipo_nombre+'',
+                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
+                ''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .attr('data-cancelacion',array.razon_cancelacion)
+                    .addClass('seleccion');
+            });
+        }
 
     </script>
 @stop

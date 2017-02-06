@@ -112,7 +112,7 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clase-personalizada f-25"></i> Sección de Clases Personalizadas</p>
                             <hr class="linea-morada">  
 
-                            <div class="col-sm-7">
+                            <div class="col-sm-12">
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
@@ -211,8 +211,6 @@
             },500);
 
         });
-
-        $("#activas").prop("checked", true);
 
         t=$('#tablelistar').DataTable({
         processing: true,

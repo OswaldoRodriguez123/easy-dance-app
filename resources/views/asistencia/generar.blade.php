@@ -209,6 +209,11 @@
                                       <i class="input-helper"></i>  
                                       Clases Personalizadas <i id="clases_personalizadas2" name="clases_personalizadas2" class="icon_a-clase-personalizada f-20"></i>
                                   </label>
+                                  <label class="radio radio-inline m-r-20">
+                                      <input name="tipo" id="citas" value="citas" type="radio">
+                                      <i class="input-helper"></i>  
+                                      Citas <i id="citas2" name="citas2" class="zmdi zmdi-calendar-check f-20"></i>
+                                  </label>
                                   </div>
                                   
                                </div>
@@ -294,6 +299,7 @@
 
       route_consultar_cg="{{url('/')}}/asistencia/consulta/clases-grupales";
       route_consultar_cp="{{url('/')}}/asistencia/consulta/clases-personalizadas";
+      route_consultar_ci="{{url('/')}}/asistencia/consulta/citas";
       route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
       route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
@@ -697,8 +703,10 @@
 
         if(tipo == 1){
           var route = route_consultar_cg;
-        }else{
+        }else if(tipo == 2){
           var route = route_consultar_cp;
+        }else{
+          var route = route_consultar_ci;
         }
 
         console.log(route);
@@ -962,14 +970,23 @@
 
      $("#clases_grupales").click(function(){
           $( "#clases_personalizadas2" ).removeClass( "c-verde" );
+          $( "#citas2" ).removeClass( "c-verde" );
           $( "#clases_grupales2" ).addClass( "c-verde" );
           tipo = 1;
       });
 
       $("#clases_personalizadas").click(function(){
           $( "#clases_grupales2" ).removeClass( "c-verde" );
+          $( "#citas2" ).removeClass( "c-verde" );
           $( "#clases_personalizadas2" ).addClass( "c-verde" );
           tipo = 2;
+      });
+
+      $("#citas").click(function(){
+          $( "#clases_grupales2" ).removeClass( "c-verde" );
+          $( "#clases_personalizadas2" ).removeClass( "c-verde" );
+          $( "#citas2" ).addClass( "c-verde" );
+          tipo = 3;
       });
 
     </script>

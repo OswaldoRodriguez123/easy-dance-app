@@ -139,6 +139,32 @@
 
                             <div class="clearfix p-b-35"></div>
 
+                             <div class="col-sm-12">
+                                    <div class="cp-container">
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la cita que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
+                                        <div class="input-group form-group">
+
+                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                                            <div class="fg-line dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
+                                                    
+                                                <div class="dropdown-menu">
+                                                    <div class="color-picker" data-cp-default="#de87b4"></div>
+                                                </div>
+                                                
+                                                <i class="cp-value"></i>
+                                            </div>
+                                            <div class="has-error" id="error-color_etiqueta">
+                                                <span >
+                                                    <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
                                        <div class="col-sm-12">
                                  
                                     <label for="tipo_id" id="id-tipo_id">Tipo de Cita</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de la cita" title="" data-original-title="Ayuda"></i>

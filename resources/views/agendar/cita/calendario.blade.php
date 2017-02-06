@@ -227,7 +227,7 @@
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
                             allDay: false,
-                            backgroundColor:'#de87b4',
+                            backgroundColor:'{{$cita->color_etiqueta}}',
                             className: '{{$cita->tipo_nombre}}',
                             url: '{{url('/')}}/agendar/citas/detalle/{{$cita->id}}'
                             },
