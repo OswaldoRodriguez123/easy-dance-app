@@ -645,35 +645,43 @@
           if("{{count($instructores_academia)}}" > 0)
           {
 
-            var tmp = "{{$instructores_academia[0]->video_promocional}}";
+            
 
-            var video_promocional = tmp.split('=');
+            tmp = "{{{ $instructores_academia[0]->video_promocional or 'Default' }}}";
 
-            if(video_promocional[1])
-            {
-              $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+video_promocional[1]);
-              $(".div_promocional").show();
-            }else{
-              $(".div_promocional").hide();
+            if(tmp != 'Default'){
+
+              var video_promocional = tmp.split('=');
+
+              if(video_promocional[1])
+              {
+                $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+video_promocional[1]);
+                $(".div_promocional").show();
+              }else{
+                $(".div_promocional").hide();
+              }
             }
 
-            var tmp = "{{$instructores_academia[0]->video_testimonial}}";
-            var video_testimonial = tmp.split('=');
+            tmp = "{{{ $instructores_academia[0]->video_testimonial or 'Default' }}}";
 
-            if(video_testimonial[1])
-            {
-              $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
-              $(".div_testimonial").show();
-              // document.getElementById('video_testimonial').contentDocument.location.reload(true);
+            if(tmp != 'Default'){
+              var video_testimonial = tmp.split('=');
 
-            }else{
-              $(".div_testimonial").hide();
+              if(video_testimonial[1])
+              {
+                $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
+                $(".div_testimonial").show();
+                // document.getElementById('video_testimonial').contentDocument.location.reload(true);
+
+              }else{
+                $(".div_testimonial").hide();
+              }
             }
 
+            tmp = "{{{ strlen($instructores_academia[0]->descripcion) or 'Default' }}}";
 
-            var tmp = "{{strlen($instructores_academia[0]->descripcion)}}";
 
-            if(tmp > 0)
+            if(tmp > 0 && tmp != 'Default')
             {
               $(".div_descripcion").show();
 
@@ -681,9 +689,9 @@
               $(".div_descripcion").hide();
             }
 
-            var tmp = "{{strlen($instructores_academia[0]->resumen_artistico)}}";
+            tmp = "{{{ strlen($instructores_academia[0]->resumen_artistico) or 'Default' }}}";
 
-            if(tmp > 0)
+            if(tmp > 0 && tmp != 'Default')
             {
               $(".div_resumen").show();
 
@@ -691,9 +699,9 @@
               $(".div_resumen").hide();
             }
 
-             var tmp = "{{$instructores_academia[0]->tiempo_experiencia_instructor}}";
+            tmp = "{{{ $instructores_academia[0]->tiempo_experiencia_instructor or 'Default' }}}";
 
-            if(tmp)
+            if(tmp && tmp != 'Default')
             {
 
             $(".circulos_instructor").show();
@@ -702,6 +710,12 @@
               $(".circulos_instructor").hide();
             }
 
+          }else{
+            $(".div_resumen").hide();
+            $(".circulos_instructor").hide();
+            $(".div_descripcion").hide();
+            $(".div_testimonial").hide();
+            $(".div_promocional").hide();
           }
 
 
