@@ -64,7 +64,7 @@
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true" value="{{$visitante->instructor_id}}">
+                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
                                           <option value="">Selecciona</option>
                                           @foreach ( $instructores as $instructor )
                                           <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
