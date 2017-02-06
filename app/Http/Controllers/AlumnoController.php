@@ -146,7 +146,6 @@ class AlumnoController extends BaseController
 		$request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
-        'instructor_id' => 'required',
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
@@ -156,7 +155,6 @@ class AlumnoController extends BaseController
     ];
 
     $messages = [
-        'instructor_id.required' => 'Ups! El Promotor es requerido',
         'identificacion.required' => 'Ups! El identificador es requerido',
         'identificacion.min' => 'El mínimo de numeros permitidos son 5',
         'identificacion.max' => 'El maximo de numeros permitidos son 20',
