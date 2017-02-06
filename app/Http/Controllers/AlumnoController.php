@@ -146,6 +146,7 @@ class AlumnoController extends BaseController
 		$request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
+        'instructor_id' => 'required',
         'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
@@ -155,7 +156,7 @@ class AlumnoController extends BaseController
     ];
 
     $messages = [
-
+        'instructor_id.required' => 'Ups! El Promotor es requerido',
         'identificacion.required' => 'Ups! El identificador es requerido',
         'identificacion.min' => 'El mínimo de numeros permitidos son 5',
         'identificacion.max' => 'El maximo de numeros permitidos son 20',
@@ -254,6 +255,7 @@ class AlumnoController extends BaseController
         $alumno->hipertension = $request->hipertension;
         $alumno->lesiones = $request->lesiones;
         $alumno->codigo_referido = $codigo_referido;
+        $alumno->instructor_id = $request->instructor_id;
 
         if($alumno->save()){
 
@@ -391,7 +393,7 @@ class AlumnoController extends BaseController
     public function create()
     {
  
-        return view('participante.alumno.create');
+        return view('participante.alumno.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     public function agregarvisitante($id)
@@ -399,12 +401,15 @@ class AlumnoController extends BaseController
 
         $visitante = Visitante::find($id);
  
-        return view('participante.alumno.create')->with('visitante',$visitante);
+        return view('participante.alumno.create')->with(['visitante' => $visitante, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
 
     public function edit($id)
     {   
-        $alumno = Alumno::find($id);
+        $alumno = Alumno::Leftjoin('instructores', 'alumnos.instructor_id', '=', 'instructores.id')
+            ->select('alumnos.*','instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido')
+            ->where('alumnos.id',$id)
+        ->first();
 
         if($alumno){
 
@@ -477,7 +482,7 @@ class AlumnoController extends BaseController
                 $puntos_referidos = 0;
             }
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos]);
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -579,6 +584,17 @@ class AlumnoController extends BaseController
         Session::put('alumno', $alumno);
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function updatePromotor(Request $request){
+        $alumno = Alumno::find($request->id);
+        $alumno->instructor_id = $request->instructor_id;
+
+        if($alumno->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function updateID(Request $request){

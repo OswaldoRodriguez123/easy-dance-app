@@ -13,6 +13,66 @@
 @stop
 
 @section('content')
+
+            <div class="modal fade" id="modalPromotor-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_promotor_alumno" id="edit_promotor_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Promotor</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="instructor_id" name="instructor_id">
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-instructor_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_promotor_alumno" data-update="promotor" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
      
             <div class="modal fade" id="modalID-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -828,6 +888,14 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
+                           <tr class="detalle" data-toggle="modal" href="#modalPromotor-Alumno">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi {{ empty($alumno->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
+                               <span class="f-14"> Promotor </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-instructor_id" class="capitalize">{{$alumno->instructor_nombre}} {{$alumno->instructor_apellido}}</span></td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($alumno->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
@@ -1208,6 +1276,13 @@
           }else if(c.name=='direccion'){
              $("#alumno-"+c.name).data('valor',c.value);
              $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='instructor_id'){
+            
+            expresion = "#"+c.name+ " option[value="+c.value+"]";
+            texto = $(expresion).text();
+
+             $("#alumno-"+c.name).text(texto);
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
 

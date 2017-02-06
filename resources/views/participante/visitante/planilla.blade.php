@@ -697,7 +697,7 @@
                            <table class="table table-striped table-bordered">
                            <tr class="detalle" data-toggle="modal" href="#modalPromotor-Visitante">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($visitante->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi {{ empty($visitante->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
                                <span class="f-14"> Promotor </span>
                              </td>
