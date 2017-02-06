@@ -31,6 +31,7 @@ class AgendarController extends BaseController
         $arrayClases=array();
         $arrayClasespersonalizadas=array();
         $arrayFiestas=array();
+        $arrayCitas=array();
 
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
         {
