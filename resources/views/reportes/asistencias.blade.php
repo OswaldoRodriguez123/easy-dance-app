@@ -255,16 +255,15 @@
         processing: true,
         serverSide: false,
         pageLength: 50, 
-        // paging:false, 
+        paging:false, 
         order: [[7, 'desc'], [8, 'desc']],
         fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
+          if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
              $('.dataTables_paginate').show();
-          }*/
+          }
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
@@ -311,17 +310,6 @@
                     format: 'DD/MM/YYYY'
                 });
             }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
 
                 rechargeClase()
             });

@@ -154,16 +154,16 @@
         processing: true,
         serverSide: false,
         pageLength: 50, 
-        // paging:false, 
+        paging:false, 
         order: [[0, 'desc']],
         fnDrawCallback: function() {
           $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
+          if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
              $('.dataTables_paginate').show();
-          }*/
+          }
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );

@@ -203,14 +203,6 @@
                                       <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
                                     <div class="fg-line">
                                       <div class="select">
-                                        <!-- <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
- -->
-                                        <!-- <select class="selectpicker bs-select-hidden" id="alumno_id" name="alumno_id" multiple="" data-max-options="5" title="Selecciona"> -->
 
                                         <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
 
@@ -267,33 +259,12 @@
                                 </tr>
                                 </table>
                                  
-                                    <!-- <label for="costo_inscripcion">Costo de la Inscripcion</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podras modificar de manera personal (por alumno) el costo de la inscripción" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="costo_inscripcion" id="costo_inscripcion" placeholder="Ej. 5000" value="{{ $clasegrupal->costo_inscripcion }}">
-                                      </div>
-                                    </div> -->
-                                 <!-- <div class="has-error" id="error-costo_inscripcion">
-                                      <span >
-                                          <small class="help-block error-span" id="error-costo_inscripcion_mensaje" ></small>                        
-                                      </span>
-                                  </div> -->
                                </div>
 
                                <br>
 
                                <div class="col-sm-12">
                                  
-                                    <!-- <label for="pago_recurrente">Pago Mensualidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podras modificar de manera personal (por alumno) el costo de la mensualidad" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="costo_mensualidad" id="costo_mensualidad" placeholder="Ej. 1000" value="{{ $clasegrupal->costo_mensualidad }}">
-                                      </div>
-                                    </div> -->
 
                                     <table class="table table-striped table-bordered">
                                    <tr class="detalle" data-toggle="modal" href="#modalCostoMensualidad-ClaseGrupal">
@@ -305,26 +276,12 @@
                                      <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad"><span>{{$clasegrupal->costo_mensualidad}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                                     </tr>
                                     </table>
-                                 
-                                 <!-- <div class="has-error" id="error-costo_mensualidad">
-                                      <span >
-                                          <small class="help-block error-span" id="error-costo_mensualidad_mensaje" ></small>                        
-                                      </span>
-                                  </div> -->
+
                                </div>
 
                                <br>
 
                                <div class="col-sm-12">
-                                    
-                                      <!-- <label for="fecha_pago">Fecha de primer cobro automático</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás gestionar una fecha de pago por alumno de manera particular, en caso que desees mantener la fecha seleccionada en la planilla de registro, debes dejar el campo sin operación, es decir, sin gestionarlo" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha_pago" id="fecha_pago" class="form-control date-picker proceso" placeholder="Selecciona" type="text" value="{{ $clasegrupal->fecha_inicio_preferencial}}">
-                                          </div>
-
-                                    </div> -->
 
                                     <table class="table table-striped table-bordered">
                                    <tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
@@ -338,12 +295,63 @@
                                     </tr>
                                     </table>
 
-                                    <!-- <div class="has-error" id="error-fecha_pago">
-                                        <span >
-                                            <small class="help-block error-span" id="error-fecha_pago_mensaje" ></small>                                           
-                                        </span>
-                                    </div> -->
                                 </div>
+
+                                <br><br>
+
+                                <div class="col-sm-12">
+
+                                  <label for="alumno" class="c-morado f-22">Entrega</label>
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-16">Camiseta</span>
+
+                                    <br></br>
+                                    <input type="text" id="boolean_franela" name="boolean_franela" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="franela" type="checkbox">
+                                      
+                                      <label for="franela-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                  <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-16">Programación</span>
+
+
+                                    <br></br>
+                                    <input type="text" id="boolean_programacion" name="boolean_programacion" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="programacion" type="checkbox">
+                                      
+                                      <label for="programacion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+
+                                <div class="col-sm-12" id="textarea_entrega" style="display:none">
+
+                                  <div class="clearfix p-b-35"></div>
+                                 
+                                  <label for="razon_entrega" id="id-razon_entrega">Explique las razones por la cual no fue entregado</label>
+                                  <br></br>
+
+                                  <div class="fg-line">
+                                    <textarea class="form-control" id="razon_entrega" name="razon_entrega" rows="2"></textarea>
+                                    </div>
+                                </div>
+
                                 <div class="clearfix p-b-35"></div>
 
 
@@ -362,8 +370,6 @@
                               </div>
                             </div>
                             <div class="col-sm-12 text-right">                           
-
-                              <!-- <a class="btn-blanco m-r-10 f-18 guardar" href="#" id="guardar" name="guardar">  Agregar </a> -->
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 agregar" id="agregar" name="agregar">Guardar<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
@@ -480,6 +486,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="iconos"></th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -491,16 +498,41 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno['inscripcion_id']; ?>
+                                <?php $id = $alumno['inscripcion_id']; 
+
+                                if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
+                                  $iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+                                }else{
+                                  if($alumno['boolean_franela']){
+                                    $iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i>';
+                                  }else{
+                                    $iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i>';
+                                  }
+                                }
+
+
+                                ?>
 
                                 @if($alumno['tipo'] == 1)
                                   <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}">
+
+
+
+                                      @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
+                                        <td class="text-center previa"><i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i></td>
+                                      @else
+                                        @if($alumno['boolean_franela'])
+                                          <td class="text-center previa"><i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i></td>
+                                        @else
+                                          <td class="text-center previa"><i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></td>
+                                        @endif
+                                      @endif
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
-                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> 
                                       @else
-                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i>
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
@@ -568,6 +600,45 @@
 
         $(document).ready(function(){
 
+
+        $("#boolean_franela").val('1');  //VALOR POR DEFECTO
+        $("#franela").attr("checked", true); //VALOR POR DEFECTO
+
+        $("#boolean_programacion").val('1');  //VALOR POR DEFECTO
+        $("#programacion").attr("checked", true); //VALOR POR DEFECTO
+
+        $("#franela").on('change', function(){
+          if ($("#franela").is(":checked")){
+            $("#boolean_franela").val('1');
+          }else{
+            $("#boolean_franela").val('0');
+          } 
+
+          if($("#franela").is(":checked") && $("#programacion").is(":checked")){
+
+            $('#textarea_entrega').hide();
+
+          }else{
+            $('#textarea_entrega').show();
+          }  
+        });
+
+        $("#programacion").on('change', function(){
+          if ($("#programacion").is(":checked")){
+            $("#boolean_programacion").val('1');
+          }else{
+            $("#boolean_programacion").val('0');
+          }
+
+          if($("#franela").is(":checked") && $("#programacion").is(":checked")){
+
+            $('#textarea_entrega').hide();
+
+          }else{
+            $('#textarea_entrega').show();
+          }    
+        });
+
         $('#alumno_id > option[value="{{ Session::get('id_alumno') }}"]').attr('selected', 'selected');
 
         id_alumno = "{{Session::get('id_alumno')}}";
@@ -583,9 +654,10 @@
         processing: true,
         serverSide: false,
         pageLength: 25,  
-        order: [[0, 'asc']],
+        paging: false,
+        order: [[1, 'asc']],
         fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
+          $('.dataTables_paginate').hide();
         /*if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
@@ -593,8 +665,6 @@
              $('.dataTables_paginate').show();
           }*/
         },
-        pageLength: 25,
-        paging: false,
         language: {
               searchPlaceholder: "Buscar"
         },
@@ -626,25 +696,8 @@
                         }
                     }
         });
-    
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-            
-            });
+        });
 
         function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -710,18 +763,18 @@
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
-                var datos = $( "#agregar_inscripcion" ).serialize(); 
                 $("#guardar").attr("disabled","disabled");
                 $(".cancelar").attr("disabled","disabled");
                 $(".procesando").removeClass('hidden');
                 $(".procesando").addClass('show');         
                 limpiarMensaje();
+                var array = {clase_grupal_id: clase_grupal_id, alumno_id: values, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, "permitir": permitir, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),};
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&clase_grupal_id="+clase_grupal_id+"&alumno_id="+values+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago+"&permitir="+permitir,
+                        data:array,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -732,7 +785,7 @@
                         if(respuesta.status=="OK"){
 
                           //SI SE ESTA INSCRIBIENDO MAS DE UNA PERSONA
-                          if(respuesta.array){
+                          // if(respuesta.array){
                             finprocesado();
                             var nType = 'success';
                             // $("#agregar_inscripcion")[0].reset();
@@ -741,8 +794,25 @@
 
                             $("#modalAgregar").modal("hide");
 
-                            $.each(respuesta.array, function (index, array) {
-                            console.log(index + ' ' +array);
+                            array = respuesta.array;
+
+                            // $.each(respuesta.array, function (index, array) {
+                      
+
+                            inscripcion = respuesta.inscripcion
+                            console.log(inscripcion);
+
+                            if(inscripcion.boolean_franela && inscripcion.boolean_programacion){
+
+                              iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
+                              
+                            }else{
+                              if(inscripcion.boolean_franela){
+                                iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
+                              }else{
+                                iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                              }
+                            }
 
                               var identificacion = array.identificacion;
                               
@@ -760,6 +830,7 @@
 
                               var rowId=array.id;
                               var rowNode=t.row.add( [
+                              ''+iconos+'',
                               ''+identificacion+'',
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
@@ -771,15 +842,16 @@
                               .attr('id',rowId)
                               .addClass('seleccion');
 
-                              });
-                            }
+                              // });
+                            // }
+
 
                             //SOLO UNA PERSONA
-                            else{
+                            // else{
 
-                              window.location = route_enhorabuena + respuesta.id;
+                              // window.location = route_enhorabuena + respuesta.id;
 
-                            }
+                            // }
 
                         }else{
                           var nTitle="Ups! ";
@@ -796,9 +868,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -835,7 +907,7 @@
                         var nType = 'danger';
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                  
                       }, 1000);
                     }
                 });

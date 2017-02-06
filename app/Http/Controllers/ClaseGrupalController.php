@@ -254,7 +254,7 @@ class ClaseGrupalController extends BaseController {
 
         $alumnos_inscritos = DB::table('inscripcion_clase_grupal')
                 ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
@@ -976,6 +976,9 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion->fecha_pago = $proxima_fecha;
                 $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
                 $inscripcion->costo_mensualidad = $request->costo_mensualidad;
+                $inscripcion->boolean_franela = $request->boolean_franela;
+                $inscripcion->boolean_programacion = $request->boolean_programacion;
+                $inscripcion->razon_entrega = $request->razon_entrega;
 
                 $inscripcion->save();
 
@@ -1027,7 +1030,7 @@ class ClaseGrupalController extends BaseController {
 
             // }
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 200]);
 
             // if(count($alumnos) > 2)
             // {

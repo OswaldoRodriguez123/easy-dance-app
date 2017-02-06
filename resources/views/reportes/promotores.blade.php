@@ -23,11 +23,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.resize.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.pie.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>                         
-<script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
-
-<script src="{{url('/')}}/assets/js/flot-charts/pie-chart.js"></script>
 @stop
 @section('content')
 
@@ -54,6 +49,8 @@
                     
                     <div class="card">
 
+
+
                         <div class="card-header">
 
                             <div class="col-md-8">
@@ -64,6 +61,17 @@
                             </div>
                             <div class="col-md-4">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <label for="especialidad" id="id-instructor_id">Promotor</label><br>
+                                <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <br>
                                 <div class="checkbox m-b-15">
                                     <label>
                                         Mes Actual
@@ -125,7 +133,7 @@
                         </div><!-- CARD HEADER 1 -->
 
                         <div class="col-md-6">
-                            <h2>Procesos de Inscripcion</h2>
+                            <h2>Visitas Presenciales</h2>
                             <hr>
                             <!-- <ul class="actions">
                                 <li class="dropdown action-show">
@@ -178,7 +186,7 @@
                                 <div class="clearfix">
                                    <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
                                     <div class="count">
-                                        <small>Total Inscritos:</small>
+                                        <small>Total Visitas:</small>
                                         <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
                                         <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
                                     </div>
@@ -190,41 +198,39 @@
  
                         </div><!-- COL-MD-6 -->
 
-
-
                         <div class="clearfix"></div>
                         <div class="clearfix"></div>
 
                         <div class="card-header text-right">
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-alumnos f-25"></i> Informes de Procesos de Inscripción</p>
+
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-instructor f-25"></i> Informes de Promotores</p>
                             <hr class="linea-morada">
+                                                         
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="cliente"></th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                    <th class="text-center" data-column-id="nac" data-order="desc">Nacimiento</th>                                    
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                     <th class="text-center" data-column-id="especialidad">Especialidad</th>
-                                    <th class="text-center" data-column-id="curso">Curso</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {{-- $inscritos --}}
-                            @foreach ($inscritos as $inscrito)
-                                <?php $id = $inscrito->id; ?>
+
+                            @foreach ($visitantes as $visitante)
+                                <?php $id = $visitante->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$inscrito->fecha}}</td>
-                                    <td class="text-center previa">{{$inscrito->nombre}}</td>
-                                    <td class="text-center previa">{{$inscrito->apellido}} </td>
-                                    <td class="text-center previa">{{$inscrito->fecha_nacimiento}} </td>
-                                    <td class="text-center previa">{{$inscrito->celular}} </td>
-                                    <td class="text-center previa">{{$inscrito->especialidad}} </td>
-                                    <td class="text-center previa">{{$inscrito->curso}} </td>
+                                    <td class="text-center previa"> @if($visitante->cliente)<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa">{{$visitante->fecha}}</td>
+                                    <td class="text-center previa">{{$visitante->nombre}}</td>
+                                    <td class="text-center previa">{{$visitante->apellido}} </td>
+                                    <td class="text-center previa">{{$visitante->celular}} </td>
+                                    <td class="text-center previa">{{$visitante->especialidad}} </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -245,18 +251,19 @@
                     
                     
                 </div>
-            </section>
 
-            <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
+                <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
+                
+            </section>
 @stop
 
 @section('js') 
             
-<script type="text/javascript">
-
-    route_filtrar = "{{url('/')}}/reportes/inscritos";
-
-    $(document).ready(function(){
+        <script type="text/javascript">
+        
+        route_filtrar = "{{url('/')}}/reportes/promotores";
+        
+        $(document).ready(function(){
 
         $('input[type=checkbox]').change(function()
         {
@@ -271,7 +278,7 @@
         serverSide: false,
         pageLength: 50, 
         paging:false, 
-        order: [[0, 'desc']],
+        order: [[1, 'desc']],
         fnDrawCallback: function() {
           if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
@@ -308,59 +315,59 @@
                         }
                     }
         });
+    
 
+            /*if($('.chosen')[0]) {
+                $('.chosen').chosen({
+                    width: '100%',
+                    allow_single_deselect: true
+                });
+            }
+            if ($('.date-time-picker')[0]) {
+               $('.date-time-picker').datetimepicker();
+            }
 
-        /*if($('.chosen')[0]) {
-            $('.chosen').chosen({
-                width: '100%',
-                allow_single_deselect: true
-            });
-        }
-        if ($('.date-time-picker')[0]) {
-           $('.date-time-picker').datetimepicker();
-        }
+            if ($('.date-picker')[0]) {
+                $('.date-picker').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+            }*/
 
-        if ($('.date-picker')[0]) {
-            $('.date-picker').datetimepicker({
-                format: 'DD/MM/YYYY'
-            });
-        }*/
+                //DateRangePicker
+                $('#personalizar').daterangepicker({
+                    "autoApply" : false,
+                    "opens": "left",
+                    "applyClass": "bgm-morado waves-effect",
+                    locale : {
+                        format: 'DD/MM/YYYY',
+                        applyLabel : 'Aplicar',
+                        cancelLabel : 'Cancelar',
+                        daysOfWeek : [
+                            "Dom",
+                            "Lun",
+                            "Mar",
+                            "Mie",
+                            "Jue",
+                            "Vie",
+                            "Sab"
+                        ],
 
-            //DateRangePicker
-            $('#personalizar').daterangepicker({
-                "autoApply" : false,
-                "opens": "left",
-                "applyClass": "bgm-morado waves-effect",
-                locale : {
-                    format: 'DD/MM/YYYY',
-                    applyLabel : 'Aplicar',
-                    cancelLabel : 'Cancelar',
-                    daysOfWeek : [
-                        "Dom",
-                        "Lun",
-                        "Mar",
-                        "Mie",
-                        "Jue",
-                        "Vie",
-                        "Sab"
-                    ],
-
-                    monthNames: [
-                        "Enero",
-                        "Febrero",
-                        "Marzo",
-                        "Abril",
-                        "Mayo",
-                        "Junio",
-                        "Julio",
-                        "Agosto",
-                        "Septiembre",
-                        "Octubre",
-                        "Noviembre",
-                        "Diciembre"
-                    ],        
-                }
-            });
+                        monthNames: [
+                            "Enero",
+                            "Febrero",
+                            "Marzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ],        
+                    }
+                });
 
             $('#meses').on('change', function () {
                 var token = $('input:hidden[name=_token]').val();
@@ -371,30 +378,36 @@
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data: { Fecha: Fecha},
+                    data: "&Fecha="+Fecha+"&instructor_id="+$('#instructor_id').val(),
                     success:function(respuesta){
+
 
                         finprocesado();
 
-                        datos = JSON.parse(JSON.stringify(respuesta));
-                        //console.log(datos.edades);
-
                         t.clear().draw();
 
-                        $.each(respuesta.inscritos, function (index, array) {
+                        $.each(respuesta.presenciales, function (index, array) {
+
+                            if(array.cliente)
+                            {
+                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                            }else{
+                                cliente = '';
+                            }
                             var rowNode=t.row.add( [
+                            ''+cliente+'',
                             ''+array.fecha+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
-                            ''+array.fecha_nacimiento+'',
                             ''+array.celular+'',
                             ''+array.especialidad+'',
-                            ''+array.curso+'',
                             ] ).draw(false).node();
                             $( rowNode )
                                 .attr('id',array.id)
                                 .addClass('seleccion');
                         });
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
 
                         $("#mujeres").text(datos.mujeres);
                         $("#hombres").text(datos.hombres);
@@ -449,7 +462,6 @@
                 });
                 
             }); //END CLICK FECHA RANGO
-
 
             $(".applyBtn").on("click", function(){
                 var token = $('input:hidden[name=_token]').val();
@@ -461,30 +473,34 @@
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
+                    data: "&fechaInicio="+fechaInicio+"&fechaFin="+fechaFin+"&rango=rango&instructor_id="+$('#instructor_id').val(),
                     success:function(respuesta){
 
                         finprocesado();
 
-                        datos = JSON.parse(JSON.stringify(respuesta));
-                        //console.log(datos.edades);
-
                         t.clear().draw();
 
-                        $.each(respuesta.inscritos, function (index, array) {
+                        $.each(respuesta.presenciales, function (index, array) {
+                            if(array.cliente)
+                            {
+                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                            }else{
+                                cliente = '';
+                            }
                             var rowNode=t.row.add( [
+                            ''+cliente+'',
                             ''+array.fecha+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
-                            ''+array.fecha_nacimiento+'',
                             ''+array.celular+'',
                             ''+array.especialidad+'',
-                            ''+array.curso+'',
                             ] ).draw(false).node();
                             $( rowNode )
                                 .attr('id',array.id)
                                 .addClass('seleccion');
                         });
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
 
                         $("#mujeres").text(datos.mujeres);
                         $("#hombres").text(datos.hombres);
@@ -540,9 +556,7 @@
                 
             }); //END CLICK FECHA RANGO
 
-
-
-    });
+        });
 /*****************************************
 FILTROS PARA GRAFCAS
 *****************************************/
@@ -552,34 +566,38 @@ FILTROS PARA GRAFCAS
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#actual_month").is(":checked")){
                     $("#mes_actual").val('1');
-                    procesando();
+                        procesando();
                         $.ajax({
                             url: route_filtrar,
                             headers: {'X-CSRF-TOKEN': token},
                             type: 'POST',
                             dataType: 'json',
-                            data: { mesActual: 'mes_actual' },
+                            data: "&mesActual=mes_actual&instructor_id="+$('#instructor_id').val(),
                             success:function(respuesta){
 
                                 finprocesado();
 
                                 t.clear().draw();
 
-                                $.each(respuesta.inscritos, function (index, array) {
+                                $.each(respuesta.presenciales, function (index, array) {
+                                    if(array.cliente)
+                                    {
+                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                    }else{
+                                        cliente = '';
+                                    }
                                     var rowNode=t.row.add( [
+                                    ''+cliente+'',
                                     ''+array.fecha+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
-                                    ''+array.fecha_nacimiento+'',
                                     ''+array.celular+'',
                                     ''+array.especialidad+'',
-                                    ''+array.curso+'',
                                     ] ).draw(false).node();
                                     $( rowNode )
                                         .attr('id',array.id)
                                         .addClass('seleccion');
                                 });
-
                                 datos = JSON.parse(JSON.stringify(respuesta));
                                 //console.log(datos.edades);
 
@@ -644,29 +662,34 @@ FILTROS PARA GRAFCAS
             $("#past_month").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#past_month").is(":checked")){
-                    procesando();
                     //$("#mes_actual").val('1');
+                        procesando();
                         $.ajax({
                             url: route_filtrar,
                             headers: {'X-CSRF-TOKEN': token},
                             type: 'POST',
                             dataType: 'json',
-                            data: { mesPasado: 'mes_pasado' },
+                            data: "&mesPasado=mes_pasado&instructor_id="+$('#instructor_id').val(),
                             success:function(respuesta){
 
                                 finprocesado();
 
                                 t.clear().draw();
 
-                                $.each(respuesta.inscritos, function (index, array) {
+                                $.each(respuesta.presenciales, function (index, array) {
+                                    if(array.cliente)
+                                    {
+                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                    }else{
+                                        cliente = '';
+                                    }
                                     var rowNode=t.row.add( [
+                                    ''+cliente+'',
                                     ''+array.fecha+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
-                                    ''+array.fecha_nacimiento+'',
                                     ''+array.celular+'',
                                     ''+array.especialidad+'',
-                                    ''+array.curso+'',
                                     ] ).draw(false).node();
                                     $( rowNode )
                                         .attr('id',array.id)
@@ -737,29 +760,34 @@ FILTROS PARA GRAFCAS
             $("#today").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#today").is(":checked")){
-                    procesando();
                     //$("#mes_actual").val('1');
+                        procesando();
                         $.ajax({
                             url: route_filtrar,
                             headers: {'X-CSRF-TOKEN': token},
                             type: 'POST',
                             dataType: 'json',
-                            data: { today: 'today' },
+                            data: "&today=today&instructor_id="+$('#instructor_id').val(),
                             success:function(respuesta){
 
                                 finprocesado();
 
                                 t.clear().draw();
 
-                                $.each(respuesta.inscritos, function (index, array) {
+                                $.each(respuesta.presenciales, function (index, array) {
+                                    if(array.cliente)
+                                    {
+                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                    }else{
+                                        cliente = '';
+                                    }
                                     var rowNode=t.row.add( [
+                                    ''+cliente+'',
                                     ''+array.fecha+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
-                                    ''+array.fecha_nacimiento+'',
                                     ''+array.celular+'',
                                     ''+array.especialidad+'',
-                                    ''+array.curso+'',
                                     ] ).draw(false).node();
                                     $( rowNode )
                                         .attr('id',array.id)
@@ -780,7 +808,7 @@ FILTROS PARA GRAFCAS
                                 });
                                 data1 = data1.substring(0, data1.length -1);
                                 data1 += ']';
-                                    //GRAFICO FILTRO MES ACTUAL
+                                    //GRAFICO FILTRO HOY
                                     $("#pie-chart-procesos").html('');
                                     $(".flc-pie").html('');
                                     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
@@ -822,7 +850,6 @@ FILTROS PARA GRAFCAS
                     //$("#mes_actual").val('0');
                 }
             });
-
 
         //PLOTS
         var pieData1 = [
@@ -873,7 +900,7 @@ FILTROS PARA GRAFCAS
 
 
 
-        sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
+        sparklinePie('presenciales-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
 
         function sparklinePie(id, values, width, height, sliceColors) {
             $('.'+id).sparkline(values, {
@@ -884,7 +911,12 @@ FILTROS PARA GRAFCAS
                 offset: 0,
                 borderWidth: 0
             });
-        }    
+        }
+
+
+
+
+
 
         </script>
 

@@ -642,6 +642,9 @@
 
         $(document).ready(function() {
 
+          if("{{count($instructores_academia)}}" > 0)
+          {
+
             var tmp = "{{$instructores_academia[0]->video_promocional}}";
 
             var video_promocional = tmp.split('=');
@@ -698,6 +701,9 @@
             }else{
               $(".circulos_instructor").hide();
             }
+
+          }
+
 
               $("#pre_condiciones").html(nl2br(condiciones));
 
