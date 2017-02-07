@@ -53,13 +53,13 @@
 
                         <div class="card-header">
 
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <div class="f-20 f-500">Solo me fio de las estadisticas que he manipulado. (Winston Churchill)</div>                            
                                 <div>
                                     <div class="f-16 text-justify">Te mantendremos informado durante tu periodo en Easy Dance y nos aseguraremos de brindarte la información que necesitas para el crecimiento de tu academia.</div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 col-sm-offset-1">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <label for="especialidad" id="id-instructor_id">Promotor</label><br>
                                 <div class="fg-line">
