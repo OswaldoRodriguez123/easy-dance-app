@@ -418,7 +418,7 @@ class AlumnoController extends BaseController
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_pago')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.razon_entrega')
                 ->where('inscripcion_clase_grupal.alumno_id', $id)
                 ->where('inscripcion_clase_grupal.deleted_at', null)
             ->get();
@@ -988,6 +988,21 @@ class AlumnoController extends BaseController
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         }
+    }
+
+    public function updateEntrega(Request $request){
+
+        $inscripcion_clase_grupal = InscripcionClaseGrupal::find($request->inscripcion_id);
+        $inscripcion_clase_grupal->boolean_franela = $request->boolean_franela;
+        $inscripcion_clase_grupal->boolean_programacion = $request->boolean_programacion;
+        $inscripcion_clase_grupal->razon_entrega = $request->razon_entrega;
+
+       if($inscripcion_clase_grupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'id' => $request->inscripcion_id, 'boolean_franela' => $request->boolean_franela, 'boolean_programacion' => $request->boolean_programacion, 'razon_entrega' => $request->razon_entrega, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
     }
 
     public function destroy($id)

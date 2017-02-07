@@ -668,7 +668,22 @@
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 clase_grupal c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span>
+                              <span class="f-18 opaco-0-8 clase_grupal clase-grupal-{{$clase_grupal->inscripcion_id}} c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span> 
+
+                              @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
+                                <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              @else
+                                @if($clase_grupal->boolean_franela == 0 && $clase_grupal->boolean_programacion == 0)
+                                  <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
+                             
+                                @else
+                                    @if($clase_grupal->boolean_franela)
+                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
+                                  @else
+                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
+                                  @endif
+                                @endif
+                              @endif
 
                               <div class="clearfix p-b-15"></div>
                               <div class="clearfix p-b-15"></div>
@@ -692,6 +707,169 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalEntrega-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Entrega <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <div>
+                        <div class="clearfix p-b-15"></div>
+
+                        <div class="row p-t-20 p-b-0" style="padding: 2%">
+
+                        @if(!$clases_grupales)
+
+                          <div class="col-sm-10 col-sm-offset-1 error_clase_grupal">
+
+
+                            <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                            <div class="c-morado f-30 text-center"> No se encontraron resultados </div>
+
+
+                          </div>
+
+                        @else
+            
+                        <div class="show_clase_grupal">
+                          
+                          @foreach($clases_grupales as $clase_grupal)
+
+                            <div class="col-sm-12">
+
+                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span>
+
+                              @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
+                                <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              @else
+                                @if($clase_grupal->boolean_franela == 0 && $clase_grupal->boolean_programacion == 0)
+                                  <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
+                             
+                                @else
+                                    @if($clase_grupal->boolean_franela)
+                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
+                                  @else
+                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
+                                  @endif
+                                @endif
+                              @endif
+
+                              <div class="clearfix p-b-15"></div>
+                              <div class="clearfix p-b-15"></div>
+
+                            </div>
+
+                          @endforeach
+
+                        </div>
+
+                        @endif
+
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+
+                        </div>
+
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
+           
+
+              <div class="modal fade" id="modalEntrega-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrega<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_entrega_clase_grupal" id="edit_entrega_clase_grupal"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" class ="inscripcion_id" id="inscripcion_id" name="inscripcion_id" value="">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                            <div class="col-sm-12">
+
+                                  <label for="alumno" class="c-morado f-22">Entrega</label>
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-16">Camiseta</span>
+
+                                    <br></br>
+                                    <input type="text" id="boolean_franela" name="boolean_franela" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="franela-switch" type="checkbox">
+                                      
+                                      <label for="franela-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                  <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-16">Programación</span>
+
+
+                                    <br></br>
+                                    <input type="text" id="boolean_programacion" name="boolean_programacion" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="programacion-switch" type="checkbox">
+                                      
+                                      <label for="programacion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+                                <div class="col-sm-12" id="textarea_entrega" style="display:none">
+
+                                  <div class="clearfix p-b-35"></div>
+                                 
+                                  <label for="razon_entrega" id="id-razon_entrega">Explique las razones por la cual no fue entregado</label>
+                                  <br></br>
+
+                                  <div class="fg-line">
+                                    <textarea class="form-control" id="razon_entrega" name="razon_entrega" rows="2"></textarea>
+                                    </div>
+                                </div>
+                              
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <!-- <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_costo_mensualidad_clase_grupal" data-update="costomensualidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
+                              <button type="button" class="btn btn-blanco m-r-10 f-12" id="guardar_entrega" name="guardar_entrega">Guardar</button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalCostoMensualidad-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -700,7 +878,7 @@
                         </div>
                         <form name="edit_costo_mensualidad_clase_grupal" id="edit_costo_mensualidad_clase_grupal"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <input type="hidden" id="inscripcion_id" name="inscripcion_id" value="">
+                           <input type="hidden" class ="inscripcion_id" id="inscripcion_id" name="inscripcion_id" value="">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                            <div class="col-sm-12">
@@ -983,6 +1161,14 @@
                              </td>
                              <td id="alumno-clase_grupal" class="f-14 m-l-15 capitalize" >{{ str_limit($descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalEntrega-Alumno">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
+                               <span class="f-14">Entrega</span>
+                             </td>
+                             <td id="alumno-clase_grupal" class="f-14 m-l-15 capitalize" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle perfil">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-perfil" class="zmdi {{ empty($perfil) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1029,11 +1215,6 @@
 
     total = "{{$total}}";
     puntos_referidos = "{{$puntos_referidos}}";
-
-    // $(document).on("click", function () {
-    //    var clickedBtnID = this; // or var clickedBtnID = this.id
-    //    console.log(this);
-    // });
 
     $(document).ready(function(){
 
@@ -1178,14 +1359,12 @@
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
-        //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
         animationDuration = 3100;
         }
         else {
         animationDuration = 3200;
         }
-        //$("h1").removeAttr('class');
         $(".container").addClass('animated '+animation);
 
             setTimeout(function(){
@@ -1233,7 +1412,6 @@
       limpiarMensaje();
        var direccion=$("#alumno-direccion").data('valor');
        $("#direccion").val(direccion);
-      //$("#direccion").val($("#alumno-direccion").text());
     })
 
     $('#modalCostoMensualidad-ClaseGrupal').on('show.bs.modal', function (event) {
@@ -1276,14 +1454,12 @@
           }else if(c.name=='direccion'){
              $("#alumno-"+c.name).data('valor',c.value);
              $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if(c.name=='instructor_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
 
              $("#alumno-"+c.name).text(texto);
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
 
             $("#alumno-"+c.name).text(c.value.toLowerCase());
@@ -1352,7 +1528,6 @@
     };
 
     $(".guardar").click(function(){
-        //$(this).data('formulario');
         var nFrom = $(this).attr('data-from');
         var nAlign = $(this).attr('data-align');
         var nIcons = $(this).attr('data-icon');
@@ -1453,17 +1628,8 @@
 
                     },
                     error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
+                      swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                    }
                 });
       });
 
@@ -1486,9 +1652,8 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
+
+            eliminar(id);
           }
                 });
       });
@@ -1496,12 +1661,47 @@
     $(".clase_grupal").click(function(){
         id = this.id;
 
-        $('#inscripcion_id').val(id);
+        $('.inscripcion_id').val(id);
 
         $('#costo_mensualidad').val($(this).data('costo'));
         $('#fecha_pago').val($(this).data('fecha'));
 
         $('#modalCostoMensualidad-ClaseGrupal').modal('show');
+               
+      });
+
+    $(".entrega").click(function(){
+        id = this.id;
+
+        $('.inscripcion_id').val(id);
+
+        boolean_programacion = $(this).data('programacion')
+        boolean_franela = $(this).data('franela')
+        razon_entrega = $(this).data('entrega')
+
+        $('#boolean_programacion').val(boolean_programacion);
+        $('#boolean_franela').val(boolean_franela);
+        $('#razon_entrega').val(razon_entrega);
+
+        if(boolean_programacion == 0 || boolean_franela == 0){
+          $('#textarea_entrega').show();
+        }else{
+          $('#textarea_entrega').hide();
+        }
+
+        if(boolean_programacion == 1){
+          $("#programacion-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#programacion-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        if(boolean_franela == 1){
+          $("#franela-switch").attr("checked", true); //VALOR POR DEFECTO
+        }else{
+          $("#franela-switch").attr("checked", false); //VALOR POR DEFECTO
+        }
+
+        $('#modalEntrega-ClaseGrupal').modal('show');
                
       });
     
@@ -1522,17 +1722,9 @@
 
                     },
                     error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
+
+                      swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                    }
                 });
       }
 
@@ -1591,8 +1783,8 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
                           
-                          $('#'+respuesta.id).data('costo', respuesta.costo_mensualidad);
-                          $('#'+respuesta.id).data('fecha', respuesta.fecha_pago);
+                          $('.clase-grupal-'+respuesta.id).data('costo', respuesta.costo_mensualidad);
+                          $('.clase-grupal-'+respuesta.id).data('fecha', respuesta.fecha_pago);
                           $('#fecha_pago_'+respuesta.id).text(respuesta.fecha_pago);
 
 
@@ -1617,9 +1809,124 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        finprocesado();
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }            
+
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+              }
+            });
+        });
+
+        $("#guardar_entrega").click(function(){
+            swal({   
+                    title: "¿Seguro deseas modificar la entrega?",   
+                    text: "Confirmar el cambio",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#ec6c62",   
+                    confirmButtonText: "Sí, modificar",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+            if (isConfirm) {
+
+                var route = route_update+"/entrega";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#edit_entrega_clase_grupal" ).serialize(); 
+                procesando();
+                $(".procesando").removeClass('hidden');
+                $(".procesando").addClass('show');         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          
+                          $('.clase-grupal-'+respuesta.id).data('programacion', respuesta.boolean_programacion);
+                          $('.clase-grupal-'+respuesta.id).data('franela', respuesta.boolean_franela);
+                          $('.clase-grupal-'+respuesta.id).data('entrega', respuesta.razon_entrega);
+
+
+                          if(respuesta.boolean_franela == 1 && respuesta.boolean_programacion == 1){
+
+                            iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
+                            
+                          }else{
+                            if(respuesta.boolean_franela == 0 && respuesta.boolean_programacion == 0)
+                            {
+                              iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>' + ' ' + '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                            }else{
+                              if(respuesta.boolean_franela == 1){
+                                iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
+                              }else{
+                                iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                              }
+                            }
+                          }
+
+                          $('.iconos-'+respuesta.id).html(iconos);
+
+
+                          finprocesado();
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $('#modalEntrega-ClaseGrupal').modal('hide');
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          finprocesado();
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         finprocesado();
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
@@ -1651,8 +1958,35 @@
       window.location = "{{url('/')}}/participante/alumno/perfil-evaluativo/{{$id}}"
     });
 
-   </script> 
+    $("#programacion-switch").on('change', function(){
+      if ($("#programacion-switch").is(":checked")){
+        $("#boolean_programacion").val('1');
+      }else{
+        $("#boolean_programacion").val('0');
+      }  
 
-   <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        
+      if ($("#franela-switch").is(":checked") && $("#programacion-switch").is(":checked")){
+        $('#textarea_entrega').hide();
+      }else{
+        $('#textarea_entrega').show();
+      }  
+    });
+
+    $("#franela-switch").on('change', function(){
+      if ($("#franela-switch").is(":checked")){
+        $("#boolean_franela").val('1');
+      }else{
+        $("#boolean_franela").val('0');
+      }  
+
+      if ($("#franela-switch").is(":checked") && $("#programacion-switch").is(":checked")){
+        $('#textarea_entrega').hide();
+      }else{
+        $('#textarea_entrega').show();
+      }  
+    });
+
+   </script> 
+  
 		
 @stop

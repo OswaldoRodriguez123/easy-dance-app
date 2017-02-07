@@ -385,6 +385,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/ficha','AlumnoController@updateFicha');
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
 			Route::post('participante/alumno/update/mensualidad', 'AlumnoController@updateCostoMensualidad');
+			Route::post('participante/alumno/update/entrega', 'AlumnoController@updateEntrega');
 
 			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
 

@@ -498,20 +498,7 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno['inscripcion_id']; 
-
-                                if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
-                                  $iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
-                                }else{
-                                  if($alumno['boolean_franela']){
-                                    $iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i>';
-                                  }else{
-                                    $iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i>';
-                                  }
-                                }
-
-
-                                ?>
+                                <?php $id = $alumno['inscripcion_id'];?>
 
                                 @if($alumno['tipo'] == 1)
                                   <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}">
