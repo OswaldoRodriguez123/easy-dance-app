@@ -237,6 +237,7 @@ public function PresencialesFiltros(Request $request)
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+            ->where('visitantes_presenciales.cliente','=', $request->cliente)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
         ->get();
 
@@ -365,6 +366,7 @@ public function PresencialesFiltros(Request $request)
             ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
             ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
+            ->where('visitantes_presenciales.cliente','=', $request->cliente)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
         ->get();
 
