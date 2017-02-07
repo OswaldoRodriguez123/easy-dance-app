@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Cita;
+use App\Academia;
 use App\Alumno;
 use App\Instructor;
 use App\Asistencia;
@@ -123,7 +124,7 @@ class CitaController extends BaseController {
 
     $messages = [
 
-        'alumno_id.required' => 'Ups! El Cliente  es requerido',
+        'alumno_id.required' => 'Ups! El Cliente es requerido',
         'fecha.required' => 'Ups! La fecha es requerida',
         'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
         'hora_final.required' => 'Ups! La hora final es requerida',
@@ -177,6 +178,56 @@ class CitaController extends BaseController {
         $cita->boolean_mostrar = $boolean_mostrar;
 
         if($cita->save()){
+
+            if($cita->boolean_mostrar == 1){
+
+                $academia = Academia::find(Auth::user()->academia_id);
+                $alumno = Alumno::find($request->alumno_id);
+                $instructor = Instructor::find($request->instructor_id);
+
+                $subj = 'Han reservado una Cita';
+
+                $array = [
+                   'nombre_instructor' => $instructor->nombre,
+                   'apellido_instructor' => $instructor->apellido,
+                   'correo' => $academia->correo,
+                   'academia' => $academia->nombre,
+                   'nombre_alumno' => $alumno->nombre,
+                   'apellido_alumno' => $alumno->apellido,
+                   'cedula' => $alumno->identificacion,
+                   'hora_inicio' => $request->hora_inicio,
+                   'hora_final' => $request->hora_final,
+                   'fecha' => $fecha,
+                   'subj' => $subj
+                ];
+
+                Mail::send('correo.cita_academia', $array, function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo']);
+                });
+
+                $subj2 = 'Has reservado una Cita';
+
+
+                $array2 = [
+                   'nombre_instructor' => $instructor->nombre,
+                   'apellido_instructor' => $instructor->apellido,
+                   'correo' => $alumno->correo,
+                   'academia' => $academia->nombre,
+                   'nombre_alumno' => $alumno->nombre,
+                   'hora_inicio' => $request->hora_inicio,
+                   'hora_final' => $request->hora_final,
+                   'fecha' => $fecha,
+                   'subj' => $subj2
+                ];
+
+                Mail::send('correo.cita_alumno', $array2, function($msj) use ($array2){
+                        $msj->subject($array2['subj']);
+                        $msj->to($array2['correo']);
+                });
+
+            }
+
             Session::forget('boolean_mostrar');
         	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
