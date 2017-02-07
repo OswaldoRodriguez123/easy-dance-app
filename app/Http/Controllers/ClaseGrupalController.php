@@ -193,7 +193,7 @@ class ClaseGrupalController extends BaseController {
                 $dia_string = '';
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $dia_de_semana = $fecha->dayOfWeek;
+                $i = $fecha->dayOfWeek;
 
                 if($i == 1){
 
