@@ -257,7 +257,7 @@
                                 <?php $id = $visitante->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa"> 
-                                        @if($presencial->cliente)
+                                        @if($visitante->cliente)
                                             <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
                                         @else
                                             <i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>

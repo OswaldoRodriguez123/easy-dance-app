@@ -193,7 +193,19 @@
 
                 <div style="padding: 10px">
 
-                <p class="f-25 f-700" style="color:#5e5e5e">{{$enlace['nombre']}}</p>
+                <p class="f-25 f-700" style="color:#5e5e5e">{{$enlace['nombre']}} 
+
+
+                @if($enlace['tipo'] == 1)
+                  @if($enlace['fecha_inicio'] < \Carbon\Carbon::Now())
+
+                  <span class="f-16"> ( No disponible )</span>
+
+                  @endif
+                @endif
+
+
+                </p>
               
 
                 @if($enlace['descripcion'])
