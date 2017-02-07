@@ -666,7 +666,7 @@
 
         $(document).ready(function() {
 
-          var = instructores = <?php echo json_encode($instructores_academia);?>;
+          var instructores = <?php echo json_encode($instructores_academia);?>;
 
           if(instructores)
           {
