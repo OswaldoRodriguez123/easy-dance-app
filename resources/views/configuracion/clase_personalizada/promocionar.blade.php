@@ -405,7 +405,7 @@
                         
                         
 
-                        <div class="div_descripcion">
+                        <div class="div_descripcion" style="display: none">
 
                         <div class="clearfix p-b-20"></div>
 
@@ -448,7 +448,7 @@
 
                         @if(count($instructores_academia) > 0)
 
-                        <div class="div_promocional">
+                        <div class="div_promocional" style="display: none">
 
                         <div class="clearfix p-b-20"></div>
                         <div class="clearfix p-b-20"></div>
@@ -464,7 +464,7 @@
 
                         
 
-                        <div class="circulos_instructor">
+                        <div class="circulos_instructor" style="display: none">
 
                         <div class="clearfix p-b-20"></div>
 
@@ -514,7 +514,7 @@
                         
                         
 
-                        <div class="div_resumen">
+                        <div class="div_resumen" style="display: none">
 
                         <div class="clearfix p-b-20"></div>
 
@@ -534,7 +534,7 @@
 
                         @if(count($instructores_academia) > 0)
 
-                        <div class="div_testimonial">
+                        <div class="div_testimonial" style="display: none">
 
                         <div class="clearfix p-b-20"></div>
                         <div class="clearfix p-b-20"></div>
@@ -726,14 +726,8 @@
               $(".circulos_instructor").hide();
             }
 
-          }else{
-            $(".div_resumen").hide();
-            $(".circulos_instructor").hide();
-            $(".div_descripcion").hide();
-            $(".div_testimonial").hide();
-            $(".div_promocional").hide();
           }
-
+           
           condiciones = <?php echo json_encode($config_clase_personalizada->condiciones);?>;
           $("#pre_condiciones").html(nl2br(condiciones));
 
