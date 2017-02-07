@@ -666,10 +666,11 @@
 
         $(document).ready(function() {
 
-          var = instructor = <?php echo json_encode($instructores_academia[0]);?>;
+          var = instructores = <?php echo json_encode($instructores_academia);?>;
 
-          if(instructor)
+          if(instructores)
           {
+            var instructor = instructores[0];
 
             tmp = instructor.video_promocional;
             var video_promocional = tmp.split('=');
@@ -743,6 +744,7 @@
           });
 
         });
+
 
       $("#condiciones").on('change', function(){
           if ($("#condiciones").is(":checked")){
@@ -852,8 +854,6 @@
             {
               $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
               $(".div_testimonial").show();
-
-              // document.getElementById('video_testimonial').contentDocument.location.reload(true);
 
             }else{
               $(".div_testimonial").hide();
