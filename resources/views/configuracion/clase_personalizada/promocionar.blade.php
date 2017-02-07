@@ -663,10 +663,9 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
+        var instructores = <?php echo json_encode($instructores_academia);?>;
 
         $(document).ready(function() {
-
-          var instructores = <?php echo json_encode($instructores_academia);?>;
 
           if(instructores)
           {
