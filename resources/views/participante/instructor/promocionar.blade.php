@@ -550,21 +550,6 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-        console.log("{{$instructores_academia->id}}");
-
-      function errores(merror){
-        console.log(merror);
-        var campo = ["alumno_id"];
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              //console.log(this);
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-       }
 
        $(".a-prevent").click(function(){
 

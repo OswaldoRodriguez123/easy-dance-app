@@ -84,38 +84,66 @@
                                         <input type="checkbox" value="" id="today">
                                         <i class="input-helper"></i>                                    
                                     </label>
-                                </div>                            
+                                </div>
 
+                                <br>
+
+                                <label for="nombre">Meses</label>
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                    <div class="fg-line">
-                                            <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
+                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                  <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" name="meses" id="meses" data-live-search="true">
+
+                                      <option value="01/01/2017-31/01/2017">Enero</option>
+                                      <option value="01/02/2017-31/02/2017">Febrero</option>
+                                      <option value="01/03/2016-31/03/2016">Marzo</option>
+                                      <option value="01/04/2016-31/04/2016">Abril</option>
+                                      <option value="01/05/2016-31/05/2016">Mayo</option>
+                                      <option value="01/06/2016-31/06/2016">Junio</option>
+                                      <option value="01/07/2016-31/07/2016">Julio</option>
+                                      <option value="01/08/2016-31/08/2016">Agosto</option>
+                                      <option value="01/09/2016-31/09/2016">Septiembre</option>
+                                      <option value="01/10/2016-31/10/2016">Octubre</option>
+                                      <option value="01/11/2016-31/11/2016">Noviembre</option>
+                                      <option value="01/12/2016-31/12/2016">Diciembre</option>
+                                    
+                                    </select>
+                                  </div>
+                                  </div>
+                                </div>   
+
+                                <br>
+
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Personalizar</label>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                        <div class="panel panel-collapse">
+                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                      <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                                    </a>
+                                                </h4>
+                                            </div>
+
+                                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                <div class="panel-body">
+                                                                 
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                        <div class="fg-line">
+                                                                <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                      <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="meses" id="meses" data-live-search="true">
-
-                                          <option value="01/01/2016-31/01/2016">Enero</option>
-                                          <option value="01/02/2016-31/02/2016">Febrero</option>
-                                          <option value="01/03/2016-31/03/2016">Marzo</option>
-                                          <option value="01/04/2016-31/04/2016">Abril</option>
-                                          <option value="01/05/2016-31/05/2016">Mayo</option>
-                                          <option value="01/06/2016-31/06/2016">Junio</option>
-                                          <option value="01/07/2016-31/07/2016">Julio</option>
-                                          <option value="01/08/2016-31/08/2016">Agosto</option>
-                                          <option value="01/09/2016-31/09/2016">Septiembre</option>
-                                          <option value="01/10/2016-31/10/2016">Octubre</option>
-                                          <option value="01/11/2016-31/11/2016">Noviembre</option>
-                                          <option value="01/12/2016-31/12/2016">Diciembre</option>
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                                </div>
                                 <!--<a class="btn-blanco m-r-10 f-25" id="personalizar"> Personalizar <i class="zmdi zmdi-calendar"></i></a>-->
                             </div>
 
@@ -123,6 +151,7 @@
 
                         <div class="col-md-6">
                             <h2>Visitas Presenciales</h2>
+                            <h4>Total Transferidos: <span id ="total"> {{$total}}</span></h4>
                             <hr>
                             <!-- <ul class="actions">
                                 <li class="dropdown action-show">
@@ -201,6 +230,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="cliente"></th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
@@ -213,6 +243,7 @@
                             @foreach ($presenciales as $presencial)
                                 <?php $id = $presencial->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> @if($presencial->cliente)<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$presencial->fecha}}</td>
                                     <td class="text-center previa">{{$presencial->nombre}}</td>
                                     <td class="text-center previa">{{$presencial->apellido}} </td>
@@ -264,16 +295,15 @@
         processing: true,
         serverSide: false,
         pageLength: 50, 
-        // paging:false, 
-        order: [[0, 'desc']],
+        paging:false, 
+        order: [[1, 'desc']],
         fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
+          if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
              $('.dataTables_paginate').show();
-          }*/
+          }
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
@@ -369,12 +399,21 @@
                     dataType: 'json',
                     data: { Fecha:Fecha},
                     success:function(respuesta){
+
+                        $('#total').text(respuesta.total)
                         finprocesado();
 
                         t.clear().draw();
 
                         $.each(respuesta.presenciales, function (index, array) {
+                            if(array.cliente)
+                            {
+                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                            }else{
+                                cliente = '';
+                            }
                             var rowNode=t.row.add( [
+                            ''+cliente+'',
                             ''+array.fecha+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
@@ -454,13 +493,20 @@
                     dataType: 'json',
                     data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
                     success:function(respuesta){
-
+                        $('#total').text(respuesta.total)
                         finprocesado();
 
                         t.clear().draw();
 
                         $.each(respuesta.presenciales, function (index, array) {
+                            if(array.cliente)
+                            {
+                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                            }else{
+                                cliente = '';
+                            }
                             var rowNode=t.row.add( [
+                            ''+cliente+'',
                             ''+array.fecha+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
@@ -546,13 +592,20 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { mesActual: 'mes_actual' },
                             success:function(respuesta){
-
+                                $('#total').text(respuesta.total)
                                 finprocesado();
 
                                 t.clear().draw();
 
                                 $.each(respuesta.presenciales, function (index, array) {
+                                    if(array.cliente)
+                                    {
+                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                    }else{
+                                        cliente = '';
+                                    }
                                     var rowNode=t.row.add( [
+                                    ''+cliente+'',
                                     ''+array.fecha+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
@@ -636,13 +689,20 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { mesPasado: 'mes_pasado' },
                             success:function(respuesta){
-
+                                $('#total').text(respuesta.total)
                                 finprocesado();
 
                                 t.clear().draw();
 
                                 $.each(respuesta.presenciales, function (index, array) {
+                                    if(array.cliente)
+                                    {
+                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                    }else{
+                                        cliente = '';
+                                    }
                                     var rowNode=t.row.add( [
+                                    ''+cliente+'',
                                     ''+array.fecha+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
@@ -727,13 +787,20 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: { today: 'today' },
                             success:function(respuesta){
-
+                                $('#total').text(respuesta.total)
                                 finprocesado();
 
                                 t.clear().draw();
 
                                 $.each(respuesta.presenciales, function (index, array) {
+                                    if(array.cliente)
+                                    {
+                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                    }else{
+                                        cliente = '';
+                                    }
                                     var rowNode=t.row.add( [
+                                    ''+cliente+'',
                                     ''+array.fecha+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
@@ -850,19 +917,14 @@ FILTROS PARA GRAFCAS
         });
 
 
+      $('#collapseTwo').on('show.bs.collapse', function () {
+        $('input:checkbox').attr('checked',false);
+        $('input:checkbox').attr("disabled","disabled");
+      })
 
-        sparklinePie('presenciales-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
-
-        function sparklinePie(id, values, width, height, sliceColors) {
-            $('.'+id).sparkline(values, {
-                type: 'pie',
-                width: width,
-                height: height,
-                sliceColors: sliceColors,
-                offset: 0,
-                borderWidth: 0
-            });
-        }
+      $('#collapseTwo').on('hide.bs.collapse', function () {
+        $('input:checkbox').removeAttr("disabled");
+      })
 
 
 

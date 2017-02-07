@@ -395,21 +395,6 @@
           }    
         });
 
-
-      function errores(merror){
-        console.log(merror);
-        var campo = ["alumno_id"];
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              //console.log(this);
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-       }
-
        $(".a-prevent").click(function(){
 
         $('body,html').animate({scrollTop : 0}, 500);

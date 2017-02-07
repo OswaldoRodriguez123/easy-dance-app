@@ -97,34 +97,61 @@
                                     </label>
                                 </div>                            
 
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                    <div class="fg-line">
-                                            <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
-                                    </div>
-                                </div>
+                                <br>
 
+                                <label for="nombre">Meses</label>
                                 <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                      <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="meses" id="meses" data-live-search="true">
+                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                  <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" name="meses" id="meses" data-live-search="true">
 
-                                          <option value="01/01/2016-31/01/2016">Enero</option>
-                                          <option value="01/02/2016-31/02/2016">Febrero</option>
-                                          <option value="01/03/2016-31/03/2016">Marzo</option>
-                                          <option value="01/04/2016-31/04/2016">Abril</option>
-                                          <option value="01/05/2016-31/05/2016">Mayo</option>
-                                          <option value="01/06/2016-31/06/2016">Junio</option>
-                                          <option value="01/07/2016-31/07/2016">Julio</option>
-                                          <option value="01/08/2016-31/08/2016">Agosto</option>
-                                          <option value="01/09/2016-31/09/2016">Septiembre</option>
-                                          <option value="01/10/2016-31/10/2016">Octubre</option>
-                                          <option value="01/11/2016-31/11/2016">Noviembre</option>
-                                          <option value="01/12/2016-31/12/2016">Diciembre</option>
-                                        
-                                        </select>
-                                      </div>
+                                      <option value="01/01/2017-31/01/2017">Enero</option>
+                                      <option value="01/02/2017-31/02/2017">Febrero</option>
+                                      <option value="01/03/2016-31/03/2016">Marzo</option>
+                                      <option value="01/04/2016-31/04/2016">Abril</option>
+                                      <option value="01/05/2016-31/05/2016">Mayo</option>
+                                      <option value="01/06/2016-31/06/2016">Junio</option>
+                                      <option value="01/07/2016-31/07/2016">Julio</option>
+                                      <option value="01/08/2016-31/08/2016">Agosto</option>
+                                      <option value="01/09/2016-31/09/2016">Septiembre</option>
+                                      <option value="01/10/2016-31/10/2016">Octubre</option>
+                                      <option value="01/11/2016-31/11/2016">Noviembre</option>
+                                      <option value="01/12/2016-31/12/2016">Diciembre</option>
+                                    
+                                    </select>
+                                  </div>
+                                  </div>
+                                </div>   
+
+                                <br>
+
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Personalizar</label>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                        <div class="panel panel-collapse">
+                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                      <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                                    </a>
+                                                </h4>
+                                            </div>
+
+                                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                <div class="panel-body">
+                                                                 
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                        <div class="fg-line">
+                                                                <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!--<a class="btn-blanco m-r-10 f-25" id="personalizar"> Personalizar <i class="zmdi zmdi-calendar"></i></a>-->
@@ -134,6 +161,7 @@
 
                         <div class="col-md-6">
                             <h2>Visitas Presenciales</h2>
+                            <h4>Total Transferidos: <span id ="total"> {{$total}}</span></h4>
                             <hr>
                             <!-- <ul class="actions">
                                 <li class="dropdown action-show">
@@ -381,7 +409,7 @@
                     data: "&Fecha="+Fecha+"&instructor_id="+$('#instructor_id').val(),
                     success:function(respuesta){
 
-
+                        $('#total').text(respuesta.total)
                         finprocesado();
 
                         t.clear().draw();
@@ -475,7 +503,7 @@
                     dataType: 'json',
                     data: "&fechaInicio="+fechaInicio+"&fechaFin="+fechaFin+"&rango=rango&instructor_id="+$('#instructor_id').val(),
                     success:function(respuesta){
-
+                        $('#total').text(respuesta.total)
                         finprocesado();
 
                         t.clear().draw();
@@ -574,7 +602,7 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: "&mesActual=mes_actual&instructor_id="+$('#instructor_id').val(),
                             success:function(respuesta){
-
+                                $('#total').text(respuesta.total)
                                 finprocesado();
 
                                 t.clear().draw();
@@ -671,7 +699,7 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: "&mesPasado=mes_pasado&instructor_id="+$('#instructor_id').val(),
                             success:function(respuesta){
-
+                                $('#total').text(respuesta.total)
                                 finprocesado();
 
                                 t.clear().draw();
@@ -769,7 +797,7 @@ FILTROS PARA GRAFCAS
                             dataType: 'json',
                             data: "&today=today&instructor_id="+$('#instructor_id').val(),
                             success:function(respuesta){
-
+                                $('#total').text(respuesta.total)
                                 finprocesado();
 
                                 t.clear().draw();
@@ -900,18 +928,14 @@ FILTROS PARA GRAFCAS
 
 
 
-        sparklinePie('presenciales-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
+      $('#collapseTwo').on('show.bs.collapse', function () {
+        $('input:checkbox').attr('checked',false);
+        $('input:checkbox').attr("disabled","disabled");
+      })
 
-        function sparklinePie(id, values, width, height, sliceColors) {
-            $('.'+id).sparkline(values, {
-                type: 'pie',
-                width: width,
-                height: height,
-                sliceColors: sliceColors,
-                offset: 0,
-                borderWidth: 0
-            });
-        }
+      $('#collapseTwo').on('hide.bs.collapse', function () {
+        $('input:checkbox').removeAttr("disabled");
+      })
 
 
 

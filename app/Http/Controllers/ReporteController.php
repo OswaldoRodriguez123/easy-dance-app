@@ -169,9 +169,14 @@ class ReporteController extends BaseController
 
 		$presenciales = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id')
+            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id','visitantes_presenciales.cliente')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
         ->get();
+
+        $total = DB::table('visitantes_presenciales')
+            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+            ->where('visitantes_presenciales.cliente','=', 1)
+        ->count();
 
 
         $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
@@ -197,8 +202,95 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');
 
-        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge]);
+        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total]);
 	}
+
+public function PresencialesFiltros(Request $request)
+    {
+        # code...
+        if($request->mesActual){
+            $start = Carbon::now()->startOfMonth()->toDateString();
+            $end = Carbon::now()->endOfMonth()->toDateString();  
+        }
+        if($request->mesPasado){
+            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+
+        }
+        if($request->today){
+            $start = Carbon::now()->toDateString();
+            $end = Carbon::now()->toDateString();  
+
+        }
+        if($request->rango){
+            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
+        }
+
+        if($request->Fecha){
+            $fechas = explode('-', $request->Fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
+        }
+
+        $presenciales = DB::table('visitantes_presenciales')
+            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
+            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+        ->get();
+
+        $total = DB::table('visitantes_presenciales')
+            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+            ->where('visitantes_presenciales.cliente','=', 1)
+        ->count();
+
+        // $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+        //     ->selectRaw('sexo, count(sexo) as CantSex')
+        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+        //     ->groupBy('visitantes_presenciales.sexo')
+        //     ->get();
+
+
+        $mujeres = 0;
+        $hombres = 0;
+
+        foreach($presenciales as $presencial){
+            if($presencial->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+        }
+
+        $forAge = DB::select("SELECT CASE
+                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
+                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
+                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
+                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
+                            WHEN age >= 51 THEN '+51'
+                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
+                        END as age_range, COUNT(*) AS count
+                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
+                        FROM visitantes_presenciales
+                        LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
+                        WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
+                        GROUP BY age_range
+                        ORDER BY age_range");
+
+        return response()->json(
+            [
+                'presenciales'      => $presenciales,
+                'mujeres'           => $mujeres,
+                'hombres'           => $hombres,
+                'edades'            => $forAge,
+                'total'             => $total
+            ]);
+
+    }
+
 
     public function Promotores(){
 
@@ -208,6 +300,11 @@ class ReporteController extends BaseController
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
         ->get();
 
+        $total = DB::table('visitantes_presenciales')
+            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+            ->where('visitantes_presenciales.cliente','=', 1)
+        ->count();
+
 
         $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->selectRaw('sexo, count(sexo) as CantSex')
@@ -232,7 +329,7 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');
 
-        return view('reportes.promotores')->with(['visitantes' => $visitantes, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('reportes.promotores')->with(['visitantes' => $visitantes, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'total' => $total]);
     }
 
     public function PromotoresFiltros(Request $request)
@@ -270,6 +367,13 @@ class ReporteController extends BaseController
             ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
         ->get();
+
+        $total = DB::table('visitantes_presenciales')
+            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+            ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
+            ->where('visitantes_presenciales.cliente','=', 1)
+        ->count();
 
         // $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
         //     ->selectRaw('sexo, count(sexo) as CantSex')
@@ -311,87 +415,8 @@ class ReporteController extends BaseController
                 'presenciales'      => $presenciales,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
-                'edades'            => $forAge
-            ]);
-
-    }
-
-
-public function PresencialesFiltros(Request $request)
-    {
-        # code...
-        if($request->mesActual){
-            $start = Carbon::now()->startOfMonth()->toDateString();
-            $end = Carbon::now()->endOfMonth()->toDateString();  
-        }
-        if($request->mesPasado){
-            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
-
-        }
-        if($request->today){
-            $start = Carbon::now()->toDateString();
-            $end = Carbon::now()->toDateString();  
-
-        }
-        if($request->rango){
-            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-        }
-
-        if($request->Fecha){
-            $fechas = explode('-', $request->Fecha);
-            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-        }
-
-        $presenciales = DB::table('visitantes_presenciales')
-            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        ->get();
-
-        // $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->selectRaw('sexo, count(sexo) as CantSex')
-        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        //     ->groupBy('visitantes_presenciales.sexo')
-        //     ->get();
-
-
-        $mujeres = 0;
-        $hombres = 0;
-
-        foreach($presenciales as $presencial){
-            if($presencial->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
-            }
-        }
-
-        $forAge = DB::select("SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-                            WHEN age >= 51 THEN '+51'
-                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM visitantes_presenciales
-                        LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
-                        WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
-                        GROUP BY age_range
-                        ORDER BY age_range");
-
-        return response()->json(
-            [
-                'presenciales'      => $presenciales,
-                'mujeres'           => $mujeres,
-                'hombres'           => $hombres,
-                'edades'            => $forAge
+                'edades'            => $forAge,
+                'total'             => $total
             ]);
 
     }

@@ -141,7 +141,7 @@
 
                     <ul>
                         <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
-                        @if($academia->facebook)
+                        <!-- @if($academia->facebook)
                         <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">Facebook</a></li>
                         @endif
 
@@ -151,6 +151,31 @@
 
                         @if($academia->instagram)
                         <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">Instagram</a></li>
+                        @endif -->
+
+                        @if($academia->facebook)
+                          @if (!filter_var($academia->facebook, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">{{ str_limit($academia->facebook, $limit = 25, $end = '...') }}</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$academia->facebook}}">https://www.facebook.com/...</a></li>
+                          @endif
+                        @endif
+
+                        @if($academia->twitter)
+
+                          @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">https://www.twitter.com/{{$academia->twitter}}</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">@ {{$academia->twitter}}</a></li>
+                          @endif
+                        @endif
+
+                        @if($academia->instagram)
+                          @if (!filter_var($academia->instagram, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">{{$academia->instagram}}</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">@ {{$academia->instagram}}</a></li>
+                          @endif
                         @endif
 
                         @if($academia->linkedin)
@@ -638,13 +663,12 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
-        var condiciones = <?php echo json_encode($config_clase_personalizada->condiciones);?>;
 
         $(document).ready(function() {
 
-          instructor = "{{{ $instructores_academia[0] or 'Default' }}}";
+          var = instructor = <?php echo json_encode($instructores_academia[0]);?>;
 
-          if(instructor != 'Default')
+          if(instructor)
           {
 
             tmp = instructor.video_promocional;
@@ -709,16 +733,16 @@
             $(".div_promocional").hide();
           }
 
+          condiciones = <?php echo json_encode($config_clase_personalizada->condiciones);?>;
+          $("#pre_condiciones").html(nl2br(condiciones));
 
-              $("#pre_condiciones").html(nl2br(condiciones));
+          $(".guardar").attr("disabled","disabled");
 
-              $(".guardar").attr("disabled","disabled");
+          $(".guardar").css({
+              "opacity": ("0.2")
+          });
 
-              $(".guardar").css({
-                  "opacity": ("0.2")
-              });
-
-            });
+        });
 
       $("#condiciones").on('change', function(){
           if ($("#condiciones").is(":checked")){
@@ -735,20 +759,6 @@
           }    
         });
 
-
-      function errores(merror){
-        console.log(merror);
-        var campo = ["alumno_id"];
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              //console.log(this);
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-       }
 
        $(".a-prevent").click(function(){
 
@@ -775,12 +785,9 @@
 
           id = this.id;
 
-          var instructores = <?php echo json_encode($instructores_academia);?>;
-
           var instructor = $.grep(instructores, function(e){ return e.id == id; });
 
           $.each(instructor, function (index, array) {
-            console.log(array.descripcion);
 
             if(array.descripcion)
             {
@@ -801,21 +808,21 @@
             if(array.tiempo_experiencia_instructor != null)
             {
 
-            $(".circulos_instructor").show();
+              $(".circulos_instructor").show();
 
-            $("#tiempo_experiencia_instructor").html(array.tiempo_experiencia_instructor);
-            $("#genero_instructor").html(array.genero_instructor);
-            $("#cantidad_horas").html(array.cantidad_horas);
-            $("#titulos_instructor").html(array.titulos_instructor);
-            $("#invitacion_evento").html(array.invitacion_evento);
-            $("#organizador").html(array.organizador);
+              $("#tiempo_experiencia_instructor").html(array.tiempo_experiencia_instructor);
+              $("#genero_instructor").html(array.genero_instructor);
+              $("#cantidad_horas").html(array.cantidad_horas);
+              $("#titulos_instructor").html(array.titulos_instructor);
+              $("#invitacion_evento").html(array.invitacion_evento);
+              $("#organizador").html(array.organizador);
 
-            $("#tiempo_experiencia_bailador").html(array.tiempo_experiencia_bailador);
-            $("#genero_bailador").html(array.genero_bailador);
-            $("#participacion_coreografia").html(array.participacion_coreografia);
-            $("#montajes").html(array.montajes);
-            $("#titulos_bailador").html(array.titulos_bailador);
-            $("#participacion_escenario").html(array.participacion_escenario);
+              $("#tiempo_experiencia_bailador").html(array.tiempo_experiencia_bailador);
+              $("#genero_bailador").html(array.genero_bailador);
+              $("#participacion_coreografia").html(array.participacion_coreografia);
+              $("#montajes").html(array.montajes);
+              $("#titulos_bailador").html(array.titulos_bailador);
+              $("#participacion_escenario").html(array.participacion_escenario);
 
             }else{
               $(".circulos_instructor").hide();
@@ -900,29 +907,6 @@
               $("#youtube").hide();
             }
 
-            
-            
-            // $("#alumno-nombre").text(array.nombre)
-            // $("#alumno-apellido").text(array.apellido)
-            // $("#alumno-fecha_nacimiento").text(array.fecha_nacimiento)
-            // $("#alumno-correo").text(array.correo)
-            // $("#alumno-telefono").text(array.telefono)
-            // $("#alumno-celular").text(array.celular)
-            // $("#alumno-direccion").text(array.direccion)
-
-            // if(array.sexo=='F'){
-
-            //   $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/1.jpg');
-
-            // }
-
-            // else{
-
-            //   $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/2.jpg');
-
-            // }
-         
-
             });
 
         });
@@ -947,30 +931,5 @@
           return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
       }
 
-
-            /*$(document).ready(function(){
-
-                $('li').hover(function(){
-                    //alert('prueba');
-                    var animation = "bounceIn";
-                    var cardImg = $(this).closest('.tab-nav').find('li');
-                    if (animation === "hinge") {
-                        animationDuration = 2100;
-                    }
-                    else {
-                        animationDuration = 1200;
-                    }
-                    
-                    cardImg.removeAttr('class');
-                    cardImg.addClass('animated '+animation);
-                    
-                    setTimeout(function(){
-                        cardImg.removeClass(animation);
-                    }, animationDuration);
-                });
-            });*/
-
-            
-
-        </script>
+    </script>
 @stop        

@@ -250,7 +250,7 @@
               <a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>
             </li>    
             <li data-hovercolor="#f44336">
-              <a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Guía de contactos </h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a>
+              <a href="{{url('/')}}/reportes/promotores"><h2 data-type="mText" class="sti-item">Promotores </h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a>
             </li>
             <li data-hovercolor="#f44336">
               <a data-toggle="modal" href="{{url('/')}}/reportes/estatus_alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a>

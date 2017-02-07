@@ -82,6 +82,7 @@ class AgendarController extends BaseController
                     ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
                     ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
                     ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
                     ->where('horario_clase_grupales.deleted_at', '=', null)
             ->get();
 

@@ -102,8 +102,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="meses" id="meses" data-live-search="true">
 
-                                          <option value="01/01/2016-31/01/2016">Enero</option>
-                                          <option value="01/02/2016-31/02/2016">Febrero</option>
+                                          <option value="01/01/2017-31/01/2017">Enero</option>
+                                          <option value="01/02/2017-31/02/2017">Febrero</option>
                                           <option value="01/03/2016-31/03/2016">Marzo</option>
                                           <option value="01/04/2016-31/04/2016">Abril</option>
                                           <option value="01/05/2016-31/05/2016">Mayo</option>
