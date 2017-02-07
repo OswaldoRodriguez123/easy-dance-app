@@ -147,7 +147,10 @@
                                                         </select>
                                                       </div>
                                                       </div>
-                                                    </div>   
+                                                    </div>  
+
+                                                    <div class="clearfix p-b-35"></div>
+                                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div> 
 
                                                 </div>
                                             </div>
@@ -253,7 +256,13 @@
                             @foreach ($visitantes as $visitante)
                                 <?php $id = $visitante->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> @if($visitante->cliente)<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa"> 
+                                        @if($presencial->cliente)
+                                            <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                        @else
+                                            <i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                        @endif
+                                    </td>
                                     <td class="text-center previa">{{$visitante->fecha}}</td>
                                     <td class="text-center previa">{{$visitante->nombre}}</td>
                                     <td class="text-center previa">{{$visitante->apellido}} </td>
@@ -419,9 +428,9 @@
 
                             if(array.cliente)
                             {
-                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                             }else{
-                                cliente = '';
+                                cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             }
                             var rowNode=t.row.add( [
                             ''+cliente+'',
@@ -514,9 +523,9 @@
 
                             if(array.cliente)
                             {
-                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                             }else{
-                                cliente = '';
+                                cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             }
                             var rowNode=t.row.add( [
                             ''+cliente+'',
@@ -608,9 +617,9 @@
                         $.each(respuesta.presenciales, function (index, array) {
                             if(array.cliente)
                             {
-                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                             }else{
-                                cliente = '';
+                                cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             }
                             var rowNode=t.row.add( [
                             ''+cliente+'',
@@ -708,9 +717,9 @@ FILTROS PARA GRAFCAS
                                 $.each(respuesta.presenciales, function (index, array) {
                                     if(array.cliente)
                                     {
-                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                        cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     }else{
-                                        cliente = '';
+                                        cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     }
                                     var rowNode=t.row.add( [
                                     ''+cliente+'',
@@ -806,9 +815,9 @@ FILTROS PARA GRAFCAS
                                 $.each(respuesta.presenciales, function (index, array) {
                                     if(array.cliente)
                                     {
-                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                        cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     }else{
-                                        cliente = '';
+                                        cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     }
                                     var rowNode=t.row.add( [
                                     ''+cliente+'',
@@ -905,9 +914,9 @@ FILTROS PARA GRAFCAS
                                 $.each(respuesta.presenciales, function (index, array) {
                                     if(array.cliente)
                                     {
-                                        cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                                        cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     }else{
-                                        cliente = '';
+                                        cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     }
                                     var rowNode=t.row.add( [
                                     ''+cliente+'',
@@ -1036,6 +1045,10 @@ FILTROS PARA GRAFCAS
       $('#collapseTwo').on('hide.bs.collapse', function () {
         $('input:checkbox').removeAttr("disabled");
       })
+
+      function collapse_minus(collaps){
+       $('#'+collaps).collapse('hide');
+      }
 
 
 
