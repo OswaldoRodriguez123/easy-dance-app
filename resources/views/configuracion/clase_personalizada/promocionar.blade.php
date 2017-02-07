@@ -354,7 +354,7 @@
 
                         
 
-                        <div class="circulos_instructor">
+                        <div class="circulos_instructor" style="display: none">
 
                         <div class="clearfix p-b-20"></div>
 
