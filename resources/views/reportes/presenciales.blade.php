@@ -88,33 +88,6 @@
 
                                 <br>
 
-                                <label for="nombre">Meses</label>
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                  <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" name="meses" id="meses" data-live-search="true">
-
-                                      <option value="01/01/2017-31/01/2017">Enero</option>
-                                      <option value="01/02/2017-31/02/2017">Febrero</option>
-                                      <option value="01/03/2016-31/03/2016">Marzo</option>
-                                      <option value="01/04/2016-31/04/2016">Abril</option>
-                                      <option value="01/05/2016-31/05/2016">Mayo</option>
-                                      <option value="01/06/2016-31/06/2016">Junio</option>
-                                      <option value="01/07/2016-31/07/2016">Julio</option>
-                                      <option value="01/08/2016-31/08/2016">Agosto</option>
-                                      <option value="01/09/2016-31/09/2016">Septiembre</option>
-                                      <option value="01/10/2016-31/10/2016">Octubre</option>
-                                      <option value="01/11/2016-31/11/2016">Noviembre</option>
-                                      <option value="01/12/2016-31/12/2016">Diciembre</option>
-                                    
-                                    </select>
-                                  </div>
-                                  </div>
-                                </div>   
-
-                                <br>
-
                                  <div class="form-group fg-line">
                                     <label for="nombre">Personalizar</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -137,6 +110,33 @@
                                                                 <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
                                                         </div>
                                                     </div>
+
+                                                    <br>
+
+                                                    <label for="nombre">Meses</label>
+                                                    <div class="input-group">
+                                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                      <div class="fg-line">
+                                                      <div class="select">
+                                                        <select class="selectpicker" name="meses" id="meses" data-live-search="true">
+
+                                                          <option value="01/01/2017-31/01/2017">Enero</option>
+                                                          <option value="01/02/2017-31/02/2017">Febrero</option>
+                                                          <option value="01/03/2016-31/03/2016">Marzo</option>
+                                                          <option value="01/04/2016-31/04/2016">Abril</option>
+                                                          <option value="01/05/2016-31/05/2016">Mayo</option>
+                                                          <option value="01/06/2016-31/06/2016">Junio</option>
+                                                          <option value="01/07/2016-31/07/2016">Julio</option>
+                                                          <option value="01/08/2016-31/08/2016">Agosto</option>
+                                                          <option value="01/09/2016-31/09/2016">Septiembre</option>
+                                                          <option value="01/10/2016-31/10/2016">Octubre</option>
+                                                          <option value="01/11/2016-31/11/2016">Noviembre</option>
+                                                          <option value="01/12/2016-31/12/2016">Diciembre</option>
+                                                        
+                                                        </select>
+                                                      </div>
+                                                      </div>
+                                                    </div>   
 
                                                 </div>
                                             </div>

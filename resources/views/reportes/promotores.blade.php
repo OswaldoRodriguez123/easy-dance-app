@@ -99,33 +99,6 @@
 
                                 <br>
 
-                                <label for="nombre">Meses</label>
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                  <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" name="meses" id="meses" data-live-search="true">
-
-                                      <option value="01/01/2017-31/01/2017">Enero</option>
-                                      <option value="01/02/2017-31/02/2017">Febrero</option>
-                                      <option value="01/03/2016-31/03/2016">Marzo</option>
-                                      <option value="01/04/2016-31/04/2016">Abril</option>
-                                      <option value="01/05/2016-31/05/2016">Mayo</option>
-                                      <option value="01/06/2016-31/06/2016">Junio</option>
-                                      <option value="01/07/2016-31/07/2016">Julio</option>
-                                      <option value="01/08/2016-31/08/2016">Agosto</option>
-                                      <option value="01/09/2016-31/09/2016">Septiembre</option>
-                                      <option value="01/10/2016-31/10/2016">Octubre</option>
-                                      <option value="01/11/2016-31/11/2016">Noviembre</option>
-                                      <option value="01/12/2016-31/12/2016">Diciembre</option>
-                                    
-                                    </select>
-                                  </div>
-                                  </div>
-                                </div>   
-
-                                <br>
-
                                  <div class="form-group fg-line">
                                     <label for="nombre">Personalizar</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -148,6 +121,33 @@
                                                                 <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
                                                         </div>
                                                     </div>
+
+                                                    <br>
+
+                                                    <label for="nombre">Meses</label>
+                                                    <div class="input-group">
+                                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                      <div class="fg-line">
+                                                      <div class="select">
+                                                        <select class="selectpicker" name="meses" id="meses" data-live-search="true">
+
+                                                          <option value="01/01/2017-31/01/2017">Enero</option>
+                                                          <option value="01/02/2017-31/02/2017">Febrero</option>
+                                                          <option value="01/03/2016-31/03/2016">Marzo</option>
+                                                          <option value="01/04/2016-31/04/2016">Abril</option>
+                                                          <option value="01/05/2016-31/05/2016">Mayo</option>
+                                                          <option value="01/06/2016-31/06/2016">Junio</option>
+                                                          <option value="01/07/2016-31/07/2016">Julio</option>
+                                                          <option value="01/08/2016-31/08/2016">Agosto</option>
+                                                          <option value="01/09/2016-31/09/2016">Septiembre</option>
+                                                          <option value="01/10/2016-31/10/2016">Octubre</option>
+                                                          <option value="01/11/2016-31/11/2016">Noviembre</option>
+                                                          <option value="01/12/2016-31/12/2016">Diciembre</option>
+                                                        
+                                                        </select>
+                                                      </div>
+                                                      </div>
+                                                    </div>   
 
                                                 </div>
                                             </div>
@@ -290,8 +290,12 @@
         <script type="text/javascript">
         
         route_filtrar = "{{url('/')}}/reportes/promotores";
+
+        var tipo = 'mesActual'
         
         $(document).ready(function(){
+
+        $('input:checkbox').removeAttr("disabled");
 
         $('input[type=checkbox]').change(function()
         {
@@ -343,23 +347,7 @@
                         }
                     }
         });
-    
 
-            /*if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }*/
 
                 //DateRangePicker
                 $('#personalizar').daterangepicker({
@@ -397,9 +385,117 @@
                     }
                 });
 
+
+
+            $('#instructor_id').on('change', function () {
+                console.log(tipo)
+                var token = $('input:hidden[name=_token]').val();
+                instructor_id = $('#instructor_id').val()
+                if(tipo == 'Fecha'){
+                    Fecha = $('#meses').val();
+                    datos = "&Fecha="+Fecha+"&instructor_id="+instructor_id
+                }else if(tipo == 'rango'){
+                    fechaInicio = $("input[name=daterangepicker_start]").val();
+                    fechaFin = $("input[name=daterangepicker_end]").val();
+                    datos = "&fechaInicio="+fechaInicio+"&fechaFin="+fechaFin+"&rango=rango&instructor_id="+instructor_id
+                }else{
+                    datos = "&"+tipo+"="+tipo+"&instructor_id="+instructor_id
+                }
+                procesando();
+                $.ajax({
+                    url: route_filtrar,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data: datos,
+                    success:function(respuesta){
+
+                        $('#total').text(respuesta.total)
+                        finprocesado();
+
+                        t.clear().draw();
+
+                        $.each(respuesta.presenciales, function (index, array) {
+
+                            if(array.cliente)
+                            {
+                                cliente = '<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> '
+                            }else{
+                                cliente = '';
+                            }
+                            var rowNode=t.row.add( [
+                            ''+cliente+'',
+                            ''+array.fecha+'',
+                            ''+array.nombre+'',
+                            ''+array.apellido+'',
+                            ''+array.celular+'',
+                            ''+array.especialidad+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                                .attr('id',array.id)
+                                .addClass('seleccion');
+                        });
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
+
+                        $("#mujeres").text(datos.mujeres);
+                        $("#hombres").text(datos.hombres);
+
+                        var data1 = ''
+                        data1 += '[';
+                        $.each( datos.edades, function( i, item ) {
+                            var edad = item.age_range;
+                            var cant = item.count
+                            data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                        });
+                        data1 = data1.substring(0, data1.length -1);
+                        data1 += ']';
+                            //GRAFICO FILTRO MES ACTUAL
+                            $("#pie-chart-procesos").html('');
+                            $(".flc-pie").html('');
+                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '.flc-pie',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                }
+                                
+                            });
+
+
+                    }
+                });
+                
+            }); 
+
             $('#meses').on('change', function () {
                 var token = $('input:hidden[name=_token]').val();
                 var Fecha = $(this).val();
+                tipo = 'Fecha'
                 procesando();
                 $.ajax({
                     url: route_filtrar,
@@ -495,6 +591,7 @@
                 var token = $('input:hidden[name=_token]').val();
                 var fechaInicio = $("input[name=daterangepicker_start]").val();
                 var fechaFin = $("input[name=daterangepicker_end]").val();
+                tipo = 'rango'
                 procesando();
                 $.ajax({
                     url: route_filtrar,
@@ -593,6 +690,7 @@ FILTROS PARA GRAFCAS
             $("#actual_month").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#actual_month").is(":checked")){
+                    var tipo = 'mesActual'
                     $("#mes_actual").val('1');
                         procesando();
                         $.ajax({
@@ -690,6 +788,7 @@ FILTROS PARA GRAFCAS
             $("#past_month").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#past_month").is(":checked")){
+                    tipo = 'mesPasado'
                     //$("#mes_actual").val('1');
                         procesando();
                         $.ajax({
@@ -788,6 +887,7 @@ FILTROS PARA GRAFCAS
             $("#today").on('click', function(){
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#today").is(":checked")){
+                    tipo = 'today'
                     //$("#mes_actual").val('1');
                         procesando();
                         $.ajax({
