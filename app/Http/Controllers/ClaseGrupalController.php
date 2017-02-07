@@ -187,10 +187,98 @@ class ClaseGrupalController extends BaseController {
 
             if($fecha >= Carbon::now() && $clase_grupal->boolean_promocionar == 1){
 
+                $horarios = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
+                $i = 0;
+                $len = count($horarios);
+                $dia_string = '';
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+ 
+                $dia_string = $dia_string . $dia;
+                
+                foreach($horarios as $horario){
+
+                    if($dia_string != ''){
+                        $dia_string = $dia_string . ', ';
+                    }
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+                    if ($i != $len - 1) {
+                        $dia_string = $dia_string . $dia;
+                    }else{
+                        $dia_string = $dia_string . 'y ' . $dia;
+                    }
+
+                    $i++;
+
+                }
+
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();
 
-                $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['dias_de_semana']=$dia_string;
                 $array[$clase_grupal->id] = $clase_grupal_array;
             }
         }

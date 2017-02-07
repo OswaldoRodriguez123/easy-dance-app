@@ -68,6 +68,8 @@
 
                                         <p class="f-15 f-700">Fecha de Inicio : {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_inicio'])->format('d-m-Y')}}</p>
 
+                                        <p class="f-15 f-700">Dias de clase : {{$clase_grupal['dias_de_semana']}}</p>
+
                                         <p class="f-15 f-700">Costo Mensualidad : {{ number_format($clase_grupal['costo_mensualidad'], 2, '.' , '.') }}</p>
 
                                         </div>
