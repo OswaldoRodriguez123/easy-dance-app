@@ -61,20 +61,6 @@
                             </div>
                             <div class="col-md-4 col-sm-offset-1">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <label for="nombre">Tipo</label>
-                                      <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="cliente" id="cliente" data-live-search="true">
-
-                                          <option value="1">Clientes</option>
-                                          <option value="0">Visitantes</option>
-                                        
-                                        </select>
-                                      </div>
-                                      </div>
-
-                                    <br>
-
                                 <label for="especialidad" id="id-instructor_id">Promotor</label><br>
                                 <div class="fg-line">
                                       <div class="select">
@@ -252,6 +238,32 @@
                             <hr class="linea-morada">
                                                          
                         </div>
+
+                        <div class="col-sm-12">
+                         <div class="form-group fg-line ">
+                            <div class="p-t-10">
+                            <label class="radio radio-inline m-r-20">
+                                <input name="tipo" id="todos" value="todos" type="radio" checked >
+                                <i class="input-helper"></i>  
+                                Todos <i id="todos2" name="todos2" class="icon_a-clases-grupales c-verde f-20"></i>
+                            </label>
+                            <label class="radio radio-inline m-r-20">
+                                <input name="tipo" id="visitantes" value="visitantes" type="radio" >
+                                <i class="input-helper"></i>  
+                                Visitantes <i id="visitantes2" name="visitantes2" class="icon_a-visitante-presencial f-20"></i>
+                            </label>
+                            <label class="radio radio-inline m-r-20">
+                                <input name="tipo" id="clientes" value="clientes" type="radio">
+                                <i class="input-helper"></i>  
+                                Clientes <i id="clientes2" name="clientes2" class="icon_a-alumnos f-20"></i>
+                            </label>
+                            </div>
+                            
+                         </div>
+                        </div> 
+
+                        <div class="clearfix"></div>
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -315,6 +327,8 @@
         route_filtrar = "{{url('/')}}/reportes/promotores";
 
         var tipo = 'mesActual'
+        var cliente = 1;
+        var presenciales = <?php echo json_encode($visitantes);?>;
         
         $(document).ready(function(){
 
@@ -410,6 +424,7 @@
 
 
              $('#cliente').on('change', function () {
+
                 var token = $('input:hidden[name=_token]').val();
                 cliente = $('#cliente').val()
                 instructor_id = $('#instructor_id').val()
@@ -436,6 +451,8 @@
                         finprocesado();
 
                         t.clear().draw();
+
+                        presenciales = respuesta.presenciales
 
                         $.each(respuesta.presenciales, function (index, array) {
 
@@ -515,7 +532,8 @@
             }); 
 
             $('#instructor_id').on('change', function () {
-                console.log(tipo)
+
+                $("#todos").click();
                 var token = $('input:hidden[name=_token]').val();
                 instructor_id = $('#instructor_id').val()
                 cliente = $('#cliente').val()
@@ -542,6 +560,8 @@
                         finprocesado();
 
                         t.clear().draw();
+
+                        presenciales = respuesta.presenciales
 
                         $.each(respuesta.presenciales, function (index, array) {
 
@@ -621,6 +641,7 @@
             }); 
 
             $('#meses').on('change', function () {
+                $("#todos").click();
                 var token = $('input:hidden[name=_token]').val();
                 var Fecha = $(this).val();
                 tipo = 'Fecha'
@@ -635,6 +656,8 @@
 
                         $('#total').text(respuesta.total)
                         finprocesado();
+
+                        presenciales = respuesta.presenciales
 
                         t.clear().draw();
 
@@ -716,6 +739,7 @@
             }); //END CLICK FECHA RANGO
 
             $(".applyBtn").on("click", function(){
+                $("#todos").click();
                 var token = $('input:hidden[name=_token]').val();
                 var fechaInicio = $("input[name=daterangepicker_start]").val();
                 var fechaFin = $("input[name=daterangepicker_end]").val();
@@ -730,6 +754,8 @@
                     success:function(respuesta){
                         $('#total').text(respuesta.total)
                         finprocesado();
+
+                        presenciales = respuesta.presenciales
 
                         t.clear().draw();
 
@@ -816,6 +842,7 @@ FILTROS PARA GRAFCAS
             //FILTRO MES ACTUAL
             $("#mes_actual").val('0');
             $("#actual_month").on('click', function(){
+                $("#todos").click();
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#actual_month").is(":checked")){
                     tipo = 'mesActual'
@@ -832,6 +859,8 @@ FILTROS PARA GRAFCAS
                                 finprocesado();
 
                                 t.clear().draw();
+
+                                presenciales = respuesta.presenciales
 
                                 $.each(respuesta.presenciales, function (index, array) {
                                     if(array.cliente)
@@ -914,6 +943,7 @@ FILTROS PARA GRAFCAS
             //FILTRO MES PASADO
             //$("#mes_actual").val('0');
             $("#past_month").on('click', function(){
+                $("#todos").click();
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#past_month").is(":checked")){
                     tipo = 'mesPasado'
@@ -928,6 +958,8 @@ FILTROS PARA GRAFCAS
                             success:function(respuesta){
                                 $('#total').text(respuesta.total)
                                 finprocesado();
+
+                                presenciales = respuesta.presenciales
 
                                 t.clear().draw();
 
@@ -1013,6 +1045,7 @@ FILTROS PARA GRAFCAS
             //FILTRO HOY
             //$("#mes_actual").val('0');
             $("#today").on('click', function(){
+                $("#todos").click();
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#today").is(":checked")){
                     tipo = 'today'
@@ -1027,6 +1060,8 @@ FILTROS PARA GRAFCAS
                             success:function(respuesta){
                                 $('#total').text(respuesta.total)
                                 finprocesado();
+
+                                presenciales = respuesta.presenciales
 
                                 t.clear().draw();
 
@@ -1168,6 +1203,115 @@ FILTROS PARA GRAFCAS
       function collapse_minus(collaps){
        $('#'+collaps).collapse('hide');
       }
+
+      function rechargeVisitantes(){
+
+        setTimeout(function(){
+        
+            var visitantes = $.grep(presenciales, function(e){ return e.cliente == 0; });
+            
+            $.each(visitantes, function (index, array) {
+                var rowNode=t.row.add( [
+                ''+'<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
+                ''+array.fecha+'',
+                ''+array.nombre+'',
+                ''+array.apellido+'',
+                ''+array.celular+'',
+                ''+array.especialidad+'',
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+
+            finprocesado();
+        }, 1000);
+    }
+
+    function rechargeClientes(){
+
+        setTimeout(function(){
+        
+            var clientes = $.grep(presenciales, function(e){ return e.cliente == 1; });
+            
+            $.each(clientes, function (index, array) {
+                var rowNode=t.row.add( [
+                ''+'<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
+                ''+array.fecha+'',
+                ''+array.nombre+'',
+                ''+array.apellido+'',
+                ''+array.celular+'',
+                ''+array.especialidad+'',
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+
+            finprocesado();
+        }, 1000);
+    }
+
+    function rechargeTodos(){
+
+        setTimeout(function(){
+        
+            $.each(presenciales, function (index, array) {
+                if(array.cliente)
+                {
+                    cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                }else{
+                    cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                }
+                var rowNode=t.row.add( [
+                ''+cliente+'',
+                ''+array.fecha+'',
+                ''+array.nombre+'',
+                ''+array.apellido+'',
+                ''+array.celular+'',
+                ''+array.especialidad+'',
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+
+            finprocesado();
+        }, 1000);
+    }
+
+        $("#visitantes").click(function(){
+            $( "#clientes2" ).removeClass( "c-verde" );
+            $( "#todos2" ).removeClass( "c-verde" );
+            $( "#visitantes2" ).addClass( "c-verde" );
+        });
+
+        $("#clientes").click(function(){
+            $( "#clientes2" ).addClass( "c-verde" );
+            $( "#todos2" ).removeClass( "c-verde" );
+            $( "#visitantes2" ).removeClass( "c-verde" );
+        });
+
+        $("#todos").click(function(){
+            $( "#clientes2" ).removeClass( "c-verde" );
+            $( "#todos2" ).addClass( "c-verde" );
+            $( "#visitantes2" ).removeClass( "c-verde" );
+        });
+
+        $('input[name="tipo"]').on('change', function(){
+            procesando();
+            t.clear().draw();
+            if ($(this).val()=='todos') {
+                  tipo = 'todos';
+                  rechargeTodos();
+            } else if ($(this).val()=='visitantes')  {
+                  tipo= 'visitantes';
+                  rechargeVisitantes();
+            } else  {
+                  tipo= 'clientes';
+                  rechargeClientes();
+            }
+         });
 
 
 

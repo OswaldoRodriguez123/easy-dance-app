@@ -43,41 +43,7 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-                              <div class="col-sm-12">
-                                 
-                                    <label for="nombre">Nombre</label>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Valeria" value="{{Auth::user()->nombre}} {{Auth::user()->apellido}}" disabled>
-                                      </div>
-                                    </div>
-                                 
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                      <label for="fecha" id="id-fecha">Fecha</label>
-
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" value="{{\Carbon\Carbon::now()->format('d\m\Y')}}" disabled>
-                                          </div>
-                                    </div>
-                                 <div class="has-error" id="error-fecha">
-                                      <span >
-                                          <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-
-                               <div class="clearfix p-b-35"></div>
-
+                              
                                   <div class="col-sm-12">
                                  
                                      <label for="nivel_baile" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
