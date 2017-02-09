@@ -196,11 +196,11 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
+                          finprocesado();
+                          var nType = 'success';
+                          $("#agregar_sugerencia")[0].reset();
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
                           window.location = route_principal;
                         }else{
                           var nTitle="Ups! ";
@@ -215,17 +215,16 @@
                             "opacity": ("1")
                           });
                           $(".cancelar").removeAttr("disabled");
+                        }   
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                    
                       }, 1000);
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

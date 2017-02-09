@@ -86,7 +86,7 @@ class SugerenciaController extends BaseController {
                     }
                 }
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente! La consulta ha sido enviada satisfactoriamente', 'status' => 'OK', 200]);
 
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

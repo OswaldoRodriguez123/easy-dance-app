@@ -336,6 +336,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('reportes/inscritos', 'ReporteController@Inscritos');
 			Route::post('reportes/inscritos', 'ReporteController@InscritosFiltros');
+			Route::get('reportes/diagnosticos', 'ReporteController@Diagnosticos');
+			Route::post('reportes/diagnosticos', 'ReporteController@DiagnosticosFiltros');
 			Route::get('reportes/presenciales', 'ReporteController@Presenciales');
 			Route::post('reportes/presenciales', 'ReporteController@PresencialesFiltros');
 			Route::get('reportes/contactos', 'ReporteController@Contactos');
@@ -933,9 +935,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 
 			//NOTIFICACIONES
-		
-			Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
+			
 			Route::get('notificaciones', 'NotificacionController@principal');
+			Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
 			Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
 			Route::post('notificacion_nueva', 'NotificacionController@nuevaNotificaion');
 

@@ -18,6 +18,20 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificacionController extends Controller
 {
+    public function principal(){
+        $notificaciones = DB::table('notificacion_usuario')
+            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
+            ->join('users','notificacion_usuario.id_usuario','=','users.id')
+            ->join('academias','users.academia_id','=','academias.id')
+            ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen','academias.nombre as nombre')
+            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+            ->where('notificacion.tipo_evento','=',5)
+            ->orderBy('created_at','desc')
+            ->limit(10)
+        ->get();
+        dd($notificaciones);
+    }
+
     public function consulta(){
         
     	$fecha_sesion="";

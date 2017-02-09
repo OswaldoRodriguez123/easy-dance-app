@@ -244,7 +244,7 @@
           <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
           <ul id="sti-menu"  class="sti-menu">
             <li data-hovercolor="#f44336">
-              <a href="{{url('/')}}/reportes/inscritos"><h2 data-type="mText" class="sti-item">Inscritos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a>
+              <a href="{{url('/')}}/reportes/diagnosticos"><h2 data-type="mText" class="sti-item">Diagnosticos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a>
             </li>
             <li data-hovercolor="#f44336">
               <a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>

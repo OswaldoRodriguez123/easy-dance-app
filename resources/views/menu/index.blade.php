@@ -148,7 +148,7 @@
                       
                       <ul id="sti-menu6" class="sti-menu roww">
 
-                        <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/inscritos"><h2 data-type="mText" class="sti-item">Inscritos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a></li>
+                        <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/diagnosticos"><h2 data-type="mText" class="sti-item">Diagnosticos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a></li>
                         
                         
                         <li data-hovercolor="#f44336"><a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a></li>
