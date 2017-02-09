@@ -65,6 +65,7 @@
                                 <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
                                           @foreach ( $instructores as $instructor )
                                           <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
                                           @endforeach
@@ -72,6 +73,16 @@
                                       </div>
                                     </div>
                                     <br>
+
+
+                                <div class="checkbox m-b-15">
+                                    <label>
+                                        Hoy
+                                        <input type="checkbox" value="" id="today">
+                                        <i class="input-helper"></i>                                    
+                                    </label>
+                                </div>  
+
                                 <div class="checkbox m-b-15">
                                     <label>
                                         Mes Actual
@@ -87,15 +98,7 @@
                                         <input type="checkbox" value="" id="past_month">
                                         <i class="input-helper"></i>                                    
                                     </label>
-                                </div>
-
-                                <div class="checkbox m-b-15">
-                                    <label>
-                                        Hoy
-                                        <input type="checkbox" value="" id="today">
-                                        <i class="input-helper"></i>                                    
-                                    </label>
-                                </div>                            
+                                </div>                          
 
                                 <br>
 

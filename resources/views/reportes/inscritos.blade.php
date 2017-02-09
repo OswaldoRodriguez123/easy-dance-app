@@ -64,6 +64,15 @@
                             </div>
                             <div class="col-md-4 col-sm-offset-1">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                                <div class="checkbox m-b-15">
+                                    <label>
+                                        Hoy
+                                        <input type="checkbox" value="" id="today">
+                                        <i class="input-helper"></i>                                    
+                                    </label>
+                                </div>
+                                  
                                 <div class="checkbox m-b-15">
                                     <label>
                                         Mes Actual
@@ -80,14 +89,7 @@
                                         <i class="input-helper"></i>                                    
                                     </label>
                                 </div>
-
-                                <div class="checkbox m-b-15">
-                                    <label>
-                                        Hoy
-                                        <input type="checkbox" value="" id="today">
-                                        <i class="input-helper"></i>                                    
-                                    </label>
-                                </div>                            
+                        
 
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>

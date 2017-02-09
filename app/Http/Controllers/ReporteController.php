@@ -246,7 +246,7 @@ public function PresencialesFiltros(Request $request)
             $collection=collect($presencial);     
             $presencial_array = $collection->toArray();
             if($presencial->especialidad == '' OR $presencial->especialidad == null){
-                $presencial_array['especialidad']='';
+                $presencial_array['especialidad']='Sin Especificar';
             }   
             $array[$presencial->id] = $presencial_array;
         }
@@ -371,13 +371,24 @@ public function PresencialesFiltros(Request $request)
             $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
         }
 
-        $presenciales = DB::table('visitantes_presenciales')
-            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
-            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        ->get();
+        if($request->instructor_id){
+           $presenciales = DB::table('visitantes_presenciales')
+                ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+                ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
+                ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+                ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
+                ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+            ->get(); 
+        }else{
+            $presenciales = DB::table('visitantes_presenciales')
+                ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+                ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
+                ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+                ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+            ->get();
+        }
+
+        
 
          $array = array();
 
@@ -385,7 +396,7 @@ public function PresencialesFiltros(Request $request)
             $collection=collect($presencial);     
             $presencial_array = $collection->toArray();
             if($presencial->especialidad == '' OR $presencial->especialidad == null){
-                $presencial_array['especialidad']='';
+                $presencial_array['especialidad']='Sin Especificar';
             }   
             $array[$presencial->id] = $presencial_array;
         }
