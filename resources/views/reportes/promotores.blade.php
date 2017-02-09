@@ -1211,7 +1211,7 @@ FILTROS PARA GRAFCAS
             $.each(presenciales, function (index, array) {
                 if(array.cliente == 0){
                     var rowNode=t.row.add( [
-                    ''+'<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
+                    ''+'<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
                     ''+array.fecha+'',
                     ''+array.nombre+'',
                     ''+array.apellido+'',
