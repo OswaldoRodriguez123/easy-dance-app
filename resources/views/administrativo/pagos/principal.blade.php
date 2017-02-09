@@ -101,7 +101,7 @@
                                 <div class="clearfix"></div>
                                 
                         <div class="col-md-12">
-                            <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
+                            <span id="monto" class ="f-700 f-16 opaco-0-8" style="display:none">Pendiente por cobrar : <span id="total">{{ number_format($total, 2) }}</span></span>
                         
                         </div>
                         <br><br>
@@ -261,7 +261,7 @@
         function rechargeFactura(){
 
             setTimeout(function(){
-                $('#monto').css('opacity', '0');
+                $('#monto').hide();
 
                 $('#checkbox_tipo').hide();
 
@@ -297,11 +297,15 @@
 
             setTimeout(function(){
             
-                $('#monto').css('opacity', '1');
+                $('#monto').show();
 
-                document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento'; 
+                document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento';
+
+                var total = 0 
 
                 $.each(proforma, function (index, array) {
+
+                    total = total + parseFloat(array.total)
                     concepto = array.concepto;
                     var rowNode=t.row.add( [
                     ''+array.id+'',
@@ -315,6 +319,8 @@
                         .attr('id',array.id)
                         .addClass('text-center');
                 });
+
+                $('#total').text(formatmoney(total))
 
                 $('#todos').click();
                 $('#checkbox_tipo').show();
@@ -331,7 +337,11 @@
 
                 var tmp = $.grep(proforma, function(e){ return e.tipo == 3; });
 
+                var total = 0;
+
                 $.each(tmp, function (index, array) {
+
+                    total = total + parseFloat(array.total)
 
                     concepto = array.concepto;
                     var rowNode=t.row.add( [
@@ -346,6 +356,8 @@
                         .attr('id',array.id)
                         .addClass('text-center');
                 });
+
+                $('#total').text(formatmoney(total))
 
                 finprocesado();
 
@@ -357,9 +369,13 @@
 
             setTimeout(function(){
 
+                var total = 0
+
                 var tmp = $.grep(proforma, function(e){ return e.tipo == 4; });
 
                 $.each(tmp, function (index, array) {
+
+                    total = total + parseFloat(array.total)
 
                     concepto = array.concepto;
                     var rowNode=t.row.add( [
@@ -374,6 +390,8 @@
                         .attr('id',array.id)
                         .addClass('text-center');
                 });
+
+                $('#total').text(formatmoney(total))
 
                 finprocesado();
 
@@ -385,9 +403,12 @@
 
             setTimeout(function(){
 
+                var total = 0
                 var tmp = $.grep(proforma, function(e){ return e.tipo == 6; });
 
                 $.each(tmp, function (index, array) {
+
+                    total = total + parseFloat(array.total)
 
                     concepto = array.concepto;
                     var rowNode=t.row.add( [
@@ -402,6 +423,8 @@
                         .attr('id',array.id)
                         .addClass('text-center');
                 });
+
+                $('#total').text(formatmoney(total))
 
                 finprocesado();
 
