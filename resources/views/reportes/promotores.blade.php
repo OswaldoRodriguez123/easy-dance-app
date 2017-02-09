@@ -349,11 +349,11 @@
         processing: true,
         serverSide: false,
         pageLength: 25, 
-        paging:false, 
         order: [[1, 'desc']],
         fnDrawCallback: function() {
           if ("{{count($visitantes)}}" < 25) {
               $('.dataTables_paginate').hide();
+              $('#tablelistar_length').hide();
           }
           else{
              $('.dataTables_paginate').show();
