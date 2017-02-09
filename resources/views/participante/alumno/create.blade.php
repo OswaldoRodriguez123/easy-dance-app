@@ -176,23 +176,7 @@
                                       </span>
                                   </div>
                                </div>
-                               <div class="clearfix p-b-35"></div>
-                               <div class="col-sm-12">
-                                    <label for="codigo" id="id-codigo">Código de Referido</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el código de referido del alumno que te informo de nosotros para obtener beneficios" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                        <input type="text" class="form-control input-sm proceso" name="codigo" id="codigo" placeholder="Ej. xD2mdF1p" value="">
-                                      </div>
-                                    </div>
-                                 <div class="has-error" id="error-codigo">
-                                      <span>
-                                          <small class="help-block error-span" id="error-codigo_mensaje" ></small>
-                                      </span>
-                                  </div>
-                               </div>
-
+                               
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
@@ -269,8 +253,26 @@
                                 </div>
                               </div>
                                
-
                                <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                    <label for="codigo" id="id-codigo">Código de Referido</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el código de referido del alumno que te informo de nosotros para obtener beneficios" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm proceso" name="codigo" id="codigo" placeholder="Ej. xD2mdF1p" value="">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-codigo">
+                                      <span>
+                                          <small class="help-block error-span" id="error-codigo_mensaje" ></small>
+                                      </span>
+                                  </div>
+                               </div>
+
+                              <div class="clearfix p-b-35"></div>
+
   
                               <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -469,6 +471,8 @@
     sexo = "{{{ $visitante->sexo or 'Default' }}}";
     instructor_id = "{{{ $visitante->instructor_id or 'Default' }}}";
 
+    codigo_referido = "{{ $codigo_referido  }}";
+
      if(sexo != 'Default'){
 
       if(sexo=="M"){
@@ -483,6 +487,13 @@
 
         $('#instructor_id').val(instructor_id);
         $('#instructor_id').selectpicker('render');
+     }
+
+    console.log(codigo_referido)
+
+     if(codigo_referido != 'Default'){
+
+        $('#codigo').val(codigo_referido);
      }
 
       $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
