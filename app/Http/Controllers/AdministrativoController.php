@@ -212,7 +212,7 @@ class AdministrativoController extends BaseController {
 
         $proforma_join = DB::table('items_factura_proforma')
             ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad', 'items_factura_proforma.tipo')
             ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
         ->get();
 

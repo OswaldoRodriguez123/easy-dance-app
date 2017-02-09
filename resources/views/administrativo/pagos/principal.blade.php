@@ -63,6 +63,42 @@
                                 </div> 
 
                                 <div class="clearfix"></div>
+
+                                <div class="col-sm-12" id="checkbox_tipo" style="display:none">
+                                 <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_proforma" id="todos" value="todos" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Todos <i id="todos2" name="todos2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
+                                    </label>
+
+
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_proforma" id="inscripcion" value="inscripcion" type="radio" >
+                                        <i class="input-helper"></i>  
+                                        Inscripción <i id="inscripcion2" name="inscripcion2" class="zmdi zmdi-money-box zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_proforma" id="mensualidad" value="mensualidad" type="radio" >
+                                        <i class="input-helper"></i>  
+                                        Mensualidad <i id="mensualidad2" name="mensualidad2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
+                                    </label>
+
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_proforma" id="acuerdo" value="acuerdo" type="radio" >
+                                        <i class="input-helper"></i>  
+                                        Acuerdo de Pago <i id="acuerdo2" name="acuerdo2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
+                                    </label>
+
+                                    </div>
+                                    
+                                 </div>
+                                </div> 
+
+                                <div class="clearfix"></div>
                                 
                         <div class="col-md-12">
                             <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : {{ number_format($total, 2) }}</span>
@@ -204,10 +240,30 @@
             }
          });
 
+         $('input[name="tipo_proforma"]').on('change', function(){
+            procesando();
+            t.clear().draw();
+            if ($(this).val()=='inscripcion') {
+                  tipo_proforma = 'inscripcion';
+                  rechargeInscripcion();
+            }else if ($(this).val()=='mensualidad') {
+                  tipo_proforma = 'mensualidad';
+                  rechargeMensualidad();
+            }else if ($(this).val()=='acuerdo') {
+                  tipo_proforma = 'acuerdo';
+                  rechargeAcuerdo();
+            }else {
+                  tipo_proforma = 'todos';
+                  rechargeProforma();
+            } 
+         });
+
         function rechargeFactura(){
 
             setTimeout(function(){
                 $('#monto').css('opacity', '0');
+
+                $('#checkbox_tipo').hide();
 
                 document.getElementById('fecha').innerHTML = 'Fecha'; 
 
@@ -260,6 +316,93 @@
                         .addClass('text-center');
                 });
 
+                $('#todos').click();
+                $('#checkbox_tipo').show();
+
+                finprocesado();
+
+            }, 1000);
+
+        }
+
+        function rechargeInscripcion(){
+
+            setTimeout(function(){
+
+                var tmp = $.grep(proforma, function(e){ return e.tipo == 3; });
+
+                $.each(tmp, function (index, array) {
+
+                    concepto = array.concepto;
+                    var rowNode=t.row.add( [
+                    ''+array.id+'',
+                    ''+array.nombre+ ' '+array.apellido+'',
+                    ''+array.cantidad+ ' ' +concepto+'',
+                    ''+array.fecha_vencimiento+'',
+                    ''+formatmoney(parseFloat(array.total))+'',
+                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('text-center');
+                });
+
+                finprocesado();
+
+            }, 1000);
+
+        }
+
+        function rechargeMensualidad(){
+
+            setTimeout(function(){
+
+                var tmp = $.grep(proforma, function(e){ return e.tipo == 4; });
+
+                $.each(tmp, function (index, array) {
+
+                    concepto = array.concepto;
+                    var rowNode=t.row.add( [
+                    ''+array.id+'',
+                    ''+array.nombre+ ' '+array.apellido+'',
+                    ''+array.cantidad+ ' ' +concepto+'',
+                    ''+array.fecha_vencimiento+'',
+                    ''+formatmoney(parseFloat(array.total))+'',
+                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('text-center');
+                });
+
+                finprocesado();
+
+            }, 1000);
+
+        }
+
+        function rechargeAcuerdo(){
+
+            setTimeout(function(){
+
+                var tmp = $.grep(proforma, function(e){ return e.tipo == 6; });
+
+                $.each(tmp, function (index, array) {
+
+                    concepto = array.concepto;
+                    var rowNode=t.row.add( [
+                    ''+array.id+'',
+                    ''+array.nombre+ ' '+array.apellido+'',
+                    ''+array.cantidad+ ' ' +concepto+'',
+                    ''+array.fecha_vencimiento+'',
+                    ''+formatmoney(parseFloat(array.total))+'',
+                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('text-center');
+                });
+
                 finprocesado();
 
             }, 1000);
@@ -274,6 +417,34 @@
         $("#pendientes").click(function(){
             $( "#pagadas2" ).removeClass( "c-verde" );
             $( "#pendientes2" ).addClass( "c-verde" );
+        });
+
+        $("#inscripcion").click(function(){
+            $( "#todos2" ).removeClass( "c-verde" );
+            $( "#mensualidad2" ).removeClass( "c-verde" );
+            $( "#acuerdo2" ).removeClass( "c-verde" );
+            $( "#inscripcion2" ).addClass( "c-verde" );
+        });
+
+        $("#mensualidad").click(function(){
+            $( "#todos2" ).removeClass( "c-verde" );
+            $( "#mensualidad2" ).addClass( "c-verde" );
+            $( "#acuerdo2" ).removeClass( "c-verde" );
+            $( "#inscripcion2" ).removeClass( "c-verde" );
+        });
+
+        $("#acuerdo").click(function(){
+            $( "#todos2" ).removeClass( "c-verde" );
+            $( "#mensualidad2" ).removeClass( "c-verde" );
+            $( "#acuerdo2" ).addClass( "c-verde" );
+            $( "#inscripcion2" ).removeClass( "c-verde" );
+        });
+
+        $("#todos").click(function(){
+            $( "#todos2" ).addClass( "c-verde" );
+            $( "#mensualidad2" ).removeClass( "c-verde" );
+            $( "#acuerdo2" ).removeClass( "c-verde" );
+            $( "#inscripcion2" ).removeClass( "c-verde" );
         });
 
         $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
