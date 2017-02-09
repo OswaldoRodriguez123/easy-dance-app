@@ -536,7 +536,9 @@
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$asistio[$alumno['alumno_id']]}}"></i></label></td>
-                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
+                                      <td class="text-center previa">
+                                      <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                      </td>
                                       <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                       <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                       <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
@@ -837,6 +839,12 @@
                               var nombre = array.nombre;
                               var apellido = array.apellido;
 
+                              if(respuesta.deuda > 0){
+                                deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
+                              }else{
+                                deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>'
+                              }
+
                               var rowId=inscripcion.id;
                               var rowNode=t.row.add( [
                               ''+iconos+'',
@@ -844,7 +852,7 @@
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
                               '<label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal c-verde"></i></label>',
-                              '<label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label>',
+                              ''+deuda+'',
                               '<i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>'
                               ] ).draw(false).node();
                               $( rowNode )

@@ -347,6 +347,19 @@ class ClaseGrupalController extends BaseController {
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
 
+        $alumnod = DB::table('alumnos')
+            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->select('inscripcion_clase_grupal.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
+            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+        ->get();
+
+        $collection=collect($alumnod);
+        $grouped = $collection->groupBy('id');     
+        $deuda = $grouped->toArray();
+
         $reservaciones = DB::table('reservaciones_visitantes')
                 ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
                 ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
@@ -446,7 +459,7 @@ class ClaseGrupalController extends BaseController {
         //     }
         // }
         
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio]);
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda]);
     }
 
     public function eliminarinscripcion($id)
@@ -1113,13 +1126,20 @@ class ClaseGrupalController extends BaseController {
 
                 }
 
+                $deuda = DB::table('alumnos')
+                    ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                    ->where('alumnos.id','=', $request->alumno_id)
+                ->sum('items_factura_proforma.importe_neto');
+
+
                 $alumno = Alumno::find($request->alumno_id);
 
                 // $array[$i] = $alumno;
 
             // }
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
 
             // if(count($alumnos) > 2)
             // {
