@@ -737,7 +737,7 @@
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span>
+                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}" data-talla="{{$clase_grupal->talla_franela}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span>
 
                               @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
                                 <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
@@ -807,6 +807,13 @@
                                       <label for="franela-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                       </div>
                                     </div>
+
+                                    <br>
+
+                                    <div class="form-group fg-line">
+                                      <label for="talla_franela">Talla de la Franela</label>
+                                      <input type="text" class="form-control input-sm" name="talla_franela" id="talla_franela" placeholder="Ej. 12">
+                                   </div>
 
                                   </div>
 
@@ -1678,10 +1685,12 @@
         boolean_programacion = $(this).data('programacion')
         boolean_franela = $(this).data('franela')
         razon_entrega = $(this).data('entrega')
+        talla_franela = $(this).data('talla')
 
         $('#boolean_programacion').val(boolean_programacion);
         $('#boolean_franela').val(boolean_franela);
         $('#razon_entrega').val(razon_entrega);
+        $('#talla_franela').val(talla_franela);
 
         if(boolean_programacion == 0 || boolean_franela == 0){
           $('#textarea_entrega').show();
@@ -1881,6 +1890,7 @@
                           $('.clase-grupal-'+respuesta.id).data('programacion', respuesta.boolean_programacion);
                           $('.clase-grupal-'+respuesta.id).data('franela', respuesta.boolean_franela);
                           $('.clase-grupal-'+respuesta.id).data('entrega', respuesta.razon_entrega);
+                          $('.clase-grupal-'+respuesta.id).data('talla', respuesta.talla_franela);
 
 
                           if(respuesta.boolean_franela == 1 && respuesta.boolean_programacion == 1){

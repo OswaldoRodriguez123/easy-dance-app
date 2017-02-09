@@ -1067,6 +1067,7 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion->boolean_franela = $request->boolean_franela;
                 $inscripcion->boolean_programacion = $request->boolean_programacion;
                 $inscripcion->razon_entrega = $request->razon_entrega;
+                $inscripcion->talla_franela = $request->talla_franela;
 
                 $inscripcion->save();
 

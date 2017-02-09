@@ -318,6 +318,14 @@
                                       </div>
                                     </div>
 
+
+                                    <br>
+
+                                    <div class="form-group fg-line">
+                                      <label for="talla_franela">Talla de la Franela</label>
+                                      <input type="text" class="form-control input-sm" name="talla_franela" id="talla_franela" placeholder="Ej. 12">
+                                   </div>
+
                                   </div>
 
                                   <div class="col-sm-6">
@@ -759,7 +767,7 @@
                 $(".procesando").removeClass('hidden');
                 $(".procesando").addClass('show');         
                 limpiarMensaje();
-                var array = {clase_grupal_id: clase_grupal_id, alumno_id: values, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, "permitir": permitir, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),};
+                var array = {clase_grupal_id: clase_grupal_id, alumno_id: values, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, "permitir": permitir, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val()};
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -791,7 +799,6 @@
                       
 
                             inscripcion = respuesta.inscripcion
-                            console.log(inscripcion.boolean_franela);
 
                             if(inscripcion.boolean_franela == 1 && inscripcion.boolean_programacion == 1){
 
@@ -845,6 +852,9 @@
                               .data('tipo',1)
                               .addClass('seleccion');
 
+                              $('#razon_entrega').val('')
+                              $('#talla_franela').val('')
+
                               // });
                             // }
 
@@ -871,9 +881,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
