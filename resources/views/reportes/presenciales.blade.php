@@ -62,7 +62,7 @@
                             <div class="col-md-4 col-sm-offset-1">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                                
+
                                 <div class="checkbox m-b-15">
                                     <label>
                                         Hoy
@@ -340,7 +340,7 @@
         paging:false, 
         order: [[1, 'desc']],
         fnDrawCallback: function() {
-          if ($('#tablelistar tr').length < 25) {
+          if ("{{count($presenciales)}}" < 25) {
               $('.dataTables_paginate').hide();
           }
           else{

@@ -348,11 +348,11 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 50, 
+        pageLength: 25, 
         paging:false, 
         order: [[1, 'desc']],
         fnDrawCallback: function() {
-          if ($('#tablelistar tr').length < 25) {
+          if ("{{count($visitantes)}}" < 25) {
               $('.dataTables_paginate').hide();
           }
           else{
