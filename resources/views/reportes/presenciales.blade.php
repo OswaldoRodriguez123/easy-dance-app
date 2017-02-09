@@ -461,7 +461,7 @@
 
                         $.each(respuesta.presenciales, function (index, array) {
 
-                            if(array.cliente)
+                            if(array.cliente == 1)
                             {
                                 cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                             }else{
@@ -558,7 +558,7 @@
                         t.clear().draw();
 
                         $.each(respuesta.presenciales, function (index, array) {
-                            if(array.cliente)
+                            if(array.cliente == 1)
                             {
                                 cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                             }else{
@@ -655,7 +655,7 @@
                         t.clear().draw();
 
                         $.each(respuesta.presenciales, function (index, array) {
-                            if(array.cliente)
+                            if(array.cliente == 1)
                             {
                                 cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                             }else{
@@ -758,7 +758,7 @@ FILTROS PARA GRAFCAS
                                 t.clear().draw();
 
                                 $.each(respuesta.presenciales, function (index, array) {
-                                    if(array.cliente)
+                                    if(array.cliente == 1)
                                     {
                                         cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     }else{
@@ -859,7 +859,7 @@ FILTROS PARA GRAFCAS
                                 t.clear().draw();
 
                                 $.each(respuesta.presenciales, function (index, array) {
-                                    if(array.cliente)
+                                    if(array.cliente == 1)
                                     {
                                         cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     }else{
@@ -961,7 +961,7 @@ FILTROS PARA GRAFCAS
                                 t.clear().draw();
 
                                 $.each(respuesta.presenciales, function (index, array) {
-                                    if(array.cliente)
+                                    if(array.cliente == 1)
                                     {
                                         cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     }else{
@@ -1102,20 +1102,20 @@ FILTROS PARA GRAFCAS
 
         setTimeout(function(){
         
-            var visitantes = $.grep(presenciales, function(e){ return e.cliente == 0; });
-            
-            $.each(visitantes, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+'<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
-                ''+array.fecha+'',
-                ''+array.nombre+'',
-                ''+array.apellido+'',
-                ''+array.celular+'',
-                ''+array.especialidad+'',
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
+            $.each(presenciales, function (index, array) {
+                if(array.cliente == 0){
+                    var rowNode=t.row.add( [
+                    ''+'<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
+                    ''+array.fecha+'',
+                    ''+array.nombre+'',
+                    ''+array.apellido+'',
+                    ''+array.celular+'',
+                    ''+array.especialidad+'',
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('seleccion');
+                }
             });
 
             finprocesado();
@@ -1125,21 +1125,21 @@ FILTROS PARA GRAFCAS
     function rechargeClientes(){
 
         setTimeout(function(){
-        
-            var clientes = $.grep(presenciales, function(e){ return e.cliente == 1; });
             
-            $.each(clientes, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+'<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
-                ''+array.fecha+'',
-                ''+array.nombre+'',
-                ''+array.apellido+'',
-                ''+array.celular+'',
-                ''+array.especialidad+'',
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
+            $.each(presenciales, function (index, array) {
+                if(array.cliente == 1){
+                    var rowNode=t.row.add( [
+                    ''+'<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
+                    ''+array.fecha+'',
+                    ''+array.nombre+'',
+                    ''+array.apellido+'',
+                    ''+array.celular+'',
+                    ''+array.especialidad+'',
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('seleccion');
+                }
             });
 
             finprocesado();
@@ -1151,7 +1151,7 @@ FILTROS PARA GRAFCAS
         setTimeout(function(){
         
             $.each(presenciales, function (index, array) {
-                if(array.cliente)
+                if(array.cliente == 1)
                 {
                     cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                 }else{

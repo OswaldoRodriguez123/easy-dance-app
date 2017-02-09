@@ -240,6 +240,17 @@ public function PresencialesFiltros(Request $request)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
         ->get();
 
+        $array = array();
+
+        foreach($presenciales as $presencial){
+            $collection=collect($presencial);     
+            $presencial_array = $collection->toArray();
+            if($presencial->especialidad == '' OR $presencial->especialidad == null){
+                $presencial_array['especialidad']='';
+            }   
+            $array[$presencial->id] = $presencial_array;
+        }
+
         $total = DB::table('visitantes_presenciales')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
@@ -282,7 +293,7 @@ public function PresencialesFiltros(Request $request)
 
         return response()->json(
             [
-                'presenciales'      => $presenciales,
+                'presenciales'      => $array,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
                 'edades'            => $forAge,
@@ -368,6 +379,17 @@ public function PresencialesFiltros(Request $request)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
         ->get();
 
+         $array = array();
+
+        foreach($presenciales as $presencial){
+            $collection=collect($presencial);     
+            $presencial_array = $collection->toArray();
+            if($presencial->especialidad == '' OR $presencial->especialidad == null){
+                $presencial_array['especialidad']='';
+            }   
+            $array[$presencial->id] = $presencial_array;
+        }
+
         $total = DB::table('visitantes_presenciales')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
             ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
@@ -412,7 +434,7 @@ public function PresencialesFiltros(Request $request)
 
         return response()->json(
             [
-                'presenciales'      => $presenciales,
+                'presenciales'      => $array,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
                 'edades'            => $forAge,
