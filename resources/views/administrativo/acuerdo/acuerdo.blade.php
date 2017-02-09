@@ -961,43 +961,45 @@
   $( "#cancelar" ).click(function() {
 
 
-                    $("#generar_acuerdo")[0].reset();
-                    $('#alumno_id').selectpicker('render');
-                    limpiarMensaje();
-                    $('#frecuencia').selectpicker('render');
+    $("#generar_acuerdo")[0].reset();
 
-                    $('#alumno_id').selectpicker('deselectAll');
-                    $('#frecuencia').selectpicker('deselectAll');
-                    $('#fecha').val('');
-                    $('#partes').val('');
-                    $('#total2').text('');
-                    $('#alumno_id').selectpicker('refresh');
-                    $('#frecuencia').selectpicker('refresh');
+    limpiarMensaje();
+    $('#alumno_id').val('');
+    $('#frecuencia').val('');
 
-                    $('#fecha').prop('readonly', true);
-                    $("#frecuencia").attr("disabled","disabled");
-                    $('#partes').prop('readonly', true);
-                    $("#generar").attr("disabled","disabled");
-                    $("#guardar").attr("disabled","disabled");
-                    $("#generar").css({
-                      "opacity": ("0.2")
-                    });
-                    $("#guardar").css({
-                      "opacity": ("0.2")
-                    });
+    $('#alumno_id').selectpicker('render');
+    $('#frecuencia').selectpicker('render');
 
-                    $("#subtotal").text(0);
-                    $("#impuestototal").text(0);
-                    $("#total").text(0);
 
-                       t
-                        .clear()
-                        .draw();
+    $('#fecha').val('');
+    $('#partes').val('');
+    $('#total2').text('');
 
-        $('html,body').animate({
-        scrollTop: $("#id-cliente").offset().top-90,
-        }, 1000);
-      });
+
+    $('#fecha').prop('readonly', true);
+    $("#frecuencia").attr("disabled","disabled");
+    $('#partes').prop('readonly', true);
+    $("#generar").attr("disabled","disabled");
+    $("#guardar").attr("disabled","disabled");
+    $("#generar").css({
+      "opacity": ("0.2")
+    });
+    $("#guardar").css({
+      "opacity": ("0.2")
+    });
+
+    $("#subtotal").text(0);
+    $("#impuestototal").text(0);
+    $("#total").text(0);
+
+       t
+        .clear()
+        .draw();
+
+    $('html,body').animate({
+    scrollTop: $("#id-cliente").offset().top-90,
+    }, 1000);
+  });
 
   function acuerdo(acuerdo){
     var acuerdo_fechas=acuerdo.fechas_acuerdo;
