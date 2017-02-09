@@ -935,6 +935,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//NOTIFICACIONES
 		
 			Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
+			Route::get('notificaciones', 'NotificacionController@principal');
 			Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
 			Route::post('notificacion_nueva', 'NotificacionController@nuevaNotificaion');
 

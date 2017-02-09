@@ -227,10 +227,25 @@ class ValidacionController extends BaseController {
                 }else{
                     return redirect('validar/invalido');
                 }
+            }else if($request->validar == 'regalo'){
+                $codigo = Codigo::where('codigo_validacion', trim($request->codigo_validacion))->first();
+
+                if($codigo){
+
+                    $fecha_limite = $codigo->fecha_vencimiento;
+
+                    if(Carbon::now() < $fecha_limite){
+                        return redirect('validar/valido');
+                    }else{
+                        return redirect('validar/invalido');
+                    }
+                }else{
+                    return redirect('validar/invalido');
+                }
+                
             }else{
                 return redirect('validar/invalido');
             }
-
 
     }
 

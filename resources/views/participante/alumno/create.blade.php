@@ -471,7 +471,7 @@
     sexo = "{{{ $visitante->sexo or 'Default' }}}";
     instructor_id = "{{{ $visitante->instructor_id or 'Default' }}}";
 
-    codigo_referido = "{{ $codigo_referido  }}";
+    codigo_referido = "{{{ $codigo_referido or 'Default' }}}";
 
      if(sexo != 'Default'){
 
@@ -489,10 +489,7 @@
         $('#instructor_id').selectpicker('render');
      }
 
-    console.log(codigo_referido)
-
      if(codigo_referido != 'Default'){
-
         $('#codigo').val(codigo_referido);
      }
 
