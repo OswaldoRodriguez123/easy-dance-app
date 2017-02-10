@@ -335,12 +335,12 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 50, 
-        paging:false, 
-        order: [[0, 'desc']],
+        pageLength: 25, 
+        order: [[1, 'desc']],
         fnDrawCallback: function() {
-          if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
+          if ("{{count($inscritos)}}" < 25) {
+            $('.dataTables_paginate').hide();
+            $('#tablelistar_length').hide();
           }
           else{
              $('.dataTables_paginate').show();
