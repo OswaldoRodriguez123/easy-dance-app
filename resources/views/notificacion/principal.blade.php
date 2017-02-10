@@ -182,7 +182,7 @@
 
                             <div class="col-sm-12 text-center">
 
-                              <button id="izquierda" class="btn btn-blanco pagina" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20" disabled></i></button> <button class="btn btn-blanco pagina" style="border:none; box-shadow: none"><i id="derecha" class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
+                              <button id="izquierda" class="btn btn-blanco pagina" style="border:none; box-shadow: none" disabled><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <button id="derecha" class="btn btn-blanco pagina" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
 
                             </div>
 
@@ -207,15 +207,21 @@
 
 
 @section('js') 
-   <script type="text/javascript">
+  <script type="text/javascript">
 
-   route_enviar="{{url('/')}}/notificaciones";
+  route_enviar="{{url('/')}}/notificaciones";
 
-   var total = 10;
+  var total = 10;
+  var recomendaciones = <?php echo json_encode($recomendaciones);?>;
 
-   var recomendaciones = <?php echo json_encode($recomendaciones);?>;
+  $(document).ready(function(){
+
+    $("#izquierda").attr("disabled","disabled");
+    $("#derecha").removeAttr("disabled");
+
+  });
    
-   $(".detalle").click(function(){
+   $(document).on( 'click', '.detalle', function () {
       var usuario_id = $(this).closest('tr').data('usuario');
       var mensaje = $(this).closest('tr').data('mensaje');
 
@@ -355,35 +361,36 @@
     }else{
       $("#izquierda").removeAttr("disabled");
     }
-
-    if(total >= recomendaciones.length)
+    if(total >= Object.keys(recomendaciones).length)
     {
       $("#derecha").attr("disabled","disabled");
     }else{
       $("#derecha").removeAttr("disabled");
     }
 
-  
-    var recomendacion = $.grep(recomendaciones, function(e){ return (e.contador >= total - 10 && e.contador <= total + 10) });
+    
+    $.each(recomendaciones, function (index, recomendacion) {
 
+      if(recomendacion.contador >= total - 10 && recomendacion.contador<= total)
+      {
+        console.log(recomendacion.contador)
 
+        mensaje = recomendacion.mensaje
 
-    $.each(recomendacion, function (index, array) {
-
-      mensaje = recomendacion.mensaje
-
-      if(recomendacion.imagen){
-        imagen = '<img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/'+recomendacion.imagen+'" alt="">'
-      }else{
-        if(recomendacion.sexo == 'M'){
-          imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">'
+        if(recomendacion.imagen){
+          imagen = '<img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/'+recomendacion.imagen+'" alt="">'
         }else{
-          imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">'
-        }
-      }  
+          if(recomendacion.sexo == 'M'){
+            imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">'
+          }else{
+            imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">'
+          }
+        }  
 
 
-      $(".table_recomendacion").append('<tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="'+recomendacion.mensaje+'" data-usuario="'+recomendacion.usuario_id+'"><td width="10%"><span class="m-l-10 m-r-5 f-16">'+recomendacion.dia+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.fecha+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.usuario_id+'</span></td><td width="20%"><br><br><br>'+imagen+'<span class="m-l-10 m-r-5 f-16 p-t-20">'+recomendacion.usuario_nombre+' '+recomendacion.usuario_apellido+'</span></td><td width="20%"><br><br><br><span class="m-l-10 m-r-5 f-16">'+mensaje.substr(0, 50)+'...<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></span></tr>')
+        $("#table_recomendacion").append('<tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="'+recomendacion.mensaje+'" data-usuario="'+recomendacion.usuario_id+'"><td width="10%"><span class="m-l-10 m-r-5 f-16">'+recomendacion.dia+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.fecha+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.hora+'</span></td><td width="20%"><br><br><br>'+imagen+'<span class="m-l-10 m-r-5 f-16 p-t-20">'+recomendacion.usuario_nombre+' '+recomendacion.usuario_apellido+'</span></td><td width="20%"><br><br><br><span class="m-l-10 m-r-5 f-16">'+mensaje.substr(0, 50)+'...<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></span></tr>')
+
+       }
 
     });
 

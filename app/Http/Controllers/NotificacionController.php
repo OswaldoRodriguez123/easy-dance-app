@@ -39,7 +39,7 @@ class NotificacionController extends BaseController
 
         $array = array();
 
-        $i = 0;
+        $j = 0;
 
 
         foreach($notificaciones as $notificacion){
@@ -138,11 +138,11 @@ class NotificacionController extends BaseController
             $notificacion_array['fecha']=$fecha;
             $notificacion_array['dia']=$dia;
             $notificacion_array['hora']=$hora;
-            $notificacion_array['contador'] = $i;
+            $notificacion_array['contador'] = intval($j);
 
             $array[$notificacion->id] = $notificacion_array;
 
-            $i = $i + 1;
+            $j = $j + 1;
         }
 
         
