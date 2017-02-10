@@ -37,8 +37,9 @@
                                 <label for="correo">Responder</label>
                                 <br><br>
                                <div class="fg-line">
-                                <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="2500 Caracteres"></textarea>
+                                <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="200 Caracteres" maxlength="200" onkeyup="countChar(this)"></textarea>
                                 </div>
+                                <div class="opaco-0-8 text-right">Resta <span id="charNum">200</span> Caracteres</div>
                                 <div class="has-error" id="error-mensaje">
                                   <span >
                                     <small class="help-block error-span" id="error-mensaje_mensaje" ></small>                                           
@@ -117,9 +118,9 @@
 					           	<div class="col-sm-12">
 
                           <div class="col-sm-12">
-                           <table class="table table-striped table-bordered">
+                           <table id="table_recomendacion" class="table table-striped table-bordered">
                            
-                           @foreach($recomendaciones as $recomendacion)
+                           @foreach(array_slice($recomendaciones, 0, 10) as $recomendacion)
                             
                             <tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="{{$recomendacion['mensaje']}}" data-usuario="{{$recomendacion['usuario_id']}}">
                              <td width="10%"> 
@@ -158,8 +159,8 @@
                               <br><br><br>
 
                               <span class="m-l-10 m-r-5 f-16">
-                    
-                              {{$recomendacion['mensaje']}}
+
+                              {{ str_limit($recomendacion['mensaje'], $limit = 50, $end = '...') }}
 
                               <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
 
@@ -173,7 +174,19 @@
                            </table>
 
                           
-                          <div class="clearfix"></div>   
+                          <div class="clearfix"></div>  
+
+                          @if(count($recomendaciones) > 10)
+
+                            <br> 
+
+                            <div class="col-sm-12 text-center">
+
+                              <button id="izquierda" class="btn btn-blanco pagina" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20" disabled></i></button> <button class="btn btn-blanco pagina" style="border:none; box-shadow: none"><i id="derecha" class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
+
+                            </div>
+
+                          @endif
                
            
                           </div>
@@ -197,6 +210,10 @@
    <script type="text/javascript">
 
    route_enviar="{{url('/')}}/notificaciones";
+
+   var total = 10;
+
+   var recomendaciones = <?php echo json_encode($recomendaciones);?>;
    
    $(".detalle").click(function(){
       var usuario_id = $(this).closest('tr').data('usuario');
@@ -238,6 +255,8 @@
               $("#form_respuesta")[0].reset();
               var nTitle="Ups! ";
               var nMensaje=respuesta.mensaje;
+              $('#mensaje').val('')
+              $('#charNum').text('200')
               $('#modalRespuesta').modal('hide');
             }else{
               var nTitle="Ups! ";
@@ -309,6 +328,110 @@
       }, 1000);          
 
   }
+
+  function countChar(val) {
+    var len = val.value.length;
+    if (len >= 200) {
+      val.value = val.value.substring(0, 200);
+    } else {
+      $('#charNum').text(200 - len);
+    }
+  };
+
+  $(document).on( 'click', '.pagina', function () {
+
+    $('#table_recomendacion').empty();
+
+    if(this.id == 'izquierda'){
+
+      total = total - 10
+
+    }else{
+      total = total + 10
+    }
+
+    if(total == 10){
+      $("#izquierda").attr("disabled","disabled");
+    }else{
+      $("#izquierda").removeAttr("disabled");
+    }
+
+    if(total >= recomendaciones.length)
+    {
+      $("#derecha").attr("disabled","disabled");
+    }else{
+      $("#derecha").removeAttr("disabled");
+    }
+
+  
+    var recomendacion = $.grep(recomendaciones, function(e){ return (e.contador >= total - 10 && e.contador <= total + 10) });
+
+
+
+    $.each(recomendacion, function (index, array) {
+
+      mensaje = recomendacion.mensaje
+
+      if(recomendacion.imagen){
+        imagen = '<img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/'+recomendacion.imagen+'" alt="">'
+      }else{
+        if(recomendacion.sexo == 'M'){
+          imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">'
+        }else{
+          imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">'
+        }
+      }  
+
+
+      $(".table_recomendacion").append('<tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="'+recomendacion.mensaje+'" data-usuario="'+recomendacion.usuario_id+'"><td width="10%"><span class="m-l-10 m-r-5 f-16">'+recomendacion.dia+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.fecha+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.usuario_id+'</span></td><td width="20%"><br><br><br>'+imagen+'<span class="m-l-10 m-r-5 f-16 p-t-20">'+recomendacion.usuario_nombre+' '+recomendacion.usuario_apellido+'</span></td><td width="20%"><br><br><br><span class="m-l-10 m-r-5 f-16">'+mensaje.substr(0, 50)+'...<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></span></tr>')
+
+    });
+
+
+    // '<tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="'+recomendacion.mensaje+'" data-usuario="'+recomendacion.usuario_id+'">'
+                             
+
+    //  '<td width="10%"> '
+    //   '<span class="m-l-10 m-r-5 f-16">'+recomendacion.dia+'</span>'
+
+    //   '<br><br><br>'
+
+    //   '<span class="m-l-10 m-r-5 f-16">'+recomendacion.fecha+'</span>'
+
+    //   '<br><br><br>  '     
+
+    //   '<span class="m-l-10 m-r-5 f-16">'+recomendacion.usuario_id+'</span>   '            
+
+    //  '</td>'
+
+    //  '<td width="20%"> '
+
+    //   '<br><br><br>'
+
+
+    //   imagen
+
+    //    '<span class="m-l-10 m-r-5 f-16 p-t-20">'+recomendacion.usuario_nombre+' '+recomendacion.usuario_apellido+'</span>'         
+
+    // '</td>'
+
+    //  '<td width="20%"> '
+
+    //   '<br><br><br>'
+
+    //   '<span class="m-l-10 m-r-5 f-16">'
+
+    //   mensaje.substr(0, 50) + "..."
+
+    //   '<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>'
+
+    //   '</span>'
+
+      
+    // '</tr>'
+
+
+  });
 
 
   </script>
