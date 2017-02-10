@@ -107,7 +107,7 @@
                                                         <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
                                                     @elseif ($notificacion['tipo_evento'] == 5)
 
-                                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/sugerencias/detalle/{{$notificacion['evento_id']}}">
+                                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
                                                     @else
 
                                                         <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones/detalle/{{$notificacion['evento_id']}}">
