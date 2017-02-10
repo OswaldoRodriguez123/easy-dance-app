@@ -55,7 +55,7 @@ Route::get('reservacion/{id}','ReservaController@reserva');
 Route::post('reservacion/{id}', 'ReservaController@GuardarTipo');
 Route::post('reservar', 'ReservaController@store');
 Route::post('reservarconusuario', 'ReservaController@storeconusuario');
-Route::get('reservacion/completado', 'ReservaController@completado');
+Route::get('agendar/reservacion/completado', 'ReservaController@completado');
 
 
 //EMPRESA

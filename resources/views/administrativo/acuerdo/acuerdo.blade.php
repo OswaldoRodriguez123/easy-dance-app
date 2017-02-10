@@ -1013,7 +1013,7 @@
         var rowNode=t.row.add( [
         ''+numero+'',
         ''+fecha_frecuencia+'',
-        ''+cantidad+'',
+        ''+formatmoney(parseFloat(cantidad))+'',
         '<i class="zmdi zmdi-edit m-r-5 f-20"></i>'
         ] ).draw(false).node();
         $( rowNode )

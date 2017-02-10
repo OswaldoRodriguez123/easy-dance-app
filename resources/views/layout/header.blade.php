@@ -81,6 +81,25 @@
 
                             @endif
 
+                            @if(Auth::check() && (Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4))
+
+                                <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 26px; right: 60%">
+                                    <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
+                                       <span class="f-15 text-header f-700">INICIO</span>
+                                    </a>
+                                </li>
+
+                                <li style="margin-top: 26px; right: 55%">
+                                        <a class="f-15 text-header f-700" href="{{url('/')}}/progreso"> MI PROGRESO</a>
+                                    </li>
+
+                                <li style="margin-top: 26px; right: 50%">
+                                    <a data-content="{{$puntos_referidos}}" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="f-15 text-header f-700 disabled" >PUNTOS ACUMULADOS</a>
+                                </li>
+
+
+                            @endif
+
                       
 
 
@@ -210,13 +229,13 @@
 
                                 @if(Auth::check() && (Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4))
 
-                                    <li class="hidden-xs">
+                                    <!-- <li class="hidden-xs">
                                         <a href="{{url('/')}}/progreso"><i class="zmdi zmdi-account"></i> Mi progreso</a>
                                     </li>
 
                                     <li class="hidden-xs">
                                         <a data-content="{{$puntos_referidos}}" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="disabled" ><i class="zmdi zmdi-account"></i> Puntos Acumulados</a>
-                                    </li>
+                                    </li> -->
 
 
                                 @endif
