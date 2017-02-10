@@ -18,10 +18,14 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Sugerencia;
 use App\User;
+use PulkitJalan\GeoIP\GeoIP;
 
 class NotificacionController extends BaseController
 {
-    public function principal(){
+    public function principal(Request $request){
+
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
 
         $notificaciones = DB::table('notificacion_usuario')
             ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
@@ -41,11 +45,12 @@ class NotificacionController extends BaseController
             $notificacion_array = $collection->toArray();
 
             $usuario = User::find($notificacion->usuario_id);
-            
-
-            $dia = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at)->format('d'); 
+        
 
             $fecha_tmp = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at);
+            $fecha_tmp->tz = $geoip->getTimezone();
+
+            $dia = $fecha_tmp->format('d'); 
 
             switch ($fecha_tmp->month) {
                 case 1:
@@ -86,7 +91,7 @@ class NotificacionController extends BaseController
                     break;
             }
 
-            $ano = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at)->format('Y'); 
+            $ano = $fecha_tmp->format('Y'); 
 
             $fecha = $dia . ' de ' . $mes . ' ' . $ano;
 
