@@ -401,7 +401,7 @@
 
     route_agregar="{{url('/')}}/reservar";
     route_agregarconusuario="{{url('/')}}/reservarconusuario";
-    route_completado="{{url('/')}}/reservacion/completado";
+    route_completado="{{url('/')}}/agendar/reservacion/completado";
 
     $(document).ready(function(){
 
