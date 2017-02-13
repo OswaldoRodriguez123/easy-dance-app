@@ -82,6 +82,11 @@
                                                     </select>
                                                   </div>
                                                 </div>
+                                                <div class="has-error" id="error-asistencia_clase_grupal_id_mensaje">
+                                                  <span >
+                                                      <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
+                                                  </span>
+                                              </div>
 
 
                                            </div>
@@ -146,6 +151,11 @@
                                                     </select>
                                                   </div>
                                                 </div>
+                                                <div class="has-error" id="error-asistencia_clase_grupal_id_mensaje">
+                                                  <span >
+                                                      <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
+                                                  </span>
+                                              </div>
                                             </div>
                                            
 
@@ -374,6 +384,7 @@
       }
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_asistencia" ).serialize(); 
+      limpiarMensaje();
       $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -417,6 +428,7 @@
             var nAnimIn = "animated flipInY";
             var nAnimOut = "animated flipOutY"; 
             var nTitle="Ups! ";
+            errores(msj.responseJSON.errores);
             if(msj.responseJSON.status=="ERROR"){
               var nTitle="    Ups! "; 
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
@@ -459,6 +471,7 @@
                           
                         },
                         error:function(msj){
+                          errores(msj.responseJSON.errores);
                           var nType = 'danger';
                           var nFrom = $(this).attr('data-from');
                           var nAlign = $(this).attr('data-align');
@@ -527,6 +540,7 @@
             }
           },
           error:function(msj){
+            errores(msj.responseJSON.errores);
             var nType = 'danger';
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
@@ -579,6 +593,7 @@
                           
                         },
                         error:function(msj){
+                          errores(msj.responseJSON.errores);
                           var nType = 'danger';
                           var nFrom = $(this).attr('data-from');
                           var nAlign = $(this).attr('data-align');
@@ -590,9 +605,6 @@
                             var nTitle="    Ups! "; 
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
                             // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-                          }else{
-
-                           
                           }
                           
                         }
@@ -805,9 +817,6 @@
                 var nTitle="    Ups! "; 
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-              }else{
-
-               
               }
               
             }
@@ -988,6 +997,31 @@
           $( "#citas2" ).addClass( "c-verde" );
           tipo = 3;
       });
+
+      function limpiarMensaje(){
+        var campo = ["asistencia_clase_grupal_id"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
+      }
+
+    function errores(merror){
+      var elemento="";
+      var contador=0;
+      $.each(merror, function (n, c) {
+      if(contador==0){
+      elemento=n;
+      }
+      contador++;
+
+       $.each(this, function (name, value) {              
+          var error=value;
+          $("#error-"+n+"_mensaje").html(error);             
+       });
+    });     
+
+  }
 
     </script>
 

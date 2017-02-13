@@ -549,7 +549,7 @@ class AsistenciaController extends BaseController
       ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta')
       ->where('citas.alumno_id','=', $request->id)
       ->where('citas.estatus', 1)
-      ->where('citas.fecha', '>=', $fechaActual->format('Y-m-d'))
+      ->where('citas.fecha', '=', $fechaActual->format('Y-m-d'))
     ->get();
 
       $array = array();

@@ -53,13 +53,13 @@ class CitaController extends BaseController {
                     $cita->save();
                 }else{
 
-                    $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
+                    // $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
 
-                    if($hora_final <= $fechaActual->format('H:i:s')){
-                        $cita = Cita::find($activa->id);
-                        $cita->estatus = 2;
-                        $cita->save();
-                    }
+                    // if($hora_final <= $fechaActual->format('H:i:s')){
+                    //     $cita = Cita::find($activa->id);
+                    //     $cita->estatus = 2;
+                    //     $cita->save();
+                    // }
 
                 }
             }

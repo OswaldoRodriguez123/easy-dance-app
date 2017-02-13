@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Academia;
 use App\Taller;
 use App\Fiesta;
 use App\Campana;
@@ -24,8 +25,16 @@ class NotificacionController extends BaseController
 {
     public function principal(Request $request){
 
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->pais_id == 11){
+            $timezone = 'America/Bogota';
+        }else{
+            $timezone = 'America/Caracas';
+        }
 
         $notificaciones = DB::table('notificacion_usuario')
             ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
@@ -49,8 +58,7 @@ class NotificacionController extends BaseController
             $usuario = User::find($notificacion->usuario_id);
         
 
-            $fecha_tmp = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at);
-            $fecha_tmp->tz = $geoip->getTimezone();
+            $fecha_tmp = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at, $timezone);
 
             $dia = $fecha_tmp->format('d'); 
 

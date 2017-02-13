@@ -182,6 +182,10 @@
 
                             <div class="col-sm-12 text-center">
 
+                            <span id="span_izquierda">1</span> / <span id="span_derecha">1</span>
+
+                            <div class="clearfix"></div>
+
                               <button id="izquierda" class="btn btn-blanco pagina" style="border:none; box-shadow: none" disabled><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <button id="derecha" class="btn btn-blanco pagina" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
 
                             </div>
@@ -215,6 +219,16 @@
   var recomendaciones = <?php echo json_encode($recomendaciones);?>;
 
   $(document).ready(function(){
+
+    var derecha = Object.keys(recomendaciones).length / 10;
+
+    if(derecha > parseInt(derecha)){
+      derecha = parseInt(derecha) + 1
+    }else{
+      derecha = parseInt(derecha)
+    }
+
+    $('#span_derecha').text(derecha)
 
     $("#izquierda").attr("disabled","disabled");
     $("#derecha").removeAttr("disabled");
@@ -348,13 +362,22 @@
 
     $('#table_recomendacion').empty();
 
+    valor = $('#span_izquierda').text()
+
     if(this.id == 'izquierda'){
+
+      valor = parseInt(valor) - 1
 
       total = total - 10
 
     }else{
+
+      valor = parseInt(valor) + 1
+
       total = total + 10
     }
+
+    $('#span_izquierda').text(valor)
 
     if(total == 10){
       $("#izquierda").attr("disabled","disabled");
@@ -373,7 +396,6 @@
 
       if(recomendacion.contador >= total - 10 && recomendacion.contador<= total)
       {
-        console.log(recomendacion.contador)
 
         mensaje = recomendacion.mensaje
 
