@@ -55,7 +55,7 @@
                             </div>
 
                             <div class="col-sm-3 text-right">
-                                <a href="{{url('/')}}/programacion" class="f-16 text-success f-700">Ver programación de las clases</a>
+                                <a href="{{url('/')}}/programacion/{{$id}}" class="f-16 text-success f-700">Ver programación de las clases</a>
                             </div>
 
                             <hr class="linea-morada">                                                         
@@ -90,6 +90,23 @@
                                     
                                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
                                             <div id="barra_1" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+
+                                        </div>
+
+                                        <div class="clearfix m-b-10"></div>
+
+                                        <span class="f-14 opaco-0-8 f-700"><span id="barra_2_span">0</span> % COMPLETADA</span>
+                                    
+                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
+                                            <div id="barra_2" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                                        </div>
+
+                                        <div class="clearfix m-b-10"></div>
+
+                                        <span class="f-14 opaco-0-8 f-700"><span id="barra_3_span">0</span> % COMPLETADA</span>
+                                    
+                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
+                                            <div id="barra_3" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
 
                                   
@@ -112,6 +129,7 @@
     <script type="text/javascript">
 
     var i = 1;
+    var j = 1;
 
     var clase_1 = <?php echo json_encode($clase_1);?>;
     var clase_2 = <?php echo json_encode($clase_2);?>;
@@ -125,10 +143,6 @@
     var clase_10 = <?php echo json_encode($clase_10);?>;
     var clase_11 = <?php echo json_encode($clase_11);?>;
     var clase_12 = <?php echo json_encode($clase_12);?>;
-    var clase_13 = <?php echo json_encode($clase_13);?>;
-    var clase_14 = <?php echo json_encode($clase_14);?>;
-    var clase_15 = <?php echo json_encode($clase_15);?>;
-    var clase_16 = <?php echo json_encode($clase_16);?>;
 
     $(document).ready(function() {
         var total = 0;
@@ -145,6 +159,7 @@
         if(clase_3['clase_4'] == 1){
             $('#nivel_3').css('background', '#67bd6a');
             i++;
+            j = 4;
 
         }
         if(clase_4['clase_4'] == 1){
@@ -160,6 +175,7 @@
         if(clase_6['clase_4'] == 1){
             $('#nivel_6').css('background', '#67bd6a');
             i++;
+            j = 7;
 
         }
         if(clase_7['clase_4'] == 1){
@@ -175,6 +191,7 @@
         if(clase_9['clase_4'] == 1){
             $('#nivel_9').css('background', '#67bd6a');
             i++;
+            j = 10;
 
         }
         if(clase_10['clase_4'] == 1){
@@ -196,29 +213,94 @@
         $('#nivel').text(i);
         $('#span_nivel').text(i);
 
-        if(window["clase_"+i]['clase_1'] == 1){
+        j2 = j+1;
+        j3 = j+2;
+
+        if(window["clase_"+j]['clase_1'] == 1){
 
             total = total + 25;
         }
 
-        if(window["clase_"+i]['clase_2'] == 1){
+        if(window["clase_"+j]['clase_2'] == 1){
 
             total = total + 25;
         }
 
-        if(window["clase_"+i]['clase_3'] == 1){
+        if(window["clase_"+j]['clase_3'] == 1){
 
             total = total + 25;
         }
 
-        if(window["clase_"+i]['clase_4'] == 1){
+        if(window["clase_"+j]['clase_4'] == 1){
 
             total = total + 25;
         }
 
         $('#barra_1').css('width', total+'%')
-        // $('#barra_1').css('background', '#67bd6a')
         $('#barra_1_span').text(total);
+
+        if(total == 100){
+            $('#barra_1').css('background', '#67bd6a')
+        }
+
+        total = 0
+
+
+        if(window["clase_"+j2]['clase_1'] == 1){
+
+            total = total + 25;
+        }
+
+        if(window["clase_"+j2]['clase_2'] == 1){
+
+            total = total + 25;
+        }
+
+        if(window["clase_"+j2]['clase_3'] == 1){
+
+            total = total + 25;
+        }
+
+        if(window["clase_"+j2]['clase_4'] == 1){
+
+            total = total + 25;
+        }
+
+        $('#barra_2').css('width', total+'%')
+        $('#barra_2_span').text(total);
+
+        if(total == 100){
+            $('#barra_2').css('background', '#67bd6a')
+        }
+
+        total = 0
+
+        if(window["clase_"+j3]['clase_1'] == 1){
+
+            total = total + 25;
+        }
+
+        if(window["clase_"+j3]['clase_2'] == 1){
+
+            total = total + 25;
+        }
+
+        if(window["clase_"+j3]['clase_3'] == 1){
+
+            total = total + 25;
+        }
+
+        if(window["clase_"+j3]['clase_4'] == 1){
+
+            total = total + 25;
+        }
+
+        $('#barra_3').css('width', total+'%')
+        $('#barra_3_span').text(total);
+
+        if(total == 100){
+            $('#barra_3').css('background', '#67bd6a')
+        }
 
     });
 
@@ -232,59 +314,59 @@
 
       });
 
-    $("button").click(function(){
-        var id = this.id
-        var arr = id.split('_')
-        var i = arr[1];
+    // $("button").click(function(){
+    //     var id = this.id
+    //     var arr = id.split('_')
+    //     var i = arr[1];
 
-        if(window["clase_"+i]['clase_1'] == 1){
+    //     if(window["clase_"+i]['clase_1'] == 1){
 
-            $('#barra_1').css('width', '100%')
-            $('#barra_1').css('background', '#67bd6a')
-            $('#barra_1_span').text(100);
-        }else{
-            $('#barra_1').css('width', '0%')
-            $('#barra_1').css('background', '#4E1E43')
-            $('#barra_1_span').text(0);
-        }
+    //         $('#barra_1').css('width', '100%')
+    //         $('#barra_1').css('background', '#67bd6a')
+    //         $('#barra_1_span').text(100);
+    //     }else{
+    //         $('#barra_1').css('width', '0%')
+    //         $('#barra_1').css('background', '#4E1E43')
+    //         $('#barra_1_span').text(0);
+    //     }
 
-        if(window["clase_"+i]['clase_2'] == 1){
+    //     if(window["clase_"+i]['clase_2'] == 1){
 
-            $('#barra_2').css('width', '100%')
-            $('#barra_2').css('background', '#67bd6a')
-            $('#barra_2_span').text(100);
-        }else{
-            $('#barra_2').css('width', '0%')
-            $('#barra_2').css('background', '#4E1E43')
-            $('#barra_2_span').text(0);
-        }
+    //         $('#barra_2').css('width', '100%')
+    //         $('#barra_2').css('background', '#67bd6a')
+    //         $('#barra_2_span').text(100);
+    //     }else{
+    //         $('#barra_2').css('width', '0%')
+    //         $('#barra_2').css('background', '#4E1E43')
+    //         $('#barra_2_span').text(0);
+    //     }
 
-        if(window["clase_"+i]['clase_3'] == 1){
+    //     if(window["clase_"+i]['clase_3'] == 1){
 
-            $('#barra_3').css('width', '100%')
-            $('#barra_3').css('background', '#67bd6a')
-            $('#barra_3_span').text(100);
-        }else{
-            $('#barra_3').css('width', '0%')
-            $('#barra_3').css('background', '#4E1E43')
-            $('#barra_3_span').text(0);
-        }
+    //         $('#barra_3').css('width', '100%')
+    //         $('#barra_3').css('background', '#67bd6a')
+    //         $('#barra_3_span').text(100);
+    //     }else{
+    //         $('#barra_3').css('width', '0%')
+    //         $('#barra_3').css('background', '#4E1E43')
+    //         $('#barra_3_span').text(0);
+    //     }
 
-        if(window["clase_"+i]['clase_4'] == 1){
+    //     if(window["clase_"+i]['clase_4'] == 1){
 
-            $('#barra_4').css('width', '100%')
-            $('#barra_4').css('background', '#67bd6a')
-            $('#barra_4_span').text(100);
-        }else{
-            $('#barra_4').css('width', '0%')
-            $('#barra_4').css('background', '#4E1E43')
-            $('#barra_4_span').text(0);
-        }
+    //         $('#barra_4').css('width', '100%')
+    //         $('#barra_4').css('background', '#67bd6a')
+    //         $('#barra_4_span').text(100);
+    //     }else{
+    //         $('#barra_4').css('width', '0%')
+    //         $('#barra_4').css('background', '#4E1E43')
+    //         $('#barra_4_span').text(0);
+    //     }
 
-        $('#nivel').text(i);
-        $('#span_nivel').text(i);
+    //     $('#nivel').text(i);
+    //     $('#span_nivel').text(i);
 
-    });
+    // });
 
     
 

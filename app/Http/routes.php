@@ -946,7 +946,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			
 			Route::get('progreso','ProgresoController@index');
 			Route::get('progreso/{id}','ProgresoController@progreso');
-			Route::get('programacion','ProgresoController@programacion');
+			Route::get('programacion/{id}','ProgresoController@programacion');
 
 			//EMBAJADOR
 

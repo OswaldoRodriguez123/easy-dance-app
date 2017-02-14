@@ -69,6 +69,107 @@
 	padding-left: 30px !important;
 }
 
+
+/*PRUEBA*/
+
+#nivelacion_1 .eos-menu-title,
+#nivelacion_1 .eos-group-title,
+#nivelacion_1 .eos-item {
+	height: 40px;
+	line-height: 40px;
+	background: #228b22;
+	border-color: #266A2E;
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+	border-bottom: 1px solid transparent;
+}
+
+#nivelacion_1 .eos-menu-title:hover,
+#nivelacion_1 .eos-group-title:hover,
+#nivelacion_1 .eos-item:hover {
+	cursor: pointer;
+	background: #266A2E;
+}
+
+#nivelacion_1 .eos-group-content .eos-item {
+	background: #266A2E;
+	padding-left: 30px !important;
+}
+
+#nivelacion_2 .eos-menu-title,
+#nivelacion_2 .eos-group-title,
+#nivelacion_2 .eos-item {
+	height: 40px;
+	line-height: 40px;
+	background: #3b5998;
+	border-color: #28498d;
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+	border-bottom: 1px solid transparent;
+}
+
+#nivelacion_2 .eos-menu-title:hover,
+#nivelacion_2 .eos-group-title:hover,
+#nivelacion_2 .eos-item:hover {
+	cursor: pointer;
+	background: #28498d;
+}
+
+#nivelacion_2 .eos-group-content .eos-item {
+	background: #28498d;
+	padding-left: 30px !important;
+}
+
+#nivelacion_3 .eos-menu-title,
+#nivelacion_3 .eos-group-title,
+#nivelacion_3 .eos-item {
+	height: 40px;
+	line-height: 40px;
+	background: #d89c30;
+	border-color: #ce8e1d ;
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+	border-bottom: 1px solid transparent;
+}
+
+#nivelacion_3 .eos-menu-title:hover,
+#nivelacion_3 .eos-group-title:hover,
+#nivelacion_3 .eos-item:hover {
+	cursor: pointer;
+	background: #ce8e1d ;
+}
+
+#nivelacion_3 .eos-group-content .eos-item {
+	background: #ce8e1d ;
+	padding-left: 30px !important;
+}
+
+
+#nivelacion_4 .eos-menu-title,
+#nivelacion_4 .eos-group-title,
+#nivelacion_4 .eos-item {
+	height: 40px;
+	line-height: 40px;
+	background: #CFB53B;
+	border-color: #D4AF37 ;
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+	border-bottom: 1px solid transparent;
+}
+
+#nivelacion_4 .eos-menu-title:hover,
+#nivelacion_4 .eos-group-title:hover,
+#nivelacion_4 .eos-item:hover {
+	cursor: pointer;
+	background: #D4AF37 ;
+}
+
+#nivelacion_4 .eos-group-content .eos-item {
+	background: #D4AF37 ;
+	padding-left: 30px !important;
+}
+
+
 .eos-menu .eos-item a {
 	color: #eee;
 	display: block;
