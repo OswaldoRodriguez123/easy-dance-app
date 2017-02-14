@@ -276,4 +276,80 @@ class ProgresoController extends BaseController {
         }
     }
 
+
+    public function certificado()
+    {
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $id = $_GET['id'];
+
+        $tipo = $_GET['tipo'];
+    
+        $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',Auth::user()->usuario_id)->first();
+
+        if($find){
+
+            $progreso = Progreso::where('clase_grupal_id',$id)->first();
+
+            if($progreso){
+                if($tipo == 1){
+                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
+
+                    if($clase){
+
+                        if($clase->clase_4){
+                            return view('progreso.certificado')->with(['certificado' => 'basico.jpg', 'academia' => $academia, 'nivel' => 'BÁSICO']);
+                        }else{
+                            return redirect("/inicio"); 
+                        }
+                    }
+                }else if($tipo == 2){
+                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
+
+                    if($clase){
+
+                        if($clase->clase_4){
+                            return view('progreso.certificado');
+                        }else{
+                            return redirect("/inicio"); 
+                        }
+                    }
+                }
+                else if($tipo == 3){
+                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
+
+                    if($clase){
+
+                        if($clase->clase_4){
+                            return view('progreso.certificado');
+                        }else{
+                            return redirect("/inicio"); 
+                        }
+                    }
+                }
+                else if($tipo == 4){
+                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
+
+                    if($clase){
+
+                        if($clase->clase_4){
+                            return view('progreso.certificado');
+                        }else{
+                            return redirect("/inicio"); 
+                        }
+                    }
+                }else{
+                    return redirect("/inicio"); 
+                }
+                
+            }else{
+                return redirect("/inicio"); 
+            }
+
+        }else{
+            return redirect("/inicio"); 
+        }
+    }
+
 }

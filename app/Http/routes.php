@@ -948,6 +948,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('progreso/{id}','ProgresoController@progreso');
 			Route::get('programacion/{id}','ProgresoController@programacion');
 
+			Route::get('certificado','ProgresoController@certificado');
+
 			//EMBAJADOR
 
 			Route::get('/invitar', 'EmbajadorController@index');

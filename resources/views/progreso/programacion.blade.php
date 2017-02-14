@@ -139,113 +139,112 @@
                                                 <a class="video_url" href="203096537">13. Yogurt</a>
                                               </li>
                                             </div>
-                                            @if($clase_1->clase_4)
+
+
                                             <div class="eos-group-title">BASICO 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Enchufa y Pa´ Arriba</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Enchufa y Pa´ Arriba</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Dame (Otra, enchufa y dame)</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Dame (Otra, enchufa y dame)</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Yogurt Con Fresa</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Yogurt Con Fresa</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Enchufa Doble/Triple</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Enchufa Doble/Triple</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Adiós/ Doble</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Adiós/ Doble</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Enchufa y Evelyn</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Enchufa y Evelyn</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Pa´ Ti Pa´ Mi</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Pa´ Ti Pa´ Mi</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Vacila/Con Ella</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Vacila/Con Ella</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. 70 (Alarde)</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. 70 (Alarde)</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Doble Play</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Doble Play</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Adiós Con La Hermana</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Adiós Con La Hermana</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12.  Pelotas (1,2,3)</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12.  Pelotas (1,2,3)</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">13. Sombrero (Una Mano)</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">13. Sombrero (Una Mano)</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">14. Dame Directo</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">14. Dame Directo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">15. Pelota Loca</a>
+                                                <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">15. Pelota Loca</a>
                                               </li>
                                             </div>
-                                            @endif
-                                            @if($clase_2->clase_4)
+ 
+
                                             <div class="eos-group-title">BASICO 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Adiós Con La familia</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Adiós Con La familia</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. El Uno /Dame</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. El Uno /Dame</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. El Dos/Dame</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. El Dos/Dame</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Adiós Con la Prima</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Adiós Con la Prima</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Vacila y Dame</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Vacila y Dame</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. 84</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. 84</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Enchufa y Raulín</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Enchufa y Raulín</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Candado</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Candado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. Métele El Dedo</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. Métele El Dedo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Torniquete</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Torniquete</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Media/Loca</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Media/Loca</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Una Pa´ Arriba</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Una Pa´ Arriba</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">13. Enchufa A Lo Moderno</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">13. Enchufa A Lo Moderno</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">14. Enchufa Con Palmas</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">14. Enchufa Con Palmas</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">15. Paséala</a>
+                                                <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">15. Paséala</a>
                                               </li>
                                             </div>
-                                            @endif
                                           </div>
                                         </div>
                                     </div>
 
                                      <!-- NIVELACION 2 -->
 
-                                     @if($clase_3->clase_4)
                                     
                                     <div class="col-sm-3">
                                         <div class="eos-menu" id="nivelacion_2">
@@ -257,155 +256,147 @@
                                             <div class="eos-group-title">INTERMEDIO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. El dedo</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. El dedo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Dame Directo Doble</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Dame Directo Doble</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Coca Cola</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Coca Cola</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Montaña</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Montaña</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. 72</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. 72</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. 74</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. 74</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Enchufa Mambo</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Enchufa Mambo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Serrucho</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Serrucho</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. 7</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. 7</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Vacila Triple</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Vacila Triple</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Abrázala</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Abrázala</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Dame Por Las Manos</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Dame Por Las Manos</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">13. Patín</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">13. Patín</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">14. Patineta</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">14. Patineta</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">15. Paséense</a>
+                                                <a class="{{ empty($clase_3->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">15. Paséense</a>
                                               </li>
                                             </div>
-                                            @if($clase_4->clase_4)
+
                                             <div class="eos-group-title">INTERMEDIO 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Enchufa a Lo Cubano</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Enchufa a Lo Cubano</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. 69</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. 69</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. 71</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. 71</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Dedo Guarapo y Bota</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Dedo Guarapo y Bota</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Jessica</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Jessica</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. 70 Por Las Manos</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. 70 Por Las Manos</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Abanico y Bota</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Abanico y Bota</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Sombrero Doble</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Sombrero Doble</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. 7 Coca Cola</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. 7 Coca Cola</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10.  El Beso</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10.  El Beso</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. 73</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. 73</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Cepillao</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Cepillao</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">13. Chinita</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">13. Chinita</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">14. Tócale La T</a>
+                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">14. Tócale La T</a>
                                               </li>
                                             </div>
 
-                                            @endif
 
-                                            @if($clase_5->clase_4)
                                             <div class="eos-group-title">INTERMEDIO 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Brazalete</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Brazalete</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Sonia</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Sonia</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Trenza</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Trenza</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Sombréala</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Sombréala</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Matanzas</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Matanzas</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Ciclón</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Ciclón</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Baracoa</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Baracoa</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. 75</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. 75</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. Sombrero Enganchado</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. Sombrero Enganchado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Palafitos</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Palafitos</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. La De Antonio</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. La De Antonio</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Atrevido</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Atrevido</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">13. Coca Cola Por Detrás</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">13. Coca Cola Por Detrás</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">14. Balsero</a>
+                                                <a class="{{ empty($clase_5->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">14. Balsero</a>
                                               </li>
                                             </div>
                                           </div>
                                         </div>
                                     </div>
-
-                                    @endif
-
-                                    @endif
-
-                                    @if($clase_6->clase_4)
 
 
                                     <!-- NIVELACION 3 -->
@@ -420,136 +411,127 @@
                                             <div class="eos-group-title">AVANZADO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. 7 Moderno</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. 7 Moderno</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Camagüey</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Camagüey</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Sombrero de Magni</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Sombrero de Magni</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Juana La Cuabana</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Juana La Cuabana</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Morón</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Morón</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Sombrero Por Debajo</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Sombrero Por Debajo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. La Jugada</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. La Jugada</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. El Puente</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. El Puente</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. Cuchillo Y Córtala</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. Cuchillo Y Córtala</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Candado Complicado</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Candado Complicado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. El 12</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. El 12</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Tornado</a>
+                                                <a class="{{ empty($clase_6->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Tornado</a>
                                               </li>
                                             </div>
-                                            @if($clase_7->clase_4)
+
                                             <div class="eos-group-title">AVANZADO 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. La Jenny</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. La Jenny</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. 7 70</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. 7 70</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. 77</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. 77</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Terremoto</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Terremoto</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Huracán</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Huracán</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Sombrero De Diana</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Sombrero De Diana</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. 7 Loco</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. 7 Loco</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Azuquita</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Azuquita</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. Ascensor</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. Ascensor</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Sombrero De Regnier</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Sombrero De Regnier</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Ponle Sabor</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Ponle Sabor</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Rumbita</a>
+                                                <a class="{{ empty($clase_7->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Rumbita</a>
                                               </li>
                                             </div>
-                                            @endf
 
-                                            @if($clase_8->clase_4)
                                             <div class="eos-group-title">AVANZADO 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Paséala Y Complícate</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Paséala Y Complícate</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Jimawa</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Jimawa</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Rubenada</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Rubenada</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. 84 Complicado</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. 84 Complicado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Oro Negro</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Oro Negro</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Tormenta</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Tormenta</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Consorte</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Consorte</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. El Bebé</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. El Bebé</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. 75 Con Gancho</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. 75 Con Gancho</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Tunturuntún</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Tunturuntún</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. La Cuñada</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. La Cuñada</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Copelia</a>
+                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Copelia</a>
                                               </li>
                                             </div>
                                           </div>
                                         </div>
                                     </div>
 
-                                    @endif
-
-                                    @endif
-
-
                                     <!-- NIVELACION 4 -->
-
-                                    @if($clase_9->clase_4)
                                     
                                     <div class="col-sm-3">
                                         <div class="eos-menu" id="nivelacion_4">
@@ -561,136 +543,125 @@
                                             <div class="eos-group-title">MASTER 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Ola Brava</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Ola Brava</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Niágara</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Niágara</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Primo Hermano</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Primo Hermano</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. 75 Derecho/Revés</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. 75 Derecho/Revés</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. Venezolano</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. Venezolano</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. 70 Nuevo</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. 70 Nuevo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. La Tuya</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. La Tuya</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Dedo Saboreado</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Dedo Saboreado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. La Cuadra</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. La Cuadra</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Abanico Complicado</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Abanico Complicado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Copelia Complicado</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Copelia Complicado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Bacardí Complicado</a>
+                                                <a class="{{ empty($clase_9->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Bacardí Complicado</a>
                                               </li>
                                             </div>
 
-                                            @endif
-
-                                            @if($clase_10->clase_4)
                                             <div class="eos-group-title">MASTER 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Tenampa</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Tenampa</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Sabrosura</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Sabrosura</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Sombrero De Cusco</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Sombrero De Cusco</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. 7 loco Complicado</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. 7 loco Complicado</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. 70 y Pescao</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. 70 y Pescao</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Tijeras</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Tijeras</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. 70 y Pico</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. 70 y Pico</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. 90</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. 90</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. Rumbera</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. Rumbera</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. La Espuma</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. La Espuma</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Carnaval</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Carnaval</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Uno Complicado</a>
+                                                <a class="{{ empty($clase_10->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Uno Complicado</a>
                                               </li>
                                             </div>
 
-                                            @endif
-
-                                            @if($clase_11->clase_4)
                                             <div class="eos-group-title">MASTER 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">01. Rubenada Complicada</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Rubenada Complicada</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">02. Alrededor Del Mundo</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">02. Alrededor Del Mundo</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">03. Chocolate</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">03. Chocolate</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">04. Bacardí Con Limón</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">04. Bacardí Con Limón</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">05. La Vieja</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">05. La Vieja</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">06. Xioma</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">06. Xioma</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">07. Mata 7</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">07. Mata 7</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">08. Angie</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">08. Angie</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">09. Gigante</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">09. Gigante</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">10. Hormiguero</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">10. Hormiguero</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">11. Nonna</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">11. Nonna</a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="video_url" href="203096537">12. Energía Latina</a>
+                                                <a class="{{ empty($clase_11->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">12. Energía Latina</a>
                                               </li>
                                             </div>
                                           </div>
                                         </div>
                                     </div>
-
-                                    @endif
-
-                                    @endif
-
 
                                  
                                 <br><br><br>
@@ -782,6 +753,12 @@
       $('#nombre_modal').text(titulo)
 
       $('#modalVideo').modal('show');
+    });
+
+    $(".disabled").click(function(e) {
+
+      e.preventDefault();
+
     });
 
     $('#modalVideo').on('hidden.bs.modal', function () {
