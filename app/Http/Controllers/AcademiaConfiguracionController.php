@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Academia;
+use App\Acuerdo;
 use App\Alumno;
 use App\Impuesto;
 use App\Instructor;
@@ -1490,6 +1491,47 @@ class AcademiaConfiguracionController extends BaseController {
                                     }
                                 }
 
+                                $acuerdos = Acuerdo::where('academia_id', Auth::user()->academia_id)->get();
+
+                                foreach($acuerdos as $acuerdo){
+
+                                    if($acuerdo->tiempo_tolerancia && $acuerdo->porcentaje_retraso)
+                                    {
+                                        $proformas = ItemsFacturaProforma::where('tipo',6)->where('item_id', $acuerdo->id)->get();
+
+                                        foreach($proformas as $proforma){
+                                            $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
+
+                                            $fecha->addDays($acuerdo->tiempo_tolerancia);
+
+                                            if(Carbon::now() > $fecha && $proforma->tiene_mora == 0){
+
+                                                $mora = ($proforma->importe_neto * $acuerdo->tiempo_tolerancia)/100;
+
+                                                $item_factura = new ItemsFacturaProforma;
+                                                                            
+                                                $item_factura->alumno_id = $acuerdo->alumno_id;
+                                                $item_factura->academia_id = Auth::user()->academia_id;
+                                                $item_factura->fecha = Carbon::now()->toDateString();
+                                                $item_factura->nombre = 'Retraso de pago ' .  $proforma->nombre;
+                                                $item_factura->tipo = 8;
+                                                $item_factura->cantidad = 1;
+
+                                                $item_factura->importe_neto = $mora;
+                                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                                $item_factura->save();
+
+                                                $proforma->tiene_mora = 1;
+
+                                                $proforma->save();
+
+                                            }
+
+                                        }
+                                    }
+                                }
+
                                 if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
                                     return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
@@ -1638,9 +1680,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 // }  
 
-                if (Session::has('fecha_sesion')) {                
-                   
-                }else{
+                if (!Session::has('fecha_sesion')) {                
                    $fecha_sesion=Carbon::now();
                    Session::put('fecha_sesion',$fecha_sesion);
                 }
