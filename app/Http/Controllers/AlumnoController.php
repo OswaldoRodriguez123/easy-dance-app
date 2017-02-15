@@ -1143,7 +1143,7 @@ class AlumnoController extends BaseController
         if($alumno->familia_id){
             $es_representante = Familia::where('representante_id', $alumno->id)->first();
             if($es_representante){
-                $hijos = Alumno::where('familia_id',$alumno->familia_id)->get();
+                $hijos =  Alumno::withTrashed()->where('familia_id',$alumno->familia_id)->get();
                 foreach($hijos as $hijo)
                 {
                     $delete = ItemsFacturaProforma::where('alumno_id',$hijo->id)->forceDelete();
