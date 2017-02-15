@@ -236,41 +236,50 @@ class EvaluacionController extends BaseController
             {
 
               $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-              $i = $fecha->dayOfWeek;
 
-              if($i == 1){
+              if($fecha >= Carbon::now()){
 
-                $dia = 'Lunes';
+                $i = $fecha->dayOfWeek;
 
-              }else if($i == 2){
+                if($i == 1){
 
-                $dia = 'Martes';
+                  $dia = 'Lunes';
 
-              }else if($i == 3){
+                }else if($i == 2){
 
-                $dia = 'Miercoles';
+                  $dia = 'Martes';
 
-              }else if($i == 4){
+                }else if($i == 3){
 
-                $dia = 'Jueves';
+                  $dia = 'Miercoles';
 
-              }else if($i == 5){
+                }else if($i == 4){
 
-                $dia = 'Viernes';
+                  $dia = 'Jueves';
 
-              }else if($i == 6){
+                }else if($i == 5){
 
-                $dia = 'Sabado';
+                  $dia = 'Viernes';
 
-              }else if($i == 0){
+                }else if($i == 6){
 
-                $dia = 'Domingo';
+                  $dia = 'Sabado';
 
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $clase_grupal_nombre = $clase_grupal->nombre;
+                $instructor = $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido;
+                $horario = $dia . ' de ' . $clase_grupal->hora_inicio .' a '. $clase_grupal->hora_final;
+
+              }else{
+                $clase_grupal_nombre = '';
+                $instructor = '';
+                $horario = '';
               }
-
-              $clase_grupal_nombre = $clase_grupal->nombre;
-              $instructor = $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido;
-              $horario = $dia . ' de ' . $clase_grupal->hora_inicio .' a '. $clase_grupal->hora_final;
 
             }else{
 
