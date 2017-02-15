@@ -237,7 +237,7 @@ class EvaluacionController extends BaseController
 
               $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
-              if($fecha >= Carbon::now()){
+              // if($fecha >= Carbon::now()){
 
                 $i = $fecha->dayOfWeek;
 
@@ -280,14 +280,15 @@ class EvaluacionController extends BaseController
                 $instructor = '';
                 $horario = '';
               }
+              
 
-            }else{
+            // }else{
 
-              $clase_grupal_nombre = '';
-              $instructor = '';
-              $horario = '';
+            //   $clase_grupal_nombre = '';
+            //   $instructor = '';
+            //   $horario = '';
 
-            }
+            // }
 
             
         //DATOS DE DETALLE
