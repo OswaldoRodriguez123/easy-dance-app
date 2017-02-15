@@ -163,7 +163,7 @@ class InstructorController extends BaseController {
 
         $nombre = title_case($request->nombre);
         $apellido = title_case($request->apellido);
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $correo = strtolower($request->correo);
 
@@ -450,7 +450,7 @@ class InstructorController extends BaseController {
     public function updateDireccion(Request $request){
         $instructor = Instructor::find($request->id);
 
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $instructor->direccion = $direccion;
 

@@ -591,8 +591,8 @@ public function todos_con_robert()
             }
 
             $nombre = title_case($request->nombre);
-            $historia = title_case($request->historia);
-            $eslogan = title_case($request->eslogan);
+            $historia = $request->historia;
+            $eslogan = $request->eslogan;
 
 
             $campana = new Campana;
@@ -1058,7 +1058,7 @@ public function todos_con_robert()
         else{
 
             $campana = Campana::find($request->id);
-            $eslogan = title_case($request->eslogan);
+            $eslogan = $request->eslogan;
             
             $campana->eslogan = $eslogan;
 
@@ -1095,7 +1095,7 @@ public function todos_con_robert()
 
             $campana = Campana::find($request->id);
 
-            $historia = title_case($request->historia);
+            $historia = $request->historia;
      
             $campana->historia = $historia;
 
@@ -1131,7 +1131,7 @@ public function todos_con_robert()
 
             $campana = Campana::find($request->id);
 
-            $presentacion = title_case($request->presentacion);
+            $presentacion = $request->presentacion;
         
             $campana->presentacion = $presentacion;
 

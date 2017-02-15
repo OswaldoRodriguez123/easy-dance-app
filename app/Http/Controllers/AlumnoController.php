@@ -37,6 +37,7 @@ use App\ItemsPresupuesto;
 use App\Presupuesto;
 use App\Asistencia;
 use App\Cita;
+use App\Notificacion;
 use App\NotificacionUsuario;
 use App\Incidencia;
 use App\Sugerencia;
@@ -225,7 +226,7 @@ class AlumnoController extends BaseController
 
         if($request->direccion)
         {
-            $direccion = title_case($request->direccion);
+            $direccion = $request->direccion;
 
         }else{
             $direccion = '';
@@ -868,7 +869,7 @@ class AlumnoController extends BaseController
     public function updateDireccion(Request $request){
         $alumno = Alumno::withTrashed()->find($request->id);
 
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $alumno->direccion = $direccion;
         

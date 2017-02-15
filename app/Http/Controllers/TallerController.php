@@ -63,6 +63,71 @@ class TallerController extends BaseController {
         }
     }
 
+    public function indexconacademia($id)
+    {
+
+        $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->where('talleres.deleted_at', '=', null)->OrderBy('talleres.hora_inicio')->get();
+
+        $array = array();
+
+        $academia = Academia::find($id);
+
+        foreach($talleres as $taller){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+            $dia_de_semana = $fecha->dayOfWeek;
+
+            if($fecha >= Carbon::now()){
+
+                $dia_string = '';
+
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+ 
+                $dia_string = $dia;
+                
+
+                $collection=collect($taller);     
+                $taller_array = $collection->toArray();
+
+                $taller_array['dias_de_semana']=$dia_string;
+                $array[$taller->id] = $taller_array;
+            }
+        }
+
+        return view('agendar.taller.principal_alumno')->with(['talleres' => $array, 'academia' => $academia]);
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -194,7 +259,7 @@ class TallerController extends BaseController {
         $taller = new Taller;
 
         $nombre = title_case($request->nombre);
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
 
         $taller->academia_id = Auth::user()->academia_id;
         $taller->descripcion = $descripcion;
@@ -386,7 +451,7 @@ class TallerController extends BaseController {
 
         $taller = Taller::find($request->id);
 
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
 
         $taller->descripcion = $descripcion;
 

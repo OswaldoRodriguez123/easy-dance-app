@@ -23,6 +23,17 @@
 <meta content="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" property='og:image'/>
 @endif
 
+@if($clase_grupal->descripcion)
+  <meta name="description" content="{{$clase_grupal->descripcion}}" />
+  <meta property="og:description" content="{{$clase_grupal->descripcion}}" />
+@else
+
+  <meta name="description" content="{{$clase_grupal->clase_grupal_nombre}}" />
+  <meta property="og:description" content="{{$clase_grupal->clase_grupal_nombre}}" />
+
+@endif
+
+
 @section('content')
 
 <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">

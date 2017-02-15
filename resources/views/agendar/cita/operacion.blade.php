@@ -8,13 +8,15 @@
 
 
 @section('content')
+
+
+
 <section id="content">
         <div class="container">
            <div class="block-header">
-           <div class="col-sm-6 text-left">
+                <div class="col-sm-6 text-left">
                 <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/citas"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección citas</a>
-            </div>
-
+                </div>
                 <div class="col-sm-6 text-right">
                 <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/agendar/citas/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
                 </div>
@@ -22,7 +24,7 @@
 
             <br>
             
-            <h4 class ="c-morado text-right">Cita: {{$cita->nombre}}</h4>
+            <h4 class ="c-morado text-right">Cliente: {{$cita->alumno_nombre}} {{$cita->alumno_apellido}}</h4>
             <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
             <hr class="linea-morada">
             <br>
@@ -31,7 +33,27 @@
 
             <div class = "col-sm-5"></div>
 
-            <ul class="ca-menu-c " style="width: 720px;">
+            <ul class="ca-menu-c">
+
+                   <!--  <li data-ripplecator class ="dark-ripples">
+                        <a class="multihorario">
+                            <span class="ca-icon-c"><i class="zmdi zmdi-calendar-note f-35 boton blue sa-warning" data-original-title="Ver Multihorario" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c f-20">Multihorario</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a data-toggle="modal" href="#modalCancelar">
+                            <span class="ca-icon-c"><i  class="zmdi zmdi-close-circle-o f-35 boton red sa-warning" name="cancelar" id="{{$id}}" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Cancelar Clase</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li> -->
 
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar">
@@ -58,16 +80,19 @@
                     
                 </ul>
 
+    
+
                 </div>
             </div>
         </div>
 </section>
 @stop
 @section('js') 
-    <script type="text/javascript">
+	<script type="text/javascript">
 
     route_eliminar="{{url('/')}}/agendar/citas/eliminar/";
     route_principal="{{url('/')}}/agendar/citas";
+
 
   $(document).ready(function(){
 
@@ -88,7 +113,7 @@
             }, animationDuration);
 
       });
-        function setAnimation(animation, target) {
+		function setAnimation(animation, target) {
              $('#'+target).addClass(animation);
 
             setTimeout(function(){
@@ -109,7 +134,7 @@
   $(".eliminar").click(function(){
                 id = this.id;
                 swal({   
-                    title: "Desea eliminar la cita?",   
+                    title: "Desea eliminar la cita",  
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -132,7 +157,7 @@
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
+         var route = route_eliminar + "{{$id}}";
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -159,7 +184,95 @@
                                 }
                 });
       }
+
+      $(".cancelar_clase").click(function(){
+
+        id = "{{$id}}";
+    
+         swal({   
+                    title: "Desea cancelar la clase personalizada",   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
+         var route = route_cancelar + id;
+         var token = '{{ csrf_token() }}';
+         var datos = $( "#cancelar_clase" ).serialize(); 
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
+
+                        window.location=route_principal; 
+
+                    },
+                    error:function(msj){
+                                // if (typeof msj.responseJSON === "undefined") {
+                                //   window.location = "{{url('/')}}/error";
+                                // }
+                    $(".modal").modal('hide');
+                    finprocesado();
+                    swal({ 
+                    title: 'El estatus de esta clase es de "cancelación tardía", al cancelarla de igual manera será debitada económicamente al participante. ¿ Desea proceder ?',   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true,
+                    html: true
+                }, function(isConfirm){   
+                  if (isConfirm) {
+                    procesando();
+                    var route = route_cancelarpermitir + id;
+
+                    $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
+
+                        window.location=route_principal; 
+
+                    },
+                    error:function(msj){
+
+                            if (typeof msj.responseJSON === "undefined") {
+                                window.location = "{{url('/')}}/error";
+                             }
+
+
+    
+                            }
+                        });
+                    }
+                });
+             }
+         });
+        }
+      });
+    });
+
+
+  $(".multihorario").click(function(){
+               
+    window.location = "{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$id}}";
+
+  });
+
   
   setAnimation('fadeInUp', 'content');
-    </script>
+	</script>
 @stop

@@ -148,8 +148,6 @@ class AcademiaConfiguracionController extends BaseController {
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
                 $fecha->addDays($clase->dias_prorroga);
                 if($fecha >= Carbon::now()){
-
-
                     $contador_clase = $contador_clase + 1;
                 }
 
@@ -605,7 +603,7 @@ class AcademiaConfiguracionController extends BaseController {
             }
 
             $correo = strtolower($request->correo);
-            $direccion = title_case($request->direccion);
+            $direccion = $request->direccion;
 
             $academia = Academia::find(Auth::user()->academia_id);
 
@@ -1105,7 +1103,7 @@ class AcademiaConfiguracionController extends BaseController {
 
     else{
 
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $correo = strtolower($request->correo);
 

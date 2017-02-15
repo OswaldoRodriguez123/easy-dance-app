@@ -58,7 +58,7 @@ class ConfigProductosController extends BaseController {
     else{
 
         $nombre = title_case($request->nombre);
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
         //$existente=ConfigProductos::where('nombre',$request->nombre)->first();
 
         /*if($existente){
@@ -221,7 +221,7 @@ class ConfigProductosController extends BaseController {
 
         $producto = ConfigProductos::find($request->id);
 
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
 
         $producto->descripcion = $descripcion;
 

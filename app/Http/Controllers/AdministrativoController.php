@@ -2583,7 +2583,7 @@ class AdministrativoController extends BaseController {
 
         $nombre = title_case($request->nombre);
         $apellido = title_case($request->apellido);
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
         $correo = strtolower($request->correo);
         
 

@@ -310,7 +310,7 @@ class ProgresoController extends BaseController {
                     if($clase){
 
                         if($clase->clase_4){
-                            return view('progreso.certificado');
+                            return view('progreso.certificado')->with(['certificado' => 'intermedio.jpg', 'academia' => $academia, 'nivel' => 'INTERMEDIO']);
                         }else{
                             return redirect("/inicio"); 
                         }
@@ -322,7 +322,7 @@ class ProgresoController extends BaseController {
                     if($clase){
 
                         if($clase->clase_4){
-                            return view('progreso.certificado');
+                           return view('progreso.certificado')->with(['certificado' => 'avanzado.jpg', 'academia' => $academia, 'nivel' => 'AVANZADO']);
                         }else{
                             return redirect("/inicio"); 
                         }
@@ -334,7 +334,7 @@ class ProgresoController extends BaseController {
                     if($clase){
 
                         if($clase->clase_4){
-                            return view('progreso.certificado');
+                            return view('progreso.certificado')->with(['certificado' => 'master.jpg', 'academia' => $academia, 'nivel' => 'MASTER']);
                         }else{
                             return redirect("/inicio"); 
                         }

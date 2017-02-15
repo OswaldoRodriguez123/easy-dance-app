@@ -114,7 +114,7 @@ class StaffController extends BaseController
 
 	        if($request->direccion)
 	        {
-	            $direccion = title_case($request->direccion);
+	            $direccion = $request->direccion;
 
 	        }else{
 	            $direccion = '';
@@ -314,7 +314,7 @@ class StaffController extends BaseController
     public function updateDireccion(Request $request){
         $alumno = Staff::withTrashed()->find($request->id);
 
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $alumno->direccion = $direccion;
         

@@ -209,17 +209,31 @@
                         @endif -->
 
                         @if($instructores_academia->facebook)
-                        <li><a name="facebook" id="facebook" class ="enlace_gris" href="{{ empty($instructores_academia->facebook) ? '' : $instructores_academia->facebook}}" target="_blank"><i class="zmdi zmdi-facebook-box"></i> Facebook</a></li>
+                          @if (!filter_var($instructores_academia->facebook, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$instructores_academia->facebook}}">{{ str_limit($instructores_academia->facebook, $limit = 25, $end = '...') }}</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$instructores_academia->facebook}}">https://www.facebook.com/...</a></li>
+                          @endif
                         @endif
 
                         @if($instructores_academia->twitter)
-                          <li><a name="twitter" id="twitter" class ="enlace_gris" href="{{ empty($instructores_academia->twitter) ? '' : $instructores_academia->twitter}}" target="_blank"><i class="zmdi zmdi-twitter"></i> Twitter</a></li>
-                        @endif
 
+                          @if (!filter_var($instructores_academia->twitter, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$instructores_academia->twitter}}">https://www.twitter.com/{{$instructores_academia->twitter}}</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$instructores_academia->twitter}}">@ {{$instructores_academia->twitter}}</a></li>
+                          @endif
+                        @endif
 
                         @if($instructores_academia->instagram)
-                          <li><a name="instagram" id="instagram" class ="enlace_gris" href="{{ empty($instructores_academia->instagram) ? '' : $instructores_academia->instagram}}" target="_blank"><i class="zmdi zmdi-instagram"></i> Instagram</a></li>
+                          @if (!filter_var($instructores_academia->instagram, FILTER_VALIDATE_URL) === false) 
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">{{$instructores_academia->instagram}}</a></li>
+                          @else
+                            <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$instructores_academia->instagram}}">@ {{$instructores_academia->instagram}}</a></li>
+                          @endif
                         @endif
+
+                        
 
                         @if($instructores_academia->linkedin)
                           <li><a name="linkedin" id="linkedin" class ="enlace_gris" href="{{ empty($instructores_academia->linkedin) ? '' : $instructores_academia->linkedin}}" target="_blank"><i class="zmdi zmdi-linkedin-box"></i> Linkedin</a></li>

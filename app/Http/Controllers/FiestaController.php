@@ -258,7 +258,7 @@ class FiestaController extends BaseController {
 
         $nombre = title_case($request->nombre);
         $lugar = title_case($request->lugar);
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
 
         $fiesta->academia_id = Auth::user()->academia_id;
         $fiesta->nombre = $nombre;
@@ -377,7 +377,7 @@ class FiestaController extends BaseController {
     }
         $fiesta = Fiesta::find($request->id);
 
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
 
         $fiesta->descripcion = $descripcion;
 

@@ -330,7 +330,7 @@ class ConfigClasesGrupalesController extends BaseController {
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
 
-        $descripcion = title_case($request->descripcion);
+        $descripcion = $request->descripcion;
 
         $clasegrupal->descripcion = $descripcion;
 

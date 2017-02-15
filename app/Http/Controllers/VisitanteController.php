@@ -30,7 +30,8 @@ class VisitanteController extends BaseController {
     {
 
         $visitantes = Visitante::Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
-            ->select('visitantes_presenciales.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
+            ->select('visitantes_presenciales.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_como_nos_conociste.nombre as como_se_entero')
             ->where('visitantes_presenciales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -118,7 +119,7 @@ class VisitanteController extends BaseController {
 
         $nombre = title_case($request->nombre);
         $apellido = title_case($request->apellido);
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $correo = strtolower($request->correo);
 

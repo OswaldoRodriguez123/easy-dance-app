@@ -277,7 +277,7 @@ class UsuarioController extends BaseController {
     public function updateDireccion(Request $request){
         $usuario = User::find(Auth::user()->id);
 
-        $direccion = title_case($request->direccion);
+        $direccion = $request->direccion;
 
         $usuario->direccion = $direccion;
         

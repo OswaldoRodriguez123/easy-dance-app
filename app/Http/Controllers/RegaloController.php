@@ -346,7 +346,7 @@ class RegaloController extends BaseController {
 
             $regalo = Regalo::find($request->id);
 
-            $descripcion = title_case($request->descripcion);
+            $descripcion = $request->descripcion;
         
             $regalo->descripcion = $request->descripcion;
 

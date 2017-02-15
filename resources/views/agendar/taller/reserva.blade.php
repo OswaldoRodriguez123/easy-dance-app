@@ -23,6 +23,16 @@
 <meta content="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" property='og:image'/>
 @endif
 
+@if($taller->descripcion)
+  <meta name="description" content="{{$taller->descripcion}}" />
+  <meta property="og:description" content="{{$taller->descripcion}}" />
+@else
+
+  <meta name="description" content="{{$taller->taller_nombre}}" />
+  <meta property="og:description" content="{{$taller->taller_nombre}}" />
+
+@endif
+
 @section('content')
 
 <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">

@@ -104,6 +104,19 @@ class CitaController extends BaseController {
         return view('agendar.cita.principal')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'canceladas' => $canceladas, 'asistencias' => $asistencias]);
     }
 
+    public function operar($id){
+
+        $cita = DB::table('citas')
+            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre', 'citas.color_etiqueta')
+            ->where('citas.id','=', $id)
+        ->first();
+
+        return view('agendar.cita.operacion')->with(['cita' => $cita, 'id' => $id]);
+    }
+
 	public function create()
     {
 
@@ -391,13 +404,6 @@ class CitaController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-    }
-
-    public function operar($id)
-    {   
-        $cita = Cita::find($id);
-
-        return view('agendar.fiesta.operacion')->with(['id' => $id , 'cita' => $cita]);       
     }
 
     public function destroy($id)

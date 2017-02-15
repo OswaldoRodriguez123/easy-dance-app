@@ -191,17 +191,8 @@
                                  <div class="form-group fg-line">
                                     <div style="text-align: center"><label for="" >Estado de Alumno</label><hr></div>
 
-                                    <div class="form-group fg-line">
-                                    <label for="costo">Estado de Inactividad</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_roja" data-mask="00000000" placeholder="Ej. 5" value="{{$clasegrupal->asistencia_rojo}}">
-                                    </div>
-                                 <div class="has-error" id="error-asistencia_rojas">
-                                      <span >
-                                          <small class="help-block error-span" id="error-asistencia_rojas_mensaje" ></small>                              
-                                      </span>
-                                  </div>
 
-                                 <div class="form-group fg-line">
+                                    <div class="form-group fg-line">
                                     <label for="costo">Riesgo de Ausencia</label>
                                     <input type="text" class="form-control input-sm input-mask" name="asistencia_amarillas" id="asistencia_amarilla" data-mask="00000000" placeholder="Ej. 2" value="{{$clasegrupal->asistencia_amarilla}}">
                                  </div>
@@ -211,6 +202,15 @@
                                       </span>
                                   </div>
 
+                                    <div class="form-group fg-line">
+                                    <label for="costo">Estado de Inactividad</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="asistencia_rojas" id="asistencia_roja" data-mask="00000000" placeholder="Ej. 5" value="{{$clasegrupal->asistencia_rojo}}">
+                                    </div>
+                                 <div class="has-error" id="error-asistencia_rojas">
+                                      <span >
+                                          <small class="help-block error-span" id="error-asistencia_rojas_mensaje" ></small>                              
+                                      </span>
+                                  </div>
                              </div>
                              </div>
                                <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>

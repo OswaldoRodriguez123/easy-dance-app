@@ -88,14 +88,15 @@ Route::get('agendar/clases-personalizadas/agregar/{id}', 'ClasePersonalizadaCont
 
 Route::get('agendar/clases-grupales/disponibles/{id}', 'ClaseGrupalController@indexconacademia');
 Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
-
-// PROGRESO
-
 Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeInscripcionVistaAlumno');
+
+// TALLER USUARIO
+
+Route::get('agendar/talleres/disponibles/{id}', 'TallerController@indexconacademia');
 Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 
-// CAMPAÑAS
+// CAMPAÑAS USUARIO
 
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
 
@@ -627,6 +628,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('agendar/citas', 'CitaController@principal');
 			Route::get('agendar/citas/calendario', 'CitaController@calendario');
+			Route::get('agendar/citas/operaciones/{id}', 'CitaController@operar');
 			Route::post('agendar/citas/agregar', 'CitaController@store');
 			Route::get('agendar/citas/agregar', 'CitaController@create');
 			Route::get('agendar/citas/detalle/{id}', 'CitaController@edit');
