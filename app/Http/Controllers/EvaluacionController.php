@@ -230,7 +230,6 @@ class EvaluacionController extends BaseController
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
                 ->where('inscripcion_clase_grupal.deleted_at', null)
-                ->where('clases_grupales.fecha_final', '<=', Carbon::now())
             ->first();
 
             if($clase_grupal)
