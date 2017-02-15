@@ -1201,10 +1201,11 @@ class AlumnoController extends BaseController
             }
         }
 
-        $delete = Familia::where('representante_id',$id)->forceDelete();
         $usuario = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->first();
 
         if($usuario){
+
+            $delete = Familia::where('representante_id',$usuario->id)->forceDelete();
 
             $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
             foreach($notificaciones_usuarios as $notificacion_usuario)
