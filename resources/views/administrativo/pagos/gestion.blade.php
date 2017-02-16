@@ -251,6 +251,8 @@
   route_cancelar = "{{url('/')}}/administrativo/pagos/cancelargestion";
   route_imprimir="{{url('/')}}/administrativo/factura/";
   //route_mercadopago="{{url('/')}}/administrativo/pagos/facturamercadopago/";
+  //
+  var puntos_referidos = "{{$puntos_referidos}}"
 
   function formatmoney(n) {
     return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -278,7 +280,19 @@
   
   $("#forma_pago_id").change(function(){
 
-    $("#monto").val(totalglobal);
+    if($(this).val() != 4){
+      $("#monto").val(totalglobal);
+    }else{
+      if(totalglobal <= puntos_referidos)
+      {
+        $("#monto").val(totalglobal);
+      }else{
+        $("#monto").val(puntos_referidos);
+      }
+      
+    }
+
+    
 
       if($(this).val() == 1 || $(this).val() == 4){
         $('#banco').val('');
@@ -544,6 +558,10 @@
                             var referencia = respuesta.array[0].referencia;
                             var monto = respuesta.array[0].monto;
 
+                            if(forma_pago == 'Puntos Acumulados'){
+                              puntos_referidos = puntos_referidos - monto
+                            }
+
                             totalglobal = totalglobal - parseFloat(monto);
 
                             var rowId=respuesta.id;
@@ -662,6 +680,10 @@
                               if(data.status=='OK'){
 
                                   totalglobal = totalglobal + parseFloat(data.monto);
+
+                                  if(data.forma_pago == 4){
+                                    puntos_referidos = puntos_referidos + parseFloat(data.monto);
+                                  }
 
                                   $("#total").text(formatmoney(totalglobal));
                                   // console.log(subtotalglobal);

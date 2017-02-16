@@ -158,6 +158,17 @@
                     <div class="clearfix p-b-15"></div>
 
                     <a href="{{url('/')}}/invitar"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_referido.jpg" alt=""></a>
+
+
+                    <div class="clearfix p-b-15"></div>
+
+
+                    <table class="table table-striped table-bordered text-center">
+                     <tr class="disabled">
+                     <td class = ""></td>
+                     <td class="f-14 m-l-15"><span class="f-12 f-700">Mi Código: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos">{{$alumno->codigo_referido}}</span></td>
+                    </tr>
+                    </table>
             
    
                 </div>

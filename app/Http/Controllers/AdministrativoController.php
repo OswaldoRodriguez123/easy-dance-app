@@ -42,7 +42,7 @@ class AdministrativoController extends BaseController {
     
 	public function index()
 	{
-        if(Auth::user()->usuario_tipo == 2)
+        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
         {
 
 
@@ -684,8 +684,9 @@ class AdministrativoController extends BaseController {
 
         $arreglo = Session::get('pagos');
         $monto = $arreglo[$id][0]['monto'];
+        $forma_pago = $arreglo[$id][0]['forma_pago'];
 
-        if($arreglo[$id][0]['forma_pago'] == 4){
+        if($forma_pago == 4){
 
             $puntos_referidos = Session::get('puntos_referidos');
             $puntos_referidos = $puntos_referidos - $monto;
@@ -696,7 +697,7 @@ class AdministrativoController extends BaseController {
         unset($arreglo[$id]);
         Session::put('pagos', $arreglo);
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'monto' => $monto, 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'monto' => $monto, 'forma_pago' => $forma_pago, 200]);
 
     }
 
@@ -1380,13 +1381,13 @@ class AdministrativoController extends BaseController {
     public function agregaritem(Request $request){
         
     $rules = [
-
+        'alumno_id' => 'required',
         'combo' => 'required',
         'cantidad' => 'required|numeric|min:1',
     ];
 
     $messages = [
-
+        'alumno_id.required' => 'Ups! El Cliente es requerido',
         'combo.required' => 'Ups! El Producto o Servicio es requerido',
         'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
         'cantidad.numeric' => 'Ups! El Cantidad es requerido',

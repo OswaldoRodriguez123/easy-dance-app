@@ -24,7 +24,12 @@ class UsuarioController extends BaseController {
 
     public function perfil()
     {
-        return view('usuario.planilla');
+        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4){
+            $alumno = Alumno::find(Auth::user()->usuario_id);
+            return view('usuario.planilla')->with('alumno',$alumno);
+        }else{
+            return view('usuario.planilla');
+        }
     }
 
     public function perfil_evaluativo()
