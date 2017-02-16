@@ -217,7 +217,7 @@ class AsistenciaController extends BaseController
       $activacion = $grouped->toArray();
 
 
-      return view('asistencia.generar')->with(['alumnosacademia' => $alumnos, 'instructores' => $instructor, 'activacion' => $activacion]);
+      return view('asistencia.generar')->with(['alumnosacademia' => $array, 'instructores' => $instructor, 'activacion' => $activacion]);
 
     }
 

@@ -245,23 +245,23 @@
                             <tbody>
 
                             @foreach ($alumnosacademia as $alumno)
-                                <?php $id = $alumno->id; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno->sexo}}" >
+                                <?php $id = $alumno['id']; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}" >
 
                                     <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
-                                        @if($alumno->imagen)
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno->imagen}}" alt="">
+                                        @if($alumno['imagen'])
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                         @else
-                                            @if($alumno->sexo == 'M')
+                                            @if($alumno['sexo'] == 'M')
                                               <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                             @else
                                               <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                         @endif
                                       @endif
                                     </td>
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}}</td>
-                                    <td class="text-center previa">{{$alumno->identificacion}}</td>
+                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
 
                                 </tr>
                             @endforeach 
