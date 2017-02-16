@@ -260,6 +260,9 @@
 
   $( document ).ready(function() {
 
+    $("#gestionar_pago")[0].reset();
+    $('#forma_pago_id').selectpicker('render');
+
      acuerdo = "{{{ $acuerdo or 'Default' }}}";
 
      if(acuerdo == 1){
