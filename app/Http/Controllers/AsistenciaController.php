@@ -67,6 +67,17 @@ class AsistenciaController extends BaseController
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->select('asistencias.fecha', 'asistencias.hora', 'clases_personalizadas.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.id', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
             ->where('clases_personalizadas.academia_id','=',Auth::user()->academia_id)
+            ->where('asistencias.tipo','=',3)
+        ->get();
+
+        $citas = DB::table('alumnos')
+            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->join('citas', 'asistencias.tipo_id', '=', 'citas.id')
+            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->select('asistencias.fecha', 'asistencias.hora', 'config_citas.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.id', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
+            ->where('citas.academia_id','=',Auth::user()->academia_id)
+            ->where('asistencias.tipo','=',4)
         ->get();
 
         $instructores = DB::table('asistencias_instructor')
@@ -108,6 +119,12 @@ class AsistenciaController extends BaseController
         }
 
         foreach($clases_personalizadas as $asistencia){
+          $collection=collect($asistencia);     
+          $asistencia_array = $collection->toArray();
+          $array[$asistencia->id] = $asistencia_array;
+        }
+
+        foreach($citas as $asistencia){
           $collection=collect($asistencia);     
           $asistencia_array = $collection->toArray();
           $array[$asistencia->id] = $asistencia_array;
