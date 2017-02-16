@@ -522,7 +522,7 @@ class ClaseGrupalController extends BaseController {
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('academias', 'clases_grupales.academia_id', '=', 'academias.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.cupo_reservacion', 'clases_grupales.fecha_inicio', 'clases_grupales.imagen', 'config_clases_grupales.descripcion', 'academias.imagen as imagen_academia', 'clases_grupales.link_video', 'config_clases_grupales.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre', 'academias.id as academia_id', 'config_clases_grupales.costo_inscripcion', 'config_clases_grupales.costo_mensualidad', 'clases_grupales.titulo_video')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.cupo_reservacion', 'clases_grupales.fecha_inicio', 'clases_grupales.imagen', 'config_clases_grupales.descripcion', 'academias.imagen as imagen_academia', 'clases_grupales.link_video', 'config_clases_grupales.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre', 'academias.id as academia_id', 'config_clases_grupales.costo_inscripcion', 'config_clases_grupales.costo_mensualidad', 'clases_grupales.titulo_video', 'clases_grupales.cantidad_mujeres', 'clases_grupales.cantidad_hombres', 'clases_grupales.cupo_maximo')
             ->where('clases_grupales.id','=', $id)
         ->first();
 
@@ -547,26 +547,72 @@ class ClaseGrupalController extends BaseController {
                 $link_video = '';
             }
 
-         $cantidad_reservaciones = DB::table('reservaciones')
-             ->select('reservaciones.*')
-             ->where('tipo_id', '=', $id)
-             ->where('tipo_reservacion', '=', 1)
-         ->count();
+         // $cantidad_reservaciones = DB::table('reservaciones')
+         //     ->select('reservaciones.*')
+         //     ->where('tipo_id', '=', $id)
+         //     ->where('tipo_reservacion', '=', 1)
+         // ->count();
 
-         if($clase_grupal_join->cupo_reservacion == 0){
-            $cupo_reservacion = 1;
-         }
-         else{
-            $cupo_reservacion = $clase_grupal_join->cupo_reservacion;
-         }
+         // if($clase_grupal_join->cupo_reservacion == 0){
+         //    $cupo_reservacion = 1;
+         // }
+         // else{
+         //    $cupo_reservacion = $clase_grupal_join->cupo_reservacion;
+         // }
 
-         $cupos_restantes = $cupo_reservacion - $cantidad_reservaciones;
+         // $cupos_restantes = $cupo_reservacion - $cantidad_reservaciones;
 
-         if($cupos_restantes < 0){
-            $cupos_restantes = 0;
-         }
+         // if($cupos_restantes < 0){
+         //    $cupos_restantes = 0;
+         // }
 
-        $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+         $cantidad_hombres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
+            ->where('alumnos.sexo','M')
+        ->count();
+
+        $cantidad_hombres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+            ->where('reservaciones_visitantes.tipo_id',$id)
+            ->where('reservaciones_visitantes.tipo_reservacion','1')
+            ->where('visitantes_presenciales.sexo','M')
+        ->count();
+
+        $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+
+        $cantidad_hombres = $clase_grupal_join->cantidad_hombres - $cantidad_hombres;
+
+        if($cantidad_hombres < 0){
+            $cantidad_hombres = 0;
+        }
+
+        $cantidad_mujeres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
+            ->where('alumnos.sexo','F')
+        ->count();
+
+        $cantidad_mujeres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+            ->where('reservaciones_visitantes.tipo_id',$id)
+            ->where('reservaciones_visitantes.tipo_reservacion','1')
+            ->where('visitantes_presenciales.sexo','F')
+        ->count();
+
+        $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
+
+        $cantidad_mujeres = $clase_grupal_join->cantidad_mujeres - $cantidad_mujeres;
+
+        if($cantidad_mujeres < 0){
+            $cantidad_mujeres = 0;
+        }
+
+        $cupos_restantes = $clase_grupal_join->cupo_maximo - $cantidad_mujeres + $cantidad_hombres;
+
+        $cupos_totales = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva + $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+
+
+
+        // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+
+        $porcentaje = intval(($cupos_totales / $clase_grupal_join->cupo_maximo) * 100);
 
         if(Auth::check()){
 
