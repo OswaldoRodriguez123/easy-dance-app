@@ -767,6 +767,8 @@
                     $("#subtotal").text(formatmoney(subtotalglobal));
                     $("#total").text(formatmoney(totalfinal));
 
+                    puntos_referidos = "{{$puntos_referidos}}"
+
                     $("#gestionar_pago")[0].reset();
                     $('#forma_pago_id').selectpicker('render');
                     limpiarMensaje();
