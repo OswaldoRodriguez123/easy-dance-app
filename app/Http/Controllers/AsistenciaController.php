@@ -158,21 +158,21 @@ class AsistenciaController extends BaseController
       $array = array(2, 4);
 
       $alumnos = DB::table('alumnos')
-            ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('users.usuario_tipo', $array)
-            ->orWhere('users.usuario_tipo', null)
-            ->orderBy('nombre', 'asc')
-        ->get();
+          ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
+          ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
+          ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+          ->where('alumnos.deleted_at', '=', null)
+          ->whereIn('users.usuario_tipo', $array)
+          ->orWhere('users.usuario_tipo', null)
+          ->orderBy('nombre', 'asc')
+      ->get();
 
       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
       $alumnoc = DB::table('alumnos')
         ->join('users', 'users.usuario_id', '=', 'alumnos.id')
         ->select('alumnos.id as id')
-        ->where('users.academia_id','=', Auth::user()->academia_id)
+        ->where('alumnos.academia_id','=', Auth::user()->academia_id)
         ->where('alumnos.deleted_at', '=', null)
         ->where('users.usuario_tipo', '=', 2)
         ->where('users.confirmation_token', '!=', null)
