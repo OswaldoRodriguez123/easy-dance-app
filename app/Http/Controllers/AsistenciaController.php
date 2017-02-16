@@ -155,17 +155,49 @@ class AsistenciaController extends BaseController
 
     public function generarAsistencia(){
 
-      $array = array(2, 4);
+      // $array = array(2, 4);
+
+      // $alumnos = DB::table('alumnos')
+      //     ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
+      //     ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
+      //     ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+      //     ->where('alumnos.deleted_at', '=', null)
+      //     ->whereIn('users.usuario_tipo', $array)
+      //     ->orWhere('users.usuario_tipo', null)
+      //     ->orderBy('nombre', 'asc')
+      // ->get();
+
+      $array = array();
 
       $alumnos = DB::table('alumnos')
-          ->Leftjoin('users', 'users.usuario_id', '=', 'alumnos.id')
-          ->select('alumnos.*', 'users.imagen', 'users.usuario_tipo')
+          ->select('alumnos.*')
           ->where('alumnos.academia_id','=', Auth::user()->academia_id)
           ->where('alumnos.deleted_at', '=', null)
-          ->whereIn('users.usuario_tipo', $array)
-          ->orWhere('users.usuario_tipo', null)
           ->orderBy('nombre', 'asc')
       ->get();
+
+      foreach($alumnos as $alumno){
+        
+        $usuario = User::where('usuario_id',$alumno->id)->first();
+
+        if($usuario){
+
+          if($usuario->imagen){
+            $imagen = $usuario->imagen;
+          }else{
+            $imagen = '';
+          }
+
+        }
+
+        $collection=collect($alumno);     
+        $alumno_array = $collection->toArray();
+            
+        $alumno_array['imagen']=$imagen;
+        $array[$alumno->id] = $alumno_array;
+
+
+      }
 
       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
