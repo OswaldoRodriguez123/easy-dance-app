@@ -38,6 +38,8 @@ use DB;
 
 use Validator;
 
+use App\User;
+
 use Illuminate\Support\Facades\Auth;
 
 use PulkitJalan\GeoIP\GeoIP;
@@ -177,7 +179,7 @@ class AsistenciaController extends BaseController
       ->get();
 
       foreach($alumnos as $alumno){
-        
+
         $usuario = User::where('usuario_id',$alumno->id)->first();
 
         if($usuario){
