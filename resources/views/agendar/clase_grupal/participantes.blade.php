@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalCostoMensualidad-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalCostoMensualidad-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1100 !important;">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -1417,27 +1417,48 @@
     //     $('#modalAgregar').css('opacity', .5);
     // });
 
-    $(document)  
-      .on('show.bs.modal', '.modal', function(event) {
-        $(this).appendTo($('body'));
-      })
-      .on('shown.bs.modal', '.modal.in', function(event) {
-        setModalsAndBackdropsOrder();
-      })
-      .on('hidden.bs.modal', '.modal', function(event) {
-        setModalsAndBackdropsOrder();
-      });
+    // $(document)  
+    //   .on('show.bs.modal', '.modal', function(event) {
+    //     $(this).appendTo($('body'));
+    //   })
+    //   .on('shown.bs.modal', '.modal.in', function(event) {
+    //     setModalsAndBackdropsOrder();
+    //   })
+    //   .on('hidden.bs.modal', '.modal', function(event) {
+    //     setModalsAndBackdropsOrder();
+    //   });
 
-    function setModalsAndBackdropsOrder() {  
-      var modalZIndex = 1040;
-      $('.modal.in').each(function(index) {
-        var $modal = $(this);
-        modalZIndex++;
-        $modal.css('zIndex', modalZIndex);
-        $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
-    });
-      $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+    // function setModalsAndBackdropsOrder() {  
+    //   var modalZIndex = 1040;
+    //   $('.modal.in').each(function(index) {
+    //     var $modal = $(this);
+    //     modalZIndex++;
+    //     $modal.css('zIndex', modalZIndex);
+    //     $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+    // });
+    //   $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+    // }
+    // 
+    $(document).on({
+    'show.bs.modal': function () {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    },
+    'hidden.bs.modal': function() {
+        if ($('.modal:visible').length > 0) {
+            // restore the modal-open class to the body element, so that scrolling works
+            // properly after de-stacking a modal.
+
+          if($('.modal').hasClass('in')) {
+            $('body').addClass('modal-open');
+          }    
+
+        }
     }
+}, '.modal');
 
     function limpiarMensaje(){
         var campo = ["alumno_id"];
