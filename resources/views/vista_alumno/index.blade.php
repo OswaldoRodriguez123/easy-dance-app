@@ -544,9 +544,9 @@
 
           $.each(enlace, function (index, array) {
 
-            if(enlace.tipo == 1){
+            if(array.tipo == 1){
               console.log('entro')
-              fecha_inicio = "<p class='f-15 f-700'> Fecha de Inicio : "+enlace.fecha_inicio+"</p>"
+              fecha_inicio = "<p class='f-15 f-700'> Fecha de Inicio : "+array.fecha_inicio+"</p>"
             }else{
               fecha_inicio = ''
             }
