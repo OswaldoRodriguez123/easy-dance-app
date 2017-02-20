@@ -114,7 +114,56 @@
                                 <div class="col-sm-4">
 
                                     <div style="margin-left: 30% ; padding: 5% ; border:1px solid" class="opaco-0-5">
-                                        <h4 class="text-center">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL NIVEL BASICO</h4>
+                                        <h4 class="text-center">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div style="margin-left: 15%; padding: 5% ; border:1px solid " class="col-sm-12 text-center opaco-0-3">
+
+                                        @if ($academia->imagen)
+                                            <img height="50px" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+                                        @else
+                                            <img height="50px" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+                                        @endif
+
+                                        <div class="clearfix m-b-20"></div>
+
+                                        <h6><b>NOS ENORGULLESE EN HACER ENTREGA DEL SIGUIENTE</b></h6>
+
+                                        <br>
+
+                                        <h6 style="font-family: 'Pacifico', cursive">CERTIFICADO</h6>
+
+                                        <h6>A:</h6>
+
+                                        <h6>{{Auth::user()->nombre}} {{Auth::user()->apellido}}</h6>
+
+                                        <hr style="border-color:black" class="opaco-0-8">
+
+                                        <br>
+
+                                        <h6><b>POR HABER CULMINADO SATISFACTORIAMENTE EL CICLO BÁSICO</b></h6>
+
+                                        <div class="clearfix m-b-25"></div>
+                                        <div class="clearfix m-b-25"></div>
+
+
+                                        <div class="col-sm-4">
+                                            
+                                            <hr style="border-color:black" class="opaco-0-8">
+                                            <span style="font-family: 'Pacifico', cursive">Henry Fuenmayor</span>
+                                            <h6>Director General</h6>
+                                        </div>
+
+                                        <div class="col-sm-4 col-sm-offset-4">
+                                            
+                                            <hr style="border-color:black" class="opaco-0-8">
+                                            <span style="font-family: 'Pacifico', cursive">Robert Virona</span>
+                                            <h6>Gerente General</h6>
+                                        </div>
+
                                     </div>
                                     
                                    

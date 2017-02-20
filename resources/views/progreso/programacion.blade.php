@@ -97,7 +97,7 @@
                                             <li class="eos-item text-center">
                                               <a href="#">CICLO 1</a>
                                             </li>
-                                            <div class="eos-group-title">BASICO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
+                                            <div class="eos-group-title">BÁSICO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
                                                 <a class="video_url" href="203096537">01. Introducción Teórica</a>
@@ -141,7 +141,7 @@
                                             </div>
 
 
-                                            <div class="eos-group-title">BASICO 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
+                                            <div class="eos-group-title">BÁSICO 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
                                                 <a class="{{ empty($clase_1->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Enchufa y Pa´ Arriba</a>
@@ -191,7 +191,7 @@
                                             </div>
  
 
-                                            <div class="eos-group-title">BASICO 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
+                                            <div class="eos-group-title">BÁSICO 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
                                                 <a class="{{ empty($clase_2->clase_4) ? 'disabled' : 'video_url' }}" href="203096537">01. Adiós Con La familia</a>
