@@ -322,7 +322,7 @@
                                     <br>
 
                                     <div class="form-group fg-line">
-                                      <label for="talla_franela">Talla de la Franela</label>
+                                      <label for="talla_franela">Talla de la Camiseta</label>
                                       <input type="text" class="form-control input-sm" name="talla_franela" id="talla_franela" placeholder="Ej. 12">
                                    </div>
 
@@ -498,6 +498,7 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="talla" data-order="desc">Talla</th>
                                     <th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Balance E</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -535,6 +536,7 @@
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
+                                      <td class="text-center previa">{{$alumno['talla_franela']}}</td>
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$asistio[$alumno['alumno_id']]}}"></i></label></td>
                                       <td class="text-center previa">
                                       <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
@@ -821,6 +823,7 @@
                             }
 
                               var identificacion = array.identificacion;
+                              var talla_franela = inscripcion.talla_franela;
                               
                               if(array.sexo=='F')
                               {
@@ -852,6 +855,7 @@
                               ''+identificacion+'',
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
+                              ''+talla_franela+'',
                               '<label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal c-verde"></i></label>',
                               ''+deuda+'',
                               '<i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>'
