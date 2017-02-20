@@ -193,7 +193,18 @@
 
                             <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-clase_personalizada_id">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-clase" id = "pop-clase" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase a la que deseas asistir, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de clase personalizada e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/clases-personalizadas' class='redirect pointer'> Llévame <i class='icon_a-clase-personalizada f-22'></i></a>" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-clase_personalizada_id">Nombre</label> <span class="c-morado f-700 f-16">*</span> 
+
+                                    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+
+                                      <i name = "pop-clase" id = "pop-clase" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase a la que deseas asistir, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de clase personalizada e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/clases-personalizadas' class='redirect pointer'> Llévame <i class='icon_a-clase-personalizada f-22'></i></a>" title="" data-original-title="Ayuda"></i>
+
+                                    @else
+
+                                      <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase a la que deseas asistir" title="" data-original-title="Ayuda"></i>
+
+                                    @endif
 
    
                                   <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
@@ -272,7 +283,19 @@
                                <div class="clearfix p-b-35"></div>
                                     <div class="col-sm-12">
                                  
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda"></i>
+                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> 
+
+
+                                    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+
+                                      <i name = "pop-instructor" id = "pop-instructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda"></i>
+
+                                    @else
+
+                                      <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor para la clase que deseas asistir" title="" data-original-title="Ayuda"></i>
+                                      
+                                    @endif
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
