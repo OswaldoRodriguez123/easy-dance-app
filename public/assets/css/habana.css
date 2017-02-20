@@ -178,6 +178,14 @@ button.btn-blanco:hover{
     opacity: 1;
 }
 
+.opaco-0-5{
+    opacity: 0.5;
+}
+
+.opaco-0-5:hover{
+    opacity: 1;
+}
+
 .thumbnail  {    
     border: 1px solid #ff9800 !important;    
 }

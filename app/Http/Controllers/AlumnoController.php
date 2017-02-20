@@ -41,6 +41,8 @@ use App\Notificacion;
 use App\NotificacionUsuario;
 use App\Incidencia;
 use App\Sugerencia;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 
 class AlumnoController extends BaseController
@@ -339,46 +341,38 @@ class AlumnoController extends BaseController
 
                 //Envio de Sms
 
-                // if($request->celular)
-                // {
+                if($request->celular)
+                {
 
-                //     $celular = getLimpiarNumero($request->celular);
-                //     $academia = Academia::find(Auth::user()->academia_id);
-                //     if($academia->pais_id == 11 && strlen($celular) == 10){
+                    $celular = getLimpiarNumero($request->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                //         $pais = Paises::find($academia->pais_id);
-                //         $msg = 'Bienvenido '.$request->nombre.', estamos felices de tenerte a bordo, en '.$academia->nombre.' daremos lo mejor para enseñarte a bailar.';
+                        $mensaje = $request->nombre.'. Subiste a bordo a la tripulación de tu clase de baile, gracias por unirte a nosotros. Nos encanta verte bailar.';
 
+                        $client = new Client(); //GuzzleHttp\Client
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.$mensaje);
 
-                //         $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=".$pais->codigo."".$celular."&SMSText=".$msg;
+                    }
 
-                //     }else{
-                //         $route = '';
-                //     }
+                    // $array_prefix = array('424', '414', '426', '416', '412');
+                    // $prefix = substr($request->celular, 1, 3);
 
-
-                //     // $array_prefix = array('424', '414', '426', '416', '412');
-                //     // $prefix = substr($request->celular, 1, 3);
-
-                //     // if (in_array($prefix, $array_prefix)) {
+                    // if (in_array($prefix, $array_prefix)) {
               
-                //     //     $data = collect([
-                //     //         'nombre' => $request->nombre,
-                //     //         'apellido' => $request->apellido,
-                //     //         'celular' => $request->celular
-                //     //     ]);
+                    //     $data = collect([
+                    //         'nombre' => $request->nombre,
+                    //         'apellido' => $request->apellido,
+                    //         'celular' => $request->celular
+                    //     ]);
                         
                         
-                //         // $sms = $this->sendAlumno($data, $msg);
+                        // $sms = $this->sendAlumno($data, $msg);
 
-                //     // }
-                // }else{
-                //     $route = '';
-                // }
+                    // }
+                }
 
-                $route = '';
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'route' => $route, 'alumno' => $alumno, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

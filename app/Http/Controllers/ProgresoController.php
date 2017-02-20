@@ -49,6 +49,8 @@ class ProgresoController extends BaseController {
 
     	if($find){
 
+            $academia = Academia::find(Auth::user()->academia_id);
+
     		$progreso = Progreso::where('clase_grupal_id',$id)->first();
 
     		if($progreso){
@@ -153,7 +155,7 @@ class ProgresoController extends BaseController {
     			// $clase_16->save();
     		}
 
-	        return view('progreso.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id]);
+	        return view('progreso.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id, 'academia' => $academia]);
 
         }else{
        		return redirect("progreso"); 

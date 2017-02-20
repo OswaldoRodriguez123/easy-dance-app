@@ -11,6 +11,8 @@ use DB;
 use App\CentauroSMS\CentauroSMS;
 use PulkitJalan\GeoIP\GeoIP;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 
 class BaseController extends Controller {
@@ -129,6 +131,17 @@ class BaseController extends Controller {
    		}
 
     }
+
+    public function enviarMensaje($numero, $mensaje)
+    {
+
+        $numero = getLimpiarNumero($numero);
+
+        $client = new Client(); //GuzzleHttp\Client
+        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numero.'&SMSText='.$mensaje);
+
+    }
+
     //SMS
     public function sendAlumno($request, $mensaje)
     {

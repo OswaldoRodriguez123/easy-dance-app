@@ -108,9 +108,19 @@
                                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
                                             <div id="barra_3" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
+                                    </div>
 
                                   
-                                <div class="col-sm-4"></div>
+                                <div class="col-sm-4">
+
+                                    <div style="margin-left: 30% ; padding: 5% ; border:1px solid" class="opaco-0-5">
+                                        <h4 class="text-center">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL NIVEL BASICO</h4>
+                                    </div>
+                                    
+                                   
+
+                              
+                                </div>
 
                                  
                                 <br><br><br>
