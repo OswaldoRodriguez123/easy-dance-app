@@ -31,6 +31,8 @@ use DB;
 use Mail;
 use Redirect;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class AdministrativoController extends BaseController {
 

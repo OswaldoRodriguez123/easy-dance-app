@@ -16,6 +16,8 @@ use Mail;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use PulkitJalan\GeoIP\GeoIP;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class CitaController extends BaseController {
 
