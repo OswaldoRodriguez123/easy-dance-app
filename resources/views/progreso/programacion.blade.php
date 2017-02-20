@@ -769,14 +769,14 @@
 
     $(".mostrar").click(function(e) {
 
-      $('.eos-menu-content').css('height','600px')
+      $('.eos-menu-content').css('height','1880px')
       $('.eos-group-content').css('height','520px')
 
     });
 
     $(".ocultar").click(function(e) {
 
-      $('.eos-menu-content').css('height','80px')
+      $('.eos-menu-content').css('height','160px')
       $('.eos-group-content').css('height','0px')
 
     });

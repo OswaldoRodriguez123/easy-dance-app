@@ -348,10 +348,10 @@ class AlumnoController extends BaseController
                     $academia = Academia::find(Auth::user()->academia_id);
                     if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                        $mensaje = $request->nombre.'. Subiste a bordo a la tripulación de tu clase de baile, gracias por unirte a nosotros. Nos encanta verte bailar.';
+                        $mensaje = $request->nombre.'. Subiste a bordo a la tripulación de tu clase de baile, gracias por unirte a nosotros. ¡Nos encanta verte bailar!.';
 
                         $client = new Client(); //GuzzleHttp\Client
-                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.$mensaje);
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
                     }
 
