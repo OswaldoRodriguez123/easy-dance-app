@@ -113,14 +113,18 @@
                                   
                                 <div class="col-sm-4">
 
-                                    <div style="margin-left: 30% ; padding: 5% ; border:1px solid" class="opaco-0-5">
+                                    <div style="margin-left: 30% ; padding: 5% ; border:1px solid" class="opaco-0-3">
                                         <h4 class="text-center">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
+
+                                        <div class="clearfix"></div>
+
+                                        <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
                                     </div>
 
                                     <br>
 
 
-                                    <div style="margin-left: 15%; padding: 5% ; border:1px solid " class="col-sm-12 text-center opaco-0-3">
+                                    <!-- <div style="margin-left: 15%; padding: 5% ; border:1px solid " class="col-sm-12 text-center opaco-0-3">
 
                                         @if ($academia->imagen)
                                             <img height="50px" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
@@ -165,7 +169,7 @@
                                         </div>
 
                                     </div>
-                                    
+                                     -->
                                    
 
                               
