@@ -682,7 +682,7 @@
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 clase_grupal clase-grupal-{{$clase_grupal->inscripcion_id}} c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span> 
+                              <span class="f-18 opaco-0-8 clase_grupal clase-grupal-{{$clase_grupal->inscripcion_id}} c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal->inscripcion_id}}">{{$clase_grupal->talla_franela}}</span></span> 
 
                               @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
                                 <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
@@ -698,6 +698,8 @@
                                   @endif
                                 @endif
                               @endif
+
+
 
                               <div class="clearfix p-b-15"></div>
                               <div class="clearfix p-b-15"></div>
@@ -751,7 +753,7 @@
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}" data-talla="{{$clase_grupal->talla_franela}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span></span>
+                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}" data-talla="{{$clase_grupal->talla_franela}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal->inscripcion_id}}">{{$clase_grupal->talla_franela}}</span></span>
 
                               @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
                                 <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
@@ -825,7 +827,7 @@
                                     <br>
 
                                     <div class="form-group fg-line">
-                                      <label for="talla_franela">Talla de la Franela</label>
+                                      <label for="talla_franela">Talla de la Camiseta</label>
                                       <input type="text" class="form-control input-sm" name="talla_franela" id="talla_franela" placeholder="Ej. 12">
                                    </div>
 
@@ -1925,6 +1927,8 @@
                           $('.clase-grupal-'+respuesta.id).data('franela', respuesta.boolean_franela);
                           $('.clase-grupal-'+respuesta.id).data('entrega', respuesta.razon_entrega);
                           $('.clase-grupal-'+respuesta.id).data('talla', respuesta.talla_franela);
+
+                          $('.talla_franela-'+respuesta.id).text(respuesta.talla_franela);
 
 
                           if(respuesta.boolean_franela == 1 && respuesta.boolean_programacion == 1){
