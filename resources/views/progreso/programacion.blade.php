@@ -71,9 +71,9 @@
 
 
                              <div class="col-sm-4 text-right">
-                                <a class="pointer mostrar f-16 text-success f-700">MOSTRAR TODAS LAS NIVELACIONES</a>
+                                <a class="pointer mostrar f-16 text-success f-700">MOSTRAR TODOS LOS CICLOS</a>
                                 <div class="clearfix"></div>
-                                <a class="pointer ocultar f-16 text-success f-700">Ocultar todas las nivelaciones</a>
+                                <a class="pointer ocultar f-16 text-success f-700">Ocultar todos los ciclos</a>
 
                                                     
                             </div>
@@ -95,7 +95,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">NIVELACIÓN 1</a>
+                                              <a href="#">CICLO 1</a>
                                             </li>
                                             <div class="eos-group-title">BASICO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -251,7 +251,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">NIVELACIÓN 2</a>
+                                              <a href="#">CICLO 2</a>
                                             </li>
                                             <div class="eos-group-title">INTERMEDIO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -406,7 +406,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">NIVELACIÓN 3</a>
+                                              <a href="#">CICLO 3</a>
                                             </li>
                                             <div class="eos-group-title">AVANZADO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -538,7 +538,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">NIVELACIÓN 4</a>
+                                              <a href="#">CICLO 4</a>
                                             </li>
                                             <div class="eos-group-title">MASTER 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -728,6 +728,19 @@
             onMenuTitleClick: null,
             onGroupTitleClick: null,
           });
+
+        $( ".eos-item" ).addClass( "detalle_oscuro" );
+
+
+        $('.disabled').attr('data-trigger','hover');
+        $('.disabled').attr('data-toggle','popover');
+        $('.disabled').attr('data-placement','right');
+        $('.disabled').attr('data-content','<p class="c-negro">Aún no posees la credencial para ver este vídeo</p>');
+        $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+        $('.disabled').attr('data-html','true');
+        $('.disabled').attr('title','');
+
+        $('[data-toggle="popover"]').popover(); 
 
         
       });

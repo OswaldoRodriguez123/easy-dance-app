@@ -239,6 +239,22 @@ class CitaController extends BaseController {
                         $msj->to($array2['correo']);
                 });
 
+                if($alumno->celular){
+
+                    $celular = getLimpiarNumero($alumno->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
+
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
+                        
+                        $mensaje = $alumno->nombre.'. Hemos creado una cita para la fecha '.$fecha.'  a las  '.$request->hora_inicio.'  con el profesor '.$instructor->nombre.' '.$instructor->apellido.', te esperamos. ¡Nos encanta verte bailar!.';
+
+                        $client = new Client(); //GuzzleHttp\Client
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+
+                    }
+
+                }
+
             }
 
             Session::forget('boolean_mostrar');

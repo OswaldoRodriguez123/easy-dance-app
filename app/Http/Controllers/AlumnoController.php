@@ -348,7 +348,7 @@ class AlumnoController extends BaseController
                     $academia = Academia::find(Auth::user()->academia_id);
                     if($academia->pais_id == 11 && strlen($celular) == 10){
 
-                        $mensaje = $request->nombre.'. Subiste a bordo a la tripulación de tu clase de baile, gracias por unirte a nosotros. ¡Nos encanta verte bailar!.';
+                        $mensaje = $request->nombre.'. Subiste a bordo a la tripulacion de tu clase de baile, gracias por unirte a nosotros. ¡Nos encanta verte bailar!.';
 
                         $client = new Client(); //GuzzleHttp\Client
                         $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
@@ -475,7 +475,9 @@ class AlumnoController extends BaseController
                 $puntos_referidos = 0;
             }
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'edad' => $edad]);
         }else{
            return redirect("participante/alumno"); 
         }

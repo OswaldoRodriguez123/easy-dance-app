@@ -23,6 +23,8 @@ use Mail;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class ReservaController extends BaseController
 {
@@ -725,6 +727,22 @@ class ReservaController extends BaseController
                             $msj->to($array['correo']);
                         });
                     }
+                }
+
+                if($visitante->celular){
+
+                    $celular = getLimpiarNumero($visitante->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
+
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
+                        
+                        $mensaje = $visitante->nombre.'. Hemos reservado para ti una clase de baile para la fecha '.$fecha_vencimiento.', tu código para confirmar tu inscripcion es '.$codigo_validacion.'. ¡Nos encanta verte bailar!.';
+
+                        $client = new Client(); //GuzzleHttp\Client
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+
+                    }
+
                 }
 
                 return response()->json(['mensaje' => '¡Excelente! La reserva se ha guardado satisfactoriamente', 'status' => 'OK', 'reservacion' => $request->reservacion, 'sexo' => $visitante->sexo, 200]);

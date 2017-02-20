@@ -889,6 +889,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('/normativas/generales', 'UsuarioController@generales');
 			Route::get('/normativas/clases-grupales', 'UsuarioController@clases_grupales');
 			Route::get('/normativas/clases-personalizadas', 'UsuarioController@clases_personalizadas');
+			Route::get('/normativas/diagnostico', 'UsuarioController@diagnostico');
 
 			// --- ADMINISTRATIVO --- 
 
@@ -948,6 +949,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			
 			Route::get('progreso','ProgresoController@index');
 			Route::get('progreso/{id}','ProgresoController@progreso');
+			Route::get('programacion','ProgresoController@principalprogramacion');
 			Route::get('programacion/{id}','ProgresoController@programacion');
 
 			Route::get('certificado','ProgresoController@certificado');

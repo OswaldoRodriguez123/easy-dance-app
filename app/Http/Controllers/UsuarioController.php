@@ -452,4 +452,10 @@ class UsuarioController extends BaseController {
 
     }
 
+    public function diagnostico(){
+        
+        return view('normativas.diagnostico');
+
+    }
+
 }

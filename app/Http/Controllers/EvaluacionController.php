@@ -34,11 +34,26 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
             ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion]);
+        $array = array(2, 4);
+
+         $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+             ->whereIn('users.usuario_tipo', $array)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
+
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion, 'activacion' => $activacion]);
     }
 
     public function evaluaciones($id)
@@ -47,11 +62,27 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
             ->where('evaluaciones.examen_id', '=' , $id)
         ->get();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id]);
+
+        $array = array(2, 4);
+
+         $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+            ->whereIn('users.usuario_tipo', $array)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
+
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id, 'activacion' => $activacion]);
     }
 
     public function evaluaciones_vista_alumno()
@@ -60,11 +91,26 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
             ->where('evaluaciones.alumno_id', '=' , Auth::user()->usuario_id)
         ->get();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join]);
+        $array = array(2, 4);
+
+         $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+             ->whereIn('users.usuario_tipo', $array)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
+
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'activacion' => $activacion]);
     }
 
     public function evaluaciones_alumno($id)
@@ -73,11 +119,26 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion')
+            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
             ->where('evaluaciones.alumno_id', '=' , $id)
         ->get();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'id' => $id]);
+        $array = array(2, 4);
+
+         $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+             ->whereIn('users.usuario_tipo', $array)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
+
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'id' => $id, 'activacion' => $activacion]);
     }
 
     /**

@@ -4,6 +4,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -266,12 +267,25 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="sexo" id="mujer" value="F" type="radio">
                                         <i class="input-helper"></i>  
-                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+
+                                        Mujer 
+
+                                        @if($edad >= 18)
+                                          <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        @else
+                                          <i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                        @endif
                                     </label>
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="sexo" id="hombre" value="M" type="radio">
                                         <i class="input-helper"></i>  
-                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                        Hombre 
+
+                                        @if($edad >= 18)
+                                          <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        @else
+                                          <i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                        @endif
                                     </label>
                                     </div>
                                     
@@ -1112,11 +1126,19 @@
                               <span class="f-14"> Sexo </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-sexo" data-valor="{{$alumno->sexo}}">
-                               @if($alumno->sexo=='F')
-                                  <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                               @else
-                                  <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                               @endif
+                               @if($edad >= 18)
+                                  @if($alumno->sexo=='F')
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                  @else
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                  @endif
+                              @else
+                                  @if($alumno->sexo=='F')
+                                      <i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                  @else
+                                      <i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                  @endif
+                              @endif
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="">
@@ -1451,10 +1473,22 @@
       function campoValor(form){
         $.each(form, function (n, c) {
           if(c.name=='sexo'){
-            if(c.value=='M'){              
-              var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
-            }else if(c.value=='F'){
-              var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+
+            if("{{$edad}}" >= 18){
+
+              if(c.value=='M'){ 
+
+                var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
+              }else if(c.value=='F'){
+                var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+              }
+            }else{
+              if(c.value=='M'){ 
+
+                var valor='<i class="zmdi fa fa-child f-15 c-azul"></i> </span>';                              
+              }else if(c.value=='F'){
+                var valor='<i class="zmdi fa fa-child f-15 c-rosado"></i> </span>';
+              }
             }
             $("#alumno-"+c.name).data('valor',c.value);
             $("#alumno-"+c.name).html(valor);

@@ -465,7 +465,7 @@
                                     </div>
                                 </div>
 
-                                <div class="t-view" data-tv-type="text">
+            <!--                     <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
                                         <a href="" class="tvh-user pull-left">
                                             <i class="icon_a icon_a-fiesta f-30 m-r-5 boton blue sa-warning"></i>
@@ -481,16 +481,7 @@
                                     
                                         <div class="clearfix"></div>
 
-                                        <!-- <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
 
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
                                         
                                         <br>
 
@@ -498,7 +489,7 @@
                                             <span data-toggle="modal" href="#modalFiesta" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
@@ -531,6 +522,32 @@
 
                                         <div class="text-right">
                                             <span data-toggle="modal" href="#modalTaller" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="t-view" data-tv-type="text">
+                                    <div class="tv-header media">
+                                        <a href="" class="tvh-user pull-left">
+                                            <i class="icon_a icon_a-examen f-30 m-r-5 boton blue sa-warning"></i>
+                                        </a>
+                                        <div class="media-body p-t-5">
+                                            <strong class="d-block f-20">DIAGNÓSTICO Y VALORACIONES</strong>
+
+ 
+                                        </div>
+                                    </div>
+                                    <div class="tv-body">
+                                       
+                                    
+                                        <div class="clearfix"></div>
+
+
+                                        
+                                        <br>
+
+                                        <div class="text-right">
+                                            <a href="{{url('/')}}/normativas/diagnostico" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</a>
                                         </div>
                                     </div>
                                 </div>

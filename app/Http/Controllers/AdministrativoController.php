@@ -1009,17 +1009,12 @@ class AdministrativoController extends BaseController {
                 }
 
                 if($academia->pais_id == 11 && strlen($celular) == 10){
-
                     
+                    $mensaje = $alumno->nombre.'. hemos registrado satisfactoriamente tu pago, gracias por usar nuestros servicios. ¡Nos encanta verte bailar!.';
 
-                    $pais = Paises::find($academia->pais_id);
-                    $msg = $alumno->nombre . ', hemos registrado satisfactoriamente el pago de tus servicios. Gracias.';
+                    $client = new Client(); //GuzzleHttp\Client
+                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
-
-                    $route = "https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=8KOkV5cv1C&GSM=".$pais->codigo."".$celular."&SMSText=".$msg;
-
-                }else{
-                    $route = '';
                 }
 
                 // $subj = 'Pago realizado exitósamente';
@@ -1052,7 +1047,7 @@ class AdministrativoController extends BaseController {
             Session::forget('gestion');
             Session::forget('pendientes');
 
-            return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 'route' => $route, 200]);
+            return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 200]);
 
      }
         return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar una linea de pago']], 'status' => 'ERROR'],422);

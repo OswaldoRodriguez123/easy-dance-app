@@ -94,7 +94,7 @@
                                     </li>
 
                                 <li style="margin-top: 26px; right: 50%">
-                                    <a data-content="{{$puntos_referidos}}" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="f-15 text-header f-700 disabled" >PUNTOS ACUMULADOS</a>
+                                    <a class="f-15 text-header f-700" href="{{url('/')}}/programacion"> MI PROGRAMACIÓN</a>
                                 </li>
 
 
