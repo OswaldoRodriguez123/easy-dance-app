@@ -849,7 +849,97 @@
                         </div>
                     </div>
                 </div>
-            </div>          
+            </div>   
+
+             <div class="modal fade" id="modalClaseGrupal-Examen" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Valoración <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_clase_grupal_examen" id="edit_clase_grupal_examen"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                  <div class="clearfix"></div>
+                                  <label for="boolean_grupal" id="id-boolean_grupal">A quien va dirigido:</label>
+                                  <div class="clearfix"></div>
+                                  <div class="input-group">
+                                      <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
+                                      <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input checked="checked" name="boolean_grupal" id="general" value="0" type="radio">
+                                          <i class="input-helper"></i>  
+                                          General
+                                      </label>
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="boolean_grupal" id="clase_grupal" value="1" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Clase Grupal
+                                      </label>
+                                     
+                                    </div>
+                                  </div>
+                                  </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12 clase_grupal" style="display:none">
+
+                                  <label for="nombre" id="id-clase_grupal_id">Clase Grupal</label> <span class="c-morado f-700 f-16">*</span>
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a icon_a-clases-grupales f-22"></i></span>
+                                        <div class="fg-line">
+                                        <div class="select">
+                                          <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" >
+
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $clases_grupales as $clase_grupal )
+                                              <option value = "{{ $clase_grupal['id'] }}">{{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['instructor_nombre'] }} {{ $clase_grupal['instructor_apellido'] }}</option>
+                                            @endforeach
+                                          
+                                          </select>
+                                        </div>
+                                      </div>
+                                      </div>
+                                   <div class="has-error" id="error-clase_grupal_id">
+                                        <span >
+                                            <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                               </div>
+
+                               <input type="hidden" name="id" id="id" value="{{$examen->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_clase_grupal_examen" data-update="clase_grupal" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>       
     
             <section id="content">
                 <div class="container">
@@ -1025,6 +1115,20 @@
                                 @endif    
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Examen">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-clase_grupal" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
+                               <span class="f-14"> A quien va dirigido </span>
+                             </td>
+                             <td  class="f-14 m-l-15" id="examen-boolean_grupal">
+                                @if($examen->boolean_grupal==0)
+                                  General
+                                @else
+                                  Clase Grupal
+                                @endif    
+                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             
                            </table>
 
@@ -1072,6 +1176,10 @@
             setTimeout(function(){
                 $(".card-body").removeClass(animation);
             }, animationDuration);
+
+          if("{{$examen->boolean_grupal}}" == 1){
+            $(".clase_grupal").show();  
+          }
 
           if("{{$examen->tiempos_musicales}}" == 1){
           $("#tiempos_musicales").val('1');  
@@ -1185,6 +1293,17 @@
         $("#casting").prop("checked", true);
       }else{
         $("#otros").prop("checked", true);
+      }
+      
+    })
+
+    $('#modalClaseGrupal-Examen').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var grupal=$("#examen-boolean_grupal").data('valor');
+      if(grupal=="0"){
+        $("#general").prop("checked", true);
+      }else{
+        $("#clase_grupal").prop("checked", true);
       }
       
     })
@@ -1342,11 +1461,11 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-          if(c.name=='sexo'){
-            if(c.value=='M'){              
-              var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
-            }else if(c.value=='F'){
-              var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+          if(c.name=='boolean_grupal'){
+            if(c.value=='0'){              
+              var valor='General </span>';                              
+            }else if(c.value=='1'){
+              var valor='Clase Grupal </span>';
             }
             $("#examen-"+c.name).data('valor',c.value);
             $("#examen-"+c.name).html(valor);
@@ -1729,6 +1848,14 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
                                 }
                 });
       }
+
+      $('input[name="boolean_grupal"]').on('change', function(){
+          if ($(this).val()=='0') {
+                $('.clase_grupal').hide();
+          } else  {
+                $('.clase_grupal').show();
+          }
+       });
     
    </script> 
 

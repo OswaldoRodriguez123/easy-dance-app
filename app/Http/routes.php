@@ -151,6 +151,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/examenes/update/generos', 'ExamenController@updateGeneros');
 			Route::put('especiales/examenes/update/tipos_de_evaluacion', 'ExamenController@updateTipos');
 			Route::put('especiales/examenes/update/items', 'ExamenController@updateItem');
+			Route::put('especiales/examenes/update/clase_grupal', 'ExamenController@updateClaseGrupal');
 			Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
 			Route::post('especiales/examenes/agregar_item','ExamenController@agregar_item');
 			Route::post('especiales/examenes/eliminar_item/{id}','ExamenController@eliminar_item');

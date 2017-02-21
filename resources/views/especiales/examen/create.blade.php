@@ -44,7 +44,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-examen f-25" id="id-clase_grupal_id"></i> Crea una Valoración </span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-examen f-25" id="valoracion_id"></i> Crea una Valoración </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -206,6 +206,57 @@
                                   </div>
                                 </div>
                                 <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                  <div class="clearfix"></div>
+                                  <label for="boolean_grupal" id="id-boolean_grupal">A quien va dirigido:</label>
+                                  <div class="clearfix"></div>
+                                  <div class="input-group">
+                                      <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
+                                      <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20 ">
+                                          <input checked="checked" name="boolean_grupal" id="boolean_grupal" value="0" type="radio">
+                                          <i class="input-helper"></i>  
+                                          General
+                                      </label>
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="boolean_grupal" id="boolean_grupal" value="1" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Clase Grupal
+                                      </label>
+                                     
+                                    </div>
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12 clase_grupal" style="display:none">
+
+                                  <label for="nombre" id="id-clase_grupal_id">Clase Grupal</label> <span class="c-morado f-700 f-16">*</span>
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a icon_a-clases-grupales f-22"></i></span>
+                                        <div class="fg-line">
+                                        <div class="select">
+                                          <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" >
+
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $clases_grupales as $clase_grupal )
+                                              <option value = "{{ $clase_grupal['id'] }}">{{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['instructor_nombre'] }} {{ $clase_grupal['instructor_apellido'] }}</option>
+                                            @endforeach
+                                          
+                                          </select>
+                                        </div>
+                                      </div>
+                                      </div>
+                                   <div class="has-error" id="error-clase_grupal_id">
+                                        <span >
+                                            <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                               </div>
+                        
+                               <div class="clearfix p-b-35"></div>
 
                                  <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -735,7 +786,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos+"&genero_id="+generos,
+                        data:datos+"&genero_id="+generos+"&clase_grupal_id="+$('#clase_grupal_id').val(),
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -891,7 +942,7 @@
 
 
       function limpiarMensaje(){
-        var campo = ["nombre", "fecha", "descripcion", "instructor_id", "color_etiqueta", "genero", "condiciones"];
+        var campo = ["nombre", "fecha", "descripcion", "instructor_id", "color_etiqueta", "genero", "condiciones", "clase_grupal_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1067,7 +1118,7 @@
         $('#instructor_id').selectpicker('render');
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+        scrollTop: $("#valoracion_id").offset().top-90,
         }, 1500);
         $("#nombre").focus();
       });
@@ -1235,6 +1286,15 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
                           
                         });
+
+      $('input[name="boolean_grupal"]').on('change', function(){
+          if ($(this).val()=='0') {
+                $('.clase_grupal').hide();
+          } else  {
+                $('.clase_grupal').show();
+          }
+       });
+
 </script> 
 @stop
 
