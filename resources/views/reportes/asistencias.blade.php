@@ -66,6 +66,7 @@
                                     <select name="participante_id" id="participante_id">
                                       <option value="1">Asistentes</option>
                                       <option value="2">Inasistentes</option>
+                                      <option value="0">Todos</option>
                                     </select>
 
                                   &nbsp; &nbsp; &nbsp; <label>Fecha</label> &nbsp; &nbsp; &nbsp;
@@ -83,6 +84,14 @@
 
 
                                 <select name="clase_grupal_id" id="clase_grupal_id">
+                                </select> 
+
+                                &nbsp; &nbsp; &nbsp; <label>Tipo</label> &nbsp; &nbsp; &nbsp;
+
+
+                                <select name="tipo" id="tipo">
+                                    <option value="1">General</option>
+                                    <option value="2">Valoracion</option>
                                 </select> 
                                 
                                <!--  <div class="has-error" id="error-fecha">
@@ -188,12 +197,12 @@
                                     <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
-                                    <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
-                                    <th class="text-center" data-column-id="estatus_e">Estatus E</th>
-                                    <th class="text-center" data-column-id="celular">Contacto Móvil</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>
-                                    <th class="text-center" data-column-id="fecha">Fecha</th>
-                                    <th class="text-center" data-column-id="hora">Hora</th>                                                                                                            
+                                    <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc"><span class="ocultar">Fecha Nacimiento</span></th>
+                                    <th class="text-center" data-column-id="estatus_e"><span class="ocultar">Estatus E</span></th>
+                                    <th class="text-center" data-column-id="celular"><span class="ocultar">Contacto Móvil</span></th>
+                                    <th class="text-center" data-column-id="sexo"><span class="ocultar">Sexo</span></th>
+                                    <th class="text-center" data-column-id="fecha"><span class="ocultar">Fecha</span></th>
+                                    <th class="text-center" data-column-id="hora"><span class="ocultar">Hora</span></th>                                                                                                            
                                 </tr>
                             </thead>
                             <tbody>
@@ -243,6 +252,8 @@
                     
                 </div>
             </section>
+
+            <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
 @stop
 
 @section('js') 
@@ -391,6 +402,13 @@
                       var nTitle="Ups! ";
                       var nMensaje=respuesta.mensaje;
 
+                      if($('#tipo').val() == 1){
+
+                        $('.ocultar').show()
+                      }else{
+                        $('.ocultar').hide()
+                      }
+
                         
                     $.each(respuesta.array, function (index, array) {
 
@@ -410,23 +428,45 @@
                             hora = array.hora;
                         }
 
-
-                        var rowId=array.id;
-                        var rowNode=t.row.add( [
-                        ''+array.pertenece+'',
-                        ''+array.nombre+ ' '+array.apellido+ '',
-                        ''+array.identificacion+'',
-                        ''+array.fecha_nacimiento+'',
-                        ''+array.deuda+'',
-                        ''+array.celular+'',
-                        ''+sexo+'',
-                        ''+fecha+'',
-                        ''+hora+'',
-                        ] ).draw(false).node();
-                        $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                        if($('#tipo').val() == 1){
+                            var rowId=array.id;
+                            var rowNode=t.row.add( [
+                            ''+array.pertenece+'',
+                            ''+array.nombre+ ' '+array.apellido+ '',
+                            ''+array.identificacion+'',
+                            ''+array.fecha_nacimiento+'',
+                            ''+array.deuda+'',
+                            ''+array.celular+'',
+                            ''+sexo+'',
+                            ''+fecha+'',
+                            ''+hora+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                              .attr('id',rowId)
+                              .addClass('seleccion');
+             
+                        }else{
+                            var rowId=array.id;
+                            var rowNode=t.row.add( [
+                            ''+array.pertenece+'',
+                            ''+array.nombre+ ' '+array.apellido+ '',
+                            ''+array.identificacion+'',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                              .attr('id',rowId)
+                              .addClass('seleccion');
+                  
+                        }
                     });
+
+
+
 
                     datos = JSON.parse(JSON.stringify(respuesta));
 

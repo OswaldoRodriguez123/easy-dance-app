@@ -815,7 +815,7 @@ public function PresencialesFiltros(Request $request)
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
 
-            }else{
+            }else if($request->participante_id == 2){
 
                 $inasistencias = array();
 
@@ -876,6 +876,68 @@ public function PresencialesFiltros(Request $request)
                 array_push($array_sexo, $array_mujeres);
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
+            }else{
+                $array = array();
+
+                foreach($inscripciones as $inscripcion){
+
+                    $asistio = 0;
+
+                    foreach($asistencias as $asistencia){
+                        if($asistencia->alumno_id == $inscripcion->alumno_id){
+                            $asistio = 1;
+                            $fecha = $asistencia->fecha;
+                            $hora = $asistencia->hora;
+                        }
+                    }
+
+                    if($asistio){
+                        $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+                    }else{
+                        $pertenece = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
+                        $fecha = '';
+                        $hora = '';
+                    }
+
+                    $deuda = DB::table('items_factura_proforma')
+                        ->select('items_factura_proforma.*')
+                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                        ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
+                    ->first();
+
+
+                    if($deuda){
+                        $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                    }else{
+                        $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                    }
+
+                    $collection=collect($inscripcion);     
+                    $inasistencias_array = $collection->toArray();
+                    $inasistencias_array['pertenece']=$pertenece;
+                    $inasistencias_array['deuda']=$deuda;
+                    $inasistencias_array['fecha']=$fecha;
+                    $inasistencias_array['hora']=$hora;
+                    $array[$inscripcion->id] = $inasistencias_array;
+
+                    if($inscripcion->sexo == 'F'){
+                        $mujeres = $mujeres + 1;
+                    }else{
+                        $hombres = $hombres + 1;
+                    }
+                }
+
+
+                            
+                
+
+                $array_hombres = array('M', $hombres);
+                $array_mujeres = array('F', $mujeres);
+
+                array_push($array_sexo, $array_hombres);
+                array_push($array_sexo, $array_mujeres);
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
             }
         }
     }
