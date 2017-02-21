@@ -17,6 +17,8 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Mail;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class VisitanteController extends BaseController {
 
@@ -487,6 +489,24 @@ class VisitanteController extends BaseController {
         $visitante->disponibilidad = $disponibilidad;
 
         if($visitante->save()){
+
+            $visitante_presencial = Visitante::find($request->visitante_id);
+
+            if($visitante_presencial->celular){
+
+                $celular = getLimpiarNumero($visitante_presencial->celular);
+                $academia = Academia::find(Auth::user()->academia_id);
+
+                if($academia->pais_id == 11 && strlen($celular) == 10){
+                    
+                    $mensaje = $visitante_presencial->nombre.'. Gracias por visitarnos, esperamos verte bailando pronto, somos “Tu Clase de Baile”.';
+
+                    $client = new Client(); //GuzzleHttp\Client
+                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+
+                }
+
+            }
 
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
 

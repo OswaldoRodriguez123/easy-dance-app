@@ -171,7 +171,7 @@
                     </table>
 
                     <table class="table table-striped table-bordered text-center">
-                     <tr class="disabled">
+                     <tr>
                      <td class = ""></td>
                      <td class="f-14 m-l-15"><span class="f-12 f-700">Puntos Acumulados: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos">{{$puntos_referidos}}</span></td>
                     </tr>
