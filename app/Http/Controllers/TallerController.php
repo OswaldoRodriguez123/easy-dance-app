@@ -238,6 +238,38 @@ class TallerController extends BaseController {
             return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
         }
 
+        if(trim($request->cantidad_hombres) == '')
+        {
+            $cantidad_hombres = null;
+        }else{
+            $cantidad_hombres = $request->cantidad_hombres;
+        }
+
+        if(trim($request->cantidad_mujeres) == '')
+        {
+            $cantidad_mujeres = null;
+        }else{
+            $cantidad_mujeres = $request->cantidad_mujeres;
+        }
+
+        $cupos = $cantidad_mujeres + $cantidad_hombres;
+
+        if($request->cupo_minimo > $request->cupo_maximo)
+        {
+
+            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
+        }
+
+        if($cupos < $request->cupo_minimo)
+        {
+            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo sobrepasa la suma de los cupos de hombres y mujeres']], 'status' => 'ERROR'],422);
+        }
+
+        if($cupos > $request->cupo_maximo)
+        {
+            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! La suma de los cupos de hombres y mujeres sobrepasa el cupo maximo']], 'status' => 'ERROR'],422);
+        }
+
         if($request->link_video){
 
             $parts = parse_url($request->link_video);
@@ -278,6 +310,8 @@ class TallerController extends BaseController {
         $taller->cupo_reservacion = $request->cupo_reservacion;
         $taller->condiciones = $request->condiciones;
         $taller->link_video = $request->link_video;
+        $taller->cantidad_hombres = $cantidad_hombres;
+        $taller->cantidad_mujeres = $cantidad_mujeres;
 
         // return redirect("/home");
         if($taller->save()){
@@ -657,6 +691,64 @@ class TallerController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         }
+
+    }
+
+    public function updateCantidad(Request $request){
+
+    $rules = [
+
+        'cantidad_hombres' => 'numeric',
+        'cantidad_mujeres' => 'numeric',
+    ];
+
+    $messages = [
+
+        'cantidad_hombres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+        'cantidad_mujeres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        // return redirect("/home")
+
+        // ->withErrors($validator)
+        // ->withInput();
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        //dd($validator);
+
+    }
+
+    else{
+
+        if(trim($request->cantidad_hombres) == '')
+        {
+            $cantidad_hombres = null;
+        }else{
+            $cantidad_hombres = $request->cantidad_hombres;
+        }
+
+        if(trim($request->cantidad_mujeres) == '')
+        {
+            $cantidad_mujeres = null;
+        }else{
+            $cantidad_mujeres = $request->cantidad_mujeres;
+        }
+
+        $taller = Taller::find($request->id);
+        $taller->cantidad_hombres = $cantidad_hombres;
+        $taller->cantidad_mujeres = $cantidad_mujeres;
+
+        if($taller->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
 
     }
 
@@ -1077,7 +1169,7 @@ class TallerController extends BaseController {
                 ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
                 ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres')
                 ->where('talleres.id', '=', $id)
                 ->first();
 

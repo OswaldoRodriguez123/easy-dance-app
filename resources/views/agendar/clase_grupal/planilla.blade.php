@@ -1285,22 +1285,7 @@
                              </td>
                              <td class="f-14 m-l-15" id="clasegrupal-fecha_inicio_preferencial"> {{ empty($clasegrupal->fecha_inicio_preferencial) ? '' :  \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio_preferencial)->format('d/m/Y') }}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCupo-ClaseGrupal">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_minimo" class="zmdi {{ empty($clasegrupal->cupo_minimo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
-                               <span class="f-14"> Cantidad de Cupos  </span>
-                             </td>
-                             <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_minimo">{{$clasegrupal->cupo_minimo}}</span> - <span id="clasegrupal-cupo_maximo">{{$clasegrupal->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-ClaseGrupal">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_reservacion" class="zmdi {{ empty($clasegrupal->cupo_reservacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
-                               <span class="f-14"> Cantidad de cupos para reserva online  </span>
-                             </td>
-                             <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_reservacion">{{$clasegrupal->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
+
                             <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClaseGrupal">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($clasegrupal->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1353,13 +1338,13 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-estudio_id"><span>{{$clasegrupal->estudio_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalLink-ClaseGrupal">
+                            <tr class="detalle" data-toggle="modal" href="#modalCupo-ClaseGrupal">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($clasegrupal->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
-                               <span class="f-14"> Link Promocional </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_minimo" class="zmdi {{ empty($clasegrupal->cupo_minimo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
+                               <span class="f-14"> Cantidad de Cupos  </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-link_video"><span>{{$clasegrupal->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_minimo">{{$clasegrupal->cupo_minimo}}</span> - <span id="clasegrupal-cupo_maximo">{{$clasegrupal->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCantidad-ClaseGrupal">
                              <td>
@@ -1368,6 +1353,22 @@
                                <span class="f-14"> Cantidad de Participantes  </span>
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cantidad_hombres">{{$clasegrupal->cantidad_hombres}}</span> - <span id="clasegrupal-cantidad_mujeres">{{$clasegrupal->cantidad_mujeres}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-ClaseGrupal">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_reservacion" class="zmdi {{ empty($clasegrupal->cupo_reservacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
+                               <span class="f-14"> Cantidad de cupos para reserva online  </span>
+                             </td>
+                             <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_reservacion">{{$clasegrupal->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalLink-ClaseGrupal">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($clasegrupal->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
+                               <span class="f-14"> Link Promocional </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-link_video"><span>{{$clasegrupal->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalMostrar-ClaseGrupal">
                              <td> 

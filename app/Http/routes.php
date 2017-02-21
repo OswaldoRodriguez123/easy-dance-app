@@ -596,6 +596,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/talleres/update/video', 'TallerController@updateLink');
 			Route::put('agendar/talleres/update/cupo', 'TallerController@updateCupos');
 			Route::put('agendar/talleres/update/cuporeservacion', 'TallerController@updateCuposOnline');
+			Route::put('agendar/talleres/update/cantidad', 'TallerController@updateCantidad');
 			Route::put('agendar/talleres/update/imagen', 'TallerController@updateImagen');
 			Route::put('agendar/talleres/update/etiqueta', 'TallerController@updateEtiqueta');
 			Route::put('agendar/talleres/update/condiciones', 'TallerController@updateCondiciones');

@@ -649,6 +649,74 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalCantidad-Taller" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Taller<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_cantidad_taller" id="edit_cantidad_taller"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Hombres</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad_hombres" id="cantidad_hombres" data-mask="000" placeholder="Minimo">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad_hombres">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_hombres_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="apellido">Mujeres</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad_mujeres" id="cantidad_mujeres" data-mask="000" placeholder="Maximo">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad_mujeres">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mujeres_mensaje"  ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$taller->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                           
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cantidad_taller" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalCupoOnline-Taller" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -1044,22 +1112,6 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="taller-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCupo-Taller">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_minimo" class="zmdi {{ empty($taller->cupo_minimo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
-                               <span class="f-14"> Cantidad de Cupos  </span>
-                             </td>
-                             <td  class="f-14 m-l-15"> <span id="taller-cupo_minimo">{{$taller->cupo_minimo}}</span> - <span id="taller-cupo_maximo">{{$taller->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-Taller">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_reservacion" class="zmdi {{ empty($taller->cupo_reservacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
-                               <span class="f-14"> Cantidad de cupos para reserva online  </span>
-                             </td>
-                             <td  class="f-14 m-l-15"> <span id="taller-cupo_reservacion">{{$taller->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Taller">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($taller->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1071,6 +1123,30 @@
                                
                                 </td>
                               </tr>
+                              <tr class="detalle" data-toggle="modal" href="#modalCupo-Taller">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_minimo" class="zmdi {{ empty($taller->cupo_minimo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
+                               <span class="f-14"> Cantidad de Cupos  </span>
+                             </td>
+                             <td  class="f-14 m-l-15"> <span id="taller-cupo_minimo">{{$taller->cupo_minimo}}</span> - <span id="taller-cupo_maximo">{{$taller->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCantidad-Taller">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
+                               <span class="f-14"> Cantidad de Participantes  </span>
+                             </td>
+                             <td  class="f-14 m-l-15"> <span id="taller-cantidad_hombres">{{$taller->cantidad_hombres}}</span> - <span id="taller-cantidad_mujeres">{{$taller->cantidad_mujeres}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-Taller">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_reservacion" class="zmdi {{ empty($taller->cupo_reservacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
+                               <span class="f-14"> Cantidad de cupos para reserva online  </span>
+                             </td>
+                             <td  class="f-14 m-l-15"> <span id="taller-cupo_reservacion">{{$taller->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalLink-Taller">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($taller->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1242,6 +1318,12 @@
     $('#modalCupoOnline-Taller').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#cupo_reservacion").val($("#taller-cupo_reservacion").text());
+    })
+
+    $('#modalCantidad-Taller').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#cantidad_hombres").val($("#taller-cantidad_hombres").text());
+      $("#cantidad_mujeres").val($("#taller-cantidad_mujeres").text()); 
     })
 
     $('#modalCondiciones-Taller').on('show.bs.modal', function (event) {
