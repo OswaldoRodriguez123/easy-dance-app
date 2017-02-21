@@ -783,7 +783,7 @@ public function PresencialesFiltros(Request $request)
                     if($pertenece){
                         $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
                     }else{
-                        $pertenece = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
+                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul"></i>';
                     }
 
                     if($deuda){
@@ -926,10 +926,6 @@ public function PresencialesFiltros(Request $request)
                         $hombres = $hombres + 1;
                     }
                 }
-
-
-                            
-                
 
                 $array_hombres = array('M', $hombres);
                 $array_mujeres = array('F', $mujeres);

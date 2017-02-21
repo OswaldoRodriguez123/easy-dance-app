@@ -227,8 +227,8 @@
                                      
                                     </div>
                                   </div>
-                                  </div>
                                 </div>
+                                
                                 <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12 clase_grupal" style="display:none">
@@ -649,6 +649,7 @@
                                       </span>
                                   </div>
                                </div>
+
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
