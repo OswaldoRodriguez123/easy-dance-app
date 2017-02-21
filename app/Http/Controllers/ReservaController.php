@@ -69,6 +69,8 @@ class ReservaController extends BaseController
 
                     $cantidad_hombres = $clase_grupal->cantidad_hombres - $cantidad_hombres;
 
+
+
                     if($cantidad_hombres < 0){
                         $cantidad_hombres = 0;
                     }

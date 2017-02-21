@@ -1143,15 +1143,6 @@
                               @endif
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="">
-                             <td> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="codigo" class="zmdi {{ empty($alumno->codigo_referido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
-                              <span class="f-14"> Codigo para referir </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">
-                              <span id="alumno-nombre" class="capitalize">{{$alumno->codigo_referido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCorreo-Alumno">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($alumno->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1207,6 +1198,15 @@
                                <span class="f-14"> Perfil Evaluativo </span>
                              </td>
                              <td id="alumno-perfil" class="f-14 m-l-15 capitalize"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr>
+                             <td> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="codigo" class="zmdi {{ empty($alumno->codigo_referido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
+                              <span class="f-14"> Codigo para referir </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">
+                              <span id="alumno-nombre" class="capitalize">{{$alumno->codigo_referido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 
 

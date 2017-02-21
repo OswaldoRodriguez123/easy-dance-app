@@ -143,9 +143,9 @@
                                     <th class="text-center" data-column-id="fecha">Fecha de Inicio</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <th class="text-center" data-column-id="dia" data-order="desc">Día</th>
-                                    <th class="text-center" data-column-id="cupos_disponibles" data-order="desc">Cupos Disponibles</th>
-                                    <th class="text-center" data-column-id="disponible_mujer" data-order="desc">Disponible <i class="zmdi zmdi-female f-25 c-rosado"></i></th>
-                                    <th class="text-center" data-column-id="disponible_hombre" data-order="desc">Disponible <i class="zmdi zmdi-male-alt f-25 c-azul"></i></th>
+                                    <th class="text-center" data-column-id="cupos_disponibles" data-order="desc">Cupos Disp.</th>
+                                    <th class="text-center" data-column-id="disponible_mujer" data-order="desc">Disp. <i class="zmdi zmdi-female f-25 c-rosado"></i></th>
+                                    <th class="text-center" data-column-id="disponible_hombre" data-order="desc">Disp. <i class="zmdi zmdi-male-alt f-25 c-azul"></i></th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
