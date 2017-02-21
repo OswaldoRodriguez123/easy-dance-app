@@ -502,7 +502,7 @@ class VisitanteController extends BaseController {
                     $mensaje = $visitante_presencial->nombre.'. Gracias por visitarnos, esperamos verte bailando pronto, somos “Tu Clase de Baile”.';
 
                     $client = new Client(); //GuzzleHttp\Client
-                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM=57'.$celular.'&SMSText='.urlencode($mensaje));
 
                 }
 
