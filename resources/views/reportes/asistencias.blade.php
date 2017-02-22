@@ -268,6 +268,8 @@
 
         $(document).ready(function(){
 
+            $('.icon_f-consultarle-al-instructor').popover();
+
         var hoy = moment().format('DD/MM/YYYY');
 
         $("#formFiltro")[0].reset();
@@ -289,7 +291,7 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

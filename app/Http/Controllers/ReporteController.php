@@ -784,9 +784,9 @@ public function PresencialesFiltros(Request $request)
                         $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
                     }else{
                         if($asistencia->sexo == 'M'){
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul"></i>';
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                         }else{
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado"></i>';
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                         }
                         
                     }
@@ -955,10 +955,10 @@ public function PresencialesFiltros(Request $request)
 
       
                         if($asistencia->sexo == 'M'){
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul"></i>';
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             $hombres = $hombres + 1;
                         }else{
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado"></i>';
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             $mujeres = $mujeres + 1;
                         }
                             
