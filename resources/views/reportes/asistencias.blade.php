@@ -277,8 +277,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 50, 
-        paging:false, 
+        pageLength: 25, 
         order: [[7, 'desc'], [8, 'desc']],
         fnDrawCallback: function() {
           if ("{{count($asistencias)}}" < 25) {
