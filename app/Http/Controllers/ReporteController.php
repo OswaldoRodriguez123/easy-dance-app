@@ -183,6 +183,19 @@ class ReporteController extends BaseController
             ->where('evaluaciones.id', '!=', null)
         ->count();
 
+        $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+            ->where('users.usuario_tipo', '=', 2)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
+
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
+
         $mujeres = 0;
         $hombres = 0;
 
@@ -207,7 +220,7 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');     
 
-        return view('reportes.diagnostico')->with(['inscritos' => $inscritos, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total]);
+        return view('reportes.diagnostico')->with(['inscritos' => $inscritos, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'activacion' => $activacion]);
     }
 
     public function DiagnosticosFiltros(Request $request)
@@ -254,6 +267,41 @@ class ReporteController extends BaseController
         //     ->groupBy('alumnos.sexo')
         //     ->get();
         //     
+        //     
+        
+        $array = array();
+        $mujeres = 0;
+        $hombres = 0;
+
+        foreach($inscritos as $inscrito){
+
+            $alumnoc = DB::table('users')
+                ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+                ->select('alumnos.id as id')
+                ->where('alumnos.id','=', $inscrito->id)
+                ->where('alumnos.deleted_at', '=', null)
+                ->where('users.usuario_tipo', '=', 2)
+                ->where('users.confirmation_token', '!=', null)
+            ->first();
+
+            if($alumnoc){
+                $activacion = 0;
+            }else{
+                $activacion = 1;
+            }
+
+            $collection=collect($inscrito); 
+            $inscrito_array = $collection->toArray();
+            
+            $inscrito_array['activacion']=$activacion;
+            $array[$inscrito->id] = $inscrito_array;
+
+            if($inscrito->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+        }
         
         $total = DB::table('alumnos')
             ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
@@ -262,18 +310,7 @@ class ReporteController extends BaseController
             ->where('evaluaciones.id', '!=', null)
             ->whereBetween('alumnos.created_at', [$start,$end])
         ->count();
-
-        $mujeres = 0;
-        $hombres = 0;
-
-        foreach($inscritos as $inscrito){
-            if($inscrito->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
-            }
-        }
-
+    
         $forAge = DB::select("SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN '3 - 10'
                             WHEN age BETWEEN 11 and 20 THEN '11 - 20'
@@ -290,7 +327,7 @@ class ReporteController extends BaseController
         
         return response()->json(
             [
-                'inscritos'         => $inscritos,
+                'inscritos'         => $array,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
                 'edades'            => $forAge,

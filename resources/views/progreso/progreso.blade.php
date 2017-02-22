@@ -383,6 +383,8 @@
             $('#barra_3').css('background', '#67bd6a')
         }
 
+        $('#nivel_'+i).css('background', '#3b5998');
+
     });
 
     route_progreso="{{url('/')}}/progreso";

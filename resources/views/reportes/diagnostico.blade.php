@@ -264,6 +264,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="activacion"></th>
                                     <th class="text-center" data-column-id="diagnostico"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
@@ -276,6 +277,7 @@
                             @foreach ($inscritos as $inscrito)
                                 <?php $id = $inscrito->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
                                         @if($inscrito->evaluacion_id)
                                             <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
@@ -319,6 +321,7 @@
     route_filtrar = "{{url('/')}}/reportes/diagnosticos";
 
     var inscritos = <?php echo json_encode($inscritos);?>;
+    var activaciones = <?php echo json_encode($activacion);?>;
 
     $(document).ready(function(){
 
@@ -460,7 +463,17 @@
                             }else{
                                 cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             }
+
+                            if(array.activacion == 0 )
+                            {
+                                activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                            }else{
+                                activacion = ''
+                            };
+
+
                             var rowNode=t.row.add( [
+                            ''+activacion+'',
                             ''+cliente+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
