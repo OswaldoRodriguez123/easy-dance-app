@@ -145,6 +145,42 @@
                             <div class ="f-16 f-700 pull-right">
 
                             Resultado final : {{$nota_final}} puntos de {{(count($detalle_notas))*10}}<br>
+
+                            <div class="rating-list">
+                                <div class="rl-star">
+                                    @if($porcentaje >= 20)
+                                        <i class="zmdi zmdi-star active"></i>
+                                    @else
+                                        <i class="zmdi zmdi-star"></i>
+                                    @endif
+
+                                    @if($porcentaje >= 40)
+                                        <i class="zmdi zmdi-star active"></i>
+                                    @else
+                                        <i class="zmdi zmdi-star"></i>
+                                    @endif
+
+                                    @if($porcentaje >= 60)
+                                        <i class="zmdi zmdi-star active"></i>
+                                    @else
+                                        <i class="zmdi zmdi-star"></i>
+                                    @endif
+
+                                    @if($porcentaje >= 80)
+                                        <i class="zmdi zmdi-star active"></i>
+                                    @else
+                                        <i class="zmdi zmdi-star"></i>
+                                    @endif
+
+                                    @if($porcentaje >= 100)
+                                        <i class="zmdi zmdi-star active"></i>
+                                    @else
+                                        <i class="zmdi zmdi-star"></i>
+                                    @endif
+                                    
+                                </div>
+                            </div>
+
                             Nivel de progreso : {{$porcentaje}} <br>
                             Fecha próxima evaluación : {{$fecha_siguiente}} <br>
 

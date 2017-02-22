@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Academia;
 use App\InscripcionClaseGrupal;
 use App\Progreso;
+use App\Examen;
+use App\Evaluacion;
+use App\DetalleEvaluacion;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -295,7 +298,27 @@ class ProgresoController extends BaseController {
             //     $clase_16->save();
             }
 
-    	   return view('progreso.programacion')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12]);
+            $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
+
+            if($examen){
+
+                $evaluacion = Evaluacion::where('examen_id',$examen->id)->where('alumno_id', Auth::user()->usuario_id)->first();
+
+                if($evaluacion){
+                    $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
+                       ->where('evaluacion_id','=',$evaluacion->id)
+                    ->count();
+
+                    $notas = ['nota' => $evaluacion->total, 'total' => $detalles_notas*10, 'porcentaje' => $evaluacion->porcentaje];
+                }else{
+                    $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
+                }
+
+            }else{
+                $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
+            }
+
+    	   return view('progreso.programacion')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas]);
         }
     }
 
