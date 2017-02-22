@@ -783,7 +783,12 @@ public function PresencialesFiltros(Request $request)
                     if($pertenece){
                         $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
                     }else{
-                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul"></i>';
+                        if($asistencia->sexo == 'M'){
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul"></i>';
+                        }else{
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado"></i>';
+                        }
+                        
                     }
 
                     if($deuda){
@@ -877,7 +882,9 @@ public function PresencialesFiltros(Request $request)
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
             }else{
+
                 $array = array();
+                $array_inscripcion = array();
 
                 foreach($inscripciones as $inscripcion){
 
@@ -893,6 +900,13 @@ public function PresencialesFiltros(Request $request)
 
                     if($asistio){
                         $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+
+                        if($inscripcion->sexo == 'F'){
+                            $mujeres = $mujeres + 1;
+                        }else{
+                            $hombres = $hombres + 1;
+                        }
+
                     }else{
                         $pertenece = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
                         $fecha = '';
@@ -913,17 +927,53 @@ public function PresencialesFiltros(Request $request)
                     }
 
                     $collection=collect($inscripcion);     
-                    $inasistencias_array = $collection->toArray();
-                    $inasistencias_array['pertenece']=$pertenece;
-                    $inasistencias_array['deuda']=$deuda;
-                    $inasistencias_array['fecha']=$fecha;
-                    $inasistencias_array['hora']=$hora;
-                    $array[$inscripcion->id] = $inasistencias_array;
+                    $asistencia_array = $collection->toArray();
+                    $asistencia_array['pertenece']=$pertenece;
+                    $asistencia_array['deuda']=$deuda;
+                    $asistencia_array['fecha']=$fecha;
+                    $asistencia_array['hora']=$hora;
+                    $array[$inscripcion->id] = $asistencia_array;
 
-                    if($inscripcion->sexo == 'F'){
-                        $mujeres = $mujeres + 1;
-                    }else{
-                        $hombres = $hombres + 1;
+                    $array_inscripcion[] = $inscripcion->alumno_id;
+                }
+
+                foreach($asistencias as $asistencia){
+                    $existe = false;
+                    foreach($array_inscripcion as $inscripcion){
+                        if($asistencia->alumno_id == $inscripcion){
+                            $existe = true;
+                        }
+                    }
+
+                    if($existe == false){
+
+                        $deuda = DB::table('items_factura_proforma')
+                            ->select('items_factura_proforma.*')
+                            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                            ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
+                        ->first();
+
+      
+                        if($asistencia->sexo == 'M'){
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul"></i>';
+                            $hombres = $hombres + 1;
+                        }else{
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado"></i>';
+                            $mujeres = $mujeres + 1;
+                        }
+                            
+                        if($deuda){
+                            $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                        }else{
+                            $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                        }
+
+                        $collection=collect($asistencia);     
+                        $asistencia_array = $collection->toArray();
+                        $asistencia_array['pertenece']=$pertenece;
+                        $asistencia_array['deuda']=$deuda;
+                        $array['2-'.$asistencia->id] = $asistencia_array;
+
                     }
                 }
 

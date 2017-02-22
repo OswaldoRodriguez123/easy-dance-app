@@ -281,7 +281,7 @@
         paging:false, 
         order: [[7, 'desc'], [8, 'desc']],
         fnDrawCallback: function() {
-          if ($('#tablelistar tr').length < 25) {
+          if ("{{count($asistencias)}}" < 25) {
               $('.dataTables_paginate').hide();
           }
           else{

@@ -164,15 +164,15 @@
 
 
                     <table class="table table-striped table-bordered text-center">
-                     <tr class="disabled">
-                     <td class = ""></td>
+                     <tr>
+                     <td></td>
                      <td class="f-14 m-l-15"><span class="f-12 f-700">Mi Código: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos">{{$alumno->codigo_referido}}</span></td>
                     </tr>
                     </table>
 
                     <table class="table table-striped table-bordered text-center">
-                     <tr>
-                     <td class = ""></td>
+                     <tr class="disabled">
+                     <td></td>
                      <td class="f-14 m-l-15"><span class="f-12 f-700">Puntos Acumulados: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos">{{$puntos_referidos}}</span></td>
                     </tr>
                     </table>
