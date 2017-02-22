@@ -189,7 +189,7 @@
 
             function rechargeAlumno(){
 
-                setTimeout(function(){
+                // setTimeout(function(){
                 
                     document.getElementById('participante').innerHTML = 'Participante';
                     document.getElementById('hora').innerHTML = 'Hora';  
@@ -210,7 +210,7 @@
 
                     finprocesado();
 
-                }, 1000);
+                // }, 1000);
             }
 
             function rechargeInstructor(){
