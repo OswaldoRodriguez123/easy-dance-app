@@ -17,7 +17,6 @@ class CreateCostoClasesPersonalizadasTable extends Migration
             $table->increments('id'); 
 
             $table->integer('clase_personalizada_id')->unsigned();
-            $table->foreign('clase_personalizada_id')->references('id')->on('config_clase_personalizada');
             $table->integer('participantes');
             $table->float('precio');
 
