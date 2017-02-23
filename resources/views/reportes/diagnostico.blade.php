@@ -64,6 +64,23 @@
                             </div>
                             <div class="col-md-4 col-sm-offset-1">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <label for="clase_grupal_id" id="id-clase_grupal_id">Clase Grupal</label><br>
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
+                                      <option value="">Selecciona</option>
+                                      @foreach ( $clases_grupales as $clase_grupal )
+                                        <option value = "{{ $clase_grupal->id }}"> {{ $clase_grupal->nombre }} - Desde: {{ $clase_grupal->hora_inicio }}  / Hasta: {{ $clase_grupal->hora_final }} - {{ $clase_grupal->instructor_nombre }}  {{ $clase_grupal->instructor_apellido }} </option>
+
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                            </div>
+
+                                <br>
+                            <div class="col-md-4 col-sm-offset-1">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                 <div class="checkbox m-b-15">
                                     <label>
@@ -321,6 +338,7 @@
     route_filtrar = "{{url('/')}}/reportes/diagnosticos";
 
     var inscritos = <?php echo json_encode($inscritos);?>;
+    var tipo = 'mesActual'
 
     $(document).ready(function(){
 
@@ -433,17 +451,134 @@
 
             });
 
-            $('#meses').on('change', function () {
-                var token = $('input:hidden[name=_token]').val();
+            $('#clase_grupal_id').on('change', function () {
+
                 $("#todos").click();
-                var Fecha = $(this).val();
+                var token = $('input:hidden[name=_token]').val();
+                clase_grupal_id = $('#clase_grupal_id').val()
+                if(tipo == 'Fecha'){
+                    Fecha = $('#meses').val();
+                    datos = "&Fecha="+Fecha+"&clase_grupal_id="+clase_grupal_id
+                }else if(tipo == 'rango'){
+                    fechaInicio = $("input[name=daterangepicker_start]").val();
+                    fechaFin = $("input[name=daterangepicker_end]").val();
+                    datos = "&fechaInicio="+fechaInicio+"&fechaFin="+fechaFin+"&rango=rango&clase_grupal_id="+clase_grupal_id
+                }else{
+                    datos = "&"+tipo+"="+tipo+"&clase_grupal_id="+clase_grupal_id
+                }
                 procesando();
                 $.ajax({
                     url: route_filtrar,
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data: { Fecha: Fecha},
+                    data: datos,
+                    success:function(respuesta){
+
+                        finprocesado();
+
+                        $('#total').text(respuesta.total)
+                        inscritos = respuesta.inscritos
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
+
+                        t.clear().draw();
+
+                        $.each(respuesta.inscritos, function (index, array) {
+                            if(array.evaluacion_id )
+                            {
+                                cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                            }else{
+                                cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                            }
+
+                            if(array.activacion == 0 )
+                            {
+                                activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                            }else{
+                                activacion = ''
+                            };
+
+
+                            var rowNode=t.row.add( [
+                            ''+activacion+'',
+                            ''+cliente+'',
+                            ''+array.nombre+'',
+                            ''+array.apellido+'',
+                            ''+array.fecha_nacimiento+'',
+                            ''+array.celular+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                                .attr('id',array.id)
+                                .addClass('seleccion');
+                        });
+
+                        $("#mujeres").text(datos.mujeres);
+                        $("#hombres").text(datos.hombres);
+
+                        var data1 = ''
+                        data1 += '[';
+                        $.each( datos.edades, function( i, item ) {
+                            var edad = item.age_range;
+                            var cant = item.count
+                            data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                        });
+                        data1 = data1.substring(0, data1.length -1);
+                        data1 += ']';
+                            //GRAFICO FILTRO MES ACTUAL
+                            $("#pie-chart-procesos").html('');
+                            $(".flc-pie").html('');
+                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '.flc-pie',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                }
+                                
+                            });
+
+
+                    }
+                });
+                
+            }); 
+
+            $('#meses').on('change', function () {
+                var token = $('input:hidden[name=_token]').val();
+                $("#todos").click();
+                var Fecha = $(this).val();
+                tipo = 'Fecha'
+                procesando();
+                $.ajax({
+                    url: route_filtrar,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data: "&Fecha="+Fecha+"&clase_grupal_id="+$('#clase_grupal_id').val(),
                     success:function(respuesta){
 
                         finprocesado();
@@ -542,6 +677,7 @@
             $(".applyBtn").on("click", function(){
                 var token = $('input:hidden[name=_token]').val();
                 $("#todos").click();
+                tipo = 'rango'
                 var fechaInicio = $("input[name=daterangepicker_start]").val();
                 var fechaFin = $("input[name=daterangepicker_end]").val();
                 procesando();
@@ -550,7 +686,7 @@
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
+                    data: "&fechaInicio="+fechaInicio+"&fechaFin="+fechaFin+"&rango=rango&clase_grupal_id="+$('#clase_grupal_id').val(),
                     success:function(respuesta){
 
                         finprocesado();
@@ -657,13 +793,14 @@ FILTROS PARA GRAFCAS
                 if ($("#actual_month").is(":checked")){
                     $("#mes_actual").val('1');
                     $("#todos").click();
+                    tipo = 'mesActual'
                     procesando();
                         $.ajax({
                             url: route_filtrar,
                             headers: {'X-CSRF-TOKEN': token},
                             type: 'POST',
                             dataType: 'json',
-                            data: { mesActual: 'mes_actual' },
+                            data: "&mesActual=mes_actual&clase_grupal_id="+$('#clase_grupal_id').val(),
                             success:function(respuesta){
 
                                 finprocesado();
@@ -769,13 +906,14 @@ FILTROS PARA GRAFCAS
                 if ($("#past_month").is(":checked")){
                     procesando();
                     $("#todos").click();
+                    tipo = 'mesPasado'
                     //$("#mes_actual").val('1');
                         $.ajax({
                             url: route_filtrar,
                             headers: {'X-CSRF-TOKEN': token},
                             type: 'POST',
                             dataType: 'json',
-                            data: { mesPasado: 'mes_pasado' },
+                            data: "&mesPasado=mes_pasado&clase_grupal_id="+$('#clase_grupal_id').val(),
                             success:function(respuesta){
 
                                 finprocesado();
@@ -880,6 +1018,7 @@ FILTROS PARA GRAFCAS
                 var token = $('input:hidden[name=_token]').val();
                 if ($("#today").is(":checked")){
                     $("#todos").click();
+                    tipo = 'today'
                     procesando();
                     //$("#mes_actual").val('1');
                         $.ajax({
@@ -887,7 +1026,7 @@ FILTROS PARA GRAFCAS
                             headers: {'X-CSRF-TOKEN': token},
                             type: 'POST',
                             dataType: 'json',
-                            data: { today: 'today' },
+                            data: "&today=today&clase_grupal_id="+$('#clase_grupal_id').val(),
                             success:function(respuesta){
 
                                 finprocesado();

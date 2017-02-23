@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use App\ItemsFactura;
+use PulkitJalan\GeoIP\GeoIP;
 
 class ReporteController extends BaseController
 {
@@ -216,6 +217,15 @@ class ReporteController extends BaseController
             }
         }
 
+        $clases_grupales= DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+      ->get();
+
+
         $forAge = DB::select('SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN "3 - 10"
                             WHEN age BETWEEN 11 and 20 THEN "11 - 20"
@@ -229,25 +239,30 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');     
 
-        return view('reportes.diagnostico')->with(['inscritos' => $array, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total]);
+        return view('reportes.diagnostico')->with(['inscritos' => $array, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'clases_grupales' => $clases_grupales]);
     }
 
     public function DiagnosticosFiltros(Request $request)
     {
+        $actual = Carbon::now();
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+        $actual->tz = $geoip->getTimezone();
+
         # code...
         //dd($request->all());
         if($request->mesActual){
-            $start = Carbon::now()->startOfMonth()->toDateString();
-            $end = Carbon::now()->endOfMonth()->toDateString();  
+            $start = $actual->startOfMonth()->toDateString();
+            $end = $actual->endOfMonth()->toDateString();  
         }
         if($request->mesPasado){
-            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+            $start = $actual->startOfMonth()->subMonth()->toDateString();
+            $end = $actual->subMonth()->endOfMonth()->toDateString();  
 
         }
         if($request->today){
-            $start = Carbon::now()->toDateString();
-            $end = Carbon::now()->toDateString();  
+            $end = $actual->toDateString();
+            $start = $actual->subDay()->toDateString();
         }
         if($request->rango){
             //$fechas = explode(' - ', $request->dateRange);
@@ -261,13 +276,79 @@ class ReporteController extends BaseController
             $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
         }
 
-        $inscritos = DB::table('alumnos')
-            ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-            ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('alumnos.created_at', [$start,$end])
-        ->get();
+        if($request->clase_grupal_id){
+
+            $inscritos = DB::table('alumnos')
+                ->join('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
+                ->join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
+                ->join('clases_grupales', 'examenes.clase_grupal_id', '=', 'clases_grupales.id')
+                ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id')
+                ->where('examenes.clase_grupal_id','=', $request->clase_grupal_id)
+                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+                ->where('examenes.boolean_grupal','=',1)
+                ->whereBetween('evaluaciones.created_at', [$start,$end])
+            ->get();
+
+
+            $total = DB::table('alumnos')
+                ->join('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
+                ->join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
+                ->join('clases_grupales', 'examenes.clase_grupal_id', '=', 'clases_grupales.id')
+                ->where('examenes.clase_grupal_id','=', $request->clase_grupal_id)
+                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+                ->where('evaluaciones.id', '!=', null)
+                ->where('examenes.boolean_grupal','=',1)
+                ->whereBetween('evaluaciones.created_at', [$start,$end])
+            ->count();
+
+
+            $forAge = DB::select("SELECT CASE
+                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
+                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
+                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
+                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
+                            WHEN age >= 51 THEN '+51'
+                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
+                        END as age_range, COUNT(*) AS count
+                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
+                        FROM alumnos 
+                        WHERE alumnos.created_at >= '".$start."' AND alumnos.created_at <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
+                        GROUP BY age_range
+                        ORDER BY age_range");      
+        }else{
+            $inscritos = DB::table('alumnos')
+                ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
+                ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
+                ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id')
+                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+                ->whereBetween('alumnos.created_at', [$start,$end])
+            ->get(); 
+
+            $total = DB::table('alumnos')
+                ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
+                ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
+                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+                ->where('evaluaciones.id', '!=', null)
+                ->whereBetween('alumnos.created_at', [$start,$end])
+            ->count();
+
+
+            $forAge = DB::select("SELECT CASE
+                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
+                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
+                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
+                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
+                            WHEN age >= 51 THEN '+51'
+                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
+                        END as age_range, COUNT(*) AS count
+                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
+                        FROM alumnos 
+                        WHERE alumnos.created_at >= '".$start."' AND alumnos.created_at <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
+                        GROUP BY age_range
+                        ORDER BY age_range");      
+        }
+
+        
 
         // $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
         //     ->selectRaw('sexo, count(sexo) as CantSex')
@@ -310,29 +391,7 @@ class ReporteController extends BaseController
             }else{
                 $hombres++;
             }
-        }
-        
-        $total = DB::table('alumnos')
-            ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-            ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('evaluaciones.id', '!=', null)
-            ->whereBetween('alumnos.created_at', [$start,$end])
-        ->count();
-    
-        $forAge = DB::select("SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-                            WHEN age >= 51 THEN '+51'
-                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM alumnos 
-                        WHERE alumnos.created_at >= '".$start."' AND alumnos.created_at <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
-                        GROUP BY age_range
-                        ORDER BY age_range");            
+        }      
         
         return response()->json(
             [
