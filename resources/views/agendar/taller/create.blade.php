@@ -610,6 +610,30 @@
 
                               <div class="clearfix p-b-35"></div>
 
+                              <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar el taller en la web" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_promocionar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                                     <div class="clearfix p-b-35"></div>
+
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
@@ -663,6 +687,17 @@
   route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarhorario";
   
   $(document).ready(function(){
+
+      $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+      $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
+
+      $("#promocionar").on('change', function(){
+        if ($("#promocionar").is(":checked")){
+          $("#boolean_promocionar").val('1');
+        }else{
+          $("#boolean_promocionar").val('0');
+        }    
+      });
     
         $('#fecha').daterangepicker({
             "autoApply" : false,

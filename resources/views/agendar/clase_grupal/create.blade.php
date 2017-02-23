@@ -60,14 +60,6 @@
                                  
                                     <label for="nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase grupal, en caso de no haberla registrado o deseas crear un nuevo registro, debes dirigirte al área de configuración general en la sección de clases grupales y procede a crear el registro. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/clases-grupales/agregar' class='redirect pointer'> Llévame <i class='icon_b icon_b-nombres f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
-   
-                                  <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
-                                    Top
-                                </button> -->
-                          <!--       <button class="btn btn-primary waves-effect" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
-                                    Top
-                                </button> -->
-
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
@@ -89,8 +81,10 @@
                                       </span>
                                   </div>
                                </div>
+
                                <div class="clearfix p-b-35"></div>
 
+                               
                                <div class="col-sm-12">
                                  
                                       <label for="fecha_inicio" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la fecha de inicio y final de la clase grupal" title="" data-original-title="Ayuda"></i>

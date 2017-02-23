@@ -14,6 +14,7 @@ use App\Instructor;
 use App\Alumno;
 use App\Academia;
 use App\CitaClasePersonalizada;
+use App\CostoClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\InscripcionClasePersonalizada;
 use App\User;
@@ -178,7 +179,14 @@ class ClasePersonalizadaController extends BaseController {
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        $precios = CostoClasePersonalizada::join('clases_personalizadas', 'costo_clases_personalizadas.clase_personalizada_id', '=', 'clases_personalizadas.id')
+        ->select('clases_personalizadas.academia_id', 'costo_clases_personalizadas.precio', 'clases_personalizadas.id', 'costo_clases_personalizadas.id as precio_id', 'costo_clases_personalizadas.participantes')
+        ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios]);
         
     }
 
@@ -213,7 +221,12 @@ class ClasePersonalizadaController extends BaseController {
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id, 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        $precios = CostoClasePersonalizada::join('clases_personalizadas', 'costo_clases_personalizadas.clase_personalizada_id', '=', 'clases_personalizadas.id')
+        ->select('clases_personalizadas.academia_id', 'costo_clases_personalizadas.precio', 'clases_personalizadas.id', 'costo_clases_personalizadas.id as precio_id', 'costo_clases_personalizadas.participantes')
+        ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id, 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios]);
         
     }
 
@@ -882,6 +895,22 @@ class ClasePersonalizadaController extends BaseController {
         // return redirect("/home");
         if($clasepersonalizada->save()){
 
+            if($request->precio_id)
+            {
+                $precio_id = explode("-", $request->precio_id);
+
+                if($precio_id[0] == '1'){
+                    $costo = $clase_personalizada->costo;
+                }else{
+                    $costo_clases_personalizadas = CostoClasePersonalizada::find($precio_id[1]);
+                    $costo = $costo_clases_personalizadas->precio;
+                }
+            }else{
+                $costo = $clase_personalizada->costo;
+            }
+
+                
+
             $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
 
             $item_factura = new ItemsFacturaProforma;
@@ -895,7 +924,7 @@ class ClasePersonalizadaController extends BaseController {
             $item_factura->cantidad = 1;
             $item_factura->precio_neto = 0;
             $item_factura->impuesto = 0;
-            $item_factura->importe_neto = $clase_personalizada->costo;
+            $item_factura->importe_neto = $costo;
             $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
             $item_factura->save();

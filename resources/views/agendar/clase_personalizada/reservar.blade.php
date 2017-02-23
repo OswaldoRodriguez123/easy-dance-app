@@ -206,14 +206,6 @@
 
                                     @endif
 
-   
-                                  <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
-                                    Top
-                                </button> -->
-                          <!--       <button class="btn btn-primary waves-effect" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
-                                    Top
-                                </button> -->
-
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">
@@ -222,7 +214,7 @@
 
                                           <option value="">Selecciona</option>
                                           @foreach ( $clases_personalizadas as $clase_personalizada )
-                                          <option value = "{{ $clase_personalizada['id'] }}">{{ $clase_personalizada['nombre'] }}</option>
+                                          <option data-precio = "{{ $clase_personalizada['costo'] }}" value = "{{ $clase_personalizada['id'] }}">{{ $clase_personalizada['nombre'] }}</option>
                                           @endforeach
                                         
                                         </select>
@@ -235,7 +227,40 @@
                                   </div>
                                 </div>
                                </div>
+
                                <div class="clearfix p-b-35"></div>
+
+                              @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                               <div class="col-sm-12 paquete" style="display:none">
+                                 
+                                    <label for="nombre">Paquete</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el paquete" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <div class="fg-line">
+                                      <div class="select">
+                                        <select name="precio_id" id="precio_id">
+
+    
+                                        </select>
+                                      </div>
+                                    </div>
+                                    </div>
+                                 <div class="has-error" id="error-precio_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-precio_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                               </div>
+
+                               @endif
+
+                               
+
 
                                      <div class="col-sm-12">
                                  
@@ -442,6 +467,8 @@
   route_completado="{{url('/')}}/agendar/clases-personalizadas/completado";
   route_enhorabuena="{{url('/')}}/agendar/clases-personalizadas/enhorabuena/";
   route_principal="{{url('/')}}/agendar/clases-personalizadas";
+
+  var precios = <?php echo json_encode($precios);?>;
 
   $(document).ready(function(){
 
@@ -779,6 +806,33 @@
             });
           }    
         });
+
+       $("#clase_personalizada_id").on('change', function(){
+        
+        $('#precio_id').empty();
+
+        var id = $(this).val();
+        var costo = $(this).find(':selected').attr('data-precio')
+        if (id){
+
+          $('#precio_id').append( new Option("1 Participante - " + costo,'1-'+id));
+
+          var tmp = $.grep(precios, function(e){ return e.id == id; });
+          $.each(tmp, function (index, array) {
+  
+            $('#precio_id').append( new Option(array.participantes + " Participantes - " + array.precio,'2-'+array.precio_id));
+
+          });
+
+          $('#precio_id').selectpicker('refresh');
+
+          $('.paquete').show()          
+        }else{
+          $('#precio_id').empty();
+          $('#precio_id').selectpicker('refresh');
+          $('.paquete').hide()
+        }    
+      });
 
        function nl2br (str, is_xhtml) {   
           var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    

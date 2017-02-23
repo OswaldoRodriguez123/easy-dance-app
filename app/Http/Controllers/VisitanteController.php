@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Mail;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use PulkitJalan\GeoIP\GeoIP;
 
 class VisitanteController extends BaseController {
 
@@ -28,8 +29,12 @@ class VisitanteController extends BaseController {
      * @return Response
      */
 
-    public function index()
+    public function index(Request $request)
     {
+
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+
 
         $visitantes = Visitante::Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
             ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
@@ -37,7 +42,22 @@ class VisitanteController extends BaseController {
             ->where('visitantes_presenciales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        return view('participante.visitante.principal')->with(['visitantes' => $visitantes]);
+        $array = array();
+
+        foreach($visitantes as $visitante){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_registro);
+            $fecha->tz = $geoip->getTimezone();
+
+            $collection=collect($visitante);     
+            $visitante_array = $collection->toArray();
+
+            $visitante_array['fecha_registro']=$fecha->toDateString();
+            $array[$visitante->id] = $visitante_array;
+
+        }
+
+        return view('participante.visitante.principal')->with(['visitantes' => $array]);
     }
 
     /**

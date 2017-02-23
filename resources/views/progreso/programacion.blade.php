@@ -143,7 +143,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">CICLO 1</a>
+                                              <a class="ciclo">CICLO 1</a>
                                             </li>
                                             <div class="eos-group-title">BÁSICO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -301,7 +301,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">CICLO 2</a>
+                                              <a class="ciclo">CICLO 2</a>
                                             </li>
                                             <div class="eos-group-title">INTERMEDIO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -457,7 +457,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">CICLO 3</a>
+                                              <a class="ciclo">CICLO 3</a>
                                             </li>
                                             <div class="eos-group-title">AVANZADO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -590,7 +590,7 @@
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
                                             <li class="eos-item text-center">
-                                              <a href="#">CICLO 4</a>
+                                              <a class="ciclo">CICLO 4</a>
                                             </li>
                                             <div class="eos-group-title">MASTER 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
@@ -794,6 +794,8 @@
 
         $('[data-toggle="popover"]').popover(); 
 
+        $('.ciclo').addClass('disabled');
+
         
       });
     
@@ -820,6 +822,24 @@
       $('#modalVideo').modal('show');
     });
 
+    $(".eos-group-title").click(function(e) {
+
+      e.preventDefault();
+
+      
+      var icono = $(this).children();
+
+      if($(icono).hasClass('glyphicon-plus'))
+      {
+        $(icono).removeClass('glyphicon-plus')
+        $(icono).addClass('glyphicon-minus')
+      }else{
+        $(icono).removeClass('glyphicon-minus')
+        $(icono).addClass('glyphicon-plus')
+      }
+
+    });
+
     $(".disabled").click(function(e) {
 
       e.preventDefault();
@@ -837,6 +857,9 @@
       $('.eos-menu-content').css('height','1880px')
       $('.eos-group-content').css('height','520px')
 
+      $(".glyphicon").removeClass('glyphicon-plus')
+      $(".glyphicon").addClass('glyphicon-minus')
+
     });
 
     $(".ocultar").click(function(e) {
@@ -844,6 +867,9 @@
       $('.eos-menu-content').css('height','160px')
       $('.eos-group-content').css('height','0px')
 
+      $(".glyphicon").removeClass('glyphicon-minus')
+      $(".glyphicon").addClass('glyphicon-plus')
+      
     });
 
 

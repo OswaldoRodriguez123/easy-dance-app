@@ -77,7 +77,7 @@ class TallerController extends BaseController {
             $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
             $dia_de_semana = $fecha->dayOfWeek;
 
-            if($fecha >= Carbon::now()){
+            if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
 
                 $dia_string = '';
 
@@ -312,6 +312,7 @@ class TallerController extends BaseController {
         $taller->link_video = $request->link_video;
         $taller->cantidad_hombres = $cantidad_hombres;
         $taller->cantidad_mujeres = $cantidad_mujeres;
+        $taller->boolean_promocionar = $request->boolean_promocionar;
 
         // return redirect("/home");
         if($taller->save()){
@@ -906,6 +907,18 @@ class TallerController extends BaseController {
         }
     }
 
+    public function updateMostrar(Request $request){
+
+        $taller = Taller::find($request->id);
+        $taller->boolean_promocionar = $request->boolean_promocionar;
+
+        if($taller->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function participantes($id)
     {
 
@@ -1169,7 +1182,7 @@ class TallerController extends BaseController {
                 ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
                 ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres')
+                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres', 'talleres.boolean_promocionar')
                 ->where('talleres.id', '=', $id)
                 ->first();
 

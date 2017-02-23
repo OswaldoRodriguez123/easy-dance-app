@@ -174,7 +174,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
 
-                if($fecha >= Carbon::now()){
+               if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
 
                     if($taller->imagen){
                         $imagen = "/assets/uploads/taller/{$taller->imagen}";

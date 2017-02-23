@@ -14,6 +14,7 @@ use App\Instructor;
 use App\Alumno;
 use App\Academia;
 use App\CitaClasePersonalizada;
+use App\CostoClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\InscripcionClasePersonalizada;
 use Mail;
@@ -100,10 +101,13 @@ class ConfigClasePersonalizadaController extends BaseController {
      */
     public function create()
     {
-        if (Session::has('horario')) {
-            Session::forget('horario'); 
-        }
+        // if (Session::has('horario')) {
+        //     Session::forget('horario'); 
+        // }
 
+        if (Session::has('precios')) {
+            Session::forget('precios'); 
+        }
 
         return view('configuracion.clase_personalizada.create')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'dias_de_semana' => DiasDeSemana::all(), 'especialidad' => ConfigEspecialidades::all(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
 
@@ -207,8 +211,25 @@ class ConfigClasePersonalizadaController extends BaseController {
         $clasepersonalizada->color_etiqueta = $request->color_etiqueta;
         $clasepersonalizada->tiempo_expiracion = $request->tiempo_expiracion;
 
-        // return redirect("/home");
+        // return redirect("/home")
         if($clasepersonalizada->save()){
+
+             $precios = Session::get('precios');
+
+                if(count($precios) > 0){
+
+                    foreach ($precios as $precio) {
+
+                        $costo = new CostoClasePersonalizada;
+
+                        $costo->clase_personalizada_id = $clasepersonalizada->id;
+                        $costo->participantes = $precio[0]['participantes'];
+                        $costo->precio = $precio[0]['precio'];
+                        $costo->save();
+                    }
+
+                }
+
 
             if($request->imageBase64){
 
@@ -236,6 +257,10 @@ class ConfigClasePersonalizadaController extends BaseController {
                 $clasepersonalizada->imagen = $nombre_img;
                 $clasepersonalizada->save();
 
+            }
+
+            if (Session::has('precios')) {
+                Session::forget('precios'); 
             }
 
            
@@ -823,7 +848,9 @@ class ConfigClasePersonalizadaController extends BaseController {
             //     $cancelacion = 'Cancelación Temprana';
             // }
 
-            return view('configuracion.clase_personalizada.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $find]);
+            $precios = CostoClasePersonalizada::where('clase_personalizada_id','=',$id)->get();
+
+            return view('configuracion.clase_personalizada.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $find, 'precios' => $precios]);
 
         }else{
            return redirect("configuracion/clases-personalizadas"); 
@@ -1120,6 +1147,106 @@ class ConfigClasePersonalizadaController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function agregar_costo(Request $request){
+
+        
+    $rules = [
+
+        'participantes' => 'required|numeric',
+        'precio' => 'required|numeric',
+    ];
+
+    $messages = [
+
+        'participantes.required' => 'Ups! La cantidad de participantes es requerida',
+        'precio.required' => 'Ups! El Costo es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $array = array(['participantes' => $request->participantes, 'precio' => $request->precio]);
+
+        Session::push('precios', $array);
+
+        $item = Session::get('precios');
+        end( $item );
+        $contador = key( $item );
+
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'participantes' => $request->participantes, 'precio' => $request->precio, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminar_costo($id){
+
+        $arreglo = Session::get('precios');
+
+        unset($arreglo[$id]);
+        Session::put('precios', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function agregar_costo_fijo(Request $request){
+        
+    $rules = [
+
+        'participantes' => 'required|numeric',
+        'precio' => 'required|numeric',
+    ];
+
+    $messages = [
+
+        'participantes.required' => 'Ups! La cantidad de participantes es requerida',
+        'precio.required' => 'Ups! El Costo es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $costo = new CostoClasePersonalizada;
+                                        
+        $costo->clase_personalizada_id = $request->id;
+        $costo->participantes = $request->participantes;
+        $costo->precio = $request->precio;
+
+        if($costo->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'participantes' => $request->participantes, 'precio' => $request->precio, 'id' => $costo->id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+        }
+    }
+
+    public function eliminar_costo_fijo($id){
+
+        $costo = CostoClasePersonalizada::find($id);
+
+        if($costo->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
     }
 
 }

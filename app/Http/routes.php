@@ -264,6 +264,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('configuracion/clases-personalizadas/configurar', 'ConfigClasePersonalizadaController@configuracion');
 			Route::get('configuracion/clases-personalizadas/participantes/{id}', 'ConfigClasePersonalizadaController@participantes');
 
+			Route::post('configuracion/clases-personalizadas/agregar_costo', 'ConfigClasePersonalizadaController@agregar_costo');
+			Route::post('configuracion/clases-personalizadas/eliminar_costo/{id}', 'ConfigClasePersonalizadaController@eliminar_costo');
+			Route::post('configuracion/clases-personalizadas/agregar_costo_fijo', 'ConfigClasePersonalizadaController@agregar_costo_fijo');
+			Route::post('configuracion/clases-personalizadas/eliminar_costo_fijo/{id}', 'ConfigClasePersonalizadaController@eliminar_costo_fijo');
+
 
 			// COREOGRAFIA
 
@@ -600,6 +605,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/talleres/update/imagen', 'TallerController@updateImagen');
 			Route::put('agendar/talleres/update/etiqueta', 'TallerController@updateEtiqueta');
 			Route::put('agendar/talleres/update/condiciones', 'TallerController@updateCondiciones');
+			Route::put('agendar/talleres/update/mostrar', 'TallerController@updateMostrar');
 
 			Route::post('agendar/talleres/update/costo_taller', 'TallerController@updateCostoTaller');
 

@@ -192,6 +192,104 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
+
+                                <div class="clearfix p-b-35"></div>
+
+                                 <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Opciones Avanzadas</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Configura nuevos paquetes" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                      <div class="panel-body">
+                                      
+                                      <div class="clearfix p-b-35"></div>
+                                      <div class="clearfix p-b-35"></div>
+
+                                    
+                                      <div class="col-sm-6">
+                                        <label for="nombre" id="id-participantes">Ingresa la cantidad de participantes</label>
+                                        <input type="text" class="form-control input-sm" name="participantes" id="participantes" data-mask="0000" placeholder="Ej. 3" value="">
+                                      </div>
+
+                                      <div class="col-sm-6">
+                                        <label for="nombre" id="id-precio">Ingresa el precio</label>
+                                        <input type="text" class="form-control input-sm" name="precio" id="precio" data-mask="0000000000" placeholder="Ej. 35000" value="">
+                                      </div>
+
+                                      <div class="clearfix p-b-35"></div>
+                                      <div class="col-md-2">
+                                  <button type="button" class="btn btn-blanco m-r-8 f-10 guardar" name= "add" id="add" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                                </div>
+
+                                <div class="col-sm-6">
+                                  <div class="has-error" id="error-participantes">
+                                        <span >
+                                          <small class="help-block error-span" id="error-participantes_mensaje" ></small>                                           
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                  <div class="has-error" id="error-precio">
+                                        <span >
+                                          <small class="help-block error-span" id="error-precio_mensaje" ></small>                                           
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+                      
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="participantes">Participantes</th>
+                                    <th class="text-center" data-column-id="precio">Precio</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                         
+                            </tbody>
+                          </table>
+
+                        </div>
+                        </div>
+
+                                      <div class="clearfix p-b-35"></div>
+
+
+
+                                      <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+
+                                      <div class="clearfix p-b-35"></div>
+                                      <hr></hr>
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                                 <div class="has-error" id="error-nombre">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+
                                <!-- <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="nombre">Multihorarios</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
@@ -343,7 +441,7 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div> -->
-
+            
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -394,10 +492,16 @@
 
   route_agregar="{{url('/')}}/configuracion/clases-personalizadas/agregar";
   route_principal="{{url('/')}}/configuracion/clases-personalizadas";
-  route_horario="{{url('/')}}/agendar/clases-grupales/agregarhorario";
-  route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarhorario";
+  // route_horario="{{url('/')}}/agendar/clases-grupales/agregarhorario";
+  // route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarhorario";
+
+
+  route_add="{{url('/')}}/configuracion/clases-personalizadas/agregar_costo";
+  route_eliminar="{{url('/')}}/configuracion/clases-personalizadas/eliminar_costo";
 
   $(document).ready(function(){
+
+      $("#agregar_clasepersonalizada")[0].reset();
 
 
         $("#imagen").bind("change", function() {
@@ -491,12 +595,12 @@
         processing: true,
         serverSide: false,
         pageLength: 25,
-        //bPaginate: false, 
+        bPaginate: false, 
         bFilter:false, 
         bSort:false, 
         order: [[0, 'asc']],
         fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
+          $('.dataTables_paginate').hide();
           /*if ($('#tablelistar tr').length < 25) {
               $('.dataTables_paginate').hide();
           }
@@ -604,7 +708,7 @@
                         if(respuesta.status=="OK"){
                           // finprocesado();
                           // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
+                          $("#agregar_clasepersonalizada")[0].reset();
                           // var nTitle="Ups! ";
                           // var nMensaje=respuesta.mensaje;
                           window.location = route_principal;
@@ -661,127 +765,250 @@
                 });
             });
 
-        $("#add").click(function(){
+  //       $("#add").click(function(){
 
-                var route = route_horario;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_clasepersonalizada" ).serialize(); 
+  //               var route = route_horario;
+  //               var token = $('input:hidden[name=_token]').val();
+  //               var datos = $( "#agregar_clasepersonalizada" ).serialize(); 
 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+  //               $.ajax({
+  //                   url: route,
+  //                       headers: {'X-CSRF-TOKEN': token},
+  //                       type: 'POST',
+  //                       dataType: 'json',
+  //                       data:datos,
+  //                   success:function(respuesta){
+  //                     setTimeout(function(){ 
+  //                       var nFrom = $(this).attr('data-from');
+  //                       var nAlign = $(this).attr('data-align');
+  //                       var nIcons = $(this).attr('data-icon');
+  //                       var nAnimIn = "animated flipInY";
+  //                       var nAnimOut = "animated flipOutY"; 
+  //                       if(respuesta.status=="OK"){
+  //                         var nType = 'success';
+  //                         var nTitle="Ups! ";
+  //                         var nMensaje=respuesta.mensaje;
 
-                          var instructor_id = respuesta.array[0].instructor;
-                          var especialidad_id = respuesta.array[0].especialidad;
-                          var dia_de_semana_id = respuesta.array[0].dia_de_semana;
-                          var hora_inicio = respuesta.array[0].hora_inicio;
-                          var hora_final = respuesta.array[0].hora_final;
+  //                         var instructor_id = respuesta.array[0].instructor;
+  //                         var especialidad_id = respuesta.array[0].especialidad;
+  //                         var dia_de_semana_id = respuesta.array[0].dia_de_semana;
+  //                         var hora_inicio = respuesta.array[0].hora_inicio;
+  //                         var hora_final = respuesta.array[0].hora_final;
 
-                          var rowId=respuesta.id;
-                          var rowNode=t.row.add( [
-                          ''+instructor_id+'',
-                          ''+especialidad_id+'',
-                          ''+dia_de_semana_id+'',
-                          ''+hora_inicio+'',
-                          ''+hora_final+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+  //                         var rowId=respuesta.id;
+  //                         var rowNode=t.row.add( [
+  //                         ''+instructor_id+'',
+  //                         ''+especialidad_id+'',
+  //                         ''+dia_de_semana_id+'',
+  //                         ''+hora_inicio+'',
+  //                         ''+hora_final+'',
+  //                         '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+  //                         ] ).draw(false).node();
+  //                         $( rowNode )
+  //                         .attr('id',rowId)
+  //                         .addClass('seleccion');
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
+  //                       }else{
+  //                         var nTitle="Ups! ";
+  //                         var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+  //                         var nType = 'danger';
+  //                       }                       
+  //                       $(".procesando").removeClass('show');
+  //                       $(".procesando").addClass('hidden');
+  //                       $("#guardar").removeAttr("disabled");
+  //                       $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+  //                       notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+  //                     }, 1000);
+  //                   },
+  //                   error:function(msj){
+  //                     setTimeout(function(){ 
+  //                       if (typeof msj.responseJSON === "undefined") {
+  //                         window.location = "{{url('/')}}/error";
+  //                       }
+  //                       if(msj.responseJSON.status=="ERROR"){
+  //                         console.log(msj.responseJSON.errores);
+  //                         errores(msj.responseJSON.errores);
+  //                         var nTitle="    Ups! "; 
+  //                         var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+  //                       }else{
+  //                         var nTitle="   Ups! "; 
+  //                         var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+  //                       }                        
+  //                       $("#guardar").removeAttr("disabled");
+  //                       $(".cancelar").removeAttr("disabled");
+  //                       $(".procesando").removeClass('show');
+  //                       $(".procesando").addClass('hidden');
+  //                       var nFrom = $(this).attr('data-from');
+  //                       var nAlign = $(this).attr('data-align');
+  //                       var nIcons = $(this).attr('data-icon');
+  //                       var nType = 'danger';
+  //                       var nAnimIn = "animated flipInY";
+  //                       var nAnimOut = "animated flipOutY";                       
+  //                       notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+  //                     }, 1000);
+  //                   }
+  //               });
 
-    });
+  //   });
 
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-        var padre=$(this).parents('tr');
-        var token = $('input:hidden[name=_token]').val();
-        var id = $(this).closest('tr').attr('id');
-              $.ajax({
-                   url: route_eliminar+"/"+id,
-                   headers: {'X-CSRF-TOKEN': token},
-                   type: 'POST',
-                   dataType: 'json',                
-                  success: function (data) {
-                    if(data.status=='OK'){
+  // $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+  //       var padre=$(this).parents('tr');
+  //       var token = $('input:hidden[name=_token]').val();
+  //       var id = $(this).closest('tr').attr('id');
+  //             $.ajax({
+  //                  url: route_eliminar+"/"+id,
+  //                  headers: {'X-CSRF-TOKEN': token},
+  //                  type: 'POST',
+  //                  dataType: 'json',                
+  //                 success: function (data) {
+  //                   if(data.status=='OK'){
                         
                       
                                          
-                    }else{
-                      swal(
-                        'Solicitud no procesada',
-                        'Ha ocurrido un error, intente nuevamente por favor',
-                        'error'
-                      );
-                    }
-                  },
-                  error:function (xhr, ajaxOptions, thrownError){
-                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                  }
-                })
+  //                   }else{
+  //                     swal(
+  //                       'Solicitud no procesada',
+  //                       'Ha ocurrido un error, intente nuevamente por favor',
+  //                       'error'
+  //                     );
+  //                   }
+  //                 },
+  //                 error:function (xhr, ajaxOptions, thrownError){
+  //                   swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+  //                 }
+  //               })
 
-                t.row( $(this).parents('tr') )
-                  .remove()
-                  .draw();
+  //               t.row( $(this).parents('tr') )
+  //                 .remove()
+  //                 .draw();
+  //           });
+  //           
+    
+
+    $("#add").click(function(){
+
+              var route = route_add;
+                  var token = $('input:hidden[name=_token]').val();
+                  var datos = '&participantes='+ $('#participantes').val()+'&precio='+ $('#precio').val(); 
+                  limpiarMensaje();
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                          dataType: 'json',
+                          data:datos,
+                      success:function(respuesta){
+                        setTimeout(function(){ 
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          if(respuesta.status=="OK"){
+                            var nType = 'success';
+                            var nTitle="Ups! ";
+                            var nMensaje=respuesta.mensaje;
+
+                            $("#participantes").val('');
+                            $("#precio").val('');
+
+                            var participantes = respuesta.participantes;
+                            var precio = respuesta.precio;
+
+                            var rowId=respuesta.id;
+                            var rowNode=t.row.add( [
+                            ''+participantes+'',
+                            ''+precio+'',
+                            '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                            ] ).draw(false).node();
+                            $( rowNode )
+                            .attr('id',rowId)
+                            .addClass('seleccion');
+
+                          }else{
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+                          }                       
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          $("#guardar").removeAttr("disabled");
+                          $(".cancelar").removeAttr("disabled");
+                          $("#add").removeAttr("disabled");
+                          $("#add").css({
+                            "opacity": ("1")
+                          });
+
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }, 1000);
+                      },
+                      error:function(msj){
+                        setTimeout(function(){ 
+                        //   if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                          if(msj.responseJSON.status=="ERROR"){
+                            console.log(msj.responseJSON.errores);
+                            errores(msj.responseJSON.errores);
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                          }else{
+                            var nTitle="   Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          }                        
+                          $("#add").removeAttr("disabled");
+                          $("#add").css({
+                            "opacity": ("1")
+                          });
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nType = 'danger';
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY";                       
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                        }, 1000);
+                      }
+                  });
             });
 
+          $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+            var padre=$(this).parents('tr');
+            var token = $('input:hidden[name=_token]').val();
+            var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: route_eliminar+"/"+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+
+                                                                
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+            t.row( $(this).parents('tr') )
+                    .remove()
+                    .draw();   
+
+              
+            });
       function limpiarMensaje(){
-        var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen"];
+        var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen", "participantes", "precio"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -789,7 +1016,6 @@
       }
 
     function errores(merror){
-      var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
