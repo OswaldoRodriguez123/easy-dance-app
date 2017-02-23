@@ -275,20 +275,20 @@
                             <tbody>
                             {{-- $inscritos --}}
                             @foreach ($inscritos as $inscrito)
-                                <?php $id = $inscrito->id; ?>
+                                <?php $id = $inscrito['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa"> @if($inscrito['activacion'] == 0) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
-                                        @if($inscrito->evaluacion_id)
+                                        @if($inscrito['evaluacion_id'])
                                             <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
                                         @else
                                             <i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
                                         @endif
                                     </td>
-                                    <td class="text-center previa">{{$inscrito->nombre}}</td>
-                                    <td class="text-center previa">{{$inscrito->apellido}} </td>
-                                    <td class="text-center previa">{{$inscrito->fecha_nacimiento}} </td>
-                                    <td class="text-center previa">{{$inscrito->celular}} </td>
+                                    <td class="text-center previa">{{$inscrito['nombre']}}</td>
+                                    <td class="text-center previa">{{$inscrito['apellido']}} </td>
+                                    <td class="text-center previa">{{$inscrito['fecha_nacimiento']}} </td>
+                                    <td class="text-center previa">{{$inscrito['celular']}} </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -321,7 +321,6 @@
     route_filtrar = "{{url('/')}}/reportes/diagnosticos";
 
     var inscritos = <?php echo json_encode($inscritos);?>;
-    var activaciones = <?php echo json_encode($activacion);?>;
 
     $(document).ready(function(){
 
@@ -570,7 +569,16 @@
                             }else{
                                 cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                             }
+                           if(array.activacion == 0 )
+                            {
+                                activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                            }else{
+                                activacion = ''
+                            };
+
+
                             var rowNode=t.row.add( [
+                            ''+activacion+'',
                             ''+cliente+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
@@ -674,7 +682,16 @@ FILTROS PARA GRAFCAS
                                     }else{
                                         cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     }
+                                    if(array.activacion == 0 )
+                                    {
+                                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                                    }else{
+                                        activacion = ''
+                                    };
+
+
                                     var rowNode=t.row.add( [
+                                    ''+activacion+'',
                                     ''+cliente+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
@@ -777,7 +794,16 @@ FILTROS PARA GRAFCAS
                                     }else{
                                         cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     }
+                                    if(array.activacion == 0 )
+                                    {
+                                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                                    }else{
+                                        activacion = ''
+                                    };
+
+
                                     var rowNode=t.row.add( [
+                                    ''+activacion+'',
                                     ''+cliente+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
@@ -880,7 +906,16 @@ FILTROS PARA GRAFCAS
                                     }else{
                                         cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     }
+                                    if(array.activacion == 0 )
+                                    {
+                                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                                    }else{
+                                        activacion = ''
+                                    };
+
+
                                     var rowNode=t.row.add( [
+                                    ''+activacion+'',
                                     ''+cliente+'',
                                     ''+array.nombre+'',
                                     ''+array.apellido+'',
@@ -1016,7 +1051,18 @@ FILTROS PARA GRAFCAS
         
             $.each(inscritos, function (index, array) {
                 if(array.evaluacion_id == null){
+
+
+                    if(array.activacion == 0 )
+                    {
+                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                    }else{
+                        activacion = ''
+                    };
+
+
                     var rowNode=t.row.add( [
+                    ''+activacion+'',
                     ''+'<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
                     ''+array.nombre+'',
                     ''+array.apellido+'',
@@ -1039,7 +1085,16 @@ FILTROS PARA GRAFCAS
             
             $.each(inscritos, function (index, array) {
                 if(array.evaluacion_id){
+                    if(array.activacion == 0 )
+                    {
+                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                    }else{
+                        activacion = ''
+                    };
+
+
                     var rowNode=t.row.add( [
+                    ''+activacion+'',
                     ''+'<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'+'',
                     ''+array.nombre+'',
                     ''+array.apellido+'',
@@ -1067,7 +1122,16 @@ FILTROS PARA GRAFCAS
                 }else{
                     cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="No Diagnostico" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                 }
+                if(array.activacion == 0 )
+                {
+                    activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                }else{
+                    activacion = ''
+                };
+
+
                 var rowNode=t.row.add( [
+                ''+activacion+'',
                 ''+cliente+'',
                 ''+array.nombre+'',
                 ''+array.apellido+'',

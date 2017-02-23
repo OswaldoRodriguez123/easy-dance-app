@@ -183,23 +183,32 @@ class ReporteController extends BaseController
             ->where('evaluaciones.id', '!=', null)
         ->count();
 
-        $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->where('users.usuario_tipo', '=', 2)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
-
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
-
         $mujeres = 0;
         $hombres = 0;
 
         foreach($inscritos as $inscrito){
+
+            $alumnoc = DB::table('users')
+                ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+                ->select('alumnos.id as id')
+                ->where('alumnos.id','=', $inscrito->id)
+                ->where('alumnos.deleted_at', '=', null)
+                ->where('users.usuario_tipo', '=', 2)
+                ->where('users.confirmation_token', '!=', null)
+            ->first();
+
+            if($alumnoc){
+                $activacion = 0;
+            }else{
+                $activacion = 1;
+            }
+
+            $collection=collect($inscrito); 
+            $inscrito_array = $collection->toArray();
+            
+            $inscrito_array['activacion']=$activacion;
+            $array[$inscrito->id] = $inscrito_array;
+
             if($inscrito->sexo == 'F'){
                 $mujeres++;
             }else{
@@ -220,7 +229,7 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');     
 
-        return view('reportes.diagnostico')->with(['inscritos' => $inscritos, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'activacion' => $activacion]);
+        return view('reportes.diagnostico')->with(['inscritos' => $array, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total]);
     }
 
     public function DiagnosticosFiltros(Request $request)
