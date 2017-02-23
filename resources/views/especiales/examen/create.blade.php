@@ -215,12 +215,12 @@
                                       <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                       <div class="p-t-10">
                                       <label class="radio radio-inline m-r-20 ">
-                                          <input checked="checked" name="boolean_grupal" id="boolean_grupal" value="0" type="radio">
+                                          <input checked="checked" name="boolean_grupal" id="general" value="0" type="radio">
                                           <i class="input-helper"></i>  
                                           General
                                       </label>
                                       <label class="radio radio-inline m-r-20">
-                                          <input name="boolean_grupal" id="boolean_grupal" value="1" type="radio">
+                                          <input name="boolean_grupal" id="clase_grupal" value="1" type="radio">
                                           <i class="input-helper"></i>  
                                           Clase Grupal
                                       </label>
@@ -725,6 +725,15 @@
   route_add="{{url('/')}}/especiales/examenes/agregar_item";
   route_eliminar="{{url('/')}}/especiales/examenes/eliminar_item";
   $(document).ready(function(){
+
+    clase_grupal_id = "{{{ $clase_grupal_id or 'Default' }}}";
+
+     if(clase_grupal_id != 'Default'){
+        $('#clase_grupal_id').val(clase_grupal_id)
+        $('#clase_grupal_id').selectpicker('refresh')
+        $('#clase_grupal').click();
+        
+     }
 
         document.getElementById("nombre").focus();
         $('body,html').animate({scrollTop : 0}, 500);

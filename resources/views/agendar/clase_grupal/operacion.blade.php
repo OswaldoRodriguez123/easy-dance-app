@@ -556,9 +556,9 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-1"></div>
+            <div class = "col-sm-2"></div>
 
-			<ul class="ca-menu-c col-sm-8" style="width: 1200px;">
+			<ul class="ca-menu-c col-sm-8" style="width: 720px;">
 
                 <li data-ripplecator class ="dark-ripples">
                         <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal">
@@ -589,12 +589,25 @@
                         </a>
                     </li>
 
+                    <div class="clearfix"></div>
+
                     <li data-ripplecator class ="dark-ripples">
                         <a class = "progreso">
                             <span class="ca-icon-c"><i class="icon_e-ver-progreso f-35 boton blue sa-warning" 
                                    data-original-title="Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Ver Progreso</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class = "valorar">
+                            <span class="ca-icon-c"><i class="icon_a-examen f-35 boton blue sa-warning" 
+                                   data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Valorar</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
@@ -639,6 +652,7 @@
     route_principal="{{url('/')}}/agendar/clases-grupales";
     route_trasladar="{{url('/')}}/agendar/clases-grupales/trasladar";
     route_cancelar="{{url('/')}}/agendar/clases-grupales/cancelar";
+    route_valorar="{{url('/')}}/especiales/examenes/agregar";
 
     $(document).ready(function(){
 
@@ -738,6 +752,12 @@
   $(".progreso").click(function(){
                
     window.location = "{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}";
+
+    });
+
+  $(".valorar").click(function(){
+               
+    window.location = "{{url('/')}}/especiales/examenes/agregar/{{$id}}";
 
     });
 

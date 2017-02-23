@@ -138,6 +138,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('especiales/examenes', 'ExamenController@principal');
 			Route::get('especiales/examenes/agregar', 'ExamenController@create');
+			Route::get('especiales/examenes/agregar/{id}', 'ExamenController@createconclasegrupal');
 			Route::post('especiales/examenes/agregar', 'ExamenController@store');
 			Route::get('especiales/examenes/detalle/{id}', 'ExamenController@edit');
 			Route::get('especiales/examenes/operaciones/{id}', 'ExamenController@operar');
