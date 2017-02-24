@@ -1165,25 +1165,31 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
-                       <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
-                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
-                                            
-                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
-                                            
-                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
-                                            
-                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
-                                           
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                        </ul>
+                       
+
+                       @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                       		<a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
+
+	                       <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+	                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+	                                            
+	                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+	                                            
+	                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+	                                            
+	                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+	                                           
+	                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+	                        </ul>
+	                    @else
+
+	                    	<a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+                        @endif
                     </div> 
                     
                     <div class="card">
-                      <div class="card-header">
-                            
-                            
-                      </div>
                       <div class="card-body p-b-20">
                         <div class="row">
                         <div class="container">
@@ -1193,10 +1199,6 @@
 
 
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
@@ -1214,55 +1216,77 @@
                                   
                               <div class="col-sm-12 text-center"> 
 
-                              <br></br>
+	                              <br></br>
 
-                              <span class="f-16 f-700">Acciones</span>
+	                              <span class="f-16 f-700">Acciones</span>
 
-                              <hr></hr>
+	                              <hr></hr>
 
-                              <a href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$clasegrupal->id}}"><i class="icon_a-niveles f-16 m-r-5 boton blue"  data-original-title="Nivelaciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal"><i class="zmdi zmdi-trending-up f-16 m-r-5 boton blue"  data-original-title="Trasladar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <a href="{{url('/')}}/agendar/clases-grupales/participantes/{{$clasegrupal->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <a href="{{url('/')}}/especiales/examenes/agregar/{{$clasegrupal->id}}"><i class="icon_a-examen f-16 m-r-5 boton blue"  data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasegrupal->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+	                              <a href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$clasegrupal->id}}"><i class="icon_a-niveles f-16 m-r-5 boton blue"  data-original-title="Nivelaciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+	                              <a href="{{url('/')}}/agendar/clases-grupales/participantes/{{$clasegrupal->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+	                              <a href="{{url('/')}}/especiales/examenes/agregar/{{$clasegrupal->id}}"><i class="icon_a-examen f-16 m-r-5 boton blue"  data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+
+	                              @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+		                            <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal"><i class="zmdi zmdi-trending-up f-16 m-r-5 boton blue"  data-original-title="Trasladar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+		                            <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+		                            <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+
+	                              	<i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasegrupal->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+	                              @endif
 
 
-                              <br></br>
-                                
-                              <hr></hr>
+	                              <br></br>
+	                                
+	                              <hr></hr>
 
-                              <br></br>
+	                              <br></br>
 
-<!--                               <button type="button" class="btn btn-blanco m-r-10 f-16" id="{{$id}}" name="progreso"> Ver Progreso <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button> -->
-                              
-                               
+	                               
+	                            </div>
+                            </div> 
                             </div>
-                                </div> 
-                              </div>
-                              <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
+
                                     
                           </div>
                      </div>
 
-					           	<div class="col-sm-9">
+					   	<div class="col-sm-9">
 
-                         <div class="col-sm-12">
+                       	<div class="col-sm-12">
                               <p class="text-center opaco-0-8 f-22">Datos de la Clase Grupal</p>
-                          </div>
+                       	</div>
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                           <tr class="detalle" data-toggle="modal" href="#modalNombre-ClaseGrupal">
+     
+                            	
+
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalNombre-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
+
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-clase_grupal_id" class="zmdi  {{ empty($clasegrupal->clase_grupal_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw""></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-clase_grupal_id"><span>{{$clasegrupal->clase_grupal_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasegrupal-clase_grupal_id"><span>{{$clasegrupal->clase_grupal_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalImagen-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalImagen-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($clasegrupal->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
@@ -1270,7 +1294,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFecha-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalFecha-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi  {{ empty($clasegrupal->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
@@ -1278,7 +1310,15 @@
                              </td>
                              <td class="f-14 m-l-15" id="clasegrupal-fecha" ><span id="clasegrupal-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y')}}</span> - <span id="clasegrupal-fecha_final">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_final)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi  {{ empty($clasegrupal->fecha_inicio_preferencial) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
@@ -1287,7 +1327,15 @@
                              <td class="f-14 m-l-15" id="clasegrupal-fecha_inicio_preferencial"> {{ empty($clasegrupal->fecha_inicio_preferencial) ? '' :  \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio_preferencial)->format('d/m/Y') }}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
 
-                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($clasegrupal->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
@@ -1298,7 +1346,15 @@
                                
                                 </td>
                               </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEspecialidades-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalEspecialidades-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidad_id" class="zmdi  {{ empty($clasegrupal->especialidad_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
@@ -1306,7 +1362,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-especialidad_id"><span>{{$clasegrupal->especialidad_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalInstructor-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalInstructor-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi  {{ empty($clasegrupal->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
@@ -1315,7 +1379,15 @@
                              <td  class="f-14 m-l-15" id="clasegrupal-instructor_id" ><span id="clasegrupal-instructor_id">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              
-                            <tr class="detalle" data-toggle="modal" href="#modalNivelBaile-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalNivelBaile-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nivel_baile_id" class="zmdi  {{ empty($clasegrupal->nivel_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-niveles f-22"></i> </span>
@@ -1323,7 +1395,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-nivel_baile_id"><span>{{$clasegrupal->nivel_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalHorario-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalHorario-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi  {{ empty($clasegrupal->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw""></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
@@ -1331,7 +1411,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-hora_inicio">{{$clasegrupal->hora_inicio}}</span> - <span id="clasegrupal-hora_final">{{$clasegrupal->hora_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEstudio-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalEstudio-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-estudio_id" class="zmdi  {{ empty($clasegrupal->estudio_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-estudio-salon f-22"></i> </span>
@@ -1339,7 +1427,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-estudio_id"><span>{{$clasegrupal->estudio_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCupo-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalCupo-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_minimo" class="zmdi {{ empty($clasegrupal->cupo_minimo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
@@ -1347,7 +1443,15 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_minimo">{{$clasegrupal->cupo_minimo}}</span> - <span id="clasegrupal-cupo_maximo">{{$clasegrupal->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCantidad-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalCantidad-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"><i class="zmdi zmdi-border-color zmdi-hc-fw f-18"></i></span>
@@ -1355,7 +1459,15 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cantidad_hombres">{{$clasegrupal->cantidad_hombres}}</span> - <span id="clasegrupal-cantidad_mujeres">{{$clasegrupal->cantidad_mujeres}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalCupoOnline-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_reservacion" class="zmdi {{ empty($clasegrupal->cupo_reservacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
@@ -1363,7 +1475,15 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_reservacion">{{$clasegrupal->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalLink-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalLink-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($clasegrupal->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
@@ -1371,7 +1491,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-link_video"><span>{{$clasegrupal->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalMostrar-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalMostrar-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-estatus" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                               <span class="m-l-10 m-r-10"> <i class="icon_a-estatus-de-clases f-20"></i> </span>
@@ -1385,7 +1513,15 @@
                                @endif
                              <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalMultihorario-ClaseGrupal">
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                            	<tr class="detalle" data-toggle="modal" href="#modalMultihorario-ClaseGrupal">
+
+                            @else
+
+                            	<tr class="disabled">
+
+                            @endif
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-multihorarios" class="zmdi {{ empty($arrayHorario) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>

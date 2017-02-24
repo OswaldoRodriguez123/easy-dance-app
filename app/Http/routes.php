@@ -460,7 +460,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('agendar/clases-grupales/agregar', 'ClaseGrupalController@store');
 			Route::get('agendar/clases-grupales/agregar', 'ClaseGrupalController@create');
-			Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
 			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			Route::delete('agendar/clases-grupales/eliminar/{id}', 'ClaseGrupalController@destroy');
 			Route::post('agendar/clases-grupales/inscribir', 'ClaseGrupalController@storeInscripcion');
@@ -490,7 +489,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/update/fecha_pago', 'ClaseGrupalController@updateFechaPago');
 
 			Route::get('agendar/clases-grupales/inscribir/{id}', 'ClaseGrupalController@inscribir');
-			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 			Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
 			Route::post('agendar/clases-grupales/eliminar_reserva/{id}', 'ClaseGrupalController@eliminar_reserva');
 			Route::post('agendar/clases-grupales/editarinscripcion', 'ClaseGrupalController@editarinscripcion');
@@ -988,6 +986,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');		
 
 			Route::post('guardar-alumno/{id}','AlumnoController@guardarAlumno');
+
+			Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
+			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 			
 				
 

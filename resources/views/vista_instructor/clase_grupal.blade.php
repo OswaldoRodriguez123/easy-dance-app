@@ -107,7 +107,7 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/clases-grupales/participantes";
+        route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
 
         var i;
         var hoy;
