@@ -195,7 +195,7 @@ class ExamenController extends BaseController {
             'fecha' => 'required',
             'color_etiqueta' => 'required',
             'descripcion' => 'min:3|max:500',
-            'genero_id' => 'required',
+            'genero' => 'required',
         ];
 
         $messages = [
@@ -208,7 +208,7 @@ class ExamenController extends BaseController {
             'fecha.required' => 'Ups! La fecha es requerida',
             'color_etiqueta.required' => 'Ups! La etiqueta es  requerida',
             'instructor_id.required' => 'Ups! El instructor es  requerido',
-            'genero_id.required' => 'Ups! El genero es requerido',
+            'genero.required' => 'Ups! El genero es requerido',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -268,7 +268,7 @@ class ExamenController extends BaseController {
             $examen->asistencia = $request->asistencia;
             $examen->estilo = $request->estilo;
             $examen->tipo = $request->tipo_de_evaluacion;
-            $examen->genero = $request->genero_id;
+            $examen->genero = $request->genero;
             $examen->boolean_grupal = $request->boolean_grupal;
             $examen->clase_grupal_id = $request->clase_grupal_id;
 
@@ -434,14 +434,31 @@ class ExamenController extends BaseController {
     }
 
     public function updateGeneros(Request $request){
-        $examen = Examen::find($request->id);
-        $examen->genero = $request->generos_musicales;
 
-        // return redirect("alumno/edit/{$request->id}");
-        if($examen->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        $rules = [
+            'genero' => 'required',
+        ];
+
+        $messages = [
+            'genero.required' => 'Ups! El genero es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $examen = Examen::find($request->id);
+            $examen->genero = $request->genero;
+
+            // return redirect("alumno/edit/{$request->id}");
+            if($examen->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 

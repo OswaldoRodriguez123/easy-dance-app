@@ -312,16 +312,16 @@
                                     <label for="apellido">Generos</label>
 
                                       <div class="select">
-                                        <select class="selectpicker bs-select-hidden" id="generos_selector" name="generos_selector" multiple="" data-max-options="5" title="Selecciona">
+                                        <select class="selectpicker bs-select-hidden" id="genero" name="genero" multiple="" data-max-options="5" title="Selecciona">
                                         @foreach ( $genero as $generos )
                                         <option value = "{{$generos->nombre}}">{{$generos->nombre}}</option>
                                         @endforeach
                                         </select>
                                       </div> 
                                     </div>
-                                    <div class="has-error" id="error-generos">
+                                    <div class="has-error" id="error-genero">
                                       <span >
-                                          <small class="help-block error-span" id="error-generos_mensaje" ></small>                                           
+                                          <small class="help-block error-span" id="error-genero_mensaje" ></small>                                           
                                       </span>
                                  </div>
                                </div>
@@ -1094,7 +1094,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
                                <span class="f-14"> Generos Musicales </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="examen-generos_selector" >{{$examen->generos}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15" id="examen-genero" >{{$examen->generos}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 
                             <tr class="detalle" data-toggle="modal" href="#modalTiposDeEvaluacion">
@@ -1274,7 +1274,7 @@
 
     $('#modalGeneros').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#generos_selector option:selected").val($("#examen-generos").text()); 
+      $("#genero option:selected").val($("#examen-generos").text()); 
     })
 
     $('#modalTiposDeEvaluacion').on('show.bs.modal', function (event) {
@@ -1438,7 +1438,7 @@
         });
 
     function limpiarMensaje(){
-        var campo = ["nombre", "descripcion", "fecha", "instructor_id", "generos_selector"];
+        var campo = ["nombre", "descripcion", "fecha", "instructor_id", "genero"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1447,7 +1447,6 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["nombre", "descripcion", "fecha", "instructor_id", "generos_selector"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -1484,7 +1483,7 @@
              $("#examen-"+c.name).data('valor',c.value);
              $("#examen-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if(c.name=='generos_selector'){
+          }else if(c.name=='genero'){
             $("#examen-"+c.name).data('valor',c.value);
             $("#examen-"+c.name).html(c.value.substr(0, 30) + "...");
 
@@ -1731,9 +1730,9 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
         var datos_array=  $( "#"+form ).serializeArray();
         console.log(datos_array);
         
-        var generos_musicales = [];
-        $('#generos_selector option:selected').each(function() {
-          generos_musicales.push( $( this ).text() );
+        var genero = [];
+        $('#genero option:selected').each(function() {
+          genero.push( $( this ).text() );
         });
 
         var route = route_update+"/"+update;
@@ -1742,7 +1741,7 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
             headers: {'X-CSRF-TOKEN': token},
             type: 'PUT',
             dataType: 'json',
-            data: datos+"&generos_musicales="+generos_musicales,                
+            data: datos+"&genero="+genero,                
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){

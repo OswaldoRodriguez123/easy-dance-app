@@ -53,7 +53,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Informes de Asistencias</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Reporte de Asistencias</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -123,7 +123,7 @@
 
                        
                         <div class="col-md-6">
-                            <h2>Procesos de Inscripcion</h2>
+                            <h2>Informe de Asistencias</h2>
                             <hr>
                             <!-- <ul class="actions">
                                 <li class="dropdown action-show">
@@ -208,7 +208,7 @@
                             <tbody>
 
                             @foreach ($asistencias as $asistencia)
-                                <?php $id = $asistencia->id; ?>
+                                <?php $id = $asistencia->alumno_id; ?>
                                 <tr id="{{$id}}" class="seleccion">
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">{{$asistencia->nombre}} {{$asistencia->apellido}}</td>
@@ -265,6 +265,7 @@
         var clase_grupal_array = [];
 
         route_filtrar="{{url('/')}}/reportes/asistencias/filtrar";
+        route_detalle="{{url('/')}}/participante/alumno/detalle";
 
         $(document).ready(function(){
 
@@ -291,7 +292,7 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -367,6 +368,8 @@
 
         $("#fecha").on("dp.change", function (e) {
 
+            $( "#clase_grupal_id" ).focus();
+
             rechargeClase();
             
         });
@@ -430,7 +433,7 @@
                         }
 
                         if($('#tipo').val() == 1){
-                            var rowId=array.id;
+                            var rowId=array.alumno_id;
                             var rowNode=t.row.add( [
                             ''+array.pertenece+'',
                             ''+array.nombre+ ' '+array.apellido+ '',
@@ -447,7 +450,7 @@
                               .addClass('seleccion');
              
                         }else{
-                            var rowId=array.id;
+                            var rowId=array.alumno_id;
                             var rowNode=t.row.add( [
                             ''+array.pertenece+'',
                             ''+array.nombre+ ' '+array.apellido+ '',
@@ -624,6 +627,12 @@
             }
             
         });
+
+     function previa(t){
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
+        window.location=route;
+      }
 
     // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
 
