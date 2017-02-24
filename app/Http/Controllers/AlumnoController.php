@@ -1097,6 +1097,12 @@ class AlumnoController extends BaseController
         return view('guia.transferir')->with('id', Session::get('id_alumno'));
     }
 
+    public function guardarAlumno($id){
+        Session::put('id_alumno', $id);
+
+         return response()->json(['mensaje' => '¡Excelente! El alumno se ha guardado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
     public function enhorabuena($id){
         Session::put('id_alumno', $id);
         return view('guia.index');

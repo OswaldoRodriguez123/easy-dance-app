@@ -201,24 +201,25 @@
                     <div class="card">
                         <div class="card-header">
 
-                        <div class="text-left">
-                                <a data-toggle="modal" id="modalPe" href="#modalPago" class="f-16 p-t-0 text-success">Configurar Pago</a>
-                            </div>
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+	                        <div class="text-left">
+	                            <a data-toggle="modal" id="modalPe" href="#modalPago" class="f-16 p-t-0 text-success">Configurar Pago</a>
+	                        </div>
+                        @endif
 
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-file-text zmdi-hc-fw p-r-5 f-25"></i> Sección de Pagos</p>
                         <hr class="linea-morada">
                                                               
                         </div>
 
-                        <div class="col-md-offset-10">
-                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" > Pagar <i class="icon_a-pagar"></i></button>
 
-                          <div class="has-error" id="error-asistencias">
-                            <span >
-                                <small id="error-asistencias_mensaje" class="help-block error-span" ></small>                                           
-                            </span>
-                          </div>
-                        </div>
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+	                        <div class="col-md-offset-10">
+	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" > Pagar <i class="icon_a-pagar"></i></button>
+	                        </div>
+
+                        @endif
 
                         <div class="col-sm-5">
                                  <div class="form-group fg-line ">
@@ -251,6 +252,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+ 
                                     <th style="width:7%;"><input style="margin-left:49%; display: none" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="clase">Clase</th>
@@ -447,11 +449,20 @@
             
 
             $('#monto').css('opacity', '1');
-            $('#select_all').show();
+
+            if("{{Auth::user()->usuario_tipo}}" != 3)
+            {
+            	$('#select_all').show();
+            	checkbox = '<input name="select_check" id="select_check" type="checkbox" />'
+            }else{
+            	checkbox = ''
+            }
 
             $.each(por_pagar, function (index, array) {
                 var rowNode=t.row.add( [
-                ''+'<input name="select_check" id="select_check" type="checkbox" />'+'', 
+
+
+                ''+checkbox+'', 
                 ''+array.fecha+'',
                 ''+array.clase+'',
                 ''+array.monto+'',

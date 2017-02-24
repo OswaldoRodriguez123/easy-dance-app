@@ -15,6 +15,7 @@ use Session;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 class ExamenController extends BaseController {
 
@@ -653,11 +654,14 @@ class ExamenController extends BaseController {
 
         if($examen->boolean_grupal){
 
-            $alumnos = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
+            $tmp = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
                 ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'users.imagen')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=' , $examen->clase_grupal_id)
             ->get();
+
+            $tmpDirty = new Collection($tmp);
+			$alumnos = $tmpDirty->unique();
 
         }else{
             $alumnos = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
@@ -753,10 +757,12 @@ class ExamenController extends BaseController {
             $i++;
         }
 
+        $alumno_id = Session::get('id_alumno');
+
         //dd($arrays_de_items);
 
         return view('especiales.examen.evaluar')
-               ->with(['alumnos' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i]);
+               ->with(['alumnos' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id]);
     }
 
     public function actualizar_item(Request $request){

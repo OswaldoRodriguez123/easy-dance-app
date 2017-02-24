@@ -17,6 +17,49 @@
 @stop
 @section('content')
 
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+     <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+        <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Error<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+     </div>
+                    
+              <div class="modal-body">                           
+              <div class="row p-t-20 p-b-0">
+
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                <div align="center"><i class="zmdi zmdi-alert-circle-o zmdi-hc-5x c-youtube"></i></div>
+                <div class="c-morado f-40 text-center"> ¡Error! </div>
+                <div class="clearfix m-20 m-b-25"></div>
+                <div class="text-center f-20">Esta clase grupal no posee valoración</div>
+                <div class="text-center f-20">No te preocupes, desde aqui puedes crearla</div>
+
+                <div class="clearfix m-20 m-b-25"></div>
+                <div class="clearfix m-20 m-b-25"></div>
+                
+                <div align="center">
+                <button type="submit" class="butp button5" onclick="valoracion()">Llevame</button>
+                <button type="submit" class="but2 button55" onclick="atras()"><span>En otro momento</span></button><br><br><br>
+                </div>
+                
+
+                <div class="clearfix m-20 m-b-25"></div>
+                <div class="clearfix m-20 m-b-25"></div>
+                <div class="clearfix m-20 m-b-25"></div>
+                <div class="clearfix m-20 m-b-25"></div>
+
+              </div>
+              <div class="col-md-2"></div>
+
+
+      
+              </div>
+              </div>
+              </div>
+      </div>
+  </div>
+
 <div class="modal fade" id="modalCostoInscripcion-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -462,20 +505,24 @@
 
                         <?php $url = "/agendar/clases-grupales/detalle/$id" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
-                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                          <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
-                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
-                                            
-                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
-                                            
-                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
-                                            
-                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
-                                           
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                            
-                        </ul>
+                              <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                              
+                              <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                              
+                              <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                              
+                              <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                             
+                              <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                              
+                          </ul>
+
+                        @endif
                     </div>  
                     
                     <div class="card">
@@ -484,7 +531,10 @@
 
 
                             <div class="text-right">
-                            <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
+
+                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                              <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
+                            @endif
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
                             <hr class="linea-morada">
@@ -520,9 +570,10 @@
 
                             @foreach ($alumnos_inscritos as $alumno)
                                 <?php $id = $alumno['inscripcion_id'];?>
+                                <?php $alumno_id = $alumno['id'];?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}">
+                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}">
 
 
 
@@ -555,7 +606,25 @@
                                       </td>
                                       <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                       <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                      <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                      <td class="text-center"> 
+
+                                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                                          <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
+
+                                        @else
+
+                                          <i class="zmdi icon_a-examen valorar f-20 p-r-10" data-html="true" data-original-title="" data-content="Valorar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+
+                                          @if(isset($activacion[$alumno_id])) 
+
+                                            <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 activar" data-html="true" data-original-title="" data-content="Activar Cuenta" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i> 
+
+                                          @endif
+
+                                        @endif
+
+                                      </td>
                                   </tr>
                                 @else
                                   <tr data-tipo ="{{$alumno['tipo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
@@ -610,6 +679,9 @@
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
+        route_valorar="{{url('/')}}/especiales/examenes/evaluar";
+        route_examen="{{url('/')}}/especiales/examenes/agregar";
+        route_alumno="{{url('/')}}/guardar-alumno";
 
         var hombres = "{{$hombres}}";
         var mujeres = "{{$mujeres}}";
@@ -1429,33 +1501,6 @@
                 });
       }
 
-    // $('#modalCosto-Producto').on('show', function() {
-    //     console.log("entro");
-    //     $('#modalAgregar').css('opacity', .5);
-    // });
-
-    // $(document)  
-    //   .on('show.bs.modal', '.modal', function(event) {
-    //     $(this).appendTo($('body'));
-    //   })
-    //   .on('shown.bs.modal', '.modal.in', function(event) {
-    //     setModalsAndBackdropsOrder();
-    //   })
-    //   .on('hidden.bs.modal', '.modal', function(event) {
-    //     setModalsAndBackdropsOrder();
-    //   });
-
-    // function setModalsAndBackdropsOrder() {  
-    //   var modalZIndex = 1040;
-    //   $('.modal.in').each(function(index) {
-    //     var $modal = $(this);
-    //     modalZIndex++;
-    //     $modal.css('zIndex', modalZIndex);
-    //     $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
-    // });
-    //   $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
-    // }
-    // 
     $(document).on({
     'show.bs.modal': function () {
         var zIndex = 1040 + (10 * $('.modal:visible').length);
@@ -1535,7 +1580,6 @@
 
     var last = $("option:selected:last",this);
 
-    console.log(last);
 
     if($(last).hasClass( "inscrito" )){
         // $(this).removeAttr("selected");
@@ -1554,28 +1598,107 @@
         });
     }
 
-    // for (var i = 0; i < selectedOptionValue.length; i++) {
-
-    // var val = selectedOptionValue[i]; 
-    // var txt = $("#alumno_id option[value='"+val+"']").text();
-
-    //     // sendRequest.products.push({
-    //     //     'productId': val ,
-    //     //     'productName': txt 
-    //     // });
-    //     console.log(txt);
-    // }
-
-    
-        // $(".test").text(selectedText);
     });
 
     function previa(t){
+      var id = $(t).closest('tr').data('id');
+      var route =route_detalle+"/"+id;
+      window.location=route;
+    }
 
-            var id = $(t).closest('tr').data('id');
-            var route =route_detalle+"/"+id;
+    $(".activar").click(function(){
+
+      var correo = $(this).closest('tr').data('correo');
+        swal({   
+            title: "Desea enviar el correo de confirmación",   
+            text: "Confirmar envio!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Enviar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: false 
+        }, function(isConfirm){   
+        if (isConfirm) {
+
+          activar(correo);
+
+          
+          }
+        });
+    });
+
+
+    $(".valorar").click(function(){
+
+      if("{{$examen}}"){
+
+        var id = $(this).closest('tr').data('id');
+        var token = $('input:hidden[name=_token]').val();
+
+        $.ajax({
+          url: route_alumno+"/"+id,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+          dataType: 'json',
+          data: id,
+          success:function(respuesta){
+            var route =route_valorar+"/{{$examen}}";
             window.location=route;
-        }
+          },
+          error:function(msj){
+            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+            }
+        });
+        
+      }else{
+         $('#modalError').modal('show');
+      }
+    });
+
+    function activar(correo){
+
+       procesando();
+
+       var route = "{{url('/')}}/activar";
+       var token = $('input:hidden[name=_token]').val();
+        
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            data:"&email="+correo,
+            success:function(respuesta){
+
+                swal("Listo!","Correo enviado exitósamente!","success");
+
+            },
+            error:function(msj){
+
+                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                }
+
+            });
+        
+        finprocesado();
+    }
+
+
+    function valoracion(){
+
+      procesando();
+
+      var route =route_examen+"/{{$clasegrupal->clase_grupal_id}}";
+      window.location=route;
+
+       
+    }
+
+    function atras(){
+      $('#modalError').modal('hide');
+     }
 
 
 

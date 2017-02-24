@@ -199,6 +199,15 @@
                                     <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
                                 </li>
 
+                                @if(Auth::check() && (Auth::user()->usuario_tipo == 3))
+
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('perfil-profesional')}}"><i class="zmdi zmdi-account"></i> Perfil Profesional</a>
+                                    </li>
+
+                                @endif
+
                                 @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
 
                                     <!-- <li class="hidden-xs">

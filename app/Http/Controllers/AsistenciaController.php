@@ -139,17 +139,31 @@ class AsistenciaController extends BaseController
         return view('asistencia.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores]);   
         }  
 
-        if(Auth::user()->usuario_tipo == 2)
+        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
         {       
 
           $alumnos = DB::table('alumnos')
             ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('academias', 'asistencias.academia_id', '=', 'academias.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'alumnos.nombre', 'alumnos.apellido')
+            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
             ->where('alumnos.id','=',Auth::user()->usuario_id)
+        ->get();
+
+          return view('vista_alumno.asistencia')->with(['alumnos_asistencia' => $alumnos]); 
+
+        }  
+
+        if(Auth::user()->usuario_tipo == 3)
+        {       
+
+          $alumnos = DB::table('instructores')
+            ->join('asistencias_instructor', 'asistencias_instructor.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
+            ->where('instructores.id','=',Auth::user()->usuario_id)
         ->get();
 
           return view('vista_alumno.asistencia')->with(['alumnos_asistencia' => $alumnos]); 

@@ -93,7 +93,7 @@
                                     <div class="col-sm-3">
                                     <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
 
-                                      @if($notas['porcentaje'])
+                                      @if($notas)
                                             <div class="rating-list text-center">
 
                                               <span class="f-12">Resultado final : {{$notas['nota']}} puntos de {{$notas['total']}}</span>

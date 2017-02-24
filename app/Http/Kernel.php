@@ -54,5 +54,6 @@ class Kernel extends HttpKernel
         'recepcionista' => \App\Http\Middleware\Recepcionista::class,
         'alumno' => \App\Http\Middleware\Alumno::class,
         'sucursal' => \App\Http\Middleware\Sucursal::class,
+        'instructor' => \App\Http\Middleware\Instructor::class,
     ];
 }

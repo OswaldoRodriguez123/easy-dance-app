@@ -15,7 +15,7 @@ class Alumno
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->isType()=='alumno' || $request->user()->isType()=='admin' || $request->user()->isType()=='recepcionista' || $request->user()->isType()=='sucursal'){
+        if($request->user()->isType()=='alumno' || $request->user()->isType()=='instructor' || $request->user()->isType()=='admin' || $request->user()->isType()=='recepcionista' || $request->user()->isType()=='sucursal'){
             return $next($request);
         }
         abort(403);

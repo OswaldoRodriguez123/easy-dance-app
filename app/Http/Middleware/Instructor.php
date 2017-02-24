@@ -15,6 +15,9 @@ class Instructor
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if($request->user()->isType()=='instructor' || $request->user()->isType()=='alumno' || $request->user()->isType()=='admin' || $request->user()->isType()=='recepcionista' || $request->user()->isType()=='sucursal'){
+            return $next($request);
+        }
+        abort(403);
     }
 }

@@ -26,19 +26,26 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Valoración</a><ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
-                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
-                                            
-                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
-                                            
-                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
-                                            
-                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
-                                           
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                            
-                        </ul>
+                        <?php $url = "/especiales/examenes" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+	                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+
+	                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+	                                            
+	                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+	                                            
+	                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+	                                            
+	                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+	                                           
+	                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+	                            
+	                        </ul>
+                        @endif
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
@@ -71,6 +78,8 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
+                               @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
                                <div class="col-sm-12">
                                  
                                      <label for="nivel_baile" id="id-instructor_id">Instructor a Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo, dirígete a la sección de instructores y procede a registrarlo" title="" data-original-title="Ayuda"></i>
@@ -98,6 +107,12 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
+
+                               @else
+
+                               	<input type="hidden" id="instructor_id" name="instructor_id" value="{{ Auth::user()->usuario_id }}">
+
+                               @endif
 
                                <div class="col-sm-12">
                                     
@@ -144,6 +159,8 @@
 
                                 <div class="clearfix p-b-35"></div>
 
+                                @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
                                 
                                 <div class="col-sm-12">
                                   <div class="clearfix"></div>
@@ -165,38 +182,54 @@
                                      
                                     </div>
                                   </div>
+
+                                  <div class="clearfix p-b-35"></div>
                                 </div>
+
+                                @else
+
+                                	<input type="hidden" name="boolean_grupal" id="boolean_grupal" value="1">
+
+                                @endif
                                 
-                                <div class="clearfix p-b-35"></div>
+                                
 
-                                <div class="col-sm-12 clase_grupal" style="display:none">
+                                @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
-                                  <label for="nombre" id="id-clase_grupal_id">Clase Grupal</label> <span class="c-morado f-700 f-16">*</span>
-                                      <div class="input-group">
-                                        <span class="input-group-addon"><i class="icon_a icon_a-clases-grupales f-22"></i></span>
-                                        <div class="fg-line">
-                                        <div class="select">
-                                          <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" >
+	                                <div class="col-sm-12 clase_grupal" style="display:none">
 
-                                            <option value="">Selecciona</option>
-                                            @foreach ( $clases_grupales as $clase_grupal )
-                                              <option value = "{{ $clase_grupal['id'] }}">{{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['instructor_nombre'] }} {{ $clase_grupal['instructor_apellido'] }}</option>
-                                            @endforeach
-                                          
-                                          </select>
-                                        </div>
-                                      </div>
-                                      </div>
-                                   <div class="has-error" id="error-clase_grupal_id">
-                                        <span >
-                                            <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
-                                        </span>
-                                    </div>
-                               </div>
+	                                  <label for="nombre" id="id-clase_grupal_id">Clase Grupal</label> <span class="c-morado f-700 f-16">*</span>
+	                                      <div class="input-group">
+	                                        <span class="input-group-addon"><i class="icon_a icon_a-clases-grupales f-22"></i></span>
+	                                        <div class="fg-line">
+	                                        <div class="select">
+	                                          <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" >
+
+	                                            <option value="">Selecciona</option>
+	                                            @foreach ( $clases_grupales as $clase_grupal )
+	                                              <option value = "{{ $clase_grupal['id'] }}">{{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['instructor_nombre'] }} {{ $clase_grupal['instructor_apellido'] }}</option>
+	                                            @endforeach
+	                                          
+	                                          </select>
+	                                        </div>
+	                                      </div>
+	                                      </div>
+	                                   <div class="has-error" id="error-clase_grupal_id">
+	                                        <span >
+	                                            <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
+	                                        </span>
+	                                    </div>
+
+	                                    <div class="clearfix p-b-35"></div>
+	                               </div>
+
+	                            @else
+
+	                           		<input type="hidden" name="clase_grupal_id" id="clase_grupal_id">
+
+                               @endif
                         
-                               <div class="clearfix p-b-35"></div>
-
-
+                               
                                 <div class="col-sm-12">
                                   <div class="clearfix"></div>
                                   <label for="fecha_cobro" id="id-tipo_de_evaluacion">Tipo de evaluacion:</label>
@@ -808,12 +841,16 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-                          window.location = route_principal;
+                          finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          // 
+                          if("{{Auth::user()->usuario_tipo}}" != 3){
+                          	window.location = route_principal;
+                          }else{
+                          	window.location = "{{$_SERVER['HTTP_REFERER']}}"
+                          }
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -828,8 +865,8 @@
                           });
                           $(".cancelar").removeAttr("disabled");
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
+                        }
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                       
                         
                       }, 1000);
                     },

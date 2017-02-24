@@ -54,6 +54,7 @@ class AcademiaConfiguracionController extends BaseController {
 	{
         $academia = Academia::find(Auth::user()->academia_id);
 
+
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
@@ -117,169 +118,167 @@ class AcademiaConfiguracionController extends BaseController {
             return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
         }
 
-        //ALUMNOS
-        if(Auth::user()->boolean_condiciones){
+        if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
 
-            $contador_clase = 0;
-            $contador_taller = 0;
-            $contador_fiesta = 0;
-            $contador_campana = 0;
+            //ALUMNOS
+            if(Auth::user()->boolean_condiciones){
 
-            $array=array();
+                $contador_clase = 0;
+                $contador_taller = 0;
+                $contador_fiesta = 0;
+                $contador_campana = 0;
 
-            $clase_grupal_join = DB::table('clases_grupales')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio', 'clases_grupales.dias_prorroga')
-                ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-                ->where('clases_grupales.boolean_promocionar','=', 1)
-                ->where('clases_grupales.deleted_at', '=', null)
-            ->get();
+                $array=array();
 
-            $alumno_examenes = DB::table('evaluaciones')
-                ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
-                ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-                ->select('examenes.nombre','evaluaciones.id')
-                ->where('evaluaciones.alumno_id','=',Auth::user()->usuario_id)
+                $clase_grupal_join = DB::table('clases_grupales')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio', 'clases_grupales.dias_prorroga')
+                    ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                    ->where('clases_grupales.boolean_promocionar','=', 1)
+                    ->where('clases_grupales.deleted_at', '=', null)
                 ->get();
 
-
-            foreach($clase_grupal_join as $clase){
-
-                $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
-                $fecha->addDays($clase->dias_prorroga);
-                if($fecha >= Carbon::now()){
-                    $contador_clase = $contador_clase + 1;
-                    $disponible = '';
-                }else{
-                    $disponible = ' ( No disponible )';
-                }
-
-                
-                if($clase->imagen){
-                    $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
-                }else{
-                    $imagen = '';
-                }
-
-                $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio)->format('d-m-Y');
+                $alumno_examenes = DB::table('evaluaciones')
+                    ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+                    ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+                    ->select('examenes.nombre','evaluaciones.id')
+                    ->where('evaluaciones.alumno_id','=',Auth::user()->usuario_id)
+                    ->get();
 
 
-                $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at, 'tipo' => 1, 'fecha_inicio' => $fecha_inicio, 'disponible' => $disponible);
+                foreach($clase_grupal_join as $clase){
 
-            }
+                    $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+                    $fecha->addDays($clase->dias_prorroga);
+                    if($fecha >= Carbon::now()){
+                        $contador_clase = $contador_clase + 1;
+                        $disponible = '';
+                    }else{
+                        $disponible = ' ( No disponible )';
+                    }
 
-            $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-            foreach($talleres as $taller){
-
-                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
-
-               if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
-
-                    if($taller->imagen){
-                        $imagen = "/assets/uploads/taller/{$taller->imagen}";
+                    
+                    if($clase->imagen){
+                        $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
                     }else{
                         $imagen = '';
                     }
 
-                    $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio, 'disponible' => '');
+                    $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio)->format('d-m-Y');
 
-                    $contador_taller = $contador_taller + 1;
+
+                    $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at, 'tipo' => 1, 'fecha_inicio' => $fecha_inicio, 'disponible' => $disponible);
+
                 }
 
-            }
+                $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-            $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                foreach($talleres as $taller){
 
-            foreach($fiestas as $fiesta){
+                    $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
+                   if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
 
-                if($fecha >= Carbon::now()){
+                        if($taller->imagen){
+                            $imagen = "/assets/uploads/taller/{$taller->imagen}";
+                        }else{
+                            $imagen = '';
+                        }
 
-                    if($fiesta->imagen){
-                        $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
-                    }else{
-                        $imagen = '';
+                        $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio, 'disponible' => '');
+
+                        $contador_taller = $contador_taller + 1;
                     }
 
-                    $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $taller->fecha_inicio, 'disponible' => '');
-
-                    $contador_fiesta = $contador_fiesta + 1;
                 }
 
-            }
+                $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-            $campanas = Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                foreach($fiestas as $fiesta){
 
-            foreach($campanas as $campana){
+                    $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
+                    if($fecha >= Carbon::now()){
 
-                if($fecha >= Carbon::now()){
+                        if($fiesta->imagen){
+                            $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
+                        }else{
+                            $imagen = '';
+                        }
 
-                    $contador_campana = $contador_campana + 1;
+                        $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $taller->fecha_inicio, 'disponible' => '');
+
+                        $contador_fiesta = $contador_fiesta + 1;
+                    }
+
                 }
 
-            }
+                $campanas = Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-            $collection = collect($array);
+                foreach($campanas as $campana){
 
-            $sorted = $collection->sortByDesc('creacion');
+                    $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
 
-            $i = 0;
+                    if($fecha >= Carbon::now()){
 
-            $arreglo=array();
+                        $contador_campana = $contador_campana + 1;
+                    }
 
-            foreach($sorted as $tmp){
-
-                $tmp['contador'] = $i;
-                $arreglo[$i] = $tmp;
-                $i = $i + 1;
-
-            }
-
-            $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
-            $clase_personalizada_contador = ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->count();
-
-                $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
-
-                if($perfil){
-                    $tiene_perfil = 1;
-                }else{
-                    $tiene_perfil = 0;
                 }
 
-                $array_deuda = array();
+                $collection = collect($array);
 
-                // $proformas = ItemsFacturaProforma::where('alumno_id', '=' ,  Auth::user()->usuario_id)->get();
+                $sorted = $collection->sortByDesc('creacion');
 
-                // foreach($proformas as $proforma){
+                $i = 0;
 
-                // $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
+                $arreglo=array();
 
-                // if($fecha > Carbon::now()){
+                foreach($sorted as $tmp){
 
-                //     $array_deuda[]=array('nombre' => $proforma->nombre , 'fecha_vencimiento' => $proforma->fecha_vencimiento ,'monto' => $proforma->importe_neto);
+                    $tmp['contador'] = $i;
+                    $arreglo[$i] = $tmp;
+                    $i = $i + 1;
 
-                //     }
-
-                // }  
-
-                if (Session::has('fecha_sesion')) {                
-                   
-                }else{
-                   $fecha_sesion=Carbon::now();
-                   Session::put('fecha_sesion',$fecha_sesion);
                 }
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
+                $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
+                $clase_personalizada_contador = ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->count();
+
+                    $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
+
+                    if($perfil){
+                        $tiene_perfil = 1;
+                    }else{
+                        $tiene_perfil = 0;
+                    }
+
+                    $array_deuda = array();
+
+                    if (Session::has('fecha_sesion')) {                
+                       
+                    }else{
+                       $fecha_sesion=Carbon::now();
+                       Session::put('fecha_sesion',$fecha_sesion);
+                    }
+
+                    $alumno = Alumno::find(Auth::user()->usuario_id);
+                    
+
+                    return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno]);  
                 
+            }else{
+                return view('vista_alumno.condiciones')->with('academia', $academia);
+            }
+        }
 
-                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno]);  
-            
-        }else{
-            return view('vista_alumno.condiciones')->with('academia', $academia);
+
+        if(Auth::user()->usuario_tipo == 3){
+
+
+            $instructor = Instructor::find(Auth::user()->usuario_id);
+
+            return view('vista_instructor.index')->with(['academia' => $academia, 'instructor' => $instructor]);  
         }
                            
 	}

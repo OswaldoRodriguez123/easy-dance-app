@@ -33,6 +33,7 @@ use App\HorarioBloqueado;
 use App\Progreso;
 use App\ReservacionVisitante;
 use App\Codigo;
+use App\Examen;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -74,7 +75,7 @@ class ClaseGrupalController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
 
         
-        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 3 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
             foreach($clase_grupal_join as $clase_grupal){
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
@@ -336,7 +337,7 @@ class ClaseGrupalController extends BaseController {
 
         $clasegrupal = DB::table('config_clases_grupales')
                 ->join('clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final')
+                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id')
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
@@ -359,6 +360,19 @@ class ClaseGrupalController extends BaseController {
         $collection=collect($alumnod);
         $grouped = $collection->groupBy('id');     
         $deuda = $grouped->toArray();
+
+        $alumnoc = DB::table('users')
+            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->select('alumnos.id as id')
+            ->where('users.academia_id','=', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at', '=', null)
+            ->where('users.usuario_tipo', '=', 2)
+            ->where('users.confirmation_token', '!=', null)
+        ->get();
+
+        $collection=collect($alumnoc);
+        $grouped = $collection->groupBy('id');     
+        $activacion = $grouped->toArray();
 
         $reservaciones = DB::table('reservaciones_visitantes')
                 ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
@@ -451,6 +465,15 @@ class ClaseGrupalController extends BaseController {
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
+
+        $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
+
+        if($examen){
+            $examen = $examen->id;
+        }else{
+            $examen = '';
+        }
+
         // for($i=0; $i<=count($alumnos_inscritos) - 1; $i++) {
         //     for($j=0; $j<=count($alumnos) - 1; $j++) {
         //         if($alumnos[$j]['id'] == $alumnos_inscritos[$i]->id){
@@ -459,7 +482,7 @@ class ClaseGrupalController extends BaseController {
         //     }
         // }
         
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda]);
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen]);
     }
 
     public function eliminarinscripcion($id)
@@ -2611,4 +2634,158 @@ class ClaseGrupalController extends BaseController {
         }
         
     }
+
+    public function principalnivelaciones(Request $request){
+
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
+            ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->OrderBy('clases_grupales.hora_inicio')
+        ->get();
+
+        $horarios_clase_grupales = DB::table('horario_clase_grupales')
+            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
+            ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->OrderBy('horario_clase_grupales.hora_inicio')
+        ->get();
+
+        $array = array();
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        foreach($clase_grupal_join as $clase_grupal){
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia_de_semana = $fecha->dayOfWeek;
+
+            if($fecha > Carbon::now()){
+                $inicio = 0;
+            }else{
+                $inicio = 1;
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+            $clase_grupal_array['inicio']=$inicio;
+            $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+        }
+
+        foreach($horarios_clase_grupales as $clase_grupal){
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia_de_semana = $fecha->dayOfWeek;
+
+            if($fecha > Carbon::now()){
+                $inicio = 0;
+            }else{
+                $inicio = 1;
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+            $clase_grupal_array['inicio']=$inicio;
+            $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
+        }
+
+        $actual = Carbon::now();
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+        $actual->tz = $geoip->getTimezone();
+        $hoy = $actual->dayOfWeek;
+
+        return view('vista_instructor.nivelaciones')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
+
+        
+    }
+
+    public function clases_grupales_vista_instructor(Request $request){
+
+        $clase_grupal_join = DB::table('clases_grupales')
+            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
+            ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->OrderBy('clases_grupales.hora_inicio')
+        ->get();
+
+        $horarios_clase_grupales = DB::table('horario_clase_grupales')
+            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
+            ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->OrderBy('horario_clase_grupales.hora_inicio')
+        ->get();
+
+        $array = array();
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        foreach($clase_grupal_join as $clase_grupal){
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia_de_semana = $fecha->dayOfWeek;
+
+            if($fecha > Carbon::now()){
+                $inicio = 0;
+            }else{
+                $inicio = 1;
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+            $clase_grupal_array['inicio']=$inicio;
+            $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+        }
+
+        foreach($horarios_clase_grupales as $clase_grupal){
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $dia_de_semana = $fecha->dayOfWeek;
+
+            if($fecha > Carbon::now()){
+                $inicio = 0;
+            }else{
+                $inicio = 1;
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+            $clase_grupal_array['inicio']=$inicio;
+            $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
+        }
+
+        $actual = Carbon::now();
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+        $actual->tz = $geoip->getTimezone();
+        $hoy = $actual->dayOfWeek;
+
+        return view('vista_instructor.clase_grupal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
+
+        
+    }
+
+
 }

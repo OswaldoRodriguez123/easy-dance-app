@@ -656,6 +656,21 @@ class InstructorController extends BaseController {
         return view('participante.instructor.planilla_evaluacion')->with(['id' => $id, 'perfil' => $perfil]);
     }
 
+    public function perfil_instructor()
+    {
+
+        $instructores = DB::table('instructores')
+            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
+            ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
+            ->where('instructores.id', Auth::user()->usuario_id)
+        ->first();
+
+        $academia = Academia::find($instructores->academia_id);
+
+  
+        return view('participante.instructor.promocionar')->with(['academia' => $academia, 'instructores_academia' => $instructores, 'id' => Auth::user()->usuario_id]);
+    }
+
     public function storeExperiencia(Request $request)
     {
         
@@ -787,6 +802,61 @@ class InstructorController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         // return redirect("alumno");
+    }
+
+    public function pagos_vista_instructor()
+    {
+
+        $instructor = Instructor::find(Auth::user()->usuario_id);
+
+        if($instructor)
+        {
+
+            $pagadas = DB::table('pagos_instructor')
+                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
+                ->where('instructores.id', Auth::user()->usuario_id)
+                ->where('pagos_instructor.boolean_clase_pagada', 1)
+            ->get();
+
+
+            $por_pagar = DB::table('pagos_instructor')
+                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor',  'pagos_instructor.monto', 'pagos_instructor.id', 'pagos_instructor.tipo')
+                ->where('instructores.id', Auth::user()->usuario_id)
+                ->where('pagos_instructor.boolean_clase_pagada', 0)
+                ->where('pagos_instructor.monto', '>', 0)
+            ->get();
+
+            $total = DB::table('pagos_instructor')
+                ->select('pagos_instructor.*')
+                ->where('pagos_instructor.instructor_id', Auth::user()->usuario_id)
+                ->where('pagos_instructor.boolean_clase_pagada', 0)
+            ->sum('pagos_instructor.monto');
+
+            $pagos_instructor = DB::table('configuracion_pagos_instructor')
+                ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
+                ->where('instructores.id', Auth::user()->usuario_id)
+            ->get();
+
+            $clase_grupal_join = DB::table('clases_grupales')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('clases_grupales.id', 'config_clases_grupales.nombre')
+                ->where('clases_grupales.instructor_id', Auth::user()->usuario_id)
+            ->get();
+
+            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join, 'id' => Auth::user()->usuario_id ]);
+        }else{ 
+
+            return redirect("participante/instructor"); 
+        }
     }
 
     public function principalpagos($id)

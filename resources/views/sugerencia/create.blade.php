@@ -63,11 +63,11 @@
                                         </select>
                                       </div>
                                     </div>
-                                    <div class="has-error" id="error-instructor_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
+                                  </div>
+                                  <div class="has-error" id="error-instructor_id">
+                                    <span >
+                                      <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                    </span>
                                   </div>
                                </div>
     
@@ -81,9 +81,9 @@
                                     <div class="fg-line">
                                       <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="1500 Caracteres"></textarea>
                                       </div>
-                                    <div class="has-error" id="error-condiciones">
+                                    <div class="has-error" id="error-mensaje">
                                       <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
+                                        <small class="help-block error-span" id="error-mensaje_mensaje" ></small>                                           
                                       </span>
                                     </div>
                                   </div>
@@ -222,9 +222,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -255,7 +255,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["mensaje"];
+      var campo = ["instructor_id", "mensaje"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

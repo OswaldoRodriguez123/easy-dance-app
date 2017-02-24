@@ -133,36 +133,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		//RUTAS QUE SOLAMENTE PODRA TENER ACCESO EL ROL ADMIN
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
-			
-			//EXAMENES
-
-			Route::get('especiales/examenes', 'ExamenController@principal');
-			Route::get('especiales/examenes/agregar', 'ExamenController@create');
-			Route::get('especiales/examenes/agregar/{id}', 'ExamenController@createconclasegrupal');
-			Route::post('especiales/examenes/agregar', 'ExamenController@store');
-			Route::get('especiales/examenes/detalle/{id}', 'ExamenController@edit');
-			Route::get('especiales/examenes/operaciones/{id}', 'ExamenController@operar');
-			Route::delete('especiales/examenes/eliminar/{id}', 'ExamenController@destroy');
-			
-			Route::put('especiales/examenes/update/nombre', 'ExamenController@updateNombre');
-			Route::put('especiales/examenes/update/descripcion', 'ExamenController@updateDescripcion');
-			Route::put('especiales/examenes/update/fecha', 'ExamenController@updateFecha');
-			Route::put('especiales/examenes/update/proxima_fecha', 'ExamenController@updateProximaFecha');
-			Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
-			Route::put('especiales/examenes/update/generos', 'ExamenController@updateGeneros');
-			Route::put('especiales/examenes/update/tipos_de_evaluacion', 'ExamenController@updateTipos');
-			Route::put('especiales/examenes/update/items', 'ExamenController@updateItem');
-			Route::put('especiales/examenes/update/clase_grupal', 'ExamenController@updateClaseGrupal');
-			Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
-			Route::post('especiales/examenes/agregar_item','ExamenController@agregar_item');
-			Route::post('especiales/examenes/eliminar_item/{id}','ExamenController@eliminar_item');
-			Route::post('especiales/examenes/actualizar_item','ExamenController@actualizar_item');
-			Route::post('especiales/examenes/eliminar_item_fijo/{id}','ExamenController@eliminar_item_fijo');
-
-			//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
-			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
-			Route::get('especiales/evaluaciones/{id}', 'EvaluacionController@evaluaciones');
-			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');			
+				
 
 			// ---- CONFIGURACION ----
 
@@ -280,8 +251,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('configuracion/coreografias/operaciones/{id}', 'CoreografiaController@operar');
 			Route::get('configuracion/coreografias/participantes/{id}', 'CoreografiaController@participantes');
 			Route::post('configuracion/coreografias/inscribir', 'CoreografiaController@storeInscripcion');
-
-			
 
 			//PAGOS
 
@@ -530,9 +499,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
 
-			Route::get('agendar/clases-grupales/nivelaciones/{id}', 'ClaseGrupalController@nivelaciones');
-			Route::post('agendar/clases-grupales/nivelaciones/agregar', 'ClaseGrupalController@storeNivelaciones');
-
 
 			//MULTIHORARIO CLASES GRUPALES
 
@@ -727,6 +693,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('especiales/regalos/update/costo', 'RegaloController@updateCosto');
 			Route::put('especiales/regalos/update/descripcion', 'RegaloController@updateDescripcion');
 			Route::put('especiales/regalos/update/imagen', 'RegaloController@updateImagen');
+
+			//EXAMENES
+			
+			Route::delete('especiales/examenes/eliminar/{id}', 'ExamenController@destroy');
 
 			// ---- CONFIGURACION ----
 
@@ -970,5 +940,58 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');		
 
 		});//END MIDDLEWARE ALUMNO
+
+		Route::group(['middleware' => ['instructor']], function() {
+
+		    // PRINCIPAL
+		    
+			Route::get('/inicio', 'AcademiaConfiguracionController@index');
+			Route::get('/', 'AcademiaConfiguracionController@menu');
+
+			Route::get('perfil-profesional', 'InstructorController@perfil_instructor');
+			Route::get('pagos', 'InstructorController@pagos_vista_instructor');
+
+			Route::get('clases-grupales', 'ClaseGrupalController@clases_grupales_vista_instructor');
+			Route::get('clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+
+			Route::get('nivelaciones', 'ClaseGrupalController@principalnivelaciones');
+			Route::get('agendar/clases-grupales/nivelaciones/{id}', 'ClaseGrupalController@nivelaciones');
+			Route::post('agendar/clases-grupales/nivelaciones/agregar', 'ClaseGrupalController@storeNivelaciones');
+
+			//EXAMENES
+
+			Route::get('especiales/examenes', 'ExamenController@principal');
+			Route::get('especiales/examenes/agregar', 'ExamenController@create');
+			Route::get('especiales/examenes/agregar/{id}', 'ExamenController@createconclasegrupal');
+			Route::post('especiales/examenes/agregar', 'ExamenController@store');
+			Route::get('especiales/examenes/detalle/{id}', 'ExamenController@edit');
+			Route::get('especiales/examenes/operaciones/{id}', 'ExamenController@operar');
+			
+			Route::put('especiales/examenes/update/nombre', 'ExamenController@updateNombre');
+			Route::put('especiales/examenes/update/descripcion', 'ExamenController@updateDescripcion');
+			Route::put('especiales/examenes/update/fecha', 'ExamenController@updateFecha');
+			Route::put('especiales/examenes/update/proxima_fecha', 'ExamenController@updateProximaFecha');
+			Route::put('especiales/examenes/update/instructor', 'ExamenController@updateInstructor');
+			Route::put('especiales/examenes/update/generos', 'ExamenController@updateGeneros');
+			Route::put('especiales/examenes/update/tipos_de_evaluacion', 'ExamenController@updateTipos');
+			Route::put('especiales/examenes/update/items', 'ExamenController@updateItem');
+			Route::put('especiales/examenes/update/clase_grupal', 'ExamenController@updateClaseGrupal');
+			Route::get('especiales/examenes/evaluar/{id}', 'ExamenController@evaluar');
+			Route::post('especiales/examenes/agregar_item','ExamenController@agregar_item');
+			Route::post('especiales/examenes/eliminar_item/{id}','ExamenController@eliminar_item');
+			Route::post('especiales/examenes/actualizar_item','ExamenController@actualizar_item');
+			Route::post('especiales/examenes/eliminar_item_fijo/{id}','ExamenController@eliminar_item_fijo');
+
+			//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
+			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
+			Route::get('especiales/evaluaciones/{id}', 'EvaluacionController@evaluaciones');
+			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');		
+
+			Route::post('guardar-alumno/{id}','AlumnoController@guardarAlumno');
+			
+				
+
+		});//END MIDDLEWARE INSTRUCTOR
+
 
 });

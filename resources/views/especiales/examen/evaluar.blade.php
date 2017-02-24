@@ -25,8 +25,9 @@
 	<section id="content">
 		<div class="container">
 			<div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Valoración</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
+                        <?php $url = "/especiales/examenes/detalle/{{$id}}" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
             </div>
 	        <div class="card">
 	            <div class="card-header ch-alt text-center">
@@ -55,10 +56,10 @@
 									<div class="clearfix"></div>
 				                    <div class="select">
 				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
-				                        <option value="">Seleccione</option>
-				                        @foreach ( $alumnos as $alumno )
-				                        <option data-imagen = "{{$alumno->imagen}}" data-sexo = "{{$alumno->sexo}}" value = "{!! $alumno->id !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!} {!! $alumno->identificacion !!}</option>
-				                        @endforeach 
+					                        <option value="">Seleccione</option>
+					                        @foreach ( $alumnos as $alumno )
+					                        	<option data-imagen = "{{$alumno->imagen}}" data-sexo = "{{$alumno->sexo}}" value = "{!! $alumno->id !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!} {!! $alumno->identificacion !!}</option>
+					                        @endforeach 
 				                        </select>
 				                    </div>
 
@@ -360,7 +361,15 @@ var arrayNotas = new Array();
 
 $(document).ready(function() {
 	$("#agregar_evaluacion")[0].reset();
-	$("#alumno_id").selectpicker('render');
+
+	alumno_id = "{{{ $alumno_id or 'Default' }}}";
+
+    if(alumno_id != 'Default'){
+       $('#alumno_id').val(alumno_id)
+       $('#alumno_id').selectpicker('refresh')
+        
+    }
+
 	@foreach( $item as $items)
 		loadId({{$items}});
 	@endforeach
@@ -466,11 +475,9 @@ $(document).ready(function() {
   		$("#guardar").click(function(){
   				//alert(items);
                 var route = route_agregar;
-                var instructor = {{$examen->instructor_id}}
-                //var total = $("#eval_total").text();
-                //var alumno = $("#alumno_id").val();
-                var academia = {{$examen->academia_id}}
-                var examen = {{$examen->id}}
+                var instructor = "{{$examen->instructor_id}}"
+                var academia = "{{$examen->academia_id}}"
+                var examen = "{{$examen->id}}"
                 var itemsExamenes = <?php echo json_encode($itemsExamenes);?>;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen+'&nota_detalle='+arrayNotas+'&nombre_detalle='+itemsExamenes; 
@@ -482,7 +489,7 @@ $(document).ready(function() {
                 $(".cancelar").attr("disabled","disabled");
                 $(".procesando").removeClass('hidden');
                 $(".procesando").addClass('show');
-                //limpiarMensaje();
+                limpiarMensaje();
                 $.ajax({
 
 						url: route,
@@ -490,12 +497,6 @@ $(document).ready(function() {
 						type: 'POST',
 						dataType: 'json',
 						data: datos,
-						/*data: {
-							datos: datos,
-                        	instructor : instructor,
-                        	academia : academia,
-                        	examen : examen
-						},*/
 
 
                     success:function(respuesta){
@@ -506,14 +507,17 @@ $(document).ready(function() {
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          	//finprocesado();
+                          	finprocesado();
                           	var nType = 'success';
                           	$("#agregar_evaluacion")[0].reset();
                           	var nTitle="Ups! ";
                           	var nMensaje=respuesta.mensaje;
-							notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                           	
-                          	window.location = route_principal 
+                          if("{{Auth::user()->usuario_tipo}}" != 3){
+                          	window.location = route_principal;
+                          }else{
+                          	window.location = "{{$_SERVER['HTTP_REFERER']}}"
+                          }
                           	
                           	
                         }else{
@@ -530,8 +534,10 @@ $(document).ready(function() {
                           });
                           $(".cancelar").removeAttr("disabled");
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
+                          
+                        } 
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
                         
                       }, 1000);
                     },
@@ -568,7 +574,6 @@ $(document).ready(function() {
 
 
 			function errores(merror){
-				var campo = ["alumno_id","total_nota"];
 				var elemento="";
 				var contador=0;
 				$.each(merror, function (n, c) {
@@ -662,6 +667,14 @@ $(document).ready(function() {
 
       function collapse_minus(collaps){
        $('#'+collaps).collapse('hide');
+      }
+
+      function limpiarMensaje(){
+        var campo = ["alumno_id"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
       }
 
 </script>
