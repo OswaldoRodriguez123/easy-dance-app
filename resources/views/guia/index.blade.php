@@ -60,7 +60,7 @@
               <hr>
 
               <div class="clearfix"></div><br>
-              <p class="m-t-5 m-b-5 f-22"><a  href="{{ url('especiales/promociones') }}">Agregar al  participante a una Promoción <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i> <i class="icon_a-promocion f-50 padding-promocion"></i> </a></p> 
+              <p class="m-t-5 m-b-5 f-22"><a  href="{{ url('agendar/clases-personalizadas') }}">Agregar al  participante a una Clase Personalizada <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i> <i class="icon_a-clase-personalizada f-50 padding-promocion"></i> </a></p> 
               <div class="clearfix p-b-15"></div>
               <div class="clearfix p-b-15"></div>
               <div class="clearfix p-b-15"></div>

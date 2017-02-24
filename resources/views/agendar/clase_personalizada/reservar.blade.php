@@ -508,6 +508,13 @@
 
       instructor_id = "{{{ $instructor_id or 'Default' }}}";
       clase_personalizada_id = "{{{ $clase_personalizada_id or 'Default' }}}";
+      alumno_id = "{{{ $alumno_id or 'Default' }}}";
+
+     if(alumno_id != 'Default'){
+        $('#alumno_id').val(alumno_id)
+        $('#alumno_id').selectpicker('refresh')
+        
+     }
 
       if(instructor_id != 'Default')
       {
