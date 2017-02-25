@@ -194,10 +194,11 @@ class CitaController extends BaseController {
 
         if($cita->save()){
 
+            $academia = Academia::find(Auth::user()->academia_id);
+            $alumno = Alumno::find($request->alumno_id);
+
             if($cita->boolean_mostrar == 1){
 
-                $academia = Academia::find(Auth::user()->academia_id);
-                $alumno = Alumno::find($request->alumno_id);
                 $instructor = Instructor::find($request->instructor_id);
 
                 $subj = 'Han reservado una Cita';
@@ -246,7 +247,6 @@ class CitaController extends BaseController {
             if($alumno->celular){
 
                 $celular = getLimpiarNumero($alumno->celular);
-                $academia = Academia::find(Auth::user()->academia_id);
 
                 if($academia->pais_id == 11 && strlen($celular) == 10){
                     

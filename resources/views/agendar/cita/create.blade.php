@@ -167,7 +167,7 @@
 
                                        <div class="col-sm-12">
                                  
-                                    <label for="tipo_id" id="id-tipo_id">Tipo de Cita</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de la cita" title="" data-original-title="Ayuda"></i>
+                                    <label for="tipo_id" id="id-tipo_id">Tipo de Cita</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de la cita" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>

@@ -492,6 +492,7 @@ class ClasePersonalizadaController extends BaseController {
             });
 
             Session::forget('instructor_id');
+            Session::forget('id_alumno');
 
             if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
@@ -825,8 +826,6 @@ class ClasePersonalizadaController extends BaseController {
     public function storeInscripcion(Request $request)
     {
 
-    Session::forget('id_alumno');
-
     $rules = [
 
         'clase_personalizada_id' => 'required',
@@ -876,7 +875,7 @@ class ClasePersonalizadaController extends BaseController {
 
         if($fecha_inicio < Carbon::now()){
 
-            return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
 
         $clasepersonalizada = new InscripcionClasePersonalizada;
@@ -897,6 +896,8 @@ class ClasePersonalizadaController extends BaseController {
         // return redirect("/home");
         if($clasepersonalizada->save()){
 
+            $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
+            
             if($request->precio_id)
             {
                 $precio_id = explode("-", $request->precio_id);
@@ -910,10 +911,6 @@ class ClasePersonalizadaController extends BaseController {
             }else{
                 $costo = $clase_personalizada->costo;
             }
-
-                
-
-            $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
 
             $item_factura = new ItemsFacturaProforma;
                     
@@ -972,6 +969,8 @@ class ClasePersonalizadaController extends BaseController {
                     $msj->subject($array2['subj']);
                     $msj->to($array2['correo']);
                 });
+
+            Session::forget('id_alumno');
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
         }else{

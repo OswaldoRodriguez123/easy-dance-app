@@ -559,7 +559,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
+    var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final", "estudio_id", "clase_personalizada_id", "alumno_id"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -759,7 +759,7 @@
             });
 
       function limpiarMensaje(){
-        var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final"];
+        var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final", "estudio_id", "clase_personalizada_id", "alumno_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
