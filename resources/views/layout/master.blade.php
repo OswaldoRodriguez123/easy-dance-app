@@ -552,6 +552,17 @@
 
   }
 
+  // $('#modalReportes').on('shown.bs.modal', function() {
+  //   procesando();
+  //   window.location = "{{url('/')}}/reportes"
+  // })
+
+  $('.rojo').on('click', function(e) {
+    e.preventDefault();
+    procesando();
+    window.location = "{{url('/')}}/reportes"
+  })
+
 
 
        

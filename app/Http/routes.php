@@ -306,10 +306,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('administrativo/factura/enviar/{id}', 'AdministrativoController@enviarfactura');
 
 			// REPORTES
-
-			// Route::get('administrativo/reporte', function () {
-			//     return view('administrativo.reporte');
-			// });
+			
+			Route::get('reportes', 'ReporteController@Principal');
 
 			Route::get('reportes/inscritos', 'ReporteController@Inscritos');
 			Route::post('reportes/inscritos', 'ReporteController@InscritosFiltros');
@@ -321,10 +319,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('reportes/promotores', 'ReporteController@Promotores');
 			Route::post('reportes/promotores', 'ReporteController@PromotoresFiltros');
 			Route::get('reportes/asistencias', 'ReporteController@asistencias');
+			Route::post('reportes/asistencias/filtrar', 'ReporteController@filtrarAsistencias');
 			Route::get('reportes/estatus_alumnos','ReporteController@estatus_alumnos');
 			Route::post('reportes/estatus_alumnos/filtrar','ReporteController@filtrar_estatus_alumnos');
-			Route::post('reportes/asistencias/filtrar', 'ReporteController@filtrarAsistencias');
-			Route::get('reportes/chart', 'ReporteController@charts');
 			Route::get('reportes/administrativo', 'ReporteController@Administrativo');
 			Route::post('reportes/administrativo', 'ReporteController@AdministrativoFiltros');
 		
