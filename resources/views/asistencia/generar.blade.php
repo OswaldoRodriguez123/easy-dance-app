@@ -817,6 +817,18 @@ $("#permitir_staff").on('click',function(){
 
         var id_instructor = $(row).data('id-participante');
         var nombre_instructor = $(row).data('nombre-participante');
+        var imagen = $(row).data('imagen');
+        var sexo = $(row).data('sexo');
+
+        if(imagen){
+          $('#instructor_imagen').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+        }else{
+          if(sexo == 'M'){
+            $('#instructor_imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+          }else{
+            $('#instructor_imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+          }
+        }
 
         $('#asistencia_id_instructor').val(id_instructor);
         $('#asistencia-nombre-instructor').text(nombre_instructor);
