@@ -87,29 +87,31 @@
                                 <div class="col-md-4">
                                     <label>Tipo de Valoración</label> &nbsp; &nbsp; &nbsp;
 
-
-                                    <select name="tipo" id="tipo">
-                                        <option value="0">Todos</option>
-                                          @foreach ( $config_examenes as $tipo_examen )
-                                            <option value = "{{ $tipo_examen->id }}"> {{ $tipo_examen->nombre }} </option>
-                                          @endforeach
-                                    </select>
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                            <option value="0">Todos</option>
+                                            @foreach ( $config_examenes as $tipo_examen )
+                                                <option value = "{{ $tipo_examen->id }}"> {{ $tipo_examen->nombre }} </option>
+                                            @endforeach
+                                        </select>
+                                      </div>
                                 </div>
 
                                 <div class="col-md-4">
 
-                                    <label>Nombre del diagnostico</label> &nbsp; &nbsp; &nbsp;
+                                    <label>Nombre del diagnostico</label> &nbsp; &nbsp; &nbsp; 
 
-                                    <select name="examen_id" id="examen_id">
-                                        <option value="0">Todos</option>
-                                    </select> 
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="examen_id" id="examen_id">
+                                            <option value="0">Todos</option>
+                                        </select>
+                                      </div>
 
                                </div>
 
+                               <div class="clearfix m-b-20"></div>
 
-                                
-
-                                <div class="col-sm-4 pull-right">
+                                <div class="col-sm-4">
                                     <div class="form-group fg-line">
                                         <label for="nombre">Personalizar</label>
                                         <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -125,8 +127,10 @@
                                                 <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                                                     <div class="panel-body">
 
+                                                        <div class="clearfix m-b-20"></div>
+
                     
-                                                        <span class="f-16 f-700">Usar Fecha Personalizada - </span>
+                                                        <span class="f-16 f-700">Usar Fecha Personalizada  -  </span>
 
                                                         <input type="text" id="boolean_fecha" name="boolean_fecha" value="" hidden="hidden">
                                                         <div class="toggle-switch" data-ts-color="purple">
@@ -407,6 +411,8 @@
 
                 }
             });
+
+            $('#examen_id').selectpicker('refresh');
             
         });
 

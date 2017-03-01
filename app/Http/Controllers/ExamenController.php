@@ -678,7 +678,7 @@ class ExamenController extends BaseController {
             ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
             ->where('examenes.id', '=', $id)
         ->first();
-        
+
         $arrays_de_items=array();
         $i=0;
 

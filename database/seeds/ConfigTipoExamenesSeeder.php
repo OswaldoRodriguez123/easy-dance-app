@@ -33,5 +33,10 @@ class ConfigTipoExamenesSeeder extends Seeder
 	      'nombre' => 'Otros',
 
 	    ));
+
+	    ConfigTipoExamen::create(array(
+	      'nombre' => 'Diagnostico de Ingreso',
+
+	    ));
     }
 }
