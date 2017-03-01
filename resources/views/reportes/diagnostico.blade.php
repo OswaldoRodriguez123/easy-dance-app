@@ -168,46 +168,18 @@
                         </div>
 
                        
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <h2>Informe de Valoración</h2>
                             <hr>
-                            <!-- <ul class="actions">
-                                <li class="dropdown action-show">
-                                    <a href="#" data-toggle="dropdown">
-                                        <i class="zmdi zmdi-more-vert"></i>
-                                    </a>
-                    
-                                    <div class="dropdown-menu pull-right">
-                                        <p class="p-20">
-                                            You can put anything here
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul> -->
                             <div id="pie-chart-procesos" class="flot-chart-pie"></div>
                             <div class="flc-pie hidden-xs"></div>
 
-                        </div><!-- COL-MD-6 -->
+                        </div>
 
 
                         <div class="col-md-6">
                             <h2>Información</h2>
                             <hr>
-
-
-                            <!-- <ul class="actions">
-                                <li class="dropdown action-show">
-                                    <a href="#" data-toggle="dropdown">
-                                        <i class="zmdi zmdi-more-vert"></i>
-                                    </a>
-                    
-                                    <div class="dropdown-menu pull-right">
-                                        <p class="p-20">
-                                            You can put anything here
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul> -->
                             
                             <div class="col-md-3">    
                                 <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
@@ -220,7 +192,6 @@
 
                             <div class="mini-charts-item bgm-blue">
                                 <div class="clearfix">
-                                   <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
                                     <div class="count">
                                         <small>Total Valoraciones:</small>
                                         <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
@@ -228,11 +199,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
- 
-                        </div><!-- COL-MD-6 -->
+                        </div> -->
 
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
@@ -457,56 +424,56 @@
                     });
 
 
-                    datos = JSON.parse(JSON.stringify(respuesta));
+                    // datos = JSON.parse(JSON.stringify(respuesta));
 
-                    $("#mujeres").text(datos.mujeres);
-                    $("#hombres").text(datos.hombres);
+                    // $("#mujeres").text(datos.mujeres);
+                    // $("#hombres").text(datos.hombres);
 
-                    var data1 = ''
-                    data1 += '[';
-                    $.each( datos.sexos, function( i, item ) {
-                        var edad = item[0];
-                        var cant = item[1];
-                        data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                    });
+                    // var data1 = ''
+                    // data1 += '[';
+                    // $.each( datos.sexos, function( i, item ) {
+                    //     var edad = item[0];
+                    //     var cant = item[1];
+                    //     data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                    // });
 
-                    data1 = data1.substring(0, data1.length -1);
-                    data1 += ']';
-                        //GRAFICO FILTRO MES ACTUAL
-                        $("#pie-chart-procesos").html('');
-                        $(".flc-pie").html('');
-                        $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                            series: {
-                                pie: {
-                                    show: true,
-                                    stroke: { 
-                                        width: 2,
-                                    },
-                                },
-                            },
-                            legend: {
-                                container: '.flc-pie',
-                                backgroundOpacity: 0.5,
-                                noColumns: 0,
-                                backgroundColor: "white",
-                                lineWidth: 0
-                            },
-                            grid: {
-                                hoverable: true,
-                                clickable: true
-                            },
-                            tooltip: true,
-                            tooltipOpts: {
-                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                shifts: {
-                                    x: 20,
-                                    y: 0
-                                },
-                                defaultTheme: false,
-                                cssClass: 'flot-tooltip'
-                            }
+                    // data1 = data1.substring(0, data1.length -1);
+                    // data1 += ']';
+                    //     //GRAFICO FILTRO MES ACTUAL
+                    //     $("#pie-chart-procesos").html('');
+                    //     $(".flc-pie").html('');
+                    //     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                    //         series: {
+                    //             pie: {
+                    //                 show: true,
+                    //                 stroke: { 
+                    //                     width: 2,
+                    //                 },
+                    //             },
+                    //         },
+                    //         legend: {
+                    //             container: '.flc-pie',
+                    //             backgroundOpacity: 0.5,
+                    //             noColumns: 0,
+                    //             backgroundColor: "white",
+                    //             lineWidth: 0
+                    //         },
+                    //         grid: {
+                    //             hoverable: true,
+                    //             clickable: true
+                    //         },
+                    //         tooltip: true,
+                    //         tooltipOpts: {
+                    //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                    //             shifts: {
+                    //                 x: 20,
+                    //                 y: 0
+                    //             },
+                    //             defaultTheme: false,
+                    //             cssClass: 'flot-tooltip'
+                    //         }
                             
-                        });
+                    //     });
                 
                     }else{
                       var nTitle="Ups! ";
@@ -567,51 +534,51 @@
     }
 
     //PLOTS
-        var pieData1 = [
-                @foreach ($sexos as $sexo)
-                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-                @endforeach
-            ];
+        // var pieData1 = [
+        //         @foreach ($sexos as $sexo)
+        //             {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
+        //         @endforeach
+        //     ];
         
-        var values = [
-            @foreach ($sexos as $sexo)        
-                   {{$sexo->CantSex}} ,
-            @endforeach                    
-            ];
+        // var values = [
+        //     @foreach ($sexos as $sexo)        
+        //            {{$sexo->CantSex}} ,
+        //     @endforeach                    
+        //     ];
 
 
-        $.plot('#pie-chart-procesos', pieData1, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: { 
-                        width: 2,
-                    },
-                },
-            },
-            legend: {
-                container: '.flc-pie',
-                backgroundOpacity: 0.5,
-                noColumns: 0,
-                backgroundColor: "white",
-                lineWidth: 0
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: false,
-                cssClass: 'flot-tooltip'
-            }
+        // $.plot('#pie-chart-procesos', pieData1, {
+        //     series: {
+        //         pie: {
+        //             show: true,
+        //             stroke: { 
+        //                 width: 2,
+        //             },
+        //         },
+        //     },
+        //     legend: {
+        //         container: '.flc-pie',
+        //         backgroundOpacity: 0.5,
+        //         noColumns: 0,
+        //         backgroundColor: "white",
+        //         lineWidth: 0
+        //     },
+        //     grid: {
+        //         hoverable: true,
+        //         clickable: true
+        //     },
+        //     tooltip: true,
+        //     tooltipOpts: {
+        //         content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+        //         shifts: {
+        //             x: 20,
+        //             y: 0
+        //         },
+        //         defaultTheme: false,
+        //         cssClass: 'flot-tooltip'
+        //     }
             
-        });
+        // });
 
      function previa(t){
         var id = $(t).closest('tr').attr('id');
