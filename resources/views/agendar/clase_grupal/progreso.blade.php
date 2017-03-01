@@ -72,7 +72,7 @@
                               <div class="clearfix p-b-35"></div>
       
 
-                               <div class="col-sm-12">
+                               <div class="col-sm-12" id="basico">
                                  <div class="form-group">
                                     <label for="nombre">Basico</label>
                                     <div class="panel-group p-l-10" data-collapse-color="blue" role="tablist" aria-multiselectable="true">
@@ -91,7 +91,7 @@
                                     <div class="clearfix p-b-35"></div>
 
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12" id="basico_1">
                                  <div class="form-group">
                                     <label for="nombre">Basico 1</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -169,7 +169,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="basico_2">
                                  <div class="form-group">
                                     <label for="nombre">Basico 2</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -247,7 +247,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="basico_3">
                                  <div class="form-group">
                                     <label for="nombre">Basico 3</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -349,7 +349,7 @@
 
                           <!--   INTERMEDIO -->
 
-                                  <div class="col-sm-12">
+                                  <div class="col-sm-12" id="intermedio">
                                  <div class="form-group">
                                     <label for="nombre">Intermedio</label>
                                     <div class="panel-group p-l-10" data-collapse-color="blue" role="tablist" aria-multiselectable="true">
@@ -368,7 +368,7 @@
                                     <div class="clearfix p-b-35"></div>
 
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12" id="intermedio_1">
                                  <div class="form-group">
                                     <label for="nombre">Intermedio 1</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -446,7 +446,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="intermedio_2">
                                  <div class="form-group">
                                     <label for="nombre">Intermedio 2</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -524,7 +524,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="intermedio_3">
                                  <div class="form-group">
                                     <label for="nombre">Intermedio 3</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -626,7 +626,7 @@
                             <!-- Avanzado -->
         
 
-                              <div class="col-sm-12">
+                              <div class="col-sm-12" id="avanzado">
                                  <div class="form-group">
                                     <label for="nombre">Avanzado</label>
                                     <div class="panel-group p-l-10" data-collapse-color="blue" role="tablist" aria-multiselectable="true">
@@ -645,7 +645,7 @@
                                     <div class="clearfix p-b-35"></div>
 
 
-                                <div class="col-sm-12">
+                                <div class="col-sm-12" id="avanzado_1">
                                  <div class="form-group">
                                     <label for="nombre">Avanzado 1</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -724,7 +724,7 @@
                            </div>
 
                            <div class="col-sm-12">
-                                 <div class="form-group">
+                                 <div class="form-group" id="avanzado_2">
                                     <label for="nombre">Avanzado 2</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
@@ -801,7 +801,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="avanzado_3">
                                  <div class="form-group">
                                     <label for="nombre">Avanzado 3</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -902,7 +902,7 @@
                             <div class="clearfix p-b-35"></div>
 
 
-                                <div class="col-sm-12">
+                                <div class="col-sm-12" id="master">
                                  <div class="form-group">
                                     <label for="nombre">Master</label>
                                     <div class="panel-group p-l-10" data-collapse-color="blue" role="tablist" aria-multiselectable="true">
@@ -921,7 +921,7 @@
                                     <div class="clearfix p-b-35"></div>
 
                   
-                                          <div class="col-sm-12">
+                                          <div class="col-sm-12" id="master_1">
                                  <div class="form-group">
                                     <label for="nombre">Master 1</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -999,7 +999,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="master_2">
                                  <div class="form-group">
                                     <label for="nombre">Master 2</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -1078,7 +1078,7 @@
                              </div>
                            </div>
 
-                           <div class="col-sm-12">
+                           <div class="col-sm-12" id="master_3">
                                  <div class="form-group">
                                     <label for="nombre">Master 3</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -1201,7 +1201,7 @@
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
-                              <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+                  <!--             <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button> -->
 
                             </div>
                         </div></form>
@@ -1245,6 +1245,8 @@
     if("{{$clase_1->clase_4}}" == 1){
       $("#b1c4").val('1');  //VALOR POR DEFECTO
       $("#b1c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#basico_2').hide();
     }
 
 
@@ -1267,6 +1269,8 @@
     if("{{$clase_2->clase_4}}" == 1){
       $("#b2c4").val('1');  //VALOR POR DEFECTO
       $("#b2c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#basico_3').hide();
     }
 
 
@@ -1288,6 +1292,8 @@
     if("{{$clase_3->clase_4}}" == 1){
       $("#b3c4").val('1');  //VALOR POR DEFECTO
       $("#b3c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#intermedio').hide();
     }
 
 
@@ -1310,6 +1316,8 @@
     if("{{$clase_4->clase_4}}" == 1){
       $("#i1c4").val('1');  //VALOR POR DEFECTO
       $("#i1c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#intermedio_2').hide();
     }
 
 
@@ -1331,6 +1339,8 @@
     if("{{$clase_5->clase_4}}" == 1){
       $("#i2c4").val('1');  //VALOR POR DEFECTO
       $("#i2c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#intermedio_3').hide();
     }
 
 
@@ -1352,6 +1362,8 @@
     if("{{$clase_6->clase_4}}" == 1){
       $("#i3c4").val('1');  //VALOR POR DEFECTO
       $("#i3c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#avanzado').hide();
     }
 
 
@@ -1374,6 +1386,8 @@
     if("{{$clase_7->clase_4}}" == 1){
       $("#a1c4").val('1');  //VALOR POR DEFECTO
       $("#a1c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#avanzado_2').hide();
     }
 
 
@@ -1395,6 +1409,8 @@
     if("{{$clase_8->clase_4}}" == 1){
       $("#a2c4").val('1');  //VALOR POR DEFECTO
       $("#a2c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#avanzado_3').hide();
     }
 
 
@@ -1416,6 +1432,8 @@
     if("{{$clase_9->clase_4}}" == 1){
       $("#a3c4").val('1');  //VALOR POR DEFECTO
       $("#a3c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#master').hide();
     }
 
 
@@ -1438,12 +1456,15 @@
     if("{{$clase_10->clase_4}}" == 1){
       $("#m1c4").val('1');  //VALOR POR DEFECTO
       $("#m1c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#master_2').hide();
     }
 
     if("{{$clase_11->clase_1}}" == 1){
       $("#m2c1").val('1');  //VALOR POR DEFECTO
       $("#m2c1-switch").attr("checked", true); //VALOR POR DEFECTO
     }
+
 
     if("{{$clase_11->clase_2}}" == 1){
       $("#m2c2").val('1');  //VALOR POR DEFECTO
@@ -1458,6 +1479,8 @@
     if("{{$clase_11->clase_4}}" == 1){
       $("#m2c4").val('1');  //VALOR POR DEFECTO
       $("#m2c4-switch").attr("checked", true); //VALOR POR DEFECTO
+    }else{
+      $('#master_3').hide();
     }
 
     if("{{$clase_12->clase_1}}" == 1){
@@ -1507,8 +1530,10 @@
     $("#b1c4-switch").on('change', function(){
       if ($("#b1c4-switch").is(":checked")){
         $("#b1c4").val('1');
+        $('#basico_2').show();
       }else{
         $("#b1c4").val('0');
+        $('#basico_2').hide();
       }     
     });
 
@@ -1541,8 +1566,10 @@
     $("#b2c4-switch").on('change', function(){
       if ($("#b2c4-switch").is(":checked")){
         $("#b2c4").val('1');
+        $('#basico_3').show();
       }else{
         $("#b2c4").val('0');
+        $('#basico_3').hide();
       }     
     });
 
@@ -1573,8 +1600,10 @@
     $("#b3c4-switch").on('change', function(){
       if ($("#b3c4-switch").is(":checked")){
         $("#b3c4").val('1');
+        $('#intermedio').show();
       }else{
         $("#b3c4").val('0');
+        $('#intermedio').hide();
       }     
     });
 
@@ -1607,8 +1636,10 @@
      $("#i1c4-switch").on('change', function(){
       if ($("#i1c4-switch").is(":checked")){
         $("#i1c4").val('1');
+        $('#intermedio_2').show();
       }else{
         $("#i1c4").val('0');
+        $('#intermedio_2').hide();
       }     
     });
 
@@ -1639,8 +1670,10 @@
     $("#i2c4-switch").on('change', function(){
       if ($("#i2c4-switch").is(":checked")){
         $("#i2c4").val('1');
+        $('#intermedio_3').show();
       }else{
         $("#i2c4").val('0');
+        $('#intermedio_3').hide();
       }     
     });
 
@@ -1671,8 +1704,10 @@
     $("#i3c4-switch").on('change', function(){
       if ($("#i3c4-switch").is(":checked")){
         $("#i3c4").val('1');
+        $('#avanzado').show();
       }else{
         $("#i3c4").val('0');
+        $('#avanzado').hide();
       }     
     });
 
@@ -1706,8 +1741,10 @@
     $("#a1c4-switch").on('change', function(){
       if ($("#a1c4-switch").is(":checked")){
         $("#a1c4").val('1');
+        $('#avanzado_2').show();
       }else{
         $("#a1c4").val('0');
+        $('#avanzado_2').hide();
       }     
     });
 
@@ -1738,8 +1775,10 @@
     $("#a2c4-switch").on('change', function(){
       if ($("#a2c4-switch").is(":checked")){
         $("#a2c4").val('1');
+        $('#avanzado_3').show();
       }else{
         $("#a2c4").val('0');
+        $('#avanzado_3').hide();
       }     
     });
 
@@ -1772,8 +1811,10 @@
     $("#a3c4-switch").on('change', function(){
       if ($("#a3c4-switch").is(":checked")){
         $("#a3c4").val('1');
+        $('#master').show();
       }else{
         $("#a3c4").val('0');
+        $('#master').hide();
       }     
     });
 
@@ -1806,8 +1847,10 @@
     $("#m1c4-switch").on('change', function(){
       if ($("#m1c4-switch").is(":checked")){
         $("#m1c4").val('1');
+        $('#master_2').show();
       }else{
         $("#m1c4").val('0');
+        $('#master_2').hide();
       }     
     });
 
@@ -1838,8 +1881,10 @@
     $("#m2c4-switch").on('change', function(){
       if ($("#m2c4-switch").is(":checked")){
         $("#m2c4").val('1');
+        $('#master_3').show();
       }else{
         $("#m2c4").val('0');
+        $('#master_3').hide();
       }     
     });
 

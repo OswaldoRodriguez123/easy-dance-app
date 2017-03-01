@@ -48,7 +48,7 @@
                             <div class="col-sm-12">
                                 <div role="tabpanel" class="tab">
                                     <ul class="tab-nav tab-menu" role="tablist" data-menu-color="naranja">
-                                        <li class="active" role="presentation"><a class="rojo" href="#reportes" aria-controls="reportes" role="tab" data-toggle="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>   
+                                        <li class="active" role="presentation"><a aria-controls="reportes" role="tab" data-toggle="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>   
                                     </ul>
                                 </div>
                                 <div class="tab-content ">
@@ -108,50 +108,6 @@
 
             $('body').css('background', "#fff")
 
-            t=$('#tablelistar').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 50, 
-            // paging:false, 
-            order: [[0, 'asc']],
-            fnDrawCallback: function() {
-              $('.dataTables_paginate').show();
-              /*if ($('#tablelistar tr').length < 25) {
-                  $('.dataTables_paginate').hide();
-              }
-              else{
-                 $('.dataTables_paginate').show();
-              }*/
-            },
-            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-            },
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-            });
-
             $('a[data-toggle="tab"]').click( function (e) {
               var tabs = e.currentTarget.hash;
 
@@ -175,10 +131,7 @@
               }       
           });
 
-          $('div.tab-pane').each(function () {
-              $(this).addClass("active");
-          });
-
+ 
           $('.sti-menu').iconmenu({
               animMouseenter: {
                   'mText': {speed: 500, easing: 'easeOutExpo', delay: 200, dir: -1},
@@ -191,11 +144,7 @@
                   'icon': {speed: 400, easing: 'easeInExpo', delay: 0, dir: -1}
               }
           });
-          $('div.tab-pane').each(function () {
-              $(this).removeClass("active");
-          });
 
-          $("div.tab-pane").first().addClass("active");
         });
 
     
