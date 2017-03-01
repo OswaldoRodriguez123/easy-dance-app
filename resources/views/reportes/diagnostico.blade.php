@@ -64,6 +64,7 @@
                         <div class="col-sm-12">
                             <form name="formFiltro" id="formFiltro">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
                                 <div class="col-md-4">
                                     <label>Clase Grupal</label>
 
@@ -99,7 +100,7 @@
 
                                 <div class="col-md-4">
 
-                                    <label>Nombre del diagnostico</label> &nbsp; &nbsp; &nbsp; 
+                                    <label>Nombre del diagnóstico</label> &nbsp; &nbsp; &nbsp; 
 
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="examen_id" id="examen_id">
@@ -128,21 +129,12 @@
                                                     <div class="panel-body">
 
                                                         <div class="clearfix m-b-20"></div>
-
-                    
-                                                        <span class="f-16 f-700">Usar Fecha Personalizada  -  </span>
-
-                                                        <input type="text" id="boolean_fecha" name="boolean_fecha" value="" hidden="hidden">
-                                                        <div class="toggle-switch" data-ts-color="purple">
-                                                            <span class="p-r-10 f-700 f-16">No</span><input id="switch-boolean_fecha" type="checkbox" hidden="hidden">
-                                                            <label for="switch-boolean_fecha" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                                        </div>
                                                     
 
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
                                                             <div class="fg-line">
-                                                                    <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar" disabled>
+                                                                    <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar">
                                                             </div>
                                                         </div>
 
@@ -163,14 +155,7 @@
 
    
 
-                                 <div class="clearfix m-b-10"></div>
-                                 <div class="has-error" id="error-linea">
-                                  <span>
-                                      <small class="help-block error-span" id="error-linea_mensaje" ></small>      
-                                  </span>
-                                 </div>
-
-                                 <div class="clearfix m-b-10"></div>
+                                 <!-- <div class="clearfix m-b-10"></div> -->
 
                                  
 
@@ -316,7 +301,7 @@
         //DateRangePicker
         $('#fecha').daterangepicker({
             "autoApply" : false,
-            "opens": "left",
+            "opens": "right",
             "applyClass": "bgm-morado waves-effect",
             locale : {
                 format: 'DD/MM/YYYY',
@@ -652,17 +637,16 @@
         $('#'+collaps).collapse('hide');
     }   
 
-    $('#switch-boolean_fecha').on('change', function () {
+    $('#collapseTwo').on('show.bs.collapse', function () {
+        $("#boolean_fecha").val('1');
+        setTimeout(function(){ 
+            $("#fecha").click();
+        }, 500);
+    })
 
-        if ($("#switch-boolean_fecha").is(":checked")){
-            $("#boolean_fecha").val('1');
-            $('#fecha').attr('disabled',false)
-        }else{
-            $("#boolean_fecha").val('0');
-            $('#fecha').attr('disabled',true)
-        }    
-
-    });
+    $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#boolean_fecha").val('0');
+    })
 
 </script>
 
