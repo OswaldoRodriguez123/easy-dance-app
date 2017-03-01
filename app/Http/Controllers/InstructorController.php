@@ -620,7 +620,7 @@ class InstructorController extends BaseController {
 
             if($request->imagePerfilBase64){
 
-                $nombre_img = "usuario-". Auth::user()->id . $extension;
+                $nombre_img = "usuario-". $request->id . $extension;
                 $image = base64_decode($base64_string);
 
                 // \Storage::disk('usuario')->put($nombre_img,  $image);
