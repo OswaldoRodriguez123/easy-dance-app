@@ -1,26 +1,21 @@
 @extends('layout.master2')
 
 @section('css_vendor')
-<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
-
-<!--     <link href="{{url('/')}}/assets/css/styles.min.css" rel="stylesheet"> -->
-    
-    <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
-<link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
-
+  <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
+  <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
 @stop
 
 @section('js_vendor')
-<script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
-
-<script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 @stop
 
 <meta content='{{$campana->nombre}}' property='og:title'/>
 @if($campana->imagen)
-<meta content="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" property='og:image'/>
+  <meta content="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" property='og:image'/>
 @endif
 
 @section('content')
@@ -434,31 +429,22 @@
                 <div role="tabpanel" class="tab-pane active animated fadeInUp in" id="empresa">
 
                     <div class="pmb-block m-t-0 p-t-0">
-
-<!--                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg"> -->
                       
-
                         <p class="text-center f-30 f-700 opaco-0-8" id="offset_nombre">{!! nl2br($campana->nombre) !!}</p>
                         <p class="text-center f-20 f-700 opaco-0-8">{!! nl2br($campana->eslogan) !!}</p>
                         
                         <div class="clearfix p-b-20"></div>
 
-                        <div class="f-700 f-30">Historia</div>
-                        <hr class='linea-morada'>
-                        <p class="f-20">Emprendí un viaje a Colombia, específicamente al departamento de Risaralda en la ciudad de Pereira, con el objetivo de sumar fuerzas en el área de baile y gerencia de la academia <b>TU CLASE DE BAILE</b> y a su vez, validar el proyecto tecnológico de creación personal llamado <b>Easy Dance</b> que he venido forjando desde unos años atrás, (aplicación web para academias de baile) herramienta que sería estrenada formalmente con la academia <b>TU CLASE DE BAILE</b>.</p>
 
-                        <p class="f-20">Al encontrarme en mis actividades diarias, sentía como fuertes dolores oprimían mi pecho y parte de mi espalda y decidí asistir al médico, pensando que era un problema muscular, pues este aparecía sólo al momento de exigirme físicamente, Entre consultas y exámenes pude darme por enterado que padecía de una enfermedad coronaria severa. Fue así que de manera muy rápida y en un cerrar de ojos me encontraba hospitalizado y sin oportunidad de volver a Venezuela.</p>
+                        @if($campana->historia)
 
-                        <p class="f-20">Después de haber sido sometido varios exámenes y a la práctica de un cateterismo fui valorado por el médico, el cual diagnosticó que habría que generarme la cirugía a corazón abierto, hoy día me encuentro esperando con mucha fe y optimismo que saldré adelante de esta dura prueba.</p>
+                          <div class="f-700 f-30">Historia</div>
+                          <hr class='linea-morada'>
 
-                        <div class="clearfix p-b-20"></div>
+                          <p class="text-center f-20">{!! nl2br($campana->historia) !!}</p>
 
-                        <div class="f-700 f-30">Mi Perfil</div>
-                        <hr class='linea-morada'>
-                        <p class="f-20">Mi nombre es Robert Virona soy de la ciudad de Maracaibo y desde muy joven me apasioné por los bailes en especial los géneros latinos, por esa razón hace aproximadamente 20 años atrás decidí tomar un rumbo e iniciar mi carrera como bailador, con el paso del tiempo fui inclinando una profunda atención a los procesos y gerencia de las academias de baile, eventos y actividades en el que pude sentir una gran afinidad con el arte de gerenciar y organizar.</p>
-
-                        <p class="f-20">Siempre me acompaña un deseo inmenso de superación y tengo la fortuna de ser un apasionado a los procesos de mejoramiento continuo, por eso utilizo la tecnología a mi favor para ser cada vez mejor, mis mejores fuentes de aprendizaje las consigo a través de la lectura y tutoriales que diariamente nos ofrece el internet , el cual , a mi juicio lo considero como la casa de estudio número 1 en el mundo , debido a la fuente de recursos y herramientas que te brinda para el crecimiento profesional.</p>
-
+                        @endif
+                        
 
                         @if($link_video)
                         <div class="clearfix p-b-20"></div>
@@ -472,34 +458,23 @@
 
                         <div class="clearfix p-b-20"></div>
 
-                        <div class="f-700 f-30">Logros Más Significativos</div>
-                        <hr class='linea-morada'>
+                        @if($campana->presentacion)
 
-                        <p class="f-20">1.  Uno de los principales promotores  de la bailoterapia en el estado Zulia- Venezuela 1997</p>
-                        <p class="f-20">2.  Pionero del estilo de baile de salsa casino en el estado Zulia- Venezuela 2005</p>
-                        <p class="f-20">3.  Dirigió la academia de baile Habana Maracaibo por diez 10 años consecutivos (2005-2015)</p>
-                        <p class="f-20">4.  Sub campeón nacional de salsa en Venezuela 2006</p>
-                        <p class="f-20">5.  Seleccionado por la revista estampa Zuliana entre los 10 venezolanos más destacado del país en el año – 2008</p>
-                        <p class="f-20">6.  Ganador del  Mara de Oro (2008)</p>
-                        <p class="f-20">7.  Productor principal  del proyecto de la rueda de salsa casino más grande de Venezuela, superando la del record guiness en Cali Colombia. En Abril 2014 ,a través de AZUCA (Asociación Zuliana de Casineros del estado Zulia )</p>
-                        <p class="f-20">8.  Productor general del evento festival de la gaita en el año 2014.</p>
-                        <p class="f-20">9.  Productor del Reality show de baile llamado “la elite” 2015</p>
-                        <p class="f-20">10. Fundador y ex -presidente de la asociación zuliana de salsa casino (2013-2015)</p>
-                        <p class="f-20">11. Ha organizado evento con artistas nacionales e internacionales durante  varios años</p>
-                        <p class="f-20">12.  Fundador de la primera aplicación  web en Latinoamérica  para el gremio del baile llamada Easy dance</p>
+                          <div class="f-700 f-30">Presentación general de la campaña</div>
+                          <hr class='linea-morada'>
 
-                        <div class="f-700 f-30">En clases bailando recientemente</div>
-                        <hr class='linea-morada'>
+                          @if($campana->imagen_presentacion)
+                            <img src="{{url('/')}}/assets/uploads/campana/{{$campana->imagen_presentacion}}" class="img-responsive opaco-0-8" alt="">
+                          @endif
 
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                          <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                            <div class="embed-responsive embed-responsive-4by3">
-                              <iframe class="embed-responsive-item" src="http://www.youtube.com/embed/sNdOSfbqggU"></iframe>
-                            </div>
-                          </div>
+                          <br>
 
-                          <div class="clearfix p-b-35"></div>
+                          <p class="text-center f-20">{!! nl2br($campana->presentacion) !!}</p>
+
+                        @endif
+
+
+                        <div class="clearfix p-b-35"></div>
                         
 
                     </div>
@@ -726,32 +701,22 @@
 
                               <div class="col-sm-12">
                                  
-                                <p class="text-left f-22 opaco-0-8 f-700">TRANSFERENCIAS O DEPÓSITOS  BANCARIOS EN VENEZUELA</p>
+                                <p class="text-left f-22 opaco-0-8 f-700">TRANSFERENCIAS O DEPÓSITOS BANCARIOS</p>
                                 <hr class='linea-morada'>
 
                                 @foreach($datos as $dato)
 
                                   <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> {{$dato->nombre_banco}}, {{$dato->tipo_cuenta}}, No: {{$dato->numero_cuenta}}</p>
+                                    
+                      
+                                  <p class="text-left f-16 opaco-0-8 f-700">A nombre de: {{$dato->nombre}}. Número de cédula: {{$dato->rif}}</p>
                                   
-                                  
-
-                                  <!-- <p class="text-left f-16 opaco-0-8 f-700">A nombre de: {{$dato->nombre}}. Número de cédula: {{$dato->rif}}</p> -->
+                                  <div class="clearfix p-b-35"></div>
 
                                 @endforeach
 
-                                <p class="text-left f-16 opaco-0-8 f-700">A nombre de: Richard Virona. Número de cédula 12.590.716</p>
+
                                 
-                                <div class="clearfix p-b-35"></div>
-
-                                <p class="text-left f-22 opaco-0-8 f-700">TRANSFERENCIAS O DEPÓSITOS  BANCARIOS EN COLOMBIA</p>
-                                <hr class='linea-morada'>
-                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Banco Davivienda, Cuenta de Ahorros, No: 126000663123. Energía Latina</p>
-
-                                <div class="clearfix p-b-35"></div>
-
-                                <p class="text-left f-22 opaco-0-8 f-700">APORTES EN EFECTIVO  DESDE EL EXTRANJERO</p>
-                                <hr class='linea-morada'>
-                                <p class="text-left f-16 opaco-0-8 f-700"><span class="c-verde">✔</span> Los aportes realizados en efectivo de cuentas del exterior hacia Colombia podrán ser realizados a través de Western Union a nombre de Helmer Morcillo 7 3141903</p>
 
 
                               </div>

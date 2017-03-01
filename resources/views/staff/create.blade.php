@@ -153,18 +153,25 @@
 
                                 <div class="col-sm-12">
                                  
-                                    <label for="cargo" id="id-cargo">Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el cargo del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="cargo" id="id-cargo">Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo del participante" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="cargo" id="cargo" placeholder="Ej. Conserje">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="cargo" id="cargo" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $config_staff as $cargo )
+                                          <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-cargo">
+                                    <div class="has-error" id="error-cargo">
                                       <span >
-                                          <small class="help-block error-span" id="error-cargo_mensaje" ></small>                                
+                                        <small class="help-block error-span" id="error-cargo_mensaje" ></small>                                           
                                       </span>
+                                    </div>
                                   </div>
                                </div>
 
@@ -843,6 +850,20 @@
                         }
                     }
         });
+
+  function collapse_minus(collaps){
+   $('#'+collaps).collapse('hide');
+  }
+
+  $('#collapseTwo').on('show.bs.collapse', function () {
+    $("#guardar").attr("disabled","disabled");
+    $("#guardar").css({"opacity": ("0.2")});
+  })
+
+  $('#collapseTwo').on('hide.bs.collapse', function () {
+    $("#guardar").removeAttr("disabled");
+    $("#guardar").css({"opacity": ("1")});
+  })
 
 
 </script> 

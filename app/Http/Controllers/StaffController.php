@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Staff;
 use App\HorarioStaff;
+use App\ConfigStaff;
 use App\DiasDeSemana;
 use Mail;
 use DB;
@@ -22,7 +23,11 @@ class StaffController extends BaseController
 	public function principal()
 	{
 
-        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $staffs = ConfigStaff::join('staff', 'staff.cargo', '=', 'config_staff.id')
+            ->select('staff.id', 'staff.identificacion', 'staff.nombre', 'staff.apellido', 'staff.sexo', 'config_staff.nombre as cargo')
+            ->where('staff.academia_id', Auth::user()->academia_id)
+            ->orWhere('staff.academia_id', null)
+        ->get();
 
 		return view('staff.principal')->with(['staffs' => $staffs]);
 	}
@@ -30,9 +35,12 @@ class StaffController extends BaseController
 	public function create()
     {
         $dia_de_semana = DiasDeSemana::all();
+
+        $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+
         Session::forget('horarios_staff');
 
-        return view('staff.create')->with('dias_de_semana', $dia_de_semana);
+        return view('staff.create')->with(['dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
     }
 
     public function store(Request $request)
