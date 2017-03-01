@@ -201,6 +201,7 @@
                 
                     document.getElementById('participante').innerHTML = 'Participante';
                     document.getElementById('hora').innerHTML = 'Hora';  
+                    document.getElementById('clase').innerHTML = 'Clase';
 
                     $.each(alumno, function (index, array) {
                         var rowNode=t.row.add( [
@@ -224,7 +225,8 @@
             function rechargeInstructor(){
                 
                 document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-                document.getElementById('hora').innerHTML = 'Hora Salida'; 
+                document.getElementById('hora').innerHTML = 'Hora Salida';
+                document.getElementById('clase').innerHTML = 'Clase';
 
                 $.each(instructor, function (index, array) {
                     var rowNode=t.row.add( [
@@ -245,12 +247,13 @@
             function rechargeStaff(){
                 
                 document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-                document.getElementById('hora').innerHTML = 'Hora Salida'; 
+                document.getElementById('hora').innerHTML = 'Hora Salida';
+                document.getElementById('clase').innerHTML = 'Cargo'; 
 
                 $.each(staff, function (index, array) {
                     var rowNode=t.row.add( [
                     ''+array.fecha+'',
-                    '',
+                    ''+array.cargo+'',
                     ''+array.nombre_staff+ ' '+array.apellido_staff+'',
                     ''+array.hora+'',
                     ''+array.hora_salida+''

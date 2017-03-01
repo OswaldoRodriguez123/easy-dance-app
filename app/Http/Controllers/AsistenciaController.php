@@ -100,7 +100,8 @@ class AsistenciaController extends BaseController
         $staff = DB::table('asistencias_staff')
             ->join('academias', 'asistencias_staff.academia_id', '=', 'academias.id')
             ->join('staff', 'asistencias_staff.staff_id', '=', 'staff.id')
-            ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'asistencias_staff.hora_salida')
+            ->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
+            ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'asistencias_staff.hora_salida', 'config_staff.nombre as cargo')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
