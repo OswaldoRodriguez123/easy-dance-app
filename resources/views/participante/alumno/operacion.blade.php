@@ -32,15 +32,18 @@
             <div>
 
 			<ul class="ca-menu-c" style="width: 1200px;">
-        		<li data-ripplecator class ="dark-ripples">
-                        <a class = "pagar">
-                            <span class="ca-icon-c"><i class="icon_a-pagar f-35 boton blue sa-warning" data-original-title="Pagar" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Pagar</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
-                    </li>
+
+                    @if($total)
+                		<li data-ripplecator class ="dark-ripples">
+                            <a class = "pagar">
+                                <span class="ca-icon-c"><i class="icon_a-pagar f-35 boton blue sa-warning" data-original-title="Pagar" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                                <div class="ca-content-c">
+                                    <h2 class="ca-main-c">Pagar</h2>
+                                    <h3 class="ca-sub-c"></h3>
+                                </div>
+                            </a>
+                        </li>
+                    @endif
                     <li data-ripplecator class ="dark-ripples">
                         <a class="email" id="{{$id}}">
                             <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" 

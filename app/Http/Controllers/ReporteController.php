@@ -63,6 +63,7 @@ class ReporteController extends BaseController
 
         $mujeres = 0;
         $hombres = 0;
+        $array = array();
 
         foreach($inscritos as $inscrito){
 

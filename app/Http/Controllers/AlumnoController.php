@@ -485,8 +485,22 @@ class AlumnoController extends BaseController
 
     public function operar($id)
     {   
+        $item_factura = DB::table('items_factura_proforma')
+            ->select('items_factura_proforma.*')
+            ->where('items_factura_proforma.alumno_id', '=', $id)
+            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+        ->get();
+
+        $total = 0;
+
+        foreach($item_factura as $items_factura){
+
+                $total = $total + $items_factura->importe_neto;
+                
+        }
+
         $alumno = Alumno::find($id);
-        return view('participante.alumno.operacion')->with(['id' => $id, 'alumno' => $alumno]);        
+        return view('participante.alumno.operacion')->with(['id' => $id, 'alumno' => $alumno, 'total' => $total]);        
     }
 
     public function deuda($id)

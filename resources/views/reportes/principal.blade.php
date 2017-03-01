@@ -6,6 +6,8 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
+<link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
 @stop
 
 @section('js_vendor')
@@ -14,6 +16,8 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script>
 @stop
 @section('content')
 
@@ -37,9 +41,9 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
-                            <!-- <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>  -->                  
-                        </div>
+     <!--                    <div class="card-header text-right">
+                            <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>                   
+                        </div> -->
                         <div class="card-body text-center">
                             <div class="col-sm-12">
                                 <div role="tabpanel" class="tab">
@@ -102,68 +106,100 @@
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 50, 
-        // paging:false, 
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            $('body').css('background', "#fff")
+
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 50, 
+            // paging:false, 
+            order: [[0, 'asc']],
+            fnDrawCallback: function() {
+              $('.dataTables_paginate').show();
+              /*if ($('#tablelistar tr').length < 25) {
+                  $('.dataTables_paginate').hide();
+              }
+              else{
+                 $('.dataTables_paginate').show();
+              }*/
+            },
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     " ",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
+            });
+
+            $('a[data-toggle="tab"]').click( function (e) {
+              var tabs = e.currentTarget.hash;
+
+              if(tabs == '#participantes'){
+                $('[data-menu-color]').attr('data-menu-color', 'azul');
+              }
+              if(tabs == '#agendar'){
+                $('[data-menu-color]').attr('data-menu-color', 'amarillo');
+              }
+              if(tabs == '#especiales'){
+                $('[data-menu-color]').attr('data-menu-color', 'morado');
+              }
+              if(tabs == '#validar'){
+                $('[data-menu-color]').attr('data-menu-color', 'naranja');
+              }       
+              if(tabs == '#punto_venta'){
+                $('[data-menu-color]').attr('data-menu-color', 'verde');
+              }       
+              if(tabs == '#reportes'){
+                $('[data-menu-color]').attr('data-menu-color', 'rojo');
+              }       
+          });
+
+          $('div.tab-pane').each(function () {
+              $(this).addClass("active");
+          });
+
+          $('.sti-menu').iconmenu({
+              animMouseenter: {
+                  'mText': {speed: 500, easing: 'easeOutExpo', delay: 200, dir: -1},
+                  'sText': {speed: 500, easing: 'easeOutExpo', delay: 200, dir: -1},
+                  'icon': {speed: 700, easing: 'easeOutBounce', delay: 0, dir: 1}
+              },
+              animMouseleave: {
+                  'mText': {speed: 400, easing: 'easeInExpo', delay: 0, dir: -1},
+                  'sText': {speed: 400, easing: 'easeInExpo', delay: 0, dir: 1},
+                  'icon': {speed: 400, easing: 'easeInExpo', delay: 0, dir: -1}
+              }
+          });
+          $('div.tab-pane').each(function () {
+              $(this).removeClass("active");
+          });
+
+          $("div.tab-pane").first().addClass("active");
         });
+
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-            
-            });
 
         </script>
 
