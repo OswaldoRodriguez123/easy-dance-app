@@ -24,7 +24,7 @@
             <section id="content">
                 <div class="container">
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+<!--                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a> -->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -48,11 +48,23 @@
                             <div class="col-sm-12">
                                 <div role="tabpanel" class="tab">
                                     <ul class="tab-nav tab-menu" role="tablist" data-menu-color="naranja">
-                                        <li class="active" role="presentation"><a aria-controls="reportes" role="tab" data-toggle="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>   
+                                            <li role="presentation"><a href="#modalParticipantes" class="azul" aria-controls="participantes" role="tab" data-toggle="modal"><div class="icon_a icon_a-participantes f-30" style="color:#2196f3;  " ></div><p style=" margin-bottom: -2px ; color:#2196f3;">Participantes</p></a></li>
+                                            
+                                            <li role="presentation" name="agendar"><a href="#modalAgendar" class="amarillo" href="#agendar" aria-controls="agendar" role="tab" data-toggle="modal"><div class="icon_a icon_a-agendar f-30" style="color:#FFD700;  " ></div><p style=" margin-bottom: -2px; color:#FFD700;">Agendar</p></a></li>
+                                            
+                                            <li role="presentation"><a href="#modalEspeciales" class="rosa" aria-controls="especiales" role="tab" data-toggle="modal"><div class="icon_a icon_a-especiales f-30" style="color:#e91e63;  " ></div><p style=" margin-bottom: -2px; color:#e91e63;">Especiales</p></a></li>
+                                           
+                                            
+                                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;  "></div><p style=" margin-bottom: -2px; color:#4caf50;">Punto de Venta</p></a></li>
+                                           
+                                            <li class="active" role="presentation"><a class="rojo" href="{{url('/')}}/reportes" aria-controls="reportes" role="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>   
                                     </ul>
                                 </div>
                                 <div class="tab-content ">
                                     <div role="tabpanel" class="tab-pane  animated active fadeInRight in" id="reportes">
+
+                                        <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
+
                                         <ul id="sti-menu"  class="sti-menu">
                                             <li data-hovercolor="#f44336">
                                                 <a href="{{url('/')}}/reportes/asistencias"><h2 data-type="mText" class="sti-item">Asistencias</h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a>
