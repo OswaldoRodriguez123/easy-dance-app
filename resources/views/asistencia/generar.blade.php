@@ -343,7 +343,7 @@
                                         @if($instructor['imagen'])
                                           <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
                                         @else
-                                            @if($alumno['sexo'] == 'M')
+                                            @if($instructor['sexo'] == 'M')
                                               <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                             @else
                                               <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
