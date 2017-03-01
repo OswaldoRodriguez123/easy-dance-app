@@ -49,7 +49,7 @@
             </div>
             <div class="tab-content ">
               <div role="tabpanel" class="tab-pane  animated active fadeInRight in" id="reportes">
-                <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
+                <div id="id-reporte" class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
                 <ul id="sti-menu"  class="sti-menu">
                   <li data-hovercolor="#f44336">
                       <a href="{{url('/')}}/reportes/asistencias"><h2 data-type="mText" class="sti-item">Asistencias</h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a>
@@ -138,6 +138,14 @@
           'icon': {speed: 400, easing: 'easeInExpo', delay: 0, dir: -1}
         }
       });
+
+      setTimeout(function(){ 
+
+      $('html,body').animate({
+            scrollTop: $("#id-reporte").offset().top-90,
+            }, 1000);
+
+      }, 1000);
     });
 
   </script>

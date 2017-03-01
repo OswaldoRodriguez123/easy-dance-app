@@ -8,6 +8,7 @@ use App\User;
 use App\ConfigEspecialidades;
 use App\Paises;
 use App\Alumno;
+use App\Instructor;
 use App\ComoNosConociste;
 use App\Academia;
 use App\PerfilEvaluativo;
@@ -375,40 +376,62 @@ class UsuarioController extends BaseController {
 
     public function updateImagen(Request $request)
     {          
-            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+        if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
 
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
+            $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imageBase64 );
+            $type =  explode( '/',  $split[0]);
 
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
-                }
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
 
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
+            if($ext == 'png'){
+                $extension = '.png';
+            }
 
-                $nombre_img = "usuario-". Auth::user()->id . $extension;
-                $image = base64_decode($base64_string);
+            $nombre_img = "usuario-". Auth::user()->id . $extension;
+            $image = base64_decode($base64_string);
 
-                // \Storage::disk('usuario')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(300, 300);
-                $img->save('assets/uploads/usuario/'.$nombre_img);
+            // \Storage::disk('usuario')->put($nombre_img,  $image);
+            $img = Image::make($image)->resize(300, 300);
+            $img->save('assets/uploads/usuario/'.$nombre_img);
+
+            }else{
+                $nombre_img = "";
+            }
+
+            $usuario = User::find(Auth::user()->id);
+
+            $usuario->imagen = $nombre_img;
+            $usuario->save();
+
+            if($usuario->usuario_tipo == 3){
+
+                if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+
+                    $nombre_img = "instructorp-". Auth::user()->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('usuario')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/instructor/'.$nombre_img);
 
                 }else{
                     $nombre_img = "";
                 }
 
-                $usuario = User::find(Auth::user()->id);
+                $instructor = Instructor::find(Auth::user()->usuario_id);
 
-                $usuario->imagen = $nombre_img;
-                $usuario->save();
+                $instructor->imagen = $nombre_img;
+                $instructor->save();
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
     }
 
     public function documentos(){

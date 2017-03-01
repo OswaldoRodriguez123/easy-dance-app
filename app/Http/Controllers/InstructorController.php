@@ -271,6 +271,20 @@ class InstructorController extends BaseController {
 
             if($usuario->save()){
 
+                if($request->imagePerfilBase64){
+
+                    $nombre_img = "usuario-". $usuario->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/usuario/'.$nombre_img);
+
+                    $usuario->imagen = $nombre_img;
+                    $usuario->save();
+
+                }
+
                 // $academia = Academia::find(Auth::user()->academia_id);
                 // $contrasena = $usuario->password;
                 // $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
@@ -568,39 +582,61 @@ class InstructorController extends BaseController {
 
     public function updateImagen(Request $request)
     {
-                $instructor = Instructor::find($request->id);
-                
-                if($request->imagePerfilBase64){
-                    $base64_string = substr($request->imagePerfilBase64, strpos($request->imagePerfilBase64, ",")+1);
-                    $path = storage_path();
-                    $split = explode( ';', $request->imagePerfilBase64 );
-                    $type =  explode( '/',  $split[0]);
+        $instructor = Instructor::find($request->id);
+        
+        if($request->imagePerfilBase64){
+            $base64_string = substr($request->imagePerfilBase64, strpos($request->imagePerfilBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imagePerfilBase64 );
+            $type =  explode( '/',  $split[0]);
 
-                    $ext = $type[1];
-                    
-                    if($ext == 'jpeg' || 'jpg'){
-                        $extension = '.jpg';
-                    }
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
 
-                    if($ext == 'png'){
-                        $extension = '.png';
-                    }
+            if($ext == 'png'){
+                $extension = '.png';
+            }
 
-                    $nombre_img = "instructorp-". $instructor->id . $extension;
-                    $image = base64_decode($base64_string);
+            $nombre_img = "instructorp-". $instructor->id . $extension;
+            $image = base64_decode($base64_string);
 
-                    // \Storage::disk('taller')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(300, 300);
-                    $img->save('assets/uploads/instructor/'.$nombre_img);
+            // \Storage::disk('taller')->put($nombre_img,  $image);
+            $img = Image::make($image)->resize(300, 300);
+            $img->save('assets/uploads/instructor/'.$nombre_img);
 
-                }else{
-                    $nombre_img = "";
-                }
+        }else{
+            $nombre_img = "";
+        }
 
-                $instructor->imagen = $nombre_img;
-                $instructor->save();
+        $instructor->imagen = $nombre_img;
+        $instructor->save();
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        $usuario = User::where('usuario_tipo',3)->where('usuario_id', $request->id)->first();
+
+        if($usuario){
+
+            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+
+                $nombre_img = "usuario-". Auth::user()->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('usuario')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/usuario/'.$nombre_img);
+
+            }else{
+                $nombre_img = "";
+            }
+
+            $usuario->imagen = $nombre_img;
+            $usuario->save();
+
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     /**
