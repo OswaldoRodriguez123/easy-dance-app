@@ -618,7 +618,7 @@ class InstructorController extends BaseController {
 
         if($usuario){
 
-            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+            if($request->imagePerfilBase64){
 
                 $nombre_img = "usuario-". Auth::user()->id . $extension;
                 $image = base64_decode($base64_string);
