@@ -943,11 +943,18 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('/inicio', 'AcademiaConfiguracionController@index');
 			Route::get('/', 'AcademiaConfiguracionController@menu');
 
+
+			//PERFIL Y PAGOS
+
 			Route::get('perfil-profesional', 'InstructorController@perfil_instructor');
 			Route::get('pagos', 'InstructorController@pagos_vista_instructor');
 
+			//CLASES GRUPALES
+
 			Route::get('clases-grupales', 'ClaseGrupalController@clases_grupales_vista_instructor');
 			Route::get('clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+
+			//NIVELACIONES CLASES GRUPALES
 
 			Route::get('nivelaciones', 'ClaseGrupalController@principalnivelaciones');
 			Route::get('agendar/clases-grupales/nivelaciones/{id}', 'ClaseGrupalController@nivelaciones');
@@ -978,6 +985,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('especiales/examenes/eliminar_item_fijo/{id}','ExamenController@eliminar_item_fijo');
 
 			//EVALUACION (SERIAN LOS RESULTADOS DE LOS EXAMENES)
+			
 			Route::get('especiales/evaluaciones', 'EvaluacionController@index');
 			Route::get('especiales/evaluaciones/{id}', 'EvaluacionController@evaluaciones');
 			Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');		

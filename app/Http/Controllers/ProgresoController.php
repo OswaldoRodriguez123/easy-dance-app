@@ -8,6 +8,7 @@ use App\Academia;
 use App\InscripcionClaseGrupal;
 use App\Progreso;
 use App\Examen;
+use App\Instructor;
 use App\Evaluacion;
 use App\DetalleEvaluacion;
 use Validator;
@@ -61,23 +62,32 @@ class ProgresoController extends BaseController {
             ->get();
 
         }else{
-             $clase_grupal_join = DB::table('clases_grupales')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-                ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
-                ->where('clases_grupales.deleted_at', '=', null)
-                ->OrderBy('clases_grupales.hora_inicio')
-            ->get();
+
+            $instructor = Instructor::find(Auth::user()->usuario_id);
+
+            if(!$instructor->boolean_administrador){
+                $clase_grupal_join = DB::table('clases_grupales')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
+                    ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
+                    ->OrderBy('clases_grupales.hora_inicio')
+                ->get();
+            }else{
+
+                $clase_grupal_join = DB::table('clases_grupales')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
+                    ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
+                    ->OrderBy('clases_grupales.hora_inicio')
+                ->get();
+            }
+             
         }
 
-
-        $academia = Academia::find(Auth::user()->academia_id);
-
-
-         return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $clase_grupal_join]);
-
-        
-    
+        return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $clase_grupal_join]);
+            
     }
 
     public function progreso($id)

@@ -958,6 +958,30 @@
                                         </div>
                                      </div>
 
+                                     <div class="clearfix p-b-35"></div>
+
+                                     <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Mostrar todas las clases grupales en el sistema</label id="id-boolean_disponibilidad"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El instructor al entrar en el sistema, podra administrar todas las clases grupales indistintamente sean de el o no" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="boolean_administrador" name="boolean_administrador" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="administrador" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_administrador">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_administrador_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
 
                                <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
@@ -1359,13 +1383,26 @@
         $("#disponibilidad").attr("checked", true); //VALOR POR DEFECTO
       }
 
-        $("#disponibilidad").on('change', function(){
-          if ($("#disponibilidad").is(":checked")){
-            $("#boolean_disponibilidad").val('1');
-          }else{
-            $("#boolean_disponibilidad").val('0');
-          }    
-        });
+      $("#disponibilidad").on('change', function(){
+        if ($("#disponibilidad").is(":checked")){
+          $("#boolean_disponibilidad").val('1');
+        }else{
+          $("#boolean_disponibilidad").val('0');
+        }    
+      });
+
+      if("{{$instructor->boolean_administrador}}" == 1){
+        $("#boolean_administrador").val('1');  //VALOR POR DEFECTO
+        $("#administrador").attr("checked", true); //VALOR POR DEFECTO
+      }
+
+      $("#administrador").on('change', function(){
+        if ($("#administrador").is(":checked")){
+          $("#boolean_administrador").val('1');
+        }else{
+          $("#boolean_administrador").val('0');
+        }    
+      });
 
     if("{{$instructor->alergia}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
