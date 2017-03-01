@@ -197,7 +197,10 @@ class AsistenciaController extends BaseController
       //     ->orderBy('nombre', 'asc')
       // ->get();
 
-      $array = array();
+      $array = array(2,4);
+
+      $array_alumno = array();
+      $array_instructor = array();
 
       $alumnos = DB::table('alumnos')
           ->select('alumnos.*')
@@ -208,7 +211,7 @@ class AsistenciaController extends BaseController
 
       foreach($alumnos as $alumno){
 
-        $usuario = User::where('usuario_id',$alumno->id)->first();
+        $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
 
         if($usuario){
 
@@ -224,12 +227,36 @@ class AsistenciaController extends BaseController
         $alumno_array = $collection->toArray();
             
         $alumno_array['imagen']=$imagen;
-        $array[$alumno->id] = $alumno_array;
+        $array_alumno[$alumno->id] = $alumno_array;
 
 
       }
 
-      $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+      $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+      foreach($instructores as $instructor){
+
+        $usuario = User::where('usuario_id',$instructor->id)->where('usuario_tipo',3)->first();
+
+        if($usuario){
+
+          if($usuario->imagen){
+            $imagen = $usuario->imagen;
+          }else{
+            $imagen = '';
+          }
+
+        }
+
+        $collection=collect($instructor);     
+        $instructor_array = $collection->toArray();
+            
+        $instructor_array['imagen']=$imagen;
+        $array_instructor[$instructor->id] = $instructor_array;
+
+
+      }
+
 
       $staff = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
@@ -247,7 +274,7 @@ class AsistenciaController extends BaseController
       $activacion = $grouped->toArray();
 
 
-      return view('asistencia.generar')->with(['alumnosacademia' => $array, 'instructores' => $instructor, 'activacion' => $activacion, 'staff' => $staff]);
+      return view('asistencia.generar')->with(['alumnosacademia' => $array_alumno, 'instructores' => $array_instructor, 'activacion' => $activacion, 'staff' => $staff]);
 
     }
 

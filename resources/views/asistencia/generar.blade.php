@@ -131,7 +131,7 @@
 
                                            <div class="col-sm-3">
   
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+                                                <img id = "instructor_imagen" name = "instructor_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
 
                                                 <div class="clearfix p-b-15"></div>
     
@@ -335,19 +335,23 @@
                                 </tr>
                             @endforeach 
 
-                            @foreach ($instructores as $alumno)
-                                <?php $id = $alumno->id; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno->imagen}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "insctructor">
+                            @foreach ($instructores as $instructor)
+                                <?php $id = $instructor['id']; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$instructor['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante = "{{$instructor['identificacion']}}" data-sexo = "{{$instructor['sexo']}}" data-tipo-participante = "instructor" >
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">
-                                        <!-- if($alumno['imagen'])
-                                            <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/instructor/{{$alumno['imagen']}}" alt="">
-                                        else -->
-                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                                        <!-- endif -->
+                                        @if($instructor['imagen'])
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
+                                        @else
+                                            @if($alumno['sexo'] == 'M')
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            @else
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+                                      @endif
                                     </td>
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}}</td>
-                                    <td class="text-center previa">{{$alumno->identificacion}} <i class="icon_a-instructor"></i></td>
+                                    <td class="text-center previa">{{$instructor['nombre']}} {{$instructor['apellido']}}</td>
+                                    <td class="text-center previa">{{$instructor['identificacion']}} <i class="icon_a-instructor"></i></td>
 
                                 </tr>
                             @endforeach 
@@ -1140,7 +1144,7 @@ $("#permitir_staff").on('click',function(){
         var tipo= $(row).data('tipo-participante');
         if(tipo=="alumno"){
           buscarAlumno(t);
-        }else if(tipo=="insctructor"){
+        }else if(tipo=="instructor"){
           buscarInstructor(t);
         }else{
           buscarStaff(t);
