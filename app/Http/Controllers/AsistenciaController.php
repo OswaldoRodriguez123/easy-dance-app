@@ -20,6 +20,8 @@ use App\AsistenciaInstructor;
 
 use App\ConfigPagosInstructor;
 
+use App\AsistenciaStaff;
+
 use App\Alumno;
 
 use App\HorarioClaseGrupal;
@@ -31,6 +33,8 @@ use App\ClasePersonalizada;
 use App\PagoInstructor;
 
 use App\Cita;
+
+use App\Staff;
 
 use Carbon\Carbon;
 
@@ -93,6 +97,13 @@ class AsistenciaController extends BaseController
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
+        $staff = DB::table('asistencias_staff')
+            ->join('academias', 'asistencias_staff.academia_id', '=', 'academias.id')
+            ->join('staff', 'asistencias_staff.staff_id', '=', 'staff.id')
+            ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'asistencias_staff.hora_salida')
+            ->where('academias.id','=',Auth::user()->academia_id)
+        ->get();
+
         $array = array();
 
         foreach($alumnos as $asistencia){
@@ -136,7 +147,7 @@ class AsistenciaController extends BaseController
 
 
 
-        return view('asistencia.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores]);   
+        return view('asistencia.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores, 'staff_asistencia' => $staff]);   
         }  
 
         if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
@@ -219,6 +230,8 @@ class AsistenciaController extends BaseController
 
       $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
+      $staff = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
       $alumnoc = DB::table('alumnos')
         ->join('users', 'users.usuario_id', '=', 'alumnos.id')
         ->select('alumnos.id as id')
@@ -233,7 +246,7 @@ class AsistenciaController extends BaseController
       $activacion = $grouped->toArray();
 
 
-      return view('asistencia.generar')->with(['alumnosacademia' => $array, 'instructores' => $instructor, 'activacion' => $activacion]);
+      return view('asistencia.generar')->with(['alumnosacademia' => $array, 'instructores' => $instructor, 'activacion' => $activacion, 'staff' => $staff]);
 
     }
 
@@ -1071,6 +1084,64 @@ class AsistenciaController extends BaseController
               
        }
 
+    }
+
+    public function storeStaff(Request $request)
+    {
+      $rules = [
+
+        'asistencia_id_staff' => 'required',
+      ];
+
+      $messages = [
+
+        'asistencia_id_staff.required' => 'Ups! El Staff es requerido',
+          
+      ];
+
+      $validator = Validator::make($request->all(), $rules, $messages);
+
+      if ($validator->fails()){
+          
+          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
+
+      }else{
+
+        $id = $request->asistencia_id_staff;
+
+        $asistencia = AsistenciaStaff::where('staff_id', $id)->where('hora_salida', '00:00:00')->first();
+
+        $actual = Carbon::now();
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+        $actual->tz = $geoip->getTimezone();
+        $fecha_actual=$actual->toDateString();
+        $hora_actual=$actual->toTimeString();
+
+        if($asistencia)
+        {
+
+          $asistencia->hora_salida = $hora_actual;
+          $asistencia->save();
+
+        }else{
+
+          $asistencia = new AsistenciaStaff;
+          $asistencia->fecha=$fecha_actual;
+          $asistencia->hora=$hora_actual;
+          $asistencia->staff_id=$id;
+          $asistencia->academia_id=Auth::user()->academia_id;
+
+          $asistencia->save();
+
+          if($asistencia->save())
+          {
+            return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+          }else{
+
+          }
+        }            
+      }
     }
 
 }

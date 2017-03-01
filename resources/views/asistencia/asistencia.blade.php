@@ -60,6 +60,11 @@
                                         <i class="input-helper"></i>  
                                         Instructores <i id="instructores2" name="instructores2" class="icon_a-instructor f-20"></i>
                                     </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="staff" value="staff" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Staff <i id="staff2" name="staff2" class="icon_f-staff f-20"></i>
+                                    </label>
                                     </div>
                                     
                                  </div>
@@ -73,7 +78,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
-                                    <th class="text-center" data-column-id="clase">Clase</th>
+                                    <th class="text-center" data-column-id="clase" id="clase">Clase</th>
                                     <th class="text-center" data-column-id="instructor">Instructor</th>
                                     <th class="text-center" data-column-id="participante" id="participante">Participante</th>
                                     <th class="text-center" data-column-id="hora" id="hora">Hora</th>
@@ -122,6 +127,7 @@
 
             var alumno = <?php echo json_encode($alumnos_asistencia);?>;
             var instructor = <?php echo json_encode($instructores_asistencia);?>;
+            var staff = <?php echo json_encode($staff_asistencia);?>;
 
             $(document).ready(function(){
 
@@ -180,9 +186,11 @@
                 t.clear().draw();
 
                 if ($(this).val()=='alumnos') {
-                      rechargeAlumno();
-                } else  {
-                      rechargeInstructor();
+                    rechargeAlumno();
+                }else if ($(this).val()=='instructores')  {
+                    rechargeInstructor();
+                }else{
+                    rechargeStaff();
                 }
                 
              });
@@ -234,14 +242,42 @@
                 finprocesado();
             }
 
+            function rechargeStaff(){
+                
+                document.getElementById('participante').innerHTML = 'Hora Entrada'; 
+                document.getElementById('hora').innerHTML = 'Hora Salida'; 
+
+                $.each(staff, function (index, array) {
+                    var rowNode=t.row.add( [
+                    ''+array.fecha+'',
+                    '',
+                    ''+array.nombre_staff+ ' '+array.apellido_staff+'',
+                    ''+array.hora+'',
+                    ''+array.hora_salida+''
+                    ] ).draw(false).node();
+                    $( rowNode )
+                        .attr('id',array.id)
+                        .addClass('seleccion');
+                });
+                finprocesado();
+            }
+
             $("#alumnos").click(function(){
                 $( "#instructores2" ).removeClass( "c-verde" );
+                $( "#staff2" ).removeClass( "c-verde" );
                 $( "#alumnos2" ).addClass( "c-verde" );
             });
 
             $("#instructores").click(function(){
                 $( "#alumnos2" ).removeClass( "c-verde" );
+                $( "#staff2" ).removeClass( "c-verde" );
                 $( "#instructores2" ).addClass( "c-verde" );
+            });
+
+            $("#staff").click(function(){
+                $( "#alumnos2" ).removeClass( "c-verde" );
+                $( "#instructores2" ).removeClass( "c-verde" );
+                $( "#staff2" ).addClass( "c-verde" );
             });
 
         </script>

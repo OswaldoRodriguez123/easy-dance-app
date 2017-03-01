@@ -757,6 +757,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('asistencia/agregar/permitir', 'AsistenciaController@storePermitir');
 			Route::post('asistencia/agregar/instructor', 'AsistenciaController@storeInstructor');
 			Route::post('asistencia/agregar/instructor/permitir', 'AsistenciaController@storeInstructorPermitir');
+			Route::post('asistencia/agregar/staff', 'AsistenciaController@storeStaff');
 
 
 		    //PRIVILEGIOS

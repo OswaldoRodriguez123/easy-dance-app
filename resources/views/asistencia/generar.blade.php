@@ -186,6 +186,75 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="modalAsistenciaStaff" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Registrar asistencia - Staff <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="agregar_asistencia_staff" id="agregar_asistencia_staff"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <div class="modal-body">                           
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <p class="p-l-10" id="asistencia-nombre-staff"> </p>
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-9">
+                                               <!-- <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
+                                               <div class="fg-line">
+                                                  <div class="select">
+                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id_instructor" id="asistencia-clase_grupal_id_instructor" data-live-search="true">
+
+                                                      <option value="">Selecciona</option>
+                                                      
+                                                    
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                                <div class="has-error" id="error-asistencia_clase_grupal_id_mensaje">
+                                                  <span >
+                                                      <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
+                                                  </span>
+                                              </div> -->
+                                            </div>
+                                           
+
+                                           <div class="clearfix"></div> 
+
+                                           
+                                           
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-7 text-left">
+                                          <div class="procesando hidden">
+                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                          <div class="preloader pls-purple">
+                                              <svg class="pl-circular" viewBox="25 25 50 50">
+                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                              </svg>
+                                          </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-5">  
+                                          <input type="hidden" id="asistencia_id_staff" name="asistencia_id_staff" ></input>                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16" id="permitir_staff" name="permitir_staff" > Generar <i class="zmdi zmdi-check"></i></button>
+                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div></form>
+                                </div>
+                            </div>
+                        </div>
                 <div class="container">
                 
                     <!-- <div class="block-header">
@@ -282,6 +351,23 @@
 
                                 </tr>
                             @endforeach 
+
+                            @foreach ($staff as $alumno)
+                                <?php $id = $alumno->id; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "staff">
+                                    <td class="text-center previa"></td>
+                                    <td class="text-center previa">
+                                        <!-- if($alumno['imagen'])
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/instructor/{{$alumno['imagen']}}" alt="">
+                                        else -->
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                                        <!-- endif -->
+                                    </td>
+                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}}</td>
+                                    <td class="text-center previa">{{$alumno->identificacion}} <i class="icon_f-staff"></i></td>
+
+                                </tr>
+                            @endforeach 
                                                            
                             </tbody>
                         </table>
@@ -314,6 +400,7 @@
       route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
       route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
+      route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
 
       var tipo = 1;
 
@@ -625,6 +712,61 @@
           
         });
     });
+
+$("#permitir_staff").on('click',function(){
+      var route = route_agregar_asistencia_staff;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_asistencia_staff" ).serialize(); 
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data:datos,
+          success:function(respuesta){  
+            console.log(respuesta)          
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              $("#agregar_asistencia_staff")[0].reset();
+              $("#asistencia-horario-staff").text("---");
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
+              $('#modalAsistenciaStaff').modal('hide');
+              swal("Permitido!", respuesta.mensaje, "success");
+              $("#content").toggleClass("opacity-content");
+              $("header").toggleClass("abierto");
+              $("footer").toggleClass("opacity-content"); 
+            }else{
+              var nType = 'danger';
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+              console.log(msj);
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }
+          },
+          error:function(msj){
+            errores(msj.responseJSON.errores);
+            var nType = 'danger';
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            var nTitle="Ups! ";
+            if(msj.responseJSON.status=="ERROR"){
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
+            }
+          }
+        });
+    });
     
 
     $('#asistencia-clase_grupal_id').on('change', function(){
@@ -645,6 +787,24 @@
         $("#asistencia-horario-instructor").text(valor[1]);
       }
     });
+
+     function buscarStaff(t){
+        procesando();
+
+        var row = $(t).closest('tr');
+
+        var id_instructor = $(row).data('id-participante');
+        var nombre_instructor = $(row).data('nombre-participante');
+
+        $('#asistencia_id_staff').val(id_instructor);
+        $('#asistencia-nombre-staff').text(nombre_instructor);
+        $("#asistencia-horario-staff").text("---");
+
+        finprocesado();
+        $('#modalAsistenciaStaff').modal('show');
+
+
+      }
 
       function buscarInstructor(t){
         procesando();
@@ -842,6 +1002,15 @@
         $("#what_we_do").removeClass("opacity-content");
       })
 
+      $('#modalAsistenciaStaff').on('hidden.bs.modal', function (e) {
+        $("#content").removeClass("opacity-content");
+        $("header").removeClass("abierto");
+        $("footer").removeClass("opacity-content");
+        $("#main").removeClass("opacity-content");
+        $("#chat").removeClass("toggled");
+        $("#what_we_do").removeClass("opacity-content");
+      })
+
 
     $('body').on('click', '#what_we_do, #menuTopConfig, #main,#content, footer, header.abierto', function(e){
 
@@ -973,6 +1142,8 @@
           buscarAlumno(t);
         }else if(tipo=="insctructor"){
           buscarInstructor(t);
+        }else{
+          buscarStaff(t);
         }
 
     }
