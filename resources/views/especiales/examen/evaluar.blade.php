@@ -58,7 +58,7 @@
 				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
 					                        <option value="">Seleccione</option>
 					                        @foreach ( $alumnos as $alumno )
-					                        	<option data-imagen = "{{$alumno->imagen}}" data-sexo = "{{$alumno->sexo}}" value = "{!! $alumno->id !!}">{!! $alumno->nombre !!} {!! $alumno->apellido !!} {!! $alumno->identificacion !!}</option>
+					                        	<option data-imagen = "{{$alumno['imagen']}}" data-sexo = "{{$alumno['sexo']}}" value = "{!! $alumno['id'] !!}">{!! $alumno['nombre'] !!} {!! $alumno['apellido'] !!} {!! $alumno['identificacion'] !!}</option>
 					                        @endforeach 
 				                        </select>
 				                    </div>

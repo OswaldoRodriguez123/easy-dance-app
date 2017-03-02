@@ -1121,7 +1121,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
                                <span class="f-14"> A quien va dirigido </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="examen-boolean_grupal">
+                             <td  class="f-14 m-l-15" id="examen-boolean_grupal" data-valor="{{$examen->boolean_grupal}}">
                                 @if($examen->boolean_grupal==0)
                                   General
                                 @else
@@ -1178,6 +1178,9 @@
             }, animationDuration);
 
           if("{{$examen->boolean_grupal}}" == 1){
+        
+            $('#clase_grupal_id').val("{{$examen->clase_grupal_id}}")
+            $('#clase_grupal_id').selectpicker('render')
             $(".clase_grupal").show();  
           }
 

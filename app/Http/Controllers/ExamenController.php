@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Examen;
+use App\User;
 use App\ClaseGrupal;
 use App\Alumno;
 use App\Instructor;
@@ -652,22 +653,72 @@ class ExamenController extends BaseController {
 
         $examen = Examen::find($id);
 
+        $array_alumno = array();
+
+        $array = array(2,4);
+
         if($examen->boolean_grupal){
 
-            $tmp = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
-                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'users.imagen')
-                ->where('inscripcion_clase_grupal.clase_grupal_id', '=' , $examen->clase_grupal_id)
-            ->get();
+            $alumnos = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+              ->select('alumnos.*')
+              ->where('inscripcion_clase_grupal.clase_grupal_id', '=' , $examen->clase_grupal_id)
+              ->where('alumnos.deleted_at', '=', null)
+              ->orderBy('nombre', 'asc')
+          ->get();
 
-            $tmpDirty = new Collection($tmp);
-			$alumnos = $tmpDirty->unique();
+          foreach($alumnos as $alumno){
+
+            $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+
+            if($usuario){
+
+              if($usuario->imagen){
+                $imagen = $usuario->imagen;
+              }else{
+                $imagen = '';
+              }
+
+            }
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+                
+            $alumno_array['imagen']=$imagen;
+            $array_alumno[$alumno->id] = $alumno_array;
+
+
+          }
 
         }else{
+
             $alumnos = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'users.imagen')
                 ->where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
+                ->orderBy('nombre', 'asc')
             ->get();
+
+            foreach($alumnos as $alumno){
+
+                $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+
+                if($usuario){
+
+                  if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                  }else{
+                    $imagen = '';
+                  }
+
+                }
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+                    
+                $alumno_array['imagen']=$imagen;
+                $array_alumno[$alumno->id] = $alumno_array;
+
+
+            }
         }
 
         //dd($alumnos);
@@ -762,7 +813,7 @@ class ExamenController extends BaseController {
         //dd($arrays_de_items);
 
         return view('especiales.examen.evaluar')
-               ->with(['alumnos' => $alumnos, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id]);
+               ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id]);
     }
 
     public function actualizar_item(Request $request){
