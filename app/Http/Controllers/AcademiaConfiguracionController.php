@@ -1500,41 +1500,40 @@ class AcademiaConfiguracionController extends BaseController {
 
                                 foreach($acuerdos as $acuerdo){
 
-                                    if($acuerdo->tiempo_tolerancia && $acuerdo->porcentaje_retraso)
-                                    {
-                                        $proformas = ItemsFacturaProforma::where('tipo',6)->where('item_id', $acuerdo->id)->get();
+            
+                                    $proformas = ItemsFacturaProforma::where('tipo',6)->where('item_id', $acuerdo->id)->get();
 
-                                        foreach($proformas as $proforma){
-                                            $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
+                                    foreach($proformas as $proforma){
+                                        $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
 
-                                            $fecha->addDays($acuerdo->tiempo_tolerancia);
+                                        $fecha->addDays($acuerdo->tiempo_tolerancia);
 
-                                            if(Carbon::now() > $fecha && $proforma->tiene_mora == 0){
+                                        if(Carbon::now() > $fecha && $proforma->tiene_mora == 0 && $acuerdo->porcentaje_retraso){
 
-                                                $mora = ($proforma->importe_neto * $acuerdo->tiempo_tolerancia)/100;
+                                            $mora = ($proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
 
-                                                $item_factura = new ItemsFacturaProforma;
-                                                                            
-                                                $item_factura->alumno_id = $acuerdo->alumno_id;
-                                                $item_factura->academia_id = Auth::user()->academia_id;
-                                                $item_factura->fecha = Carbon::now()->toDateString();
-                                                $item_factura->nombre = 'Retraso de pago ' .  $proforma->nombre;
-                                                $item_factura->tipo = 8;
-                                                $item_factura->cantidad = 1;
+                                            $item_factura = new ItemsFacturaProforma;
+                                                                        
+                                            $item_factura->alumno_id = $acuerdo->alumno_id;
+                                            $item_factura->academia_id = Auth::user()->academia_id;
+                                            $item_factura->fecha = Carbon::now()->toDateString();
+                                            $item_factura->nombre = 'Retraso de pago ' .  $proforma->nombre;
+                                            $item_factura->tipo = 8;
+                                            $item_factura->cantidad = 1;
 
-                                                $item_factura->importe_neto = $mora;
-                                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                                            $item_factura->importe_neto = $mora;
+                                            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
-                                                $item_factura->save();
+                                            $item_factura->save();
 
-                                                $proforma->tiene_mora = 1;
+                                            $proforma->tiene_mora = 1;
 
-                                                $proforma->save();
-
-                                            }
+                                            $proforma->save();
 
                                         }
+
                                     }
+                                    
                                 }
 
                                 if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
