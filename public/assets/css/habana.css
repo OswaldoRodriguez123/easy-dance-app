@@ -514,6 +514,13 @@ table.dataTable > thead > tr > th {
   font-weight: bold;
 }
 
+.fc-day-grid-event:hover{
+  background: rgba(78,30,67,0.3) !important;  
+  cursor:pointer;
+  color: #4E1E43;
+  font-weight: bold;
+}
+
 .seleccion:hover{
   /*background: rgba(78,30,67,0.3) !important;  
   cursor:pointer;
