@@ -1297,114 +1297,84 @@ class AcademiaConfiguracionController extends BaseController {
                 ->get();
         
             //Desgloso la Fecha Preferencial
-                foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
+            foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
 
-                    $fecha_cuota_explode=explode('-', $InscripcionClase->fecha_pago);
+                $fecha_cuota_explode=explode('-', $InscripcionClase->fecha_pago);
 
-                            foreach ($ConfigClasesGrupales as $configClases) {
+                foreach ($ConfigClasesGrupales as $configClases) {
 
-                                $fecha_inicio_preferencial = Carbon::createFromFormat('Y-m-d', $configClases->fecha_inicio_preferencial);
+                    $fecha_inicio_preferencial = Carbon::createFromFormat('Y-m-d', $configClases->fecha_inicio_preferencial);
 
-                                if ($fecha_inicio_preferencial <= Carbon::now()){
+                    if ($fecha_inicio_preferencial <= Carbon::now()){
 
-                                    $fecha_inicio_preferencial = $fecha_inicio_preferencial->addMonth()->toDateString();
+                        $fecha_inicio_preferencial = $fecha_inicio_preferencial->addMonth()->toDateString();
 
-                                    $clase_grupal = ClaseGrupal::find($configClases->clase_grupal_id);
-                                    $clase_grupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
-                                    $clase_grupal->save();
+                        $clase_grupal = ClaseGrupal::find($configClases->clase_grupal_id);
+                        $clase_grupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
+                        $clase_grupal->save();
+
+                    }
+
+                    $fecha_pago = Carbon::createFromFormat('Y-m-d', $InscripcionClase->fecha_pago);
+
+                    if ($fecha_pago <= Carbon::now()){
+
+                        if($configClases->id == $InscripcionClase->ClaseGrupalID){
+
+                            $FacturaProforma = ItemsFacturaProforma::select(
+                            'items_factura_proforma.tipo', 
+                            'items_factura_proforma.alumno_id')
+                            ->where('items_factura_proforma.tipo','=',$tipo)
+                            ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                            ->where('items_factura_proforma.item_id', '=', $configClases->clase_grupal_id)
+                            ->get()->count();
+
+                            /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
+                                OBTENER LA FECHA LIMITE DE PAGO **/
+                            $fecha_cuota = Carbon::create($fecha_cuota_explode[0], $fecha_cuota_explode[1], $fecha_cuota_explode[2],0);
+
+                            /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
+                            $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
+                            
+                            if($FacturaProforma == 0 && $InscripcionClase->Costo > 0){
+
+                                $fecha_final = Carbon::createFromFormat('Y-m-d', $configClases->fecha_final);
+
+                                if($fecha_final > Carbon::now()){
+                                    
+                                    $fecha_cuota = $fecha_cuota->addMonth()->toDateString();
+                                    
+                                    $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
+
+                                    $clasegrupal->fecha_pago = $fecha_cuota;
+                                    $clasegrupal->save();
+
+                                    $item_factura = new ItemsFacturaProforma;
+                                    
+                                    $item_factura->alumno_id = $InscripcionClase->AlumnoId;
+                                    $item_factura->academia_id = Auth::user()->academia_id;
+                                    $item_factura->fecha = Carbon::now()->toDateString();
+                                    $item_factura->item_id = $configClases->id;
+                                    $item_factura->nombre = 'Cuota ' . $configClases->nombre;
+                                    $item_factura->tipo = $tipo;
+                                    $item_factura->cantidad = $cantidad;
+                                    $item_factura->importe_neto = $InscripcionClase->Costo;
+                                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                    $item_factura->save();
 
                                 }
 
-                                $fecha_pago = Carbon::createFromFormat('Y-m-d', $InscripcionClase->fecha_pago);
-
-                                if ($fecha_pago <= Carbon::now()){
-
-                                    if($configClases->id == $InscripcionClase->ClaseGrupalID){
-
-                                        $FacturaProforma = ItemsFacturaProforma::select(
-                                        'items_factura_proforma.tipo', 
-                                        'items_factura_proforma.alumno_id')
-                                        ->where('items_factura_proforma.tipo','=',$tipo)
-                                        ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
-                                        ->where('items_factura_proforma.item_id', '=', $configClases->clase_grupal_id)
-                                        ->get()->count();
-
-                                        /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
-                                            OBTENER LA FECHA LIMITE DE PAGO **/
-                                        $fecha_cuota = Carbon::create($fecha_cuota_explode[0], $fecha_cuota_explode[1], $fecha_cuota_explode[2],0);
-
-                                        /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
-                                        $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
-                                        
-                                        if($FacturaProforma == 0 AND $InscripcionClase->Costo > 0){
-
-                                            $fecha_final = Carbon::createFromFormat('Y-m-d', $configClases->fecha_final);
-
-                                            if($fecha_final > Carbon::now()){
-                                                
-                                                $fecha_cuota = $fecha_cuota->addMonth()->toDateString();
-                                                
-                                                $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
-
-                                                $clasegrupal->fecha_pago = $fecha_cuota;
-                                                $clasegrupal->save();
-
-                                                $item_factura = new ItemsFacturaProforma;
-                                                
-                                                $item_factura->alumno_id = $InscripcionClase->AlumnoId;
-                                                $item_factura->academia_id = Auth::user()->academia_id;
-                                                $item_factura->fecha = Carbon::now()->toDateString();
-                                                $item_factura->item_id = $configClases->id;
-                                                $item_factura->nombre = 'Cuota ' . $configClases->nombre;
-                                                $item_factura->tipo = $tipo;
-                                                $item_factura->cantidad = $cantidad;
-                                                $item_factura->importe_neto = $InscripcionClase->Costo;
-                                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-
-                                                $item_factura->save();
-
-                                            }
-
-                                            }else{
-                                                $result[] = array(
-                                                    'mensaje' => 'Ya hay Deuda Asignada para la Clase '.$configClases->nombre,
-                                                    'alumno' => $InscripcionClase->NombreAlumno.' '.$InscripcionClase->ApellidoAlumno,
-                                                    );
-                                            }
+                            }
                                             
-
-                            //                 $result[] = array(
-                            //                     'mensaje' => 'Fecha Limite de Pago, se le cargara un porcentaje adicional a su factura',
-                            //                     'alumno' => $InscripcionClase->NombreAlumno.' '.$InscripcionClase->ApellidoAlumno,
-                            //                     'monto' => $configClases->costo_mensualidad,
-                            //                     'mora' => $mora,
-
-                            // );
                         }
                                      
-                   
-                }    
-
-                // $result[] = array(
-                //     'id' => $configClases->id,
-                //     'mensaje' => 'La Clase Grupal '.$configClases->nombre.' tiene deuda',
-                //     'fecha_de_pago' => $configClases->fecha_inicio_preferencial,
-                //     'monto' => $configClases->costo_mensualidad,  );
-            }
-                // else{
-            //     $result[] = array(
-            //         'id' => $configClases->id,
-            //         'mensaje' => 'La Clase Grupal '.$configClases->nombre.' no tiene deuda',
-            //         'fecha_de_pago' => $configClases->fecha_inicio_preferencial,
-            //         'monto' => $configClases->costo_mensualidad,  );
-            // }
-            // $result;
-        }
+		            }    
+		        }
+		    }
 
         return $this->tiempotolerancia();
         
-
-
     }
 
     public function tiempotolerancia(){
@@ -1440,265 +1410,103 @@ class AcademiaConfiguracionController extends BaseController {
         
         
             //Desgloso la Fecha Preferencial
-                foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
+        foreach ($InscripcionClaseGrupal as $InscripcionClase ) {
 
-                            foreach ($ConfigClasesGrupales as $configClases) {
+        	foreach ($ConfigClasesGrupales as $configClases) {
 
-                                    if($configClases->id == $InscripcionClase->ClaseGrupalID){
+                if($configClases->id == $InscripcionClase->ClaseGrupalID){
 
-                                        $FacturaProforma = ItemsFacturaProforma::select(
-                                        'items_factura_proforma.tipo', 
-                                        'items_factura_proforma.alumno_id')
-                                        ->where('items_factura_proforma.tipo','=',$tipo)
-                                        ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
-                                        ->get()->count();
+                    $FacturaProforma = ItemsFacturaProforma::select(
+                    'items_factura_proforma.tipo', 
+                    'items_factura_proforma.alumno_id')
+                    ->where('items_factura_proforma.tipo','=',$tipo)
+                    ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                    ->get()->count();
 
-                                        /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
-                                            OBTENER LA FECHA LIMITE DE PAGO **/
+                    /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER
+                        OBTENER LA FECHA LIMITE DE PAGO **/
 
-                                        $fecha_cuota_explode=explode('-', $InscripcionClase->fecha_pago);
-                                        $fecha_cuota = Carbon::create($fecha_cuota_explode[0], $fecha_cuota_explode[1], $fecha_cuota_explode[2],0);
+                    $fecha_cuota_explode=explode('-', $InscripcionClase->fecha_pago);
+                    $fecha_cuota = Carbon::create($fecha_cuota_explode[0], $fecha_cuota_explode[1], $fecha_cuota_explode[2],0);
 
-                                        /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
-                                        $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
-                                        
-                                            //CONDICION PARA EL TIEMPO DE TOLERANCIA, SI SE CUMPLE
-                                            //CALCULARA SEGUN EL PORCENTAJE CONFIGURADO Y SE LE SUMARA
-                                            //AL MONTO DE LA CUOTA
-                                        $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
+                    /** AQUI CALCULAMOS LA FECHA FECHA LIMITE DE PAGO **/
+                    $tolerancia = $fecha_cuota->addDay($configClases->tiempo_tolerancia)->toDateString();
+                    
+                        //CONDICION PARA EL TIEMPO DE TOLERANCIA, SI SE CUMPLE
+                        //CALCULARA SEGUN EL PORCENTAJE CONFIGURADO Y SE LE SUMARA
+                        //AL MONTO DE LA CUOTA
+                    $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
 
-                                            
-                                           if($FacturaProforma != 0 && Carbon::now()->format('Y-m-d') > $tolerancia && $clasegrupal->tiene_mora == 0){
+                        
+                   	if($FacturaProforma != 0 && Carbon::now()->format('Y-m-d') > $tolerancia && $clasegrupal->tiene_mora == 0){
 
-                                                $mora = ($configClases->costo_mensualidad * $configClases->porcentaje_retraso)/100;
+                        $mora = ($configClases->costo_mensualidad * $configClases->porcentaje_retraso)/100;
 
-                                                $item_factura = new ItemsFacturaProforma;
-                                                                            
-                                                $item_factura->alumno_id = $InscripcionClase->AlumnoId;
-                                                $item_factura->academia_id = Auth::user()->academia_id;
-                                                $item_factura->fecha = Carbon::now()->toDateString();
-                                                                                //$item_factura->item_id = $id;
-                                                $item_factura->nombre = 'Mora por retraso de pago Cuota' .  $configClases->nombre;
-                                                $item_factura->tipo = 8;
-                                                $item_factura->cantidad = 1;
-                                                                                // $item_factura->precio_neto = $configClases->costo_mensualidad;
-                                                                                //$item_factura->impuesto = $impuesto;
-                                                $item_factura->importe_neto = $mora;
-                                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                        $item_factura = new ItemsFacturaProforma;
+                                                    
+                        $item_factura->alumno_id = $InscripcionClase->AlumnoId;
+                        $item_factura->academia_id = Auth::user()->academia_id;
+                        $item_factura->fecha = Carbon::now()->toDateString();
+                                                        //$item_factura->item_id = $id;
+                        $item_factura->nombre = 'Mora por retraso de pago Cuota' .  $configClases->nombre;
+                        $item_factura->tipo = 8;
+                        $item_factura->cantidad = 1;
+                                                        // $item_factura->precio_neto = $configClases->costo_mensualidad;
+                                                        //$item_factura->impuesto = $impuesto;
+                        $item_factura->importe_neto = $mora;
+                        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
-                                                $item_factura->save();
+                        $item_factura->save();
 
-                                                $clasegrupal->tiene_mora = 1;
-                                                $clasegrupal->save();
+                        $clasegrupal->tiene_mora = 1;
+                        $clasegrupal->save();
 
-                                            }
-                                        }
-                                    }
-                                }
-
-                                $acuerdos = Acuerdo::where('academia_id', Auth::user()->academia_id)->get();
-
-                                foreach($acuerdos as $acuerdo){
-
-            
-                                    $proformas = ItemsFacturaProforma::where('tipo',6)->where('item_id', $acuerdo->id)->get();
-
-                                    foreach($proformas as $proforma){
-                                        $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
-
-                                        $fecha->addDays($acuerdo->tiempo_tolerancia);
-
-                                        if(Carbon::now() > $fecha && $proforma->tiene_mora == 0 && $acuerdo->porcentaje_retraso){
-
-                                            $mora = ($proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
-
-                                            $item_factura = new ItemsFacturaProforma;
-                                                                        
-                                            $item_factura->alumno_id = $acuerdo->alumno_id;
-                                            $item_factura->academia_id = Auth::user()->academia_id;
-                                            $item_factura->fecha = Carbon::now()->toDateString();
-                                            $item_factura->nombre = 'Mora por retraso de pago ' .  $proforma->nombre;
-                                            $item_factura->tipo = 8;
-                                            $item_factura->cantidad = 1;
-
-                                            $item_factura->importe_neto = $mora;
-                                            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-
-                                            $item_factura->save();
-
-                                            $proforma->tiene_mora = 1;
-
-                                            $proforma->save();
-
-                                        }
-
-                                    }
-                                    
-                                }
-
-                                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
-
-                                    return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
-                                }
-                                else{
-
-                                    if(Auth::user()->boolean_condiciones){
-
-            $contador_clase = 0;
-            $contador_taller = 0;
-            $contador_fiesta = 0;
-            $contador_campana = 0;
-
-            $array=array();
-
-            $clase_grupal_join = DB::table('clases_grupales')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio', 'clases_grupales.dias_prorroga')
-                ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-                ->where('clases_grupales.boolean_promocionar','=', 1)
-                ->where('clases_grupales.deleted_at', '=', null)
-            ->get();
-
-            $alumno_examenes = DB::table('evaluaciones')
-                ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
-                ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-                ->select('examenes.nombre','evaluaciones.id')
-                ->where('evaluaciones.alumno_id','=',Auth::user()->usuario_id)
-                ->get();
-
-
-            foreach($clase_grupal_join as $clase){
-
-                // $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
-                // $fecha->addDays($clase->dias_prorroga);
-                // if($fecha >= Carbon::now()){
-
-                    if($clase->imagen){
-                        $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
-                    }else{
-                        $imagen = '';
                     }
-
-                    $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at, 'tipo' => 1, 'fecha_inicio' => $clase->fecha_inicio);
-
-                    $contador_clase = $contador_clase + 1;
-                // }
-
-            }
-
-            $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-            foreach($talleres as $taller){
-
-                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
-
-                if($fecha >= Carbon::now()){
-
-                    if($taller->imagen){
-                        $imagen = "/assets/uploads/taller/{$taller->imagen}";
-                    }else{
-                        $imagen = '';
-                    }
-
-                    $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio);
-
-                    $contador_taller = $contador_taller + 1;
                 }
-
             }
-
-            $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-            foreach($fiestas as $fiesta){
-
-                $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
-
-                if($fecha >= Carbon::now()){
-
-                    if($fiesta->imagen){
-                        $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
-                    }else{
-                        $imagen = '';
-                    }
-
-                    $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $taller->fecha_inicio);
-
-                    $contador_fiesta = $contador_fiesta + 1;
-                }
-
-            }
-
-            $campanas = Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-            foreach($campanas as $campana){
-
-                $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
-
-                if($fecha >= Carbon::now()){
-
-                    $contador_campana = $contador_campana + 1;
-                }
-
-            }
-
-            $collection = collect($array);
-
-            $sorted = $collection->sortByDesc('creacion');
-
-            $i = 0;
-
-            $arreglo=array();
-
-            foreach($sorted as $tmp){
-
-                $tmp['contador'] = $i;
-                $arreglo[$i] = $tmp;
-                $i = $i + 1;
-
-            }
-
-            $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
-            $clase_personalizada_contador = ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->count();
-
-                $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
-
-                if($perfil){
-                    $tiene_perfil = 1;
-                }else{
-                    $tiene_perfil = 0;
-                }
-
-                $array_deuda = array();
-
-                // $proformas = ItemsFacturaProforma::where('alumno_id', '=' ,  Auth::user()->usuario_id)->get();
-
-                // foreach($proformas as $proforma){
-
-                // $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
-
-                // if($fecha > Carbon::now()){
-
-                //     $array_deuda[]=array('nombre' => $proforma->nombre , 'fecha_vencimiento' => $proforma->fecha_vencimiento ,'monto' => $proforma->importe_neto);
-
-                //     }
-
-                // }  
-
-                if (!Session::has('fecha_sesion')) {                
-                   $fecha_sesion=Carbon::now();
-                   Session::put('fecha_sesion',$fecha_sesion);
-                }
-                
-
-                $alumno = Alumno::find(Auth::user()->usuario_id);
-                
-
-                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno]);  
-            
-        }else{
-            return view('vista_alumno.condiciones')->with('academia', $academia);
         }
+
+        $acuerdos = Acuerdo::where('academia_id', Auth::user()->academia_id)->get();
+
+        foreach($acuerdos as $acuerdo){
+
+            $proformas = ItemsFacturaProforma::where('tipo',6)->where('item_id', $acuerdo->id)->get();
+
+            foreach($proformas as $proforma){
+                $fecha = Carbon::createFromFormat('Y-m-d', $proforma->fecha_vencimiento);
+
+                $fecha->addDays($acuerdo->tiempo_tolerancia);
+
+                if(Carbon::now() > $fecha && $proforma->tiene_mora == 0 && $acuerdo->porcentaje_retraso){
+
+                    $mora = ($proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
+
+                    $item_factura = new ItemsFacturaProforma;
+                                                
+                    $item_factura->alumno_id = $acuerdo->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->nombre = 'Mora por retraso de pago ' .  $proforma->nombre;
+                    $item_factura->tipo = 8;
+                    $item_factura->cantidad = 1;
+
+                    $item_factura->importe_neto = $mora;
+                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                    $item_factura->save();
+
+                    $proforma->tiene_mora = 1;
+
+                    $proforma->save();
+
+                }
+
+            }
+            
         }
+
+        return $this->index();
+
     }
 
 }

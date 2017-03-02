@@ -531,8 +531,7 @@ class ReporteController extends BaseController
 
     public function InscritosFiltros(Request $request)
     {
-        # code...
-        //dd($request->all());
+
         if($request->mesActual){
             $start = Carbon::now()->startOfMonth()->toDateString();
             $end = Carbon::now()->endOfMonth()->toDateString();  
@@ -635,9 +634,12 @@ class ReporteController extends BaseController
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
             ->groupBy('visitantes_presenciales.sexo')
             ->get();
-        //dd($sexo);
+
         $mujeres = Visitante::where('sexo', 'F')->where('academia_id',Auth::user()->academia_id)->count();
         $hombres = Visitante::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->count();
+
+        $promotores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
+                        
 
         $forAge = DB::select('SELECT CASE
                             WHEN age BETWEEN 3 and 10 THEN "3 - 10"
@@ -653,47 +655,98 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');
 
-        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total]);
+        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'promotores' => $promotores]);
 	}
 
 public function PresencialesFiltros(Request $request)
     {
-        # code...
-        if($request->mesActual){
-            $start = Carbon::now()->startOfMonth()->toDateString();
-            $end = Carbon::now()->endOfMonth()->toDateString();  
-        }
-        if($request->mesPasado){
-            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
 
-        }
-        if($request->today){
-            $start = Carbon::now()->toDateString();
-            $end = Carbon::now()->toDateString();  
+        // if($request->mesActual){
+        //     $start = Carbon::now()->startOfMonth()->toDateString();
+        //     $end = Carbon::now()->endOfMonth()->toDateString();  
+        // }
+        // if($request->mesPasado){
+        //     $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+        //     $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
 
-        }
-        if($request->rango){
-            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-        }
+        // }
+        // if($request->today){
+        //     $start = Carbon::now()->toDateString();
+        //     $end = Carbon::now()->toDateString();  
 
-        if($request->Fecha){
-            $fechas = explode('-', $request->Fecha);
-            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-        }
+        // }
+        // if($request->rango){
+        //     $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
+        //     $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
+        // }
 
-        $presenciales = DB::table('visitantes_presenciales')
+        // if($request->Fecha){
+        //     $fechas = explode('-', $request->Fecha);
+        //     $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
+        //     $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
+        // }
+
+        // $presenciales = DB::table('visitantes_presenciales')
+        //     ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+        //     ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
+        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
+        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
+        // ->get();
+
+        $query = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        ->get();
+            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id);
+
+        if($request->instructor_id)
+        {
+            $query->where('visitantes_presenciales.instructor_id','=', $request->instructor_id);
+        }
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+            $query->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end]);
+        }else{
+
+            if($request->tipo){
+                if($request->tipo == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->toDateString();  
+                }else if($request->tipo == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->tipo == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                }
+
+                $query->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end]);
+            }
+        }
+
+            
+        $presenciales = $query->get();
 
         $array = array();
 
+        $total = 0;
+        $mujeres = 0;
+        $hombres = 0;
+
         foreach($presenciales as $presencial){
+
+            if($presencial->cliente){
+                $total = $total + 1;
+            }
+
+            if($presencial->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+
             $collection=collect($presencial);     
             $presencial_array = $collection->toArray();
             if($presencial->especialidad == '' OR $presencial->especialidad == null){
@@ -702,53 +755,39 @@ public function PresencialesFiltros(Request $request)
             $array[$presencial->id] = $presencial_array;
         }
 
-        $total = DB::table('visitantes_presenciales')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-            ->where('visitantes_presenciales.cliente','=', 1)
-        ->count();
+        $array_sexo = array();
 
-        // $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->selectRaw('sexo, count(sexo) as CantSex')
-        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        //     ->groupBy('visitantes_presenciales.sexo')
-        //     ->get();
+        $array_hombres = array('M', $hombres);
+        $array_mujeres = array('F', $mujeres);
+
+        array_push($array_sexo, $array_hombres);
+        array_push($array_sexo, $array_mujeres);   
 
 
-        $mujeres = 0;
-        $hombres = 0;
-
-        foreach($presenciales as $presencial){
-            if($presencial->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
-            }
-        }
-
-        $forAge = DB::select("SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-                            WHEN age >= 51 THEN '+51'
-                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM visitantes_presenciales
-                        LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
-                        WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
-                        GROUP BY age_range
-                        ORDER BY age_range");
+        // $forAge = DB::select("SELECT CASE
+        //                     WHEN age BETWEEN 3 and 10 THEN '3 - 10'
+        //                     WHEN age BETWEEN 11 and 20 THEN '11 - 20'
+        //                     WHEN age BETWEEN 21 and 35 THEN '21 - 35'
+        //                     WHEN age BETWEEN 36 and 50 THEN '36 - 50'
+        //                     WHEN age >= 51 THEN '+51'
+        //                     WHEN age IS NULL THEN 'Sin fecha (NULL)'
+        //                 END as age_range, COUNT(*) AS count
+        //                 FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
+        //                 FROM visitantes_presenciales
+        //                 LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
+        //                 WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
+        //                 GROUP BY age_range
+        //                 ORDER BY age_range");
 
         return response()->json(
             [
                 'presenciales'      => $array,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
-                'edades'            => $forAge,
-                'total'             => $total
+                'total'             => $total,
+                'sexos'             => $array_sexo,
+                'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
+
             ]);
 
     }
