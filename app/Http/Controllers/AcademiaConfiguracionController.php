@@ -1478,7 +1478,7 @@ class AcademiaConfiguracionController extends BaseController {
                                                 $item_factura->academia_id = Auth::user()->academia_id;
                                                 $item_factura->fecha = Carbon::now()->toDateString();
                                                                                 //$item_factura->item_id = $id;
-                                                $item_factura->nombre = 'Retraso de pago ' .  $configClases->nombre;
+                                                $item_factura->nombre = 'Mora por retraso de pago Cuota' .  $configClases->nombre;
                                                 $item_factura->tipo = 8;
                                                 $item_factura->cantidad = 1;
                                                                                 // $item_factura->precio_neto = $configClases->costo_mensualidad;
@@ -1517,7 +1517,7 @@ class AcademiaConfiguracionController extends BaseController {
                                             $item_factura->alumno_id = $acuerdo->alumno_id;
                                             $item_factura->academia_id = Auth::user()->academia_id;
                                             $item_factura->fecha = Carbon::now()->toDateString();
-                                            $item_factura->nombre = 'Retraso de pago ' .  $proforma->nombre;
+                                            $item_factura->nombre = 'Mora por retraso de pago ' .  $proforma->nombre;
                                             $item_factura->tipo = 8;
                                             $item_factura->cantidad = 1;
 
