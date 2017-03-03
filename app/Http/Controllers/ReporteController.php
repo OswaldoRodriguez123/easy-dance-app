@@ -1838,4 +1838,66 @@ public function PresencialesFiltros(Request $request)
 
     }
 
+    public function Camiseta_Programacion(){
+
+        $inscritos = DB::table('inscripcion_clase_grupal')
+            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion')
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+        $clases_grupales= DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+      ->get();   
+
+        return view('reportes.camiseta_programacion')->with(['inscritos' => $inscritos, 'clases_grupales' => $clases_grupales]);
+    }
+
+
+    public function Camiseta_ProgramacionFiltros(Request $request)
+    {
+
+        $query = DB::table('inscripcion_clase_grupal')
+            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular')
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id);
+
+
+        if($request->clase_grupal_id)
+        {
+            $query->where('clases_grupales.clase_grupal_id','=', $request->clase_grupal_id);
+        }
+
+
+        if($request->tipo == 0){
+            $query->where('inscripcion_clase_grupal.boolean_franela',1);
+            $query->where('inscripcion_clase_grupal.boolean_programacion',1);
+        }else if($request->tipo == 1){
+            $query->where('inscripcion_clase_grupal.boolean_franela',1);
+        }else if($request->tipo == 2){
+            $query->where('inscripcion_clase_grupal.boolean_programacion',1);
+        }
+
+        $inscritos = $query->get();
+
+        return response()->json(
+            [
+                'inscritos'         => $inscritos,
+                'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente',
+                'status'            => 'OK'
+
+            ]);
+
+    }
+
 }
