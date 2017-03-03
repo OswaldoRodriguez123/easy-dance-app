@@ -110,7 +110,6 @@ class StaffController extends BaseController
 	        $nombre = title_case($request->nombre);
 	        $apellido = title_case($request->apellido);
 	        $correo = strtolower($request->correo);
-	        $cargo = title_case($request->cargo);
 
 	        if($request->telefono)
 	        {
@@ -138,7 +137,7 @@ class StaffController extends BaseController
 	        $staff->telefono = $telefono;
 	        $staff->celular = $request->celular;
 	        $staff->direccion = $direccion;
-	        $staff->cargo = $cargo;
+	        $staff->cargo = $request->cargo;
 
 	        if($staff->save()){
 
