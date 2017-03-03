@@ -1900,4 +1900,110 @@ public function PresencialesFiltros(Request $request)
 
     }
 
+    public function Referidos(){
+
+        $referidos = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        ->where('referido_id', '!=', null)
+        ->get();
+
+        $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+        $total = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        ->where('referido_id', '!=', null)
+        ->count();
+
+        $sexo = Alumno::selectRaw('sexo, count(sexo) as CantSex')
+            ->where('academia_id','=', Auth::user()->academia_id)
+            ->where('referido_id', '!=', null)
+            ->groupBy('.sexo')
+            ->get();
+
+        $mujeres = Alumno::where('sexo', 'F')->where('academia_id',Auth::user()->academia_id)->where('referido_id', '!=', null)->count();
+        $hombres = Alumno::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->where('referido_id', '!=', null)->count();
+                        
+
+        return view('reportes.referidos')->with(['referidos' => $referidos, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'total' => $total, 'alumnos' => $alumnos]);
+    }
+
+    public function ReferidosFiltros(Request $request)
+    {
+
+
+        $query = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        ->where('referido_id', '!=', null);
+
+        if($request->alumno_id)
+        {
+            $query->where('referido_id','=', $request->alumno_id);
+        }
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+            $query->whereBetween('created_at', [$start,$end]);
+        }else{
+
+            if($request->tipo){
+                if($request->tipo == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->toDateString();  
+                }else if($request->tipo == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->tipo == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                }
+
+                $query->whereBetween('created_at', [$start,$end]);
+            }
+        }
+
+            
+        $referidos = $query->get();
+
+        $array = array();
+
+        $total = 0;
+        $mujeres = 0;
+        $hombres = 0;
+
+        foreach($referidos as $referido){
+
+            $total = $total + 1;
+            
+            if($referido->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+
+            $collection=collect($referido);     
+            $referido_array = $collection->toArray();  
+            $array[$referido->id] = $referido_array;
+        }
+
+        $array_sexo = array();
+
+        $array_hombres = array('M', $hombres);
+        $array_mujeres = array('F', $mujeres);
+
+        array_push($array_sexo, $array_hombres);
+        array_push($array_sexo, $array_mujeres);   
+
+        return response()->json(
+            [
+                'referidos'         => $array,
+                'mujeres'           => $mujeres,
+                'hombres'           => $hombres,
+                'total'             => $total,
+                'sexos'             => $array_sexo,
+                'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
+
+            ]);
+
+    }
+
 }

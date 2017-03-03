@@ -234,6 +234,12 @@ class AlumnoController extends BaseController
             $direccion = '';
         }
 
+        if($request->instructor_id){
+            $instructor_id = $request->instructor_id;
+        }else{
+            $instructor_id = null;
+        }
+
         do{
             $codigo_referido = str_random(8);
             $find = Alumno::where('codigo_referido', $codigo_referido)->first();
@@ -256,7 +262,7 @@ class AlumnoController extends BaseController
         $alumno->hipertension = $request->hipertension;
         $alumno->lesiones = $request->lesiones;
         $alumno->codigo_referido = $codigo_referido;
-        $alumno->instructor_id = $request->instructor_id;
+        $alumno->instructor_id = $instructor_id;
 
         if($alumno->save()){
 
@@ -267,6 +273,9 @@ class AlumnoController extends BaseController
                     ->where('alumnos.academia_id','=',Auth::user()->academia_id)
                 ->first();
                 if($referido){
+
+                    $alumno->referido_id = $referido->id;
+                    $alumno->save();
 
                     $remuneracion = new AlumnoRemuneracion;
                     $academia=Academia::where('id', Auth::user()->academia_id)->first();

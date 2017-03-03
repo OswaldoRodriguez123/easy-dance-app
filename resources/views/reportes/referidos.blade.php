@@ -56,7 +56,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Reporte de Presenciales</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Reporte de Referidos</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -66,17 +66,21 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
                                 <div class="col-md-4">
-                                    <label>Promotor</label>
+                                    <label>Participantes</label>
 
 
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="instructor_id" id="instructor_id">
-                                          <option value="0">Todos</option>
-                                          @foreach ( $promotores as $promotor )
-                                            <option value = "{{ $promotor->id }}"> {{ $promotor->nombre }} {{ $promotor->apellido }}</option>
+                                        <select class="selectpicker" id="alumno_id" name="alumno_id">
 
-                                          @endforeach
+                                          <option value="0">Todos</option>
+                                          
+
+                                         @foreach ( $alumnos as $alumno )
+
+                                              <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                         
+                                         @endforeach
                                         </select>
                                       </div>
                                     </div>
@@ -154,7 +158,7 @@
 
                        
                         <div class="col-md-6">
-                            <h2>Informe de Presenciales</h2>
+                            <h2>Informe de Referidos</h2>
                             <hr>
                             <div id="pie-chart-procesos" class="flot-chart-pie"></div>
                             <div class="flc-pie hidden-xs"></div>
@@ -178,7 +182,7 @@
                             <div class="mini-charts-item bgm-blue">
                                 <div class="clearfix">
                                     <div class="count">
-                                        <small>Total Presenciales:</small>
+                                        <small>Total Referidos:</small>
                                         <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
                                         <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
                                     </div>
@@ -192,31 +196,19 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="cliente"></th>
-                                    <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
-                                    <th class="text-center" data-column-id="especialidad">Especialidad</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {{-- $inscritos --}}
-                            @foreach ($presenciales as $presencial)
-                                <?php $id = $presencial->id; ?>
+                            @foreach ($referidos as $referido)
+                                <?php $id = $referido->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> 
-                                        @if($presencial->cliente)
-                                            <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
-                                        @else
-                                            <i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
-                                        @endif
-                                    </td>
-                                    <td class="text-center previa">{{$presencial->fecha}}</td>
-                                    <td class="text-center previa">{{$presencial->nombre}}</td>
-                                    <td class="text-center previa">{{$presencial->apellido}} </td>
-                                    <td class="text-center previa">{{$presencial->celular}} </td>
-                                    <td class="text-center previa">{{$presencial->especialidad}} </td>
+                                    <td class="text-center previa">{{$referido->nombre}}</td>
+                                    <td class="text-center previa">{{$referido->apellido}} </td>
+                                    <td class="text-center previa">{{$referido->celular}} </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -248,7 +240,7 @@
 
         var clase_grupal_array = [];
 
-        route_filtrar="{{url('/')}}/reportes/presenciales";
+        route_filtrar="{{url('/')}}/reportes/referidos";
         route_detalle="{{url('/')}}/participante/visitante/detalle";
 
         $(document).ready(function(){
@@ -297,7 +289,7 @@
         pageLength: 25, 
         order: [[1, 'desc']],
         fnDrawCallback: function() {
-          if ("{{count($presenciales)}}" < 25) {
+          if ("{{count($referidos)}}" < 25) {
             $('.dataTables_paginate').hide();
             $('#tablelistar_length').hide();
           }
@@ -368,25 +360,16 @@
                             $('#total').text(respuesta.total)
                             finprocesado();
 
-                            presenciales = respuesta.presenciales
+                            presenciales = respuesta.referidos
 
                             t.clear().draw();
 
-                            $.each(respuesta.presenciales, function (index, array) {
+                            $.each(respuesta.referidos, function (index, array) {
 
-                                if(array.cliente == 1)
-                                {
-                                    cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
-                                }else{
-                                    cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
-                                }
                                 var rowNode=t.row.add( [
-                                ''+cliente+'',
-                                ''+array.fecha+'',
                                 ''+array.nombre+'',
                                 ''+array.apellido+'',
                                 ''+array.celular+'',
-                                ''+array.especialidad+'',
                                 ] ).draw(false).node();
                                 $( rowNode )
                                     .attr('id',array.id)
