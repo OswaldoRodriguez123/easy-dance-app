@@ -639,29 +639,6 @@ class ReporteController extends BaseController
         $mujeres = Visitante::where('sexo', 'F')->where('academia_id',Auth::user()->academia_id)->count();
         $hombres = Visitante::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->count();
 
-        $instructores = Instructor::all();
-
-
-        foreach($instructores as $instructor){
-
-            $promotor = new Staff;
-
-            $promotor->id = $instructor->id;
-            $promotor->academia_id = $instructor->academia_id;
-            $promotor->identificacion = $instructor->identificacion;
-            $promotor->nombre = $instructor->nombre;
-            $promotor->apellido = $instructor->apellido;
-            $promotor->sexo = $instructor->sexo;
-            $promotor->fecha_nacimiento = $instructor->fecha_nacimiento;
-            $promotor->correo = $instructor->correo;
-            $promotor->telefono = $instructor->telefono;
-            $promotor->celular = $instructor->celular;
-            $promotor->direccion = $instructor->direccion;
-            $promotor->cargo = 1;
-
-            $promotor->save();
-        }
-
         $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
                         
 
