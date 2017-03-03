@@ -177,18 +177,23 @@ class StaffController extends BaseController
 
     public function edit($id)
     {   
-        $staff = Staff::find($id);
+        $staff = Staff::join('config_staff', 'staff.cargo', '=', 'config_staff.id')
+            ->select('staff.*', 'config_staff.nombre as cargo')
+            ->where('staff.id', $id)
+        ->first();
 
         if($staff){
 
             $dia_de_semana = DiasDeSemana::all();
+
+            $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
             $horarios = HorarioStaff::join('dias_de_semana', 'horarios_staff.dia_de_semana_id', '=', 'dias_de_semana.id')
                 ->join('staff', 'horarios_staff.staff_id', '=', 'staff.id')
                 ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
                 ->where('staff.academia_id' , Auth::user()->academia_id)
             ->get();
-            return view('staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana]);
+            return view('staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
         }else{
            return redirect("staff"); 
         }
