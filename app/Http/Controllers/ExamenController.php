@@ -691,9 +691,7 @@ class ExamenController extends BaseController {
 
         }else{
 
-            $alumnos = Alumno::join('users', 'users.usuario_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'users.imagen')
-                ->where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
+            $alumnos = Alumno::where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
                 ->orderBy('nombre', 'asc')
             ->get();
 
