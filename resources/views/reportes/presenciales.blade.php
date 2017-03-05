@@ -358,12 +358,12 @@
                             $('#total').text(respuesta.total)
                             finprocesado();
 
-                            presenciales = respuesta.presenciales
+                            array = respuesta.presenciales
 
                             t.clear().draw();
 
-                            if(respuesta.presenciales){
-                                if(presenciales[1].sexo == 'F'){
+                            if(array[1]){
+                                if(array[1].sexo == 'F'){
                                     color2 = "#2196f3"
                                     color1 = "#FF4081"
                                 }else{

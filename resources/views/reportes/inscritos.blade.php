@@ -376,7 +376,7 @@
 
                         array = respuesta.inscritos
 
-                        if(respuesta.inscritos){
+                        if(array[1]){
                             if(array[1].sexo == 'F'){
                                 color2 = "#2196f3"
                                 color1 = "#FF4081"
