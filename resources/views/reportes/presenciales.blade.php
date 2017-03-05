@@ -383,22 +383,10 @@
                             var nTitle="Ups! ";
                             var nMensaje=respuesta.mensaje;
 
-                            $('#total').text(respuesta.total)
-                            finprocesado();
-
-                            array = respuesta.presenciales
-
                             t.clear().draw();
 
-                            if(array[1]){
-                                if(array[1].sexo == 'F'){
-                                    color1 = "#2196f3"
-                                    color2 = "#FF4081"
-                                }else{
-                                    color2 = "#2196f3"
-                                    color1 = "#FF4081"
-                                }
-                            }
+                            $('#total').text(respuesta.total)
+                            finprocesado();
 
                             total = 0
                             cliente_valor = 0
@@ -477,6 +465,18 @@
 
                             $("#mujeres").text(datos.mujeres);
                             $("#hombres").text(datos.hombres);
+
+                            sexos = respuesta.sexos
+
+                            if(sexos[1]){
+                                if(sexos[1][0] == 'F'){
+                                    color1 = "#2196f3"
+                                    color2 = "#FF4081"
+                                }else{
+                                    color2 = "#2196f3"
+                                    color1 = "#FF4081"
+                                }
+                            }
 
                             var data1 = ''
                             data1 += '[';
