@@ -77,6 +77,7 @@
                                     <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="inicio" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
+                                    <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <!--<th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
@@ -318,6 +319,7 @@
                     var rowNode=t.row.add( [
                     ''+inicio+'',
                     ''+array.clase_grupal_nombre+'',
+                    ''+array.instructor_nombre+ ' ' +array.instructor_apellido+ '',
                     ''+array.especialidad_nombre+'',
                     ''+array.hora_inicio+ ' '+array.hora_final+'',
                     ''+operacion+''
