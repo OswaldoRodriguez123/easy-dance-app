@@ -192,7 +192,7 @@
                                 <hr class="linea-morada opaco-0-8">
 
                                 <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                    <div class="progress-bar progress-bar-success" id="barra_progreso" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                    <div class="progress-bar progress-bar-success" id="barra_progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
                                 </div>
                                 <span class="f-700"><span class="progreso">100</span>% de Efectividad</span>
                             </div>
@@ -431,8 +431,7 @@
                             console.log(nocliente + ' ' + total + ' ' + efectividad)
 
                             $('.progreso').text(efectividad)
-                            $('#barra_progreso').css('height',efectividad)
-                            $('#barra_progreso').attr('aria-valuenow',efectividad+'%');
+                            $('#barra_progreso').css('height',efectividad+'%')
 
                             datos = JSON.parse(JSON.stringify(respuesta));
 
