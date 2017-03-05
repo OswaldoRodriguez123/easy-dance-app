@@ -114,44 +114,80 @@ class ValidacionController extends BaseController {
                         
                             if($reservacion->tipo_reservacion == 1){
 
-                                $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                                    ->select('config_clases_grupales.*', 'clases_grupales.id', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio')
-                                    ->where('clases_grupales.id', $reservacion->tipo_id)
-                                ->first();
+                                $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', $alumno->id)->where('clase_grupal_id', $reservacion->tipo_id)->first();
+                                if(!$alumnosclasegrupal){
 
-                                $inscripcion = new InscripcionClaseGrupal;
+                                    $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                                        ->select('config_clases_grupales.*', 'clases_grupales.id', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio')
+                                        ->where('clases_grupales.id', $reservacion->tipo_id)
+                                    ->first();
 
-                                $inscripcion->clase_grupal_id = $reservacion->tipo_id;
-                                $inscripcion->alumno_id = $alumno->id;
-                                $inscripcion->fecha_pago = $clasegrupal->fecha_inicio_preferencial;
-                                $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
-                                $inscripcion->costo_mensualidad = $clasegrupal->costo_mensualidad;
+                                    $inscripcion = new InscripcionClaseGrupal;
 
-                                $inscripcion->save();
+                                    $inscripcion->clase_grupal_id = $reservacion->tipo_id;
+                                    $inscripcion->alumno_id = $alumno->id;
+                                    $inscripcion->fecha_pago = $clasegrupal->fecha_inicio_preferencial;
+                                    $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
+                                    $inscripcion->costo_mensualidad = $clasegrupal->costo_mensualidad;
 
-                                if($clasegrupal->costo_inscripcion != 0)
-                                {
+                                    $inscripcion->save();
 
-                                    $item_factura = new ItemsFacturaProforma;
-                                        
-                                    $item_factura->alumno_id = $alumno->id;
-                                    $item_factura->academia_id =  $alumno->academia_id;
-                                    $item_factura->fecha = Carbon::now()->toDateString();
-                                    $item_factura->item_id = $reservacion->tipo_id;
-                                    $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
-                                    $item_factura->tipo = 3;
-                                    $item_factura->cantidad = 1;
-                                    $item_factura->precio_neto = 0;
-                                    $item_factura->impuesto = 0;
-                                    $item_factura->importe_neto = $clasegrupal->costo_inscripcion;
-                                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                                        
-                                    $item_factura->save();
+                                    if($clasegrupal->costo_inscripcion != 0)
+                                    {
 
+                                        $item_factura = new ItemsFacturaProforma;
+                                            
+                                        $item_factura->alumno_id = $alumno->id;
+                                        $item_factura->academia_id =  $alumno->academia_id;
+                                        $item_factura->fecha = Carbon::now()->toDateString();
+                                        $item_factura->item_id = $reservacion->tipo_id;
+                                        $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
+                                        $item_factura->tipo = 3;
+                                        $item_factura->cantidad = 1;
+                                        $item_factura->precio_neto = 0;
+                                        $item_factura->impuesto = 0;
+                                        $item_factura->importe_neto = $clasegrupal->costo_inscripcion;
+                                        $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                                            
+                                        $item_factura->save();
+
+                                    }
+
+                                    if($clasegrupal->costo_mensualidad != 0)
+                                    {
+
+                                        $item_factura = new ItemsFacturaProforma;
+                                            
+                                        $item_factura->alumno_id = $alumno->id;
+                                        $item_factura->academia_id = $alumno->academia_id;
+                                        $item_factura->fecha = Carbon::now()->toDateString();
+                                        $item_factura->item_id = $reservacion->tipo_id;
+                                        $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                                        $item_factura->tipo = 4;
+                                        $item_factura->cantidad = 1;
+                                        $item_factura->precio_neto = 0;
+                                        $item_factura->impuesto = 0;
+                                        $item_factura->importe_neto = $clasegrupal->costo_mensualidad;
+                                        $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                                            
+                                        $item_factura->save();
+
+                                    }
                                 }
 
-                                if($clasegrupal->costo_mensualidad != 0)
-                                {
+                            }else{
+                                $alumnostaller = InscripcionTaller::where('alumno_id', $alumno->id)->where('clase_grupal_id', $reservacion->tipo_id)->first();
+                                
+                                if(!$alumnostaller){
+
+                                    $taller = Taller::find($reservacion->tipo_id);
+
+                                    $inscripcion = new InscripcionTaller;
+
+                                    $inscripcion->taller_id = $reservacion->tipo_id;
+                                    $inscripcion->alumno_id = $alumno->id;
+
+                                    $inscripcion->save();
 
                                     $item_factura = new ItemsFacturaProforma;
                                         
@@ -159,45 +195,17 @@ class ValidacionController extends BaseController {
                                     $item_factura->academia_id = $alumno->academia_id;
                                     $item_factura->fecha = Carbon::now()->toDateString();
                                     $item_factura->item_id = $reservacion->tipo_id;
-                                    $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
-                                    $item_factura->tipo = 4;
+                                    $item_factura->nombre = 'Inscripcion ' . $taller->nombre;
+                                    $item_factura->tipo = 5;
                                     $item_factura->cantidad = 1;
                                     $item_factura->precio_neto = 0;
                                     $item_factura->impuesto = 0;
-                                    $item_factura->importe_neto = $clasegrupal->costo_mensualidad;
-                                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                                    $item_factura->importe_neto = $taller->costo;
+                                    $item_factura->fecha_vencimiento = $taller->fecha_inicio;
                                         
                                     $item_factura->save();
 
                                 }
-
-                            }else{
-
-                                $taller = Taller::find($reservacion->tipo_id);
-
-                                $inscripcion = new InscripcionTaller;
-
-                                $inscripcion->taller_id = $reservacion->tipo_id;
-                                $inscripcion->alumno_id = $alumno->id;
-
-                                $inscripcion->save();
-
-                                $item_factura = new ItemsFacturaProforma;
-                                    
-                                $item_factura->alumno_id = $alumno->id;
-                                $item_factura->academia_id = $alumno->academia_id;
-                                $item_factura->fecha = Carbon::now()->toDateString();
-                                $item_factura->item_id = $reservacion->tipo_id;
-                                $item_factura->nombre = 'Inscripcion ' . $taller->nombre;
-                                $item_factura->tipo = 5;
-                                $item_factura->cantidad = 1;
-                                $item_factura->precio_neto = 0;
-                                $item_factura->impuesto = 0;
-                                $item_factura->importe_neto = $taller->costo;
-                                $item_factura->fecha_vencimiento = $taller->fecha_inicio;
-                                    
-                                $item_factura->save();
-
                             }
                             
                             $codigo->delete();
