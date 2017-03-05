@@ -517,11 +517,9 @@ class ClaseGrupalController extends BaseController {
         // $inscripcion = InscripcionClaseGrupal::find($id);
         $reserva = ReservacionVisitante::find($id);
         $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
-        $codigo_reservacion = $codigo->codigo_validacion;
         
         if($reserva->delete()){
             if($codigo){
-
 
                 if($codigo->delete())
                 {
