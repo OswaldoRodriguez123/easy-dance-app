@@ -385,7 +385,7 @@
                             }
 
                             total = 0
-                            cliente = 0
+                            cliente_valor = 0
                             nocliente = 0
 
                             $.each(respuesta.presenciales, function (index, array) {
@@ -393,7 +393,7 @@
                                 if(array.cliente == 1)
                                 {
                                     cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
-                                    cliente = cliente + 1
+                                    cliente_valor = cliente_valor + 1
                                     total = total + 1
                                 }else{
                                     cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
@@ -414,7 +414,7 @@
                                     .addClass('seleccion');
                             });
 
-                            efectividad = (cliente/total)*100
+                            efectividad = (cliente_valor/total)*100
 
                             if(isNaN(efectividad)){
                                 efectividad = 0

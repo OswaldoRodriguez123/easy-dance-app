@@ -486,8 +486,7 @@ class ReporteController extends BaseController
 
 	public function Inscritos(){
 
-		$inscritos = DB::table('inscripcion_clase_grupal')
-			->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+		$inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
