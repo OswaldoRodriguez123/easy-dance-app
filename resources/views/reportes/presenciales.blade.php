@@ -431,7 +431,7 @@
                             console.log(nocliente + ' ' + total + ' ' + efectividad)
 
                             $('.progreso').text(efectividad)
-                            $('#barra_progreso').css('height',efectividad+'%')
+                            $('#barra_progreso').css('width',efectividad+'%')
 
                             datos = JSON.parse(JSON.stringify(respuesta));
 
