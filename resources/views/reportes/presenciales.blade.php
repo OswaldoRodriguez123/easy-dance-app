@@ -184,6 +184,18 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="clearfix m-b-20"></div>
+
+                            <div class="text-center">
+                                <div class="text-center f-700" >Porcentaje de Efectividad</div>
+                                <hr class="linea-morada opaco-0-8">
+
+                                <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
+                                    <div class="progress-bar progress-bar-success" id="barra_progreso" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                </div>
+                                <span class="f-700"><span class="progreso">100</span>% de Efectividad</span>
+                            </div>
                         </div>
 
                         <div class ="clearfix"></div>
@@ -372,14 +384,23 @@
                                 }
                             }
 
+                            total = 0
+                            cliente = 0
+                            nocliente = 0
+
                             $.each(respuesta.presenciales, function (index, array) {
 
                                 if(array.cliente == 1)
                                 {
                                     cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                                    cliente = cliente + 1
+                                    total = total + 1
                                 }else{
                                     cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                                    nocliente = nocliente + 1
+                                    total = total + 1
                                 }
+
                                 var rowNode=t.row.add( [
                                 ''+cliente+'',
                                 ''+array.fecha+'',
@@ -392,6 +413,25 @@
                                     .attr('id',array.id)
                                     .addClass('seleccion');
                             });
+
+                            efectividad = (cliente/total)*100
+
+                            if(isNaN(efectividad)){
+                                efectividad = 0
+                            }
+
+                            if(efectividad >= 100){
+                                $("#barra_progreso").removeClass('progress-bar-morado');
+                                $("#barra_progreso").addClass('progress-bar-success');
+                            }else{
+                                $("#barra_progreso").removeClass('progress-bar-success');
+                                $("#barra_progreso").addClass('progress-bar-morado');
+                            }
+                            
+                            console.log(nocliente + ' ' + total + ' ' + efectividad)
+
+                            $('.progreso').text(efectividad)
+                            $('#barra_progreso').css('height',efectividad)
 
                             datos = JSON.parse(JSON.stringify(respuesta));
 

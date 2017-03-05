@@ -520,14 +520,20 @@ class ClaseGrupalController extends BaseController {
         $codigo_reservacion = $codigo->codigo_validacion;
         
         if($reserva->delete()){
+            if($codigo){
 
-            if($codigo->delete())
-            {
-                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
 
+                if($codigo->delete())
+                {
+                    return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+                }else{
+
+                    return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+                }
             }else{
-
                 return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

@@ -210,7 +210,8 @@
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                    <th class="text-center" data-column-id="nac" data-order="desc">Nacimiento</th>                                    
+                                    <th class="text-center" data-column-id="nac" data-order="desc">Nacimiento</th>
+                                    <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>                    
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                     <th class="text-center" data-column-id="especialidad">Especialidad</th>
                                     <th class="text-center" data-column-id="curso">Curso</th>
@@ -389,11 +390,23 @@
 
                         
                         $.each(respuesta.inscritos, function (index, array) {
+
+
+                            if(array.sexo=='F')
+                              {
+                                sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                              }
+                              else
+                              {
+                                sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                              }
+
                             var rowNode=t.row.add( [
                             ''+array.fecha+'',
                             ''+array.nombre+'',
                             ''+array.apellido+'',
                             ''+array.fecha_nacimiento+'',
+                            ''+sexo+'',
                             ''+array.celular+'',
                             ''+array.especialidad+'',
                             ''+array.curso+'',
