@@ -201,25 +201,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            {{-- $inscritos --}}
-                            @foreach ($presenciales as $presencial)
-                                <?php $id = $presencial->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> 
-                                        @if($presencial->cliente)
-                                            <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
-                                        @else
-                                            <i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
-                                        @endif
-                                    </td>
-                                    <td class="text-center previa">{{$presencial->fecha}}</td>
-                                    <td class="text-center previa">{{$presencial->nombre}}</td>
-                                    <td class="text-center previa">{{$presencial->apellido}} </td>
-                                    <td class="text-center previa">{{$presencial->celular}} </td>
-                                    <td class="text-center previa">{{$presencial->especialidad}} </td>
-                                </tr>
-                            @endforeach 
-                                                           
+                    
                             </tbody>
                         </table>
                          </div>
@@ -247,6 +229,14 @@
         <script type="text/javascript">
 
         var clase_grupal_array = [];
+
+        if("{{$sexos[0]->sexo}}" == 'F'){
+            color2 = "#2196f3"
+            color1 = "#FF4081"
+        }else{
+            color1 = "#2196f3"
+            color2 = "#FF4081"
+        }
 
         route_filtrar="{{url('/')}}/reportes/presenciales";
         route_detalle="{{url('/')}}/participante/visitante/detalle";
@@ -372,6 +362,16 @@
 
                             t.clear().draw();
 
+                            if(respuesta.presenciales){
+                                if(presenciales[1].sexo == 'F'){
+                                    color2 = "#2196f3"
+                                    color1 = "#FF4081"
+                                }else{
+                                    color1 = "#2196f3"
+                                    color2 = "#FF4081"
+                                }
+                            }
+
                             $.each(respuesta.presenciales, function (index, array) {
 
                                 if(array.cliente == 1)
@@ -439,7 +439,8 @@
                                     },
                                     defaultTheme: false,
                                     cssClass: 'flot-tooltip'
-                                }
+                                },
+                                colors: [color1, color2],
                                 
                             });
 
@@ -533,7 +534,8 @@
                 },
                 defaultTheme: false,
                 cssClass: 'flot-tooltip'
-            }
+            },
+            colors: [color1, color2],
             
         });
 

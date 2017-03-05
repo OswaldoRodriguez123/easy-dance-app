@@ -177,7 +177,7 @@
                                 <div class="clearfix">
                                    <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
                                     <div class="count">
-                                        <small>Total Asistencias:</small>
+                                        <small>Total:</small>
                                         <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
                                         <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
                                     </div>
@@ -208,32 +208,6 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($asistencias as $asistencia)
-                                <?php $id = $asistencia->alumno_id; ?>
-                                <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa"></td>
-                                    <td class="text-center previa">{{$asistencia->nombre}} {{$asistencia->apellido}}</td>
-                                    <td class="text-center previa">{{$asistencia->identificacion}}</td>
-                                    <td class="text-center previa">{{$asistencia->fecha_nacimiento}}</td>
-                                    <td class="text-center previa">
-                                    <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20"></i>
-                                    </td>
-                                    <td class="text-center previa">{{$asistencia->celular}}</td>
-
-                                    <td class="text-center previa">
-            
-                                    @if($asistencia->sexo=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
-                                    @endif
-
-                                    </td>
-                                    <td class="text-center previa">{{$asistencia->fecha}}</td>
-                                    <td class="text-center previa">{{$asistencia->hora}}</td>
-                                  
-                                </tr>
-                            @endforeach  
                                                            
                             </tbody>
                         </table>
@@ -265,12 +239,27 @@
         var instructores = <?php echo json_encode($instructores);?>;
         var clase_grupal_array = [];
 
+        if("{{$sexos[0]->sexo}}" == 'F'){
+            color2 = "#2196f3"
+            color1 = "#FF4081"
+        }else{
+            color1 = "#2196f3"
+            color2 = "#FF4081"
+        }
+
         route_filtrar="{{url('/')}}/reportes/asistencias/filtrar";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
 
         $(document).ready(function(){
 
-            $('.icon_f-consultarle-al-instructor').popover();
+
+        [].sort.call( clases_grupales, function(a,b) {
+           return new Date(a.hora_inicio).getTime() - new Date(b.hora_inicio).getTime() 
+        }); 
+      
+
+
+        $('.icon_f-consultarle-al-instructor').popover();
 
         var hoy = moment().format('DD/MM/YYYY');
 
@@ -355,7 +344,10 @@
             // $('#error-fecha_mensaje').text('')
             var dia = fecha_seleccionada.getDay() + 1;
 
+            $('#clase_grupal_id').append( new Option('Todas',0));
+
             $.each(clases_grupales, function (index, array) {
+                console.log(array)
                 if(array.dia == dia){
 
                     clase_grupal_array.push(array); 
@@ -408,11 +400,23 @@
                       var nMensaje=respuesta.mensaje;
 
                       if($('#tipo').val() == 1){
-
                         $('.ocultar').show()
                       }else{
                         $('.ocultar').hide()
                       }
+
+                    array = respuesta.array
+
+                    if(respuesta.array){
+                        if(array[1].sexo == 'F'){
+                            color2 = "#2196f3"
+                            color1 = "#FF4081"
+                        }else{
+                            color1 = "#2196f3"
+                            color2 = "#FF4081"
+                        }
+                    }
+
 
                         
                     $.each(respuesta.array, function (index, array) {
@@ -520,7 +524,9 @@
                                 },
                                 defaultTheme: false,
                                 cssClass: 'flot-tooltip'
-                            }
+                            },
+                            colors: [color1, color2],
+
                             
                         });
                 
@@ -625,7 +631,8 @@
                 },
                 defaultTheme: false,
                 cssClass: 'flot-tooltip'
-            }
+            },
+            colors: [color1, color2],
             
         });
 

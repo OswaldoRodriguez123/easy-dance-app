@@ -131,19 +131,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            {{-- $inscritos --}}
-                            @foreach ($inscritos as $inscrito)
-                                <?php $id = $inscrito->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$inscrito->fecha}}</td>
-                                    <td class="text-center previa">{{$inscrito->nombre}}</td>
-                                    <td class="text-center previa">{{$inscrito->apellido}} </td>
-                                    <td class="text-center previa">{{$inscrito->fecha_nacimiento}} </td>
-                                    <td class="text-center previa">{{$inscrito->celular}} </td>
-                                    <td class="text-center previa">{{$inscrito->especialidad}} </td>
-                                    <td class="text-center previa">{{$inscrito->curso}} </td>
-                                </tr>
-                            @endforeach 
                                                            
                             </tbody>
                         </table>

@@ -1161,6 +1161,8 @@ public function PresencialesFiltros(Request $request)
             $array['2'.$clase_grupal->clase_grupal_id] = $clase_array;
         }
 
+            
+
         //dd($asistencia);
         return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
@@ -1199,15 +1201,25 @@ public function PresencialesFiltros(Request $request)
 
             $fecha = $fecha->toDateString();
 
-            $asistencias = DB::table('asistencias')
-                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
-                ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-                // ->where('instructores.id', '=', $request->instructor_id)
-                ->where('asistencias.fecha', '=', $fecha)
-            ->get();
+            if($request->clase_grupal_id){
+                $asistencias = DB::table('asistencias')
+                    ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+                    ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
+                    ->where('clases_grupales.id', '=', $request->clase_grupal_id)
+                    // ->where('instructores.id', '=', $request->instructor_id)
+                    ->where('asistencias.fecha', '=', $fecha)
+                ->get();
+            }else{
+                $asistencias = DB::table('asistencias')
+                    ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+                    ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
+                    ->where('asistencias.fecha', '=', $fecha)
+                ->get();
+            }
 
             $inscripciones = DB::table('inscripcion_clase_grupal')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')

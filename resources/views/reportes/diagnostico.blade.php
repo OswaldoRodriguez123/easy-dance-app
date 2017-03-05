@@ -216,18 +216,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            {{-- $inscritos --}}
-                            @foreach ($inscritos as $inscrito)
-                                <?php $id = $inscrito['id']; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa"> @if($inscrito['activacion'] == 0) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
-                                    <td class="text-center previa">{{$inscrito['nombre']}}</td>
-                                    <td class="text-center previa">{{$inscrito['apellido']}} </td>
-                                    <td class="text-center previa">{{$inscrito['fecha_nacimiento']}} </td>
-                                    <td class="text-center previa">{{$inscrito['celular']}} </td>
-                                    <td class="text-center previa">{{$inscrito['valoracion']}} </td>
-                                </tr>
-                            @endforeach 
                                                            
                             </tbody>
                         </table>

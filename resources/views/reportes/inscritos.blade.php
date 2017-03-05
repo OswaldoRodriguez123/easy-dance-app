@@ -217,19 +217,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            {{-- $inscritos --}}
-                            @foreach ($inscritos as $inscrito)
-                                <?php $id = $inscrito->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$inscrito->fecha}}</td>
-                                    <td class="text-center previa">{{$inscrito->nombre}}</td>
-                                    <td class="text-center previa">{{$inscrito->apellido}} </td>
-                                    <td class="text-center previa">{{$inscrito->fecha_nacimiento}} </td>
-                                    <td class="text-center previa">{{$inscrito->celular}} </td>
-                                    <td class="text-center previa">{{$inscrito->especialidad}} </td>
-                                    <td class="text-center previa">{{$inscrito->curso}} </td>
-                                </tr>
-                            @endforeach 
                                                            
                             </tbody>
                         </table>
@@ -258,6 +245,14 @@
         <script type="text/javascript">
 
         var clase_grupal_array = [];
+
+        if("{{$sexos[0]->sexo}}" == 'F'){
+            color2 = "#2196f3"
+            color1 = "#FF4081"
+        }else{
+            color1 = "#2196f3"
+            color2 = "#FF4081"
+        }
 
         route_filtrar="{{url('/')}}/reportes/inscritos";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
@@ -379,6 +374,19 @@
                       var nTitle="Ups! ";
                       var nMensaje=respuesta.mensaje;
 
+                        array = respuesta.inscritos
+
+                        if(respuesta.inscritos){
+                            if(array[1].sexo == 'F'){
+                                color2 = "#2196f3"
+                                color1 = "#FF4081"
+                            }else{
+                                color1 = "#2196f3"
+                                color2 = "#FF4081"
+                            }
+                        }
+
+
                         
                         $.each(respuesta.inscritos, function (index, array) {
                             var rowNode=t.row.add( [
@@ -442,7 +450,8 @@
                                 },
                                 defaultTheme: false,
                                 cssClass: 'flot-tooltip'
-                            }
+                            },
+                            colors: [color1, color2],
                             
                         });
                 
@@ -547,7 +556,8 @@
                 },
                 defaultTheme: false,
                 cssClass: 'flot-tooltip'
-            }
+            },
+            colors: [color1, color2],
             
         });
 
