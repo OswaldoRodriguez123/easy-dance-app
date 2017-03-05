@@ -432,6 +432,7 @@
 
                             $('.progreso').text(efectividad)
                             $('#barra_progreso').css('height',efectividad)
+                            $('#barra_progreso').attr('aria-valuenow',efectividad+'%');
 
                             datos = JSON.parse(JSON.stringify(respuesta));
 
