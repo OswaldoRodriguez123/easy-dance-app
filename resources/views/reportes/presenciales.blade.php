@@ -194,7 +194,7 @@
                                 <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
                                     <div class="progress-bar progress-bar-morado" id="barra_progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                 </div>
-                                <span class="f-700"><span class="progreso">0</span>% de Efectividad con <span class="total"></span> inscritos</span>
+                                <span class="f-700"><span class="progreso">0</span>% de Efectividad con <span class="total">0</span> inscritos</span>
                             </div>
                         </div>
 
@@ -225,6 +225,22 @@
                               </div>
                             </div>
                         </div>
+
+
+                        <nav class="navbar navbar-default navbar-fixed-bottom">
+                            <div class="container">
+                                <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >0%</div>
+                                <div class="col-xs-11">
+                                    <div class="clearfix p-b-20"></div>
+                                    <div class="progress-fino progress-striped m-b-10">
+                                        <div class="progress-bar progress-bar-morado" id="barra-progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                                        <div class="clearfix"></div>
+                                        <input type="hidden" name="barra_de_progreso" id="barra_de_progreso">
+                                        <div id="msj_porcentaje" class="m-b-20 m-l-25" style="text-align: center">0% de inscritos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
                         
                         
                     </div>
@@ -414,13 +430,14 @@
                                     .addClass('seleccion');
                             });
 
-                            efectividad = (cliente_valor/total)*100
+                            porcentaje = (cliente_valor/total)*100
+                            porcentaje = parseInt(porcentaje)
 
-                            if(isNaN(efectividad)){
-                                efectividad = 0
+                            if(isNaN(porcentaje)){
+                                porcentaje = 0
                             }
 
-                            if(efectividad >= 100){
+                            if(porcentaje >= 100){
                                 $("#barra_progreso").removeClass('progress-bar-morado');
                                 $("#barra_progreso").addClass('progress-bar-success');
                             }else{
@@ -428,11 +445,33 @@
                                 $("#barra_progreso").addClass('progress-bar-morado');
                             }
                             
-                            console.log(nocliente + ' ' + total + ' ' + efectividad)
-
-                            $('.progreso').text(parseInt(efectividad))
+                    
+                            $('.progreso').text(porcentaje)
                             $('.total').text(cliente_valor);
-                            $('#barra_progreso').css('width',efectividad+'%')
+                            $('#barra_progreso').css('width',porcentaje+'%')
+        
+                            $("#text-progreso").text(porcentaje+"%");
+                            $("#barra-progreso").css({
+                              "width": (porcentaje + "%")
+                            });        
+                            
+                            if(porcentaje<="10"){
+                              $("#barra-progreso").css("background-color","red");
+                              $("#msj_porcentaje").html("Debe mejorar");
+                            }else if(porcentaje<="20"){
+                              $("#barra-progreso").css("background-color","orange");
+                              $("#msj_porcentaje").html("Regular");
+                            }else if(porcentaje<="30"){
+                              $("#barra-progreso").css("background-color","gold");
+                              $("#msj_porcentaje").html("Bueno");
+                            }else if(porcentaje<"40"){
+                              $("#barra-progreso").css("background-color","greenyellow ");
+                              $("#msj_porcentaje").html("Muy bueno");
+                            }else{
+                              $("#barra-progreso").css("background-color","green");
+                              $("#msj_porcentaje").html("Excelente");
+                            }
+    
 
                             datos = JSON.parse(JSON.stringify(respuesta));
 
