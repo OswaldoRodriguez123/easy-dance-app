@@ -238,6 +238,7 @@
         var clases_grupales = <?php echo json_encode($clases_grupales);?>;
         var instructores = <?php echo json_encode($instructores);?>;
         var clase_grupal_array = [];
+        var sortable = [];
 
         if("{{$sexos[0]->sexo}}" == 'F'){
             color2 = "#2196f3"
@@ -252,16 +253,30 @@
 
         $(document).ready(function(){
 
+        var hoy = moment().format('DD/MM/YYYY');
 
-        [].sort.call( clases_grupales, function(a,b) {
-           return new Date(a.hora_inicio).getTime() - new Date(b.hora_inicio).getTime() 
-        }); 
-      
+        $.each(clases_grupales, function (index, array) {
+            sortable.push(array);
+        });
 
+        sortable.sort(function(a, b) {
+
+            var c = new Date(hoy + ' ' + a.hora_inicio)
+            var d = new Date(hoy + ' ' + b.hora_inicio)
+
+            if (c.getTime() > d.getTime()) {
+                retorno = 1;
+            } else if (c.getTime() > d.getTime()) {
+                retorno = -1;
+            }
+            else {
+                retorno =  0;
+            }
+
+            return retorno
+        })
 
         $('.icon_f-consultarle-al-instructor').popover();
-
-        var hoy = moment().format('DD/MM/YYYY');
 
         $("#formFiltro")[0].reset();
         $('#clase_grupal_id').empty();
@@ -346,8 +361,7 @@
 
             $('#clase_grupal_id').append( new Option('Todas',0));
 
-            $.each(clases_grupales, function (index, array) {
-                console.log(array)
+            $.each(sortable, function (index, array) {
                 if(array.dia == dia){
 
                     clase_grupal_array.push(array); 
