@@ -1998,4 +1998,95 @@ public function PresencialesFiltros(Request $request)
 
     }
 
+    public function Credenciales(){
+
+        $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+        $clases_grupales= DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
+
+                        
+
+        return view('reportes.credenciales')->with(['alumnos' => $alumnos, 'clases_grupales' => $clases_grupales]);
+    }
+
+    public function CredencialesFiltros(Request $request)
+    {
+        
+         $query = DB::table('asistencias')
+            ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
+            ->where('asistencias.pertenece', 0);
+
+        if($request->clase_grupal_id)
+        {
+            $query->where('asistencias.clase_grupal_id','=', $request->clase_grupal_id);
+        }
+
+        if($request->alumno_id)
+        {
+            $query->where('asistencias.alumno_id','=', $request->alumno_id);
+        }
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+            $query->whereBetween('asistencias.fecha', [$start,$end]);
+        }else{
+
+            if($request->tipo){
+                if($request->tipo == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->toDateString();  
+                }else if($request->tipo == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->tipo == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                }
+
+                $query->whereBetween('asistencias.fecha', [$start,$end]);
+            }
+        }
+        
+
+        $asistencias = $query->get();
+        $array = array();
+
+        foreach($asistencias as $asistencia){
+
+            $deuda = DB::table('items_factura_proforma')
+                ->select('items_factura_proforma.*')
+                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
+            ->first();
+
+            if($deuda){
+                $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+            }else{
+                $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+            }
+
+            $collection=collect($asistencia);     
+            $asistencia_array = $collection->toArray();
+            $asistencia_array['deuda']=$deuda;
+            $array[$asistencia->id] = $asistencia_array;
+            
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+
+        
+    }
+
 }

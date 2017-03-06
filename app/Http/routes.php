@@ -328,6 +328,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('reportes/camisetas-programacion', 'ReporteController@Camiseta_ProgramacionFiltros');
 			Route::get('reportes/referidos', 'ReporteController@Referidos');
 			Route::post('reportes/referidos', 'ReporteController@ReferidosFiltros');
+			Route::get('reportes/credenciales', 'ReporteController@Credenciales');
+			Route::post('reportes/credenciales', 'ReporteController@CredencialesFiltros');
 		
 		});	//END MIDDLEWARE ADMIN
 		/*----------------------------------------------------------

@@ -48,6 +48,8 @@ use App\User;
 
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Session;
+
 use PulkitJalan\GeoIP\GeoIP;
 
 class AsistenciaController extends BaseController
@@ -805,6 +807,12 @@ class AsistenciaController extends BaseController
               if($credencial_alumno->cantidad > 0 OR $request->credencial)
               {
 
+                if(Session::has('pertenece')){
+                  $pertenece = 0;
+                }else{
+                  $pertenece = 1;
+                }
+
                 $actual = Carbon::now();
                 $geoip = new GeoIP();
                 $geoip->setIp($request->ip());
@@ -822,16 +830,21 @@ class AsistenciaController extends BaseController
                 $asistencia->academia_id=Auth::user()->academia_id;
                 $asistencia->tipo = $clase_id[2];
                 $asistencia->tipo_id = $clase_id[3];
+                $asistencia->pertenece = $pertenece;
 
                 if($asistencia->save()){
-                  
+
                   $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
                   $credencial_alumno->save();
+
+                  Session::forget('pertenece');
 
                   return response()->json(['mensaje' => '¡Excelente! La Asistencia se han guardado satisfactoriamente','status' => 'OK', 200]);
                 }
 
               }else{
+
+                Session::put('pertenece',0);
                 return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_CREDENCIAL','text' => "El alumno no posee las credenciales necesarias!", 'campo' => 'credencial'],422);
               }
               

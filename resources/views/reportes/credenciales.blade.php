@@ -56,7 +56,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Reporte de Referidos</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Reporte de Credenciales</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -65,31 +65,53 @@
                             <form name="formFiltro" id="formFiltro">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
-                                <div class="col-md-4">
-                                    <label>Participantes</label>
+
+                            <div class="col-md-4">
+                                <label>Participantes</label>
 
 
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" id="alumno_id" name="alumno_id">
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" id="alumno_id" name="alumno_id">
 
-                                          <option value="0">Todos</option>
-                                          
+                                      <option value="0">Todos</option>
+                                      
 
-                                         @foreach ( $alumnos as $alumno )
+                                     @foreach ( $alumnos as $alumno )
 
-                                              <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                         
-                                         @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
+                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                     
+                                     @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              
+
+                                
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Clase Grupal</label>
+
+
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
+                                      <option value="0">Todas</option>
+                                      @foreach ( $clases_grupales as $clase_grupal )
+                                        <option value = "{{ $clase_grupal->id }}"> {{ $clase_grupal->nombre }} - {{ $clase_grupal->hora_inicio }}  / {{ $clase_grupal->hora_final }} - {{ $clase_grupal->instructor_nombre }}  {{ $clase_grupal->instructor_apellido }} </option>
+
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
                                   
 
                                     
-                                </div>
+                            </div>
 
-                                <div class="col-md-4">
+
+                               <div class="col-md-4">
                                     <label>Fecha</label> &nbsp; &nbsp; &nbsp;
 
                                     <div class="select">
@@ -140,9 +162,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                
 
-   
+                               
 
                                  <!-- <div class="clearfix m-b-10"></div> -->
 
@@ -156,52 +177,24 @@
                             </form>
                         </div>
 
-                       
-                        <div class="col-md-6">
-                            <h2>Informe de Referidos</h2>
-                            <hr>
-                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                            <div class="flc-pie hidden-xs"></div>
-
-                        </div>
-
-
-                        <div class="col-md-6">
-                            <h2>Información</h2>
-                            <hr>
-                            
-                            <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">    
-                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
-                            </div>
-                            <div class="clearfix"></div>    
-
-                            <div class="mini-charts-item bgm-blue">
-                                <div class="clearfix">
-                                    <div class="count">
-                                        <small>Total Referidos:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                    <th class="text-center" data-column-id="celular">Contacto Móvil</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
+                                    <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc"><span class="ocultar">Fecha Nacimiento</span></th>
+                                    <th class="text-center" data-column-id="estatus_e"><span class="ocultar">Estatus E</span></th>
+                                    <th class="text-center" data-column-id="celular"><span class="ocultar">Contacto Móvil</span></th>
+                                    <th class="text-center" data-column-id="sexo"><span class="ocultar">Sexo</span></th>
+                                    <th class="text-center" data-column-id="fecha"><span class="ocultar">Fecha</span></th>
+                                    <th class="text-center" data-column-id="hora"><span class="ocultar">Hora</span></th>                                                                                                            
                                 </tr>
                             </thead>
-                            <tbody>                 
+                            <tbody>
+                                                           
                             </tbody>
                         </table>
                          </div>
@@ -230,8 +223,8 @@
 
         var clase_grupal_array = [];
 
-        route_filtrar="{{url('/')}}/reportes/referidos";
-        route_detalle="{{url('/')}}/participante/visitante/detalle";
+        route_filtrar="{{url('/')}}/reportes/credenciales";
+        route_detalle="{{url('/')}}/participante/alumno/detalle";
 
         $(document).ready(function(){
 
@@ -319,119 +312,91 @@
 
             procesando(); 
 
+            t.clear().draw();
+
+
             $.ajax({
-                    url: route_filtrar,
+                url: route,
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data: datos,
-                    success:function(respuesta){
+                    data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
 
-                        setTimeout(function(){ 
-                            var nFrom = $(this).attr('data-from');
-                            var nAlign = $(this).attr('data-align');
-                            var nIcons = $(this).attr('data-icon');
-                            var nAnimIn = "animated flipInY";
-                            var nAnimOut = "animated flipOutY"; 
+                      var nType = 'success';
+                      var nTitle="Ups! ";
+                      var nMensaje=respuesta.mensaje;
 
-                            var nType = 'success';
-                            var nTitle="Ups! ";
-                            var nMensaje=respuesta.mensaje;
+                        
+                        $.each(respuesta.array, function (index, array) {
 
-                            $('#total').text(respuesta.total)
-                            finprocesado();
-
-                            presenciales = respuesta.referidos
-
-                            t.clear().draw();
-
-                            $.each(respuesta.referidos, function (index, array) {
-
-                                var rowNode=t.row.add( [
-                                ''+array.nombre+'',
-                                ''+array.apellido+'',
-                                ''+array.celular+'',
-                                ] ).draw(false).node();
-                                $( rowNode )
-                                    .attr('id',array.id)
-                                    .addClass('seleccion');
-                            });
-
-                            datos = JSON.parse(JSON.stringify(respuesta));
-
-                            $("#mujeres").text(datos.mujeres);
-                            $("#hombres").text(datos.hombres);
-
-                            var data1 = ''
-                            data1 += '[';
-                            $.each( datos.sexos, function( i, item ) {
-                                var edad = item[0];
-                                var cant = item[1];
-                                data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                            });
-                            data1 = data1.substring(0, data1.length -1);
-                            data1 += ']';
-
-                            $("#pie-chart-procesos").html('');
-                            $(".flc-pie").html('');
-                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                                series: {
-                                    pie: {
-                                        show: true,
-                                        stroke: { 
-                                            width: 2,
-                                        },
-                                    },
-                                },
-                                legend: {
-                                    container: '.flc-pie',
-                                    backgroundOpacity: 0.5,
-                                    noColumns: 0,
-                                    backgroundColor: "white",
-                                    lineWidth: 0
-                                },
-                                grid: {
-                                    hoverable: true,
-                                    clickable: true
-                                },
-                                tooltip: true,
-                                tooltipOpts: {
-                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                    shifts: {
-                                        x: 20,
-                                        y: 0
-                                    },
-                                    defaultTheme: false,
-                                    cssClass: 'flot-tooltip'
-                                }
-                                
-                            });
-
-
-                            finprocesado();
-
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                      }, 1000);
-                    },
-                    error:function(msj){
-                        setTimeout(function(){ 
-                            // if (typeof msj.responseJSON === "undefined") {
-                            //   window.location = "{{url('/')}}/error";
-                            // }
-                            if(msj.responseJSON.status=="ERROR"){
-                              errores(msj.responseJSON.errores);
-                              var nTitle="    Ups! "; 
-                              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                            }else{
-                              var nTitle="   Ups! "; 
-                              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            if(array.sexo=='F'){
+                                sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i>'
                             }
-                            var nType = 'danger';          
-                            finprocesado();            
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                        }, 1000);
+                            else{
+                                sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i>'
+                            }
+
+                            var rowId=array.alumno_id;
+                            var rowNode=t.row.add( [
+                            ''+array.nombre+ ' '+array.apellido+ '',
+                            ''+array.identificacion+'',
+                            ''+array.fecha_nacimiento+'',
+                            ''+array.deuda+'',
+                            ''+array.celular+'',
+                            ''+sexo+'',
+                            ''+array.fecha+'',
+                            ''+array.hora+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                                .attr('id',array.id)
+                                .addClass('seleccion');
+                        });
+
+                
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
                     }
+
+                    finprocesado();                       
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
+                    if(msj.responseJSON.status=="ERROR"){
+                      errores(msj.responseJSON.errores);
+                      var nTitle="    Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle="   Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }
+
+                    finprocesado();
+
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'danger';
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY";                       
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                  }, 1000);
+                }
             });
 
         });
@@ -454,72 +419,12 @@
 
     }
 
-    //PLOTS
-        var pieData1 = [
-                @foreach ($sexos as $sexo)
-                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-                @endforeach
-            ];
-        
-        var values = [
-            @foreach ($sexos as $sexo)        
-                   {{$sexo->CantSex}} ,
-            @endforeach                    
-            ];
-
-
-        $.plot('#pie-chart-procesos', pieData1, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: { 
-                        width: 2,
-                    },
-                },
-            },
-            legend: {
-                container: '.flc-pie',
-                backgroundOpacity: 0.5,
-                noColumns: 0,
-                backgroundColor: "white",
-                lineWidth: 0
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: false,
-                cssClass: 'flot-tooltip'
-            }
-            
-        });
-
      function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
         window.location=route;
       }
-
-    // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
-
-    //     function sparklinePie(id, values, width, height, sliceColors) {
-    //         $('.'+id).sparkline(values, {
-    //             type: 'pie',
-    //             width: width,
-    //             height: height,
-    //             sliceColors: sliceColors,
-    //             offset: 0,
-    //             borderWidth: 0
-    //         });
-    //     }   
-    //     
+  
     
     function collapse_minus(collaps){
         $('#'+collaps).collapse('hide');
