@@ -208,6 +208,7 @@
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
+                                    <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                     <th class="text-center" data-column-id="especialidad">Especialidad</th>
                                 </tr>
@@ -394,6 +395,15 @@
 
                             $.each(respuesta.presenciales, function (index, array) {
 
+                                if(array.sexo=='F')
+                                {
+                                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                                }
+                                else
+                                {
+                                    sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                                }
+
                                 if(array.cliente == 1)
                                 {
                                     cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
@@ -410,6 +420,7 @@
                                 ''+array.fecha+'',
                                 ''+array.nombre+'',
                                 ''+array.apellido+'',
+                                ''+sexo+'',
                                 ''+array.celular+'',
                                 ''+array.especialidad+'',
                                 ] ).draw(false).node();
