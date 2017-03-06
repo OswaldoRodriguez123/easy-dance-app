@@ -119,7 +119,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                   <!--          <div class="col-md-4">
                                 <label>Tipo</label>
 
                                 <div class="fg-line">
@@ -130,7 +130,7 @@
                                         </select>
                                     </div>
                                 </div>    
-                            </div>
+                            </div> -->
 
 
                             <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
@@ -453,41 +453,41 @@
                             hora = array.hora;
                         }
 
-                        if($('#tipo').val() == 1){
-                            var rowId=array.alumno_id;
-                            var rowNode=t.row.add( [
-                            ''+array.pertenece+'',
-                            ''+array.nombre+ ' '+array.apellido+ '',
-                            ''+array.identificacion+'',
-                            ''+array.fecha_nacimiento+'',
-                            ''+array.deuda+'',
-                            ''+array.celular+'',
-                            ''+sexo+'',
-                            ''+fecha+'',
-                            ''+hora+'',
-                            ] ).draw(false).node();
-                            $( rowNode )
-                              .attr('id',rowId)
-                              .addClass('seleccion');
+                        // if($('#tipo').val() == 1){
+                        var rowId=array.alumno_id;
+                        var rowNode=t.row.add( [
+                        ''+array.pertenece+'',
+                        ''+array.nombre+ ' '+array.apellido+ '',
+                        ''+array.identificacion+'',
+                        ''+array.fecha_nacimiento+'',
+                        ''+array.deuda+'',
+                        ''+array.celular+'',
+                        ''+sexo+'',
+                        ''+fecha+'',
+                        ''+hora+'',
+                        ] ).draw(false).node();
+                        $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
              
-                        }else{
-                            var rowId=array.alumno_id;
-                            var rowNode=t.row.add( [
-                            ''+array.pertenece+'',
-                            ''+array.nombre+ ' '+array.apellido+ '',
-                            ''+array.identificacion+'',
-                            '',
-                            '',
-                            '',
-                            '',
-                            '',
-                            '',
-                            ] ).draw(false).node();
-                            $( rowNode )
-                              .attr('id',rowId)
-                              .addClass('seleccion');
+                        // }else{
+                        //     var rowId=array.alumno_id;
+                        //     var rowNode=t.row.add( [
+                        //     ''+array.pertenece+'',
+                        //     ''+array.nombre+ ' '+array.apellido+ '',
+                        //     ''+array.identificacion+'',
+                        //     '',
+                        //     '',
+                        //     '',
+                        //     '',
+                        //     '',
+                        //     '',
+                        //     ] ).draw(false).node();
+                        //     $( rowNode )
+                        //       .attr('id',rowId)
+                        //       .addClass('seleccion');
                   
-                        }
+                        // }
                     });
 
 
