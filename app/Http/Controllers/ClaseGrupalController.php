@@ -34,6 +34,8 @@ use App\Progreso;
 use App\ReservacionVisitante;
 use App\Codigo;
 use App\Examen;
+use App\CredencialAlumno;
+use App\CredencialInstructor;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -398,10 +400,26 @@ class ClaseGrupalController extends BaseController {
                 $hombres++;
             }
 
+            $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('clase_grupal_id',$id)->first();
+
+            if(!$credencial){
+                $credencial = new CredencialAlumno;
+
+                $credencial->alumno_id = $alumno->id;
+                $credencial->clase_grupal_id = $id;
+                $credencial->cantidad = 0;
+                $credencial->dias_vencimiento = 0;
+                $credencial->fecha_vencimiento = Carbon::now();
+
+                $credencial->save();
+            }
+
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
 
             $alumno_array['tipo'] = 1;
+            $alumno_array['cantidad'] = $credencial->cantidad;
+            $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;
             $array[$alumno->id] = $alumno_array;
         }
 
@@ -1443,6 +1461,82 @@ class ClaseGrupalController extends BaseController {
 
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
+        }
+    }
+
+    public function editarcredencial(Request $request)
+    {
+
+    $rules = [
+        'cantidad' => 'numeric',
+        'dias_vencimiento' => 'numeric',
+    ];
+
+    $messages = [
+
+        'cantidad.numeric' => 'Ups! El campo de credenciales en inválido , debe contener sólo números', 
+        'dias_vencimiento.numeric' => 'Ups! El campo de dias de vencimiento en inválido , debe contener sólo números',         
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $credencial_instructor = CredencialInstructor::where('instructor_id', Auth::user()->usuario_id)->first();
+
+            if($credencial_instructor){
+
+                $total = $credencial_instructor->cantidad - $request->cantidad;
+
+                if($total > 0){
+                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('clase_grupal_id',$request->clase_grupal_id)->first();
+
+                    if($credencial_alumno){
+                        
+                        $credencial_alumno->cantidad = $request->cantidad;
+                        $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
+                        $credencial_alumno->fecha_vencimiento = Carbon::now()->AddDays($request->dias_vencimiento);
+
+                        $credencial_alumno->save();
+
+                    }else{
+
+                        $credencial_alumno = new CredencialAlumno;
+
+                        $credencial_alumno->alumno_id = $request->alumno_id_credencial;
+                        $credencial_alumno->clase_grupal_id = $request->clase_grupal_id;
+                        $credencial_alumno->cantidad = $request->cantidad;
+                        $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
+                        $credencial_alumno->fecha_vencimiento = Carbon::now()->AddDays($request->dias_vencimiento);
+
+                        $credencial_alumno->save();
+
+                    }
+
+                    $credencial_instructor->cantidad = $total;
+
+                    if($credencial_instructor->save())
+                    {
+                        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'inscripcion' => $request->all(), 200]);
+
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }else{
+                    return response()->json(['error_mensaje'=> 'Ups! No posees la cantidad de credenciales necesarias' , 'status' => 'ERROR-CREDENCIAL2'],422);
+                }
+
+            }else{
+                return response()->json(['error_mensaje'=> 'Ups! No posees la cantidad de credenciales necesarias' , 'status' => 'ERROR-CREDENCIAL1'],422);
             }
 
         }

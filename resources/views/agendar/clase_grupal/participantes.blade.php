@@ -467,7 +467,7 @@
                                 </div>
                                </div>
 
-                               <input type="hidden" name="id_edicion" id="id_edicion" value=""></input>
+                               <input class ="id_edicion" type="hidden" name="id_edicion" id="id_edicion" value=""></input>
                               
 
                                <div class="clearfix"></div> 
@@ -498,6 +498,77 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalCredencial" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Credenciales Alumno: <span id="credencial_alumno" name="credencial_alumno"></span><button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_credencial" id="form_credencial"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="clase_grupal_id" value="{{ $id }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="cantidad">Ingresa la cantidad de credenciales</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="0000000" placeholder="Ej: 50">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="dias_vencimiento">Días de caducidad</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="dias_vencimiento" data-mask="0000000" placeholder="Ej: 25">
+                                 </div>
+                                 <div class="has-error" id="error-dias_vencimiento">
+                                      <span >
+                                          <small class="help-block error-span" id="error-dias_vencimiento_mensaje"  ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <input type="hidden" name="alumno_id_credencial" id="alumno_id_credencial"></input>
+                               <input class ="id_edicion" type="hidden" name="id_edicion" id="id_edicion" value=""></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar_credencial" name="guardar_credencial">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+
             <section id="content">
                 <div class="container">
                 
@@ -527,11 +598,7 @@
                     
                     <div class="card">
                         <div class="card-header">
-
-
-
-                            <div class="text-right">
-
+                          <div class="text-right">
                             @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
                               <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
                             @endif
@@ -540,13 +607,12 @@
                             <hr class="linea-morada">
 
                             <div class="col-sm-5 text-left">
-                                      <div class="p-t-10"> 
-                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
-                                        <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
-                                    </div>
+                              <div class="p-t-10"> 
+                                <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
+                                <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
+                              </div>
                             </div> 
-
-                            </div>                                                        
+                          </div>                                                        
                         </div>
 
                         <div class="clearfix p-b-35"></div>
@@ -573,8 +639,7 @@
                                 <?php $alumno_id = $alumno['id'];?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}">
-
+                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}">
 
 
                                       @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
@@ -604,8 +669,6 @@
                                       <td class="text-center previa">
                                       <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                       </td>
-                                      <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                      <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                       <td class="text-center"> 
 
                                         @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
@@ -614,7 +677,9 @@
 
                                         @else
 
-                                          <i class="zmdi icon_a-examen valorar f-20 p-r-10" data-html="true" data-original-title="" data-content="Valorar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                          <i class="zmdi icon_a-examen valorar f-20 p-r-10" data-html="true" data-original-title="" data-content="Valorar" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i>
+
+                                          <i class="zmdi icon_b-telefono credencial f-20 p-r-10" data-html="true" data-original-title="" data-content="Credenciales" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i>
 
                                           @if(isset($activacion[$alumno_id])) 
 
@@ -678,6 +743,7 @@
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
+        route_credencial="{{url('/')}}/agendar/clases-grupales/editarcredencial";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
         route_valorar="{{url('/')}}/especiales/examenes/evaluar";
         route_examen="{{url('/')}}/especiales/examenes/agregar";
@@ -1385,6 +1451,103 @@
 
             });
 
+        $("#guardar_credencial").click(function(){
+
+                procesando();
+                var route = route_credencial;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#form_credencial" ).serialize();         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          var tr_edicion = $("#"+respuesta.inscripcion.id_edicion);
+
+                          $(tr_edicion).data('cantidad', respuesta.inscripcion.cantidad)
+                          $(tr_edicion).data('dias_vencimiento', respuesta.inscripcion.dias_vencimiento)
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        finprocesado();
+                        $('#modalCredencial').modal('hide');
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        finprocesado();
+                        // if(msj.responseJSON.status=="ERROR"){
+                        //   console.log(msj.responseJSON.errores);
+                        //   errores(msj.responseJSON.errores);
+                        //   var nTitle="    Ups! "; 
+                        //   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        // }else{
+                        //   var nTitle="   Ups! "; 
+                        //   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        // }                        
+                        // $("#guardar").removeAttr("disabled");
+                        // $(".cancelar").removeAttr("disabled");
+                        // $(".procesando").removeClass('show');
+                        // $(".procesando").addClass('hidden');
+                        // var nFrom = $(this).attr('data-from');
+                        // var nAlign = $(this).attr('data-align');
+                        // var nIcons = $(this).attr('data-icon');
+                        // var nType = 'danger';
+                        // var nAnimIn = "animated flipInY";
+                        // var nAnimOut = "animated flipOutY";                       
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+            });
+
+        $(".credencial").on('click', function(){
+
+            var alumno_id = $(this).closest('tr').data('alumno_id');
+            var id = $(this).closest('tr').attr('id');
+            var cantidad = $(this).closest('tr').data('cantidad');
+            var dias_vencimiento = $(this).closest('tr').data('dias_vencimiento');
+            var nombre = $(this).closest('tr').data('nombre');
+
+
+            $('#alumno_id_credencial').val(alumno_id);
+            $('.id_edicion').val(id);
+            $('#cantidad').val(cantidad);
+            $('#dias_vencimiento').val(dias_vencimiento);
+            $('#credencial_alumno').text(nombre);
+            
+            $('#modalCredencial').modal('show');
+        });
+
         function previa(t){
 
             var id = $(t).closest('tr').attr('id');
@@ -1393,7 +1556,7 @@
             var nombre = $(t).closest('tr').data('nombre');
 
 
-            $('#id_edicion').val(id);
+            $('.id_edicion').val(id);
             $('#costo_mensualidad_edicion').val(costo_mensualidad);
             $('#fecha_pago_edicion').val(fecha_pago);
             $('#span_alumno').text(nombre);

@@ -27,6 +27,8 @@
                                     </div>
                                     <form name="agregar_asistencia" id="agregar_asistencia"  >
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input type="hidden" name="pertenece" id="pertenece">
+                                       <input type="hidden" name="credencial" id="credencial">
                                        <div class="modal-body">                           
                                        <div class="row p-t-20 p-b-0">
 
@@ -82,7 +84,7 @@
                                                     </select>
                                                   </div>
                                                 </div>
-                                                <div class="has-error" id="error-asistencia_clase_grupal_id_mensaje">
+                                                <div class="has-error text-danger" id="error-asistencia_clase_grupal_id_mensaje">
                                                   <span >
                                                       <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
                                                   </span>
@@ -476,42 +478,50 @@
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_asistencia" ).serialize(); 
       limpiarMensaje();
+      procesando();
       $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
         type: 'POST',
         dataType: 'json',
         data:datos,
-          success:function(respuesta){            
-            if(respuesta.status=="OK"){
-              var nType = 'success';
-              $("#agregar_asistencia")[0].reset();
-              $("#asistencia-horario").text("---");
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              var nTitle="Ups! ";
-              var nMensaje=respuesta.mensaje;
+        success:function(respuesta){ 
 
-              $('#modalAsistencia').modal('hide');
-              swal("Permitido!", respuesta.mensaje, "success");
-              $("#content").toggleClass("opacity-content");
-              $("header").toggleClass("abierto");
-              $("footer").toggleClass("opacity-content");
+          finprocesado();           
+    
+          $("#agregar_asistencia")[0].reset();
+          $("#asistencia-horario").text("---");
+          $('#modalAsistencia').modal('hide');
+          swal("Permitido!", respuesta.mensaje, "success");
+          $("#content").toggleClass("opacity-content");
+          $("header").toggleClass("abierto");
+          $("footer").toggleClass("opacity-content");
 
+        },
+        error:function(msj){
+          errores(msj.responseJSON.errores);
+          finprocesado();
 
-            }else{
-              var nType = 'danger';
-              var nTitle="Ups! ";
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              var nType = 'danger';
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-            }
-            
-          },
-          error:function(msj){
+          if(msj.responseJSON.status != 'ERROR'){
+
+            swal({   
+                title: "¿Desea permitir la entrada?",   
+                text: msj.responseJSON.text,   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Permitir!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+              if (isConfirm) {
+                $('#'+msj.responseJSON.campo).val(1)
+                $('#permitir').click();
+                
+              }
+            });  
+
+          }else{
             var nType = 'danger';
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
@@ -519,78 +529,14 @@
             var nAnimIn = "animated flipInY";
             var nAnimOut = "animated flipOutY"; 
             var nTitle="Ups! ";
-            errores(msj.responseJSON.errores);
-            if(msj.responseJSON.status=="ERROR"){
-              var nTitle="    Ups! "; 
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-            }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
-              swal({   
-                    title: "¿Desea permitir la entrada?",   
-                    text: "El alumno no se encuentra asociado a esta clase!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Permitir!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-                if (isConfirm) {
-                    var route = route_agregar_asistencia_permitir;
-                    var token = $('input:hidden[name=_token]').val();
-                    var datos = $( "#agregar_asistencia" ).serialize(); 
-                    $.ajax({
-                      url: route,
-                      headers: {'X-CSRF-TOKEN': token},
-                      type: 'POST',
-                      dataType: 'json',
-                      data:datos,
-                        success:function(respuesta){  
-                          console.log(respuesta)          
-                          if(respuesta.status=="OK"){
-                            $('#modalAsistencia').modal('hide');
-                            swal("Permitido!", respuesta.mensaje, "success");
-                            $("#content").toggleClass("opacity-content");
-                            $("header").toggleClass("abierto");
-                            $("footer").toggleClass("opacity-content");                                              
-                          }else{
-                            var nType = 'danger';
-                            var nTitle="Ups! ";
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                            var nType = 'danger';
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                          }
-                          
-                        },
-                        error:function(msj){
-                          errores(msj.responseJSON.errores);
-                          var nType = 'danger';
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-                          
-                        }
-                        
-                      });
-                  
-                  
-                }
-              });
+            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
 
-            }else if(msj.responseJSON.status=="ERROR_REGISTRADO"){
-              var nType = 'info';
-              var nTitle="    Ups! "; 
-              var nMensaje="El alumno no ha formalizado su inscripción"; 
-            } 
-            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-          }
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          } 
+        }
           
-        });
-    });
+      });
+  });
 
 
     $("#permitir_instructor").on('click',function(){

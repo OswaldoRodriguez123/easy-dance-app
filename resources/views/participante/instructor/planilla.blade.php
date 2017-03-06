@@ -375,6 +375,74 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalCredencial-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Instructor<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_credencial_instructor" id="edit_credencial_instructor"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="cantidad">Ingresa la cantidad de credenciales</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="0000000" placeholder="Ej: 50">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="dias_vencimiento">Días de caducidad</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="dias_vencimiento" data-mask="0000000" placeholder="Ej: 25">
+                                 </div>
+                                 <div class="has-error" id="error-dias_vencimiento">
+                                      <span >
+                                          <small class="help-block error-span" id="error-dias_vencimiento_mensaje"  ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$instructor->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_credencial_instructor" data-update="credencial" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalDireccion-Instructor" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -1288,6 +1356,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCredencial-Instructor">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi {{ empty($credencial->cantidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
+                               <span class="f-14"> Credenciales </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="instructor-cantidad">{{$credencial->cantidad}}</span> Credenciales - <span id="instructor-dias_vencimiento">{{$credencial->dias_vencimiento}}</span> Dias de Vencimiento<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
 
 
                            </table>
@@ -1547,6 +1624,12 @@
       limpiarMensaje();
       $("#telefono").val($("#instructor-telefono").text());
       $("#celular").val($("#instructor-celular").text()); 
+    })
+
+    $('#modalCredencial-Instructor').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#cantidad").val($("#instructor-cantidad").text());
+      $("#dias_vencimiento").val($("#instructor-dias_vencimiento").text()); 
     })
 
     $('#modalDireccion-Instructor').on('show.bs.modal', function (event) {

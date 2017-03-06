@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use App\ConfigPagosInstructor;
 use App\AsistenciaInstructor;
 use App\PagoInstructor;
+use App\CredencialInstructor;
 
 class InstructorController extends BaseController {
 
@@ -53,7 +54,6 @@ class InstructorController extends BaseController {
      */
     public function create()
     {
-
         return view('participante.instructor.create');
     }
 
@@ -639,6 +639,33 @@ class InstructorController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+
+    public function updateCredencial(Request $request){
+        $credencial = CredencialInstructor::where('instructor_id',$request->id)->first();
+
+        if($credencial){
+
+            $credencial->cantidad = $request->cantidad;
+            $credencial->dias_vencimiento = $request->dias_vencimiento;
+            $credencial->fecha_vencimiento = Carbon::now()->addDays($request->dias_vencimiento);
+
+        }else{
+            $credencial = new CredencialInstructor;
+
+            $credencial->instructor_id = $request->id;
+            $credencial->cantidad = $request->cantidad;
+            $credencial->dias_vencimiento = $request->dias_vencimiento;
+            $credencial->fecha_vencimiento = Carbon::now()->addDays($request->dias_vencimiento);
+        }
+
+
+        if($credencial->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -661,21 +688,32 @@ class InstructorController extends BaseController {
     {   
         $instructor = Instructor::find($id);
         if($instructor){
-            $config['center'] = '10.6913156,-71.6800493';
-            $config['zoom'] = 14;
-            \Gmaps::initialize($config);
+            // $config['center'] = '10.6913156,-71.6800493';
+            // $config['zoom'] = 14;
+            // \Gmaps::initialize($config);
 
-            $marker = array();
-            $marker['position'] = '10.6913156,-71.6800493';
-            $marker['draggable'] = true;
-            $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-            \Gmaps::add_marker($marker);
+            // $marker = array();
+            // $marker['position'] = '10.6913156,-71.6800493';
+            // $marker['draggable'] = true;
+            // $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
+            // \Gmaps::add_marker($marker);
 
+            // $map = \Gmaps::create_map();
+            // 
+            $credencial = CredencialInstructor::where('instructor_id',$id)->first();
 
-            $map = \Gmaps::create_map();
+            if(!$credencial){
+                $credencial = new CredencialInstructor;
+
+                $credencial->instructor_id = $id;
+                $credencial->cantidad = 0;
+                $credencial->dias_vencimiento = 0;
+                $credencial->fecha_vencimiento = Carbon::now();
+                $credencial->save();
+            }
  
         //Devolver vista con datos del mapa
-           return view('participante.instructor.planilla',['instructor'=>$instructor] ,compact('map'));
+           return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial]);
         }else{
            return redirect("participante/instructor"); 
         }

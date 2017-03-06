@@ -391,6 +391,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/instructor/update/redes', 'InstructorController@updateRedes');
 			Route::put('participante/instructor/update/avanzado','InstructorController@updateAvanzado');
 			Route::put('participante/instructor/update/imagen','InstructorController@updateImagen');
+			Route::put('participante/instructor/update/credencial','InstructorController@updateCredencial');
 
 			Route::get('participante/instructor/pagos/{id}', 'InstructorController@principalpagos');
 			Route::post('participante/instructor/agregarpago', 'InstructorController@agregarpago');
@@ -958,6 +959,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('clases-grupales', 'ClaseGrupalController@clases_grupales_vista_instructor');
 			Route::get('clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+			Route::post('agendar/clases-grupales/editarcredencial', 'ClaseGrupalController@editarcredencial');
 
 			//NIVELACIONES CLASES GRUPALES
 

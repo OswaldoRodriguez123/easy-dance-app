@@ -36,6 +36,8 @@ use App\Cita;
 
 use App\Staff;
 
+use App\CredencialAlumno;
+
 use Carbon\Carbon;
 
 use DB;
@@ -741,22 +743,20 @@ class AsistenciaController extends BaseController
       
     }
 
-
-
     public function store(Request $request)
     {
 
 
         $rules = [
 
-        'asistencia_clase_grupal_id' => 'required',
-        'asistencia_id_alumno' => 'required',
+          'asistencia_clase_grupal_id' => 'required',
+          'asistencia_id_alumno' => 'required',
         ];
 
         $messages = [
 
-            'asistencia_clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
-            'asistencia_id_alumno.required' => 'Ups! El Alumno es requerido',
+          'asistencia_clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
+          'asistencia_id_alumno.required' => 'Ups! El Alumno es requerido',
             
         ];
 
@@ -772,77 +772,74 @@ class AsistenciaController extends BaseController
             $id_alumno=$request->asistencia_id_alumno;
 
             $ClasesAsociadas=InscripcionClaseGrupal::where('alumno_id',$id_alumno)->get();
-
-            //dd($ClasesAsociadas);
-            //dd($clase);
             $clase_id=explode('-', $clase);
 
-            if(count($ClasesAsociadas)>0){
-              $estatu="no_asociado";
-              foreach ($ClasesAsociadas as $clasegrupal) {
-                if($clasegrupal->clase_grupal_id==$clase_id[0]){
-                  // if($clasegrupal->estatu=="inscrito" && $clasegrupal->clase_grupal_id==$clase_id[0]){
-                    $estatu="inscrito";
-                }
-                // elseif($clasegrupal->estatu=="registrado" && $clasegrupal->clase_grupal_id==$clase_id[0]){
-                //     $estatu="registrado";
-                // }
-                //dd($clasegrupal->estatu ."-".  $clasegrupal->clase_grupal_id."-".$estatu);
+            $estatu="no_asociado";
+
+
+            foreach ($ClasesAsociadas as $clasegrupal) {
+              if($clasegrupal->clase_grupal_id==$clase_id[0]){
+                  $estatu="inscrito";
+              }
+            }
+
+              
+            if($estatu=="inscrito" OR $request->pertenece){
+
+              $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->first();
+
+              if(!$credencial_alumno){
+
+                $credencial_alumno = new CredencialAlumno;
+
+                $credencial_alumno->alumno_id = $id_alumno;
+                $credencial_alumno->clase_grupal_id = $clase;
+                $credencial_alumno->cantidad = 0;
+                $credencial_alumno->dias_vencimiento = 0;
+                $credencial_alumno->fecha_vencimiento = Carbon::now();
+
+                $credencial_alumno->save();
+
               }
 
+              if($credencial_alumno->cantidad > 0 OR $request->credencial)
+              {
 
-              //dd($estatu);
-            }else{
-                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO'],422);
-            }
+                $actual = Carbon::now();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+
+                $actual->tz = $geoip->getTimezone();
+
+                $fecha_actual=$actual->toDateString();
+                $hora_actual=$actual->toTimeString();
+
+                $asistencia = new Asistencia;
+                $asistencia->fecha=$fecha_actual;
+                $asistencia->hora=$hora_actual;
+                $asistencia->clase_grupal_id=$clase;
+                $asistencia->alumno_id=$id_alumno;
+                $asistencia->academia_id=Auth::user()->academia_id;
+                $asistencia->tipo = $clase_id[2];
+                $asistencia->tipo_id = $clase_id[3];
+
+                if($asistencia->save()){
+                  
+                  $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
+                  $credencial_alumno->save();
+
+                  return response()->json(['mensaje' => '¡Excelente! La Asistencia se han guardado satisfactoriamente','status' => 'OK', 200]);
+                }
+
+              }else{
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_CREDENCIAL','text' => "El alumno no posee las credenciales necesarias!", 'campo' => 'credencial'],422);
+              }
               
-            if($estatu=="no_asociado"){
-              return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO'],422);
-            }elseif($estatu=="registrado"){
-              return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_REGISTRADO'],422);
-            }elseif($estatu=="inscrito") {
-              $actual = Carbon::now();
-              $geoip = new GeoIP();
-              $geoip->setIp($request->ip());
+            }elseif($estatu=="no_asociado") {
 
-              // $actual->tz = 'America/Caracas';
-              // $actual->tz = $request->timezone;
-              $actual->tz = $geoip->getTimezone();
+              return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO', 'text' => "El alumno no se encuentra asociado a esta clase!", 'campo' => 'pertenece'],422);
 
-              
-              $fecha_actual=$actual->toDateString();
-              $hora_actual=$actual->toTimeString();
-
-              $asistencia = new Asistencia;
-              $asistencia->fecha=$fecha_actual;
-              $asistencia->hora=$hora_actual;
-              $asistencia->clase_grupal_id=$clase;
-              $asistencia->alumno_id=$id_alumno;
-              $asistencia->academia_id=Auth::user()->academia_id;
-              $asistencia->tipo = $clase_id[2];
-              $asistencia->tipo_id = $clase_id[3];
-
-              $asistencia->save();
-
-              return response()->json(['mensaje' => '¡Excelente! La Asistencia se han guardado satisfactoriamente','status' => 'OK', 200]);
             }
-            /*
-            $actual = Carbon::now();
-            $actual->tz = 'America/Caracas';
-            
-            $fecha_actual=$actual->toDateString();
-            $hora_actual=$actual->toTimeString();
-
-            $asistencia = new Asistencia;
-            $asistencia->fecha=$fecha_actual;
-            $asistencia->hora=$hora_actual;
-            $asistencia->clase_grupal_id=$clase;
-            $asistencia->alumno_id=$id_alumno;
-
-            $asistencia->save();
-            */
-
-            
 
         }
 
