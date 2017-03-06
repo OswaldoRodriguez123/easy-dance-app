@@ -62,62 +62,81 @@
                         <div class="col-sm-12">
                             <form name="formFiltro" id="formFiltro">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                            <div class="col-md-4">
                                 <label>Participantes</label>
 
-                                    <select name="participante_id" id="participante_id">
-                                      <option value="1">Asistentes</option>
-                                      <option value="2">Inasistentes</option>
-                                      <option value="0">Todos</option>
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" data-live-search="true" name="participante_id" id="participante_id">
+                                        <option value="1">Asistentes</option>
+                                        <option value="2">Inasistentes</option>
+                                        <option value="0">Todos</option>
                                     </select>
+                                  </div>
+                                </div>
+                            </div>
 
-                                  &nbsp; &nbsp; &nbsp; <label>Fecha</label> &nbsp; &nbsp; &nbsp;
+                            <div class="col-md-4">
+                                <label>Alumnos</label>
 
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" data-live-search="true" name="alumno_id" id="alumno_id">
+                                        <option value="0">Todos</option>
+                                        @foreach($alumnos as $alumno)
+                                            <option value="{{$alumno->id}}">{{$alumno->nombre}} {{$alumno->apellido}} {{$alumno->identificacion}}</option>
+                                        @endforeach
+                                        
+                                    </select>
+                                  </div>
+                                </div>
+                            </div>
 
-                                <input type="text" id="fecha" name="fecha" class="date-picker proceso pointer" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" placeholder="Selecciona la fecha" style="display: inline; width: 10% "> 
-                                
-                               <!--  <div class="has-error" id="error-fecha">
-                                  <span>
-                                      <small class="help-block error-span" id="error-fecha_mensaje" ></small>      
-                                  </span>
-                              </div>
-                                 -->
-                                  &nbsp; &nbsp; &nbsp; <label>Clase Grupal</label> &nbsp; &nbsp; &nbsp;
+                            <div class="col-md-4">
+                                <label>Fecha</label>
 
-
-                                <select name="clase_grupal_id" id="clase_grupal_id">
-                                </select> 
-
-                                &nbsp; &nbsp; &nbsp; <label>Tipo</label> &nbsp; &nbsp; &nbsp;
-
-
-                                <select name="tipo" id="tipo">
-                                    <option value="1">General</option>
-                                    <option value="2">Valoracion</option>
-                                </select> 
-                                
-                               <!--  <div class="has-error" id="error-fecha">
-                                  <span>
-                                      <small class="help-block error-span" id="error-fecha_mensaje" ></small>      
-                                  </span>
-                              </div>
-     -->
-
-
-                                 <div class="clearfix m-b-10"></div>
-                                 <div class="has-error" id="error-linea">
+                                <div class="fg-line">
+                                    <input type="text" id="fecha" name="fecha" class="date-picker form-control input-sm proceso pointer" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" placeholder="Selecciona la fecha"> 
+                                </div>
+                                <div class="has-error" id="error-linea">
                                   <span>
                                       <small class="help-block error-span" id="error-linea_mensaje" ></small>      
                                   </span>
                                  </div>
+                            </div>
 
-                                 <div class="clearfix m-b-10"></div>
+                            <div class="clearfix"></div>
 
-                                 
+                            <div class="col-md-4">
+                                <label>Clase Grupal</label>
 
-                                 <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+                                <div class="fg-line">
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
+                                        </select> 
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class ="clearfix m-b-10"></div>
-                                <div class ="clearfix m-b-10"></div>
+                            <div class="col-md-4">
+                                <label>Tipo</label>
+
+                                <div class="fg-line">
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                            <option value="1">General</option>
+                                            <option value="2">Valoracion</option>
+                                        </select>
+                                    </div>
+                                </div>    
+                            </div>
+
+
+                            <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+
+                            <div class ="clearfix m-b-10"></div>
+                            <div class ="clearfix m-b-10"></div>
 
                             </form>
                         </div>
@@ -352,11 +371,6 @@
             var tmp = $("#fecha").val().split("/");
             var hoy = new Date();
             var fecha_seleccionada = new Date(tmp[2]+'-'+tmp[1]+'-'+tmp[0]);
-            // if(fecha_seleccionada > hoy){
-            //     $('#error-fecha_mensaje').text('Ups! Debe seleccionar una fecha menor o igual a hoy')
-            //     $("#fecha").val('')
-            // }else{
-            // $('#error-fecha_mensaje').text('')
             var dia = fecha_seleccionada.getDay() + 1;
 
             $('#clase_grupal_id').append( new Option('Todas',0));
@@ -370,7 +384,8 @@
 
                 }
             });
-            // }
+
+            $('#clase_grupal_id').selectpicker('refresh');
         }
 
         $("#fecha").on("dp.change", function (e) {

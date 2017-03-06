@@ -1159,10 +1159,10 @@ public function PresencialesFiltros(Request $request)
             $array['2'.$clase_grupal->clase_grupal_id] = $clase_array;
         }
 
-            
+        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->get();
 
         //dd($asistencia);
-        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumnos' => $alumnos]);
     }
 
     public function filtrarAsistencias(Request $request)
@@ -1191,40 +1191,45 @@ public function PresencialesFiltros(Request $request)
 
         else{
 
-            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+             $query = DB::table('asistencias')
+                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id');
 
-            if($fecha > Carbon::now()){
-                return response()->json(['errores' => ['linea' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha menor al dia de hoy']], 'status' => 'ERROR'],422);
-            }
 
-            $fecha = $fecha->toDateString();
-
-            if($request->clase_grupal_id){
-                $asistencias = DB::table('asistencias')
-                    ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                    ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                    ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
-                    ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-                    // ->where('instructores.id', '=', $request->instructor_id)
-                    ->where('asistencias.fecha', '=', $fecha)
-                ->get();
-            }else{
-                $asistencias = DB::table('asistencias')
-                    ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                    ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                    ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
-                    ->where('asistencias.fecha', '=', $fecha)
-                ->get();
-            }
-
-            $inscripciones = DB::table('inscripcion_clase_grupal')
+            $query2 = DB::table('inscripcion_clase_grupal')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id')
-                ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-            ->get();
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id');
+
+            if($request->clase_grupal_id)
+            {
+                $query->where('asistencias.clase_grupal_id','=', $request->clase_grupal_id);
+                $query2->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+            }
+
+            if($request->alumno_id)
+            {
+                $query->where('asistencias.alumno_id','=', $request->alumno_id);
+                $query2->where('inscripcion_clase_grupal.alumno_id','=', $request->alumno_id);
+            }
+
+            if($request->fecha){
+                $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+
+                if($fecha > Carbon::now()){
+                    return response()->json(['errores' => ['linea' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha menor al dia de hoy']], 'status' => 'ERROR'],422);
+
+                }
+
+                $fecha = $fecha->toDateString();
+                $query->where('asistencias.fecha','=', $fecha);
+            }
+            
+
+            $asistencias = $query->get();
+            $inscripciones = $query2->get();
 
             $mujeres = 0;
             $hombres = 0;
