@@ -1167,86 +1167,236 @@ public function PresencialesFiltros(Request $request)
 
     public function filtrarAsistencias(Request $request)
     {
-        $rules = [
+        
+         $query = DB::table('asistencias')
+            ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id');
 
-            'participante_id' => 'required',
-            'fecha' => 'required',
-            'clase_grupal_id' => 'required',
-        ];
 
-        $messages = [
+        $query2 = DB::table('inscripcion_clase_grupal')
+            ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id');
 
-            'participante_id.required' => 'Ups! Tiene que seleccionar una opción',
-            'fecha.required' => 'Ups! La fecha es requerida',
-            'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
+        if($request->clase_grupal_id)
+        {
+            $query->where('asistencias.clase_grupal_id','=', $request->clase_grupal_id);
+            $query2->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
         }
 
-        else{
+        if($request->alumno_id)
+        {
+            $query->where('asistencias.alumno_id','=', $request->alumno_id);
+            $query2->where('inscripcion_clase_grupal.alumno_id','=', $request->alumno_id);
+        }
 
-             $query = DB::table('asistencias')
-                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id');
+        if($request->fecha){
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
 
+            if($fecha > Carbon::now()){
+                return response()->json(['errores' => ['linea' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha menor al dia de hoy']], 'status' => 'ERROR'],422);
 
-            $query2 = DB::table('inscripcion_clase_grupal')
-                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id');
-
-            if($request->clase_grupal_id)
-            {
-                $query->where('asistencias.clase_grupal_id','=', $request->clase_grupal_id);
-                $query2->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
             }
 
-            if($request->alumno_id)
-            {
-                $query->where('asistencias.alumno_id','=', $request->alumno_id);
-                $query2->where('inscripcion_clase_grupal.alumno_id','=', $request->alumno_id);
-            }
+            $fecha = $fecha->toDateString();
+            $query->where('asistencias.fecha','=', $fecha);
+        }
+        
 
-            if($request->fecha){
-                $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+        $asistencias = $query->get();
+        $inscripciones = $query2->get();
 
-                if($fecha > Carbon::now()){
-                    return response()->json(['errores' => ['linea' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha menor al dia de hoy']], 'status' => 'ERROR'],422);
+        $mujeres = 0;
+        $hombres = 0;
+        $total = 0;
+        $array_sexo = array();
 
+        if($request->participante_id == 1){
+
+            $array = array();
+
+            foreach($asistencias as $asistencia){
+
+                $pertenece = DB::table('inscripcion_clase_grupal')
+                    ->select('inscripcion_clase_grupal.*')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $asistencia->clase_grupal_id)
+                    ->where('inscripcion_clase_grupal.alumno_id', '=', $asistencia->alumno_id)
+                ->first();
+
+                $deuda = DB::table('items_factura_proforma')
+                    ->select('items_factura_proforma.*')
+                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                    ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
+                ->first();
+
+                if($pertenece){
+                    $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+                }else{
+                    if($asistencia->sexo == 'M'){
+                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                    }else{
+                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                    }
+                    
                 }
 
-                $fecha = $fecha->toDateString();
-                $query->where('asistencias.fecha','=', $fecha);
+                if($deuda){
+                    $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                }else{
+                    $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                }
+
+                $collection=collect($asistencia);     
+                $asistencia_array = $collection->toArray();
+                $asistencia_array['pertenece']=$pertenece;
+                $asistencia_array['deuda']=$deuda;
+                $array[$asistencia->id] = $asistencia_array;
+
+                if($asistencia->sexo == 'F'){
+                    $mujeres = $mujeres + 1;
+                }else{
+                    $hombres = $hombres + 1;
+                }
+
+                
             }
-            
 
-            $asistencias = $query->get();
-            $inscripciones = $query2->get();
+            $array_hombres = array('M', $hombres);
+            $array_mujeres = array('F', $mujeres);
 
-            $mujeres = 0;
-            $hombres = 0;
-            $total = 0;
-            $array_sexo = array();
+            array_push($array_sexo, $array_hombres);
+            array_push($array_sexo, $array_mujeres);
 
-            if($request->participante_id == 1){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
 
-                $array = array();
+        }else if($request->participante_id == 2){
+
+            $inasistencias = array();
+
+            foreach($inscripciones as $inscripcion){
+
+                $asistio = 0;
 
                 foreach($asistencias as $asistencia){
+                    if($asistencia->alumno_id == $inscripcion->alumno_id){
+                        $asistio = 1;
+                    }
+                }
 
+                if($asistio == 0)
+                {
                     $pertenece = DB::table('inscripcion_clase_grupal')
                         ->select('inscripcion_clase_grupal.*')
-                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $asistencia->clase_grupal_id)
-                        ->where('inscripcion_clase_grupal.alumno_id', '=', $asistencia->alumno_id)
+                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $inscripcion->clase_grupal_id)
+                        ->where('inscripcion_clase_grupal.alumno_id', '=', $inscripcion->alumno_id)
                     ->first();
+
+                    if($pertenece){
+
+                        $pertenece = '';
+
+                        $deuda = DB::table('items_factura_proforma')
+                            ->select('items_factura_proforma.*')
+                            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                            ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
+                        ->first();
+
+
+                        if($deuda){
+                            $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                        }else{
+                            $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                        }
+
+                        $collection=collect($inscripcion);     
+                        $inasistencias_array = $collection->toArray();
+                        $inasistencias_array['pertenece']=$pertenece;
+                        $inasistencias_array['deuda']=$deuda;
+                        $inasistencias[$inscripcion->id] = $inasistencias_array;
+
+                        if($inscripcion->sexo == 'F'){
+                            $mujeres = $mujeres + 1;
+                        }else{
+                            $hombres = $hombres + 1;
+                        }
+                    }
+                }               
+            }
+
+            $array_hombres = array('M', $hombres);
+            $array_mujeres = array('F', $mujeres);
+
+            array_push($array_sexo, $array_hombres);
+            array_push($array_sexo, $array_mujeres);
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
+        }else{
+
+            $array = array();
+            $array_inscripcion = array();
+
+            foreach($inscripciones as $inscripcion){
+
+                $asistio = 0;
+
+                foreach($asistencias as $asistencia){
+                    if($asistencia->alumno_id == $inscripcion->alumno_id){
+                        $asistio = 1;
+                        $fecha = $asistencia->fecha;
+                        $hora = $asistencia->hora;
+                    }
+                }
+
+                if($asistio){
+                    $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+
+                    if($inscripcion->sexo == 'F'){
+                        $mujeres = $mujeres + 1;
+                    }else{
+                        $hombres = $hombres + 1;
+                    }
+
+                }else{
+                    $pertenece = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
+                    $fecha = '';
+                    $hora = '';
+                }
+
+                $deuda = DB::table('items_factura_proforma')
+                    ->select('items_factura_proforma.*')
+                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                    ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
+                ->first();
+
+
+                if($deuda){
+                    $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                }else{
+                    $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                }
+
+                $collection=collect($inscripcion);     
+                $asistencia_array = $collection->toArray();
+                $asistencia_array['pertenece']=$pertenece;
+                $asistencia_array['deuda']=$deuda;
+                $asistencia_array['fecha']=$fecha;
+                $asistencia_array['hora']=$hora;
+                $array[$inscripcion->id] = $asistencia_array;
+
+                $array_inscripcion[] = $inscripcion->alumno_id;
+            }
+
+            foreach($asistencias as $asistencia){
+                $existe = false;
+                foreach($array_inscripcion as $inscripcion){
+                    if($asistencia->alumno_id == $inscripcion){
+                        $existe = true;
+                    }
+                }
+
+                if($existe == false){
 
                     $deuda = DB::table('items_factura_proforma')
                         ->select('items_factura_proforma.*')
@@ -1254,17 +1404,15 @@ public function PresencialesFiltros(Request $request)
                         ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
                     ->first();
 
-                    if($pertenece){
-                        $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+  
+                    if($asistencia->sexo == 'M'){
+                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                        $hombres = $hombres + 1;
                     }else{
-                        if($asistencia->sexo == 'M'){
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
-                        }else{
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
-                        }
-                        
+                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                        $mujeres = $mujeres + 1;
                     }
-
+                        
                     if($deuda){
                         $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
                     }else{
@@ -1275,190 +1423,19 @@ public function PresencialesFiltros(Request $request)
                     $asistencia_array = $collection->toArray();
                     $asistencia_array['pertenece']=$pertenece;
                     $asistencia_array['deuda']=$deuda;
-                    $array[$asistencia->id] = $asistencia_array;
+                    $array['2-'.$asistencia->id] = $asistencia_array;
 
-                    if($asistencia->sexo == 'F'){
-                        $mujeres = $mujeres + 1;
-                    }else{
-                        $hombres = $hombres + 1;
-                    }
-
-                    
                 }
-
-                $array_hombres = array('M', $hombres);
-                $array_mujeres = array('F', $mujeres);
-
-                array_push($array_sexo, $array_hombres);
-                array_push($array_sexo, $array_mujeres);
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
-
-            }else if($request->participante_id == 2){
-
-                $inasistencias = array();
-
-                foreach($inscripciones as $inscripcion){
-
-                    $asistio = 0;
-
-                    foreach($asistencias as $asistencia){
-                        if($asistencia->alumno_id == $inscripcion->alumno_id){
-                            $asistio = 1;
-                        }
-                    }
-
-                    if($asistio == 0)
-                    {
-                        $pertenece = DB::table('inscripcion_clase_grupal')
-                            ->select('inscripcion_clase_grupal.*')
-                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $inscripcion->clase_grupal_id)
-                            ->where('inscripcion_clase_grupal.alumno_id', '=', $inscripcion->alumno_id)
-                        ->first();
-
-                        if($pertenece){
-
-                            $pertenece = '';
-
-                            $deuda = DB::table('items_factura_proforma')
-                                ->select('items_factura_proforma.*')
-                                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                                ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
-                            ->first();
-
-
-                            if($deuda){
-                                $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
-                            }else{
-                                $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
-                            }
-
-                            $collection=collect($inscripcion);     
-                            $inasistencias_array = $collection->toArray();
-                            $inasistencias_array['pertenece']=$pertenece;
-                            $inasistencias_array['deuda']=$deuda;
-                            $inasistencias[$inscripcion->id] = $inasistencias_array;
-
-                            if($inscripcion->sexo == 'F'){
-                                $mujeres = $mujeres + 1;
-                            }else{
-                                $hombres = $hombres + 1;
-                            }
-                        }
-                    }               
-                }
-
-                $array_hombres = array('M', $hombres);
-                $array_mujeres = array('F', $mujeres);
-
-                array_push($array_sexo, $array_hombres);
-                array_push($array_sexo, $array_mujeres);
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
-            }else{
-
-                $array = array();
-                $array_inscripcion = array();
-
-                foreach($inscripciones as $inscripcion){
-
-                    $asistio = 0;
-
-                    foreach($asistencias as $asistencia){
-                        if($asistencia->alumno_id == $inscripcion->alumno_id){
-                            $asistio = 1;
-                            $fecha = $asistencia->fecha;
-                            $hora = $asistencia->hora;
-                        }
-                    }
-
-                    if($asistio){
-                        $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
-
-                        if($inscripcion->sexo == 'F'){
-                            $mujeres = $mujeres + 1;
-                        }else{
-                            $hombres = $hombres + 1;
-                        }
-
-                    }else{
-                        $pertenece = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
-                        $fecha = '';
-                        $hora = '';
-                    }
-
-                    $deuda = DB::table('items_factura_proforma')
-                        ->select('items_factura_proforma.*')
-                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                        ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
-                    ->first();
-
-
-                    if($deuda){
-                        $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
-                    }else{
-                        $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
-                    }
-
-                    $collection=collect($inscripcion);     
-                    $asistencia_array = $collection->toArray();
-                    $asistencia_array['pertenece']=$pertenece;
-                    $asistencia_array['deuda']=$deuda;
-                    $asistencia_array['fecha']=$fecha;
-                    $asistencia_array['hora']=$hora;
-                    $array[$inscripcion->id] = $asistencia_array;
-
-                    $array_inscripcion[] = $inscripcion->alumno_id;
-                }
-
-                foreach($asistencias as $asistencia){
-                    $existe = false;
-                    foreach($array_inscripcion as $inscripcion){
-                        if($asistencia->alumno_id == $inscripcion){
-                            $existe = true;
-                        }
-                    }
-
-                    if($existe == false){
-
-                        $deuda = DB::table('items_factura_proforma')
-                            ->select('items_factura_proforma.*')
-                            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                            ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
-                        ->first();
-
-      
-                        if($asistencia->sexo == 'M'){
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
-                            $hombres = $hombres + 1;
-                        }else{
-                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
-                            $mujeres = $mujeres + 1;
-                        }
-                            
-                        if($deuda){
-                            $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
-                        }else{
-                            $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
-                        }
-
-                        $collection=collect($asistencia);     
-                        $asistencia_array = $collection->toArray();
-                        $asistencia_array['pertenece']=$pertenece;
-                        $asistencia_array['deuda']=$deuda;
-                        $array['2-'.$asistencia->id] = $asistencia_array;
-
-                    }
-                }
-
-                $array_hombres = array('M', $hombres);
-                $array_mujeres = array('F', $mujeres);
-
-                array_push($array_sexo, $array_hombres);
-                array_push($array_sexo, $array_mujeres);
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
             }
+
+            $array_hombres = array('M', $hombres);
+            $array_mujeres = array('F', $mujeres);
+
+            array_push($array_sexo, $array_hombres);
+            array_push($array_sexo, $array_mujeres);
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
+            
         }
     }
 
