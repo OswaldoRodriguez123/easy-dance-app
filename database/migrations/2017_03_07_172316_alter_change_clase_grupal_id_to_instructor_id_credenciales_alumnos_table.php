@@ -17,7 +17,6 @@ class AlterChangeClaseGrupalIdToInstructorIdCredencialesAlumnosTable extends Mig
             $table->dropColumn('clase_grupal_id');
 
             $table->integer('instructor_id')->unsigned();
-            $table->foreign('instructor_id')->references('id')->on('instructores');
 
         });
     }
@@ -36,7 +35,6 @@ class AlterChangeClaseGrupalIdToInstructorIdCredencialesAlumnosTable extends Mig
             $table->dropColumn('instructor_id');
 
             $table->integer('clase_grupal_id')->unsigned();
-            $table->foreign('clase_grupal_id')->references('id')->on('clases_grupales');
             
         });
 

@@ -841,14 +841,16 @@ class AsistenciaController extends BaseController
               
             if($estatu=="inscrito" OR $request->pertenece){
 
-              $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->first();
+              $clase_grupal = ClaseGrupal::find($clase);
+
+              $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id',$clase_grupal->instructor_id)->first();
 
               if(!$credencial_alumno){
 
                 $credencial_alumno = new CredencialAlumno;
 
                 $credencial_alumno->alumno_id = $id_alumno;
-                $credencial_alumno->clase_grupal_id = $clase;
+                $credencial_alumno->instructor_id = $clase_grupal->instructor_id;
                 $credencial_alumno->cantidad = 0;
                 $credencial_alumno->dias_vencimiento = 0;
                 $credencial_alumno->fecha_vencimiento = Carbon::now();
