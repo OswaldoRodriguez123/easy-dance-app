@@ -13,9 +13,7 @@ class AlterChangeClaseGrupalIdToInstructorIdCredencialesAlumnosTable extends Mig
     public function up()
     {
         Schema::table('credenciales_alumno', function (Blueprint $table) {
-            $table->dropForeign('credenciales_alumno_clase_grupal_id_foreign');
             $table->dropColumn('clase_grupal_id');
-
             $table->integer('instructor_id')->unsigned();
 
         });
@@ -31,9 +29,7 @@ class AlterChangeClaseGrupalIdToInstructorIdCredencialesAlumnosTable extends Mig
 
         Schema::table('credenciales_alumno', function (Blueprint $table) {
             
-            $table->dropForeign('credenciales_alumno_instructor_id_foreign');
             $table->dropColumn('instructor_id');
-
             $table->integer('clase_grupal_id')->unsigned();
             
         });
