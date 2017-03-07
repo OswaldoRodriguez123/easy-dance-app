@@ -1598,13 +1598,11 @@ public function PresencialesFiltros(Request $request)
         $rules = [
 
             'estatus_alumno_id' => 'required',
-            // 'clase_grupal_id' => 'required',
         ];
 
         $messages = [
 
             'estatus_alumno_id.required' => 'Ups! Tiene que seleccionar una opción',
-            // 'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -1693,11 +1691,18 @@ public function PresencialesFiltros(Request $request)
 
                 $collection=collect($inscritos);     
                 $alumno_array = $collection->toArray();
-
                 $alumno_array['estatus'] = $estatus;
-                $array[$inscritos->inscripcion_id] = $alumno_array;
-           
 
+                if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
+                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                }else if($request->estatus_alumno_id== 2 && $estatus=="c-amarillo"){
+                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                }else if($request->estatus_alumno_id== 3 && $estatus=="c-youtube"){
+                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                }else if(!$request->estatus_alumno_id){
+                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                }
+           
             }
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'reporte_datos' => $array, 200]);
