@@ -68,7 +68,7 @@
                                              <div class="form-group fg-line">
                                                 <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
                                                 <div class="clearfix p-b-15"></div>
-                                                <span class="text-center" id="asistencia-estado_ausencia"> --</span>
+                                                <span class="text-center"><i id="asistencia-estado_ausencia" class="zmdi zmdi-label-alt-outline f-20"></i></span>
                                              </div>
                                            </div>
                                            
@@ -408,6 +408,8 @@
       route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
 
+      var estatus = <?php echo json_encode($estatus);?>;
+
       var tipo = 1;
 
         $(document).ready(function(){
@@ -720,6 +722,30 @@ $("#permitir_staff").on('click',function(){
     
 
     $('#asistencia-clase_grupal_id').on('change', function(){
+
+      alumno_id = $('#asistencia_id_alumno').val();
+      clase_grupal_id = $(this).val();
+      $("#asistencia-estado_ausencia").removeClass('c-verde')
+      $("#asistencia-estado_ausencia").removeClass('c-amarillo')
+      $("#asistencia-estado_ausencia").removeClass('c-rojo')
+
+      existe = false;
+
+      $.each(estatus, function (index, array) { 
+
+        if(array.alumno_id == alumno_id && array.clase_grupal_id == clase_grupal_id){
+          existe = true;
+          estatus = array.estatus
+        }
+
+      });
+
+      if(existe == true){
+
+        $("#asistencia-estado_ausencia").addClass(estatus)
+
+      }
+
       if ($(this).val()=='') {
         $("#asistencia-horario").text("---");           
       }else{
@@ -853,7 +879,6 @@ $("#permitir_staff").on('click',function(){
           dataType: 'json',
           data: "&id="+id_alumno,
           success:function(respuesta){
-            console.log(respuesta);
             $.each(respuesta.inscripciones, function (index, array) { 
               if(array.diferencia > 1){
                 restan = 'Restan '

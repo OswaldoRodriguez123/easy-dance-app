@@ -1647,6 +1647,10 @@ public function PresencialesFiltros(Request $request)
             $reporte_estatus = array();
             $hoy = Carbon::now();
 
+            $activos = 0;
+            $riesgo = 0;
+            $inactivos = 0;
+
             foreach ($inscripciones as $inscritos) {
                 $fecha_de_inicio = $inscritos->fecha_inicio;
                 $fecha_de_inicio = Carbon::parse($fecha_de_inicio);
@@ -1683,10 +1687,13 @@ public function PresencialesFiltros(Request $request)
 
                 if($clases_completadas>=$asistencia_roja){
                     $estatus="c-youtube";
+                    $inactivos = $inactivos + 1;
                 }else if($clases_completadas>=$asistencia_amarilla){
                     $estatus="c-amarillo";
+                    $riesgo = $riesgo + 1;
                 }else{
                     $estatus="c-verde";
+                    $activos = $activos + 1;
                 }
 
                 $collection=collect($inscritos);     
@@ -1705,7 +1712,18 @@ public function PresencialesFiltros(Request $request)
            
             }
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'reporte_datos' => $array, 200]);
+            $array_estatus = array();
+
+            $array_activos = array('I', $inactivos);
+            $array_riesgo = array('R', $riesgo);
+            $array_inactivos = array('A', $activos);
+
+            array_push($array_estatus, $array_activos);
+            array_push($array_estatus, $array_riesgo);
+            array_push($array_estatus, $array_inactivos);  
+
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'reporte_datos' => $array, 'estatus' => $array_estatus, 200]);
             }
     }
 

@@ -104,6 +104,29 @@
                             </form>
                         </div>
 
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-6 estatus" style="display: none">
+                            <h2>Informe de Estatus</h2>
+                            <hr>
+                            <!-- <ul class="actions">
+                                <li class="dropdown action-show">
+                                    <a href="#" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+                    
+                                    <div class="dropdown-menu pull-right">
+                                        <p class="p-20">
+                                            You can put anything here
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul> -->
+                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
+                            <div class="flc-pie hidden-xs"></div>
+
+                        </div><!-- COL-MD-6 -->
+
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -235,6 +258,73 @@
                     });
 
                     datos = JSON.parse(JSON.stringify(respuesta));
+
+                    // estatus = respuesta.estatus
+
+                    // if(estatus[1]){
+                    //     if(estatus[1][0] == 'A'){
+                            color1 = "#E22C29"
+                            color2 = "#FFC107"
+                            color3 = "#4CAF50"
+                    //     }else{
+                    //         color2 = "#2196f3"
+                    //         color1 = "#FF4081"
+                    //     }
+                    // }
+
+                    var data1 = ''
+                    data1 += '[';
+                    $.each( datos.estatus, function( i, item ) {
+                        var estatus = item[0];
+                        var cant = item[1];
+                        data1 += '{"data":"'+cant+'","label":"'+estatus+'"},';
+                    });
+
+                    data1 = data1.substring(0, data1.length -1);
+                    data1 += ']';
+                        //GRAFICO FILTRO MES ACTUAL
+                        $("#pie-chart-procesos").html('');
+                        $(".flc-pie").html('');
+                        $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                            series: {
+                                pie: {
+                                    show: true,
+                                    stroke: { 
+                                        width: 2,
+                                    },
+                                },
+                            },
+                            legend: {
+                                container: '.flc-pie',
+                                backgroundOpacity: 0.5,
+                                noColumns: 0,
+                                backgroundColor: "white",
+                                lineWidth: 0
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                shifts: {
+                                    x: 20,
+                                    y: 0
+                                },
+                                defaultTheme: false,
+                                cssClass: 'flot-tooltip'
+                            },
+                            colors: [color1, color2, color3],
+
+                            
+                        });
+
+                        if($('#estatus_alumno_id').val() == 0){
+                          $('.estatus').show()
+                        }else{
+                          $('.estatus').hide()
+                        }
 
                     }else{
                       var nTitle="Ups! ";

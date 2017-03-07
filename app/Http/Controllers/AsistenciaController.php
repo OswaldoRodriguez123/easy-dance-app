@@ -203,16 +203,69 @@ class AsistenciaController extends BaseController
 
       $array = array(2,4);
 
-      $array_alumno = array();
-      $array_instructor = array();
-
       $alumnos = DB::table('alumnos')
-          ->select('alumnos.*')
-          ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-          ->where('alumnos.deleted_at', '=', null)
-          ->orderBy('nombre', 'asc')
+        ->select('alumnos.*')
+        ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+        ->where('alumnos.deleted_at', '=', null)
+        ->orderBy('nombre', 'asc')
       ->get();
 
+      $alumnos_inscritos = DB::table('inscripcion_clase_grupal')
+        ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+        ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        ->select('alumnos.*', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.clase_grupal_id as clase_grupal_id', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_amarilla', 'config_clases_grupales.asistencia_rojo')
+        ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+        ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+      ->get();
+
+      $array_alumno = array();
+      $array_instructor = array();
+      $hoy = Carbon::now();
+      $array_estatus = array();
+
+
+    foreach($alumnos_inscritos as $alumno){
+      $clases_completadas = 0; 
+      $fecha_de_inicio = Carbon::parse($alumno->fecha_inicio);
+      $fecha_de_finalizacion = Carbon::parse($alumno->fecha_final); 
+      $asistencia_roja = $alumno->asistencia_rojo;
+      $asistencia_amarilla = $alumno->asistencia_amarilla; 
+
+      $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$alumno->clase_grupal_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+      if($ultima_asistencia){
+
+          $fecha = Carbon::parse($ultima_asistencia->fecha);
+
+      }else{
+          $fecha = $fecha_de_inicio;
+      }
+
+      if($hoy<$fecha_de_finalizacion){
+          while($fecha<$hoy){
+              $clases_completadas++;
+              $fecha->addWeek();
+          }
+      }else{
+          while($fecha<$fecha_de_finalizacion){
+              $clases_completadas++;
+              $fecha->addWeek();
+          }
+      }
+
+      if($clases_completadas>=$asistencia_roja){
+          $estatus="c-youtube";
+      }else if($clases_completadas>=$asistencia_amarilla){
+          $estatus="c-amarillo";
+      }else{
+          $estatus="c-verde";
+      }
+
+      $array_estatus[]=array('alumno_id' => $alumno->id, 'clase_grupal_id' => $alumno->clase_grupal_id , 'estatus' => $estatus);
+
+  }
+    
       foreach($alumnos as $alumno){
 
         $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
@@ -278,7 +331,7 @@ class AsistenciaController extends BaseController
       $activacion = $grouped->toArray();
 
 
-      return view('asistencia.generar')->with(['alumnosacademia' => $array_alumno, 'instructores' => $array_instructor, 'activacion' => $activacion, 'staff' => $staff]);
+      return view('asistencia.generar')->with(['alumnosacademia' => $array_alumno, 'instructores' => $array_instructor, 'activacion' => $activacion, 'staff' => $staff, 'estatus' => $array_estatus]);
 
     }
 
