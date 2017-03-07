@@ -1488,7 +1488,7 @@ class ClaseGrupalController extends BaseController {
                 $total = $credencial_instructor->cantidad - $request->cantidad;
 
                 if($total > 0){
-                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('clase_grupal_id',$request->clase_grupal_id)->first();
+                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('instructor_id',Auth::user()->usuario_id))->first();
 
                     if($credencial_alumno){
                         
@@ -1503,7 +1503,7 @@ class ClaseGrupalController extends BaseController {
                         $credencial_alumno = new CredencialAlumno;
 
                         $credencial_alumno->alumno_id = $request->alumno_id_credencial;
-                        $credencial_alumno->clase_grupal_id = $request->clase_grupal_id;
+                        $credencial_alumno->instructor_id = Auth::user()->usuario_id);
                         $credencial_alumno->cantidad = $request->cantidad;
                         $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
                         $credencial_alumno->fecha_vencimiento = Carbon::now()->AddDays($request->dias_vencimiento);
