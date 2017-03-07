@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Alumno;
+use App\ClaseGrupal;
 use App\Examen;
 use App\Instructor;
 use App\Staff;
@@ -1441,31 +1442,30 @@ public function PresencialesFiltros(Request $request)
 
     public function Estatus_Alumnos()
     {
-        $inscripciones = DB::table('clases_grupales')
-            ->join('inscripcion_clase_grupal', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
-            ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
-            ->join('alumnos','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
-            ->select('inscripcion_clase_grupal.id as inscripcion_id',
-                     'inscripcion_clase_grupal.alumno_id as alumno_id',
-                     'config_clases_grupales.nombre as clase_nombre',
-                     'config_clases_grupales.id as id_clase',
-                     'clases_grupales.fecha_inicio_preferencial',
-                     'clases_grupales.fecha_inicio',
-                     'clases_grupales.fecha_final',
-                     'config_clases_grupales.asistencia_rojo',
-                     'config_clases_grupales.asistencia_amarilla',
-                     'alumnos.id',
-                     'alumnos.nombre',
-                     'alumnos.apellido',
-                     'alumnos.identificacion',
-                     'alumnos.sexo',
-                     'alumnos.celular',
-                     'alumnos.fecha_nacimiento')
-            ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
-        ->get();
+        // $inscripciones = DB::table('clases_grupales')
+        //     ->join('inscripcion_clase_grupal', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
+        //     ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
+        //     ->join('alumnos','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+        //     ->select('inscripcion_clase_grupal.id as inscripcion_id',
+        //              'inscripcion_clase_grupal.alumno_id as alumno_id',
+        //              'config_clases_grupales.nombre as clase_nombre',
+        //              'config_clases_grupales.id as id_clase',
+        //              'clases_grupales.fecha_inicio_preferencial',
+        //              'clases_grupales.fecha_inicio',
+        //              'clases_grupales.fecha_final',
+        //              'config_clases_grupales.asistencia_rojo',
+        //              'config_clases_grupales.asistencia_amarilla',
+        //              'alumnos.id',
+        //              'alumnos.nombre',
+        //              'alumnos.apellido',
+        //              'alumnos.identificacion',
+        //              'alumnos.sexo',
+        //              'alumnos.celular',
+        //              'alumnos.fecha_nacimiento')
+        //     ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+        // ->get();
 
-        $alumnos = DB::table('alumnos')
-                ->select('alumnos.id',
+        $alumnos = Alumno::select('alumnos.id',
                          'alumnos.nombre',
                          'alumnos.apellido',
                          'alumnos.identificacion',
@@ -1476,8 +1476,7 @@ public function PresencialesFiltros(Request $request)
         ->get();
 
 
-        $clases_grupales = DB::table('clases_grupales')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('clases_grupales.id',
                          'clases_grupales.hora_inicio',
@@ -1532,65 +1531,60 @@ public function PresencialesFiltros(Request $request)
             $clases[$clase->id] = $clase_array;
         }
 
-        $sexo = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->groupBy('alumnos.sexo')
-        ->get();
 
-        $asistio = array();
-        $array = array();
-        $hoy = Carbon::now();
+        // $asistio = array();
+        // $array = array();
+        // $hoy = Carbon::now();
 
-        foreach ($inscripciones as $inscritos) {
-            $fecha_de_inicio = $inscritos->fecha_inicio;
-            $fecha_de_inicio = Carbon::parse($fecha_de_inicio);
-            $fecha_de_finalizacion = $inscritos->fecha_final;
-            $fecha_de_finalizacion = Carbon::parse($fecha_de_finalizacion);
-            $clases_completadas = 0;
-            $numero_de_asistencias = 0;
-            $asistencia_roja = $inscritos->asistencia_rojo;
-            $asistencia_amarilla = $inscritos->asistencia_amarilla;
+        // foreach ($inscripciones as $inscritos) {
+        //     $fecha_de_inicio = $inscritos->fecha_inicio;
+        //     $fecha_de_inicio = Carbon::parse($fecha_de_inicio);
+        //     $fecha_de_finalizacion = $inscritos->fecha_final;
+        //     $fecha_de_finalizacion = Carbon::parse($fecha_de_finalizacion);
+        //     $clases_completadas = 0;
+        //     $numero_de_asistencias = 0;
+        //     $asistencia_roja = $inscritos->asistencia_rojo;
+        //     $asistencia_amarilla = $inscritos->asistencia_amarilla;
 
-            $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$inscritos->id_clase)->where('alumno_id',$inscritos->id)->orderBy('created_at', 'desc')->first();
+        //     $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$inscritos->id_clase)->where('alumno_id',$inscritos->id)->orderBy('created_at', 'desc')->first();
 
-            if($ultima_asistencia){
+        //     if($ultima_asistencia){
 
-                $fecha = Carbon::parse($ultima_asistencia->fecha);
+        //         $fecha = Carbon::parse($ultima_asistencia->fecha);
 
-            }else{
-                $fecha = $fecha_de_inicio;
-            }
+        //     }else{
+        //         $fecha = $fecha_de_inicio;
+        //     }
 
-            if($hoy<$fecha_de_finalizacion)
-            {
-                while($fecha<$hoy)
-                {
-                    $clases_completadas++;
-                    $fecha->addWeek();
-                }
-            }else{
-                while($fecha<$fecha_de_finalizacion){
-                    $clases_completadas++;
-                    $fecha->addWeek();
-                }
-            }
+        //     if($hoy<$fecha_de_finalizacion)
+        //     {
+        //         while($fecha<$hoy)
+        //         {
+        //             $clases_completadas++;
+        //             $fecha->addWeek();
+        //         }
+        //     }else{
+        //         while($fecha<$fecha_de_finalizacion){
+        //             $clases_completadas++;
+        //             $fecha->addWeek();
+        //         }
+        //     }
 
-            if($clases_completadas>=$asistencia_roja){
-                $estatus="c-youtube";
-            }else if($clases_completadas>=$asistencia_amarilla){
-                $estatus="c-amarillo";
-            }else{
-                $estatus="c-verde";
-            }
+        //     if($clases_completadas>=$asistencia_roja){
+        //         $estatus="c-youtube";
+        //     }else if($clases_completadas>=$asistencia_amarilla){
+        //         $estatus="c-amarillo";
+        //     }else{
+        //         $estatus="c-verde";
+        //     }
 
-            $collection=collect($inscritos);     
-            $alumno_array = $collection->toArray();
-            $alumno_array['estatus'] = $estatus;
-            $array[$inscritos->inscripcion_id] = $alumno_array;
-        }
+        //     $collection=collect($inscritos);     
+        //     $alumno_array = $collection->toArray();
+        //     $alumno_array['estatus'] = $estatus;
+        //     $array[$inscritos->inscripcion_id] = $alumno_array;
+        // }
 
-        return view('reportes.estatus_alumnos')->with(['alumnos' => $inscripciones, 'reporte_datos' => $array, 'clases_grupales' => $clases, 'sexos' => $sexo]);
+        return view('reportes.estatus_alumnos')->with(['alumnos' => $alumnos, 'clases_grupales' => $clases]);
     }
 
     public function Estatus_AlumnosFiltros(Request $request){
@@ -1613,14 +1607,13 @@ public function PresencialesFiltros(Request $request)
 
         else{
 
-            $query = DB::table('clases_grupales')
-                ->join('inscripcion_clase_grupal', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
+            $query = ClaseGrupal::join('inscripcion_clase_grupal', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
                 ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
                 ->join('alumnos','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
                 ->select('inscripcion_clase_grupal.id as inscripcion_id',
                          'inscripcion_clase_grupal.alumno_id as alumno_id',
                          'config_clases_grupales.nombre as clase_nombre',
-                         'config_clases_grupales.id as id_clase',
+                         'clases_grupales.id as clase_grupal_id',
                          'clases_grupales.fecha_inicio_preferencial',
                          'clases_grupales.fecha_inicio',
                          'clases_grupales.fecha_final',
@@ -1638,6 +1631,7 @@ public function PresencialesFiltros(Request $request)
             if($request->clase_grupal_id){
 
                 $query->where('clases_grupales.id', '=', $request->clase_grupal_id);
+                $query->where('clases_grupales.deleted_at', '=', null);
 
             }
 
@@ -1661,7 +1655,7 @@ public function PresencialesFiltros(Request $request)
                 $asistencia_roja = $inscritos->asistencia_rojo;
                 $asistencia_amarilla = $inscritos->asistencia_amarilla;
 
-                $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$inscritos->id_clase)->where('alumno_id',$inscritos->id)->orderBy('created_at', 'desc')->first();
+                $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$inscritos->clase_grupal_id)->where('alumno_id',$inscritos->alumno_id)->orderBy('created_at', 'desc')->first();
 
                 if($ultima_asistencia){
 

@@ -142,21 +142,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-<!-- 
-                            @foreach ($reporte_datos as $alumno)
-                                <?php $id = $alumno['inscripcion_id'] ?>
-                                <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
-                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
-                                    <td class="text-center previa">{{$alumno['fecha_nacimiento']}}</td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$alumno['estatus']}}"></i></label></td>
-                                    <td class="text-center previa">{{$alumno['clase_nombre']}}</td>
-                                    <td class="text-center previa">{{$alumno['celular']}}</td>
-                                </tr>
-                            @endforeach   -->
+
                                                            
                             </tbody>
-                        </table><!--here-->
+                        </table>
                          </div>
                         </div>
                         <div class="card-body p-b-20">
