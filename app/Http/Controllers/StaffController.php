@@ -23,10 +23,10 @@ class StaffController extends BaseController
 	public function principal()
 	{
 
-        $staffs = ConfigStaff::join('staff', 'staff.cargo', '=', 'config_staff.id')
+        $staffs = Staff::join('config_staff', 'staff.cargo', '=', 'config_staff.id')
             ->select('staff.id', 'staff.identificacion', 'staff.nombre', 'staff.apellido', 'staff.sexo', 'config_staff.nombre as cargo')
+            ->where('staff.deleted_at', '=', null)
             ->where('staff.academia_id', Auth::user()->academia_id)
-            ->orWhere('staff.academia_id', null)
         ->get();
 
 		return view('staff.principal')->with(['staffs' => $staffs]);
@@ -534,10 +534,10 @@ class StaffController extends BaseController
     public function destroy($id)
     {
         
-        $alumno = Staff::withTrashed()->find($id);
+        $staff = Staff::withTrashed()->find($id);
         
-        if($alumno->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        if($staff->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El staff ha sido eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
