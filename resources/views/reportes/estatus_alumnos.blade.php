@@ -142,18 +142,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                            @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno->inscripcion_id; ?>
+<!-- 
+                            @foreach ($reporte_datos as $alumno)
+                                <?php $id = $alumno['inscripcion_id'] ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$reporte_datos[$id]['alumno_nombre']}} {{$reporte_datos[$id]['alumno_apellido']}}</td>
-                                    <td class="text-center previa">{{$reporte_datos[$id]['alumno_identificacion']}}</td>
-                                    <td class="text-center previa">{{$reporte_datos[$id]['alumno_nacimiento']}}</td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$reporte_datos[$id]['estatus_alumno']}}"></i></label></td>
-                                    <td class="text-center previa">{{$reporte_datos[$id]['clase_grupal']}}</td>
-                                    <td class="text-center previa">{{$reporte_datos[$id]['alumno_celular']}}</td>
+                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                    <td class="text-center previa">{{$alumno['fecha_nacimiento']}}</td>
+                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$alumno['estatus']}}"></i></label></td>
+                                    <td class="text-center previa">{{$alumno['clase_nombre']}}</td>
+                                    <td class="text-center previa">{{$alumno['celular']}}</td>
                                 </tr>
-                            @endforeach  
+                            @endforeach   -->
                                                            
                             </tbody>
                         </table><!--here-->
