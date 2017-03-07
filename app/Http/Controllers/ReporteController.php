@@ -1625,13 +1625,14 @@ public function PresencialesFiltros(Request $request)
                          'alumnos.identificacion',
                          'alumnos.sexo',
                          'alumnos.celular',
-                         'alumnos.fecha_nacimiento');
+                         'alumnos.fecha_nacimiento')
+                ->where('clases_grupales.deleted_at', '=', null);
 
 
             if($request->clase_grupal_id){
 
                 $query->where('clases_grupales.id', '=', $request->clase_grupal_id);
-                $query->where('clases_grupales.deleted_at', '=', null);
+
 
             }
 
