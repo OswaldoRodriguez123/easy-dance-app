@@ -665,7 +665,7 @@
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
                                       <td class="text-center previa">{{$alumno['talla_franela']}}</td>
-                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$asistio[$alumno['alumno_id']]}}"></i></label></td>
+                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal {{$alumno['estatus']}}"></i></label></td>
                                       <td class="text-center previa">
                                       <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                       </td>

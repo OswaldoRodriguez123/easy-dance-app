@@ -267,7 +267,7 @@
             color2 = "#FF4081"
         }
 
-        route_filtrar="{{url('/')}}/reportes/asistencias/filtrar";
+        route_filtrar="{{url('/')}}/reportes/asistencias";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
 
         $(document).ready(function(){

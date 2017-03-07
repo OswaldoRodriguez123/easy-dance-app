@@ -67,12 +67,15 @@
                                       <option value="1">Activos</option>
                                       <option value="2">Riesgo de ausencia</option>
                                       <option value="3">Inactivos</option>
+                                      <option value="0">Todos</option>
                                     </select>
 
                                 &nbsp; &nbsp; &nbsp; <label>Clase Grupal</label> &nbsp; &nbsp; &nbsp;
 
 
                                 <select name="clase_grupal_id" id="clase_grupal_id">
+
+                                    <option value="0">Todas</option>
                                     @foreach ($clases_grupales as $clase)
                                         <?php $id = $clase['id']; ?>
                                         <option value="{{$id}}">                       
@@ -148,7 +151,7 @@
             
         <script type="text/javascript">
 
-        route_filtrar="{{url('/')}}/reportes/estatus_alumnos/filtrar";
+        route_filtrar="{{url('/')}}/reportes/estatus-alumnos";
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -219,12 +222,12 @@
 
                         var rowId=array.id;
                         var rowNode=t.row.add( [
-                        ''+array.alumno_nombre+ ' '+array.alumno_apellido+ '',
-                        ''+array.alumno_identificacion+'',
-                        ''+array.alumno_nacimiento+'',
-                        ''+"<i data-toggle='modal' href='#' class='zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal "+array.estatus_alumno+"'></i>",
-                        ''+array.clase_grupal+'',
-                        ''+array.alumno_celular+'',
+                        ''+array.nombre+ ' '+array.apellido+ '',
+                        ''+array.identificacion+'',
+                        ''+array.fecha_nacimiento+'',
+                        ''+"<i data-toggle='modal' href='#' class='zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal "+array.estatus+"'></i>",
+                        ''+array.clase_nombre+'',
+                        ''+array.celular+'',
                         ] ).draw(false).node();
                         $( rowNode )
                           .attr('id',rowId)

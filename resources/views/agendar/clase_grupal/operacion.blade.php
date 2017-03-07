@@ -561,78 +561,85 @@
 			<ul class="ca-menu-c col-sm-8" style="width: 720px;">
 
                 <li data-ripplecator class ="dark-ripples">
-                        <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal">
-                            <span class="ca-icon-c"><i class="zmdi zmdi-trending-up f-35 boton blue sa-warning" data-original-title="Trasladar" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                        <a class="nivelaciones">
+                            <span class="ca-icon-c"><i class="icon_a-niveles f-35 boton blue sa-warning" data-original-title="Nivelaciones" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
-                                <h2 class="ca-main-c f-20">Trasladar</h2>
+                                <h2 class="ca-main-c f-20">Nivelaciones</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
                 </li>
 
                 <li data-ripplecator class ="dark-ripples">
-                        <a class="multihorario">
-                            <span class="ca-icon-c"><i class="zmdi zmdi-calendar-note f-35 boton blue sa-warning" data-original-title="Ver Multihorario" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c f-20">Multihorario</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
+                    <a class="participantes">
+                        <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                        <div class="ca-content-c">
+                            <h2 class="ca-main-c f-20">Participantes</h2>
+                            <h3 class="ca-sub-c"></h3>
+                        </div>
+                    </a>
                 </li>
-        		<li data-ripplecator class ="dark-ripples">
-                        <a class="participantes">
-                            <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c f-20">Participantes</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
-                    </li>
 
-                    <div class="clearfix"></div>
+                <li data-ripplecator class ="dark-ripples">
+                    <a class = "valorar">
+                        <span class="ca-icon-c"><i class="icon_a-examen f-35 boton blue sa-warning" 
+                               data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                        <div class="ca-content-c">
+                            <h2 class="ca-main-c">Valorar</h2>
+                            <h3 class="ca-sub-c"></h3>
+                        </div>
+                    </a>
+                </li>
 
-                    <li data-ripplecator class ="dark-ripples">
-                        <a class = "progreso">
-                            <span class="ca-icon-c"><i class="icon_e-ver-progreso f-35 boton blue sa-warning" 
-                                   data-original-title="Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Ver Progreso</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
-                    </li>
+                @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
-                    <li data-ripplecator class ="dark-ripples">
-                        <a class = "valorar">
-                            <span class="ca-icon-c"><i class="icon_a-examen f-35 boton blue sa-warning" 
-                                   data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Valorar</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
-                    </li>
+                
+                  <div class="clearfix"></div>
 
-                    <li data-ripplecator class ="dark-ripples">
-                        <a data-toggle="modal" href="#modalCancelar">
-                            <span class="ca-icon-c"><i  class="zmdi zmdi-close-circle-o f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Cancelar Clase</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
-                    </li>
+                  <li data-ripplecator class ="dark-ripples">
+                          <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal">
+                              <span class="ca-icon-c"><i class="zmdi zmdi-trending-up f-35 boton blue sa-warning" data-original-title="Trasladar" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                              <div class="ca-content-c">
+                                  <h2 class="ca-main-c f-20">Trasladar</h2>
+                                  <h3 class="ca-sub-c"></h3>
+                              </div>
+                          </a>
+                  </li>
 
-                    <!--<li>
-                        <a href="#">
-                            <span class="ca-icon-c">A</span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Exceptional Service</h2>
-                                <h3 class="ca-sub-c">Personalized to your needs</h3>
-                            </div>
-                        </a>
-                    </li>-->
-                    
+
+                  <li data-ripplecator class ="dark-ripples">
+                          <a class="multihorario">
+                              <span class="ca-icon-c"><i class="zmdi zmdi-calendar-note f-35 boton blue sa-warning" data-original-title="Ver Multihorario" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                              <div class="ca-content-c">
+                                  <h2 class="ca-main-c f-20">Multihorario</h2>
+                                  <h3 class="ca-sub-c"></h3>
+                              </div>
+                          </a>
+                  </li>
+
+                      <li data-ripplecator class ="dark-ripples">
+                          <a class = "progreso">
+                              <span class="ca-icon-c"><i class="icon_e-ver-progreso f-35 boton blue sa-warning" 
+                                     data-original-title="Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                              <div class="ca-content-c">
+                                  <h2 class="ca-main-c">Ver Progreso</h2>
+                                  <h3 class="ca-sub-c"></h3>
+                              </div>
+                          </a>
+                      </li>
+
+                      <li data-ripplecator class ="dark-ripples">
+                          <a data-toggle="modal" href="#modalCancelar">
+                              <span class="ca-icon-c"><i  class="zmdi zmdi-close-circle-o f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                              <div class="ca-content-c">
+                                  <h2 class="ca-main-c">Cancelar Clase</h2>
+                                  <h3 class="ca-sub-c"></h3>
+                              </div>
+                          </a>
+                      </li>
+
+                    @endif
+
 
 
                     
@@ -758,6 +765,12 @@
   $(".valorar").click(function(){
                
     window.location = "{{url('/')}}/especiales/examenes/agregar/{{$id}}";
+
+    });
+
+  $(".nivelaciones").click(function(){
+               
+    window.location = "{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}";
 
     });
 

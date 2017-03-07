@@ -108,6 +108,7 @@
         <script type="text/javascript">
 
         route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
+        route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones";
 
         var i;
         var hoy;

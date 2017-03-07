@@ -1227,11 +1227,12 @@
 	                              <a href="{{url('/')}}/especiales/examenes/agregar/{{$clasegrupal->id}}"><i class="icon_a-examen f-16 m-r-5 boton blue"  data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
 	                              @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-		                            <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal"><i class="zmdi zmdi-trending-up f-16 m-r-5 boton blue"  data-original-title="Trasladar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-		                            <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-		                            <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+    	                            <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal"><i class="zmdi zmdi-trending-up f-16 m-r-5 boton blue"  data-original-title="Trasladar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+    	                            <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+    	                            <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
-	                              	<i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasegrupal->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasegrupal->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                
 	                              @endif
 
 

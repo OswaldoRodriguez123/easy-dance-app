@@ -383,14 +383,17 @@ class ClaseGrupalController extends BaseController {
                 ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
         ->get();
 
-        $asistencias = DB::table('asistencias')
-                ->select('asistencias.*')
-                ->where('asistencias.clase_grupal_id', '=', $id)
-        ->get();
-
         $array = array();
         $mujeres = 0;
         $hombres = 0;
+
+        $asistio = array();
+
+        $hoy = Carbon::now();
+        $fecha_de_inicio = Carbon::parse($clasegrupal->fecha_inicio);
+        $fecha_de_finalizacion = Carbon::parse($clasegrupal->fecha_final);
+        $asistencia_roja = $clasegrupal->asistencia_rojo;
+        $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
 
 
         foreach($alumnos_inscritos as $alumno){
@@ -420,7 +423,46 @@ class ClaseGrupalController extends BaseController {
             $alumno_array['tipo'] = 1;
             $alumno_array['cantidad'] = $credencial->cantidad;
             $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;
+
+
+            // ----------
+            // 
+            
+            $clases_completadas = 0;
+                
+            $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+            if($ultima_asistencia){
+
+                $fecha = Carbon::parse($ultima_asistencia->fecha);
+
+            }else{
+                $fecha = $fecha_de_inicio;
+            }
+
+            if($hoy<$fecha_de_finalizacion){
+                while($fecha<$hoy){
+                    $clases_completadas++;
+                    $fecha->addWeek();
+                }
+            }else{
+                while($fecha<$fecha_de_finalizacion){
+                    $clases_completadas++;
+                    $fecha->addWeek();
+                }
+            }
+
+            if($clases_completadas>=$asistencia_roja){
+                $estatus="c-youtube";
+            }else if($clases_completadas>=$asistencia_amarilla){
+                $estatus="c-amarillo";
+            }else{
+                $estatus="c-verde";
+            }
+
+            $alumno_array['estatus'] = $estatus;
             $array[$alumno->id] = $alumno_array;
+
         }
 
         foreach($reservaciones as $alumno){
@@ -437,53 +479,9 @@ class ClaseGrupalController extends BaseController {
             $array[$alumno->id] = $alumno_array;
         }
 
-        $asistio = array();
-        $numero_de_asistencias=0;
-
-        $hoy = Carbon::now();
-        $fecha_de_inicio = $clasegrupal->fecha_inicio;
-        $fecha_de_inicio = Carbon::parse($fecha_de_inicio);
-        $fecha_de_finalizacion = $clasegrupal->fecha_final;
-        $fecha_de_finalizacion = Carbon::parse($fecha_de_finalizacion);
-        $clases_completadas = 0;
-        $asistencia_roja = $clasegrupal->asistencia_rojo;
-        $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
-
-        if($hoy<$fecha_de_finalizacion){
-            while($fecha_de_inicio<$hoy){
-                $clases_completadas++;
-                $fecha_de_inicio->addWeek();
-            }
-        }else{
-            while($fecha_de_inicio<$fecha_de_finalizacion){
-                $clases_completadas++;
-                $fecha_de_inicio->addWeek();
-            }
-        }
-
-        foreach($alumnos_inscritos as $inscrito) {
-            foreach($asistencias as $asistencia) {
-                if($inscrito->id==$asistencia->alumno_id)
-                {
-                    $numero_de_asistencias++;
-                }
-            }
-
-            if(($clases_completadas-$numero_de_asistencias)>=$asistencia_roja){
-                $asistio[$inscrito->id]="c-youtube";
-            }else if(($clases_completadas-$numero_de_asistencias)>=$asistencia_amarilla){
-                $asistio[$inscrito->id]="c-amarillo";
-            }else{
-                $asistio[$inscrito->id]="c-verde";
-            }
-            $numero_de_asistencias=0;
-        }
-
         // dd($alumnos_inscritos);
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-
         $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
 
         if($examen){
@@ -492,14 +490,6 @@ class ClaseGrupalController extends BaseController {
             $examen = '';
         }
 
-        // for($i=0; $i<=count($alumnos_inscritos) - 1; $i++) {
-        //     for($j=0; $j<=count($alumnos) - 1; $j++) {
-        //         if($alumnos[$j]['id'] == $alumnos_inscritos[$i]->id){
-        //             $alumnos[$j]->setAttribute('inscrito', 'inscrito');
-        //         }
-        //     }
-        // }
-        
         return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen]);
     }
 

@@ -141,7 +141,8 @@
                                                
                       
                     </div>
-                                            <div role="tabpanel" class="tab-pane animated fadeInRight" id="reportes">
+                    
+                    <div role="tabpanel" class="tab-pane animated fadeInRight" id="reportes">
                       
                       <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
                       
@@ -161,7 +162,7 @@
 
                       </ul>
 
-                      </div>
+                    </div>
                                     </div>
                                 </div>
                             </div>

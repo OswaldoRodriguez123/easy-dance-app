@@ -319,9 +319,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('reportes/promotores', 'ReporteController@Promotores');
 			Route::post('reportes/promotores', 'ReporteController@PromotoresFiltros');
 			Route::get('reportes/asistencias', 'ReporteController@asistencias');
-			Route::post('reportes/asistencias/filtrar', 'ReporteController@filtrarAsistencias');
-			Route::get('reportes/estatus_alumnos','ReporteController@estatus_alumnos');
-			Route::post('reportes/estatus_alumnos/filtrar','ReporteController@filtrar_estatus_alumnos');
+			Route::post('reportes/asistencias', 'ReporteController@AsistenciasFiltros');
+			Route::get('reportes/estatus-alumnos','ReporteController@Estatus_Alumnos');
+			Route::post('reportes/estatus-alumnos','ReporteController@Estatus_AlumnosFiltros');
 			Route::get('reportes/administrativo', 'ReporteController@Administrativo');
 			Route::post('reportes/administrativo', 'ReporteController@AdministrativoFiltros');
 			Route::get('reportes/camisetas-programacion', 'ReporteController@Camiseta_Programacion');
@@ -464,7 +464,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('agendar/clases-grupales/agregar', 'ClaseGrupalController@store');
 			Route::get('agendar/clases-grupales/agregar', 'ClaseGrupalController@create');
-			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			Route::delete('agendar/clases-grupales/eliminar/{id}', 'ClaseGrupalController@destroy');
 			Route::post('agendar/clases-grupales/inscribir', 'ClaseGrupalController@storeInscripcion');
 			Route::post('agendar/clases-grupales/alumnos', 'ClaseGrupalController@getAlumnos');
@@ -1003,6 +1002,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
 			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			
 				
 

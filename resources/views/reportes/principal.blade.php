@@ -61,7 +61,7 @@
                       <a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales </h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>
                   </li>
                   <li data-hovercolor="#f44336">
-                      <a data-toggle="modal" href="{{url('/')}}/reportes/estatus_alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a>
+                      <a data-toggle="modal" href="{{url('/')}}/reportes/estatus-alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a>
                   </li>
 
                   <div class="clearfix"></div>
