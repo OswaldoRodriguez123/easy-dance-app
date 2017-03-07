@@ -22,6 +22,65 @@
 @section('content')
 
 
+<div class="modal fade" id="modalCredencial" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+              <h4 class="modal-title c-negro"> Credenciales <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+          </div>
+             <div class="modal-body">                           
+             <div class="row p-t-20 p-b-0">
+
+                 <div class="col-sm-3">
+
+                      <img name = "instructor_imagen" id ="instructor_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                      <div class="clearfix p-b-15"></div>
+
+                      <p class="p-l-10" id="instructor_nombre"></p>
+                        
+                 </div>
+                 
+
+                 <div class="col-sm-8">
+                     <label for="asistencia-clase_grupal_id" class="f-16">Instructor</label>
+                        <div class="select">
+                          <select class="selectpicker form-control" name="credencial_id" id="credencial_id" data-live-search="true">
+
+                            <option value="">Selecciona</option>
+
+                            @foreach ( $credenciales_alumno as $credencial_alumno )
+                              <option data-nombre = "{{$credencial_alumno['instructor_nombre']}} {{$credencial_alumno['instructor_apellido']}}" value = "{{ $credencial_alumno['id'] }}">{{ $credencial_alumno['instructor_nombre'] }} {{ $credencial_alumno['instructor_apellido'] }}</option>
+                            @endforeach
+                            
+                          </select>
+                        </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                   <div class="form-group fg-line">
+                      <label for="cantidad">Cantidad de credenciales</label>
+                      <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="0000000" placeholder="Ej: 50" value="0" disabled>
+                   </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                   <div class="form-group fg-line">
+                      <label for="fecha_vencimiento">Fecha de Vencimiento</label>
+                      <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="fecha_vencimiento" placeholder="Ej: 20/08/1991" value="0" disabled>
+                   </div>
+                 </div>
+        
+                 <div class="clearfix"></div> 
+
+             </div>
+             
+          </div>
+      </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -141,6 +200,10 @@
                           <div class ="detalle campana">
 
                           <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span></a> </div>
+
+                          <div class ="detalle credencial">
+
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Credenciales <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$total_credenciales}}</span></a> </div>
 
                           <div class="clearfix p-b-15"></div>
 
@@ -459,6 +522,8 @@
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
 
+        var credenciales_alumno = <?php echo json_encode($credenciales_alumno);?>;
+
         function configuracion(){
           window.location = "{{url('/')}}/perfil-evaluativo";
           }
@@ -496,6 +561,10 @@
           $(".campana").click(function(){
             procesando();
             window.location = "{{url('/')}}/especiales/campañas";
+          });
+
+          $(".credencial").click(function(){
+            $('#modalCredencial').modal('show');
           });
 
 
@@ -572,6 +641,44 @@
 
           }
 
+        });
+
+        $('#credencial_id').on('change', function(){
+
+          credencial_id = $(this).val();
+
+          existe = false
+
+
+          $.each(credenciales_alumno, function (index, array) { 
+
+            if(credencial_id == array.id){
+
+              $('#instructor_nombre').text(array.instructor_nombre + ' ' + array.instructor_apellido)
+
+              if(array.imagen){
+                $('#instructor_imagen').attr('src', "{{url('/')}}/assets/uploads/usuario/"+array.imagen)
+              }else{
+                if(array.sexo == 'M'){
+                  $('#instructor_imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+                }else{
+                  $('#instructor_imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+                }
+              }
+
+              $('#fecha_vencimiento').val(array.fecha_vencimiento)
+              $('#cantidad').val(array.cantidad)
+
+              existe = true
+
+            }
+          });
+
+          if(existe == false){
+            $('#fecha_vencimiento').val(0)
+            $('#cantidad').val(0)
+          }
+          
         });
 
         </script>

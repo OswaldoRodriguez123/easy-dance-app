@@ -606,12 +606,21 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
                             <hr class="linea-morada">
 
-                            <div class="col-sm-5 text-left">
+                            <div class="col-sm-6 text-left">
                               <div class="p-t-10"> 
                                 <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
                                 <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
                               </div>
-                            </div> 
+                            </div>
+
+                            @if(Auth::user()->usuario_tipo == 3)
+                              <div class="col-sm-6 text-right">
+
+                                <span class="f-15">Total Credenciales:<span class="f-15" id="total_credenciales">{{$total_credenciales}}</span>
+                                
+
+                              </div> 
+                            @endif
                           </div>                                                        
                         </div>
 
@@ -1480,6 +1489,10 @@
 
                           $(tr_edicion).data('cantidad', respuesta.inscripcion.cantidad)
                           $(tr_edicion).data('dias_vencimiento', respuesta.inscripcion.dias_vencimiento)
+
+                          total = $('#total_credenciales').text() - respuesta.inscripcion.cantidad;
+
+                          $('#total_credenciales').text(total);
 
                         }else{
                           var nTitle="Ups! ";

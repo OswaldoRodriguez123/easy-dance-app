@@ -32,6 +32,7 @@ use App\ItemsFactura;
 use App\ConfigPagosInstructor;
 use App\PagoInstructor;
 use App\ReservacionVisitante;
+use App\CredencialAlumno;
 use App\Codigo;
 use Validator;
 use Carbon\Carbon;
@@ -143,7 +144,7 @@ class AcademiaConfiguracionController extends BaseController {
                     ->join('examenes','evaluaciones.examen_id','=','examenes.id')
                     ->select('examenes.nombre','evaluaciones.id')
                     ->where('evaluaciones.alumno_id','=',Auth::user()->usuario_id)
-                    ->get();
+                ->get();
 
 
                 foreach($clase_grupal_join as $clase){
@@ -245,27 +246,54 @@ class AcademiaConfiguracionController extends BaseController {
                 $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
                 $clase_personalizada_contador = ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->count();
 
-                    $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
+                $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
 
-                    if($perfil){
-                        $tiene_perfil = 1;
-                    }else{
-                        $tiene_perfil = 0;
+                if($perfil){
+                    $tiene_perfil = 1;
+                }else{
+                    $tiene_perfil = 0;
+                }
+
+                $array_deuda = array();
+
+                if (!Session::has('fecha_sesion')) {                
+                   $fecha_sesion=Carbon::now();
+                   Session::put('fecha_sesion',$fecha_sesion);
+                }
+
+                $alumno = Alumno::find(Auth::user()->usuario_id);
+
+                $credenciales_alumno = CredencialAlumno::join('instructores','credenciales_alumno.instructor_id','=','instructores.id')
+                    ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo')
+                    ->where('credenciales_alumno.alumno_id',Auth::user()->usuario_id)
+                ->get();
+
+                $array_credencial = array();
+                $total_credenciales = 0;
+
+                foreach($credenciales_alumno as $credencial_alumno){
+                    $instructor = User::where('usuario_tipo',3)->where('usuario_id',$credencial_alumno->instructor_id)->first();
+
+                    if($instructor){
+
+                      if($instructor->imagen){
+                        $imagen = $instructor->imagen;
+                      }else{
+                        $imagen = '';
+                      }
+
                     }
 
-                    $array_deuda = array();
+                    $collection=collect($credencial_alumno);     
+                    $credencial_array = $collection->toArray();
+                        
+                    $credencial_array['imagen']=$imagen;
+                    $array_credencial[$credencial_alumno->id] = $credencial_array;
 
-                    if (Session::has('fecha_sesion')) {                
-                       
-                    }else{
-                       $fecha_sesion=Carbon::now();
-                       Session::put('fecha_sesion',$fecha_sesion);
-                    }
-
-                    $alumno = Alumno::find(Auth::user()->usuario_id);
-                    
-
-                    return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno]);  
+                    $total_credenciales = $total_credenciales + $credencial_alumno->cantidad;
+                }
+                
+                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno, 'credenciales_alumno' => $array_credencial, 'total_credenciales' => $total_credenciales]);  
                 
             }else{
                 return view('vista_alumno.condiciones')->with('academia', $academia);

@@ -339,7 +339,8 @@ class ClaseGrupalController extends BaseController {
 
         $clasegrupal = DB::table('config_clases_grupales')
                 ->join('clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
@@ -403,13 +404,13 @@ class ClaseGrupalController extends BaseController {
                 $hombres++;
             }
 
-            $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('clase_grupal_id',$id)->first();
+            $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
 
             if(!$credencial){
                 $credencial = new CredencialAlumno;
 
                 $credencial->alumno_id = $alumno->id;
-                $credencial->clase_grupal_id = $id;
+                $credencial->instructor_id = $clasegrupal->instructor_id;
                 $credencial->cantidad = 0;
                 $credencial->dias_vencimiento = 0;
                 $credencial->fecha_vencimiento = Carbon::now();
@@ -490,7 +491,15 @@ class ClaseGrupalController extends BaseController {
             $examen = '';
         }
 
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen]);
+        if(Auth::user()->usuario_tipo == 3){
+            $credenciales = CredencialInstructor::where('instructor_id',Auth::user()->usuario_id)->first();
+
+            $total_credenciales = $credenciales->cantidad;
+        }else{
+            $total_credenciales = 0;
+        }
+
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales]);
     }
 
     public function eliminarinscripcion($id)
@@ -1488,7 +1497,7 @@ class ClaseGrupalController extends BaseController {
                 $total = $credencial_instructor->cantidad - $request->cantidad;
 
                 if($total > 0){
-                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('instructor_id',Auth::user()->usuario_id))->first();
+                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('instructor_id', Auth::user()->usuario_id)->first();
 
                     if($credencial_alumno){
                         
@@ -1503,7 +1512,7 @@ class ClaseGrupalController extends BaseController {
                         $credencial_alumno = new CredencialAlumno;
 
                         $credencial_alumno->alumno_id = $request->alumno_id_credencial;
-                        $credencial_alumno->instructor_id = Auth::user()->usuario_id);
+                        $credencial_alumno->instructor_id = Auth::user()->usuario_id;
                         $credencial_alumno->cantidad = $request->cantidad;
                         $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
                         $credencial_alumno->fecha_vencimiento = Carbon::now()->AddDays($request->dias_vencimiento);
