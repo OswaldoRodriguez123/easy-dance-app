@@ -44,10 +44,27 @@
 
                             
                             <div class ="col-md-6 text-left">  
-                                                      
-                               <i name="restablecer" id="restablecer" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer bandeja detalle" data-html="true" data-original-title="" data-content=" <br> Restablecer participante <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eliminado" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" onclick="procesando()"></i>
 
-                               <i name="descongelar" id="descongelar" class="tm-icon zmdi zmdi-close-circle-o f-25 pointer descongelar detalle" data-html="true" data-original-title="" data-content=" <br> Restablecer participante <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;congelado" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" onclick="procesando()"></i>
+
+                                <ul class="top-menu">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                           <span class="f-15 f-700" style="color:black"> 
+                                                <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                           </span>
+                                        </a>
+                                        <ul class="dropdown-menu dm-icon pull-right">
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/inactivos"><i name="restablecer" id="restablecer" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer bandeja detalle"></i>&nbsp;Bandeja Eliminados</a>
+                                            </li>
+
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/congelados"><i name="descongelar" id="descongelar" class="tm-icon zmdi zmdi-close-circle-o f-25 pointer descongelar detalle"></i> Bandeja Congelados</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
 
                             </div>
 
@@ -153,6 +170,38 @@
         route_operacion="{{url('/')}}/participante/alumno/operaciones";
 
         $(document).ready(function(){
+
+
+        $('#pop-operaciones').popover({
+            html: true,
+            trigger: 'manual'
+        }).on( "mouseenter", function(e) {
+
+            $(this).popover('show');
+            
+            e.preventDefault();
+        });
+
+        $('#restablecer').popover({
+            html: true,
+            trigger: 'manual'
+        }).on( "mouseenter", function(e) {
+
+            $(this).popover('show');
+            
+            e.preventDefault();
+        });
+
+        $('body').on('click', function (e) {
+            $('[data-toggle="popover"]').each(function () {
+                //the 'is' for buttons that trigger popups
+                //the 'has' for icons within a button that triggers a popup
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+
 
         t=$('#tablelistar').DataTable({
         processing: true,

@@ -1627,7 +1627,8 @@ public function PresencialesFiltros(Request $request)
                          'alumnos.celular',
                          'alumnos.fecha_nacimiento')
                 ->where('clases_grupales.deleted_at', '=', null)
-                ->where('config_clases_grupales.deleted_at', '=', null);
+                ->where('config_clases_grupales.deleted_at', '=', null)
+                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
 
 
             if($request->clase_grupal_id){
