@@ -1837,7 +1837,54 @@ public function PresencialesFiltros(Request $request)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();   
 
-        return view('reportes.camiseta_programacion')->with(['inscritos' => $inscritos, 'clases_grupales' => $clases_grupales]);
+      $array = array();
+
+      foreach($clases_grupales as $clase_grupal){
+
+        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+        $i = $fecha->dayOfWeek;
+
+        if($i == 1){
+
+          $dia = 'Lunes';
+
+        }else if($i == 2){
+
+          $dia = 'Martes';
+
+        }else if($i == 3){
+
+          $dia = 'Miercoles';
+
+        }else if($i == 4){
+
+          $dia = 'Jueves';
+
+        }else if($i == 5){
+
+          $dia = 'Viernes';
+
+        }else if($i == 6){
+
+          $dia = 'Sabado';
+
+        }else if($i == 0){
+
+          $dia = 'Domingo';
+
+        }
+
+        $collection=collect($clase_grupal);     
+        $clase_grupal_array = $collection->toArray();
+
+        $clase_grupal_array['dia']=$dia;
+        $array[$clase_grupal->id] = $clase_grupal_array;
+
+      }
+
+    
+
+        return view('reportes.camiseta_programacion')->with(['inscritos' => $inscritos, 'clases_grupales' => $array]);
     }
 
 
