@@ -164,7 +164,7 @@ class AlumnoController extends BaseController
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.*', 'config_clases_grupales.nombre as clase_grupal_nombre', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_inicio', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_final')
+            ->select('alumnos.*', 'config_clases_grupales.nombre as clase_grupal_nombre', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_inicio', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_final', 'inscripcion_clase_grupal.razon_congelacion')
             ->where('alumnos.academia_id', Auth::user()->academia_id)
             ->whereNotNull('inscripcion_clase_grupal.deleted_at')
         ->get();

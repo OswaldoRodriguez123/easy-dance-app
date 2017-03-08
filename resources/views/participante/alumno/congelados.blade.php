@@ -17,6 +17,56 @@
 @stop
 @section('content')
 
+    <div class="modal fade" id="modalCongelar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                <h4 class="modal-title c-negro"> Alumno: <span id="span_alumno">Congelar un alumno</span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+            </div>
+               <div class="modal-body">                           
+               <div class="row p-t-20 p-b-0">
+
+                   <div class="col-sm-3">
+
+                        <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                        <div class="clearfix p-b-15"></div>
+
+                        <span class="f-15 f-700 span_alumno"></span>
+
+                          
+                   </div>
+
+               <div class="col-sm-9">
+         
+                <label for="razon_cancelacion" id="id-razon_congelacion">Razones de congelar el alumno</label>
+                <br></br>
+
+                <div class="fg-line">
+                  <textarea class="form-control" id="razon_congelacion" name="razon_congelacion" rows="2" placeholder="Ej. No podré asistir por razones ajenas a mi voluntad" disabled></textarea>
+                  </div>
+              </div>
+
+
+              <div class="col-sm-9">
+                <div class="form-group">
+                    <div class="form-group fg-line">
+                    <label for="fecha_inicio">Fecha</label>
+                    <div class="fg-line">
+                        <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha" disabled>
+                    </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+
+               
+            </div>
+
+        </div>
+    </div>
+</div>
+
             <section id="content">
                 <div class="container">
                 
@@ -50,22 +100,22 @@
 
                             @foreach ($alumnos as $alumno)
                                 <?php $id = $alumno->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center disabled">{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}</td>
-                                    <td class="text-center disabled">{{$alumno->identificacion}}</td>
-                                    <td class="text-center disabled">
+                                <tr data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}" data-fecha = "{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}" data-congelacion="{{$alumno->razon_congelacion}}" id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center">{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}</td>
+                                    <td class="text-center">{{$alumno->identificacion}}</td>
+                                    <td class="text-center">
                                     @if($alumno->sexo=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
                                     <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
-                                    <td class="text-center disabled">{{$alumno->nombre}} {{$alumno->apellido}} </td>
-                                    <td class="text-center disabled">{{$alumno->clase_grupal_nombre}}</td>
-                                    <td class="text-center disabled">
+                                    <td class="text-center">{{$alumno->nombre}} {{$alumno->apellido}}</td>
+                                    <td class="text-center">{{$alumno->clase_grupal_nombre}}</td>
+                                    <td class="text-center">
                                     <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
                                     </td>
-                                    <td class="text-center disabled"> 
+                                    <td class="text-center"> 
 
                                     <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="descongelar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Descongelar" title="" data-original-title=""></i> 
                                     <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i></td>
@@ -120,6 +170,7 @@
         paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -284,6 +335,20 @@
                                 }
                 });
       }
+
+      function previa(t){
+
+            var fecha = $(t).closest('tr').data('fecha');
+            var congelacion = $(t).closest('tr').data('congelacion');
+            var nombre = $(t).closest('tr').data('nombre');
+
+
+            $('#fecha').val(fecha);
+            $('#razon_congelacion').val(congelacion);
+            $('#span_alumno').text(nombre);
+            
+            $('#modalCongelar').modal('show');
+        };
 
 
 

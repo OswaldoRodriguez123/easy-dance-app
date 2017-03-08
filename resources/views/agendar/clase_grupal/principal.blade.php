@@ -42,8 +42,17 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar una Clase Grupal <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
+                        <div class="card-header">
+
+                            <div class="col-sm-6">
+                                Activos: {{$activos}}
+                                <div class="clearfix"></div>
+                                Riesgo de Ausencial: {{$riesgo}}
+                            </div>
+
+                            <div class="col-sm-6 text-right">
+                                <span class="f-16 p-t-0 text-success">Agregar una Clase Grupal <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
+                            </div>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Clases Grupales</p>
                             <hr class="linea-morada"> 

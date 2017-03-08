@@ -121,7 +121,49 @@ class ClaseGrupalController extends BaseController {
             $actual->tz = $geoip->getTimezone();
             $hoy = $actual->dayOfWeek;
 
-            return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
+            $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->get();
+
+            $asistencia_amarilla = 3;
+            $asistencia_roja = 6;
+            $riesgo = 0;
+            $activos = 0;
+            $inactivos = 0;
+
+            foreach($alumnos as $alumno){
+
+                $semanas = 0;
+
+                $ultima_asistencia = Asistencia::where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+                if($ultima_asistencia){
+
+                    $fecha = Carbon::parse($ultima_asistencia->fecha);
+
+                }else{
+                    $inactivos = $inactivos + 1;
+                    break;
+                }
+
+                while($fecha < Carbon::now())
+                {
+                    $semanas++;
+                    $fecha->addWeek();
+                }
+                
+                if($semanas >= $asistencia_roja){
+                    $inactivos = $inactivos + 1;
+                }
+                else if($semanas >= $asistencia_amarilla){
+                    $riesgo = $riesgo + 1;
+                }else{
+                    $activos = $activos + 1;
+                }
+
+            }
+
+
+
+            return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia, 'riesgo' => $riesgo, 'activos' => $activos]);
 
         }else{
 

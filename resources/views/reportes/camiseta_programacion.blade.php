@@ -56,7 +56,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Reporte de Camisetas y Programación</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-productos f-25"></i> Reporte de Camisetas y Programación</p>
                             <hr class="linea-morada">
                                                          
                         </div>

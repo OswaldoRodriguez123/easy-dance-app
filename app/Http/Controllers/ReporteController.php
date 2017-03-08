@@ -672,7 +672,7 @@ class ReporteController extends BaseController
                 $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
                 if($request->edad_inicio && $request->edad_final){
-                    if($edad >= $request->edad_inicio && $edad <= $request->edad_inicio){
+                    if($edad >= $request->edad_inicio && $edad <= $request->edad_final){
                         $collection=collect($inscrito);     
                         $inscrito_array = $collection->toArray();   
                         $array[$inscrito->id] = $inscrito_array;
@@ -1628,7 +1628,7 @@ public function PresencialesFiltros(Request $request)
                          'alumnos.fecha_nacimiento')
                 ->where('clases_grupales.deleted_at', '=', null)
                 ->where('config_clases_grupales.deleted_at', '=', null)
-                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+                ->where('alumnos.academia_id', '=', Auth::user()->academia_id);
 
 
             if($request->clase_grupal_id){

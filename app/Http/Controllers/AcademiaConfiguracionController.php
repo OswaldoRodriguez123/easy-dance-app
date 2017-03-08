@@ -218,7 +218,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                 foreach($campanas as $campana){
 
-                    $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_inicio);
+                    $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_final);
 
                     if($fecha >= Carbon::now()){
 
