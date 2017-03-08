@@ -56,12 +56,14 @@
                                 <span class="f-16 p-t-0 text-success">Agregar una Clase Grupal <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
                             </div>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Clases Grupales</p>
-                            <hr class="linea-morada"> 
+                            <div class="clearfix"></div>
 
-                            <div class="text-center"> 
+                            <div class="text-center">
+                                <p class="opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Clases Grupales</p>
 
-                               <button class="btn btn-blanco button_izquierda" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <span class="span_dia f-20 c-morado">LUNES</span> <button class="btn btn-blanco button_derecha" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
+                                <hr class="linea-morada"> 
+
+                                <button class="btn btn-blanco button_izquierda" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <span class="span_dia f-20 c-morado">LUNES</span> <button class="btn btn-blanco button_derecha" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
 
                                 <div class="clearfix"></div>
 
@@ -72,8 +74,6 @@
                                 <button class="btn btn-blanco button_dia no_border_button" value="5">Vier</button> &nbsp; 
                                 <button class="btn btn-blanco button_dia no_border_button" value="6">Sab</button> &nbsp; 
                                 <button class="btn btn-blanco button_dia no_border_button" value="7">Dom</button>
-
-
 
                             </div>                                                   
                         </div>
