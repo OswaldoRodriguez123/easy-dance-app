@@ -141,7 +141,7 @@ class ClaseGrupalController extends BaseController {
 
                 }else{
                     $inactivos = $inactivos + 1;
-                    break;
+                    return;
                 }
 
                 while($fecha < Carbon::now())
