@@ -136,42 +136,6 @@
 
                         </div><!-- CARD HEADER 1 -->
 
-                       <!--  <div class="col-md-6">
-                            <h2>Procesos de Inscripcion</h2>
-                            <hr>
-                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                            <div class="flc-pie hidden-xs"></div>
-
-                        </div> -->
-
-
-                        <!-- <div class="col-md-6">
-                            <h2>Información</h2>
-                            <hr>
-
-                            <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">    
-                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
-                            </div>
-                            <div class="clearfix"></div>    
-
-                            <div class="mini-charts-item bgm-blue">
-                                <div class="clearfix">
-                                    <div class="count">
-                                        <small>Total Inscritos:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">$hombres}}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">$mujeres}}</h2>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div> -->
-
-
-
                         <div class="clearfix"></div>
                         <div class="clearfix"></div>
 
@@ -179,6 +143,7 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-alumnos f-25"></i> Informe Administrativo</p>
                             <hr class="linea-morada">
                         </div>
+                        
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -211,6 +176,8 @@
                         </table>
                          </div>
                         </div>
+
+                        <div class="clearfix"></div>
                         <div class="card-body p-b-20">
                             <div class="row">
                                 <div class="container">

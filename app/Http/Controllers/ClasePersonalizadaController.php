@@ -175,6 +175,25 @@ class ClasePersonalizadaController extends BaseController {
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', Auth::user()->academia_id)->first();
 
+        if(!$config_clase_personalizada)
+        {
+
+            $config_clase_personalizada = new ConfigClasesPersonalizadas;
+
+            $config_clase_personalizada->academia_id = Auth::user()->academia_id;
+            $config_clase_personalizada->imagen_principal = '';
+            $config_clase_personalizada->descripcion = '';
+            $config_clase_personalizada->video_promocional = '';
+            $config_clase_personalizada->imagen1 = '';
+            $config_clase_personalizada->imagen2 = '';
+            $config_clase_personalizada->imagen3 = '';
+            $config_clase_personalizada->ventajas = '';
+            $config_clase_personalizada->condiciones = '';
+
+            $config_clase_personalizada->save();
+            
+        }
+
         $id = Auth::user()->academia_id;
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -185,8 +204,6 @@ class ClasePersonalizadaController extends BaseController {
         ->get();
 
         $alumno_id = Session::get('id_alumno');
-
-
 
         return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id]);
         

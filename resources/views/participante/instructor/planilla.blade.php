@@ -1359,7 +1359,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalCredencial-Instructor">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi {{ empty($credencial->cantidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-pagar f-22"></i> </span>
                                <span class="f-14"> Credenciales </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="instructor-cantidad">{{$credencial->cantidad}}</span> Credenciales - <span id="instructor-dias_vencimiento">{{$credencial->dias_vencimiento}}</span> Dias de Vencimiento<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
