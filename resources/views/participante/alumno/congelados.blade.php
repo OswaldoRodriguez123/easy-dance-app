@@ -99,7 +99,7 @@
                             <tbody>
 
                             @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno->id; ?>
+                                <?php $id = $alumno->inscripcion_id; ?>
                                 <tr data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}" data-fecha = "{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}" data-congelacion="{{$alumno->razon_congelacion}}" id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center">{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}</td>
                                     <td class="text-center">{{$alumno->identificacion}}</td>
