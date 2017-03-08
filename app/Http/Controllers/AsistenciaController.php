@@ -12,25 +12,25 @@ use App\ClaseGrupal;
 
 use App\InscripcionClaseGrupal;
 
-use App\Asistencia;
-
-use App\Instructor;
-
-use App\AsistenciaInstructor;
-
-use App\ConfigPagosInstructor;
-
-use App\AsistenciaStaff;
-
-use App\Alumno;
-
 use App\HorarioClaseGrupal;
-
-use App\InscripcionClasePersonalizada;
 
 use App\ClasePersonalizada;
 
+use App\InscripcionClasePersonalizada;
+
+use App\Asistencia;
+
+use App\AsistenciaInstructor;
+
+use App\AsistenciaStaff;
+
+use App\Instructor;
+
+use App\ConfigPagosInstructor;
+
 use App\PagoInstructor;
+
+use App\Alumno;
 
 use App\Cita;
 
@@ -888,6 +888,12 @@ class AsistenciaController extends BaseController
                 $asistencia->pertenece = $pertenece;
 
                 if($asistencia->save()){
+
+                  $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->first();
+
+                  if($inscripcion_clase_grupal){
+                    $inscripcion_clase_grupal->deleted_at = null;
+                  }
 
                   $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
                   $credencial_alumno->save();
