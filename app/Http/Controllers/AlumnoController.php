@@ -143,6 +143,36 @@ class AlumnoController extends BaseController
         return view('participante.alumno.bandeja')->with(['alumnos' => $alumno, 'deuda' => $deuda]);
     }
 
+    public function congelados()
+    {
+        $alumnod = DB::table('alumnos')
+            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+            ->where('deleted_at', '!=' ,  NULL)
+        ->get();
+
+        $collection=collect($alumnod);
+
+        $grouped = $collection->groupBy('id');     
+        
+        $deuda = $grouped->toArray();
+
+
+        $alumno = InscripcionClaseGrupal::onlyTrashed()
+            ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.*', 'config_clases_grupales.nombre as clase_grupal_nombre', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_inicio', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_final')
+            ->where('alumnos.academia_id', Auth::user()->academia_id)
+            ->whereNotNull('inscripcion_clase_grupal.deleted_at')
+        ->get();
+
+
+        return view('participante.alumno.congelados')->with(['alumnos' => $alumno, 'deuda' => $deuda]);
+    }
+
 	public function store(Request $request)
 	{
         
@@ -1088,6 +1118,34 @@ class AlumnoController extends BaseController
                 ->first();
             
             if($alumno->restore()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
+    }
+
+    public function descongelar($id)
+    {
+            
+            $alumno = InscripcionClaseGrupal::onlyTrashed()
+                ->where('id', $id)
+                ->first();
+            
+            if($alumno->restore()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
+    }
+
+    public function eliminar_inscripcion($id)
+    {
+            
+            $delete = InscripcionClaseGrupal::withTrashed()->where('id',$id)->first();
+            
+            if($delete->forceDelete()){
                 return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

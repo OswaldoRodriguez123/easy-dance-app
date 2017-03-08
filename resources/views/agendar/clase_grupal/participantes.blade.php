@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -14,6 +15,8 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/moment.min.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 @stop
 @section('content')
 
@@ -59,6 +62,84 @@
               </div>
       </div>
   </div>
+
+  <div class="modal fade" id="modalCongelar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                <h4 class="modal-title c-negro"> Congelar un alumno <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+            </div>
+            <form name="congelar_alumno" id="congelar_alumno"  >
+               <input type="hidden" name="_token" value="{{ csrf_token() }}">
+               <input type="hidden" name="inscripcion_clase_grupal_id" id="inscripcion_clase_grupal_id"></input>  
+               <div class="modal-body">                           
+               <div class="row p-t-20 p-b-0">
+
+                   <div class="col-sm-3">
+
+                        <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                        <div class="clearfix p-b-15"></div>
+
+                        <span class="f-15 f-700 span_alumno"></span>
+
+                          
+                   </div>
+
+               <div class="col-sm-9">
+         
+                <label for="razon_cancelacion" id="id-razon_congelacion">Razones de congelar el alumno</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás congelando al alumno" title="" data-original-title="Ayuda"></i>
+                <br></br>
+
+                <div class="fg-line">
+                  <textarea class="form-control" id="razon_congelacion" name="razon_congelacion" rows="2" placeholder="Ej. No podré asistir por razones ajenas a mi voluntad"></textarea>
+                  </div>
+                <div class="has-error" id="error-razon_congelacion">
+                  <span >
+                    <small class="help-block error-span" id="error-razon_congelacion_mensaje" ></small>                                           
+                  </span>
+                </div>
+              </div>
+
+
+              <div class="col-sm-9">
+                <div class="form-group">
+                    <div class="form-group fg-line">
+                    <label for="fecha_inicio">Fecha</label>
+                    <div class="fg-line">
+                        <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha">
+                    </div>
+                 </div>
+                    <div class="has-error" id="error-fecha">
+                      <span >
+                          <small id="error-fecha_mensaje" class="help-block error-span" ></small>                                           
+                      </span>
+                    </div>
+                </div>
+               </div>
+              </div>
+
+               
+            </div>
+            <div class="modal-footer p-b-20 m-b-20">
+                <div class="col-sm-6 text-left">
+                  <div class="procesando hidden">
+                  <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                  <div class="preloader pls-purple">
+                      <svg class="pl-circular" viewBox="25 25 50 50">
+                          <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                      </svg>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">                          
+                  <button type="button" class="btn-blanco btn m-r-10 f-16" id="congelar" name="congelar" > Completar la congelación</button>
+                  <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                </div>
+            </div></form>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modalCostoInscripcion-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -648,7 +729,7 @@
                                 <?php $alumno_id = $alumno['id'];?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}">
+                                  <tr id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}">
 
 
                                       @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
@@ -682,7 +763,9 @@
 
                                         @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
-                                          <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
+                                          <i class="zmdi zmdi-close-circle-o congelar_alumno f-20 p-r-10"></i>
+
+                                          <!-- <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> -->
 
                                         @else
 
@@ -749,6 +832,7 @@
         route_agregar="{{url('/')}}/agendar/clases-grupales/inscribir";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarinscripcion/";
         route_eliminar_reserva="{{url('/')}}/agendar/clases-grupales/eliminar_reserva/";
+        route_congelar="{{url('/')}}/agendar/clases-grupales/congelar-alumno";
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
@@ -763,6 +847,40 @@
         var permitir = 0;
 
         $(document).ready(function(){
+
+          $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "left",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+        });
 
 
         $("#boolean_franela").val('1');  //VALOR POR DEFECTO
@@ -1543,6 +1661,99 @@
 
             });
 
+          $("#congelar").click(function(){
+            swal({   
+                    title: "¿Seguro deseas congelar al alumno ?",   
+                    text: "Confirmar la congelación",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#ec6c62",   
+                    confirmButtonText: "Sí, congelar",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+            if (isConfirm) {
+
+                var route = route_congelar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#congelar_alumno" ).serialize(); 
+                procesando();    
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          row = $('#'+respuesta.id)
+                          
+                          t.row($(row))
+                            .remove()
+                            .draw();
+
+                          finprocesado();
+                          $('#modalCongelar').modal('hide');
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          finprocesado();
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        finprocesado();
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }            
+
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+
+                    }
+                });
+              }
+            });
+        });
+
         $(".credencial").on('click', function(){
 
             var alumno_id = $(this).closest('tr').data('alumno_id');
@@ -1559,6 +1770,18 @@
             $('#credencial_alumno').text(nombre);
             
             $('#modalCredencial').modal('show');
+        });
+
+        $(".congelar_alumno").on('click', function(){
+
+            var id = $(this).closest('tr').attr('id');
+            var nombre = $(this).closest('tr').data('nombre');
+
+
+            $('#inscripcion_clase_grupal_id').val(id);
+            $('.span_alumno').text(nombre);
+            
+            $('#modalCongelar').modal('show');
         });
 
         function previa(t){

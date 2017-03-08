@@ -47,6 +47,8 @@
                                                       
                                <i name="restablecer" id="restablecer" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer bandeja detalle" data-html="true" data-original-title="" data-content=" <br> Restablecer participante <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eliminado" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" onclick="procesando()"></i>
 
+                               <i name="descongelar" id="descongelar" class="tm-icon zmdi zmdi-close-circle-o f-25 pointer descongelar detalle" data-html="true" data-original-title="" data-content=" <br> Restablecer participante <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;congelado" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover" onclick="procesando()"></i>
+
                             </div>
 
                             <div class ="col-md-6 text-right">                                
@@ -213,6 +215,10 @@
 
         $(".bandeja").click(function(){
             window.location="{{url('/')}}/participante/alumno/inactivos";
+         });
+
+        $(".descongelar").click(function(){
+            window.location="{{url('/')}}/participante/alumno/congelados";
          });
 
          $("i[name=operacion").click(function(){

@@ -556,6 +556,54 @@ class ClaseGrupalController extends BaseController {
 
     }
 
+    public function congelarInscripcion(Request $request)
+    {
+
+    $rules = [
+        'razon_congelacion' => 'required',
+        'fecha' => 'required',
+     
+    ];
+
+    $messages = [
+
+        'razon_congelacion.required' => 'Ups! El La razon de la congelación es requerida',
+        'fecha.required' => 'Ups! La fecha es requerida',
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $clasegrupal = InscripcionClaseGrupal::find($request->inscripcion_clase_grupal_id);
+
+        $fecha = explode(" - ", $request->fecha);
+
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+        
+        $clasegrupal->razon_congelacion = $request->razon_congelacion;
+        $clasegrupal->fecha_inicio = $fecha_inicio;
+        $clasegrupal->fecha_final = $fecha_final;
+        $clasegrupal->deleted_at = Carbon::now();
+       
+
+        if($clasegrupal->save()){
+           
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->inscripcion_clase_grupal_id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+    }
+
 
     public function progreso($id)
     {
@@ -938,13 +986,13 @@ class ClaseGrupalController extends BaseController {
                 ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                 ->select('config_clases_grupales.nombre')
                 ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
-            ->get();
+            ->first();
 
             $notificacion = new Notificacion; 
 
             $notificacion->tipo_evento = 1;
             $notificacion->evento_id = $clasegrupal->id;
-            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$nombre[0]->nombre;
+            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$nombre->nombre;
             $notificacion->titulo = "Nueva Clase Grupal";
 
             if($notificacion->save()){
@@ -962,28 +1010,6 @@ class ClaseGrupalController extends BaseController {
                     $usuarios_notificados->save();
                 }
             }
-            // $nombre=DB::table('config_clases_grupales')
-            //     ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
-            //     ->select('config_clases_grupales.nombre')
-            //     ->where('config_clases_grupales.id','=',$request->clase_grupal_id)
-            // ->get();
-
-            // $notificacion = new Notificacion;
-            // $notificacion->tipo_evento=1;//1 clase grupal
-            // $notificacion->evento_id =$request->clase_grupal_id;
-            // $notificacion->mensaje = "tu academia a creado una nueva clase grupal llamada:".$nombre;
-
-            // if($notificacion->save()){
-            //     $alumnos_de_la_academia=DB::table('users')
-            //         ->select('users.id')
-            //         ->where('users.academia_id','=',Auth::user()->academia_id;)
-            //     ->get();
-
-            //     foreach ($alumnos_de_la_academia as $alumnos) {
-            //         $notificar_usuario = new NotificacionUsuario;
-            //         $notificar_usuario->id_alumno
-            //     }
-            // }
 
             if($request->imageBase64){
 
@@ -1013,23 +1039,23 @@ class ClaseGrupalController extends BaseController {
 
             }
 
-            $academia = Academia::find(Auth::user()->academia_id);
-            $instructor = Instructor::find($request->instructor_id);
-            $clase_grupal = ConfigClasesGrupales::find($request->clase_grupal_id);
+            // $academia = Academia::find(Auth::user()->academia_id);
+            // $instructor = Instructor::find($request->instructor_id);
+            // $clase_grupal = ConfigClasesGrupales::find($request->clase_grupal_id);
 
-            $subj = 'Te han asignado una Clase Grupal';
+            // $subj = 'Te han asignado una Clase Grupal';
 
-            $array = [
+            // $array = [
 
-               'nombre_clase' => $clase_grupal->nombre,
-               'nombre_instructor' => $instructor->nombre,
-               'correo' => $instructor->correo,
-               'academia' => $academia->nombre,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj
-            ];
+            //    'nombre_clase' => $clase_grupal->nombre,
+            //    'nombre_instructor' => $instructor->nombre,
+            //    'correo' => $instructor->correo,
+            //    'academia' => $academia->nombre,
+            //    'hora_inicio' => $request->hora_inicio,
+            //    'hora_final' => $request->hora_final,
+            //    'fecha' => $fecha_inicio,
+            //    'subj' => $subj
+            // ];
 
             /*Mail::send('correo.clase_grupal_instructor', $array, function($msj) use ($array){
                     $msj->subject($array['subj']);
