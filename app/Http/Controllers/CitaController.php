@@ -72,7 +72,7 @@ class CitaController extends BaseController {
             ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
             ->where('citas.estatus', 1)
         ->get();
@@ -81,7 +81,7 @@ class CitaController extends BaseController {
             ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
             ->where('citas.estatus', 2)
         ->get();
@@ -90,7 +90,7 @@ class CitaController extends BaseController {
             ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
             ->where('citas.estatus', 0)
         ->get();

@@ -79,6 +79,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="acepto" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Cliente</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Sexo</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
                                     <th class="text-center" data-column-id="tipo" data-order="desc">Tipo</th>
@@ -335,9 +336,19 @@
 
             $.each(activas, function (index, array) {
 
+                if(array.sexo=='F')
+                {
+                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                }
+                else
+                {
+                    sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                }
+
                 var rowNode=t.row.add( [
                 '',
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+sexo+'',
                 ''+array.fecha+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
                 ''+array.tipo_nombre+'',
@@ -354,15 +365,25 @@
 
             $.each(finalizadas, function (index, array) {
 
-              if(asistencias[array.id]){
-                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-              }else{
-                acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
-              }
+                if(asistencias[array.id]){
+                    acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
+                }else{
+                    acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
+                }
+
+                if(array.sexo=='F')
+                {
+                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                }
+                else
+                {
+                    sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                }
 
                 var rowNode=t.row.add( [
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+sexo+'',
                 ''+array.fecha+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
                 ''+array.tipo_nombre+'',
@@ -379,9 +400,19 @@
     
             $.each(canceladas, function (index, array) {
 
+                if(array.sexo=='F')
+                {
+                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                }
+                else
+                {
+                    sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                }
+
                 var rowNode=t.row.add( [
                 '' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
+                ''+sexo+'',
                 ''+array.fecha+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
                 ''+array.tipo_nombre+'',
