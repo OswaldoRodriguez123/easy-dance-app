@@ -45,9 +45,11 @@
                         <div class="card-header">
 
                             <div class="col-sm-6">
-                                Activos: {{$activos}} <i class="zmdi zmdi-label-alt f-25 c-verde"></i>
+                                <i class="zmdi zmdi-label-alt f-25 c-verde"></i> Activos: {{$activos}} 
                                 <div class="clearfix"></div>
-                                Riesgo de Ausencial: {{$riesgo}} <i class="zmdi zmdi-label-alt f-25 c-amarillo"></i>
+                                <i class="zmdi zmdi-label-alt f-25 c-amarillo"></i> Riesgo de Ausencial: {{$riesgo}} 
+                                <div class="clearfix"></div>
+                                Total: {{$activos + $riesgo}}
                             </div>
 
                             <div class="col-sm-6 text-right">
