@@ -195,6 +195,20 @@
                                     <div class="progress-bar progress-bar-morado" id="barra_progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                 </div>
                                 <span class="f-700"><span class="progreso">0</span>% de Efectividad con <span class="total">0</span> inscritos</span>
+
+                                 <div class="rating-list text-center">
+
+                                      <br>
+                                      <div class="rl-star">
+
+                                        <i id="estrella_1" class="zmdi zmdi-star"></i>
+                                        <i id="estrella_2" class="zmdi zmdi-star"></i>
+                                        <i id="estrella_3" class="zmdi zmdi-star"></i>
+                                        <i id="estrella_4" class="zmdi zmdi-star"></i>
+                                        <i id="estrella_5" class="zmdi zmdi-star"></i>
+                                          
+                                      </div>
+                                  </div>
                             </div>
                         </div>
 
@@ -433,6 +447,36 @@
                             }else{
                                 $("#barra_progreso").removeClass('progress-bar-success');
                                 $("#barra_progreso").addClass('progress-bar-morado');
+                            }
+
+                            if(porcentaje >= 10){
+                                $('#estrella_1').addClass('active')
+                            }else{
+                                $('#estrella_1').removeClass('active')
+                            }
+
+                            if(porcentaje >= 20){
+                                $('#estrella_2').addClass('active')
+                            }else{
+                                $('#estrella_2').removeClass('active')
+                            }
+
+                            if(porcentaje >= 30){
+                                $('#estrella_3').addClass('active')
+                            }else{
+                                $('#estrella_3').removeClass('active')
+                            }
+
+                            if(porcentaje >= 40){
+                                $('#estrella_4').addClass('active')
+                            }else{
+                                $('#estrella_4').removeClass('active')
+                            }
+
+                            if(porcentaje >= 50){
+                                $('#estrella_5').addClass('active')
+                            }else{
+                                $('#estrella_5').removeClass('active')
                             }
                             
                     
