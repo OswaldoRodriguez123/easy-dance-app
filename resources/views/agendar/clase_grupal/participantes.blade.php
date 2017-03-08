@@ -761,17 +761,15 @@
                                       </td>
                                       <td class="text-center"> 
 
-                                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                        <!-- @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
                                           <i class="zmdi zmdi-close-circle-o congelar_alumno f-20 p-r-10"></i>
-
-                                          <!-- <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> -->
 
                                         @else
 
                                           <i class="zmdi icon_a-examen valorar f-20 p-r-10" data-html="true" data-original-title="" data-content="Valorar" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i>
 
-                                          <i class="zmdi icon_b-telefono credencial f-20 p-r-10" data-html="true" data-original-title="" data-content="Credenciales" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i>
+                                          
 
                                           @if(isset($activacion[$alumno_id])) 
 
@@ -779,7 +777,44 @@
 
                                           @endif
 
-                                        @endif
+                                        @endif -->
+
+                                          <ul class="top-menu">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+
+                                                <div class="dropup">
+                                                  <ul class="dropdown-menu dm-icon pull-right">
+                                                      <li class="hidden-xs">
+                                                          <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
+                                                      </li>
+
+                                                      @if(isset($activacion[$alumno_id])) 
+                                                      
+                                                        <li class="hidden-xs">
+                                                          <a class="activar"><i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20"></i> &nbsp;Activar Cuenta</a>
+                                                        </li>
+
+                                                      @endif
+
+                                                      <li class="hidden-xs">
+                                                          <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
+                                                      </li>
+
+                                                      <li class="hidden-xs">
+                                                          <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
+                                                      </li>
+
+
+                                                  </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+
 
                                       </td>
                                   </tr>
