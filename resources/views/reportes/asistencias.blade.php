@@ -77,7 +77,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+             <!--                <div class="col-md-4">
                                 <label>Alumnos</label>
 
                                 <div class="fg-line">
@@ -91,7 +91,7 @@
                                     </select>
                                   </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="col-md-4">
                                 <label>Fecha</label>
@@ -106,8 +106,6 @@
                                  </div>
                             </div>
 
-                            <div class="clearfix"></div>
-
                             <div class="col-md-4">
                                 <label>Clase Grupal</label>
 
@@ -119,7 +117,9 @@
                                 </div>
                             </div>
 
-                   <!--          <div class="col-md-4">
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-4">
                                 <label>Tipo</label>
 
                                 <div class="fg-line">
@@ -130,7 +130,7 @@
                                         </select>
                                     </div>
                                 </div>    
-                            </div> -->
+                            </div>
 
 
                             <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
