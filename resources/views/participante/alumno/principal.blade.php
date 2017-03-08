@@ -55,11 +55,15 @@
                                         </a>
                                         <ul class="dropdown-menu dm-icon pull-right">
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/inactivos"><i name="restablecer" id="restablecer" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer bandeja detalle"></i>&nbsp;Bandeja Eliminados</a>
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/eliminados"><i name="eliminados" id="eliminados" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer eliminados detalle"></i>&nbsp;Bandeja Eliminados</a>
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/congelados"><i name="descongelar" id="descongelar" class="tm-icon zmdi zmdi-close-circle-o f-25 pointer descongelar detalle"></i> Bandeja Congelados</a>
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/inactivos"><i name="inactivos" id="inactivos" class="tm-icon zmdi zmdi-label-alt-outline f-25 pointer inactivos detalle"></i> Bandeja Inactivos</a>
+                                            </li>
+
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/congelados"><i name="congelados" id="congelados" class="tm-icon zmdi zmdi-close-circle-o f-25 pointer congelados detalle"></i> Bandeja Congelados</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -260,20 +264,11 @@
             }
         }
 
-        
 
-        $(".bandeja").click(function(){
-            window.location="{{url('/')}}/participante/alumno/inactivos";
-         });
-
-        $(".descongelar").click(function(){
-            window.location="{{url('/')}}/participante/alumno/congelados";
-         });
-
-         $("i[name=operacion").click(function(){
+        $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
             window.location=route;
-         });
+        });
 
 
         </script>

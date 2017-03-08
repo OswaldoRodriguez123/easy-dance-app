@@ -28,7 +28,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-mood-bad zmdi-hc-fw f-25"></i> Bandeja Inactivos</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-mood-bad zmdi-hc-fw f-25"></i> Bandeja Eliminados</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -37,7 +37,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="fecha">Fecha de Inactividad</th>
+                                    <th class="text-center" data-column-id="fecha">Fecha de Eliminacion</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>

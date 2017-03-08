@@ -377,7 +377,6 @@ class ClaseGrupalController extends BaseController {
 
     public function participantes($id)
     {
-        // $clasegrupal = ClaseGrupal::find($id);
 
         $clasegrupal = DB::table('config_clases_grupales')
                 ->join('clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -386,8 +385,7 @@ class ClaseGrupalController extends BaseController {
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
-        $alumnos_inscritos = DB::table('inscripcion_clase_grupal')
-                ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+        $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
@@ -420,19 +418,16 @@ class ClaseGrupalController extends BaseController {
         $activacion = $grouped->toArray();
 
         $reservaciones = DB::table('reservaciones_visitantes')
-                ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
-                ->where('reservaciones_visitantes.tipo_id', '=', $id)
-                ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+            ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
+            ->where('reservaciones_visitantes.tipo_id', '=', $id)
+            ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
         ->get();
 
         $array = array();
         $mujeres = 0;
         $hombres = 0;
 
-        $asistio = array();
-
-        $hoy = Carbon::now();
         $fecha_de_inicio = Carbon::parse($clasegrupal->fecha_inicio);
         $fecha_de_finalizacion = Carbon::parse($clasegrupal->fecha_final);
         $asistencia_roja = $clasegrupal->asistencia_rojo;
@@ -440,11 +435,49 @@ class ClaseGrupalController extends BaseController {
 
 
         foreach($alumnos_inscritos as $alumno){
-            if($alumno->sexo == 'F'){
-                $mujeres++;
+
+            $clases_completadas = 0;
+                
+            $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+            if($ultima_asistencia){
+
+                $fecha = Carbon::parse($ultima_asistencia->fecha);
+
             }else{
-                $hombres++;
+                $fecha = $fecha_de_inicio;
             }
+
+            if(Carbon::now() < $fecha_de_finalizacion){
+                while($fecha < Carbon::now()){
+                    $clases_completadas++;
+                    $fecha->addWeek();
+                }
+            }else{
+                while($fecha < $fecha_de_finalizacion){
+                    $clases_completadas++;
+                    $fecha->addWeek();
+                }
+            }
+
+            if($clases_completadas >= $asistencia_roja){
+                $estatus="c-youtube";
+
+                $alumno->deleted_at = Carbon::now();
+                $alumno->save();
+                
+                continue;
+            }else if($clases_completadas >= $asistencia_amarilla){
+                $estatus="c-amarillo";
+            }else{
+                $estatus="c-verde";
+            }
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            $alumno_array['estatus'] = $estatus;
+
+            // ----------
 
             $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
 
@@ -460,55 +493,22 @@ class ClaseGrupalController extends BaseController {
                 $credencial->save();
             }
 
-            $collection=collect($alumno);     
-            $alumno_array = $collection->toArray();
-
             $alumno_array['tipo'] = 1;
             $alumno_array['cantidad'] = $credencial->cantidad;
             $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;
 
-
-            // ----------
-            // 
-            
-            $clases_completadas = 0;
-                
-            $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
-
-            if($ultima_asistencia){
-
-                $fecha = Carbon::parse($ultima_asistencia->fecha);
-
-            }else{
-                $fecha = $fecha_de_inicio;
-            }
-
-            if($hoy<$fecha_de_finalizacion){
-                while($fecha<$hoy){
-                    $clases_completadas++;
-                    $fecha->addWeek();
-                }
-            }else{
-                while($fecha<$fecha_de_finalizacion){
-                    $clases_completadas++;
-                    $fecha->addWeek();
-                }
-            }
-
-            if($clases_completadas>=$asistencia_roja){
-                $estatus="c-youtube";
-            }else if($clases_completadas>=$asistencia_amarilla){
-                $estatus="c-amarillo";
-            }else{
-                $estatus="c-verde";
-            }
-
-            $alumno_array['estatus'] = $estatus;
             $array[$alumno->id] = $alumno_array;
+
+            if($alumno->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
 
         }
 
         foreach($reservaciones as $alumno){
+
             if($alumno->sexo == 'F'){
                 $mujeres++;
             }else{
@@ -521,8 +521,6 @@ class ClaseGrupalController extends BaseController {
             $alumno_array['tipo'] = 2;
             $array[$alumno->id] = $alumno_array;
         }
-
-        // dd($alumnos_inscritos);
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
         $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
@@ -541,7 +539,7 @@ class ClaseGrupalController extends BaseController {
             $total_credenciales = 0;
         }
 
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'asistio' => $asistio, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales]);
+        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales]);
     }
 
     public function eliminarinscripcion($id)
@@ -573,7 +571,6 @@ class ClaseGrupalController extends BaseController {
 
     public function eliminar_reserva($id)
     {
-        // $inscripcion = InscripcionClaseGrupal::find($id);
         $reserva = ReservacionVisitante::find($id);
         $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
         
@@ -634,7 +631,7 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->razon_congelacion = $request->razon_congelacion;
         $clasegrupal->fecha_inicio = $fecha_inicio;
         $clasegrupal->fecha_final = $fecha_final;
-        $clasegrupal->deleted_at = Carbon::now();
+        $clasegrupal->boolean_congelacion = 1;
        
 
         if($clasegrupal->save()){
@@ -1113,8 +1110,6 @@ class ClaseGrupalController extends BaseController {
     public function storeInscripcion(Request $request)
     {
 
-    Session::forget('id_alumno');
-
     $rules = [
         'clase_grupal_id' => 'required',
         'alumno_id' => 'required',
@@ -1157,6 +1152,8 @@ class ClaseGrupalController extends BaseController {
             ->sum('items_factura_proforma.importe_neto');
 
             $alumno = Alumno::find($alumnosclasegrupal->alumno_id);
+
+            Session::forget('id_alumno');
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $alumnosclasegrupal->alumno_id, 'inscripcion' => $alumnosclasegrupal, 'array'=> $alumno, 'deuda' => $deuda, 200]);
         }
@@ -1230,7 +1227,6 @@ class ClaseGrupalController extends BaseController {
 
             $fecha_pago = trim($request->fecha_pago);
             $proxima_fecha = Carbon::createFromFormat('d/m/Y', $fecha_pago);
-            // $proxima_fecha = $proxima_fecha->addMonth();
             $proxima_fecha = $proxima_fecha->toDateString();
 
             $clasegrupal = DB::table('config_clases_grupales')
@@ -1312,6 +1308,8 @@ class ClaseGrupalController extends BaseController {
 
             // }
             
+
+            Session::forget('id_alumno');
 
             // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
 

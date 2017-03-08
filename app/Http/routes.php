@@ -347,11 +347,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('participante/alumno/agregar', 'AlumnoController@create');
 			Route::get('participante/alumno/agregar/{id}', 'AlumnoController@agregarvisitante');
 			Route::delete('participante/alumno/eliminar/{id}', 'AlumnoController@destroy');
-			Route::get('participante/alumno/inactivos', 'AlumnoController@inactivos');
+			Route::get('participante/alumno/eliminados', 'AlumnoController@eliminados');
 			Route::post('participante/alumno/restablecer/{id}', 'AlumnoController@restore');
 			Route::delete('participante/alumno/eliminar_permanentemente/{id}', 'AlumnoController@eliminar_permanentemente');
 			Route::get('participante/alumno/congelados', 'AlumnoController@congelados');
 			Route::post('participante/alumno/descongelar/{id}', 'AlumnoController@descongelar');
+			Route::get('participante/alumno/inactivos', 'AlumnoController@inactivos');
+			Route::post('participante/alumno/activar/{id}', 'AlumnoController@activar');
 			Route::delete('participante/alumno/eliminar-inscripcion/{id}', 'AlumnoController@eliminar_inscripcion');
 			Route::get('participante/alumno/detalle/{id}', 'AlumnoController@edit');
 			Route::get('participante/alumno/perfil-evaluativo/{id}', 'AlumnoController@perfil_evaluativo');
