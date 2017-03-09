@@ -543,7 +543,7 @@
 
                                                           Pesos
 
-                                                        @else if($patrocinador->tipo_moneda == 2)
+                                                        @elseif($patrocinador->tipo_moneda == 2)
 
                                                           USD
 

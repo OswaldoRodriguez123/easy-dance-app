@@ -60,7 +60,7 @@
                                         
                                         Pesos
 
-                                    @else if($contribucion['tipo_moneda'] == 2)
+                                    @elseif($contribucion['tipo_moneda'] == 2)
 
                                         USD
 
