@@ -49,9 +49,10 @@
             <span class="icon-bar"></span>
           </button> -->
             <li style="list-style: none" class="logo" popover-placement="bottom" popover-trigger="mouseenter" popover="Inicio">
-                    <a  href="{{url('/')}}/empresa/sobre-la-empresa"><img src="http://easydancelatino.com/img/correos/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
+                    <!-- <a  href="{{url('/')}}/empresa/sobre-la-empresa"><img src="http://easydancelatino.com/img/correos/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="90">
+                    </a> -->
+                    <a  href="http://tuclasedebaile.com.co"><img src="http://tuclasedebaile.com.co/img/logo.png" class="img-opaco p-b-0 m-b-0 p-r-0 m-r-0" width="45" height="45">
                     </a>
-
             </li>
         </div>
         <div id="navbar" class="navbar-collapse collapse" style="border-color: none">
