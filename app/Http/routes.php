@@ -175,6 +175,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('configuracion/productos/detalle/{id}', 'ConfigProductosController@edit');
 			Route::delete('configuracion/productos/eliminar/{id}', 'ConfigProductosController@destroy');
 
+			Route::post('configuracion/productos/agregar_cantidad','ConfigProductosController@agregar_cantidad');
+			Route::post('configuracion/productos/eliminar_cantidad/{id}', 'ConfigProductosController@eliminar_cantidad');
+
 			Route::put('configuracion/productos/update/nombre', 'ConfigProductosController@updateNombre');
 			Route::put('configuracion/productos/update/costo', 'ConfigProductosController@updateCosto');
 			Route::put('configuracion/productos/update/cantidad', 'ConfigProductosController@updateCantidad');

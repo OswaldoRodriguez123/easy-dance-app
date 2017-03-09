@@ -124,35 +124,72 @@
             </div>
 
             <div class="modal fade" id="modalCantidad-Producto" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Producto<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_cantidad_producto" id="edit_cantidad_producto">
+                        <form name="edit_cantidad_producto" id="edit_cantidad_producto"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" id="cantidad" name="cantidad">
+                           <input type="hidden" name="id" value="{{$producto->id}}"></input>
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="cantidad">Cantidad</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="00000000" placeholder="Ej. 50" value="{{$producto->cantidad}}">
-                                 </div>
-                                 <div class="has-error" id="error-cantidad">
-                                      <span >
-                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$producto->id}}"></input>
                               
-                               <div class="clearfix"></div> 
+                          <div class="col-sm-12">
+                            <div class="form-group fg-line">
+      
 
-                           </div>
-                           
+                                <label for="cantidad_producto" id="id-cantidad_producto">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de productos a agregar" title="" data-original-title="Ayuda"></i>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                    <div class="fg-line">
+                                    <input type="text" class="form-control input-sm input-mask proceso" data-mask="00000" name="cantidad_producto" id="cantidad_producto" placeholder="Ej. 50">
+                                    </div>
+                                  </div>
+                               <div class="has-error" id="error-cantidad_producto">
+                                    <span >
+                                        <small class="help-block error-span" id="error-cantidad_producto_mensaje" ></small>                               
+                                    </span>
+                                </div>
+                             </div>
+
+                              <br>
+
+                              <div class="card-header text-left">
+
+                                <button type="button" class="btn btn-blanco m-r-10 f-10" name= "agregar_cantidad" id="agregar_cantidad" > Agregar Linea</button>
+
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="cantidad"></th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                   
+                            </tbody>
+                          </table>
+
+
                         </div>
-                        <div class="modal-footer p-b-20 m-b-20">
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                      
+                      <div class="clearfix p-b-35"></div>
+
+                      <div class="clearfix"></div> 
+                       <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
                               <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
@@ -164,7 +201,11 @@
                               </div>
                             </div>
                             <div class="col-sm-12">                            
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cantidad_producto" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" name="guardar" data-formulario="edit_cantidad_producto" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                              <div class="clearfix p-b-35"></div>
+                      
 
                             </div>
                         </div></form>
@@ -497,6 +538,8 @@
    <script type="text/javascript">
     route_update="{{url('/')}}/configuracion/productos/update";
     route_eliminar="{{url('/')}}/configuracion/productos/eliminar/";
+    route_agregar_cantidad="{{url('/')}}/configuracion/productos/agregar_cantidad";
+    route_eliminar_cantidad="{{url('/')}}/configuracion/productos/eliminar_cantidad/";
     route_principal="{{url('/')}}/configuracion/productos";
 
     function formatmoney(n) {
@@ -504,6 +547,9 @@
     } 
 
     $(document).ready(function(){
+
+
+      $('#cantidad').val("{{$producto->cantidad}}")
 
 
       $("#imagen").bind("change", function() {
@@ -719,9 +765,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -809,6 +855,167 @@
           $('#charNum').text(250 - len);
         }
       };
+
+      $("#agregar_cantidad").click(function(){
+
+
+        var datos = $( "#edit_cantidad_producto" ).serialize(); 
+        procesando();
+        var route = route_agregar_cantidad;
+        var token = $('input:hidden[name=_token]').val();
+        limpiarMensaje();
+        $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            data:datos,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+
+                  cantidad = parseInt(respuesta.cantidad);
+                  cantidad_actual = parseInt($('#cantidad').val());
+                  cantidad_total = cantidad + cantidad_actual;
+
+                  $('#cantidad').val(cantidad_total);
+
+                  var rowId=respuesta.id;
+                  var rowNode=t.row.add( [
+                  ''+cantidad+'',
+                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .addClass('seleccion');
+
+                  $('#cantidad_producto').val('')
+
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                $("#guardar").removeAttr("disabled");
+                finprocesado();
+                $(".cancelar").removeAttr("disabled");
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                  window.location = "{{url('/')}}/error";
+                }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                $("#guardar").removeAttr("disabled");
+                $(".cancelar").removeAttr("disabled");
+                finprocesado();
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+    });
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: route_eliminar_cantidad+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+
+                    cantidad = parseInt(data.cantidad);
+                    cantidad_actual = parseInt($('#cantidad').val());
+                    cantidad_total = cantidad_actual - cantidad;
+                  
+                    $('#cantidad').val(cantidad_total);
+                      
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+              t.row( $(this).parents('tr') )
+                .remove()
+                .draw();
+          });
+
+      var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
     
    </script> 
 

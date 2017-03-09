@@ -27,8 +27,6 @@ class ConfigProductosController extends BaseController {
 
     public function store(Request $request)
     {
-        //dd($request->all());
-
 
     $rules = [
 
@@ -59,34 +57,16 @@ class ConfigProductosController extends BaseController {
 
         $nombre = title_case($request->nombre);
         $descripcion = $request->descripcion;
-        //$existente=ConfigProductos::where('nombre',$request->nombre)->first();
-
-        /*if($existente){
-            $existente->costo = $request->costo;
-
-            $cantidad_actual=$existente->cantidad;
-            $cantidad_nueva=$request->cantidad;
-            $existente->cantidad = $cantidad_nueva+$cantidad_actual;
-
-            if(!empty($request->imagen)){
-                $existente->imagen = $request->imagen;
-            }
-            if(!empty($request->descripcion)){
-                $existente->descripcion = $descripcion;;
-            }
-            
-            $producto->incluye_iva = $request->incluye_iva;
-        }else{*/
-            $producto = new ConfigProductos;
-        
-            $producto->academia_id = Auth::user()->academia_id;
-            $producto->nombre = $nombre;
-            $producto->costo = $request->costo;
-            $producto->cantidad = $request->cantidad;
-            $producto->imagen = $request->imagen;
-            $producto->descripcion = $descripcion;
-            $producto->incluye_iva = $request->incluye_iva;
-        //}
+    
+        $producto = new ConfigProductos;
+    
+        $producto->academia_id = Auth::user()->academia_id;
+        $producto->nombre = $nombre;
+        $producto->costo = $request->costo;
+        $producto->cantidad = $request->cantidad;
+        $producto->imagen = $request->imagen;
+        $producto->descripcion = $descripcion;
+        $producto->incluye_iva = $request->incluye_iva;
 
         if($producto->save()){
 
@@ -129,8 +109,9 @@ class ConfigProductosController extends BaseController {
     {   
         $producto = ConfigProductos::find($id);
 
+        Session::forget('cantidad_productos');
+
         if($producto){
-            
             return view('configuracion.productos.planilla')->with(['producto' => $producto , 'id' => $id]);
         }else{
            return redirect("configuracion/productos"); 
@@ -186,7 +167,6 @@ class ConfigProductosController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-        // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -207,8 +187,10 @@ class ConfigProductosController extends BaseController {
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
     }
     else{
+
         $producto = ConfigProductos::find($request->id);
         $producto->cantidad = $request->cantidad;
+
         if($producto->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -230,7 +212,6 @@ class ConfigProductosController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateImpuesto(Request $request){
@@ -243,44 +224,44 @@ class ConfigProductosController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateImagen(Request $request)
     {
-                $producto = ConfigProductos::find($request->id);
-                if($request->imageBase64){
+        $producto = ConfigProductos::find($request->id);
 
-                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                    $path = storage_path();
-                    $split = explode( ';', $request->imageBase64 );
-                    $type =  explode( '/',  $split[0]);
+        if($request->imageBase64){
 
-                    $ext = $type[1];
-                    
-                    if($ext == 'jpeg' || 'jpg'){
-                        $extension = '.jpg';
-                    }
+            $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imageBase64 );
+            $type =  explode( '/',  $split[0]);
 
-                    if($ext == 'png'){
-                        $extension = '.png';
-                    }
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
 
-                    $nombre_img = "producto-". $producto->id . $extension;
-                    $image = base64_decode($base64_string);
+            if($ext == 'png'){
+                $extension = '.png';
+            }
 
-                    // \Storage::disk('producto')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(640, 480);
-                    $img->save('assets/uploads/producto/'.$nombre_img);
+            $nombre_img = "producto-". $producto->id . $extension;
+            $image = base64_decode($base64_string);
 
-                }else{
-                    $nombre_img = "";
-                }
+            // \Storage::disk('producto')->put($nombre_img,  $image);
+            $img = Image::make($image)->resize(640, 480);
+            $img->save('assets/uploads/producto/'.$nombre_img);
 
-                $producto->imagen = $nombre_img;
-                $producto->save();
+        }else{
+            $nombre_img = "";
+        }
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        $producto->imagen = $nombre_img;
+        $producto->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     public function destroy($id)
@@ -293,6 +274,53 @@ class ConfigProductosController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
+    }
+
+    public function agregar_cantidad(Request $request){
+        
+        $rules = [
+
+            'cantidad_producto' => 'required|numeric|min:1',
+        ];
+
+        $messages = [
+
+            'cantidad_producto.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
+            'cantidad_producto.numeric' => 'Ups! El Cantidad es requerido',
+            'cantidad_producto.min' => 'El mínimo de cantidad permitida es 1',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            Session::push('cantidad_productos', $request->cantidad_producto);
+
+            $items = Session::get('cantidad_productos');
+            end( $items );
+            $contador = key( $items );
+
+             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'cantidad' => $request->cantidad_producto, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminar_cantidad($id){
+
+        $arreglo = Session::get('cantidad_productos');
+
+        $cantidad = $arreglo[$id];
+
+        unset($arreglo[$id]);
+        Session::put('cantidad_productos', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+
     }
 }
