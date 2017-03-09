@@ -655,8 +655,10 @@
                 
                     <div class="block-header">
 
-                        <?php $url = "/agendar/clases-grupales/detalle/$id" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <!-- <?php $url = "/agendar/clases-grupales/detalle/$id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a> -->
+
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         
                         @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
@@ -787,8 +789,8 @@
                                                    </span>
                                                 </a>
 
-                                                <div class="dropup">
-                                                  <ul class="dropdown-menu dm-icon pull-right">
+                                                <!-- <div class="dropup"> -->
+                                                  <ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">
                                                       <li class="hidden-xs">
                                                           <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
                                                       </li>
@@ -815,7 +817,7 @@
 
 
                                                   </ul>
-                                                </div>
+                                                <!-- </div> -->
                                             </li>
                                         </ul>
 
