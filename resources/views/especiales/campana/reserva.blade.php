@@ -539,7 +539,7 @@
                                                    <div class="col-sm-5">
                                                      <div class="pull-right p-relative">
                                                         <div class="lv-title"><span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
-                                                        @if($patrocinador->tipo_moneda == 3)
+                                                        @if($patrocinador->tipo_moneda == 1)
 
                                                           Pesos
 
@@ -928,7 +928,7 @@
                                                 <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                                 <div class="p-t-10">
                                               <label class="radio radio-inline m-r-20">
-                                                  <input checked="checked" name="tipo_moneda" id="pesos" value="3" type="radio">
+                                                  <input checked="checked" name="tipo_moneda" id="pesos" value="1" type="radio">
                                                   <i class="input-helper"></i>  
                                                   Pesos 
                                               </label>

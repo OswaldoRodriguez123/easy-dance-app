@@ -55,9 +55,8 @@
                                     <td class="text-center previa">{{$contribucion['nombre']}}</td>
                                     <td class="text-center previa">{{$contribucion['monto']}}
 
-                                    @if($contribucion['tipo_moneda'] == 3)
+                                    @if($contribucion['tipo_moneda'] == 1)
 
-                                        
                                         Pesos
 
                                     @elseif($contribucion['tipo_moneda'] == 2)
