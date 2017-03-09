@@ -725,7 +725,8 @@ public function todos_con_robert()
     {
 
         $rules = [
-            'alumno_id' => 'required|numeric',
+            'alumno_id' => 'required',
+            'cantidad' => 'required|numeric',
             'recompensa_id' => 'required',
             'campana_id' => 'required',
         ];
@@ -733,6 +734,8 @@ public function todos_con_robert()
         $messages = [
             
             'alumno_id.required' => 'Ups! El patrocinador es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+            'cantidad.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
             'recompensa_id.required' => 'Ups! La recompensa es requerida',
             'campana_id.required' => 'Ups! La campaña es requerida',
         ];
@@ -747,16 +750,18 @@ public function todos_con_robert()
 
         else{
 
+
+
                 $recompensa = Recompensa::find($request->recompensa_id);
+                $monto = $recompensa->cantidad * $request->cantidad;
 
                 $patrocinador = new Patrocinador;
 
                 $patrocinador->academia_id = Auth::user()->academia_id;
                 $patrocinador->campana_id = $request->campana_id;
-                $patrocinador->campana_id = $request->campana_id;
                 $patrocinador->usuario_id = $request->alumno_id;
                 $patrocinador->tipo_id = 1;
-                $patrocinador->monto = $recompensa->cantidad;
+                $patrocinador->monto = $monto;
 
                 if($patrocinador->save()){
 
@@ -771,7 +776,7 @@ public function todos_con_robert()
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;
                     $item_factura->impuesto = 0;
-                    $item_factura->importe_neto = $recompensa->cantidad;
+                    $item_factura->importe_neto = $monto;
                     $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
                     if($item_factura->save()){

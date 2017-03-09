@@ -207,8 +207,21 @@
                             <span >
                                 <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
                             </span>
-                        </div>                        
-                    </div><!-- END COL-SM-4 -->
+                        </div> 
+
+                        <div class="clearfix"></div> 
+
+                        <div class="col-sm-8 col-sm-offset-2">
+                          <div class="text-center c-morado f-30" id="id-cantidad">Coloca la cantidad</div>
+                          <div class="clearfix m-20 m-b-25"></div> 
+                          <input type="text" class="form-control caja input-mask" id="cantidad" name="cantidad" data-mask="00000000000000000000"></input>
+                          <div class="has-error" id="error-cantidad">
+                              <span >
+                                  <small id="error-cantidad_mensaje" class="help-block error-span" ></small>
+                              </span>
+                           </div>
+                         </div>                      
+                    </div><!-- END COL-SM-6 -->
                     <div class="col-sm-3"></div>    
                     
                 </div><!-- END ROW -->
@@ -422,7 +435,7 @@
                 procesando();
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = "&recompensa_id="+{{$recompensas->id}}+"&campana_id={{$campana->id}}&alumno_id="+$("#alumno_id").val(); 
+                var datos = "&recompensa_id="+{{$recompensas->id}}+"&campana_id={{$campana->id}}&alumno_id="+$("#alumno_id").val()+"&cantidad="+$("#cantidad").val();; 
                 $("#guardar").attr("disabled","disabled");
                 $("#guardar").css({
                   "opacity": ("0.2")
@@ -477,9 +490,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -527,6 +540,36 @@
         });
       }
     });
+
+
+    function errores(merror){
+      var elemento="";
+      var contador=0;
+      $.each(merror, function (n, c) {
+      if(contador==0){
+      elemento=n;
+      }
+      contador++;
+
+       $.each(this, function (name, value) {              
+          var error=value;
+          $("#error-"+n+"_mensaje").html(error);             
+       });
+    });
+
+      $('html,body').animate({
+            scrollTop: $("#id-"+elemento).offset().top-90,
+      }, 1000);          
+
+  }
+
+  function limpiarMensaje(){
+    var campo = ["alumno_id", "cantidad"];
+      fLen = campo.length;
+      for (i = 0; i < fLen; i++) {
+          $("#error-"+campo[i]+"_mensaje").html('');
+      }
+    }
 
 
 	</script>
