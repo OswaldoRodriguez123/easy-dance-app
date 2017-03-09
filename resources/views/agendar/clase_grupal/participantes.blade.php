@@ -809,6 +809,10 @@
                                                           <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
                                                       </li>
 
+                                                      <li class="hidden-xs">
+                                                          <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
+                                                      </li>
+
 
                                                   </ul>
                                                 </div>

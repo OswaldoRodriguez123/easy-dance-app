@@ -970,6 +970,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('clases-grupales', 'ClaseGrupalController@clases_grupales_vista_instructor');
 			Route::get('clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+			Route::get('clases-grupales/participantes/historial/{id}', 'ClaseGrupalController@historial-asistencia');
 			Route::post('agendar/clases-grupales/editarcredencial', 'ClaseGrupalController@editarcredencial');
 
 			//NIVELACIONES CLASES GRUPALES

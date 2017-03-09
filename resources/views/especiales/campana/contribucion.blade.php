@@ -55,13 +55,18 @@
                                     <td class="text-center previa">{{$contribucion['nombre']}}</td>
                                     <td class="text-center previa">{{$contribucion['monto']}}
 
-                                    @if($contribucion['tipo_moneda'] == 1)
+                                    @if($contribucion['tipo_moneda'] == 3)
 
-                                    BsF
+                                        
+                                        Pesos
+
+                                    @else if($contribucion['tipo_moneda'] == 2)
+
+                                        USD
 
                                     @else
 
-                                    USD
+                                        BsF
 
                                     @endif
 

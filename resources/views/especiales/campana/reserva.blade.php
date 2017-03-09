@@ -486,7 +486,7 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        <p class="text-left f-30 opaco-0-8 f-700" id="offset_patrocinador" >Nuestros patrocinadores ángeles</p>
+                        <p class="text-left f-30 opaco-0-8 f-700" id="offset_patrocinador" >Nuestros patrocinadores</p>
                         <hr class='linea-morada'>
 
                         <div class="col-sm-12" style="padding:0px">
@@ -539,13 +539,17 @@
                                                    <div class="col-sm-5">
                                                      <div class="pull-right p-relative">
                                                         <div class="lv-title"><span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
-                                                        @if($patrocinador->tipo_moneda == 1)
+                                                        @if($patrocinador->tipo_moneda == 3)
 
-                                                        BsF
+                                                          Pesos
+
+                                                        @else if($patrocinador->tipo_moneda == 2)
+
+                                                          USD
 
                                                         @else
 
-                                                        USD
+                                                          BsF
 
                                                         @endif
 
@@ -924,9 +928,9 @@
                                                 <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
                                                 <div class="p-t-10">
                                               <label class="radio radio-inline m-r-20">
-                                                  <input checked="checked" name="tipo_moneda" id="bolivares" value="1" type="radio">
+                                                  <input checked="checked" name="tipo_moneda" id="pesos" value="3" type="radio">
                                                   <i class="input-helper"></i>  
-                                                  Bolivares 
+                                                  Pesos 
                                               </label>
                                               <label class="radio radio-inline m-r-20 ">
                                                   <input name="tipo_moneda" id="dolares" value="2" type="radio">
