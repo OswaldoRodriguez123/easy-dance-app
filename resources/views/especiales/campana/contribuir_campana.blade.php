@@ -335,9 +335,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         finprocesado();
                         $(".zmdi-check").css('visibility','visible');
                         $(".zmdi-hc-spin-reverse").css('visibility','hidden');

@@ -216,9 +216,9 @@
 
                     },
                     error:function(msj){
-                                // if (typeof msj.responseJSON === "undefined") {
-                                //   window.location = "{{url('/')}}/error";
-                                // }
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
                     $(".modal").modal('hide');
                     finprocesado();
                     swal({ 

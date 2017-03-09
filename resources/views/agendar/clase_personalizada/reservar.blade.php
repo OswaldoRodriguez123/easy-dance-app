@@ -725,9 +725,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           $(".modal").modal('hide');
                           console.log(msj.responseJSON.errores);

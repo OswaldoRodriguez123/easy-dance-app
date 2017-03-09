@@ -876,9 +876,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                // if (typeof msj.responseJSON === "undefined") {
-                //           window.location = "{{url('/')}}/error";
-                //         }
+                if (typeof msj.responseJSON === "undefined") {
+                  window.location = "{{url('/')}}/error";
+                }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   errores(msj.responseJSON.errores);
@@ -910,45 +910,45 @@
                 }, function(isConfirm){   
           if (isConfirm) {
           procesando();
-         var route = route_cancelar;
-         var token = '{{ csrf_token() }}';
-         var datos = $( "#cancelar_una_clase" ).serialize(); 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:datos+"&tipo=1",
-                    success:function(respuesta){
+          var route = route_cancelar;
+          var token = '{{ csrf_token() }}';
+          var datos = $( "#cancelar_una_clase" ).serialize(); 
+          $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            data:datos+"&tipo=1",
+            success:function(respuesta){
 
-                        window.location=route_principal; 
+                window.location=route_principal; 
 
-                    },
-                    error:function(msj){
+            },
+            error:function(msj){
 
-                    setTimeout(function(){ 
-                  // if (typeof msj.responseJSON === "undefined") {
-                  //           window.location = "{{url('/')}}/error";
-                  //         }
-                  var nType = 'danger';
-                  if(msj.responseJSON.status=="ERROR"){
-                    errores(msj.responseJSON.errores);
-                    var nTitle=" Ups! "; 
-                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                  }else{
-                    var nTitle=" Ups! "; 
-                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                  }
-                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  finprocesado();
-                    
-                }, 1000); 
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                        window.location = "{{url('/')}}/error";
+                      }
+              var nType = 'danger';
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              finprocesado();
+            
+              }, 1000); 
              
-             }
-         });
-        }
-      });
-    });
+                   }
+               });
+              }
+            });
+          });
 
       $(".cancelar_varias_clases").click(function(){
     
@@ -981,9 +981,9 @@
                     error:function(msj){
 
                     setTimeout(function(){ 
-                  // if (typeof msj.responseJSON === "undefined") {
-                  //           window.location = "{{url('/')}}/error";
-                  //         }
+                  if (typeof msj.responseJSON === "undefined") {
+                    window.location = "{{url('/')}}/error";
+                  }
                   var nType = 'danger';
                   if(msj.responseJSON.status=="ERROR"){
                     errores(msj.responseJSON.errores);
@@ -1035,20 +1035,20 @@
                     error:function(msj){
 
                     setTimeout(function(){ 
-                  // if (typeof msj.responseJSON === "undefined") {
-                  //           window.location = "{{url('/')}}/error";
-                  //         }
-                  var nType = 'danger';
-                  if(msj.responseJSON.status=="ERROR"){
-                    errores(msj.responseJSON.errores);
-                    var nTitle=" Ups! "; 
-                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                  }else{
-                    var nTitle=" Ups! "; 
-                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                  }
-                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  finprocesado();
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
+                    var nType = 'danger';
+                    if(msj.responseJSON.status=="ERROR"){
+                      errores(msj.responseJSON.errores);
+                      var nTitle=" Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle=" Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    finprocesado();
                     
                 }, 1000); 
              

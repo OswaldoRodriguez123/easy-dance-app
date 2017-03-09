@@ -351,39 +351,40 @@
                         si el la sesion existe, de lo contrario solamente habra un
                         boton de contribucion para personas externas a la Aplicacion
                   -->
+                      @if(Auth::check())
+                        @foreach ($recompensas as $recompensa)
 
-                      @foreach ($recompensas as $recompensa)
+                        <div style="border: 1px solid;">
+                        <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Recompensa</div>
 
-                      <div style="border: 1px solid;">
-                      <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Recompensa</div>
+                        
+                      <div class="col-sm-12">
+                          <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2, '.' , '.') }} </span> 
+                          <br>
+                          <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
+                          <br>
+                          <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
 
-                      
-                    <div class="col-sm-12">
-                        <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2, '.' , '.') }} </span> 
-                        <br>
-                        <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
-                        <br>
-                        <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-
-                    </div>
-
-                        <span class="text-center">
-                             <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
-
-                            <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
-                        </span>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
 
                       </div>
 
-                      <div class="clearfix p-b-15"></div>
+                          <span class="text-center">
+                               <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
 
-                      @endforeach 
+                              <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
+                          </span>
 
-                      <div style="border: 1px solid;">
+                        </div>
+
+                        <div class="clearfix p-b-15"></div>
+
+                        @endforeach 
+                      @endif
+
+<!--                       <div style="border: 1px solid;">
                         <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">Paga con MercadoPago</div>
 
                         
@@ -403,7 +404,7 @@
                             <button id="{{$campana->id}}" name ="{{$campana->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa_otra" style="width:100%; padding:5px"> </i> Contribuir </button> 
                         </span>
 
-                      </div>
+                      </div> -->
                   
                   
 

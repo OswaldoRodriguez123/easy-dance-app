@@ -1207,9 +1207,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -1664,9 +1664,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
 
                         swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                         finprocesado();
@@ -1758,9 +1758,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         finprocesado();
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);

@@ -1539,12 +1539,14 @@ public function todos_con_robert()
 
         if(Auth::check()){
             $usuario_tipo = Auth::user()->usuario_tipo;
-            $usuario_id = Auth::user()->id;
+            $user_id = Auth::user()->id;
             $usuario_nombre = Auth::user()->nombre . ' ' . Auth::user()->apellido;
+            $usuario_id = Auth::user()->usuario_id;
         }else{
             $usuario_tipo = '';
-            $usuario_id = '';
+            $user_id = '';
             $usuario_nombre = '';
+            $usuario_id = '';
         }
 
         $recompensa = Recompensa::find($id);
@@ -1554,28 +1556,30 @@ public function todos_con_robert()
         $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->get();
         //dd($alumnos->all());
         //MERCADO PAGO
-        $preference_data = array(
-            "items" => array(
-                array(
-                //"id" => $array['mov_id'],
-                "currency_id" => "VEF",
-                "title" => $recompensa->nombre,
-                "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
-                "description" => $recompensa->descripcion,
-                "quantity" => 1,
-                "unit_price" =>  intval($recompensa->cantidad)
-                )
-            )/*,
-            "payer" => array(
-              "name" => $alumno->nocontribuimbre,
-              "surname" => $alumno->apellido,
-              "email" => $alumno->correo,
-              //"date_created" => "2014-07-28T09:50:37.521-04:00"
-            )*/
-        );
-        $preference = MP::create_preference($preference_data);
+        // $preference_data = array(
+        //     "items" => array(
+        //         array(
+        //         //"id" => $array['mov_id'],
+        //         "currency_id" => "VEF",
+        //         "title" => $recompensa->nombre,
+        //         "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
+        //         "description" => $recompensa->descripcion,
+        //         "quantity" => 1,
+        //         "unit_price" =>  intval($recompensa->cantidad)
+        //         )
+        //     )/*,
+        //     "payer" => array(
+        //       "name" => $alumno->nocontribuimbre,
+        //       "surname" => $alumno->apellido,
+        //       "email" => $alumno->correo,
+        //       //"date_created" => "2014-07-28T09:50:37.521-04:00"
+        //     )*/
+        // );
+        // $preference = MP::create_preference($preference_data);
 
-        return view('especiales.campana.contribuir_recompensa')->with(['id' => $id, 'recompensas' => $recompensa, 'academia' => $academia, 'datos' => $preference, 'campana' => $campana, 'alumnos' => $alumnos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre]);
+        // 'datos' => $preference,
+
+        return view('especiales.campana.contribuir_recompensa')->with(['id' => $id, 'recompensas' => $recompensa, 'academia' => $academia,  'campana' => $campana, 'alumnos' => $alumnos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre, 'user_id' => $user_id]);
     }
 
     //VISTA PARA PAGOS DE CONTRIBUCION / DONACION PARTICIPANTES EXTERNOS

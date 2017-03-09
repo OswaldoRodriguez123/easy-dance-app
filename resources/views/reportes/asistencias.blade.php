@@ -295,8 +295,6 @@
             return retorno
         })
 
-        $('.icon_f-consultarle-al-instructor').popover();
-
         $("#formFiltro")[0].reset();
         $('#clase_grupal_id').empty();
         $('#instructor_id').empty();
@@ -336,24 +334,8 @@
         });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                rechargeClase()
-            });
+            rechargeClase()
+        });
 
         function rechargeClase(){
 
@@ -482,9 +464,6 @@
                         }
                     });
 
-
-
-
                     datos = JSON.parse(JSON.stringify(respuesta));
 
                     $("#mujeres").text(datos.mujeres);
@@ -512,7 +491,7 @@
 
                     data1 = data1.substring(0, data1.length -1);
                     data1 += ']';
-                        //GRAFICO FILTRO MES ACTUAL
+        
                         $("#pie-chart-procesos").html('');
                         $(".flc-pie").html('');
                         $.plot('#pie-chart-procesos', $.parseJSON(data1), {
@@ -537,7 +516,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                content: "%p.0%, %s", 
                                 shifts: {
                                     x: 20,
                                     y: 0
@@ -563,9 +542,9 @@
                 },
                 error:function(msj){
                   setTimeout(function(){ 
-                    // if (typeof msj.responseJSON === "undefined") {
-                    //   window.location = "{{url('/')}}/error";
-                    // }
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
                     if(msj.responseJSON.status=="ERROR"){
                       errores(msj.responseJSON.errores);
                       var nTitle="    Ups! "; 
@@ -644,7 +623,7 @@
             },
             tooltip: true,
             tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                content: "%p.0%, %s",
                 shifts: {
                     x: 20,
                     y: 0
@@ -661,19 +640,6 @@
         var route =route_detalle+"/"+id;
         window.location=route;
       }
-
-    // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
-
-    //     function sparklinePie(id, values, width, height, sliceColors) {
-    //         $('.'+id).sparkline(values, {
-    //             type: 'pie',
-    //             width: width,
-    //             height: height,
-    //             sliceColors: sliceColors,
-    //             offset: 0,
-    //             borderWidth: 0
-    //         });
-    //     }    
 
 </script>
 

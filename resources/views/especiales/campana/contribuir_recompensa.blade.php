@@ -176,29 +176,31 @@
                     <div class="col-sm-3"></div>
                     <div class="col-sm-6">
 
-                        <div class="fg-line">
+                        
                         @if(Auth::check())
-                           @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <div class="select">
+                          @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                            <div class="fg-line">
+                              <div class="select" id="id-alumno_id">
                                   <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
                                       @foreach ( $alumnos as $alumno )
                                         <option value = "{{ $alumno->id }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
                                       @endforeach
                                   </select>
                               </div>
+                            </div>
 
-                              @else
+                          @else
                           
-                              <div class="text-center">
-                                <span class="f-18 c-morado text-center">{{$usuario_nombre}}</span>
-                                <input type="hidden" value="" name="alumno_id" id="alumno_id">
-                              </div>  
+                            <div class="text-center" id="id-alumno_id">
+                              <span class="f-18 c-morado text-center">{{$usuario_nombre}}</span>
+                              <input type="hidden" value="{{$usuario_id}}" name="alumno_id" id="alumno_id">
+                            </div>  
 
 
                               
                           @endif
                         @endif
-                        </div>
+                        
                         <div class="has-error" id="error-alumno_id">
                             <span >
                                 <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
@@ -217,10 +219,10 @@
                     "view-mercadopago-button" usando reglas de Acceso ACL o
                     Policies, usando el metodo can()
                   -->
-                 
-                    <a href="{{ $datos['response']['init_point'] }}" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>
+                
+                    <!-- <a href="{ $datos['response']['init_point'] }" id="pagar" name="MP-Checkout" class="btn-blanco m-r-10 f-25 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a> -->
         
-                    <!-- <button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Contribuir</button> -->
+                    <button type="button" class="btn-blanco m-r-10 f-25 guardar" id="guardar" name="guardar">Contribuir</button>
 
                   </div>
 
