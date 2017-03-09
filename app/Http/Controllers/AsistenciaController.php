@@ -859,7 +859,7 @@ class AsistenciaController extends BaseController
 
               }
 
-              if($credencial_alumno->cantidad > 0 OR $request->credencial)
+              if($estatu=="inscrito" OR $credencial_alumno->cantidad > 0 OR $request->credencial)
               {
 
                 if(Session::has('pertenece')){
@@ -877,22 +877,29 @@ class AsistenciaController extends BaseController
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
 
-                $asistencia = new Asistencia;
-                $asistencia->fecha=$fecha_actual;
-                $asistencia->hora=$hora_actual;
-                $asistencia->clase_grupal_id=$clase;
-                $asistencia->alumno_id=$id_alumno;
-                $asistencia->academia_id=Auth::user()->academia_id;
-                $asistencia->tipo = $clase_id[2];
-                $asistencia->tipo_id = $clase_id[3];
-                $asistencia->pertenece = $pertenece;
+                $asistencia = Asistencia::where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->where('fecha',$fecha_actual)->first();
+
+                if(!$asistencia)
+                {
+
+                  $asistencia = new Asistencia;
+                  $asistencia->fecha=$fecha_actual;
+                  $asistencia->hora=$hora_actual;
+                  $asistencia->clase_grupal_id=$clase;
+                  $asistencia->alumno_id=$id_alumno;
+                  $asistencia->academia_id=Auth::user()->academia_id;
+                  $asistencia->tipo = $clase_id[2];
+                  $asistencia->tipo_id = $clase_id[3];
+                  $asistencia->pertenece = $pertenece;
+                }
 
                 if($asistencia->save()){
-
-                  $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->first();
+            
+                  $inscripcion_clase_grupal = InscripcionClaseGrupal::onlyTrashed()->where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->whereNotNull('deleted_at')->first();
 
                   if($inscripcion_clase_grupal){
                     $inscripcion_clase_grupal->deleted_at = null;
+                    $inscripcion_clase_grupal->save();
                   }
 
                   $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
