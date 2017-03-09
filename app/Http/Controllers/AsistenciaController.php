@@ -1003,17 +1003,16 @@ class AsistenciaController extends BaseController
     public function storeInstructor(Request $request)
     {
 
-
         $rules = [
 
-        'asistencia_clase_grupal_id_instructor' => 'required',
-        'asistencia_id_instructor' => 'required',
+          'asistencia_clase_grupal_id_instructor' => 'required',
+          'asistencia_id_instructor' => 'required',
         ];
 
         $messages = [
 
-            'asistencia_clase_grupal_id_instructor.required' => 'Ups! La Clase Grupal es requerida',
-            'asistencia_id_instructor.required' => 'Ups! El Instructor es requerido',
+          'asistencia_clase_grupal_id_instructor.required' => 'Ups! La Clase Grupal es requerida',
+          'asistencia_id_instructor.required' => 'Ups! El Instructor es requerido',
             
         ];
 
@@ -1021,176 +1020,92 @@ class AsistenciaController extends BaseController
 
         if ($validator->fails()){
             
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
+          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
 
         }else{
 
-            $clase=$request->asistencia_clase_grupal_id_instructor;
-            $id_instructor=$request->asistencia_id_instructor;
+          $clase=$request->asistencia_clase_grupal_id_instructor;
+          $id_instructor=$request->asistencia_id_instructor;
 
-            $clase_id=explode('-', $clase);
+          $clase_id=explode('-', $clase);
 
-            if($clase_id[2] == '2'){
-              $ClasesAsociadas=HorarioClaseGrupal::where('instructor_id',$id_instructor)
+          if($clase_id[2] == '2'){
+            $ClasesAsociadas=HorarioClaseGrupal::where('instructor_id',$id_instructor)
               ->where('id',$clase_id[3])
-              ->get();
-            }else{
-              $ClasesAsociadas=ClaseGrupal::where('instructor_id',$id_instructor)
+            ->get();
+          }else{
+            $ClasesAsociadas=ClaseGrupal::where('instructor_id',$id_instructor)
               ->where('id',$clase_id[0])
-              ->get();
-            }
+            ->get();
+          }
+          
+          $estatu="no_asociado";
+          
+          if(count($ClasesAsociadas)>0){              
+            $estatu="asociado";              
+          }
             
+          if($estatu=="asociado" OR $request->es_instructor) {
 
-            // dd(count($id_instructor));
+            $actual = Carbon::now();
+            $geoip = new GeoIP();
+            $geoip->setIp($request->ip());
 
-            
-            $estatu="no_asociado";
-            if(count($ClasesAsociadas)>0){              
-              $estatu="asociado";              
-            }
-              
-             if($estatu=="asociado") {
+            $actual->tz = $geoip->getTimezone();
+            $fecha_actual=$actual->toDateString();
+            $hora_actual=$actual->toTimeString();
 
-                $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
+            $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->where('fecha',$fecha_actual)->first();
 
-                  $actual = Carbon::now();
-                  // $actual->tz = 'America/Caracas';
-                  $geoip = new GeoIP();
-                  $geoip->setIp($request->ip());
+            if($asistencia)
+            {
+              $asistencia->hora_salida = $hora_actual;
+              $asistencia->save();
+            }else{
 
-                  // $actual->tz = 'America/Caracas';
-                  // $actual->tz = $request->timezone;
-                  $actual->tz = $geoip->getTimezone();
-                  
-                  $fecha_actual=$actual->toDateString();
-                  $hora_actual=$actual->toTimeString();
+              $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('clase_grupal_id' , '=', $clase_id[0])->where('fecha',$fecha_actual)->first();
 
-                  if($asistencia)
+              if(!$asistencia)
+              {
+
+                $asistencia = new AsistenciaInstructor;
+                $asistencia->fecha=$fecha_actual;
+                $asistencia->hora=$hora_actual;
+                $asistencia->clase_grupal_id=$clase_id[0];
+                $asistencia->instructor_id=$id_instructor;
+                $asistencia->academia_id=Auth::user()->academia_id;
+
+                $asistencia->save();
+
+                $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
+
+                if($config_pago){
+                  if($config_pago->tipo == 1)
                   {
-                    $asistencia->hora_salida = $hora_actual;
-                    $asistencia->save();
-                  }
-                  else{
 
-                  $asistencia = new AsistenciaInstructor;
-                  $asistencia->fecha=$fecha_actual;
-                  $asistencia->hora=$hora_actual;
-                  $asistencia->clase_grupal_id=$clase_id[0];
-                  $asistencia->instructor_id=$id_instructor;
-                  $asistencia->academia_id=Auth::user()->academia_id;
+                    $pago = new PagoInstructor;
 
-                  $asistencia->save();
+                    $pago->instructor_id=$id_instructor;
+                    $pago->tipo=$config_pago->tipo;
+                    $pago->monto=$config_pago->monto;
+                    $pago->clase_grupal_id=$clase_id[0];
+                    $pago->asistencia_id=$asistencia->id;
 
-                  $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
-
-                  if($config_pago){
-                    if($config_pago->tipo == 1)
-                    {
-
-                      $pago = new PagoInstructor;
-
-                      $pago->instructor_id=$id_instructor;
-                      $pago->tipo=$config_pago->tipo;
-                      $pago->monto=$config_pago->monto;
-                      $pago->clase_grupal_id=$clase_id[0];
-                      $pago->asistencia_id=$asistencia->id;
-
-                      $pago->save();
-                    }
+                    $pago->save();
                   }
                 }
-
-
-                return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
-              }elseif($estatu="no_asociado"){
-                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO'],422);
               }
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+
+          }else{
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO', 'text' => "El instructor no se encuentra asociado a esta clase!", 'campo' => 'es_instructor'],422);
+          }
        }
 
     }
 
-    public function storeInstructorPermitir(Request $request)
-    {
-        $rules = [
-
-        'asistencia_clase_grupal_id_instructor' => 'required',
-        'asistencia_id_instructor' => 'required',
-        ];
-
-        $messages = [
-
-            'asistencia_clase_grupal_id_instructor.required' => 'Ups! La Clase Grupal es requerida',
-            'asistencia_id_instructor.required' => 'Ups! El Instructor es requerido',
-            
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-            
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
-
-        }else{
-
-            $clase=$request->asistencia_clase_grupal_id_instructor;
-            $id_instructor=$request->asistencia_id_instructor;
-
-            $clase_id=explode('-', $clase);
-
-                $actual = Carbon::now();
-                // $actual->tz = 'America/Caracas';
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-
-                // $actual->tz = 'America/Caracas';
-                // $actual->tz = $request->timezone;
-                $actual->tz = $geoip->getTimezone();
-                
-                $fecha_actual=$actual->toDateString();
-                $hora_actual=$actual->toTimeString();
-
-                $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->first();
-
-                if($asistencia)
-                {
-                  $asistencia->hora_salida = $hora_actual;
-                  $asistencia->save();
-                }
-                else{
-
-                  $asistencia = new AsistenciaInstructor;
-                  $asistencia->fecha=$fecha_actual;
-                  $asistencia->hora=$hora_actual;
-                  $asistencia->clase_grupal_id=$clase_id[0];
-                  $asistencia->instructor_id=$id_instructor;
-                  $asistencia->academia_id=Auth::user()->academia_id;
-
-                  $asistencia->save();
-
-                  $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
-
-                  if($config_pago){
-                    if($config_pago->tipo == 1)
-                    {
-
-                      $pago = new PagoInstructor;
-
-                      $pago->instructor_id=$id_instructor;
-                      $pago->tipo=$config_pago->tipo;
-                      $pago->monto=$config_pago->monto;
-                      $pago->clase_grupal_id=$clase_id[0];
-                      $pago->asistencia_id=$asistencia->id;
-
-                      $pago->save();
-                    }
-                  }
-                }
-
-                return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
-              
-       }
-
-    }
 
     public function storeStaff(Request $request)
     {

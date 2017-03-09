@@ -128,6 +128,7 @@
                                     </div>
                                     <form name="agregar_asistencia_instructor" id="agregar_asistencia_instructor"  >
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input type="hidden" name="es_instructor" id="es_instructor">
                                        <div class="modal-body">                           
                                        <div class="row p-t-20 p-b-0">
 
@@ -578,8 +579,30 @@
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }
           },
-          error:function(msj){
-            errores(msj.responseJSON.errores);
+           error:function(msj){
+          errores(msj.responseJSON.errores);
+          finprocesado();
+
+          if(msj.responseJSON.status != 'ERROR'){
+
+            swal({   
+                title: "¿Desea permitir la entrada como suplente?",   
+                text: msj.responseJSON.text,   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Permitir!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+              if (isConfirm) {
+                $('#'+msj.responseJSON.campo).val(1)
+                $('#permitir_instructor').click();
+                
+              }
+            });  
+
+          }else{
             var nType = 'danger';
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
@@ -587,83 +610,13 @@
             var nAnimIn = "animated flipInY";
             var nAnimOut = "animated flipOutY"; 
             var nTitle="Ups! ";
-            if(msj.responseJSON.status=="ERROR"){
-              var nTitle="    Ups! "; 
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-            }else if(msj.responseJSON.status=="ERROR_ASOCIADO"){
+            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
 
-              swal({   
-                    title: "¿Desea permitir la entrada como suplente?",   
-                    text: "El instructor no se encuentra asociado a esta clase!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Permitir!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-                if (isConfirm) {
-                    var route = route_agregar_asistencia_instructor_permitir;
-                    var token = $('input:hidden[name=_token]').val();
-                    var datos = $( "#agregar_asistencia_instructor" ).serialize(); 
-                    $.ajax({
-                      url: route,
-                      headers: {'X-CSRF-TOKEN': token},
-                      type: 'POST',
-                      dataType: 'json',
-                      data:datos,
-                        success:function(respuesta){  
-                          console.log(respuesta)          
-                          if(respuesta.status=="OK"){
-                            $('#modalAsistenciaInstructor').modal('hide');
-                            swal("Permitido!", respuesta.mensaje, "success");
-                            $("#content").toggleClass("opacity-content");
-                            $("header").toggleClass("abierto");
-                            $("footer").toggleClass("opacity-content");                                              
-                          }else{
-                            var nType = 'danger';
-                            var nTitle="Ups! ";
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                            var nType = 'danger';
-                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                            //console.log(msj);
-                          }
-                          
-                        },
-                        error:function(msj){
-                          errores(msj.responseJSON.errores);
-                          var nType = 'danger';
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nTitle="Ups! ";
-                          if(msj.responseJSON.status=="ERROR"){
-                            var nTitle="    Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-                            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-                          }
-                          
-                        }
-                        
-                      });
-                  
-                  
-                }
-              });
-              /*
-              var nType = 'warning';
-              var nTitle="    Ups! "; 
-              var nMensaje="El instructor no se encuentra asociado a la clase"; 
-              */
-            }
-            //notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-          }
-          
-        });
-    });
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          } 
+        }
+     }); 
+  });
 
 $("#permitir_staff").on('click',function(){
       var route = route_agregar_asistencia_staff;
