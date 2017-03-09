@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Fiesta;
+use App\Academia;
 use App\ConfigEstudios;
 use App\ConfigBoletos;
 use App\DiasDeSemana;
@@ -328,13 +329,7 @@ class FiestaController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
         $fiesta = Fiesta::find($request->id);
@@ -367,13 +362,7 @@ class FiestaController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
         $fiesta = Fiesta::find($request->id);
@@ -428,7 +417,6 @@ class FiestaController extends BaseController {
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateHorario(Request $request){
@@ -503,13 +491,7 @@ class FiestaController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
         $fiesta = Fiesta::find($request->id);
@@ -685,6 +667,43 @@ class FiestaController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function progreso($id)
+    {
+
+        $fiesta = Fiesta::find($id);
+
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
+
+        if(Carbon::now() > $fecha_inicio){
+            $inicio = 1;
+        }else{
+            $inicio = 0;
+        }
+
+        $academia = Academia::find($fiesta->academia_id);
+
+        if($fiesta->link_video){
+
+            $parts = parse_url($clase_grupal_join->link_video);
+            $partes = explode( '=', $parts['query'] );
+            $link_video = $partes[1];
+
+        }else{
+            $link_video = '';
+        }
+
+        if(Auth::check()){
+
+            $usuario_tipo = Auth::user()->usuario_tipo;
+
+        }else{
+            $usuario_tipo = 0;
+        
+        }
+
+        return view('agendar.fiesta.reserva')->with(['fiesta' => $fiesta, 'id' => $id, 'link_video' => $link_video, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio]);
     }
 
 }

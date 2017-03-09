@@ -199,7 +199,7 @@ class AcademiaConfiguracionController extends BaseController {
 
                     $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
 
-                    if($fecha >= Carbon::now()){
+                    if($fecha >= Carbon::now() && $fiesta->boolean_promocionar == 1){
 
                         if($fiesta->imagen){
                             $imagen = "/assets/uploads/fiesta/{$fiesta->imagen}";
@@ -207,9 +207,9 @@ class AcademiaConfiguracionController extends BaseController {
                             $imagen = '';
                         }
 
-                        // $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/detalle/{$fiesta->id}", 'facebook' => "/agendar/fiesta/detalle/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/detalle/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $fiesta->fecha_inicio, 'disponible' => '');
+                        $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $fiesta->fecha_inicio, 'disponible' => '');
 
-                        // $contador_fiesta = $contador_fiesta + 1;
+                        $contador_fiesta = $contador_fiesta + 1;
                     }
 
                 }

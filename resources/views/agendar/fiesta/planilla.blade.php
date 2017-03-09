@@ -5,6 +5,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -669,6 +670,8 @@
 
                                     <hr></hr>
                                     
+                                    <a href="{{url('/')}}/agendar/fiestas/progreso/{{$fiesta->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+
                                     <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$fiesta->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                     <br></br>
@@ -1225,7 +1228,7 @@
           $('#charNum2').text(10000 - len);
         }
       };
-      
+
       $("#promocionar").on('change', function(){
         if ($("#promocionar").is(":checked")){
           $("#boolean_promocionar").val('1');

@@ -65,7 +65,7 @@
                                     <td class="text-center previa">{{$fiestas->nombre}}</td>
                                     <td class="text-center previa">{{$fiestas->fecha_inicio}}</td>
                                     <td class="text-center previa">{{$fiestas->hora_inicio}} - {{$fiestas->hora_final}}</td>
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach  
                                                            
@@ -240,6 +240,11 @@
                                 }
                 });
       }
+
+    $("i[name=operacion").click(function(){
+        var route =route_operacion+"/"+this.id;
+        window.location=route;
+    });
 
     </script>
 @stop
