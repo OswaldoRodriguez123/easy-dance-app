@@ -15,6 +15,8 @@
 
 @section('content')
   <!-- PAGO RECOMPENSA MERCADOPAGO -->
+
+  <section id="content">
     
     <div class="container">
 
@@ -240,7 +242,7 @@
             </div><!-- END CARD BODY -->
         </div><!-- END CARD -->
     </div><!-- END CONTAINER -->
-
+  </section>
 
 @stop
 
