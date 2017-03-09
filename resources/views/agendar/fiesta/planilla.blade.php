@@ -542,6 +542,71 @@
                     </div>
                 </div>
             </div>
+
+             <div class="modal fade" id="modalMostrar-Fiesta" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Fiesta<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_mostrar_fiesta" id="edit_mostrar_fiesta"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                              <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar esta fiesta en la web" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_promocionar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+
+
+                               <input type="hidden" name="id" value="{{$fiesta->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_mostrar_fiesta" data-update="mostrar" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
             
             <section id="content">
                 <div class="container">
@@ -777,6 +842,20 @@
                              </td>
                              <td id="fiesta-condiciones" class="f-14 m-l-15" data-valor="{{$fiesta->condiciones}}" ><span id="fiesta-condiciones"><span>{{ str_limit($fiesta->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalMostrar-Fiesta">
+                             <td> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-estatus" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              <span class="m-l-10 m-r-10"> <i class="icon_a-estatus-de-clases f-20"></i> </span>
+                              <span class="f-14"> Mostrar en la Web </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="fiesta-boolean_promocionar" data-valor="{{$fiesta->boolean_promocionar}}">
+                               @if($fiesta->boolean_promocionar==1)
+                                  <i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i> </span>
+                               @else
+                                  <i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i></span>
+                               @endif
+                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <!-- <tr class="detalle" data-toggle="modal" href="#modalMultihorario-Fiesta">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-multihorarios" class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i></span>                              
@@ -815,6 +894,11 @@
     route_principal="{{url('/')}}/agendar/fiestas";
 
     $(document).ready(function(){
+
+      if("{{$fiesta->boolean_promocionar}}" == 1){
+        $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+        $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
+      }
 
       $("#imagen").bind("change", function() {
             //alert('algo cambio');
@@ -917,7 +1001,16 @@
              $("#fiesta-"+c.name).data('valor',c.value);
              $("#fiesta-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else{
+          }else if(c.name=='boolean_promocionar'){
+            if(c.value==1){              
+              var valor='<i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i>';
+            }else{
+              var valor='<i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i>';
+            }
+            $("#fiesta-"+c.name).html(valor)
+            
+          }
+          else{
             $("#fiesta-"+c.name).text(c.value.toLowerCase());
           }
 
@@ -1132,6 +1225,14 @@
           $('#charNum2').text(10000 - len);
         }
       };
+      
+      $("#promocionar").on('change', function(){
+        if ($("#promocionar").is(":checked")){
+          $("#boolean_promocionar").val('1');
+        }else{
+          $("#boolean_promocionar").val('0');
+        }    
+      });
     
    </script> 
 

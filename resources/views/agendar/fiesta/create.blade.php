@@ -510,6 +510,31 @@
 
                             <div class="clearfix p-b-35"></div>
 
+                            <div class="col-sm-12">
+                             <div class="form-group fg-line ">
+                                <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar la fiesta en la web" title="" data-original-title="Ayuda"></i>
+                                
+                                <br></br>
+                                <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                <div class="p-t-10">
+                                  <div class="toggle-switch" data-ts-color="purple">
+                                  <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                  
+                                  <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                  </div>
+                                </div>
+                                
+                             </div>
+                             <div class="has-error" id="error-boolean_promocionar">
+                                <span >
+                                    <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
+                                </span>
+                            </div>
+                           </div>
+
+                          <div class="clearfix p-b-35"></div>     
+
+
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -565,46 +590,55 @@
   route_eliminarhorario="{{url('/')}}/agendar/fiestas/eliminarhorario";
 
   $(document).ready(function(){
-        document.getElementById("nombre").focus();
-        $('body,html').animate({scrollTop : 0}, 500);
-        var animation = 'fadeInDownBig';
-        //var cardImg = $(this).closest('#content').find('h1');
-        if (animation === "hinge") {
-        animationDuration = 3100;
-        }
-        else {
-        animationDuration = 3200;
-        }
-        //$("h1").removeAttr('class');
-        $(".container").addClass('animated '+animation);
 
-            setTimeout(function(){
-                $(".card-body").removeClass(animation);
-            }, animationDuration);
+    $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+    $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
 
-        $("#imagen").bind("change", function() {
-            //alert('algo cambio');
-            
-            setTimeout(function(){
-              var imagen = $("#imagena img").attr('src');
-              var canvas = document.createElement("canvas");
-     
-              var context=canvas.getContext("2d");
-              var img = new Image();
-              img.src = imagen;
-              
-              canvas.width  = img.width;
-              canvas.height = img.height;
+    $("#promocionar").on('change', function(){
+      if ($("#promocionar").is(":checked")){
+        $("#boolean_promocionar").val('1');
+      }else{
+        $("#boolean_promocionar").val('0');
+      }    
+    });
 
-              context.drawImage(img, 0, 0);
-       
-              var newimage = canvas.toDataURL("image/jpeg", 0.8);
-              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-            },500);
+    document.getElementById("nombre").focus();
+    $('body,html').animate({scrollTop : 0}, 500);
+    var animation = 'fadeInDownBig';
+    if (animation === "hinge") {
+    animationDuration = 3100;
+    }
+    else {
+    animationDuration = 3200;
+    }
+    $(".container").addClass('animated '+animation);
 
-        });
+    setTimeout(function(){
+        $(".card-body").removeClass(animation);
+    }, animationDuration);
 
-      });
+    $("#imagen").bind("change", function() {
+        
+        setTimeout(function(){
+          var imagen = $("#imagena img").attr('src');
+          var canvas = document.createElement("canvas");
+ 
+          var context=canvas.getContext("2d");
+          var img = new Image();
+          img.src = imagen;
+          
+          canvas.width  = img.width;
+          canvas.height = img.height;
+
+          context.drawImage(img, 0, 0);
+   
+          var newimage = canvas.toDataURL("image/jpeg", 0.8);
+          var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+        },500);
+
+    });
+
+  });
 
   setInterval(porcentaje, 1000);
 
@@ -1185,6 +1219,15 @@
           $('#charNum2').text(10000 - len);
         }
       };
+
+      $("#promocionar").on('change', function(){
+        if ($("#promocionar").is(":checked")){
+          $("#boolean_promocionar").val('1');
+        }else{
+          $("#boolean_promocionar").val('0');
+        }    
+      });
+      
 </script> 
 @stop
 

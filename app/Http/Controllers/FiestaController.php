@@ -271,6 +271,7 @@ class FiestaController extends BaseController {
         $fiesta->color_etiqueta = $request->color_etiqueta;
         $fiesta->link_video = $request->link_video;
         $fiesta->condiciones = $request->condiciones;
+        $fiesta->boolean_promocionar = $request->boolean_promocionar;
 
         // return redirect("/home");
         if($fiesta->save()){
@@ -610,6 +611,18 @@ class FiestaController extends BaseController {
                 $fiesta->save();
 
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function updateMostrar(Request $request){
+
+        $fiesta = Fiesta::find($request->id);
+        $fiesta->boolean_promocionar = $request->boolean_promocionar;
+
+        if($fiesta->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function operar($id)
