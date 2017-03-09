@@ -926,7 +926,7 @@ class AsistenciaController extends BaseController
 
     }
 
-    public function storePermitir(Request $request)
+    public function storeOtros(Request $request)
     {
 
         $rules = [

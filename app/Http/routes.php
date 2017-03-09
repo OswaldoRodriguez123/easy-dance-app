@@ -766,7 +766,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('asistencia/consulta/citas', 'AsistenciaController@consulta_citas_alumno');
 			Route::get('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales');
 			Route::post('asistencia/agregar', 'AsistenciaController@store');
-			Route::post('asistencia/agregar/permitir', 'AsistenciaController@storePermitir');
+			Route::post('asistencia/agregar/otros', 'AsistenciaController@storeOtros');
 			Route::post('asistencia/agregar/instructor', 'AsistenciaController@storeInstructor');
 			Route::post('asistencia/agregar/instructor/permitir', 'AsistenciaController@storeInstructorPermitir');
 			Route::post('asistencia/agregar/staff', 'AsistenciaController@storeStaff');

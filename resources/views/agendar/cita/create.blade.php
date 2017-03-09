@@ -194,7 +194,8 @@
 
                                     <div class="col-sm-12">
                                  
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda"></i>
+                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> 
+                                     <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>

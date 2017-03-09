@@ -404,9 +404,8 @@
       route_consultar_cp="{{url('/')}}/asistencia/consulta/clases-personalizadas";
       route_consultar_ci="{{url('/')}}/asistencia/consulta/citas";
       route_agregar_asistencia="{{url('/')}}/asistencia/agregar";
-      route_agregar_asistencia_permitir="{{url('/')}}/asistencia/agregar/permitir";
+      route_agregar_asistencia_otros="{{url('/')}}/asistencia/agregar/otros";
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
-      route_agregar_asistencia_instructor_permitir="{{url('/')}}/asistencia/agregar/instructor/permitir";
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
 
       var estatus = <?php echo json_encode($estatus);?>;
@@ -476,7 +475,7 @@
       if(tipo == 1){
         var route = route_agregar_asistencia;
       }else{
-        var route = route_agregar_asistencia_permitir
+        var route = route_agregar_asistencia_otros
       }
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_asistencia" ).serialize(); 
