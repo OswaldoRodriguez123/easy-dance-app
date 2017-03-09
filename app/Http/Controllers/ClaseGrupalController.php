@@ -2919,6 +2919,45 @@ class ClaseGrupalController extends BaseController {
 
         
     }
+    public function historial_asistencia($id){
+
+        $inscripcion_clase_grupal = InscripcionClaseGrupal::find($id);
+
+        $clase_grupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+          ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+          ->where('clases_grupales.id',$inscripcion_clase_grupal->clase_grupal_id)
+          ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+        ->first();
+        $alumno = Alumno::find($inscripcion_clase_grupal->alumno_id);
+        $fecha = Carbon::parse($clase_grupal->fecha_inicio);
+        $alumno_id = $inscripcion_clase_grupal->alumno_id;
+        $clase_grupal_id = $inscripcion_clase_grupal->clase_grupal_id;
+
+        $array = array();
+
+        $i = 0;
+
+        while($fecha < Carbon::now())
+        {
+            $fecha_asistencia = $fecha;
+            $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_asistencia)->first();
+            if($asistencia){
+                $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
+                $hora = $asistencia->hora;
+            }else{
+                $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                $hora = '';
+            }
+
+            $array[]=array('id' => $i, 'fecha' => $fecha_asistencia->toDateString() , 'asistio' => $asistio, 'hora' => $hora);
+
+            $fecha->addWeek();
+            $i = $i + 1;
+        }
+
+        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno]);
+        
+    }
 
 
 }
