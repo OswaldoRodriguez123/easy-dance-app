@@ -589,7 +589,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/fiestas', 'FiestaController@index');
 			Route::post('agendar/fiestas/agregar', 'FiestaController@store');
 			Route::get('agendar/fiestas/agregar', 'FiestaController@create');
-			Route::get('agendar/fiestas/detalle/{id}', 'FiestaController@edit');
 			Route::get('agendar/fiestas/operaciones/{id}', 'FiestaController@operar');
 			Route::delete('agendar/fiestas/eliminar/{id}', 'FiestaController@destroy');
 			Route::post('agendar/fiestas/agregarboleto', 'FiestaController@agregarboleto');
@@ -869,6 +868,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('especiales/regalos/verificar', 'RegaloController@verify');
 			Route::post('especiales/regalos/verificar/{id}', 'RegaloController@verificarconalumno');
+
+			//FIESTA
+			
+			Route::get('agendar/fiestas/detalle/{id}', 'FiestaController@edit');
 
 
 			// NORMATIVAS

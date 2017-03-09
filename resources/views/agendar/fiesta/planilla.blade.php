@@ -547,6 +547,7 @@
                 <div class="container">
                 
                     <div class="block-header">
+                      @if(Auth::user()->usuario_tipo == 1)
                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/fiestas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Fiestas o Eventos</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -559,6 +560,11 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
+                      @else
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                      @endif
+
+
                     </div> 
                     
                     <div class="card">
@@ -588,24 +594,27 @@
                                     </li>
                                   </ul>
 
+                                  @if(Auth::user()->usuario_tipo == 1)
+
                                   <div class="col-sm-12 text-center"> 
 
-                                  <br></br>
+                                    <br></br>
 
-                                  <span class="f-16 f-700">Acciones</span>
+                                    <span class="f-16 f-700">Acciones</span>
 
-                                  <hr></hr>
+                                    <hr></hr>
+                                    
+                                    <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$fiesta->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+
+                                    <br></br>
                                   
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$fiesta->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                    <hr></hr>
 
-                                  <br></br>
-                                
-                                  <hr></hr>
-
-                                  <br></br>
-<!--                                   <a class="btn-blanco m-r-10 f-18 guardar" id="guardar" href="#"> Ver Progreso <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
+                                    <br></br>
                                    
-                                </div>
+                                  </div>
+
+                                  @endif
 
                                 </div>                
                               </div>
@@ -620,7 +629,15 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Fiesta">
+
+                           @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalNombre-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($fiesta->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
@@ -628,7 +645,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-nombre" class="capitalize">{{$fiesta->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($fiesta->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
@@ -636,7 +660,14 @@
                              </td>
                              <td id="fiesta-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$fiesta->descripcion}}" >{{ str_limit($fiesta->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFecha-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalFecha-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi {{ empty($fiesta->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
@@ -644,7 +675,14 @@
                              </td>
                              <td class="f-14 m-l-15"><span id="fiesta-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$fiesta->fecha_inicio)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalHorario-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi {{ empty($fiesta->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
@@ -652,7 +690,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-hora_inicio">{{$fiesta->hora_inicio}}</span> - <span id="fiesta-hora_final">{{$fiesta->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalLugar-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalLugar-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-lugar" class="zmdi {{ empty($fiesta->lugar) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-estudio-salon f-22"></i> </span>
@@ -668,7 +713,14 @@
                              </td>
                              <td class="f-14 m-l-15" id="fiesta-boletos" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr> -->
-                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($fiesta->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
@@ -679,8 +731,14 @@
                                
                                 </td>
                               </tr>
-                            
-                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalImagen-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($fiesta->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
@@ -688,7 +746,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalLink-Fiesta">
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalLink-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($fiesta->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
@@ -696,7 +761,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-link_video"><span>{{$fiesta->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Fiesta">
+
+                            @if(Auth::user()->usuario_tipo == 1)
+                              <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Fiesta">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($fiesta->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
