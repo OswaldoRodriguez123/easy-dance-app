@@ -181,7 +181,7 @@
                           @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                             <div class="fg-line">
                               <div class="select" id="id-alumno_id">
-                                  <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona">
+                                  <select class="selectpicker"  data-live-search="true" id="alumno_id" name="alumno_id" title="Selecciona">
                                       @foreach ( $alumnos as $alumno )
                                         <option value = "{{ $alumno->id }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
                                       @endforeach

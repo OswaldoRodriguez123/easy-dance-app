@@ -1553,7 +1553,7 @@ public function todos_con_robert()
         $academia = Academia::find($recompensa->academia_id);
 
         $campana = Campana::find($recompensa->campana_id);
-        $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->OrderBy('nombre')->get();
         //dd($alumnos->all());
         //MERCADO PAGO
         // $preference_data = array(
