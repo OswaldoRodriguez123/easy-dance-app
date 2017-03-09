@@ -199,7 +199,7 @@
 
                           <div class ="detalle campana">
 
-                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$campanas}}</span></a> </div>
+                          <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-campana f-20"></i> Campañas <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$contador_campana}}</span></a> </div>
 
                           <div class ="detalle credencial">
 
@@ -523,6 +523,7 @@
         <script type="text/javascript">
 
         var credenciales_alumno = <?php echo json_encode($credenciales_alumno);?>;
+        var campanas = <?php echo json_encode($campanas);?>;
 
         function configuracion(){
           window.location = "{{url('/')}}/perfil-evaluativo";
@@ -560,7 +561,14 @@
 
           $(".campana").click(function(){
             procesando();
-            window.location = "{{url('/')}}/especiales/campañas";
+
+            if(campanas.length > 1)
+            {
+              window.location = "{{url('/')}}/especiales/campañas";
+            }else{
+              window.location = "{{url('/')}}/especiales/campañas/progreso/"+campanas[0].id;
+            }
+            
           });
 
           $(".credencial").click(function(){

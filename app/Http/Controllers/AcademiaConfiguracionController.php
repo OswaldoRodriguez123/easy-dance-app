@@ -272,6 +272,7 @@ class AcademiaConfiguracionController extends BaseController {
                 $total_credenciales = 0;
 
                 foreach($credenciales_alumno as $credencial_alumno){
+
                     $instructor = User::where('usuario_tipo',3)->where('usuario_id',$credencial_alumno->instructor_id)->first();
 
                     if($instructor){
@@ -293,7 +294,7 @@ class AcademiaConfiguracionController extends BaseController {
                     $total_credenciales = $total_credenciales + $credencial_alumno->cantidad;
                 }
                 
-                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'campanas' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno, 'credenciales_alumno' => $array_credencial, 'total_credenciales' => $total_credenciales]);  
+                return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'contador_campana' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno, 'credenciales_alumno' => $array_credencial, 'total_credenciales' => $total_credenciales, 'campanas' => $campanas]);  
                 
             }else{
                 return view('vista_alumno.condiciones')->with('academia', $academia);
