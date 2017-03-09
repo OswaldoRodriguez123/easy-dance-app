@@ -823,15 +823,21 @@ public function PresencialesFiltros(Request $request)
         }else{
 
             if($request->tipo){
+
+                $actual = Carbon::now();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+                $actual->tz = $geoip->getTimezone();
+
                 if($request->tipo == 1){
-                    $start = Carbon::now()->toDateString();
-                    $end = Carbon::now()->toDateString();  
+                    $start = $actual->toDateString();
+                    $end = $actual->toDateString();  
                 }else if($request->tipo == 2){
-                    $start = Carbon::now()->startOfMonth()->toDateString();
-                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                    $start = $actual->startOfMonth()->toDateString();
+                    $end = $actual->endOfMonth()->toDateString();  
                 }else if($request->tipo == 3){
-                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                    $start = $actual->startOfMonth()->subMonth()->toDateString();
+                    $end = $actual->subMonth()->endOfMonth()->toDateString();  
                 }
 
                 $query->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end]);

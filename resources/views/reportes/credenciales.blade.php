@@ -123,6 +123,8 @@
                                       </div>
                                 </div>
 
+                                <div class="clearfix m-b-10"></div>
+
                                 <div class="col-sm-4">
                                     <div class="form-group fg-line">
                                         <label for="nombre">Personalizar</label>
@@ -169,7 +171,7 @@
 
                                  
 
-                                 <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+                                 <button type="button" class="btn btn-blanco m-t-10 m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
 
                                 <div class ="clearfix m-b-10"></div>
                                 <div class ="clearfix m-b-10"></div>

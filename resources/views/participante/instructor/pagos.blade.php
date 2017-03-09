@@ -44,14 +44,15 @@
                                              @foreach ( $clases_grupales as $clase_grupal )
                                               <?php $exist = false; ?>
                                               @foreach ( $pagos_instructor as $pagos)
-                                                @if ($pagos->clase_grupal_id==$clase_grupal->id )
+                                                @if ($pagos->clase_grupal_id==$clase_grupal['id'] )
                                                   <?php $exist = true; ?>
                                                 @endif
                                               @endforeach
                                               @if ($exist)
-                                                  <option value = "{{ $clase_grupal->id }}" disabled="" data-icon="glyphicon-remove"> {{ $clase_grupal->nombre }}</option>
+
+                                                  <option value = "{{ $clase_grupal['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }}</option>
                                               @else
-                                                  <option value = "{{ $clase_grupal->id }}">{{ $clase_grupal->nombre }}</option>
+                                                  <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }}</option>
                                               @endif
                                              @endforeach
                                             </select>
