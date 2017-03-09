@@ -2933,6 +2933,39 @@ class ClaseGrupalController extends BaseController {
         $alumno_id = $inscripcion_clase_grupal->alumno_id;
         $clase_grupal_id = $inscripcion_clase_grupal->clase_grupal_id;
 
+        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+        $i = $fecha->dayOfWeek;
+
+        if($i == 1){
+
+          $dia = 'Lunes';
+
+        }else if($i == 2){
+
+          $dia = 'Martes';
+
+        }else if($i == 3){
+
+          $dia = 'Miercoles';
+
+        }else if($i == 4){
+
+          $dia = 'Jueves';
+
+        }else if($i == 5){
+
+          $dia = 'Viernes';
+
+        }else if($i == 6){
+
+          $dia = 'Sabado';
+
+        }else if($i == 0){
+
+          $dia = 'Domingo';
+
+        }
+
         $array = array();
 
         $i = 0;
@@ -2955,7 +2988,7 @@ class ClaseGrupalController extends BaseController {
             $i = $i + 1;
         }
 
-        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno]);
+        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno, 'dia' => $dia]);
         
     }
 

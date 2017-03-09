@@ -2138,7 +2138,15 @@
       $('#modalError').modal('hide');
      }
 
+    $( ".dropdown-toggle" ).hover(function() {
 
+      if($('.dropdown').hasClass('open')){
+
+      }else{
+        $( this ).click();
+      }
+     
+    });
 
     </script>
 

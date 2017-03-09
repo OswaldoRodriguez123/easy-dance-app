@@ -57,6 +57,7 @@
                             Alumno: {{$alumno->nombre}} {{$alumno->apellido}}<br>
                             Clase Grupal: {{$clase_grupal->nombre}}<br>
                             Horario : {{$clase_grupal->hora_inicio}} - {{$clase_grupal->hora_final}}<br>
+                            Dia: {{$dia}}<br>
                             Instructor : {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}}<br>
 
                             <div class="clearfix"></div>
@@ -172,9 +173,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="asistio" data-order="desc"></th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
+                                    <th class="text-center" data-column-id="asistio" data-order="desc"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,9 +183,9 @@
                             @foreach ($asistencias as $asistencia)
                                 <?php $id = $asistencia['id']; ?>
                                 <tr id="{{$id}}" class="disabled"> 
-                                    <td class="text-center previa"><i class="{{$asistencia['asistio']}}"></i></td>
                                     <td class="text-center previa">{{$asistencia['fecha']}}</td>
                                     <td class="text-center previa">{{$asistencia['hora']}}</td>
+                                    <td class="text-center previa"><i class="{{$asistencia['asistio']}}"></i></td>
                                 </tr>
                             @endforeach
 
