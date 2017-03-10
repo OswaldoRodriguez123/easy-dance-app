@@ -2984,6 +2984,7 @@ class ClaseGrupalController extends BaseController {
         while($fecha_clase_grupal < Carbon::now())
         {
             $fecha_a_comparar = $fecha_clase_grupal;
+            $fecha_a_comparar = $fecha_a_comparar->toDateString();
             $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
             if($asistencia){
                 $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
@@ -3026,7 +3027,7 @@ class ClaseGrupalController extends BaseController {
                 $hora = '';
                 $dia = '';
             }
-            $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar->toDateString() , 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+            $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
             $fecha_clase_grupal->addWeek();
             $j = $j + 1;
@@ -3039,6 +3040,7 @@ class ClaseGrupalController extends BaseController {
             while($fecha_horario < Carbon::now())
             {
                 $fecha_a_comparar = $fecha_horario;
+                $fecha_a_comparar = $fecha_a_comparar->toDateString();
                 $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
                 if($asistencia){
                     $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
@@ -3081,7 +3083,7 @@ class ClaseGrupalController extends BaseController {
                     $hora = '';
                     $dia = '';
                 }
-                $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar->toDateString() , 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+                $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
                 $fecha_horario->addWeek();
                 $j = $j + 1;
