@@ -551,20 +551,22 @@ class ClaseGrupalController extends BaseController {
         
         if($inscripcion->delete()){
 
-            $asistencias = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id', $inscripcion->alumno_id)->get();
+            // $asistencias = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id', $inscripcion->alumno_id)->get();
 
-            if($asistencias)
-            {
+            // if($asistencias)
+            // {
                 
-                $detele = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id', $inscripcion->alumno_id)->delete();
+            //     $detele = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id', $inscripcion->alumno_id)->delete();
 
-                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            //     return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
 
                
-            }else{
+            // }else{
 
-                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-            }
+            //     return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            // }
+            // 
+            return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

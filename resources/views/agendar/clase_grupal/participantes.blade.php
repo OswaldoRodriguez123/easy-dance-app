@@ -798,7 +798,7 @@
                                                       @if(isset($activacion[$alumno_id])) 
                                                       
                                                         <li class="hidden-xs">
-                                                          <a class="activar"><i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20"></i> &nbsp;Activar Cuenta</a>
+                                                          <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
                                                         </li>
 
                                                       @endif
@@ -813,6 +813,10 @@
 
                                                       <li class="hidden-xs">
                                                           <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
+                                                      </li>
+
+                                                      <li class="hidden-xs">
+                                                          <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
                                                       </li>
 
 
@@ -839,9 +843,7 @@
                                       <td class="text-center previa"></td>
                                       <td class="text-center previa"></td>
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                      <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                      <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                      <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i></td>
+                                      <td class="text-center"><i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i></td>
                                   </tr>
                                 @endif
                             @endforeach 
@@ -993,7 +995,8 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -1177,12 +1180,14 @@
                               ''+talla_franela+'',
                               '<label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal c-verde"></i></label>',
                               ''+deuda+'',
-                              '<i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>'
+                              ''
                               ] ).draw(false).node();
                               $( rowNode )
                               .attr('id',rowId)
                               .data('tipo',1)
                               .addClass('seleccion');
+
+                              // <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
 
                               $('#razon_entrega').val('')
                               $('#talla_franela').val('')
@@ -1841,7 +1846,8 @@
             $('#modalEdicion').modal('show');
         }
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+          $('.eliminar').on('click', function () {
+        // $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
                 var id = $(this).closest('tr').attr('id');
 
