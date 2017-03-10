@@ -96,6 +96,10 @@ Route::get('agendar/talleres/disponibles/{id}', 'TallerController@indexconacadem
 Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
 Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 
+//FIESTAS USUARIO
+
+Route::get('agendar/fiestas/progreso/{id}', 'FiestaController@progreso');
+
 // CAMPAÑAS USUARIO
 
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
@@ -924,10 +928,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//TALLERES
 			
 			Route::get('agendar/talleres', 'TallerController@index');
-
-			//FIESTAS
-			
-			Route::get('agendar/fiestas/progreso/{id}', 'FiestaController@progreso');
 
 			//EVALUACIONES
 			
