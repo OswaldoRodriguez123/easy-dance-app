@@ -2925,16 +2925,23 @@ class ClaseGrupalController extends BaseController {
 
         $clase_grupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
           ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-          ->where('clases_grupales.id',$inscripcion_clase_grupal->clase_grupal_id)
           ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+          ->where('clases_grupales.id',$inscripcion_clase_grupal->clase_grupal_id)
         ->first();
+
+        $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+          ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+          ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+          ->select('horario_clase_grupales.*')
+          ->where('clases_grupales.id',$inscripcion_clase_grupal->clase_grupal_id)
+        ->get();
+
         $alumno = Alumno::find($inscripcion_clase_grupal->alumno_id);
-        $fecha = Carbon::parse($clase_grupal->fecha_inicio);
         $alumno_id = $inscripcion_clase_grupal->alumno_id;
         $clase_grupal_id = $inscripcion_clase_grupal->clase_grupal_id;
+        $fecha_clase_grupal = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
-        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-        $i = $fecha->dayOfWeek;
+        $i = $fecha_clase_grupal->dayOfWeek;
 
         if($i == 1){
 
@@ -2966,29 +2973,120 @@ class ClaseGrupalController extends BaseController {
 
         }
 
+        $dia_principal = $dia;
+
         $array = array();
 
-        $i = 0;
+        $j = 0;
 
-        while($fecha < Carbon::now())
+        while($fecha_clase_grupal < Carbon::now())
         {
-            $fecha_asistencia = $fecha;
-            $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_asistencia)->first();
+            $fecha_a_comparar = $fecha_clase_grupal;
+            $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
             if($asistencia){
                 $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                 $hora = $asistencia->hora;
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
             }else{
                 $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
                 $hora = '';
+                $dia = '';
             }
+            $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar->toDateString() , 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
-            $array[]=array('id' => $i, 'fecha' => $fecha_asistencia->toDateString() , 'asistio' => $asistio, 'hora' => $hora);
-
-            $fecha->addWeek();
-            $i = $i + 1;
+            $fecha_a_comparar->addWeek();
+            $j = $j + 1;
         }
 
-        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno, 'dia' => $dia]);
+        foreach($horarios_clase_grupales as $horario){
+
+            $fecha_horario = Carbon::parse($horario->fecha_inicio);
+
+            while($fecha_horario < Carbon::now())
+            {
+                $fecha_a_comparar = $fecha_horario;
+                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
+                if($asistencia){
+                    $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
+                    $hora = $asistencia->hora;
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+                }else{
+                    $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                    $hora = '';
+                    $dia = '';
+                }
+                $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar->toDateString() , 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+
+                $fecha_a_comparar->addWeek();
+                $j = $j + 1;
+            }
+        }
+
+        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno, 'dia' => $dia_principal]);
         
     }
 
