@@ -387,8 +387,8 @@ class ClaseGrupalController extends BaseController {
 
         $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
-                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+            ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
 
         $alumnod = DB::table('alumnos')
@@ -433,7 +433,6 @@ class ClaseGrupalController extends BaseController {
         $asistencia_roja = $clasegrupal->asistencia_rojo;
         $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
 
-
         foreach($alumnos_inscritos as $alumno){
 
             $clases_completadas = 0;
@@ -463,8 +462,11 @@ class ClaseGrupalController extends BaseController {
             if($clases_completadas >= $asistencia_roja){
                 $estatus="c-youtube";
 
-                $alumno->deleted_at = Carbon::now();
-                $alumno->save();
+                if($asistencia_roja > 0)
+                {
+                    $alumno->deleted_at = Carbon::now();
+                    $alumno->save();
+                }
                 
                 continue;
             }else if($clases_completadas >= $asistencia_amarilla){
@@ -519,7 +521,7 @@ class ClaseGrupalController extends BaseController {
             $alumno_array = $collection->toArray();
 
             $alumno_array['tipo'] = 2;
-            $array[$alumno->id] = $alumno_array;
+            $array['2-'.$alumno->id] = $alumno_array;
         }
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -3032,7 +3034,7 @@ class ClaseGrupalController extends BaseController {
 
         foreach($horarios_clase_grupales as $horario){
 
-            $fecha_horario = Carbon::parse($horario->fecha_inicio);
+            $fecha_horario = Carbon::parse($horario->fecha);
 
             while($fecha_horario < Carbon::now())
             {
