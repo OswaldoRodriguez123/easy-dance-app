@@ -1239,6 +1239,9 @@
                     error:function(msj){
                       setTimeout(function(){ 
                         if(msj.responseJSON.status=="ERROR"){
+                          if (typeof msj.responseJSON === "undefined") {
+                            window.location = "{{url('/')}}/error";
+                          }
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
                           var nTitle="    Ups! "; 

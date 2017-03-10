@@ -272,6 +272,7 @@ class FiestaController extends BaseController {
         $fiesta->color_etiqueta = $request->color_etiqueta;
         $fiesta->link_video = $request->link_video;
         $fiesta->condiciones = $request->condiciones;
+        $fiesta->presentacion = $request->presentacion;
         $fiesta->boolean_promocionar = $request->boolean_promocionar;
 
         // return redirect("/home");
@@ -301,6 +302,34 @@ class FiestaController extends BaseController {
                 $img->save('assets/uploads/fiesta/'.$nombre_img);
 
                 $fiesta->imagen = $nombre_img;
+                $fiesta->save();
+
+            }
+
+            if($request->imagePresentacionBase64){
+
+                $base64_string = substr($request->imagePresentacionBase64, strpos($request->imagePresentacionBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imagePresentacionBase64 );
+                $type =  explode( '/',  $split[0]);
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "fiestapresentacion-". $fiesta->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('campana')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(1440, 500);
+                $img->save('assets/uploads/fiesta/'.$nombre_img);
+
+                $fiesta->imagen_presentacion = $nombre_img;
                 $fiesta->save();
 
             }
@@ -397,19 +426,18 @@ class FiestaController extends BaseController {
 
     }
 
-    else{
+    else{   
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio);
 
-            if($request->fecha_inicio < Carbon::now()){
+            if($fecha_inicio < Carbon::now()){
 
                 return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la fiesta no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
             }
 
             $fiesta = Fiesta::find($request->id);
 
-            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
-
-            $fiesta->fecha_final = $fecha;
-            $fiesta->fecha_inicio = $fecha;
+            $fiesta->fecha_final = $fecha_inicio;
+            $fiesta->fecha_inicio = $fecha_inicio;
 
             if($fiesta->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -605,6 +633,77 @@ class FiestaController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function updatePresentacion(Request $request){
+
+        $rules = [
+            'presentacion' => 'min:3|max:1000',
+        ];
+
+        $messages = [
+
+            'presentacion.min' => 'El mínimo de caracteres permitidos son 3',
+            'presentacion.max' => 'El máximo de caracteres permitidos son 1000',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $fiesta = Fiesta::find($request->id);
+            $fiesta->presentacion = $request->presentacion;
+
+            if($fiesta->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateImagenPresentacion(Request $request)
+    {           
+
+        $fiesta = Fiesta::find($request->id);
+        if($request->imagePresentacionBase64){
+
+            $base64_string = substr($request->imagePresentacionBase64, strpos($request->imagePresentacionBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imagePresentacionBase64 );
+            $type =  explode( '/',  $split[0]);
+
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
+
+            if($ext == 'png'){
+                $extension = '.png';
+            }
+
+            $nombre_img = "fiestapresentacion-". $fiesta->id . $extension;
+            $image = base64_decode($base64_string);
+
+            // \Storage::disk('campana')->put($nombre_img,  $image);
+            $img = Image::make($image)->resize(1440, 500);
+            $img->save('assets/uploads/fiesta/'.$nombre_img);
+        }
+        else{
+            $nombre_img = "";
+        }
+        
+        $fiesta->imagen_presentacion = $nombre_img;
+        $fiesta->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     public function operar($id)

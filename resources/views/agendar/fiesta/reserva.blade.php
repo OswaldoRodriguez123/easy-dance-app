@@ -155,12 +155,18 @@
 
                         <div class="clearfix p-b-20"></div>
 
-                        @if($fiesta->condiciones)
+                        @if($fiesta->presentacion)
 
-                          <div class="f-700 f-30">Condiciones y Normativas</div>
+                          <div class="f-700 f-30">Presentación general de la fiesta</div>
                           <hr class='linea-morada'>
 
-                          <p class="text-center f-20">{!! nl2br($fiesta->condiciones) !!}</p>
+                          @if($fiesta->imagen_presentacion)
+                            <img src="{{url('/')}}/assets/uploads/fiesta/{{$fiesta->imagen_presentacion}}" class="img-responsive opaco-0-8" alt="">
+                          @endif
+
+                          <br>
+
+                          <p class="text-center f-20">{!! nl2br($fiesta->presentacion) !!}</p>
 
                         @endif
 

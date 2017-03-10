@@ -346,6 +346,51 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
+                               <div class="col-sm-12">
+                                 
+                                  <label for="nombre" id="id-presentacion">Presentación general de la fiesta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Preséntate, presenta tus antecedentes, tu fiesta y por qué es importante para ti. Expresa la magnitud de lo que te ayudarán a lograr tus colaboradores" title="" data-original-title="Ayuda"></i>
+
+                                  <br></br>
+
+                                  <div class="fg-line">
+                                    <textarea class="form-control" id="presentacion" name="presentacion" rows="8" placeholder="500 Caracteres"></textarea>
+                                  </div>
+                               <div class="has-error" id="error-presentacion">
+                                    <span >
+                                        <small class="help-block error-span" id="error-presentacion_mensaje" ></small>                                
+                                    </span>
+                                </div>
+                             </div>
+
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                              <label for="apellido" id="id-imagen_presentacion">Imagen de la presentación general</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                              
+                              <div class="clearfix p-b-15"></div>
+                                
+                                <input type="hidden" name="imagePresentacionBase64" id="imagePresentacionBase64">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                  <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                                  <div>
+                                      <span class="btn btn-info btn-file">
+                                          <span class="fileinput-new">Seleccionar Imagen</span>
+                                          <span class="fileinput-exists">Cambiar</span>
+                                          <input type="file" name="imagen_presentacion" id="imagen_presentacion" >
+                                      </span>
+                                      <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                  </div>
+                              </div>
+                                <div class="has-error" id="error-imagen_presentacion">
+                                <span >
+                                    <small class="help-block error-span" id="error-imagen_presentacion_mensaje"  ></small>
+                                </span>
+                              </div>
+                            </div>
+
+                          <div class="clearfix p-b-35"></div>
+
+
                             <div class="col-sm-12">
                                  
                                     <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
@@ -638,12 +683,34 @@
 
     });
 
+    $("#imagen_presentacion").bind("change", function() {
+          //alert('algo cambio');
+          
+          setTimeout(function(){
+            var imagen = $("#imagenb img").attr('src');
+            var canvas = document.createElement("canvas");
+   
+            var context=canvas.getContext("2d");
+            var img = new Image();
+            img.src = imagen;
+            
+            canvas.width  = img.width;
+            canvas.height = img.height;
+
+            context.drawImage(img, 0, 0);
+     
+            var newimage = canvas.toDataURL("image/jpeg", 0.8);
+            var image64 = $("input:hidden[name=imagePresentacionBase64]").val(newimage);
+          },500);
+
+      });
+
   });
 
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "condiciones"];
+    var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "condiciones", "presentacion", "imagen_presentacion"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -863,9 +930,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);

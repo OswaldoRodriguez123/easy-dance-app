@@ -610,6 +610,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/fiestas/update/imagen', 'FiestaController@updateImagen');
 			Route::put('agendar/fiestas/update/etiqueta', 'FiestaController@updateEtiqueta');
 			Route::put('agendar/fiestas/update/mostrar', 'FiestaController@updateMostrar');
+			Route::put('agendar/fiestas/update/presentacion', 'FiestaController@updatePresentacion');
+			Route::put('agendar/fiestas/update/imagen_presentacion', 'FiestaController@updateImagenPresentacion');
 
 			//CITAS
 
