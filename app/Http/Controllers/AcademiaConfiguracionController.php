@@ -1467,28 +1467,29 @@ class AcademiaConfiguracionController extends BaseController {
                     $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
 
                         
-                   	if($FacturaProforma != 0 && Carbon::now()->format('Y-m-d') > $tolerancia && $clasegrupal->tiene_mora == 0){
+                   	if($FacturaProforma != 0 && Carbon::now()->format('Y-m-d') > $tolerancia && $clasegrupal->tiene_mora == 0 && $configClases->porcentaje_retraso){
 
                         $mora = ($configClases->costo_mensualidad * $configClases->porcentaje_retraso)/100;
 
-                        $item_factura = new ItemsFacturaProforma;
-                                                    
-                        $item_factura->alumno_id = $InscripcionClase->AlumnoId;
-                        $item_factura->academia_id = Auth::user()->academia_id;
-                        $item_factura->fecha = Carbon::now()->toDateString();
-                                                        //$item_factura->item_id = $id;
-                        $item_factura->nombre = 'Mora por retraso de pago Cuota' .  $configClases->nombre;
-                        $item_factura->tipo = 8;
-                        $item_factura->cantidad = 1;
-                                                        // $item_factura->precio_neto = $configClases->costo_mensualidad;
-                                                        //$item_factura->impuesto = $impuesto;
-                        $item_factura->importe_neto = $mora;
-                        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                        if($mora > 0)
+                        {
+                            $item_factura = new ItemsFacturaProforma;
+                                                        
+                            $item_factura->alumno_id = $InscripcionClase->AlumnoId;
+                            $item_factura->academia_id = Auth::user()->academia_id;
+                            $item_factura->fecha = Carbon::now()->toDateString();
+                                                            //$item_factura->item_id = $id;
+                            $item_factura->nombre = 'Mora por retraso de pago Cuota ' .  $configClases->nombre;
+                            $item_factura->tipo = 8;
+                            $item_factura->cantidad = 1;
+                            $item_factura->importe_neto = $mora;
+                            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
-                        $item_factura->save();
+                            $item_factura->save();
 
-                        $clasegrupal->tiene_mora = 1;
-                        $clasegrupal->save();
+                            $clasegrupal->tiene_mora = 1;
+                            $clasegrupal->save();
+                        }
 
                     }
                 }

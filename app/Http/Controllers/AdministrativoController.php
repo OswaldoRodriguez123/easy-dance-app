@@ -22,6 +22,7 @@ use App\ConfigServicios;
 use App\MercadopagoMovs;
 use App\User;
 use App\Familia;
+use App\InscripcionClaseGrupal;
 //use MP;
 use Validator;
 use Carbon\Carbon;
@@ -940,6 +941,11 @@ class AdministrativoController extends BaseController {
 
                                 $item_factura->save();
                             }
+                        }else if($item_proforma->tipo == 4){
+
+                            $inscripcion_clase_grupal = InscripcionClaseGrupal::find($item_proforma->item_id);
+                            $inscripcion_clase_grupal->tiene_mora = 0;
+                            $inscripcion_clase_grupal->save();
                         }
 
                         $item_proforma->delete();
