@@ -3028,7 +3028,7 @@ class ClaseGrupalController extends BaseController {
             }
             $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar->toDateString() , 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
-            $fecha_a_comparar->addWeek();
+            $fecha_clase_grupal->addWeek();
             $j = $j + 1;
         }
 
@@ -3083,7 +3083,7 @@ class ClaseGrupalController extends BaseController {
                 }
                 $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar->toDateString() , 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
-                $fecha_a_comparar->addWeek();
+                $fecha_horario->addWeek();
                 $j = $j + 1;
             }
         }
