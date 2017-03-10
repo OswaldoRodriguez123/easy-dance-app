@@ -158,16 +158,144 @@ class AsistenciaController extends BaseController
         if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
         {       
 
-          $alumnos = DB::table('alumnos')
-            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
-            ->where('alumnos.id','=',Auth::user()->usuario_id)
+        $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+          ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'inscripcion_clase_grupal.id')
+          ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+          ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+          ->where('inscripcion_clase_grupal.alumno_id','=',Auth::user()->usuario_id)
         ->get();
 
-          return view('vista_alumno.asistencia')->with(['alumnos_asistencia' => $alumnos]); 
+        $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+          ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'inscripcion_clase_grupal.id')
+          ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+          ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+          ->select('horario_clase_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+          ->where('inscripcion_clase_grupal.alumno_id','=',Auth::user()->usuario_id)
+        ->get();
+
+        $alumno_id = Auth::user()->usuario_id;
+    
+
+        $array = array();
+
+        $j = 0;
+
+        foreach($clases_grupales as $clase_grupal){
+
+          $fecha_inicio = Carbon::parse($clase_grupal->fecha_inicio);
+
+          while($fecha_inicio < Carbon::now())
+          {
+              $fecha_a_comparar = $fecha_inicio;
+              $fecha_a_comparar = $fecha_a_comparar->toDateString();
+              $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal->id)->where('fecha',$fecha_a_comparar)->first();
+              if($asistencia){
+                  $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
+                  $hora = $asistencia->hora;
+
+                  $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                  $i = $fecha->dayOfWeek;
+
+                  if($i == 1){
+
+                    $dia = 'Lunes';
+
+                  }else if($i == 2){
+
+                    $dia = 'Martes';
+
+                  }else if($i == 3){
+
+                    $dia = 'Miercoles';
+
+                  }else if($i == 4){
+
+                    $dia = 'Jueves';
+
+                  }else if($i == 5){
+
+                    $dia = 'Viernes';
+
+                  }else if($i == 6){
+
+                    $dia = 'Sabado';
+
+                  }else if($i == 0){
+
+                    $dia = 'Domingo';
+
+                  }
+              }else{
+                  $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                  $hora = '';
+                  $dia = '';
+              }
+
+              $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia, 'clase' => $clase_grupal->nombre, 'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido);
+
+              $fecha_inicio->addWeek();
+              $j = $j + 1;
+          }
+        }
+
+        foreach($horarios_clase_grupales as $horario){
+
+            $fecha_horario = Carbon::parse($horario->fecha);
+
+            while($fecha_horario < Carbon::now())
+            {
+                $fecha_a_comparar = $fecha_horario;
+                $fecha_a_comparar = $fecha_a_comparar->toDateString();
+                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
+                if($asistencia){
+                    $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
+                    $hora = $asistencia->hora;
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+                }else{
+                    $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                    $hora = '';
+                    $dia = '';
+                }
+                $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia, 'clase' => $horario->nombre, 'instructor' => $horario->instructor_nombre . ' ' . $horario->instructor_apellido);
+
+                $fecha_horario->addWeek();
+                $j = $j + 1;
+            }
+        }
+
+        return view('vista_alumno.asistencia')->with(['alumnos_asistencia' => $array]); 
 
         }  
 
