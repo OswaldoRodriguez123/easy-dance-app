@@ -41,19 +41,21 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
-                                    <th class="text-center" data-column-id="clase">Clase</th>
-                                    <th class="text-center" data-column-id="instructor">Instructor</th>
                                     <th class="text-center" data-column-id="hora" id="hora">Hora</th>
+                                    <th class="text-center" data-column-id="dia" id="dia">Dia</th>
+                                    <th class="text-center" data-column-id="clase">Clase</th>
+                                    <th class="text-center" data-column-id="asistio" data-order="desc"></th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($alumnos_asistencia as $asistencia)
+                            @foreach ($asistencias as $asistencia)
                                 <tr class="seleccion" >
-                                    <td class="text-center previa">{{$asistencia->fecha}}</td>
-                                    <td class="text-center previa">{{$asistencia->clase}}</td>
-                                    <td class="text-center previa">{{$asistencia->nombre_instructor}} {{$asistencia->apellido_instructor}}</td>
-                                    <td class="text-center previa">{{$asistencia->hora}}</td>
+                                    <td class="text-center previa">{{$asistencia['fecha']}}</td>
+                                    <td class="text-center previa">{{$asistencia['hora']}}</td>
+                                    <td class="text-center previa">{{$asistencia['dia']}}</td>
+                                    <td class="text-center previa">{{$asistencia['clase']}}</td>
+                                    <td class="text-center previa"><i class="{{$asistencia['asistio']}}"></i></td>
                                 </tr>
 
 
@@ -93,18 +95,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,   
-        order: [[0, 'desc'], [3, 'desc']],
-        fnDrawCallback: function() {
-        if ("{{count($alumnos_asistencia)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }
-
-        },
-        pageLength: 25,
-        language: {
-              searchPlaceholder: "Buscar"
-        },
+        order: [[0, 'desc'], [1, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled");
