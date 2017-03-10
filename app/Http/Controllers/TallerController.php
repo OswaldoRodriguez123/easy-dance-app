@@ -210,8 +210,8 @@ class TallerController extends BaseController {
 
         $fecha = explode(" - ", $request->fecha);
 
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0])->toDateString();
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1])->toDateString();
+        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
         if($fecha_inicio < Carbon::now()){
 
@@ -222,6 +222,9 @@ class TallerController extends BaseController {
         {
             return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
         }
+
+        $fecha_inicio = $fecha_inicio->toDateString();
+        $fecha_final = $fecha_final->toDateString();
 
         $hora_inicio = strtotime($request->hora_inicio);
         $hora_final = strtotime($request->hora_final);
