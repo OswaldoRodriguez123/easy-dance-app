@@ -14,39 +14,44 @@ class ConfigStaffTableSeeder extends Seeder
     {
     	DB::table('config_staff')->delete();
 
-		ConfigStaff::create(array(
-	      'nombre' => 'Promotor',
-	      'academia_id' => null,
-	    ));
+  	  ConfigStaff::create(array(
+        'nombre' => 'Promotor',
+        'academia_id' => null,
+      ));
 
-        ConfigStaff::create(array(
-          'nombre' => 'Recepcionista',
-          'academia_id' => null,
-        ));
+      ConfigStaff::create(array(
+        'nombre' => 'Recepcionista',
+        'academia_id' => null,
+      ));
 
-        ConfigStaff::create(array(
-          'nombre' => 'Administrador',
-          'academia_id' => null,
-        ));
+      ConfigStaff::create(array(
+        'nombre' => 'Administrador',
+        'academia_id' => null,
+      ));
 
-        ConfigStaff::create(array(
-          'nombre' => 'Coordinador de Pista',
-          'academia_id' => null,
-        ));
+      ConfigStaff::create(array(
+        'nombre' => 'Coordinador de Pista',
+        'academia_id' => null,
+      ));
 
-        ConfigStaff::create(array(
-          'nombre' => 'Mantenimiento',
-          'academia_id' => null,
-        ));
+      ConfigStaff::create(array(
+        'nombre' => 'Mantenimiento',
+        'academia_id' => null,
+      ));
 
-        ConfigStaff::create(array(
-          'nombre' => 'Seguridad',
-          'academia_id' => null,
-        ));
+      ConfigStaff::create(array(
+        'nombre' => 'Seguridad',
+        'academia_id' => null,
+      ));
 
-        ConfigStaff::create(array(
-          'nombre' => 'Gerente General',
-          'academia_id' => null,
-        ));
+      ConfigStaff::create(array(
+        'nombre' => 'Gerente General',
+        'academia_id' => null,
+      ));
+
+      ConfigStaff::create(array(
+        'nombre' => 'Relacionista Público',
+        'academia_id' => null,
+      ));
     }
 }
