@@ -11,6 +11,7 @@ use App\ConfigBoletos;
 use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\Instructor;
+use App\EgresosFiesta;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -28,15 +29,6 @@ class FiestaController extends BaseController {
 
     public function index()
     {
-        // $taller_join = DB::table('talleres')
-        //     ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
-        //     ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
-        //     ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-        //     ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'talleres.hora_inicio','talleres.hora_final')
-        //     ->get();
-
-            //dd($clase_grupal_join);
-
         return view('agendar.fiesta.principal')->with('fiesta', Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
     }
 
@@ -737,6 +729,74 @@ class FiestaController extends BaseController {
            return view('agendar.fiesta.planilla')->with('fiesta' , $fiesta);
         }else{
            return redirect("agendar/fiestas"); 
+        }
+    }
+
+    public function egresos($id)
+    {
+        $fiesta = Fiesta::find($id);
+
+        if($fiesta){
+            $egresos = EgresosFiesta::where('fiesta_id',$id)->get();
+            $total = EgresosFiesta::where('fiesta_id',$id)->sum('cantidad');
+            return view('agendar.fiesta.egresos')->with(['fiesta' => $fiesta, 'egresos' => $egresos, 'total' => $total]);
+        }else{
+           return redirect("agendar/fiestas"); 
+        }
+    }
+
+    public function agregar_egreso(Request $request)
+    {
+
+        $rules = [
+            'factura' => 'required',
+            'concepto' => 'required',
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'factura.required' => 'Ups! La factura es requerida ',
+            'concepto.required' => 'Ups! El concepto es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $fiesta = new EgresosFiesta;
+
+            $fiesta->factura = $request->factura;
+            $fiesta->concepto = $request->concepto;
+            $fiesta->cantidad = $request->cantidad;
+            $fiesta->fiesta_id = $request->fiesta_id;
+
+            if($fiesta->save()){
+                
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $fiesta, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_egreso($id)
+    {
+        $fiesta = EgresosFiesta::find($id);
+
+        $cantidad = $fiesta->cantidad;
+        
+        if($fiesta->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Fiesta o Evento se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 

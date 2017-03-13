@@ -63,7 +63,7 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <label>Participantes</label>
 
-                                    <select name="estatus_alumno_id" id="estatus_alumno_id">
+                                    <select name="estatus_alumno_id" id="estatus_alumno_id" data-live-search="true">
                                       <option value="1">Activos</option>
                                       <option value="2">Riesgo de ausencia</option>
                                       <option value="3">Inactivos</option>
@@ -73,7 +73,7 @@
                                 &nbsp; &nbsp; &nbsp; <label>Clase Grupal</label> &nbsp; &nbsp; &nbsp;
 
 
-                                <select name="clase_grupal_id" id="clase_grupal_id">
+                                <select name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
 
                                     <option value="0">Todas</option>
                                     @foreach ($clases_grupales as $clase)

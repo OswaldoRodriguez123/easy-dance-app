@@ -47,152 +47,135 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
 
-                    <div class="card-header">
-                    <div class="col-md-12">
+                        <div class="card-header">
                             <ul class="tab-nav tn-justified" role="tablist">
-                                    <li class="waves-effect"><a href="{{url('/')}}/administrativo/pagos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-pagar f-30"></div><p style=" margin-bottom: -2px;">Pagos</p></a></li>
-                                    <li class="waves-effect"><a href="{{url('/')}}/administrativo/acuerdos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-acuerdo-de-pago f-30"></div><p style=" margin-bottom: -2px;">Acuerdos</p></a></li>
-                                    <li class="waves-effect"><a href="{{url('/')}}/administrativo/presupuestos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-presupuesto f-30"></div><p style=" margin-bottom: -2px;">Presupuestos</p></a></li>
-                                    <li class="waves-effect active"><a href="{{url('/')}}/reportes/administrativo" aria-controls="home11" onclick="procesando()"><div class="icon_d icon_d-reporte f-30"></div><p style=" margin-bottom: -2px;">Reportes</p></a></li>
-                                    
+                                <li class="waves-effect"><a href="{{url('/')}}/administrativo/pagos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-pagar f-30"></div><p style=" margin-bottom: -2px;">Pagos</p></a></li>
+                                <li class="waves-effect"><a href="{{url('/')}}/administrativo/acuerdos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-acuerdo-de-pago f-30"></div><p style=" margin-bottom: -2px;">Acuerdos</p></a></li>
+                                <li class="waves-effect"><a href="{{url('/')}}/administrativo/presupuestos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-presupuesto f-30"></div><p style=" margin-bottom: -2px;">Presupuestos</p></a></li>
+                                <li class="waves-effect active"><a href="{{url('/')}}/reportes/administrativo" aria-controls="home11" onclick="procesando()"><div class="icon_d icon_d-reporte f-30"></div><p style=" margin-bottom: -2px;">Reportes</p></a></li>
                             </ul>
-                            </div>
                         </div> 
 
-                        <div class="clearfix p-b-15"></div>
-
-                        <div class="card-header">
-
-                            <div class="col-md-8">
-                                <div class="f-20 f-500">Solo me fio de las estadisticas que he manipulado. (Winston Churchill)</div>                            
-                                <div>
-                                    <div class="f-16 text-justify">Te mantendremos informado durante tu periodo en Easy Dance y nos aseguraremos de brindarte la información que necesitas para el crecimiento de tu academia.</div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <div class="checkbox m-b-15">
-                                    <label>
-                                        Mes Actual
-                                        <input type="checkbox" value="" id="actual_month" name="actual_month">
-                                        <i class="input-helper"></i>
-                                        <input type="hidden" name="mes_actual" id="mes_actual">                             
-                                    </label>
-                                </div>
-
-                                <div class="checkbox m-b-15">
-                                    <label>
-                                        Mes Pasado
-                                        <input type="checkbox" value="" id="past_month">
-                                        <i class="input-helper"></i>                                    
-                                    </label>
-                                </div>
-
-                                <div class="checkbox m-b-15">
-                                    <label>
-                                        Hoy
-                                        <input type="checkbox" value="" id="today">
-                                        <i class="input-helper"></i>                                    
-                                    </label>
-                                </div>                            
-
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                    <div class="fg-line">
-                                            <input type="text" id="personalizar" class="form-control" placeholder="Personalizar">
-                                    </div>
-                                </div>
-
-                                <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
-                                      <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="meses" id="meses" data-live-search="true">
-
-                                          <option value="01/01/2016-31/01/2016">Enero</option>
-                                          <option value="01/02/2016-31/02/2016">Febrero</option>
-                                          <option value="01/03/2016-31/03/2016">Marzo</option>
-                                          <option value="01/04/2016-31/04/2016">Abril</option>
-                                          <option value="01/05/2016-31/05/2016">Mayo</option>
-                                          <option value="01/06/2016-31/06/2016">Junio</option>
-                                          <option value="01/07/2016-31/07/2016">Julio</option>
-                                          <option value="01/08/2016-31/08/2016">Agosto</option>
-                                          <option value="01/09/2016-31/09/2016">Septiembre</option>
-                                          <option value="01/10/2016-31/10/2016">Octubre</option>
-                                          <option value="01/11/2016-31/11/2016">Noviembre</option>
-                                          <option value="01/12/2016-31/12/2016">Diciembre</option>
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                                </div>
-                                <!--<a class="btn-blanco m-r-10 f-25" id="personalizar"> Personalizar <i class="zmdi zmdi-calendar"></i></a>-->
-                            </div>
-
-                        </div><!-- CARD HEADER 1 -->
-
-                        <div class="clearfix"></div>
                         <div class="clearfix"></div>
 
                         <div class="card-header text-right">
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-alumnos f-25"></i> Informe Administrativo</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_d icon_d-reporte f-25"></i> Informe Administrativo</p>
                             <hr class="linea-morada">
                         </div>
-                        
-                        <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="factura" data-order="asc" id="factura">Factura</th>
-                                    <th class="text-center" data-column-id="cliente">Cliente</th>
-                                    <th class="text-center" data-column-id="concepto">Concepto</th>
-                                    <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
-                                    <th class="text-center" data-column-id="total">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {{-- $inscritos --}}
-                             @foreach($facturas as $factura)
-                                    <?php $id = $factura['id']; ?>
 
-                                    <tr id="{{$id}}" class="seleccion">
-                                        <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
-                                        <td class="text-center previa">{{$factura['nombre']}}</td>
-                                        <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}</td>
-                                        <td class="text-center previa">{{$factura['fecha']}}</td>
-                                        <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
-                                      
-                                    </tr>
+                         <div class="col-sm-12">
+                            <form name="formFiltro" id="formFiltro">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
+                                <div class="col-md-4">
+                                    <label>Clase Grupal</label>
 
-                                @endforeach
-                                                           
-                            </tbody>
-                        </table>
-                         </div>
+                                    <div class="fg-line">
+                                        <div class="select">
+                                            <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
+                                                <option value="0">Todas</option>
+                                                @foreach ($clases_grupales as $clase)
+                                                    <?php $id = $clase['id']; ?>
+                                                    <option value="{{$id}}">                       
+                                                        {{$clase['nombre']}} - {{$clase['dia']}} - 
+                                                        {{$clase['hora_inicio']}}/ 
+                                                        {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
+                                                        {{$clase['instructor_apellido']}}
+                                                    </option>
+                                                @endforeach 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Servicios</label>
+
+                                    <div class="fg-line">
+                                        <div class="select">
+                                            <select class="selectpicker" data-live-search="true" name="servicio_id" id="servicio_id">
+                                                <option value="0">Todas</option>
+                                                @foreach ($servicios as $servicio)
+                                                    <option value="{{$servicio->id}}-{{$servicio->tipo}}">
+                                                        {{$servicio->nombre}}
+                                                    </option>
+                                                @endforeach 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Tipo</label>
+
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo" data-live-search="true">
+                                            <option value="1">Vencidas</option>
+                                            <option value="2">Actuales</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                       
+                                <div class="clearfix m-b-10"></div> 
+
+                                <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+
+                                <div class ="clearfix m-b-10"></div>
+                                <div class ="clearfix m-b-10"></div>
+
+                            </form>
                         </div>
 
                         <div class="clearfix"></div>
+                        
+                        <div class="table-responsive row">
+                           <div class="col-md-12">
+                                <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" data-column-id="factura" data-order="asc" id="factura">Factura</th>
+                                            <th class="text-center" data-column-id="cliente">Cliente</th>
+                                            <th class="text-center" data-column-id="concepto">Concepto</th>
+                                            <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
+                                            <th class="text-center" data-column-id="total">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
                         <div class="card-body p-b-20">
                             <div class="row">
                                 <div class="container">
                                     <div class="clearfix p-b-15"></div>
-                                    <div class="col-sm-12 text-right">
-                                    <span id = "totales" class="f-30 text-center c-morado">Total</span>
-                                </div></div>
 
-                                <br>
-                                <div class="col-sm-12 text-right">
-                                    <p><span class="f-15 text-right c-morado">Total</span>
-                                    <span class="f-15 c-morado" id = "total">{{$total}}</span></p>
+                                    <div class="col-sm-12 text-right c-morado">
+
+                                        <div class="col-sm-12">
+                                            <span id = "totales" class="f-30">Total</span>
+
+                                            <br><br>
+
+                                            <p>
+                                                <span class="f-15">Total</span>
+                                                <span class="f-15" id = "total">0</span>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
+                        </div>
+
                         </div>  
                     </div>
                 </div>
@@ -226,7 +209,7 @@
         order: [[0, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -253,547 +236,83 @@
                     }
         });
 
-            //DateRangePicker
-            $('#personalizar').daterangepicker({
-                "autoApply" : false,
-                "opens": "left",
-                "applyClass": "bgm-morado waves-effect",
-                locale : {
-                    format: 'DD/MM/YYYY',
-                    applyLabel : 'Aplicar',
-                    cancelLabel : 'Cancelar',
-                    daysOfWeek : [
-                        "Dom",
-                        "Lun",
-                        "Mar",
-                        "Mie",
-                        "Jue",
-                        "Vie",
-                        "Sab"
-                    ],
+        //DateRangePicker
+        $('#personalizar').daterangepicker({
+            "autoApply" : false,
+            "opens": "left",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
 
-                    monthNames: [
-                        "Enero",
-                        "Febrero",
-                        "Marzo",
-                        "Abril",
-                        "Mayo",
-                        "Junio",
-                        "Julio",
-                        "Agosto",
-                        "Septiembre",
-                        "Octubre",
-                        "Noviembre",
-                        "Diciembre"
-                    ],        
-                }
-            });
-
-            $('#meses').on('change', function () {
-                var token = $('input:hidden[name=_token]').val();
-                var Fecha = $(this).val();
-                procesando();
-                $.ajax({
-                    url: route_filtrar,
-                    headers: {'X-CSRF-TOKEN': token},
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { Fecha: Fecha},
-                    success:function(respuesta){
-
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje=respuesta.mensaje;
-
-                        // datos = JSON.parse(JSON.stringify(respuesta));
-                        //console.log(datos.edades);
-                        
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje=respuesta.mensaje;
-
-                        t.clear().draw();
-
-                        $.each(respuesta.facturas, function (index, array) {
-                            concepto = array.concepto;
-                            if(concepto.length > 50)
-                            {
-                                concepto = concepto.substr(0, 50) + "...";
-                            }
-                            var rowNode=t.row.add( [
-                            ''+pad(array.factura, 10)+'',
-                            ''+array.nombre+'',
-                            ''+concepto+'',
-                            ''+array.fecha+'',
-                            ''+formatmoney(parseFloat(array.total))+'',
-                            '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                            ] ).draw(false).node();
-                            $( rowNode )
-                                .attr('id',array.id)
-                                .addClass('seleccion');
-                        });
-
-                        // $("#mujeres").text(datos.mujeres);
-                        // $("#hombres").text(datos.hombres);
-
-                        // var data1 = ''
-                        // data1 += '[';
-                        // $.each( datos.edades, function( i, item ) {
-                        //     var edad = item.age_range;
-                        //     var cant = item.count
-                        //     data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                        // });
-                        // data1 = data1.substring(0, data1.length -1);
-                        // data1 += ']';
-                        //     //GRAFICO FILTRO MES ACTUAL
-                        //     $("#pie-chart-procesos").html('');
-                        //     $(".flc-pie").html('');
-                        //     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                        //         series: {
-                        //             pie: {
-                        //                 show: true,
-                        //                 stroke: { 
-                        //                     width: 2,
-                        //                 },
-                        //             },
-                        //         },
-                        //         legend: {
-                        //             container: '.flc-pie',
-                        //             backgroundOpacity: 0.5,
-                        //             noColumns: 0,
-                        //             backgroundColor: "white",
-                        //             lineWidth: 0
-                        //         },
-                        //         grid: {
-                        //             hoverable: true,
-                        //             clickable: true
-                        //         },
-                        //         tooltip: true,
-                        //         tooltipOpts: {
-                        //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                        //             shifts: {
-                        //                 x: 20,
-                        //                 y: 0
-                        //             },
-                        //             defaultTheme: false,
-                        //             cssClass: 'flot-tooltip'
-                        //         }
-                                
-                        //     });
-
-                        finprocesado();                       
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-                    }
-                });
-                
-            }); //END CLICK FECHA RANGO
-
-
-            $(".applyBtn").on("click", function(){
-                var token = $('input:hidden[name=_token]').val();
-                var fechaInicio = $("input[name=daterangepicker_start]").val();
-                var fechaFin = $("input[name=daterangepicker_end]").val();
-                procesando();
-                $.ajax({
-                    url: route_filtrar,
-                    headers: {'X-CSRF-TOKEN': token},
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { fechaInicio:fechaInicio, fechaFin:fechaFin, rango : 'rango' },
-                    success:function(respuesta){
-
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje=respuesta.mensaje;
-
-                        datos = JSON.parse(JSON.stringify(respuesta));
-                        //console.log(datos.edades);
-
-                        t.clear().draw();
-
-                        $.each(respuesta.facturas, function (index, array) {
-                            concepto = array.concepto;
-                            if(concepto.length > 50)
-                            {
-                                concepto = concepto.substr(0, 50) + "...";
-                            }
-                            var rowNode=t.row.add( [
-                            ''+pad(array.factura, 10)+'',
-                            ''+array.nombre+'',
-                            ''+concepto+'',
-                            ''+array.fecha+'',
-                            ''+formatmoney(parseFloat(array.total))+'',
-                            '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                            ] ).draw(false).node();
-                            $( rowNode )
-                                .attr('id',array.id)
-                                .addClass('seleccion');
-                        });
-
-                        // $("#mujeres").text(datos.mujeres);
-                        // $("#hombres").text(datos.hombres);
-
-                        // var data1 = ''
-                        // data1 += '[';
-                        // $.each( datos.edades, function( i, item ) {
-                        //     var edad = item.age_range;
-                        //     var cant = item.count
-                        //     data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                        // });
-                        // data1 = data1.substring(0, data1.length -1);
-                        // data1 += ']';
-                        //     //GRAFICO FILTRO MES ACTUAL
-                        //     $("#pie-chart-procesos").html('');
-                        //     $(".flc-pie").html('');
-                        //     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                        //         series: {
-                        //             pie: {
-                        //                 show: true,
-                        //                 stroke: { 
-                        //                     width: 2,
-                        //                 },
-                        //             },
-                        //         },
-                        //         legend: {
-                        //             container: '.flc-pie',
-                        //             backgroundOpacity: 0.5,
-                        //             noColumns: 0,
-                        //             backgroundColor: "white",
-                        //             lineWidth: 0
-                        //         },
-                        //         grid: {
-                        //             hoverable: true,
-                        //             clickable: true
-                        //         },
-                        //         tooltip: true,
-                        //         tooltipOpts: {
-                        //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                        //             shifts: {
-                        //                 x: 20,
-                        //                 y: 0
-                        //             },
-                        //             defaultTheme: false,
-                        //             cssClass: 'flot-tooltip'
-                        //         }
-                                
-                        //     });
-
-                        finprocesado();                       
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                    }
-                });
-                
-            }); //END CLICK FECHA RANGO
-
-
-
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+        });
     });
-/*****************************************
-FILTROS PARA GRAFCAS
-*****************************************/
-            //FILTRO MES ACTUAL
-            $("#mes_actual").val('0');
-            $("#actual_month").on('click', function(){
-                var token = $('input:hidden[name=_token]').val();
-                if ($("#actual_month").is(":checked")){
-                    $("#mes_actual").val('1');
-                    procesando();
-                        $.ajax({
-                            url: route_filtrar,
-                            headers: {'X-CSRF-TOKEN': token},
-                            type: 'POST',
-                            dataType: 'json',
-                            data: { mesActual: 'mes_actual' },
-                            success:function(respuesta){
-
-                                var nType = 'success';
-                                var nTitle="Ups! ";
-                                var nMensaje=respuesta.mensaje;
-
-                                t.clear().draw();
-
-                                $.each(respuesta.facturas, function (index, array) {
-                                    concepto = array.concepto;
-                                    if(concepto.length > 50)
-                                    {
-                                        concepto = concepto.substr(0, 50) + "...";
-                                    }
-                                    var rowNode=t.row.add( [
-                                    ''+pad(array.factura, 10)+'',
-                                    ''+array.nombre+'',
-                                    ''+concepto+'',
-                                    ''+array.fecha+'',
-                                    ''+formatmoney(parseFloat(array.total))+'',
-                                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                                    ] ).draw(false).node();
-                                    $( rowNode )
-                                        .attr('id',array.id)
-                                        .addClass('seleccion');
-                                });
-
-                                // datos = JSON.parse(JSON.stringify(respuesta));
-                                // //console.log(datos.edades);
-
-                                // $("#mujeres").text(datos.mujeres);
-                                // $("#hombres").text(datos.hombres);
-
-                                // var data1 = ''
-                                // data1 += '[';
-                                // $.each( datos.edades, function( i, item ) {
-                                //     var edad = item.age_range;
-                                //     var cant = item.count
-                                //     data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                                // });
-                                // data1 = data1.substring(0, data1.length -1);
-                                // data1 += ']';
-                                //     //GRAFICO FILTRO MES ACTUAL
-                                //     $("#pie-chart-procesos").html('');
-                                //     $(".flc-pie").html('');
-                                //     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                                //         series: {
-                                //             pie: {
-                                //                 show: true,
-                                //                 stroke: { 
-                                //                     width: 2,
-                                //                 },
-                                //             },
-                                //         },
-                                //         legend: {
-                                //             container: '.flc-pie',
-                                //             backgroundOpacity: 0.5,
-                                //             noColumns: 0,
-                                //             backgroundColor: "white",
-                                //             lineWidth: 0
-                                //         },
-                                //         grid: {
-                                //             hoverable: true,
-                                //             clickable: true
-                                //         },
-                                //         tooltip: true,
-                                //         tooltipOpts: {
-                                //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                //             shifts: {
-                                //                 x: 20,
-                                //                 y: 0
-                                //             },
-                                //             defaultTheme: false,
-                                //             cssClass: 'flot-tooltip'
-                                //         }
-                                        
-                                //     });
-                                finprocesado();                       
-
-                                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                            }
-                        });
-                }else{
-                    $("#mes_actual").val('0');
-                }
-            });//END FILTRO MES ACTUAL
 
 
-            //FILTRO MES PASADO
-            //$("#mes_actual").val('0');
-            $("#past_month").on('click', function(){
-                var token = $('input:hidden[name=_token]').val();
-                if ($("#past_month").is(":checked")){
-                    procesando();
-                    //$("#mes_actual").val('1');
-                        $.ajax({
-                            url: route_filtrar,
-                            headers: {'X-CSRF-TOKEN': token},
-                            type: 'POST',
-                            dataType: 'json',
-                            data: { mesPasado: 'mes_pasado' },
-                            success:function(respuesta){
+        $("#guardar").click(function(){
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#formFiltro" ).serialize();
+            // procesando();
+            $.ajax({
+                url: route_filtrar,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data: datos,
+                success:function(respuesta){
 
-                                var nType = 'success';
-                                var nTitle="Ups! ";
-                                var nMensaje=respuesta.mensaje;
+                    var nType = 'success';
+                    var nTitle="Ups! ";
+                    var nMensaje=respuesta.mensaje;
 
-                                t.clear().draw();
+                    t.clear().draw();
 
-                                $.each(respuesta.facturas, function (index, array) {
-                                    concepto = array.concepto;
-                                    if(concepto.length > 50)
-                                    {
-                                        concepto = concepto.substr(0, 50) + "...";
-                                    }
-                                    var rowNode=t.row.add( [
-                                    ''+pad(array.factura, 10)+'',
-                                    ''+array.nombre+'',
-                                    ''+concepto+'',
-                                    ''+array.fecha+'',
-                                    ''+formatmoney(parseFloat(array.total))+'',
-                                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                                    ] ).draw(false).node();
-                                    $( rowNode )
-                                        .attr('id',array.id)
-                                        .addClass('seleccion');
-                                });
+                    $.each(respuesta.facturas, function (index, array) {
+                        var rowNode=t.row.add( [
+                        ''+array.id+'',
+                        ''+array.cliente+'',
+                        ''+array.nombre+'',
+                        ''+array.fecha_vencimiento+'',
+                        ''+formatmoney(parseFloat(array.importe_neto))+''
+                        ] ).draw(false).node();
+                        $( rowNode )
+                            .attr('id',array.id)
+                            .addClass('seleccion');
+                    });
 
-                                // datos = JSON.parse(JSON.stringify(respuesta));
-                                // //console.log(datos.edades);
-                                // $("#mujeres").text(datos.mujeres);
-                                // $("#hombres").text(datos.hombres);
 
-                                // var data1 = ''
-                                // data1 += '[';
-                                // $.each( datos.edades, function( i, item ) {
-                                //     var edad = item.age_range;
-                                //     var cant = item.count
-                                //     data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                                // });
-                                // data1 = data1.substring(0, data1.length -1);
-                                // data1 += ']';
-                                //     //GRAFICO FILTRO MES ACTUAL
-                                //     $("#pie-chart-procesos").html('');
-                                //     $(".flc-pie").html('');
-                                //     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                                //         series: {
-                                //             pie: {
-                                //                 show: true,
-                                //                 stroke: { 
-                                //                     width: 2,
-                                //                 },
-                                //             },
-                                //         },
-                                //         legend: {
-                                //             container: '.flc-pie',
-                                //             backgroundOpacity: 0.5,
-                                //             noColumns: 0,
-                                //             backgroundColor: "white",
-                                //             lineWidth: 0
-                                //         },
-                                //         grid: {
-                                //             hoverable: true,
-                                //             clickable: true
-                                //         },
-                                //         tooltip: true,
-                                //         tooltipOpts: {
-                                //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                //             shifts: {
-                                //                 x: 20,
-                                //                 y: 0
-                                //             },
-                                //             defaultTheme: false,
-                                //             cssClass: 'flot-tooltip'
-                                //         }
-                                        
-                                //     });
-                                finprocesado();                       
+                    $('#total').text(formatmoney(parseFloat(respuesta.total)))
 
-                                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                            }
-                        });
-                }else{
-                    //$("#mes_actual").val('0');
+                    finprocesado();                       
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                 }
             });
-
-
-
-            //FILTRO HOY
-            //$("#mes_actual").val('0');
-            $("#today").on('click', function(){
-                var token = $('input:hidden[name=_token]').val();
-                if ($("#today").is(":checked")){
-                    procesando();
-                    //$("#mes_actual").val('1');
-                        $.ajax({
-                            url: route_filtrar,
-                            headers: {'X-CSRF-TOKEN': token},
-                            type: 'POST',
-                            dataType: 'json',
-                            data: { today: 'today' },
-                            success:function(respuesta){
-
-                                var nType = 'success';
-                                var nTitle="Ups! ";
-                                var nMensaje=respuesta.mensaje;
-
-                                t.clear().draw();
-
-                                $.each(respuesta.facturas, function (index, array) {
-                                    concepto = array.concepto;
-                                    if(concepto.length > 50)
-                                    {
-                                        concepto = concepto.substr(0, 50) + "...";
-                                    }
-                                    var rowNode=t.row.add( [
-                                    ''+pad(array.factura, 10)+'',
-                                    ''+array.nombre+'',
-                                    ''+concepto+'',
-                                    ''+array.fecha+'',
-                                    ''+formatmoney(parseFloat(array.total))+'',
-                                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                                    ] ).draw(false).node();
-                                    $( rowNode )
-                                        .attr('id',array.id)
-                                        .addClass('seleccion');
-                                });
-
-                                // datos = JSON.parse(JSON.stringify(respuesta));
-                                // //console.log(datos.edades);
-                                // $("#mujeres").text(datos.mujeres);
-                                // $("#hombres").text(datos.hombres);
-
-                                // var data1 = ''
-                                // data1 += '[';
-                                // $.each( datos.edades, function( i, item ) {
-                                //     var edad = item.age_range;
-                                //     var cant = item.count
-                                //     data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                                // });
-                                // data1 = data1.substring(0, data1.length -1);
-                                // data1 += ']';
-                                //     //GRAFICO FILTRO MES ACTUAL
-                                //     $("#pie-chart-procesos").html('');
-                                //     $(".flc-pie").html('');
-                                //     $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                                //         series: {
-                                //             pie: {
-                                //                 show: true,
-                                //                 stroke: { 
-                                //                     width: 2,
-                                //                 },
-                                //             },
-                                //         },
-                                //         legend: {
-                                //             container: '.flc-pie',
-                                //             backgroundOpacity: 0.5,
-                                //             noColumns: 0,
-                                //             backgroundColor: "white",
-                                //             lineWidth: 0
-                                //         },
-                                //         grid: {
-                                //             hoverable: true,
-                                //             clickable: true
-                                //         },
-                                //         tooltip: true,
-                                //         tooltipOpts: {
-                                //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                //             shifts: {
-                                //                 x: 20,
-                                //                 y: 0
-                                //             },
-                                //             defaultTheme: false,
-                                //             cssClass: 'flot-tooltip'
-                                //         }
-                                        
-                                //     });
-                                finprocesado();                       
-
-                                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                            }
-                        });
-                }else{
-                    //$("#mes_actual").val('0');
-                }
-            });
+        });
 
         function pad (str, max) {
           str = str.toString();

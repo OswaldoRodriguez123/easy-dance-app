@@ -603,6 +603,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/fiestas/eliminarboleto/{id}', 'FiestaController@eliminarboleto');
 			Route::post('agendar/fiestas/agregarhorario', 'FiestaController@agregarhorario');
 			Route::post('agendar/fiestas/eliminarhorario/{id}', 'FiestaController@eliminarhorario');
+			Route::get('agendar/fiestas/egresos/{id}', 'FiestaController@egresos');
+			Route::post('agendar/fiestas/agregar-egreso', 'FiestaController@agregar_egreso');
+			Route::delete('agendar/fiestas/eliminar-egreso/{id}', 'FiestaController@eliminar_egreso');
 
 			Route::put('agendar/fiestas/update/nombre', 'FiestaController@updateNombre');
 			Route::put('agendar/fiestas/update/descripcion', 'FiestaController@updateDescripcion');

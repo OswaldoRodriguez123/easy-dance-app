@@ -146,7 +146,7 @@ class ConfigClasesGrupalesController extends BaseController {
             $servicio = new ConfigServicios;
             
             $servicio->academia_id = Auth::user()->academia_id;
-            $servicio->nombre = 'Mensualidad ' . $nombre;
+            $servicio->nombre = 'Cuota ' . $nombre;
             $servicio->costo = $costo_mensualidad;
             $servicio->imagen = '';
             $servicio->descripcion = $request->descripcion;

@@ -55,6 +55,20 @@ class AcademiaConfiguracionController extends BaseController {
 	{
         $academia = Academia::find(Auth::user()->academia_id);
 
+        $servicios = ConfigServicios::all();
+
+        foreach($servicios as $servicio){
+            $nombre = explode(" ", $servicio->nombre);
+
+            if($nombre[0] == 'Inscripción'){
+                $servicio->tipo = 3;
+                $servicio->save();
+            }else if($nombre[0] == 'Cuota' OR $nombre[0] == 'Mensualidad'){
+                $servicio->tipo = 4;
+                $servicio->save();
+            }
+        }
+
 
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){

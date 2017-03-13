@@ -214,24 +214,24 @@
 
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="cliente"></th>
-                                    <th class="text-center" data-column-id="fecha">Fecha</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                    <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>
-                                    <th class="text-center" data-column-id="celular">Contacto Móvil</th>
-                                    <th class="text-center" data-column-id="especialidad">Especialidad</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    
-                            </tbody>
-                        </table>
-                         </div>
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" data-column-id="cliente"></th>
+                                            <th class="text-center" data-column-id="fecha">Fecha</th>
+                                            <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
+                                            <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
+                                            <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>
+                                            <th class="text-center" data-column-id="celular">Contacto Móvil</th>
+                                            <th class="text-center" data-column-id="especialidad">Especialidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="card-body p-b-20">
                             <div class="row">

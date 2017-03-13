@@ -71,7 +71,7 @@
 
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" id="alumno_id" name="alumno_id">
+                                        <select class="selectpicker" id="alumno_id" name="alumno_id" data-live-search="true">
 
                                           <option value="0">Todos</option>
                                           

@@ -38,5 +38,10 @@ class ConfigTipoExamenesSeeder extends Seeder
 	      'nombre' => 'Diagnostico de Ingreso',
 
 	    ));
+
+	    ConfigTipoExamen::create(array(
+	      'nombre' => 'Diagnóstico Recurrente',
+
+	    ));
     }
 }

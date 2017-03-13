@@ -20,6 +20,7 @@ use App\Academia;
 use App\Visitante;
 use App\Asistencia;
 use App\ConfigTipoExamen;
+use App\ConfigServicios;
 use Mail;
 use DB;
 use Validator;
@@ -1732,9 +1733,59 @@ public function PresencialesFiltros(Request $request)
 
     public function Administrativo()
     {
-        
-        
+        $clases_grupales= DB::table('clases_grupales')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();  
+
+        $servicios = ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
         $array = array();
+        foreach($clases_grupales as $clase_grupal){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+
+            $clase_grupal_array['dia']=$dia;
+            $array[$clase_grupal->id] = $clase_grupal_array;
+
+        }
 
         $factura_join = DB::table('facturas')
             ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
@@ -1750,79 +1801,156 @@ public function PresencialesFiltros(Request $request)
 
         foreach($factura_join as $factura){
 
-
             $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-            $collection=collect($factura);     
-            $factura_array = $collection->toArray();
-            
-            $factura_array['total']=$total;
             $total_de_informe+=$total;
-            $array[$factura->id] = $factura_array;
 
         }
 
-        return view('reportes.administrativo')->with(['facturas'=> $array, 'total'=>$total_de_informe]);
+        return view('reportes.administrativo')->with(['total'=>$total_de_informe, 'clases_grupales' => $array, 'servicios' => $servicios]);
     }
 
     public function AdministrativoFiltros(Request $request)
     {
-        # code...
-        //dd($request->all());
-        if($request->mesActual){
-            $start = Carbon::now()->startOfMonth()->toDateString();
-            $end = Carbon::now()->endOfMonth()->toDateString();  
-        }
-        if($request->mesPasado){
-            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
-
-        }
-        if($request->today){
-            $start = Carbon::now()->toDateString();
-            $end = Carbon::now()->toDateString();  
-        }
-        if($request->rango){
-            //$fechas = explode(' - ', $request->dateRange);
-            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-        }
-
-        if($request->Fecha){
-            $fechas = explode('-', $request->Fecha);
-            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-        }
 
         $array = array();
+        $total = 0;
 
-        $factura_join = DB::table('facturas')
-            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
-            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
-            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->where('alumnos.deleted_at' , '=' , null)
-            ->whereBetween('facturas.fecha', [$start,$end])
-            ->OrderBy('facturas.created_at')
-        ->get();
+        $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+                ->select('alumnos.id as id',
+                         'alumnos.nombre',
+                         'alumnos.apellido')
+                ->where('alumnos.academia_id', '=', Auth::user()->academia_id);
+                
 
-        foreach($factura_join as $factura){
-
-
-            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-            $collection=collect($factura);     
-            $factura_array = $collection->toArray();
-            
-            $factura_array['total']=$total;
-            $array[$factura->id] = $factura_array;
-
+        if($request->clase_grupal_id)
+        {
+            $query->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
         }
 
-        
-        
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 200]);
+        $query->distinct('id');
+
+        $alumnos = $query->get();
+
+        foreach($alumnos as $alumno){
+
+            $query = ItemsFacturaProforma::where('alumno_id', $alumno->id);
+
+            if($request->servicio_id)
+            {
+                $servicio = explode("-", $request->servicio_id);
+                $query->where('tipo','=', $servicio[1]);
+                $query->where('item_id','=', $servicio[0]);
+            }
+
+            if($request->tipo == 1)
+            {
+                $query->where('fecha_vencimiento','<=', Carbon::now()->toDateString());
+            }else{
+                $query->where('fecha_vencimiento','>=', Carbon::now()->toDateString());
+            }
+
+            $facturas = $query->get();
+
+            foreach($facturas as $factura){
+
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
+                $array[$factura->id] = $factura_array;
+
+                $total = $total + $factura->importe_neto;
+
+            }
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total' => $total, 200]);
 
     }
+
+    // public function Administrativo()
+    // {
+    //     $array = array();
+
+    //     $factura_join = DB::table('facturas')
+    //         ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+    //         ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+    //         // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+    //         ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
+    //         ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+    //         ->where('alumnos.deleted_at' , '=' , null)
+    //         ->OrderBy('facturas.created_at')
+    //     ->get();
+
+    //     $total_de_informe=0;
+
+    //     foreach($factura_join as $factura){
+
+    //         $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+    //         $collection=collect($factura);     
+    //         $factura_array = $collection->toArray();
+            
+    //         $factura_array['total']=$total;
+    //         $total_de_informe+=$total;
+    //         $array[$factura->id] = $factura_array;
+
+    //     }
+
+    //     return view('reportes.administrativo')->with(['facturas'=> $array, 'total'=>$total_de_informe]);
+    // }
+
+    // public function AdministrativoFiltros(Request $request)
+    // {
+    //     if($request->mesActual){
+    //         $start = Carbon::now()->startOfMonth()->toDateString();
+    //         $end = Carbon::now()->endOfMonth()->toDateString();  
+    //     }
+    //     if($request->mesPasado){
+    //         $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+    //         $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+
+    //     }
+    //     if($request->today){
+    //         $start = Carbon::now()->toDateString();
+    //         $end = Carbon::now()->toDateString();  
+    //     }
+    //     if($request->rango){
+    //         //$fechas = explode(' - ', $request->dateRange);
+    //         $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
+    //         $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
+    //     }
+
+    //     if($request->Fecha){
+    //         $fechas = explode('-', $request->Fecha);
+    //         $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
+    //         $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
+    //     }
+
+    //     $array = array();
+
+    //     $factura_join = DB::table('facturas')
+    //         ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+    //         ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+    //         // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+    //         ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
+    //         ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+    //         ->where('alumnos.deleted_at' , '=' , null)
+    //         ->whereBetween('facturas.fecha', [$start,$end])
+    //         ->OrderBy('facturas.created_at')
+    //     ->get();
+
+    //     foreach($factura_join as $factura){
+
+    //         $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+    //         $collection=collect($factura);     
+    //         $factura_array = $collection->toArray();
+            
+    //         $factura_array['total']=$total;
+    //         $array[$factura->id] = $factura_array;
+    //     }
+
+    //     return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 200]);
+
+    // }
 
     public function Camiseta_Programacion(){
 
@@ -1908,7 +2036,7 @@ public function PresencialesFiltros(Request $request)
 
         if($request->clase_grupal_id)
         {
-            $query->where('clases_grupales.clase_grupal_id','=', $request->clase_grupal_id);
+            $query->where('clases_grupales.id','=', $request->clase_grupal_id);
         }
 
 

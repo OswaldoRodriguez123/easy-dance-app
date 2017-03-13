@@ -554,13 +554,57 @@
             <hr class="linea-morada">
             <br>
             <div class="card-body p-b-20">
-            <div>
 
-            <div class = "col-sm-2"></div>
+              <div class="col-sm-5"></div>
 
-			<ul class="ca-menu-c col-sm-8" style="width: 720px;">
+              <ul class="top-menu">
+                <li class="dropdown" style="width: 19.5%">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                     <span class="f-15 f-700"> 
+                       <ul class="ca-menu-c">
+                          <li>
+                              <span class="ca-icon-c"><i class="zmdi zmdi-wrench f-35 boton blue sa-warning"></i></span>
+                              <div class="ca-content-c">
+                                  <h2 class="ca-main-c f-20">Operaciones</h2>
+                                  <h3 class="ca-sub-c"></h3>
+                              </div>
+                          </li>
+                        </ul>
+                     </span>
+                  </a>
+                  <ul class="dropdown-menu dm-icon pull-right">
+                      <li class="hidden-xs">
+                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}"><i class="icon_a-niveles f-16 m-r-10 boton blue"></i>&nbsp;Nivelaciones</a>
+                      </li>
 
-                <li data-ripplecator class ="dark-ripples">
+                      <li class="hidden-xs">
+                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}"><i class="icon_a-participantes f-16 m-r-10 boton blue"></i> Participantes</a>
+                      </li>
+
+                      <li class="hidden-xs">
+                          <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/agregar/{{$id}}"><i class="icon_a-examen f-16 m-r-10 boton blue"></i> Valorar</a>
+                      </li>
+
+                      @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                        <li class="hidden-xs">
+                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
+                        </li>
+
+                        <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
+                        </li>
+
+                        <li class="hidden-xs">
+                            <a class="cancelar"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
+                        </li>
+
+                      @endif
+                  </ul>
+                </li>
+              </ul>
+
+                <!-- <li data-ripplecator class ="dark-ripples">
                         <a class="nivelaciones">
                             <span class="ca-icon-c"><i class="icon_a-niveles f-35 boton blue sa-warning" data-original-title="Nivelaciones" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
@@ -640,14 +684,11 @@
 
                     @endif
 
-
+ -->
 
                     
-                </ul>
-
-                <div class = "col-sm-1"></div>
                 
-                </div>
+            
             </div>
         </div>
 </section>
@@ -1056,6 +1097,12 @@
          });
         }
       });
+    });
+
+    $('.cancelar').click(function(){
+
+      $('#modalCancelar').modal('show')
+
     });
 
 

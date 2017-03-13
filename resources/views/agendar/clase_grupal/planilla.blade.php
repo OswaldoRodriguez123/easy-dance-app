@@ -1720,7 +1720,7 @@
                                               </li>
 
                                               <li class="hidden-xs">
-                                                  <a data-toggle="modal" href="#modalCancelar" class="cancelar"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
+                                                  <a class="cancelar"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
                                               </li>
 
                                             @endif

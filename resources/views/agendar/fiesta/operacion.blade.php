@@ -4,6 +4,7 @@
 
 <link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 
 @stop
 
@@ -30,7 +31,7 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-4"></div>
+            <div class = "col-sm-2"></div>
 
             <ul class="ca-menu-c " style="width: 720px;">
 
@@ -40,6 +41,17 @@
                                    data-original-title="Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Ver Progreso</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class = "egresos">
+                            <span class="ca-icon-c"><i class="fa fa-money f-35 boton blue sa-warning" 
+                                   data-original-title="Egresos" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Egresos</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
@@ -175,6 +187,12 @@
     $(".progreso").click(function(){
                
         window.location = "{{url('/')}}/agendar/fiestas/progreso/{{$id}}";
+
+    });
+
+    $(".egresos").click(function(){
+               
+        window.location = "{{url('/')}}/agendar/fiestas/egresos/{{$id}}";
 
     });
   
