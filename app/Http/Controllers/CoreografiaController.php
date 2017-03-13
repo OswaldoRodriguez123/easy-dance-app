@@ -533,7 +533,7 @@ class CoreografiaController extends BaseController {
    
         $coreografia = Coreografia::find($request->id);
 
-        $coreografia->especialidad_id = $request->especialidad;
+        $coreografia->especialidad_id = $request->especialidad_id;
 
         if($coreografia->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
