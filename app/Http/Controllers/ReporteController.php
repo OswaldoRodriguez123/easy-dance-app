@@ -1837,9 +1837,17 @@ public function PresencialesFiltros(Request $request)
 
             if($request->servicio_id)
             {
+
                 $servicio = explode("-", $request->servicio_id);
-                $query->where('tipo','=', $servicio[1]);
-                $query->where('item_id','=', $servicio[0]);
+                $servicio_tmp = ConfigServicios::find($servicio[0]);
+
+                if($servicio_tmp)
+                {
+                    $query->where('nombre','=', $servicio_tmp->nombre);
+                }else{
+                    $query->where('tipo','=', $servicio[1]);
+                    $query->where('item_id','=', $servicio[0]);
+                }
             }
 
             if($request->tipo == 1)
