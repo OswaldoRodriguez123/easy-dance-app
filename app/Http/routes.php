@@ -256,8 +256,22 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('configuracion/coreografias/agregar','CoreografiaController@store');
 			Route::get('configuracion/coreografias/detalle/{id}', 'CoreografiaController@edit');
 			Route::get('configuracion/coreografias/operaciones/{id}', 'CoreografiaController@operar');
+			Route::delete('configuracion/coreografias/eliminar/{id}', 'CoreografiaController@destroy');
 			Route::get('configuracion/coreografias/participantes/{id}', 'CoreografiaController@participantes');
 			Route::post('configuracion/coreografias/inscribir', 'CoreografiaController@storeInscripcion');
+
+			Route::put('configuracion/coreografias/update/nombre_evento', 'CoreografiaController@updateNombreEvento');
+			Route::put('configuracion/coreografias/update/nombre_coreografia', 'CoreografiaController@updateNombreCoreografia');
+			Route::put('configuracion/coreografias/update/tipo', 'CoreografiaController@updateTipo');
+			Route::put('configuracion/coreografias/update/imagen', 'CoreografiaController@updateImagen');
+			Route::put('configuracion/coreografias/update/imagen_presentacion', 'CoreografiaController@updateImagenPresentacion');
+			Route::put('configuracion/coreografias/update/descripcion', 'CoreografiaController@updateDescripcion');
+			Route::put('configuracion/coreografias/update/video', 'CoreografiaController@updateLink');
+			Route::put('configuracion/coreografias/update/especialidad', 'CoreografiaController@updateEspecialidad');
+			Route::put('configuracion/coreografias/update/tema_musical', 'CoreografiaController@updateTemaMusical');
+			Route::put('configuracion/coreografias/update/tiempo_duracion', 'CoreografiaController@updateTiempoDuracion');
+			Route::put('configuracion/coreografias/update/coreografo', 'CoreografiaController@updateCoreografo');
+
 
 			//PAGOS
 
@@ -457,19 +471,19 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//PROVEEDOR
 
-			Route::get('participante/proveedor', 'ProveedorController@principal');
-			Route::post('participante/proveedor/agregar', 'ProveedorController@store');
-			Route::get('participante/proveedor/agregar', 'ProveedorController@create');
-			Route::delete('participante/proveedor/eliminar/{id}', 'ProveedorController@destroy');
-			Route::get('participante/proveedor/detalle/{id}', 'ProveedorController@edit');
-			Route::get('participante/proveedor/operaciones/{id}', 'ProveedorController@operar');
-			Route::put('participante/proveedor/update/nombre','ProveedorController@updateNombre');
-			Route::put('participante/proveedor/update/fecha_nacimiento','ProveedorController@updateFecha');
-			Route::put('participante/proveedor/update/sexo','ProveedorController@updateSexo');
-			Route::put('participante/proveedor/update/correo','ProveedorController@updateCorreo');
-			Route::put('participante/proveedor/update/telefono','ProveedorController@updateTelefono');
-			Route::put('participante/proveedor/update/direccion','ProveedorController@updateDireccion');
-			Route::put('participante/proveedor/update/empresa','ProveedorController@updateEmpresa');
+			Route::get('configuracion/proveedor', 'ProveedorController@principal');
+			Route::post('configuracion/proveedor/agregar', 'ProveedorController@store');
+			Route::get('configuracion/proveedor/agregar', 'ProveedorController@create');
+			Route::delete('configuracion/proveedor/eliminar/{id}', 'ProveedorController@destroy');
+			Route::get('configuracion/proveedor/detalle/{id}', 'ProveedorController@edit');
+			Route::get('configuracion/proveedor/operaciones/{id}', 'ProveedorController@operar');
+			Route::put('configuracion/proveedor/update/nombre','ProveedorController@updateNombre');
+			Route::put('configuracion/proveedor/update/fecha_nacimiento','ProveedorController@updateFecha');
+			Route::put('configuracion/proveedor/update/sexo','ProveedorController@updateSexo');
+			Route::put('configuracion/proveedor/update/correo','ProveedorController@updateCorreo');
+			Route::put('configuracion/proveedor/update/telefono','ProveedorController@updateTelefono');
+			Route::put('configuracion/proveedor/update/direccion','ProveedorController@updateDireccion');
+			Route::put('configuracion/proveedor/update/empresa','ProveedorController@updateEmpresa');
 
 
 			//CLASES GRUPALES
@@ -813,24 +827,24 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//STAFF
 
 
-			Route::get('staff', 'StaffController@principal');
-			Route::post('staff/agregar', 'StaffController@store');
-			Route::post('staff/agregarhorario', 'StaffController@agregar_horario');
-			Route::post('staff/eliminarhorario/{id}', 'StaffController@eliminar_horario');
-			Route::post('staff/agregarhorariofijo', 'StaffController@agregar_horario_fijo');
-			Route::post('staff/eliminarhorariofijo/{id}', 'StaffController@eliminar_horario_fijo');
-			Route::get('staff/agregar', 'StaffController@create');
-			Route::delete('staff/eliminar/{id}', 'StaffController@destroy');
-			Route::get('staff/detalle/{id}', 'StaffController@edit');
-			Route::get('staff/operaciones/{id}', 'StaffController@operar');
-			Route::put('staff/update/identificacion','StaffController@updateID');
-			Route::put('staff/update/nombre','StaffController@updateNombre');
-			Route::put('staff/update/fecha_nacimiento','StaffController@updateFecha');
-			Route::put('staff/update/sexo','StaffController@updateSexo');
-			Route::put('staff/update/telefono','StaffController@updateTelefono');
-			Route::put('staff/update/direccion','StaffController@updateDireccion');
-			Route::put('staff/update/cargo','StaffController@updateCargo');
-			Route::put('staff/update/horario','StaffController@updateHorario');
+			Route::get('configuracion/staff', 'StaffController@principal');
+			Route::post('configuracion/staff/agregar', 'StaffController@store');
+			Route::post('configuracion/staff/agregarhorario', 'StaffController@agregar_horario');
+			Route::post('configuracion/staff/eliminarhorario/{id}', 'StaffController@eliminar_horario');
+			Route::post('configuracion/staff/agregarhorariofijo', 'StaffController@agregar_horario_fijo');
+			Route::post('configuracion/staff/eliminarhorariofijo/{id}', 'StaffController@eliminar_horario_fijo');
+			Route::get('configuracion/staff/agregar', 'StaffController@create');
+			Route::delete('configuracion/staff/eliminar/{id}', 'StaffController@destroy');
+			Route::get('configuracion/staff/detalle/{id}', 'StaffController@edit');
+			Route::get('configuracion/staff/operaciones/{id}', 'StaffController@operar');
+			Route::put('configuracion/staff/update/identificacion','StaffController@updateID');
+			Route::put('configuracion/staff/update/nombre','StaffController@updateNombre');
+			Route::put('configuracion/staff/update/fecha_nacimiento','StaffController@updateFecha');
+			Route::put('configuracion/staff/update/sexo','StaffController@updateSexo');
+			Route::put('configuracion/staff/update/telefono','StaffController@updateTelefono');
+			Route::put('configuracion/staff/update/direccion','StaffController@updateDireccion');
+			Route::put('configuracion/staff/update/cargo','StaffController@updateCargo');
+			Route::put('configuracion/staff/update/horario','StaffController@updateHorario');
 
 			//INCIDENCIAS
 

@@ -18,7 +18,7 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/staff/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/configuracion/staff/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
@@ -121,8 +121,8 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/staff/detalle";
-        route_operacion="{{url('/')}}/staff/operaciones";
+        route_detalle="{{url('/')}}/configuracion/staff/detalle";
+        route_operacion="{{url('/')}}/configuracion/staff/operaciones";
 
         $(document).ready(function(){
 

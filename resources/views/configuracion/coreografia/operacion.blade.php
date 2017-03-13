@@ -115,59 +115,58 @@
   });
 
   $(".eliminar").click(function(){
-                id = this.id;
-                swal({   
-                    title: "Desea eliminar la coreografia",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
-          }
-                });
-            });
-      function eliminar(id){
-         var route = route_eliminar + id;
-         var token = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
+        id = this.id;
+        swal({   
+            title: "Desea eliminar la coreografia",   
+            text: "Confirmar eliminación!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Eliminar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: false 
+        }, function(isConfirm){   
+  if (isConfirm) {
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
 
-                        window.location=route_principal; 
+        eliminar("{{$id}}");
+    }
+    });
+});
 
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
+function eliminar(id){
+     var route = route_eliminar + id;
+     var token = $('input:hidden[name=_token]').val();
+        
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+            dataType: 'json',
+            data:id,
+            success:function(respuesta){
+
+                window.location=route_principal; 
+
+            },
+            error:function(msj){
+                        $("#msj-danger").fadeIn(); 
+                        var text="";
+                        console.log(msj);
+                        var merror=msj.responseJSON;
+                        text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        $("#msj-error").html(text);
+                        setTimeout(function(){
+                                 $("#msj-danger").fadeOut();
+                                }, 3000);
+                        }
+        });
       }
-  
   setAnimation('fadeInUp', 'content');
 	</script>
 @stop

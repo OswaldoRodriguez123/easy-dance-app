@@ -26,7 +26,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/staff" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Staff</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/staff" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Staff</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -403,10 +403,10 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/staff/agregar";
-  route_enhorabuena="{{url('/')}}/staff";
-  route_horario="{{url('/')}}/staff/agregarhorario";
-  route_eliminar="{{url('/')}}/staff/eliminarhorario";
+  route_agregar="{{url('/')}}/configuracion/staff/agregar";
+  route_enhorabuena="{{url('/')}}/configuracion/staff";
+  route_horario="{{url('/')}}/configuracion/staff/agregarhorario";
+  route_eliminar="{{url('/')}}/configuracion/staff/eliminarhorario";
   
   $(document).ready(function(){
 

@@ -29,7 +29,7 @@ class StaffController extends BaseController
             ->where('staff.academia_id', Auth::user()->academia_id)
         ->get();
 
-		return view('staff.principal')->with(['staffs' => $staffs]);
+		return view('configuracion.staff.principal')->with(['staffs' => $staffs]);
 	}
 
 	public function create()
@@ -40,7 +40,7 @@ class StaffController extends BaseController
 
         Session::forget('horarios_staff');
 
-        return view('staff.create')->with(['dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
+        return view('configuracion.staff.create')->with(['dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
     }
 
     public function store(Request $request)
@@ -169,7 +169,7 @@ class StaffController extends BaseController
         $staff = Staff::find($id);
 
         if($staff){
-        	return view('staff.operacion')->with(['id' => $id, 'staff' => $staff]);   
+        	return view('configuracion.staff.operacion')->with(['id' => $id, 'staff' => $staff]);   
         }else{
            return redirect("staff"); 
         }     
@@ -193,7 +193,7 @@ class StaffController extends BaseController
                 ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
                 ->where('staff.academia_id' , Auth::user()->academia_id)
             ->get();
-            return view('staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
+            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
         }else{
            return redirect("staff"); 
         }

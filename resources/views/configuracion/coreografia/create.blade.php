@@ -51,17 +51,26 @@
 
                                 <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-nombre_evento">Nombre del evento </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del evento, en el que desarrollarás la coreografía" title="" data-original-title="Ayuda"></i>
-
+                                    <label for="nombre" id="id-fiesta_id">Nombre del evento</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre del evento, en el que desarrollarás la coreografía" title="" data-original-title="Ayuda"></i>
+                                    
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-fiesta f-22"></i></span>
+                                      <span class="input-group-addon"><i class=" icon_a-fiesta f-22"></i></span>
                                       <div class="fg-line">
-                                        <input type="text" class="form-control input-sm input-mask" name="nombre_evento" id="nombre_evento" placeholder="Ej. Aniversario">
+                                        <div class="select">
+                                          <select class="selectpicker" name="fiesta_id" id="fiesta_id" data-live-search="true">
+
+                                            <option value="0">Sin Especificar</option>
+                                            @foreach ( $fiestas as $fiesta )
+                                            <option value = "{{ $fiesta->id }}">{{ $fiesta->nombre }}</option>
+                                            @endforeach
+                                          
+                                          </select>
+                                        </div>
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-nombre_evento">
+                                 <div class="has-error" id="error-fiesta_id">
                                       <span >
-                                          <small class="help-block error-span" id="error-nombre_evento_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-fiesta_id_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -69,60 +78,8 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                    <div class="cp-container">
-                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la coreografía, esta será visualizada  por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
-                                        <div class="input-group form-group">
-
-                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
-                                            <div class="fg-line dropdown">
-                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
-                                                    
-                                                <div class="dropdown-menu">
-                                                    <div class="color-picker" data-cp-default="#de87b4"></div>
-                                                </div>
-                                                
-                                                <i class="cp-value"></i>
-                                            </div>
-                                            <div class="has-error" id="error-color_etiqueta">
-                                                <span >
-                                                      <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="clearfix p-b-35"></div>
-
-                                  
-                            <div class="col-sm-12">
-                            <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
-                            
-                            <div class="clearfix p-b-15"></div>
-
-                              <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
-                                <div>
-                                    <span class="btn btn-info btn-file">
-                                        <span class="fileinput-new">Seleccionar Imagen</span>
-                                        <span class="fileinput-exists">Cambiar</span>
-                                        <input type="file" name="imagen" id="imagen" >
-                                    </span>
-                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                </div>
-                            </div>
-                              <div class="has-error" id="error-imagen">
-                              <span >
-                                  <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
-                              </span>
-                            </div>
-                          </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-nombre_coreografia">Nombre de la coreografía </label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre para identificar  la propuesta coreográfica" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre_coreografia">Nombre de la coreografía</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre para identificar  la propuesta coreográfica" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class=" icon_d-coreografia f-22"></i></span>
@@ -139,236 +96,185 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Horarios de práctica </label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el horario o los diversos horarios planteados para tus practicas corográficas" title="" data-original-title="Ayuda"></i>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
+                                <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-tipo">Tipo de coreografía</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de coreografía" title="" data-original-title="Ayuda"></i>
 
-                                    <div class="col-sm-2 text-center">
-                                    
-                                    <span class="f-16 c-morado">Coreógrafo</span>
-
-                                   </div>
-
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Día de la semana</span>
-
-                                   </div>
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Hora Desde</span>
-
-                                   </div>
-
-                                   <div class="col-sm-2 text-center">
-
-                                   <span class="f-16 c-morado">Hora Hasta</span>
-
-                                   </div>
-
-                                   <div class="col-sm-2 text-center">
-                                    
-                                    <span class="f-16 c-morado">Sala / Estudio</span>
-
-                                   </div>
-
-
-                              <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-2">
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="instructor_acordeon_id" id="instructor_acordeon_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-
-
-                              <div class="col-sm-2 text-center">
-                                <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="dia_de_semana_id" id="dia_de_semana_id" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $dias_de_semana as $dias )
-                                          <option value = "{{ $dias['id'] }}">{{ $dias['nombre'] }}</option>
-                                          @endforeach
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_inicio_acordeon" id="hora_inicio_acordeon" class="form-control time-picker" placeholder="Desde" type="text">
-                                      </div>
-                              </div>
-
-                              <div class="col-sm-2 text-center">
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_final_acordeon" id="hora_final_acordeon" class="form-control time-picker" placeholder="Hasta" type="text">
-                                      </div>
-                              </div>
-                              
-                              <div class="col-sm-2 text-center">
-                                <div class="fg-line">
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                      <div class="fg-line">
                                         <div class="select">
-                                          <select class="selectpicker" name="estudio_id" id="estudio_id" data-live-search="true">
+                                          <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+
                                             <option value="">Selecciona</option>
-                                            @foreach ( $estudio as $estudios )
-                                            <option value = "{{ $estudios['id'] }}">{{ $estudios['nombre'] }}</option>
+                                            @foreach ( $config_coreografias as $tipo )
+                                              <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
                                             @endforeach
+                                          
                                           </select>
                                         </div>
                                       </div>
+                                    </div>
+                                 <div class="has-error" id="error-tipo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
+                                
+                                <div class="clearfix p-b-15"></div>
+                                  
+                                  <input type="hidden" name="imageBase64" id="imageBase64">
+                                  <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                    <div>
+                                        <span class="btn btn-info btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imagen" id="imagen" >
+                                        </span>
+                                        <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                    </div>
+                                </div>
+                                  <div class="has-error" id="error-imagen">
+                                  <span >
+                                      <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                                  </span>
+                                </div>
                               </div>
 
                               <div class="clearfix p-b-35"></div>
 
-                              <div class="card-header text-left">
+                              <div class="col-sm-12">
+                                 
+                                <span class="f-30 text-center c-morado">Fundamentos Coreográficos</span>
+                                
+                                <hr>
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-12 guardar" id="add" >Agregar Linea</button>
-                              
-                              </div>
-
-                              <br>
-
-                          <div class="table-responsive row">
-                           <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-column-id="id" data-type="numeric"></th>
-                                    <th class="text-center" data-column-id="sexo"></th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc"></th>
-                                    <th class="text-center" data-column-id="estatu_c" data-order="desc"></th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                                           
-                            </tbody>
-                            </table>
-
-                            </div>
-                            </div>
-
-                            <div class="clearfix p-b-35"></div>
-                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
-
-                            <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
-
-
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                               </div>
-
-                    
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                    
-                                      <label for="fecha_inicio" id="id-fecha">Fecha previa de la muestra coreográfica</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa una fecha previa al evento en el que aspiras que  el trabajo este culminado , de esa forma aumentarás el compromiso con tus  clientes y contigo mismo" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text">
-                                          </div>
-
-                                    </div>
-                                    <div class="has-error" id="error-fecha">
-                                        <span >
-                                            <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                           
-                                        </span>
-                                    </div>
-                                </div>
                                 <div class="clearfix p-b-35"></div>
-                                    
-                                  <div class="col-xs-6">
-                                    
-                                    <label for="nombre" id="id-cantidad_minima">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de cupos mínimos y máximos permitidos en la coreografía" title="" data-original-title="Ayuda"></i>
-
-                                    
-                                      <div class="dtp-container fg-line">
-                                              <input name="cantidad_minima" id="cantidad_minima" class="form-control" placeholder="Minimo" type="text">
-                                     </div>
-                                    
-                                   <div class="has-error" id="error-cantidad_minima">
-                                        <span >
-                                            <small class="help-block error-span" id="error-cantidad_minima_mensaje" ></small>                                
-                                        </span>
-                                    </div>
-                                 </div>
-
-                                 <div class="col-xs-6">
-                                        <label for="fecha_inicio" id="id-cantidad_maxima">&nbsp;</label>
-                                        <div class="dtp-container fg-line">
-                                                <input name="cantidad_maxima" id="cantidad_maxima" class="form-control" placeholder="Maxima" type="text">
-                                        </div>
-                                   <div class="has-error" id="error-cantidad_maxima">
-                                        <span >
-                                            <small class="help-block error-span" id="error-cantidad_maxima_mensaje" ></small>                                
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                               <div class="clearfix p-b-35"></div>
-
+                                  
                                 <div class="col-sm-12">
                                  
-                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-descripcion">Concepto o descripción coreográfica</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta el concepto coreográfico que deseas realizar , indicándole  a tus alumnos o grupo lo que deseas manifestar a través de la propuesta , informándoles si es o no temático , tipo de vestimenta , lo que deseas expresar al público entre otros detalles , de la coreografía y sus beneficios  , de esa forma motivarás a tus alumnos" title="" data-original-title="Ayuda"></i>
+
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="1500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="500 Caracteres"></textarea>
                                     </div>
+                                 <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                      </span>
                                   </div>
                                </div>
 
                                <div class="clearfix p-b-35"></div>
 
-                              
-                                    <div class="col-sm-12">
-                                 
-                                    <span class="f-30 text-center c-morado">Fundamentos Coreográficos</span>
-                                    
-                                    <hr>
+                               <div class="col-sm-12">
+                                  <label for="id" id="id-link_video">Ingresa el link del video promocional</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+                                  
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
+                                    </span>  
 
-                                    <div class="clearfix p-b-35"></div>
+                                    <div class="fg-line">                       
+                                      <input type="text" class="form-control caja input-sm" name="link_video" id="link_video" placeholder="Ingresa el link">
+                                    </div>
+                                   </div>
+                                   
+                                   <div class="has-error" id="error-link_video">
+                                    <span >
+                                     <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>  
+
+                                 <div class="col-sm-12">
+                                    <label for="apellido" id="id-imagen_presentacion">Imagen horizontal</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
                                     
-                                     <div class="col-sm-12">
+                                    <div class="clearfix p-b-15"></div>
+                                      
+                                    <input type="hidden" name="imagePresentacionBase64" id="imagePresentacionBase64">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen_presentacion" id="imagen_presentacion" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                      <div class="has-error" id="error-imagen_presentacion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-imagen_presentacion_mensaje"  ></small>
+                                      </span>
+                                  </div>
+                                </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                   <label for="especialidad_id" id="id-especialidad_id">Estilos de baile que se implementará</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona los estilos de baile que se utilizaran, en caso de no poseerlo, dirígete a la sección de especialidades y procede a registrarlo" title="" data-original-title="Ayuda"></i>
+
+                                   <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                  <div class="fg-line">
+                                    <div class="select">
+                                      <select class="selectpicker bs-select-hidden" id="especialidad_id" name="especialidad_id" multiple="" data-max-options="5" title="Selecciona">
+
+                                        <option value="">Selecciona</option>
+                                        @foreach ( $especialidades as $especialidad )
+                                        <option value = "{{$especialidad->nombre}}">{{$especialidad->nombre}}</option>
+                                        @endforeach
+                                      
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                  <div class="has-error" id="error-especialidad_id">
+                                    <span >
+                                      <small class="help-block error-span" id="error-especialidad_id_mensaje" ></small>                                           
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="clearfix p-b-35"></div>
+
+
+                            <div class="col-sm-12">
+                           
+                              <label for="nombre" id="id-tema_musical">Tema musical principal</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del tema musical que utilizara la propuesta coreográfica" title="" data-original-title="Ayuda"></i>
+
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class=" icon_d-coreografia f-22"></i></span>
+                                <div class="fg-line">
+                                  <input type="text" class="form-control input-sm input-mask" name="tema_musical" id="tema_musical" placeholder="Ej. Coreografía">
+                                </div>
+                              </div>
+                           <div class="has-error" id="error-tema_musical">
+                                <span >
+                                    <small class="help-block error-span" id="error-tema_musical_mensaje" ></small>                                
+                                </span>
+                            </div>
+                         </div>
+
+                         <div class="clearfix p-b-35"></div>
+
+
+                                  <div class="col-sm-12">
                                  
-                                     <label for="nivel_baile" id="id-instructor_id"> Coreógrafo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre del coreógrafo o instructor que dirigirá la coreografía" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-instructor_id"> Coreógrafo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre del coreógrafo o instructor que dirigirá la coreografía" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -377,8 +283,8 @@
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
 
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructor as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{ $instructor->id }}">{{ $instructor->nombre }} {{ $instructor->apellido }}</option>
                                           @endforeach
                                         
                                         </select>
@@ -396,14 +302,23 @@
 
                                <div class="col-xs-12">
                                  
-                                      <label for="fecha_inicio" id="id-tiempo_duracion">Tiempo y duración de la coreografía</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tiempo de duración aproximado o exacto de la coreografía" title="" data-original-title="Ayuda"></i>
+                                      <label for="tiempo_duracion" id="id-tiempo_duracion">Tiempo aproximado de la coreografía</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el tiempo de duración aproximado o exacto de la coreografía" title="" data-original-title="Ayuda"></i>
 
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="tiempo_duracion" id="tiempo_duracion" class="form-control time-picker pointer" placeholder="Selecciona" type="text">
+                                        <div class="form-group">
+                                        
+                                          <div class="col-sm-5">
+                                            <label>La coreografía tiene una duración aproximada de  </label>
                                           </div>
-                                    </div>
+
+                                          <div class="col-sm-1">
+                                            <input type="text" class="form-control input-sm input-mask" name="tiempo_duracion" id="tiempo_duracion" data-mask="0000" placeholder="Ej. 10">
+                                          </div>
+
+                                          <div class="col-sm-2">
+                                            <label>minutos</label>
+                                          </div>
+
+                                        </div>
 
                                  <div class="has-error" id="error-tiempo_duracion">
                                       <span >
@@ -414,23 +329,31 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="nombre" id="id-descripcion">Descripción de la propuesta coreográfica</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta el concepto coreográfico que deseas realizar , indicándole  a tus alumnos o grupo lo que deseas manifestar a través de la propuesta , informándoles si es o no temático , tipo de vestimenta , lo que deseas expresar al público entre otros detalles , de la coreografía y sus beneficios  , de esa forma motivarás a tus alumnos" title="" data-original-title="Ayuda"></i>
 
+
+                                <div class="col-sm-12">
+                                  <div class="form-group fg-line ">
+                                    <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar la clase grupal en la web" title="" data-original-title="Ayuda"></i>
+                                    
                                     <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="250 Caracteres"></textarea>
+                                    <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                      
+                                      <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
                                     </div>
-                                 <div class="has-error" id="error-descripcion">
+                                    
+                                 </div>
+                                 <div class="has-error" id="error-boolean_promocionar">
                                       <span >
-                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
                                       </span>
                                   </div>
-                               </div>
+                              </div>
 
-                               <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
                             
                           <div class="modal-footer p-b-20 m-b-20">
@@ -482,33 +405,85 @@
 
   route_agregar="{{url('/')}}/configuracion/coreografias/agregar";
   route_principal="{{url('/')}}/configuracion/coreografias";
-  route_recompensa="{{url('/')}}/especiales/campañas/agregarrecompensa";
-  route_eliminar="{{url('/')}}/especiales/campañas/eliminarrecompensa";
   
   $(document).ready(function(){
-        document.getElementById("nombre_evento").focus();
-        $('body,html').animate({scrollTop : 0}, 500);
-        var animation = 'fadeInDownBig';
-        //var cardImg = $(this).closest('#content').find('h1');
-        if (animation === "hinge") {
-        animationDuration = 3100;
-        }
-        else {
-        animationDuration = 3200;
-        }
-        //$("h1").removeAttr('class');
-        $(".container").addClass('animated '+animation);
 
-            setTimeout(function(){
-                $(".card-body").removeClass(animation);
-            }, animationDuration);
+    $("#imagen").bind("change", function() {
+        
+      setTimeout(function(){
+        var imagen = $("#imagena img").attr('src');
+        var canvas = document.createElement("canvas");
 
-      }); 
+        var context=canvas.getContext("2d");
+        var img = new Image();
+        img.src = imagen;
+        
+        canvas.width  = img.width;
+        canvas.height = img.height;
+
+        context.drawImage(img, 0, 0);
+ 
+        var newimage = canvas.toDataURL("image/jpeg", 0.8);
+        var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+
+      },500);
+
+    });
+
+    $("#imagen_presentacion").bind("change", function() {
+        
+      setTimeout(function(){
+        var imagen = $("#imagenb img").attr('src');
+        var canvas = document.createElement("canvas");
+
+        var context=canvas.getContext("2d");
+        var img = new Image();
+        img.src = imagen;
+        
+        canvas.width  = img.width;
+        canvas.height = img.height;
+
+        context.drawImage(img, 0, 0);
+ 
+        var newimage = canvas.toDataURL("image/jpeg", 0.8);
+        var image64 = $("input:hidden[name=imagePresentacionBase64]").val(newimage);
+        
+      },500);
+
+    });
+
+    $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
+    $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
+
+    $("#promocionar").on('change', function(){
+      if ($("#promocionar").is(":checked")){
+        $("#boolean_promocionar").val('1');
+      }else{
+        $("#boolean_promocionar").val('0');
+      }    
+    });
+
+    $('body,html').animate({scrollTop : 0}, 500);
+    var animation = 'fadeInDownBig';
+    //var cardImg = $(this).closest('#content').find('h1');
+    if (animation === "hinge") {
+    animationDuration = 3100;
+    }
+    else {
+    animationDuration = 3200;
+    }
+    //$("h1").removeAttr('class');
+    $(".container").addClass('animated '+animation);
+
+        setTimeout(function(){
+            $(".card-body").removeClass(animation);
+        }, animationDuration);
+  }); 
 
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre_evento", "imagen", "nombre_coreografia", "fecha", "cantidad_minima", "cantidad_maxima", "condiciones", "color_etiqueta", "instructor_id", "tiempo_duracion", "descripcion"];
+    var campo = ["fiesta_id", "nombre_coreografia", "imagen", "tipo", "descripcion", "link_video", "imagen_presentacion", "tema_musical", "instructor_id", "tiempo_duracion"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -550,295 +525,122 @@
     //$("#barra-progreso").s
 
   }
-
-  var t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,
-        //bPaginate: false,
-        bFilter:false, 
-        bSort:false, 
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "Buscar:",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-
-  function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
-
-            $("#add").click(function(){
-
-                var route = route_recompensa;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_campana" ).serialize(); 
-
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-
-                          var recompensa = respuesta.array[0].recompensa;
-                          var cantidad = respuesta.array[0].cantidad;
-
-                          var rowId=respuesta.id;
-                          var rowNode=t.row.add( [
-                          ''+recompensa+'',
-                          ''+cantidad+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-
-    });
-
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-        var padre=$(this).parents('tr');
-        var token = $('input:hidden[name=_token]').val();
-        var id = $(this).closest('tr').attr('id');
-              $.ajax({
-                   url: route_eliminar+"/"+id,
-                   headers: {'X-CSRF-TOKEN': token},
-                   type: 'POST',
-                   dataType: 'json',                
-                  success: function (data) {
-                    if(data.status=='OK'){
-                        
-                                         
-                    }else{
-                      swal(
-                        'Solicitud no procesada',
-                        'Ha ocurrido un error, intente nuevamente por favor',
-                        'error'
-                      );
-                    }
+      function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+          $.growl({
+              icon: icon,
+              title: titulo,
+              message: mensaje,
+              url: ''
+          },{
+                  element: 'body',
+                  type: type,
+                  allow_dismiss: true,
+                  placement: {
+                          from: from,
+                          align: align
                   },
-                  error:function (xhr, ajaxOptions, thrownError){
-                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                  }
-                })
+                  offset: {
+                      x: 20,
+                      y: 85
+                  },
+                  spacing: 10,
+                  z_index: 1070,
+                  delay: 2500,
+                  timer: 2000,
+                  url_target: '_blank',
+                  mouse_over: false,
+                  animate: {
+                          enter: animIn,
+                          exit: animOut
+                  },
+                  icon_type: 'class',
+                  template: '<div data-growl="container" class="alert" role="alert">' +
+                                  '<button type="button" class="close" data-growl="dismiss">' +
+                                      '<span aria-hidden="true">&times;</span>' +
+                                      '<span class="sr-only">Close</span>' +
+                                  '</button>' +
+                                  '<span data-growl="icon"></span>' +
+                                  '<span data-growl="title"></span>' +
+                                  '<span data-growl="message"></span>' +
+                                  '<a href="#" data-growl="url"></a>' +
+                              '</div>'
+          });
+      };
 
-                t.row( $(this).parents('tr') )
-                  .remove()
-                  .draw();
-            });
 
-  $("#guardar").click(function(){
+      $("#guardar").click(function(){
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_coreografia" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-                          window.location = route_principal;
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
+          var route = route_agregar;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = $( "#agregar_coreografia" ).serialize(); 
 
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
+          var especialidad = [];
+          $('#especialidad_id option:selected').each(function() {
+            especialidad.push( $( this ).val() );
+          });
+          procesando();       
+          limpiarMensaje();
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+                  dataType: 'json',
+                  data:datos + "&especialidad="+especialidad,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+                    // finprocesado();
+                    // var nType = 'success';
+                    $("#agregar_coreografia")[0].reset();
+                    // var nTitle="Ups! ";
+                    // var nMensaje=respuesta.mensaje;
+                    window.location = route_principal;
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
+                    finprocesado();
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }                       
+                  
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  finprocesado();
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+      });
 
       function limpiarMensaje(){
-        var campo = ["nombre_evento", "imagen", "nombre_coreografia", "fecha", "cantidad_minima", "cantidad_maxima", "condiciones", "color_etiqueta", "instructor_id", "tiempo_duracion", "descripcion", 'instructor_acordeon_id', 'estudio_id', 'hora_inicio_acordeon', 'hora_final_acordeon'];
+        var campo = ["fiesta_id", "nombre_coreografia", "imagen", "tipo", "descripcion", "link_video", "imagen_presentacion", "tema_musical", "instructor_id", "tiempo_duracion"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -846,7 +648,6 @@
       }
 
     function errores(merror){
-      var campo = ["nombre_evento", "imagen", "nombre_coreografia", "fecha", "cantidad_minima", "cantidad_maxima", "condiciones", "color_etiqueta", "instructor_id", "tiempo_duracion", "descripcion", 'instructor_acordeon_id', 'estudio_id', 'hora_inicio_acordeon', 'hora_final_acordeon'];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -867,29 +668,17 @@
 
   }
 
-      function collapse_minus(collaps){
-       $('#'+collaps).collapse('hide');
-      }
-
-      $('#collapseTwo').on('show.bs.collapse', function () {
-        $("#guardar").attr("disabled","disabled");
-        $("#guardar").css({"opacity": ("0.2")});
-      })
-
-      $('#collapseTwo').on('hide.bs.collapse', function () {
-        $("#guardar").removeAttr("disabled");
-        $("#guardar").css({"opacity": ("1")});
-      })
-
-
-       $( "#cancelar" ).click(function() {
-        $("#agregar_coreografia")[0].reset();
-        limpiarMensaje();
-        $('html,body').animate({
-        scrollTop: $("#id-clase_grupal_id").offset().top-90,
-        }, 1500);
-        $("#nombre_evento").focus();
-      });
+  $( "#cancelar" ).click(function() {
+    $("#agregar_coreografia")[0].reset();
+    $('#especialidad_id').selectpicker('render');
+    $('#tipo').selectpicker('render');
+    $('#fiesta_id').selectpicker('render');
+    $('#instructor_id').selectpicker('render');
+    limpiarMensaje();
+    $('html,body').animate({
+    scrollTop: $("#id-fiesta_id").offset().top-90,
+    }, 1500);
+  });
 
 </script> 
 @stop

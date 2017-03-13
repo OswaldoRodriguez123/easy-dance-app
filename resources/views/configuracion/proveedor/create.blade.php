@@ -26,7 +26,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/proveedor" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Proveedor</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/proveedor" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Proveedor</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -193,7 +193,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="direccion" id="id-direccion">Dirección</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la dirección del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="direccion" id="id-direccion">Dirección</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la dirección del proveedor" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i></span>
                                       <div class="fg-line">
@@ -283,8 +283,8 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/participante/proveedor/agregar";
-  route_principal="{{url('/')}}/participante/proveedor";
+  route_agregar="{{url('/')}}/configuracion/proveedor/agregar";
+  route_principal="{{url('/')}}/configuracion/proveedor";
 
   $(document).ready(function(){
 

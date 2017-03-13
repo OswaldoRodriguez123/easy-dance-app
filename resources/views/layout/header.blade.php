@@ -41,7 +41,7 @@
                                     </a>
                                     <ul class="dropdown-menu dm-icon pull-right">
                                         <li class="hidden-xs">
-                                            <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
+                                            <a href="{{url('configuracion/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
                                         </li>
 
                                         <li class="hidden-xs">
@@ -49,7 +49,7 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
+                                            <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
                                         </li>
 
                                         <li class="hidden-xs">

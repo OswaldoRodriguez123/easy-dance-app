@@ -38,10 +38,10 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="numero" data-type="numeric" data-order="desc">#</th>
+                                    <th class="text-center" data-column-id="evento">Evento</th>
                                     <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="tipo">Tipo</th>
                                     <th class="text-center" data-column-id="coreografo">Coreógrafo</th>
-                                    <th class="text-center" data-column-id="cantidad">Cantidad de participantes</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -50,10 +50,10 @@
                             @foreach ($coreografias as $coreografia)
                                 <?php $id = $coreografia->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$coreografia->id}}</td>
+                                    <td class="text-center previa">{{$coreografia->fiesta_nombre}}</td>
                                     <td class="text-center previa">{{$coreografia->nombre_coreografia}}</td>
+                                    <td class="text-center previa">{{$coreografia->tipo}}</td>
                                     <td class="text-center previa">{{$coreografia->nombre_coreografo}} {{$coreografia->apellido_coreografo}}</td>
-                                    <td class="text-center previa">{{ empty($coreografia->cantidad) ? 0 : $coreografia->cantidad }}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                   </tr>
                             @endforeach 

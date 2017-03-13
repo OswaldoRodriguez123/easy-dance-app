@@ -19,18 +19,18 @@ class ProveedorController extends BaseController {
     public function index()
     {
 
-        return view('participante.proveedor.index')->with('proveedor', Proveedor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        return view('configuracion.proveedor.index')->with('proveedor', Proveedor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
     }
 
     public function principal()
     {
-        return view('participante.proveedor.principal')->with('proveedor', Proveedor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        return view('configuracion.proveedor.principal')->with('proveedor', Proveedor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
     }
 
     public function operar($id)
     {   
         $proveedor = Proveedor::find($id);
-        return view('participante.proveedor.operacion')->with(['id' => $id, 'proveedor' => $proveedor]);        
+        return view('configuracion.proveedor.operacion')->with(['id' => $id, 'proveedor' => $proveedor]);        
     }
 
     /**
@@ -54,7 +54,7 @@ class ProveedorController extends BaseController {
         $map = \Gmaps::create_map();
  
         //Devolver vista con datos del mapa
-        return view('participante.proveedor.create' , compact('map'));
+        return view('configuracion.proveedor.create' , compact('map'));
     }
 
     /**
@@ -309,9 +309,9 @@ class ProveedorController extends BaseController {
 
             $map = \Gmaps::create_map();
  
-           return view('participante.proveedor.planilla' , compact('map'))->with('proveedor' , $proveedor);
+           return view('configuracion.proveedor.planilla' , compact('map'))->with('proveedor' , $proveedor);
         }else{
-           return redirect("participante/proveedor"); 
+           return redirect("configuracion/proveedor"); 
         }
     }
 
