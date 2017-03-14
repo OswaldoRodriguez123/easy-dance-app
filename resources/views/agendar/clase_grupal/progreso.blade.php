@@ -1921,6 +1921,61 @@
     });
 
 
+    $("input[type='checkbox").on('change', function(){
+
+      id = $(this).attr('id')
+      total = id.split('-')
+      nivel = total[0].substr(0,1)
+      nivel_numero = parseInt(total[0].substr(1,2))
+      clase_numero = parseInt(total[0].substr(3,4))
+
+      if ($(this).is(":checked")){
+
+        if(clase_numero > "1" && clase_numero <= "4"){
+          newlevel = clase_numero - 1;
+          newswitch = nivel + nivel_numero + 'c' + newlevel + '-switch';
+          // console.log(newswitch)
+          if($("#"+newswitch).is(":checked")){
+
+          }else{
+            $(this).attr("checked", false)
+            $("#"+total[0]).val('0')
+          }
+        }
+
+        // else{
+
+        // }
+        
+      }else{
+
+        cambio = 0;
+
+        while(nivel_numero < 4){
+
+          if(cambio){
+
+            nivel_numero += 1;
+            $('#basico_'+nivel_numero).hide();
+
+          }
+
+          while(clase_numero < 4) {
+            clase_numero += 1;
+            newswitch = nivel+nivel_numero+'c'+clase_numero+'-switch';
+            newtotal = nivel+nivel_numero+'c'+clase_numero;
+            // console.log(newswitch);
+            $('#'+newswitch).attr("checked", false)
+            $('#'+newtotal).val(0)
+          }
+
+          cambio = 1;
+        }
+      }
+      
+    });
+
+
   });
 
   $("#guardar").click(function(){
