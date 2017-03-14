@@ -496,9 +496,9 @@
 
                             <thead>
                                 <tr>    
-                                    <th class="text-center" data-column-id="imagen"></th> 
-                                    <th class="text-center" data-column-id="nombre">Nombre</th>
-                                    <th class="text-center" data-column-id="monto">Cantidad</th>                                  
+                                    <th data-column-id="imagen"></th> 
+                                    <th data-column-id="nombre">Nombre</th>
+                                    <th data-column-id="monto" class="text-right">Cantidad</th>                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -1166,17 +1166,20 @@
             // });
           });
 
-        var h=$('#tablelistar').DataTable({
+        var t=$('#tablelistar').DataTable({
           processing: true,
           serverSide: false, 
-          bPaginate: false, 
-          // bFilter:false, 
-          // bSort:false, 
+          // bPaginate: false, 
           bInfo:false,
-          order: [[0, 'asc']],
+          pageLength: 25,
+          fnDrawCallback: function() {
+
+            $('#tablelistar_length').hide();
+       
+          },
           language: {
             processing:     "Procesando ...",
-            search:         "Buscar:",
+            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
             lengthMenu:     "Mostrar _MENU_ Registros",
             info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
             infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
