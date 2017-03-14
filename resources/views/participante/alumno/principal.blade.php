@@ -175,7 +175,6 @@
 
         $(document).ready(function(){
 
-
         $('#pop-operaciones').popover({
             html: true,
             trigger: 'manual'

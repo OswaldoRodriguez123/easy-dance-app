@@ -11,6 +11,7 @@ use App\Alumno;
 use App\Instructor;
 use App\ItemsExamenes;
 use App\ConfigEspecialidades;
+use App\ConfigTipoExamen;
 use Validator;
 use Session;
 use Carbon\Carbon;
@@ -108,8 +109,10 @@ class ExamenController extends BaseController {
             $array[$clase_grupal->id] = $clase_grupal_array;
         }
 
+        $config_examenes = ConfigTipoExamen::all();
 
-		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array]);
+
+		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
 	}
 
     public function createconclasegrupal($id)
@@ -184,8 +187,10 @@ class ExamenController extends BaseController {
             $array[$clase_grupal->id] = $clase_grupal_array;
         }
 
+        $config_examenes = ConfigTipoExamen::all();
 
-        return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'clase_grupal_id' => $id]);
+
+        return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'clase_grupal_id' => $id, 'config_examenes' => $config_examenes]);
     }
 
     public function store(Request $request)
@@ -269,7 +274,7 @@ class ExamenController extends BaseController {
             $examen->complejidad_de_movimientos = $request->complejidad_de_movimientos;
             $examen->asistencia = $request->asistencia;
             $examen->estilo = $request->estilo;
-            $examen->tipo = $request->tipo_de_evaluacion;
+            $examen->tipo = $request->tipo;
             $examen->genero = $request->genero;
             $examen->boolean_grupal = $request->boolean_grupal;
             $examen->clase_grupal_id = $request->clase_grupal_id;
@@ -465,10 +470,10 @@ class ExamenController extends BaseController {
     }
 
     public function updateTipos(Request $request){
-        $examen = Examen::find($request->id);
-        $examen->tipo = $request->tipos_de_evaluacion;
 
-        // return redirect("alumno/edit/{$request->id}");
+        $examen = Examen::find($request->id);
+        $examen->tipo = $request->tipo;
+
         if($examen->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -477,25 +482,25 @@ class ExamenController extends BaseController {
     }
 
     public function updateItem(Request $request){
-        $examen = Examen::find($request->id);
-            $examen->tiempos_musicales = $request->tiempos_musicales;
-            $examen->compromiso = $request->compromiso;
-            $examen->condicion = $request->condicion;
-            $examen->habilidades = $request->habilidades;
-            $examen->disciplina = $request->disciplina;
-            $examen->expresion_corporal = $request->expresion_corporal;
-            $examen->expresion_facial = $request->expresion_facial;
-            $examen->destreza = $request->destreza;
-            $examen->dedicacion = $request->dedicacion;
-            $examen->oido_musical = $request->oido_musical;
-            $examen->postura = $request->postura;
-            $examen->respeto = $request->respeto;
-            $examen->elasticidad = $request->elasticidad;
-            $examen->complejidad_de_movimientos = $request->complejidad_de_movimientos;
-            $examen->asistencia = $request->asistencia;
-            $examen->estilo = $request->estilo;
 
-        // return redirect("alumno/edit/{$request->id}");
+        $examen = Examen::find($request->id);
+        $examen->tiempos_musicales = $request->tiempos_musicales;
+        $examen->compromiso = $request->compromiso;
+        $examen->condicion = $request->condicion;
+        $examen->habilidades = $request->habilidades;
+        $examen->disciplina = $request->disciplina;
+        $examen->expresion_corporal = $request->expresion_corporal;
+        $examen->expresion_facial = $request->expresion_facial;
+        $examen->destreza = $request->destreza;
+        $examen->dedicacion = $request->dedicacion;
+        $examen->oido_musical = $request->oido_musical;
+        $examen->postura = $request->postura;
+        $examen->respeto = $request->respeto;
+        $examen->elasticidad = $request->elasticidad;
+        $examen->complejidad_de_movimientos = $request->complejidad_de_movimientos;
+        $examen->asistencia = $request->asistencia;
+        $examen->estilo = $request->estilo;
+
         if($examen->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -542,13 +547,10 @@ class ExamenController extends BaseController {
 	 */
     public function edit($id)
     {
-        // $visitante_presencial_join = DB::table('visitantes_presenciales')
-        //     ->join('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->select('config_especialidades.nombre as especialidad_nombre')
-        //     ->get();
 
         $examen_join = DB::table('examenes')
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+            ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
             ->select('instructores.nombre as instructor_nombre',
                 'instructores.apellido as instructor_apellido',
                 'examenes.id as id',
@@ -573,70 +575,74 @@ class ExamenController extends BaseController {
                 'examenes.asistencia as asistencia',
                 'examenes.estilo as estilo',
                 'examenes.genero as generos',
-                'examenes.tipo as tipos', 
+                'config_tipo_examenes.nombre as tipo', 
                 'examenes.proxima_fecha',
                 'examenes.boolean_grupal',
                 'examenes.clase_grupal_id')
             ->where('examenes.id', '=', $id)
         ->first();
 
-        $item_examen = DB::table('items_examenes')
-            ->where('examen_id','=',$id)->get();
-        $generos = DB::table('config_especialidades')->get();
+        if($examen_join){
 
-        $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
-            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-            ->where('clases_grupales.deleted_at', '=', null)
-        ->get();
+            $item_examen = DB::table('items_examenes')->where('examen_id','=',$id)->get();
 
-        $array = array();
+            $generos = DB::table('config_especialidades')->get();
 
-        foreach($clase_grupal_join as $clase_grupal){
-            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-            $i = $fecha->dayOfWeek;
+            $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+                ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                ->where('clases_grupales.deleted_at', '=', null)
+            ->get();
 
-            if($i == 1){
+            $array = array();
 
-              $dia = 'Lunes';
+            foreach($clase_grupal_join as $clase_grupal){
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $i = $fecha->dayOfWeek;
 
-            }else if($i == 2){
+                if($i == 1){
 
-              $dia = 'Martes';
+                  $dia = 'Lunes';
 
-            }else if($i == 3){
+                }else if($i == 2){
 
-              $dia = 'Miercoles';
+                  $dia = 'Martes';
 
-            }else if($i == 4){
+                }else if($i == 3){
 
-              $dia = 'Jueves';
+                  $dia = 'Miercoles';
 
-            }else if($i == 5){
+                }else if($i == 4){
 
-              $dia = 'Viernes';
+                  $dia = 'Jueves';
 
-            }else if($i == 6){
+                }else if($i == 5){
 
-              $dia = 'Sabado';
+                  $dia = 'Viernes';
 
-            }else if($i == 0){
+                }else if($i == 6){
 
-              $dia = 'Domingo';
+                  $dia = 'Sabado';
 
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                
+                $clase_grupal_array['dia_de_semana']=$dia;
+
+                $array[$clase_grupal->id] = $clase_grupal_array;
             }
 
-            $collection=collect($clase_grupal);     
-            $clase_grupal_array = $collection->toArray();
-            
-            $clase_grupal_array['dia_de_semana']=$dia;
+            $config_examenes = ConfigTipoExamen::all();
 
-            $array[$clase_grupal->id] = $clase_grupal_array;
-        }
+            return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen, 'genero'=>$generos, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
 
-        if($examen_join){
-           return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen, 'genero'=>$generos, 'clases_grupales' => $array]);
         }else{
            return redirect("especiales/examenes"); 
         }

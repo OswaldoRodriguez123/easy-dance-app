@@ -161,9 +161,9 @@ class ClaseGrupalController extends BaseController {
 
             }
 
+            $fecha_inicio = Session::get('fecha_inicio');
 
-
-            return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia, 'riesgo' => $riesgo, 'activos' => $activos]);
+            return view('agendar.clase_grupal.principal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia, 'riesgo' => $riesgo, 'activos' => $activos, 'fecha_inicio' => $fecha_inicio]);
 
         }else{
 

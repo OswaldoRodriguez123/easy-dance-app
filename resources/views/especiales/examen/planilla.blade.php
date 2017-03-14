@@ -370,45 +370,26 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                  <div class="form-group fg-line">
-                                      <label for="fecha_cobro" id="id-tipos_de_evaluacion">Tipo de evaluacion:</label>
-                                      <div class="clearfix"></div>
-                                      <div class="input-group">
-                                      <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
-                                      <div class="p-t-10">
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="otros" value="5" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Diagnóstico de ingreso
-                                      </label><br />
-                                      <label class="radio radio-inline m-r-20">
-                                          <input name="tipos_de_evaluacion" id="evaluacion" value="1" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Evaluacion 
-                                      </label><br />
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="clase" value="2" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Clase personalizada
-                                      </label><br />
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="casting" value="3" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Casting
-                                      </label><br />
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipos_de_evaluacion" id="otros" value="4" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Otros
-                                      </label><br />
+                                  <label for="nombre" id="id-tipo">Tipo de evaluacion</label> 
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <div class="fg-line">
+                                    <div class="select">
+                                      <select class="selectpicker" name="tipo" id="tipo" data-live-search="true" >
+
+                                        @foreach ( $config_examenes as $tipo )
+                                          <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                                        @endforeach
+                                      
+                                      </select>
                                     </div>
                                   </div>
-                                    </div>
-                                    <div class="has-error" id="error-tipos_de_evaluacion">
-                                      <span >
-                                          <small class="help-block error-span" id="error-tipos_de_evaluacion_mensaje" ></small>                                           
-                                      </span>
-                                 </div>
+                                  </div>
+                                  <div class="has-error" id="error-tipo">
+                                    <span>
+                                        <small class="help-block error-span" id="error-tipo_mensaje" ></small>  
+                                    </span>
+                                  </div>
                                </div>
 
                                <input type="hidden" name="id" id="id" value="{{$examen->id}}"></input>
@@ -1099,21 +1080,11 @@
 
                             <tr class="detalle" data-toggle="modal" href="#modalTiposDeEvaluacion">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipos_de_evaluacion" class="zmdi {{ empty($examen->tipos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo" class="zmdi {{ empty($examen->tipo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i></span>
                                <span class="f-14"> Tipo de Evaluación </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="examen-tipos_de_evaluacion"  data-valor="{{$examen->tipos}}">
-                                @if($examen->tipos==1)
-                                  Evaluacion
-                                @elseif($examen->tipos==2)
-                                  Clase Personalizada
-                                @elseif($examen->tipos==3)
-                                  Casting
-                                @else
-                                  Otros
-                                @endif    
-                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15" id="examen-tipo">{{$examen->tipo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Examen">
                              <td>
@@ -1471,7 +1442,7 @@
             }
             $("#examen-"+c.name).data('valor',c.value);
             $("#examen-"+c.name).html(valor);
-          }else if(c.name=='instructor_id'){
+          }else if(c.name=='instructor_id' || c.name=='tipo'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
@@ -1489,23 +1460,6 @@
           }else if(c.name=='genero'){
             $("#examen-"+c.name).data('valor',c.value);
             $("#examen-"+c.name).html(c.value.substr(0, 30) + "...");
-
-          }else if(c.name=='tipos_de_evaluacion'){
-            $("#examen-"+c.name).data('valor',c.value);
-            var nombre;
-
-            if(c.value==1){
-              nombre="Evaluacion";
-            }else if(c.value==2){
-              nombre="Clase Personalizada";
-            }else if(c.value==3){
-              nombre="Casting";
-            }else if(c.value==5){
-              nombre="Diagnóstico de ingreso";
-            }else{
-              nombre="Otros";
-            }
-            $("#examen-"+c.name).html(nombre);
 
           }else{
             $("#examen-"+c.name).text(c.value);

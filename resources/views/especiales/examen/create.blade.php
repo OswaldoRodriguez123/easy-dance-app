@@ -228,45 +228,32 @@
 	                           		<input type="hidden" name="clase_grupal_id" id="clase_grupal_id">
 
                                @endif
-                        
-                               
-                                <div class="col-sm-12">
-                                  <div class="clearfix"></div>
-                                  <label for="fecha_cobro" id="id-tipo_de_evaluacion">Tipo de evaluacion:</label>
-                                  <div class="clearfix"></div>
-                                  <div class="input-group">
-                                      <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
-                                      <div class="p-t-10">
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input checked="checked" name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="5" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Diagnóstico de ingreso
-                                      </label>
-                                      <label class="radio radio-inline m-r-20">
-                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="1" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Evaluacion 
-                                      </label>
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="2" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Clase personalizada
-                                      </label>
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="3" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Casting
-                                      </label>
-                                      <label class="radio radio-inline m-r-20 ">
-                                          <input name="tipo_de_evaluacion" id="tipo_de_evaluacion" value="4" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Otros
-                                      </label>
-                                    </div>
-                                  </div>
-                                  </div>
-                                </div>
-                                <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+
+                                    <label for="nombre" id="id-tipo">Tipo de evaluacion</label> <span class="c-morado f-700 f-16">*</span>
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                          <div class="fg-line">
+                                          <div class="select">
+                                            <select class="selectpicker" name="tipo" id="tipo" data-live-search="true" >
+
+                                              @foreach ( $config_examenes as $tipo )
+                                                <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                                              @endforeach
+                                            
+                                            </select>
+                                          </div>
+                                        </div>
+                                        </div>
+                                     <div class="has-error" id="error-tipo">
+                                          <span >
+                                              <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                          </span>
+                                      </div>
+                                 </div>
+
+                                 <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12">
                                     <div class="cp-container">
