@@ -492,11 +492,13 @@
                         <div class="col-sm-12" style="padding:0px">
 
 
-                         <table class="table" id="tablelistar" >
+                         <table class="table table-striped table-bordered" id="tablelistar" >
 
                             <thead>
-                                <tr class="hidden">    
-                                    <th class="text-center" >Nombres</th>                                    
+                                <tr>    
+                                    <th class="text-center" data-column-id="imagen"></th> 
+                                    <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="monto">Cantidad</th>                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -504,63 +506,56 @@
                                                  
                             @foreach ($patrocinadores as $patrocinador)
                                 <?php $id = $patrocinador->id; ?>
-                                <tr id="tablelistar" class="">
-                                    <td class="p-10" >
-                                      <div class="listview">
-                                      <a class="lv-item" href="javascript:void(0)"  >
-                                              <div class="media">
-                                                  <div class="pull-left p-relative">
-                                                      @if($patrocinador->sexo == 'F')
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
-                                                        <i class="chat-status-busy"></i>
-                                                      @elseif($patrocinador->sexo == 'M')
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
-                                                        <i class="chat-status-busy"></i>
-                                                      @elseif($patrocinador->sexo == 'FA')
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
-                                                        <i class="chat-status-busy"></i>
-                                                      @elseif($patrocinador->sexo == 'O')
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
-                                                        <i class="chat-status-busy"></i>
-                                                      @else
-                                                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt="">
-                                                        <i class="chat-status-busy"></i>
-                                                      @endif
-                                                  </div>
-                                                  <div class="col-sm-6">
-                                                    <div class="media-body">
-                                                        <div class="lv-title"><p class="c-morado">
-                                                          {{ $patrocinador->Nombres }}
-                                                        </p></div>
-                                                        <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
-                                                    </div>
-                                                  </div>
+                                <tr id="{{$id}}" class="p-10"">
+                                  <td>
+                                    <div class="pull-left p-relative">
+                                        @if($patrocinador->sexo == 'F')
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                                          <!-- <i class="chat-status-busy"></i> -->
+                                        @elseif($patrocinador->sexo == 'M')
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                                          <!-- <i class="chat-status-busy"></i> -->
+                                        @elseif($patrocinador->sexo == 'FA')
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
+                                          <!-- <i class="chat-status-busy"></i> -->
+                                        @elseif($patrocinador->sexo == 'O')
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
+                                          <!-- <i class="chat-status-busy"></i> -->
+                                        @else
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt="">
+                                          <!-- <i class="chat-status-busy"></i> -->
+                                        @endif
+                                    </div>
+                                  </td>
 
-                                                   <div class="col-sm-5">
-                                                     <div class="pull-right p-relative">
-                                                        <div class="lv-title"><span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
-                                                        @if($patrocinador->tipo_moneda == 1)
+                                  <td>
+                                    <p class="lv-title c-morado">
+                                      {{ $patrocinador->Nombres }}
+                                    </p>
+                                    <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
+                                  </td>
 
-                                                          Pesos
+                                  <td>
+                                    <div class="pull-right p-relative">
+                                      <span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
+                                        @if($patrocinador->tipo_moneda == 1)
 
-                                                        @elseif($patrocinador->tipo_moneda == 2)
+                                          Pesos
 
-                                                          USD
+                                        @elseif($patrocinador->tipo_moneda == 2)
 
-                                                        @else
+                                          USD
 
-                                                          BsF
+                                        @else
 
-                                                        @endif
+                                          BsF
 
-                                                      </span></div>
-                                                    </div>
-                                                  </div>
-                                                  
-                                              </div>
-                                      </a>
-                                      </div>
-                                   </td>
+                                        @endif
+
+                                      </span>
+                                    </div>
+                                  </td>
+
                                 </tr>
                             @endforeach 
                                                            
@@ -1171,40 +1166,72 @@
             // });
           });
 
+        var h=$('#tablelistar').DataTable({
+          processing: true,
+          serverSide: false, 
+          bPaginate: false, 
+          // bFilter:false, 
+          // bSort:false, 
+          bInfo:false,
+          order: [[0, 'asc']],
+          language: {
+            processing:     "Procesando ...",
+            search:         "Buscar:",
+            lengthMenu:     "Mostrar _MENU_ Registros",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+          }
+        });
+
         var h=$('#tableañadir').DataTable({
-        processing: true,
-        serverSide: false, 
-        bPaginate: false, 
-        bFilter:false, 
-        bSort:false, 
-        bInfo:false,
-        order: [[0, 'asc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "Buscar:",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-            });
+          processing: true,
+          serverSide: false, 
+          bPaginate: false, 
+          bFilter:false, 
+          bSort:false, 
+          bInfo:false,
+          order: [[0, 'asc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          },
+          language: {
+            processing:     "Procesando ...",
+            search:         "Buscar:",
+            lengthMenu:     "Mostrar _MENU_ Registros",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+          }
+        });
 
             $(".recompensa_confirmar").click(function(){
               $('#modalConfirmar').modal('show');
