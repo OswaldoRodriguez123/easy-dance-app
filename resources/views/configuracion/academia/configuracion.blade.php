@@ -606,17 +606,18 @@
 
                         </div>
                         </div>
-                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseNivel')" ></i></div>
+                        <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseNivel')" ></i></div>
 
-                                    <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
-                                
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                               </div>
+                        <div class="clearfix p-b-35"></div>
+
+                          <hr></hr>
+                    
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                     </div>
+
 
 
 
@@ -626,7 +627,7 @@
 
                                     <div class="col-sm-12">
                                     <div class="form-group fg-line">
-                                    <label for="id">Cargos de Staqff</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos cargos que posees en tu academia" title="" data-original-title="Ayuda"></i>
+                                    <label for="id">Cargos de Staff</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos cargos que posees en tu academia" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -1287,11 +1288,10 @@
 
       $("#añadircargo").click(function(){
 
-                var datos = $( "#edit_cargo_academia" ).serialize(); 
                 procesando();
                 var route = "{{url('/')}}/configuracion/academia/cargo";
                 var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
+                var datos = "&nombre_cargo="+$('#nombre_cargo').val();
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -1323,7 +1323,7 @@
                           .attr('id',rowId)
                           .addClass('seleccion');
 
-                          $("#edit_cargo_academia")[0].reset();
+                          $("#nombre_cargo").val('')
                           // rechargeServicio();
 
                         }else{
