@@ -493,50 +493,51 @@ class AcademiaConfiguracionController extends BaseController {
 
     public function configuracion(){
 
-        if (Session::has('academia')) {
-            Session::forget('academia'); 
-        }
+        // if (Session::has('academia')) {
+        //     Session::forget('academia'); 
+        // }
 
-        if (Session::has('estudio')) {
-            Session::forget('estudio'); 
-        }
+        // if (Session::has('estudio')) {
+        //     Session::forget('estudio'); 
+        // }
 
-        if (Session::has('niveles')) {
-            Session::forget('niveles'); 
-        }
+        // if (Session::has('niveles')) {
+        //     Session::forget('niveles'); 
+        // }
         
         $academia = Academia::find(Auth::user()->academia_id);
-        $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
-        $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
-        $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
+
 
         if($academia){
+
+            $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
+            $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
+            $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
+
         //Simple Marker
-        $config['center'] = '10.6913156,-71.6800493';
-        $config['zoom'] = 14;
-        \Gmaps::initialize($config);
+        // $config['center'] = '10.6913156,-71.6800493';
+        // $config['zoom'] = 14;
+        // \Gmaps::initialize($config);
 
-        $marker = array();
-        $marker['position'] = '10.6913156,-71.6800493';
-        $marker['draggable'] = true;
-        $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-        \Gmaps::add_marker($marker);
+        // $marker = array();
+        // $marker['position'] = '10.6913156,-71.6800493';
+        // $marker['draggable'] = true;
+        // $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
+        // \Gmaps::add_marker($marker);
 
-        $map = \Gmaps::create_map();
+        // $map = \Gmaps::create_map();
 
         if($academia->correo)
         {
-
-            return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with(['id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff]);
- 
+            return view('configuracion.academia.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff]);
         }
 
         else{
 
-            return view('configuracion.academia.configuracion' , compact('map'))->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles]);
+            return view('configuracion.academia.configuracion')->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles, 'config_staff' => $config_staff]);
         }
 
-        //Devolver vista con datos del mapa
+        
         
 
         }else{
@@ -1132,36 +1133,6 @@ class AcademiaConfiguracionController extends BaseController {
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
-    }
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-    {   
-        $academia = Academia::find($id);
-        if($academia){
-            
-            $config['center'] = '10.6913156,-71.6800493';
-            $config['zoom'] = 14;
-            \Gmaps::initialize($config);
-
-            $marker = array();
-            $marker['position'] = '10.6913156,-71.6800493';
-            $marker['draggable'] = true;
-            $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-            \Gmaps::add_marker($marker);
-
-            $map = \Gmaps::create_map();
-
-           return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'));
-        }else{
-           return redirect("/"); 
-        }
     }
 
 	/**
