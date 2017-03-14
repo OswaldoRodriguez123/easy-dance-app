@@ -498,7 +498,8 @@
                                 <tr>    
                                     <th data-column-id="imagen"></th> 
                                     <th data-column-id="nombre">Nombre</th>
-                                    <th data-column-id="monto" class="text-right">Cantidad</th>                                  
+                                    <th data-column-id="monto" class="text-right">Cantidad</th>
+                                    <th data-column-id="cantidad" class="text-right">Cantidad</th>                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -535,6 +536,18 @@
                                     <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
                                   </td>
 
+                                  
+                                  <td>
+
+                                    <div class="pull-right p-relative">
+                                      <span class="c-morado">
+
+                                        {{$patrocinador->cantidad}}
+                                      </span>
+                                    </div>
+
+                                  </td>
+
                                   <td>
                                     <div class="pull-right p-relative">
                                       <span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
@@ -555,6 +568,7 @@
                                       </span>
                                     </div>
                                   </td>
+
 
                                 </tr>
                             @endforeach 

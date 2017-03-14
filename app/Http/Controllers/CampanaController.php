@@ -750,8 +750,6 @@ public function todos_con_robert()
 
         else{
 
-
-
                 $recompensa = Recompensa::find($request->recompensa_id);
                 $monto = $recompensa->cantidad * $request->cantidad;
 
@@ -762,6 +760,7 @@ public function todos_con_robert()
                 $patrocinador->usuario_id = $request->alumno_id;
                 $patrocinador->tipo_id = 1;
                 $patrocinador->monto = $monto;
+                $patrocinador->cantidad = $request->cantidad;
 
                 if($patrocinador->save()){
 
@@ -771,7 +770,8 @@ public function todos_con_robert()
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $request->recompensa_id;
-                    $item_factura->nombre = 'Campaña - Contribucion';
+                    // $item_factura->nombre = 'Campaña - Contribucion';
+                    $item_factura->nombre = $request->cantidad . ' ' . $recompensa->nombre;
                     $item_factura->tipo = 11;
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;
@@ -1498,7 +1498,46 @@ public function todos_con_robert()
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
                     $hora_segundos = $fecha_de_registro->format('H:i');
                     $dia = $fecha_de_registro->format('d');
-                    $fecha_de_realizacion = $dia . " de septiembre a las ".$hora_segundos;
+
+                    switch ($fecha_de_registro->month) {
+                        case 1:
+                            $mes = "Enero";
+                            break;
+                        case 2:
+                            $mes = "Febrero";
+                            break;
+                        case 3:
+                            $mes = "Marzo";
+                            break;
+                        case 4:
+                            $mes = "Abril";
+                            break;
+                        case 5:
+                            $mes = "Mayo";
+                            break;
+                        case 6:
+                            $mes = "Junio";
+                            break;
+                        case 7:
+                            $mes = "Julio";
+                            break;
+                        case 8:
+                            $mes = "Agosto";
+                            break;
+                        case 9:
+                            $mes = "Septiembre";
+                            break;
+                        case 10:
+                            $mes = "Octubre";
+                            break;
+                        case 11:
+                            $mes = "Noviembre";
+                            break;
+                        case 12:
+                            $mes = "Diciembre";
+                            break;
+                    }
+                    $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
                  }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
