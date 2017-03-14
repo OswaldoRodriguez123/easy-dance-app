@@ -621,6 +621,90 @@
 
 
 
+                        <div class="clearfix p-b-35"></div>
+
+
+                                    <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="id">Cargos de Staqff</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos cargos que posees en tu academia" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseCargo" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseCargo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    
+                                    <div class="panel-body">
+                                    
+                                    <label for="nombre_cargo" id="id-nombre_cargo">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del nivel que deseas asignar" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_cargo" id="nombre_cargo" placeholder="Ej. Vigilante">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-nombre_cargo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_cargo_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+                               </div>
+
+                              <br>
+
+                              <div class="card-header text-left">
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" id="añadircargo" name="añadircargo" >Agregar Linea</button>
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablecargo" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="nombre"></th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                            @foreach ($config_staff as $staff)
+                                <?php $id = $staff->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$staff->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                  </tr>
+                            @endforeach 
+                   
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                        </div>
+                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseCargo')" ></i></div>
+
+                                    <div class="clearfix p-b-35"></div>
+                                      <hr></hr>
+                                
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                 </div>
+                               </div>
+
+
+
+
                               <div class="clearfix p-b-35"></div>
 
 
@@ -805,6 +889,41 @@
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+  var k=$('#tablecargo').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -1165,6 +1284,125 @@
                 .remove()
                 .draw();
           });
+
+      $("#añadircargo").click(function(){
+
+                var datos = $( "#edit_cargo_academia" ).serialize(); 
+                procesando();
+                var route = "{{url('/')}}/configuracion/academia/cargo";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = datos;
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data: datos ,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var nombre = respuesta.array.nombre;
+
+                          var rowId=respuesta.id;
+                          var rowNode=k.row.add( [
+                          ''+nombre+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                          $("#edit_cargo_academia")[0].reset();
+                          // rechargeServicio();
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $('#tablecargo tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: "{{url('/')}}/configuracion/academia/eliminarcargo/"+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+                      
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+              k.row( $(this).parents('tr') )
+                .remove()
+                .draw();
+          });
+
 
   
   function limpiarMensaje(){

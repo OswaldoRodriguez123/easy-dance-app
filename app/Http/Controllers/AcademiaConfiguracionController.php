@@ -16,6 +16,7 @@ use App\ConfigClasesGrupales;
 use App\ConfigEspecialidades;
 use App\ConfigEstudios;
 use App\ConfigNiveles;
+use App\ConfigStaff;
 use App\Taller;
 use App\Fiesta;
 use App\Campana;
@@ -507,6 +508,7 @@ class AcademiaConfiguracionController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
         $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
+        $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
 
         if($academia){
         //Simple Marker
@@ -525,7 +527,7 @@ class AcademiaConfiguracionController extends BaseController {
         if($academia->correo)
         {
 
-            return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with(['id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios]);
+            return view('configuracion.academia.planilla',['academia'=>$academia], compact('map'))->with(['id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff]);
  
         }
 
@@ -1085,6 +1087,53 @@ class AcademiaConfiguracionController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
+
+    Public function agregarcargo(Request $request){
+        
+    $rules = [
+
+        'nombre_cargo' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_cargo.required' => 'Ups! El Nombre es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = title_case($request->nombre_cargo);
+
+        $staff = new ConfigStaff;
+                                        
+        $staff->academia_id = Auth::user()->academia_id;
+        $staff->nombre = $nombre;
+
+        $staff->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $staff, 'id' => $staff->id, 200]);
+
+        }
+    }
+
+    public function eliminarcargo($id){
+
+        $staff = ConfigStaff::find($id);
+
+        $staff->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
 
 	/**
 	 * Show the form for editing the specified resource.
