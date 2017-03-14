@@ -771,9 +771,9 @@ public function todos_con_robert()
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $request->recompensa_id;
                     // $item_factura->nombre = 'Campaña - Contribucion';
-                    $item_factura->nombre = $request->cantidad . ' ' . $recompensa->nombre;
+                    $item_factura->nombre = $recompensa->nombre;
                     $item_factura->tipo = 11;
-                    $item_factura->cantidad = 1;
+                    $item_factura->cantidad = $request->cantidad;
                     $item_factura->precio_neto = 0;
                     $item_factura->impuesto = 0;
                     $item_factura->importe_neto = $monto;
