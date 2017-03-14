@@ -33,8 +33,7 @@
             <section id="content">
                 <div class="container">
                 
-                    <div class="block-header">
-                        <!-- <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/asistencia" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Asistencias</a> -->
+                    <div class="block-header hidden-print">
 
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/reportes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Reportes</a>
 
@@ -52,163 +51,164 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
+                        <div class="card-header text-right hidden-print">
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-shield-check f-25"></i> Reporte de Asistencias</p>
                             <hr class="linea-morada">
                                                          
                         </div>
+                        
+                        <div class ="hidden-print">
+                            <div class="col-sm-12">
+                                <form name="formFiltro" id="formFiltro">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <div class="col-sm-12">
-                            <form name="formFiltro" id="formFiltro">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <div class="col-md-4">
+                                    <label>Participantes</label>
 
-                            <div class="col-md-4">
-                                <label>Participantes</label>
-
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" data-live-search="true" name="participante_id" id="participante_id">
-                                        <option value="1">Asistentes</option>
-                                        <option value="2">Inasistentes</option>
-                                        <option value="0">Todos</option>
-                                    </select>
-                                  </div>
-                                </div>
-                            </div>
-
-             <!--                <div class="col-md-4">
-                                <label>Alumnos</label>
-
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" data-live-search="true" name="alumno_id" id="alumno_id">
-                                        <option value="0">Todos</option>
-                                        @foreach($alumnos as $alumno)
-                                            <option value="{{$alumno->id}}">{{$alumno->nombre}} {{$alumno->apellido}} {{$alumno->identificacion}}</option>
-                                        @endforeach
-                                        
-                                    </select>
-                                  </div>
-                                </div>
-                            </div> -->
-
-                            <div class="col-md-4">
-                                <label>Fecha</label>
-
-                                <div class="fg-line">
-                                    <input type="text" id="fecha" name="fecha" class="date-picker form-control input-sm proceso pointer" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" placeholder="Selecciona la fecha"> 
-                                </div>
-                                <div class="has-error" id="error-linea">
-                                  <span>
-                                      <small class="help-block error-span" id="error-linea_mensaje" ></small>      
-                                  </span>
-                                 </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label>Clase Grupal</label>
-
-                                <div class="fg-line">
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
-                                        </select> 
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="clearfix"></div>
-
-                            <div class="col-md-4">
-                                <label>Tipo</label>
-
-                                <div class="fg-line">
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
-                                            <option value="1">General</option>
-                                            <option value="2">Valoracion</option>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="participante_id" id="participante_id">
+                                            <option value="1">Asistentes</option>
+                                            <option value="2">Inasistentes</option>
+                                            <option value="0">Todos</option>
                                         </select>
+                                      </div>
                                     </div>
-                                </div>    
+                                </div>
+
+                 <!--                <div class="col-md-4">
+                                    <label>Alumnos</label>
+
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="alumno_id" id="alumno_id">
+                                            <option value="0">Todos</option>
+                                            @foreach($alumnos as $alumno)
+                                                <option value="{{$alumno->id}}">{{$alumno->nombre}} {{$alumno->apellido}} {{$alumno->identificacion}}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="col-md-4">
+                                    <label>Fecha</label>
+
+                                    <div class="fg-line">
+                                        <input type="text" id="fecha" name="fecha" class="date-picker form-control input-sm proceso pointer" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" placeholder="Selecciona la fecha"> 
+                                    </div>
+                                    <div class="has-error" id="error-linea">
+                                      <span>
+                                          <small class="help-block error-span" id="error-linea_mensaje" ></small>      
+                                      </span>
+                                     </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Clase Grupal</label>
+
+                                    <div class="fg-line">
+                                        <div class="select">
+                                            <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
+                                            </select> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="col-md-4">
+                                    <label>Tipo</label>
+
+                                    <div class="fg-line">
+                                        <div class="select">
+                                            <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                                <option value="1">General</option>
+                                                <option value="2">Valoracion</option>
+                                            </select>
+                                        </div>
+                                    </div>    
+                                </div>
+
+
+                                <button type="button" class="btn btn-blanco m-t-10 m-l-10 f-10 guardar" id="guardar" >Filtrar</button>
+
+                                <div class ="clearfix m-b-10"></div>
+                                <div class ="clearfix m-b-10"></div>
+
+                                </form>
                             </div>
 
+                           
+                            <div class="col-md-6">
+                                <h2>Informe de Asistencias</h2>
+                                <hr>
+                                <!-- <ul class="actions">
+                                    <li class="dropdown action-show">
+                                        <a href="#" data-toggle="dropdown">
+                                            <i class="zmdi zmdi-more-vert"></i>
+                                        </a>
+                        
+                                        <div class="dropdown-menu pull-right">
+                                            <p class="p-20">
+                                                You can put anything here
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul> -->
+                                <div id="pie-chart-procesos" class="flot-chart-pie"></div>
+                                <div class="flc-pie hidden-xs"></div>
 
-                            <button type="button" class="btn btn-blanco m-t-10 m-l-10 f-10 guardar" id="guardar" >Filtrar</button>
+                            </div><!-- COL-MD-6 -->
 
-                            <div class ="clearfix m-b-10"></div>
-                            <div class ="clearfix m-b-10"></div>
 
-                            </form>
+                            <div class="col-md-6">
+                                <h2>Información</h2>
+                                <hr>
+
+
+                                <!-- <ul class="actions">
+                                    <li class="dropdown action-show">
+                                        <a href="#" data-toggle="dropdown">
+                                            <i class="zmdi zmdi-more-vert"></i>
+                                        </a>
+                        
+                                        <div class="dropdown-menu pull-right">
+                                            <p class="p-20">
+                                                You can put anything here
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul> -->
+                                
+                                <div class="col-md-3">    
+                                    <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3">    
+                                    <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
+                                </div>
+                                <div class="clearfix"></div>    
+
+                                <div class="mini-charts-item bgm-blue">
+                                    <div class="clearfix">
+                                       <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
+                                        <div class="count">
+                                            <small>Total:</small>
+                                            <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
+                                            <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- COL-MD-6 -->
+
+                            <div class ="clearfix"></div>
+
                         </div>
 
-                       
-                        <div class="col-md-6">
-                            <h2>Informe de Asistencias</h2>
-                            <hr>
-                            <!-- <ul class="actions">
-                                <li class="dropdown action-show">
-                                    <a href="#" data-toggle="dropdown">
-                                        <i class="zmdi zmdi-more-vert"></i>
-                                    </a>
-                    
-                                    <div class="dropdown-menu pull-right">
-                                        <p class="p-20">
-                                            You can put anything here
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul> -->
-                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                            <div class="flc-pie hidden-xs"></div>
-
-                        </div><!-- COL-MD-6 -->
-
-
-                        <div class="col-md-6">
-                            <h2>Información</h2>
-                            <hr>
-
-
-                            <!-- <ul class="actions">
-                                <li class="dropdown action-show">
-                                    <a href="#" data-toggle="dropdown">
-                                        <i class="zmdi zmdi-more-vert"></i>
-                                    </a>
-                    
-                                    <div class="dropdown-menu pull-right">
-                                        <p class="p-20">
-                                            You can put anything here
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul> -->
-                            
-                            <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">    
-                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
-                            </div>
-                            <div class="clearfix"></div>    
-
-                            <div class="mini-charts-item bgm-blue">
-                                <div class="clearfix">
-                                   <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
-                                    <div class="count">
-                                        <small>Total:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
- 
-                        </div><!-- COL-MD-6 -->
-
-                        <div class ="clearfix"></div>
+                        
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -302,7 +302,9 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 25, 
+        pageLength: 50, 
+        bInfo: false,
+        bPaginate: false,
         order: [[7, 'desc'], [8, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
