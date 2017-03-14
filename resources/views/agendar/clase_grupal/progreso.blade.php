@@ -1938,7 +1938,7 @@
           if($("#"+newswitch).is(":checked")){
 
           }else{
-            $(this).attr("checked", false)
+            $(this).prop("checked", false)
             $("#"+total[0]).val('0')
           }
         }
@@ -1949,28 +1949,50 @@
         
       }else{
 
-        cambio = 0;
+        swal({   
+          title: "Desea desmarcar esta opcion?",   
+          text: "Confirmar!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Desmarcar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+        }, function(isConfirm){   
+          if (isConfirm) {
 
-        while(nivel_numero < 4){
+            cambio = 0;
 
-          if(cambio){
+            while(nivel_numero < 4){
 
-            nivel_numero += 1;
-            $('#basico_'+nivel_numero).hide();
+              if(cambio){
 
+                nivel_numero += 1;
+                $('#basico_'+nivel_numero).hide();
+
+              }
+
+              while(clase_numero < 4) {
+                clase_numero += 1;
+                newswitch = nivel+nivel_numero+'c'+clase_numero+'-switch';
+                newtotal = nivel+nivel_numero+'c'+clase_numero;
+                // console.log(newswitch);
+                $('#'+newswitch).prop("checked", false)
+                $('#'+newtotal).val(0)
+              }
+
+              cambio = 1;
+            }
+      
+          }else{
+
+            newswitch = total[0]+'-switch';
+            // console.log(newswitch)
+            $("#"+newswitch).prop("checked", true)
+            $("#"+total[0]).val('1')
           }
-
-          while(clase_numero < 4) {
-            clase_numero += 1;
-            newswitch = nivel+nivel_numero+'c'+clase_numero+'-switch';
-            newtotal = nivel+nivel_numero+'c'+clase_numero;
-            // console.log(newswitch);
-            $('#'+newswitch).attr("checked", false)
-            $('#'+newtotal).val(0)
-          }
-
-          cambio = 1;
-        }
+        });
+      
       }
       
     });
