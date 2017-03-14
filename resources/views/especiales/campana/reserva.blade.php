@@ -489,93 +489,93 @@
                         <p class="text-left f-30 opaco-0-8 f-700" id="offset_patrocinador" >Nuestros patrocinadores</p>
                         <hr class='linea-morada'>
 
-                        <div class="col-sm-12" style="padding:0px">
+                        
 
+                        <div class="table-responsive row">
+                          <div class="col-sm-12">
+                            <table class="table table-striped table-bordered" id="tablelistar" >
 
-                         <table class="table table-striped table-bordered" id="tablelistar" >
+                              <thead>
+                                  <tr>    
+                                      <th data-column-id="imagen"></th> 
+                                      <th data-column-id="nombre">Nombre</th>
+                                      <th data-column-id="monto" class="text-right">Cantidad</th>
+                                      <th data-column-id="cantidad" class="text-right">Cantidad</th>                                  
+                                  </tr>
+                              </thead>
 
-                            <thead>
-                                <tr>    
-                                    <th data-column-id="imagen"></th> 
-                                    <th data-column-id="nombre">Nombre</th>
-                                    <th data-column-id="monto" class="text-right">Cantidad</th>
-                                    <th data-column-id="cantidad" class="text-right">Cantidad</th>                                  
-                                </tr>
-                            </thead>
-                            <tbody>
-                          
-                                                 
-                            @foreach ($patrocinadores as $patrocinador)
-                                <?php $id = $patrocinador->id; ?>
-                                <tr id="{{$id}}" class="p-10"">
-                                  <td>
-                                    <div class="pull-left p-relative">
-                                        @if($patrocinador->sexo == 'F')
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
-                                          <!-- <i class="chat-status-busy"></i> -->
-                                        @elseif($patrocinador->sexo == 'M')
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
-                                          <!-- <i class="chat-status-busy"></i> -->
-                                        @elseif($patrocinador->sexo == 'FA')
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
-                                          <!-- <i class="chat-status-busy"></i> -->
-                                        @elseif($patrocinador->sexo == 'O')
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
-                                          <!-- <i class="chat-status-busy"></i> -->
-                                        @else
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt="">
-                                          <!-- <i class="chat-status-busy"></i> -->
-                                        @endif
-                                    </div>
-                                  </td>
+                              <tbody>
+                                         
+                                @foreach ($patrocinadores as $patrocinador)
+                                  <?php $id = $patrocinador->id; ?>
+                                  <tr id="{{$id}}" class="p-10"">
+                                    <td>
+                                      <div class="pull-left p-relative">
+                                          @if($patrocinador->sexo == 'F')
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                                            <!-- <i class="chat-status-busy"></i> -->
+                                          @elseif($patrocinador->sexo == 'M')
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                                            <!-- <i class="chat-status-busy"></i> -->
+                                          @elseif($patrocinador->sexo == 'FA')
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
+                                            <!-- <i class="chat-status-busy"></i> -->
+                                          @elseif($patrocinador->sexo == 'O')
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
+                                            <!-- <i class="chat-status-busy"></i> -->
+                                          @else
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt="">
+                                            <!-- <i class="chat-status-busy"></i> -->
+                                          @endif
+                                      </div>
+                                    </td>
 
-                                  <td>
-                                    <p class="lv-title c-morado">
-                                      {{ $patrocinador->Nombres }}
-                                    </p>
-                                    <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
-                                  </td>
+                                    <td>
+                                      <p class="lv-title c-morado">
+                                        {{ $patrocinador->Nombres }}
+                                      </p>
+                                      <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
+                                    </td>
 
-                                  
-                                  <td>
+                                    
+                                    <td>
 
-                                    <div class="pull-right p-relative">
-                                      <span class="c-morado">
+                                      <div class="pull-right p-relative">
+                                        <span class="c-morado">
 
-                                        {{$patrocinador->cantidad}}
-                                      </span>
-                                    </div>
+                                          {{$patrocinador->cantidad}}
+                                        </span>
+                                      </div>
 
-                                  </td>
+                                    </td>
 
-                                  <td>
-                                    <div class="pull-right p-relative">
-                                      <span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
-                                        @if($patrocinador->tipo_moneda == 1)
+                                    <td>
+                                      <div class="pull-right p-relative">
+                                        <span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
+                                          @if($patrocinador->tipo_moneda == 1)
 
-                                          Pesos
+                                            Pesos
 
-                                        @elseif($patrocinador->tipo_moneda == 2)
+                                          @elseif($patrocinador->tipo_moneda == 2)
 
-                                          USD
+                                            USD
 
-                                        @else
+                                          @else
 
-                                          BsF
+                                            BsF
 
-                                        @endif
+                                          @endif
 
-                                      </span>
-                                    </div>
-                                  </td>
-
-
-                                </tr>
-                            @endforeach 
-                                                           
-                            </tbody>
-                        </table>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                @endforeach 
+                                                             
+                              </tbody>
+                          </table>
                         </div>
+                      </div>
                     </div>
 
                     <div class="clearfix p-b-35"></div>
