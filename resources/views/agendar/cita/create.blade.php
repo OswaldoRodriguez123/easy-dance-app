@@ -175,9 +175,9 @@
                                       <div class="select">
                                         <select class="selectpicker" name="tipo_id" id="tipo_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          <option value="1">Diagnóstico</option>
-                                          <option value="2">Asesoría de eventos</option>
-                                          <option value="3">Clases personalizadas</option>
+                                          @foreach ( $config_citas as $tipo )
+                                            <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                                          @endforeach
 
                                         </select>
                                       </div>
@@ -204,7 +204,7 @@
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
                                           <option value="">Selecciona</option>
                                           @foreach ( $instructoresacademia as $instructores )
-                                          <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
+                                            <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
                                           @endforeach
                                         </select>
                                       </div>

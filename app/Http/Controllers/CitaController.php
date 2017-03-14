@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Cita;
+use App\ConfigCitas;
 use App\Academia;
 use App\Alumno;
 use App\Instructor;
@@ -122,7 +123,7 @@ class CitaController extends BaseController {
 	public function create()
     {
 
-        return view('agendar.cita.create')->with([ 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('agendar.cita.create')->with([ 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_citas' => ConfigCitas::all()]);
     }
 
     public function store(Request $request)
@@ -284,7 +285,7 @@ class CitaController extends BaseController {
 
                 //dd($clase_grupal_join);
 
-            return view('agendar.cita.planilla')->with(['alumnosacademia' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'cita' => $cita]);
+            return view('agendar.cita.planilla')->with(['alumnosacademia' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'cita' => $cita, 'config_citas' => ConfigCitas::all()]);
 
         }else{
            return redirect("agendar/citas"); 

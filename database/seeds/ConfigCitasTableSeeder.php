@@ -26,5 +26,9 @@ class ConfigCitasTableSeeder extends Seeder
 	      'nombre' => 'Clases personalizadas',
 	    ));
 
+	    ConfigCitas::create(array(
+	      'nombre' => 'Diagnóstico Recurrente',
+	    ));
+
     }
 }

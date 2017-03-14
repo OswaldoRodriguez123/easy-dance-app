@@ -277,9 +277,9 @@
                                       <div class="select">
                                         <select class="form-control" id="tipo_id" name="tipo_id">
 
-                                        <option value="1">Diagnóstico</option>
-                                        <option value="2">Asesoría de eventos</option>
-                                        <option value="3">Clases personalizadas</option>
+                                        @foreach ( $config_citas as $tipo )
+                                          <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                                        @endforeach
                                         
                                         </select>
                                       </div> 
