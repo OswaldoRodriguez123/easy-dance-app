@@ -3096,5 +3096,130 @@ class ClaseGrupalController extends BaseController {
         
     }
 
+    public function agenda($id){
+
+        $clase = DB::table('config_clases_grupales')
+                ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+                ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre')
+                ->where('clases_grupales.id', '=' ,  $id)
+        ->first();
+
+        $nombre = $clase->nombre;
+
+        $horarios_clasegrupal = DB::table('config_clases_grupales')
+                ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                ->join('horario_clase_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
+                ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+                ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+                ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad')
+                ->where('clases_grupales.id', '=' ,  $id)
+        ->get();
+
+
+        $fecha_start=explode('-',$clase->fecha_inicio);
+        $fecha_end=explode('-',$clase->fecha_final);
+
+        $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+        $id=$clase->id;
+        $nombre=$clase->nombre;
+        $descripcion=$clase->descripcion;
+        $hora_inicio=$clase->hora_inicio;
+        $hora_final=$clase->hora_final;
+        $fecha_inicio = $dt->toDateString();
+        $fecha_final = $df->toDateString();
+        $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+        if($clase->color_etiqueta){
+            $etiqueta=$clase->color_etiqueta;
+        }else{
+            $etiqueta=$clase->clase_etiqueta;
+        }
+
+        $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+
+        $c=0;
+
+        
+        while($dt->timestamp<$df->timestamp){
+            $fecha="";
+            $fecha=$dt->addWeek()->toDateString();
+
+            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
+                ->where('fecha_final', '>=', $fecha)
+                ->where('tipo_id', $id)
+                ->where('tipo', 1)
+            ->first();
+
+            if(!$horario_bloqueado){
+
+                $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+            }else{
+                if($horario_bloqueado->boolean_mostrar == 1)
+                {
+                    $arrayClases[]=array("id"=>$id,"nombre"=>"CLASE CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"cancelada!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                 }
+            }
+            
+            $c++;
+        }
+
+ 
+
+        foreach ($horarios_clasegrupal as $clase) {
+            $fecha_start=explode('-',$clase->fecha_inicio);
+            $fecha_end=explode('-',$clase->fecha_final);
+
+            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+            $id=$clase->id;
+            $nombre=$clase->nombre;
+            $descripcion=$clase->descripcion;
+            $hora_inicio=$clase->hora_inicio;
+            $hora_final=$clase->hora_final;
+            $fecha_inicio = $dt->toDateString();
+            $fecha_final = $df->toDateString();
+            $etiqueta=$clase->color_etiqueta;
+            $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+
+
+            $fecha_inicio = $dt->toDateString();
+            $fecha_final = $df->toDateString();
+
+            $arrayClases[]=array("id"=>$id, "fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+
+            $c=0;
+
+            
+            while($dt->timestamp<$df->timestamp){
+                $fecha="";
+                $fecha=$dt->addWeek()->toDateString();
+
+                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
+                    ->where('fecha_final', '>=', $fecha)
+                    ->where('tipo_id', $id)
+                    ->where('tipo', 1)
+                ->first();
+
+                 if(!$horario_bloqueado){
+
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                }else{
+                    if($horario_bloqueado->boolean_mostrar == 1)
+                    {
+                        $arrayClases[]=array("id"=>$id,"nombre"=>"CLASE CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"cancelada!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                     }
+                }
+                $c++;
+            }
+
+        }
+
+        return view('agendar.clase_grupal.agenda')->with(['fechas' => $arrayClases, 'nombre' => $nombre, 'id' => $id]);
+    }
+
 
 }

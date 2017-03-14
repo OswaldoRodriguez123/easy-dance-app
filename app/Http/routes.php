@@ -498,6 +498,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/alumnos/eliminar', 'ClaseGrupalController@eliminarAlumnos');
 			Route::post('agendar/clases-grupales/agregarhorario', 'ClaseGrupalController@agregarhorario');
 			Route::post('agendar/clases-grupales/eliminarhorario/{id}', 'ClaseGrupalController@eliminarhorario');
+			Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
 
 			Route::put('agendar/clases-grupales/update/nombre', 'ClaseGrupalController@updateNombre');
 			Route::put('agendar/clases-grupales/update/fecha', 'ClaseGrupalController@updateFecha');
