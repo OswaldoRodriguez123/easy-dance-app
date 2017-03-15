@@ -14,6 +14,9 @@
 @stop
 
 <meta content='{{$campana->nombre}}' property='og:title'/>
+<meta name="description" content="{{$campana->historia}}" />
+<meta property="og:description" content="{{$campana->historia}}" />
+
 @if($campana->imagen)
   <meta content="{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}" property='og:image'/>
 @endif
