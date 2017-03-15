@@ -1,20 +1,29 @@
 @extends('layout.master')
 
 @section('css_vendor')
-<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+
+  <style>
+
+  .glyphicon{
+    top: 10px;
+  }
+
+  </style>
 @stop
 
 @section('js_vendor')
-<script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
-<script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
+
 @section('content')
 
   <section id="content">
