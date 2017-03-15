@@ -21,6 +21,7 @@ use App\Visitante;
 use App\Asistencia;
 use App\ConfigTipoExamen;
 use App\ConfigServicios;
+use App\ComoNosConociste;
 use Mail;
 use DB;
 use Validator;
@@ -752,6 +753,8 @@ class ReporteController extends BaseController
         $hombres = Visitante::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->count();
 
         $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
+
+        $como_nos_conociste = ComoNosConociste::all();
                         
 
         $forAge = DB::select('SELECT CASE
@@ -768,7 +771,7 @@ class ReporteController extends BaseController
                         GROUP BY age_range
                         ORDER BY age_range');
 
-        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'promotores' => $promotores]);
+        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'promotores' => $promotores, 'como_nos_conociste' => $como_nos_conociste]);
 	}
 
 public function PresencialesFiltros(Request $request)
@@ -808,12 +811,17 @@ public function PresencialesFiltros(Request $request)
 
         $query = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
+            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente', 'visitantes_presenciales.como_nos_conociste_id')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id);
 
         if($request->instructor_id)
         {
             $query->where('visitantes_presenciales.instructor_id','=', $request->instructor_id);
+        }
+
+        if($request->como_nos_conociste_id)
+        {
+            $query->where('visitantes_presenciales.como_nos_conociste_id','=', $request->como_nos_conociste_id);
         }
 
         if($request->boolean_fecha){
@@ -853,6 +861,15 @@ public function PresencialesFiltros(Request $request)
         $total = 0;
         $mujeres = 0;
         $hombres = 0;
+        
+        
+        $amigo = 0;
+        $redes = 0;
+        $prensa = 0;
+        $television = 0;
+        $radio = 0;
+        $lugar = 0;
+        $otros = 0;
 
         foreach($presenciales as $presencial){
 
@@ -865,6 +882,22 @@ public function PresencialesFiltros(Request $request)
             }else{
                 $hombres++;
             }
+            
+            if($presencial->como_nos_conociste_id == 1){
+                $amigo++;
+            }else if($presencial->como_nos_conociste_id == 2){
+                $redes++;
+            }else if($presencial->como_nos_conociste_id == 3){
+                $prensa++;
+            }else if($presencial->como_nos_conociste_id == 4){
+                $television++;
+            }else if($presencial->como_nos_conociste_id == 5){
+                $radio++;
+            }else if($presencial->como_nos_conociste_id == 6){
+                $lugar++;
+            }else{
+                $otros++;
+            }
 
             $collection=collect($presencial);     
             $presencial_array = $collection->toArray();
@@ -874,29 +907,46 @@ public function PresencialesFiltros(Request $request)
             $array[$presencial->id] = $presencial_array;
         }
 
-        $array_sexo = array();
+        // $array_sexo = array();
+        $array_conociste = array();
 
-        $array_hombres = array('M', $hombres);
-        $array_mujeres = array('F', $mujeres);
+        $array_amigo = array('Por un amigo', $amigo);
+        $array_redes = array('Redes sociales / internet', $redes);
+        $array_prensas = array('Prensa', $prensa);
+        $array_television = array('Televisión', $television);
+        $array_radios = array('Radio', $radio);
+        $array_lugar = array('Ubicación/Lugar', $lugar);
+        $array_otros = array('Otros', $otros);
 
-        array_push($array_sexo, $array_hombres);
-        array_push($array_sexo, $array_mujeres);   
+        array_push($array_conociste, $array_amigo);
+        array_push($array_conociste, $array_redes);
+        array_push($array_conociste, $array_prensas);
+        array_push($array_conociste, $array_television);
+        array_push($array_conociste, $array_radios);
+        array_push($array_conociste, $array_lugar);
+        array_push($array_conociste, $array_otros);
+
+        // $array_hombres = array('M', $hombres);
+        // $array_mujeres = array('F', $mujeres);
+
+        // array_push($array_sexo, $array_hombres);
+        // array_push($array_sexo, $array_mujeres);   
 
 
         // $forAge = DB::select("SELECT CASE
-        //                     WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-        //                     WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-        //                     WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-        //                     WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-        //                     WHEN age >= 51 THEN '+51'
-        //                     WHEN age IS NULL THEN 'Sin fecha (NULL)'
-        //                 END as age_range, COUNT(*) AS count
-        //                 FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-        //                 FROM visitantes_presenciales
-        //                 LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
-        //                 WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
-        //                 GROUP BY age_range
-        //                 ORDER BY age_range");
+        //     WHEN age BETWEEN 3 and 10 THEN '3 - 10'
+        //     WHEN age BETWEEN 11 and 20 THEN '11 - 20'
+        //     WHEN age BETWEEN 21 and 35 THEN '21 - 35'
+        //     WHEN age BETWEEN 36 and 50 THEN '36 - 50'
+        //     WHEN age >= 51 THEN '+51'
+        //     WHEN age IS NULL THEN 'Sin fecha (NULL)'
+        // END as age_range, COUNT(*) AS count
+        // FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
+        // FROM visitantes_presenciales
+        // LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
+        // WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
+        // GROUP BY age_range
+        // ORDER BY age_range");
 
         return response()->json(
             [
@@ -904,7 +954,7 @@ public function PresencialesFiltros(Request $request)
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
                 'total'             => $total,
-                'sexos'             => $array_sexo,
+                'conociste'         => $array_conociste,
                 'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
 
             ]);

@@ -63,8 +63,9 @@
 
                         <div class="col-sm-12">
                             <form name="formFiltro" id="formFiltro">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
+
                                 <div class="col-md-4">
                                     <label>Promotor</label>
 
@@ -80,9 +81,6 @@
                                         </select>
                                       </div>
                                     </div>
-                                  
-
-                                    
                                 </div>
 
                                 <div class="col-md-4">
@@ -96,6 +94,25 @@
                                         </select>
                                       </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <label>¿Cómo se enteró?</label>
+
+
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="como_nos_conociste_id" id="como_nos_conociste_id">
+                                          <option value="0">Todos</option>
+                                          @foreach ( $como_nos_conociste as $como_se_entero )
+                                            <option value = "{{ $como_se_entero->id }}"> {{ $como_se_entero->nombre }}</option>
+
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix m-b-20"></div>
 
                                 <div class="col-sm-4">
                                     <div class="form-group fg-line">
@@ -138,7 +155,7 @@
                                 </div>
                                 
 
-   
+
 
                                  <!-- <div class="clearfix m-b-10"></div> -->
 
@@ -512,24 +529,24 @@
                             $("#mujeres").text(datos.mujeres);
                             $("#hombres").text(datos.hombres);
 
-                            sexos = respuesta.sexos
+                            // sexos = respuesta.sexos
 
-                            if(sexos[1]){
-                                if(sexos[1][0] == 'F'){
-                                    color1 = "#2196f3"
-                                    color2 = "#FF4081"
-                                }else{
-                                    color2 = "#2196f3"
-                                    color1 = "#FF4081"
-                                }
-                            }
+                            // if(sexos[1]){
+                            //     if(sexos[1][0] == 'F'){
+                            //         color1 = "#2196f3"
+                            //         color2 = "#FF4081"
+                            //     }else{
+                            //         color2 = "#2196f3"
+                            //         color1 = "#FF4081"
+                            //     }
+                            // }
 
                             var data1 = ''
                             data1 += '[';
-                            $.each( datos.sexos, function( i, item ) {
-                                var edad = item[0];
+                            $.each( datos.conociste, function( i, item ) {
+                                var label = item[0];
                                 var cant = item[1];
-                                data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                                data1 += '{"data":"'+cant+'","label":"'+label+'"},';
                             });
                             data1 = data1.substring(0, data1.length -1);
                             data1 += ']';
@@ -566,7 +583,7 @@
                                     defaultTheme: false,
                                     cssClass: 'flot-tooltip'
                                 },
-                                colors: [color1, color2],
+                                // colors: [color1, color2],
                                 
                             });
 
