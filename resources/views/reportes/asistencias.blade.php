@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -211,7 +212,7 @@
                         
                         <div class="table-responsive row">
                            <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <table class="table display  cell-border text-center " id="tablelistar" >
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
