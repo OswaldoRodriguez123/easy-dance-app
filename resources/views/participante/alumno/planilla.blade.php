@@ -1289,7 +1289,7 @@
                             <tr>
                              <td> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="codigo" class="zmdi {{ empty($alumno->codigo_referido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
+                              <span class="m-l-10 m-r-10"> <i class="icon_b-nombres f-22"></i> </span>
                               <span class="f-14"> Codigo para referir </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">
@@ -1302,11 +1302,11 @@
                                   </i>
                                 </span>
                                 <span class="m-l-10 m-r-10"> 
-                                  <i class="icon_b icon_b-costo f-22">
+                                  <i class="icon_b-nombres f-22">
                                   </i> 
                                 </span>
                                 <span class="f-14">
-                                  Cantidad
+                                  Cantidad de Referidos
                                 </span>
                               </td>
 

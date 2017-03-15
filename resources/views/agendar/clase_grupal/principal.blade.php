@@ -792,6 +792,7 @@
                     operacion += '<span class="f-15 f-700" style="color:black">'
                     operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
                     operacion += '</span></a>'
+                    operacion += '<div class="dropup">'
                     operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
                     operacion += '<li class="hidden-xs">'
                     operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/nivelaciones/'+array.id+'">'
@@ -820,7 +821,7 @@
                     operacion += '<i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>'
                     operacion += 'Cancelar Clase'
                     operacion += '</a></li>'
-                    operacion += '</ul></li></ul>'
+                    operacion += '</ul></div></li></ul>'
        
                     var rowNode=t.row.add( [
                     ''+inicio+'',
@@ -1041,6 +1042,14 @@
       }
      
     });
+
+    $('.table-responsive').on('show.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "inherit" );
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "auto" );
+    })
 
     </script>
 @stop

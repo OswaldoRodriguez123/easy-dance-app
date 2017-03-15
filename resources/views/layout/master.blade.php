@@ -33,9 +33,9 @@
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_2.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/easy_dance_ico_4.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/easy_dance_ico_6.css" rel="stylesheet">
-      <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
 
       <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />
 

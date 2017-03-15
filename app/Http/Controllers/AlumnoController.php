@@ -329,10 +329,10 @@ class AlumnoController extends BaseController
                         $remuneracion_codigo->save();
                     }else{
                         $remuneracion = new AlumnoRemuneracion;
-                        do{
-                            $codigo_validacion = str_random(8);
-                            $find = Alumno::where('codigo_referido', $codigo_validacion)->first();
-                        }while ($find);
+                        // do{
+                        //     $codigo_validacion = str_random(8);
+                        //     $find = Alumno::where('codigo_referido', $codigo_validacion)->first();
+                        // }while ($find);
                         $remuneracion->alumno_id = $referido->id;
                         $remuneracion->remuneracion = $academia->puntos_referencia;
                         $remuneracion->save();
@@ -516,6 +516,17 @@ class AlumnoController extends BaseController
             }
 
             $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->first();
+
+            if(!$alumno_remuneracion)
+            {
+                
+                $alumno_remuneracion = new AlumnoRemuneracion;
+                $alumno_remuneracion->alumno_id = $id;
+                $alumno_remuneracion->remuneracion = 0;
+                $alumno_remuneracion->save();
+            }
+
+            
 
             if($alumno_remuneracion){
                 $puntos_referidos = $alumno_remuneracion->remuneracion;

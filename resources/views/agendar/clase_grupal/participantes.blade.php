@@ -789,8 +789,8 @@
                                                    </span>
                                                 </a>
 
-                                                <!-- <div class="dropup"> -->
-                                                  <ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">
+                                                  <div class="dropup">
+                                                  <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
                                                       <li class="hidden-xs">
                                                           <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
                                                       </li>
@@ -821,7 +821,7 @@
 
 
                                                   </ul>
-                                                <!-- </div> -->
+                                                </div>
                                             </li>
                                         </ul>
 
@@ -2156,6 +2156,27 @@
      
     });
 
+    // $(".dropdown-toggle").on('mouseleave', function() {
+
+
+
+    //   if($('.dropdown').hasClass('open')){
+
+    //     setTimeout(function(){
+    //       $('body').click();
+    //     }, 1500);
+
+    //   }
+
+    // });
+    $('.table-responsive').on('show.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "inherit" );
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "auto" );
+    })
+    
     </script>
 
 @stop
