@@ -71,14 +71,14 @@ class AcademiaConfiguracionController extends BaseController {
         //     }
         // }
 
-        $patrocinadores = Patrocinador::all();
+        // $patrocinadores = Patrocinador::all();
 
-        foreach($patrocinadores as $patrocinador){
+        // foreach($patrocinadores as $patrocinador){
 
-        	$cantidad = intval($patrocinador->monto) / 10000;
-        	$patrocinador->cantidad = $cantidad;
-        	$patrocinador->save();
-        }
+        // 	$cantidad = intval($patrocinador->monto) / 10000;
+        // 	$patrocinador->cantidad = $cantidad;
+        // 	$patrocinador->save();
+        // }
 
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
