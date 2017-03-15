@@ -444,6 +444,9 @@ class AlumnoController extends BaseController
 
     public function edit($id)
     {   
+
+        Session::forget('puntos_referidos');
+
         $alumno = Alumno::Leftjoin('instructores', 'alumnos.instructor_id', '=', 'instructores.id')
             ->select('alumnos.*','instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido')
             ->where('alumnos.id',$id)
@@ -1062,6 +1065,17 @@ class AlumnoController extends BaseController
         
     }
 
+    public function updateReferido(Request $request){
+        $alumno = AlumnoRemuneracion::where('alumno_id', $request->id)->first();
+        $alumno->remuneracion = $request->cantidad_actual + $alumno->remuneracion;
+
+        if($alumno->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function destroy($id)
     {
         // $total = 0;
@@ -1333,6 +1347,63 @@ class AlumnoController extends BaseController
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         
+    }
+
+
+    public function agregar_cantidad(Request $request){
+        
+        $rules = [
+
+            'cantidad' => 'required|numeric|min:1',
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
+            'cantidad.numeric' => 'Ups! El Cantidad es requerido',
+            'cantidad.min' => 'El mínimo de cantidad permitida es 1',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            $puntos_referidos = $academia->puntos_referidos * $request->cantidad;
+
+            Session::push('puntos_referidos', $request->cantidad);
+
+            $items = Session::get('puntos_referidos');
+            end( $items );
+            $contador = key( $items );
+
+             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'cantidad' => $request->cantidad, 'puntos_referidos' => $puntos_referidos, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminar_cantidad($id){
+
+        $arreglo = Session::get('puntos_referidos');
+
+        $cantidad = $arreglo[$id];
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $puntos_referidos = $academia->puntos_referidos * $cantidad;
+
+        unset($arreglo[$id]);
+        Session::put('puntos_referidos', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 'puntos_referidos' => $puntos_referidos, 200]);
+
     }
 
 

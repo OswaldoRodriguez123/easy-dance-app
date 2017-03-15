@@ -396,6 +396,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/alumno/update/rol','AlumnoController@updateRol');
 			Route::post('participante/alumno/update/mensualidad', 'AlumnoController@updateCostoMensualidad');
 			Route::post('participante/alumno/update/entrega', 'AlumnoController@updateEntrega');
+			Route::put('participante/alumno/update/referido', 'AlumnoController@updateReferido');
+
+			Route::post('participante/alumno/agregar_cantidad', 'AlumnoController@agregar_cantidad');
+			Route::post('participante/alumno/eliminar_cantidad/{id}', 'AlumnoController@eliminar_cantidad');
 
 			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
 

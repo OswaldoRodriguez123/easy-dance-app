@@ -966,7 +966,7 @@
                   </div>
                   <form name="edit_referido_alumno" id="edit_referido_alumno"  >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" id="cantidad" name="cantidad">
+                    <input type="hidden" id="cantidad_actual" name="cantidad_actual" value="0">
                     <input type="hidden" name="id" value="{{$alumno->id}}"></input>
                     <div class="modal-body">                           
                       <div class="row p-t-20 p-b-0">
@@ -1346,12 +1346,17 @@
     route_sesion="{{url('/')}}/participante/alumno/sesion";
     route_historial = "{{url('/')}}/participante/alumno/historial/";
     route_email="{{url('/')}}/correo/sesion/";
+    route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
+    route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
 
 
     total = "{{$total}}";
     puntos_referidos = "{{$puntos_referidos}}";
+    cantidad_actual = 0;
 
     $(document).ready(function(){
+
+      $('#cantidad_actual').val(0);
 
       if($('#tr_contacto').data('valor') != ''){
         $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
@@ -1607,6 +1612,12 @@
             texto = $(expresion).text();
 
              $("#alumno-"+c.name).text(texto);
+          }else if(c.name=='cantidad_actual'){
+
+            console.log(puntos_referidos + ' ' + c.value)
+            
+            $('#puntos_referidos').text(parseInt(puntos_referidos) + parseInt(c.value))
+
           }else{
 
             $("#alumno-"+c.name).text(c.value.toLowerCase());
@@ -1732,9 +1743,9 @@
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
                 var nType = 'danger';
-                if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
                   errores(msj.responseJSON.errores);
@@ -2140,7 +2151,7 @@
 
     $("#agregar_cantidad").click(function(){
 
-      var datos = $( "#edit_cantidad_producto" ).serialize(); 
+      var datos = $( "#edit_referido_alumno" ).serialize(); 
       procesando();
       var route = route_agregar_cantidad;
       var token = $('input:hidden[name=_token]').val();
@@ -2165,11 +2176,12 @@
               var nTitle="Ups! ";
               var nMensaje=respuesta.mensaje;
 
-              cantidad = parseInt(respuesta.cantidad);
-              cantidad_actual = parseInt($('#cantidad').val());
-              cantidad_total = cantidad + cantidad_actual;
+              cantidad = respuesta.cantidad;
+              referidos = parseInt(respuesta.puntos_referidos);
+              cantidad_actual = parseInt($('#cantidad_actual').val());
+              cantidad_total = referidos + cantidad_actual;
 
-              $('#cantidad').val(cantidad_total);
+              $('#cantidad_actual').val(cantidad_total);
 
               var rowId=respuesta.id;
               var rowNode=t.row.add( [
@@ -2239,11 +2251,11 @@
         success: function (data) {
           if(data.status=='OK'){
 
-            cantidad = parseInt(data.cantidad);
-            cantidad_actual = parseInt($('#cantidad').val());
-            cantidad_total = cantidad_actual - cantidad;
+            referidos = parseInt(data.puntos_referidos);
+            cantidad_actual = parseInt($('#cantidad_actual').val());
+            cantidad_total = cantidad_actual - referidos;
           
-            $('#cantidad').val(cantidad_total);
+            $('#cantidad_actual').val(cantidad_total);
 
           }else{
             swal(
