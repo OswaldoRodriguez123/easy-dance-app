@@ -310,32 +310,34 @@
                         <tbody>
                                    
                           @foreach ($patrocinadores as $patrocinador)
-                            <?php $id = $patrocinador->id; ?>
+                            <?php $id = $patrocinador['id']; ?>
                             <tr id="{{$id}}" class="p-10"">
                               <td>
                                 <div class="pull-left p-relative">
-                                    @if($patrocinador->sexo == 'F')
+                                  @if($patrocinador['imagen'])
+                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$patrocinador['imagen']}}" alt="">
+                                  @else
+                                    @if($patrocinador['sexo'] == 'F')
                                       <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
-                                      <!-- <i class="chat-status-busy"></i> -->
-                                    @elseif($patrocinador->sexo == 'M')
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
-                                      <!-- <i class="chat-status-busy"></i> -->
-                                    @elseif($patrocinador->sexo == 'FA')
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
-                                      <!-- <i class="chat-status-busy"></i> -->
-                                    @elseif($patrocinador->sexo == 'O')
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
-                                      <!-- <i class="chat-status-busy"></i> -->
                                     @else
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt="">
-                                      <!-- <i class="chat-status-busy"></i> -->
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                                    <!--              
+                                    elseif($patrocinador[''] == 'M')
+                                      
+                                    elseif($patrocinador->sexo == 'FA')
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Familia.jpg" alt="">
+                                    elseif($patrocinador->sexo == 'O')
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Empresa.jpg" alt="">
+                                    else
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/Anonimo.jpg" alt=""> -->
                                     @endif
+                                  @endif
                                 </div>
                               </td>
 
                               <td>
                                 <p class="lv-title c-morado">
-                                  {{ $patrocinador->Nombres }}
+                                  {{ $patrocinador['Nombres']}}
                                 </p>
                                 <small class="lv-small">{{$fecha_de_realizacion[$id]}}</small>
                               </td>
@@ -346,7 +348,7 @@
                                 <div class="pull-right p-relative">
                                   <span class="c-morado">
 
-                                    {{$patrocinador->cantidad}}
+                                    {{$patrocinador['cantidad']}}
                                   </span>
                                 </div>
 
@@ -354,12 +356,12 @@
 
                               <td>
                                 <div class="pull-right p-relative">
-                                  <span class="c-morado">{{ number_format($patrocinador->monto, 2, '.' , '.') }} 
-                                    @if($patrocinador->tipo_moneda == 1)
+                                  <span class="c-morado">{{ number_format($patrocinador['monto'], 2, '.' , '.') }} 
+                                    @if($patrocinador['tipo_moneda'] == 1)
 
                                       Pesos
 
-                                    @elseif($patrocinador->tipo_moneda == 2)
+                                    @elseif($patrocinador['tipo_moneda'] == 2)
 
                                       USD
 

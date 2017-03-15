@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Campana;
+use App\User;
 use App\Academia;
 use App\Recompensa;
 use App\Alumno;
@@ -1426,27 +1427,29 @@ public function todos_con_robert()
 
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-         $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
          // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
-         $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
+        $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
-         $patrocinadores = DB::table('patrocinadores')
-             ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
-             ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+        $patrocinadores = DB::table('patrocinadores')
+            ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+            ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
-             ->where('patrocinadores.campana_id', '=', $id)
-             ->orderBy('patrocinadores.created_at', 'desc')
-         ->get();
+            ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
+            ->where('patrocinadores.campana_id', '=', $id)
+            ->orderBy('patrocinadores.created_at', 'desc')
+        ->get();
 
-         mb_internal_encoding("UTF-8");
+        mb_internal_encoding("UTF-8");
 
         $fecha_de_realizacion_general = array();
         $now = Carbon::now();
         $recaudado = 0;
+        $array = array(2,4);
+        $patrocinador_array = array();
 
-         foreach($patrocinadores as $patrocinador){
-            // $patrocinador->Nombres = mb_convert_case($patrocinador->Nombres, MB_CASE_TITLE, "utf8");
+        foreach($patrocinadores as $patrocinador){
+
             $patrocinador->Nombres = title_case($patrocinador->Nombres);
 
             $fecha_de_registro = new Carbon($patrocinador->created_at);
@@ -1472,7 +1475,7 @@ public function todos_con_robert()
                         }else{
                             $fecha_de_realizacion = "hace ".$diferencia_tiempo." Segundos";
                         }
-                     }else{
+                    }else{
 
                         if($diferencia_tiempo==1){
                             $fecha_de_realizacion = "hace ".$diferencia_tiempo." minuto";
@@ -1490,11 +1493,11 @@ public function todos_con_robert()
                 }
             }else{
 
-                 if($diferencia_tiempo==1){
+                if($diferencia_tiempo==1){
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
                     $hora_segundos = $fecha_de_registro->format('H:i');
                     $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
-                 }else{
+                }else{
                     // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
                     $hora_segundos = $fecha_de_registro->format('H:i');
                     $dia = $fecha_de_registro->format('d');
@@ -1538,7 +1541,7 @@ public function todos_con_robert()
                             break;
                     }
                     $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
-                 }
+                }
             }
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
 
@@ -1549,14 +1552,33 @@ public function todos_con_robert()
             }
 
             $recaudado = $recaudado + $patrocinador_monto;
-         }
 
-         $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
-         $academia = Academia::find($campaña->academia_id);
+            $usuario = User::where('usuario_id',$patrocinador->usuario_id)->whereIn('usuario_tipo',$array)->first();
 
-         $datos = DatosBancariosCampana::where('campana_id', $campaña->id)->get();
+            if($usuario){
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $patrocinadores, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos]);
+              if($usuario->imagen){
+                $imagen = $usuario->imagen;
+              }else{
+                $imagen = '';
+              }
+
+            }
+
+            $collection=collect($patrocinador);     
+            $patrocinador_array = $collection->toArray();
+                
+            $patrocinador_array['imagen']=$imagen;
+            $array_patrocinador[$patrocinador->id] = $patrocinador_array;
+          
+        }
+
+        $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
+        $academia = Academia::find($campaña->academia_id);
+
+        $datos = DatosBancariosCampana::where('campana_id', $campaña->id)->get();
+
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos]);
     }
 
     public function contribuirCampana($id)
