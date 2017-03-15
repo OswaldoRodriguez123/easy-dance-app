@@ -74,7 +74,8 @@ class AcademiaConfiguracionController extends BaseController {
         $patrocinadores = Patrocinador::all();
 
         foreach($patrocinadores as $patrocinador){
-        	$cantidad = intval($patrocinador->monto) / 15000;
+
+        	$cantidad = intval($patrocinador->monto) / 10000;
         	$patrocinador->cantidad = $cantidad;
         	$patrocinador->save();
         }
