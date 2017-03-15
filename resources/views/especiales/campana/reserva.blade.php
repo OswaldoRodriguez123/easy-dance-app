@@ -892,6 +892,8 @@
       $("#barra-progreso").removeClass('progress-bar-success');
       $("#barra-progreso").addClass('progress-bar-morado');
     }
+
+    $('.glyphicon').css('top','10px')
   });
 
   var t=$('#tablelistar').DataTable({
