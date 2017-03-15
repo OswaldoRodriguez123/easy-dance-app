@@ -911,55 +911,55 @@ public function todos_con_robert()
             $nombre = 'Anónimo';
         }
 
-                Session::put('nombre_contribuyente', $nombre);
+        Session::put('nombre_contribuyente', $nombre);
 
-                $transferencia = new TransferenciaCampana;
+        $transferencia = new TransferenciaCampana;
 
-                $transferencia->campana_id = $request->id;
-                $transferencia->nombre = $nombre;
-                $transferencia->sexo = $sexo;
-                $transferencia->monto = $request->monto;
-                $transferencia->tipo_moneda = $request->tipo_moneda;
-                $transferencia->nombre_banco = $request->nombre_banco;
-                $transferencia->tipo_cuenta = $request->tipo_cuenta;
-                $transferencia->numero_cuenta = $request->numero_cuenta;
-                $transferencia->telefono = $request->telefono;
-                $transferencia->correo = $request->correo;
-                $transferencia->coordinador = $request->correo;
+        $transferencia->campana_id = $request->id;
+        $transferencia->nombre = $nombre;
+        $transferencia->sexo = $sexo;
+        $transferencia->monto = $request->monto;
+        $transferencia->tipo_moneda = $request->tipo_moneda;
+        $transferencia->nombre_banco = $request->nombre_banco;
+        $transferencia->tipo_cuenta = $request->tipo_cuenta;
+        $transferencia->numero_cuenta = $request->numero_cuenta;
+        $transferencia->telefono = $request->telefono;
+        $transferencia->correo = $request->correo;
+        $transferencia->coordinador = $request->correo;
 
-                if($transferencia->save()){
+        if($transferencia->save()){
 
-                    if($request->correo)
-                    {
-                        $campaña = Campana::find($transferencia->campana_id);
+            if($request->correo)
+            {
+                $campaña = Campana::find($transferencia->campana_id);
 
-                        $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
+                $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
 
-                        $array = [
+                $array = [
 
-                           'nombre' => $request->nombre,
-                           'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
-                           'correo' => $transferencia->correo,
-                           'subj' => $subj,
-                           'id' => $transferencia->id,
-                           'campaña' => $campaña->nombre
+                   'nombre' => $request->nombre,
+                   'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
+                   'correo' => $transferencia->correo,
+                   'subj' => $subj,
+                   'id' => $transferencia->id,
+                   'campaña' => $campaña->nombre
 
-                        ];
+                ];
 
-                        Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
-                                $msj->subject($array['subj']);
-                                $msj->to($array['correo']);
-                            });
+                Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo']);
+                    });
 
-                    }
+            }
 
-                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-          
-                }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-                }
-
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+  
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+
+    }
 
     public function enhorabuena($id)
     {

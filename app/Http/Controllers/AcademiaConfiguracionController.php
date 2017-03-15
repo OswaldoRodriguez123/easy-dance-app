@@ -35,6 +35,7 @@ use App\PagoInstructor;
 use App\ReservacionVisitante;
 use App\CredencialAlumno;
 use App\Codigo;
+use App\Patrocinador;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -70,6 +71,13 @@ class AcademiaConfiguracionController extends BaseController {
         //     }
         // }
 
+        $patrocinadores = Patrocinador::all();
+
+        foreach($patrocinadores as $patrocinador){
+        	$cantidad = 15000 / intval($patrocinador->monto);
+        	$patrocinador->cantidad = $cantidad;
+        	$patrocinador->save();
+        }
 
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
