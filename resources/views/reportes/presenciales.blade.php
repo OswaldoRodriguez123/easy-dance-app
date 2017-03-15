@@ -196,8 +196,8 @@
                                 <div class="clearfix">
                                     <div class="count">
                                         <small>Total Presenciales:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
+                                        <h2 id="hombres" class="pull-left m-l-30"></h2>
+                                        <h2 id="mujeres" class="pull-right m-r-30"></h2>
                                     </div>
                                 </div>
                             </div>
@@ -634,53 +634,53 @@
 
     }
 
-    //PLOTS
-        var pieData1 = [
-                @foreach ($sexos as $sexo)
-                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-                @endforeach
-            ];
+    // //PLOTS
+    //     var pieData1 = [
+    //             @foreach ($sexos as $sexo)
+    //                 {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
+    //             @endforeach
+    //         ];
         
-        var values = [
-            @foreach ($sexos as $sexo)        
-                   {{$sexo->CantSex}} ,
-            @endforeach                    
-            ];
+    //     var values = [
+    //         @foreach ($sexos as $sexo)        
+    //                {{$sexo->CantSex}} ,
+    //         @endforeach                    
+    //         ];
 
 
-        $.plot('#pie-chart-procesos', pieData1, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: { 
-                        width: 2,
-                    },
-                },
-            },
-            legend: {
-                container: '.flc-pie',
-                backgroundOpacity: 0.5,
-                noColumns: 0,
-                backgroundColor: "white",
-                lineWidth: 0
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: false,
-                cssClass: 'flot-tooltip'
-            },
-            colors: [color1, color2],
+    //     $.plot('#pie-chart-procesos', pieData1, {
+    //         series: {
+    //             pie: {
+    //                 show: true,
+    //                 stroke: { 
+    //                     width: 2,
+    //                 },
+    //             },
+    //         },
+    //         legend: {
+    //             container: '.flc-pie',
+    //             backgroundOpacity: 0.5,
+    //             noColumns: 0,
+    //             backgroundColor: "white",
+    //             lineWidth: 0
+    //         },
+    //         grid: {
+    //             hoverable: true,
+    //             clickable: true
+    //         },
+    //         tooltip: true,
+    //         tooltipOpts: {
+    //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+    //             shifts: {
+    //                 x: 20,
+    //                 y: 0
+    //             },
+    //             defaultTheme: false,
+    //             cssClass: 'flot-tooltip'
+    //         },
+    //         colors: [color1, color2],
             
-        });
+    //     });
 
      function previa(t){
         var id = $(t).closest('tr').attr('id');
