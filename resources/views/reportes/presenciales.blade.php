@@ -583,8 +583,7 @@
                                     defaultTheme: false,
                                     cssClass: 'flot-tooltip'
                                 },
-                                // colors: [color1, color2],
-                                
+                                colors: ["rgb(237,194,64)", "rgb(175,216,248)", "rgb(203,75,75)", "rgb(77,167,77)", "rgb(148,64,237)", "rgb(31,64,163)", "rgb(140,172,198)"],
                             });
 
 
