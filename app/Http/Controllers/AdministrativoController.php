@@ -648,13 +648,15 @@ class AdministrativoController extends BaseController {
 
     else{
 
+        $monto = str_replace('.', '', $request->monto);
+
         if($request->forma_pago_id == 4){
             $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$request->alumno_id)->first();
             if($alumno_remuneracion){
                 $puntos_referidos = Session::get('puntos_referidos');
                 $puntos_totales = $alumno_remuneracion->remuneracion - $puntos_referidos;
-                if($puntos_totales >= $request->monto){
-                    $puntos_referidos = $puntos_referidos + $request->monto;
+                if($puntos_totales >= $monto){
+                    $puntos_referidos = $puntos_referidos + $monto;
                     Session::put('puntos_referidos', $puntos_referidos);
                 }else{
                     return response()->json(['errores' => ['monto' => [0, 'Ups! No tienes suficientes puntos acumulados']], 'status' => 'ERROR'],422);
@@ -668,11 +670,11 @@ class AdministrativoController extends BaseController {
         ->where('id' , '=' , $request->forma_pago_id)
         ->first();
 
-        $array = array(['forma_pago' => $request->forma_pago_id , 'banco' => $request->banco, 'referencia' => $request->referencia, 'monto' => $request->monto]);
+        $array = array(['forma_pago' => $request->forma_pago_id , 'banco' => $request->banco, 'referencia' => $request->referencia, 'monto' => $monto]);
 
         Session::push('pagos', $array);
 
-        $array2 = array(['forma_pago' => $forma_pago->nombre , 'banco' => $request->banco, 'referencia' => $request->referencia, 'monto' => $request->monto]);
+        $array2 = array(['forma_pago' => $forma_pago->nombre , 'banco' => $request->banco, 'referencia' => $request->referencia, 'monto' => $monto]);
 
         $items = Session::get('pagos');
         end( $items );
