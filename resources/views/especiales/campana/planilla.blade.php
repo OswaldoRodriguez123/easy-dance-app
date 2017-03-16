@@ -5,6 +5,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -972,6 +973,9 @@
                                   <a href="{{url('/')}}/especiales/campañas/progreso/{{$campana->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/especiales/campañas/contribuciones/{{$campana->id}}"><i class="icon_c-money f-16 m-r-5 boton blue"  data-original-title="Ver Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/especiales/campañas/patrocinadores/{{$campana->id}}"><i class="icon_a-campana f-16 m-r-5 boton blue"  data-original-title="Ver Patrocinadores" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+
+                                  <a href="{{url('/')}}/especiales/campañas/egresos/{{$campana->id}}"><i class="fa fa-money f-16 m-r-5 boton blue"  data-original-title="Egresos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$campana->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>

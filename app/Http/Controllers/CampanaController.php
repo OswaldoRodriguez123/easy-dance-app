@@ -17,6 +17,7 @@ use App\MercadopagoMovs;
 use App\UsuarioExterno;
 use App\TransferenciaCampana;
 use App\DatosBancariosCampana;
+use App\EgresosCampana;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -2344,6 +2345,74 @@ public function todos_con_robert()
                 return response()->json(['error_mensaje'=> 'Ups! ha ocurrido un error', 'status' => 'ERROR-ENVIO'],422);
             }
 
+    }
+
+    public function egresos($id)
+    {
+        $campana = Campana::find($id);
+
+        if($campana){
+            $egresos = EgresosCampana::where('campana_id',$id)->get();
+            $total = EgresosCampana::where('campana_id',$id)->sum('cantidad');
+            return view('especiales.campana.egresos')->with(['campana' => $campana, 'egresos' => $egresos, 'total' => $total]);
+        }else{
+           return redirect("especiales/campañas"); 
+        }
+    }
+
+    public function agregar_egreso(Request $request)
+    {
+
+        $rules = [
+            'factura' => 'required',
+            'concepto' => 'required',
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'factura.required' => 'Ups! La factura es requerida ',
+            'concepto.required' => 'Ups! El concepto es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $campana = new EgresosCampana;
+
+            $campana->factura = $request->factura;
+            $campana->concepto = $request->concepto;
+            $campana->cantidad = $request->cantidad;
+            $campana->campana_id = $request->campana_id;
+
+            if($campana->save()){
+                
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $campana, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_egreso($id)
+    {
+        $campana = EgresosCampana::find($id);
+
+        $cantidad = $campana->cantidad;
+        
+        if($campana->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Fiesta o Evento se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
 }

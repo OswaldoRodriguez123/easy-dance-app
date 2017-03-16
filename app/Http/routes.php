@@ -707,6 +707,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('especiales/campañas/agregardatosfijos', 'CampanaController@agregardatosfijos');
 		    Route::post('especiales/campañas/eliminardatosfijos/{id}', 'CampanaController@eliminardatosfijos');
 
+		    Route::get('especiales/campañas/egresos/{id}', 'CampanaController@egresos');
+			Route::post('especiales/campañas/agregar-egreso', 'CampanaController@agregar_egreso');
+			Route::delete('especiales/campañas/eliminar-egreso/{id}', 'CampanaController@eliminar_egreso');
+
 		    //PATROCINADORES
 
 			Route::get('especiales/campañas/patrocinadores/{id}', 'CampanaController@principalpatrocinadores');
