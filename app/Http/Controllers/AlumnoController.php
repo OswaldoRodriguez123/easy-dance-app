@@ -81,7 +81,7 @@ class AlumnoController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->where('tipo', 1)->get();
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->where('tipo', 1)->orderBy('nombre', 'asc')->get();
 
         $array = array();
 
@@ -431,7 +431,7 @@ class AlumnoController extends BaseController
     public function create()
     {
  
-        return view('participante.alumno.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('participante.alumno.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
     }
 
     public function agregarvisitante($id)
@@ -439,7 +439,7 @@ class AlumnoController extends BaseController
 
         $visitante = Visitante::find($id);
  
-        return view('participante.alumno.create')->with(['visitante' => $visitante, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('participante.alumno.create')->with(['visitante' => $visitante, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
     }
 
     public function edit($id)
@@ -536,7 +536,7 @@ class AlumnoController extends BaseController
 
             $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'edad' => $edad]);
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'edad' => $edad]);
         }else{
            return redirect("participante/alumno"); 
         }

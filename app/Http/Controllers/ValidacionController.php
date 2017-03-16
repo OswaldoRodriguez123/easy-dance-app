@@ -230,7 +230,7 @@ class ValidacionController extends BaseController {
                 if($alumno){
                     $codigo_referido = trim($request->codigo_validacion);
 
-                    $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                    $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
                      return View::make('participante.alumno.create', compact('codigo_referido', 'instructores'));
                 }else{
                     return redirect('validar/invalido');

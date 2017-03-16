@@ -112,7 +112,7 @@ class ExamenController extends BaseController {
         $config_examenes = ConfigTipoExamen::all();
 
 
-		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
+		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
 	}
 
     public function createconclasegrupal($id)
@@ -190,7 +190,7 @@ class ExamenController extends BaseController {
         $config_examenes = ConfigTipoExamen::all();
 
 
-        return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'clase_grupal_id' => $id, 'config_examenes' => $config_examenes]);
+        return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'clase_grupal_id' => $id, 'config_examenes' => $config_examenes]);
     }
 
     public function store(Request $request)

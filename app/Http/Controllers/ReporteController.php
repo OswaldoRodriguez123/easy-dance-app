@@ -999,7 +999,7 @@ public function PresencialesFiltros(Request $request)
                         GROUP BY age_range
                         ORDER BY age_range');
 
-        return view('reportes.promotores')->with(['visitantes' => $visitantes, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'total' => $total]);
+        return view('reportes.promotores')->with(['visitantes' => $visitantes, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'total' => $total]);
     }
 
     public function PromotoresFiltros(Request $request)
@@ -1217,10 +1217,10 @@ public function PresencialesFiltros(Request $request)
             $array['2'.$clase_grupal->clase_grupal_id] = $clase_array;
         }
 
-        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         //dd($asistencia);
-        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumnos' => $alumnos]);
+        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'alumnos' => $alumnos]);
     }
 
     public function AsistenciasFiltros(Request $request)
@@ -1530,6 +1530,7 @@ public function PresencialesFiltros(Request $request)
                          'alumnos.celular',
                          'alumnos.fecha_nacimiento')
                 ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+                ->orderBy('nombre', 'asc')
         ->get();
 
 
@@ -1869,7 +1870,8 @@ public function PresencialesFiltros(Request $request)
                 ->select('alumnos.id as id',
                          'alumnos.nombre',
                          'alumnos.apellido')
-                ->where('alumnos.academia_id', '=', Auth::user()->academia_id);
+                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+                ->orderBy('nombre', 'asc');
                 
 
         if($request->clase_grupal_id)
@@ -2125,7 +2127,7 @@ public function PresencialesFiltros(Request $request)
         ->where('referido_id', '!=', null)
         ->get();
 
-        $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)->orderBy('nombre', 'asc')
         ->get();
 
         $total = Alumno::where('academia_id','=', Auth::user()->academia_id)
@@ -2227,7 +2229,7 @@ public function PresencialesFiltros(Request $request)
 
     public function Credenciales(){
 
-        $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)
+        $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)->orderBy('nombre', 'asc')
         ->get();
 
         $clases_grupales= DB::table('clases_grupales')

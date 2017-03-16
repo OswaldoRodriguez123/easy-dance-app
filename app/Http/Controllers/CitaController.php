@@ -123,7 +123,7 @@ class CitaController extends BaseController {
 	public function create()
     {
 
-        return view('agendar.cita.create')->with([ 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_citas' => ConfigCitas::all()]);
+        return view('agendar.cita.create')->with([ 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_citas' => ConfigCitas::all()]);
     }
 
     public function store(Request $request)

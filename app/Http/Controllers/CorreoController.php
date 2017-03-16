@@ -26,7 +26,7 @@ class CorreoController extends BaseController {
 
 		Session::forget('tipo');
 
-		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->get();
+		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 		// $clasegrupal = ClaseGrupal::where('academia_id', '=', Auth::user()->academia_id)->get();
 
 		$clasegrupal = DB::table('config_clases_grupales')

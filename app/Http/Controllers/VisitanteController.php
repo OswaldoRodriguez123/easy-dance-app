@@ -68,7 +68,7 @@ class VisitanteController extends BaseController {
     public function create()
     {
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);;
     }
 
     public function operar($id)
@@ -432,7 +432,7 @@ class VisitanteController extends BaseController {
                 $especialidades = $visitante_join->especialidad_nombre;
             }
  
-           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
         }else{
            return redirect("participante/visitante"); 
         }

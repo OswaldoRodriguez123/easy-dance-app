@@ -65,7 +65,7 @@ public function todos_con_robert()
 
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-         $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
+         $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->orderBy('nombre', 'asc')->get();
          // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
          $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
@@ -1428,7 +1428,7 @@ public function todos_con_robert()
 
          // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-        $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->orderBy('nombre', 'asc')->get();
          // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
         $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
 
@@ -1595,7 +1595,7 @@ public function todos_con_robert()
         }
 
         $campana = Campana::find($id);
-        $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  $campana->academia_id)->orderBy('nombre', 'asc')->get();
 
         $academia = Academia::find($campana->academia_id);
         return view('especiales.campana.contribuir_campana')->with(['id' => $id, 'campana' => $campana, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre, 'alumnos' => $alumnos]);        

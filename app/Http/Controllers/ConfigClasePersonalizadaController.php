@@ -109,7 +109,7 @@ class ConfigClasePersonalizadaController extends BaseController {
             Session::forget('precios'); 
         }
 
-        return view('configuracion.clase_personalizada.create')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'dias_de_semana' => DiasDeSemana::all(), 'especialidad' => ConfigEspecialidades::all(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('configuracion.clase_personalizada.create')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'dias_de_semana' => DiasDeSemana::all(), 'especialidad' => ConfigEspecialidades::all(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
 
     }
 
@@ -885,7 +885,7 @@ class ConfigClasePersonalizadaController extends BaseController {
         ->get();
 
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         return view('configuracion.clase_personalizada.participantes')->with(['alumnos' => $alumnos, 'activas' => $activas, 'canceladas' => $canceladas, 'id' => $id, 'clasepersonalizada' => $clasepersonalizada, 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
     }
@@ -1101,6 +1101,7 @@ class ConfigClasePersonalizadaController extends BaseController {
             ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
             ->where('academia_id', $id)
             ->where('boolean_promocionar', 1)
+            ->orderBy('instructores.nombre', 'asc')
         ->get();
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', $id)->first();

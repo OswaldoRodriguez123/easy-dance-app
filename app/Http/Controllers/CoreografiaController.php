@@ -64,7 +64,7 @@ class CoreografiaController extends BaseController {
 
     public function create()
     {
-        return view('configuracion.coreografia.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_coreografias' => ConfigCoreografias::all(), 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'especialidades' => ConfigEspecialidades::all()]);
+        return view('configuracion.coreografia.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'config_coreografias' => ConfigCoreografias::all(), 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'especialidades' => ConfigEspecialidades::all()]);
     }
 
     public function store(Request $request)
@@ -213,7 +213,7 @@ class CoreografiaController extends BaseController {
             ->where('coreografias.id', '=', $id)
         ->first();
 
-        return view('configuracion.coreografia.planilla')->with(['coreografia' => $coreografia , 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'especialidades' => ConfigEspecialidades::all(), 'config_coreografias' => ConfigCoreografias::all()]);
+        return view('configuracion.coreografia.planilla')->with(['coreografia' => $coreografia , 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'especialidades' => ConfigEspecialidades::all(), 'config_coreografias' => ConfigCoreografias::all()]);
     }
 
     public function participantes($id)
@@ -227,7 +227,7 @@ class CoreografiaController extends BaseController {
                 ->where('inscripcion_coreografia.coreografia_id', '=', $id)
         ->get();
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         return view('configuracion.coreografia.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'coreografia' => $coreografia, 'alumnos' => $alumnos]);
     }

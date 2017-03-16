@@ -40,7 +40,7 @@ class MultihorarioClaseGrupalController extends BaseController
         $dias_de_semana = DiasDeSemana::all();
         $config_especialidades = ConfigEspecialidades::all();
         $config_estudios = ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();        
-        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         // $horario_clase_grupal=HorarioClaseGrupal::where('clase_grupal_id',$id)
         //     ->join('config_especialidades', 
@@ -533,7 +533,7 @@ class MultihorarioClaseGrupalController extends BaseController
 
             }
 
-            return view('agendar.clase_grupal.multihorario.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'dia_de_semana' => $dia]);
+            return view('agendar.clase_grupal.multihorario.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'dia_de_semana' => $dia]);
 
         }else{
            return redirect("agendar/clases-grupales"); 

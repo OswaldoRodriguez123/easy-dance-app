@@ -475,7 +475,7 @@ class RegaloController extends BaseController {
 
                 if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
-                    $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                    $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
                     return view('especiales.regalo.vender')->with(['regalo' => $regalo, 'alumnos' => $alumnos]);
                 }else{
                    return view('especiales.regalo.enviar')->with(['regalo' => $regalo]);

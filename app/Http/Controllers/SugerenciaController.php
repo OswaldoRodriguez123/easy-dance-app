@@ -20,7 +20,7 @@ class SugerenciaController extends BaseController {
 
     public function create()
     {
-        $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
+        $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
         return view('sugerencia.create')->with('instructores', $instructores);
     }
 

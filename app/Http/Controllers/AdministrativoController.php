@@ -288,7 +288,7 @@ class AdministrativoController extends BaseController {
             ->where('alumnos.deleted_at' , '=' , null)
         ->get();
 
-        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         foreach($alumnos as $alumno)
         {
@@ -1121,7 +1121,7 @@ class AdministrativoController extends BaseController {
     {
         Session::forget('acuerdos');
         
-        return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
     }
 
     public function acuerdoconalumno($id)
@@ -1170,7 +1170,7 @@ class AdministrativoController extends BaseController {
                 $acuerdo = 0;
             }
         
-        return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'id' => $id, 'total' => $total, 'acuerdo' => $acuerdo]);
+        return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'id' => $id, 'total' => $total, 'acuerdo' => $acuerdo]);
     }
 
     public function principalpresupuesto()
@@ -1259,7 +1259,7 @@ class AdministrativoController extends BaseController {
         }
 
 
-        return view('administrativo.presupuesto.presupuesto')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto]);
+        return view('administrativo.presupuesto.presupuesto')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto]);
     }
 
 	/**

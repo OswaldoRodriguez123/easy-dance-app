@@ -196,7 +196,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $id = Auth::user()->academia_id;
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         $precios = CostoClasePersonalizada::join('clases_personalizadas', 'costo_clases_personalizadas.clase_personalizada_id', '=', 'clases_personalizadas.id')
         ->select('clases_personalizadas.academia_id', 'costo_clases_personalizadas.precio', 'clases_personalizadas.id', 'costo_clases_personalizadas.id as precio_id', 'costo_clases_personalizadas.participantes')
@@ -238,7 +238,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $academia_id = Auth::user()->academia_id;
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         $precios = CostoClasePersonalizada::join('clases_personalizadas', 'costo_clases_personalizadas.clase_personalizada_id', '=', 'clases_personalizadas.id')
         ->select('clases_personalizadas.academia_id', 'costo_clases_personalizadas.precio', 'clases_personalizadas.id', 'costo_clases_personalizadas.id as precio_id', 'costo_clases_personalizadas.participantes')
@@ -824,7 +824,7 @@ class ClasePersonalizadaController extends BaseController {
             );
         }
 
-            return view('agendar.clase_personalizada.planilla')->with(['clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'clasepersonalizada' => $clase_personalizada_join, 'arrayHorario' => $arrayHorario]);
+            return view('agendar.clase_personalizada.planilla')->with(['clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'clasepersonalizada' => $clase_personalizada_join, 'arrayHorario' => $arrayHorario]);
 
         }else{
            return redirect("agendar/clases-personalizadas"); 

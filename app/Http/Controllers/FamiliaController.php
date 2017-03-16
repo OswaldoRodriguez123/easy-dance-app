@@ -626,7 +626,7 @@ class FamiliaController extends BaseController {
     public function edit($id)
     {   
 
-        $alumnos = Alumno::withTrashed()->where('familia_id', $id)->get();
+        $alumnos = Alumno::withTrashed()->where('familia_id', $id)->orderBy('nombre', 'asc')->get();
         $array = array();
 
         $i = 0;

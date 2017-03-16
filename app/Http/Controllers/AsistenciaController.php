@@ -541,7 +541,7 @@ class AsistenciaController extends BaseController
 
       }
 
-      $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+      $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
       foreach($instructores as $instructor){
 

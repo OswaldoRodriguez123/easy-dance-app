@@ -139,7 +139,7 @@ class TallerController extends BaseController {
             Session::forget('horario'); 
         }
 
-        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
     }
 
     /**
@@ -934,7 +934,7 @@ class TallerController extends BaseController {
                 ->where('inscripcion_taller.deleted_at', '=', null)
         ->get();
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos]);
     }
@@ -1191,7 +1191,7 @@ class TallerController extends BaseController {
 
                 //dd($clase_grupal_join);
 
-            return view('agendar.taller.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'taller' => $taller_join]);
+            return view('agendar.taller.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'taller' => $taller_join]);
 
         }else{
            return redirect("agendar/talleres"); 
