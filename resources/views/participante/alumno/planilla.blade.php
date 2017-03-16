@@ -977,7 +977,7 @@
                             <div class="input-group">
                               <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
                               <div class="fg-line">
-                                <input type="text" class="form-control input-sm input-mask proceso" data-mask="00000" name="cantidad" id="cantidad" placeholder="Ej. 50">
+                                <input type="text" class="form-control input-sm input-mask proceso" data-mask="00" name="cantidad" id="cantidad" placeholder="Ej. 50">
                               </div>
                             </div>
                             <div class="has-error" id="error-cantidad">

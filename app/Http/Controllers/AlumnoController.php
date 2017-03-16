@@ -1387,7 +1387,7 @@ class AlumnoController extends BaseController
 
             $academia = Academia::find(Auth::user()->academia_id);
 
-            $puntos_referidos = $academia->puntos_referidos * $request->cantidad;
+            $puntos_referidos = $academia->puntos_referencia * $request->cantidad;
 
             Session::push('puntos_referidos', $request->cantidad);
 
@@ -1408,7 +1408,7 @@ class AlumnoController extends BaseController
 
         $academia = Academia::find(Auth::user()->academia_id);
 
-        $puntos_referidos = $academia->puntos_referidos * $cantidad;
+        $puntos_referidos = $academia->puntos_referencia * $cantidad;
 
         unset($arreglo[$id]);
         Session::put('puntos_referidos', $arreglo);

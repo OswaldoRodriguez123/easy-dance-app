@@ -480,35 +480,22 @@
 
                                   <div class="text-center">
 
-                                  
+                                    <!-- <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span>
 
-                                  <!-- <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span>
+                                    <br><br> -->
 
-                                  <br><br> -->
+                                    @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) 
+                                      <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  
+                                    @endif
 
-                                  @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) 
-                                    <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  
-                                  @endif
-
-                                  
-
-                                  
-
-
-                                </div> 
-
-
-                                    
+                                  </div> 
                                    
                                 </div>
-
-                                </div>                
-                              </div>
-                              <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
-                                    
+                              </div>                
+                            </div>
                           </div>
 
-                        <div class="pm-body clearfix col-sm-9">
+                          <div class="pm-body clearfix col-sm-9">
                             <div class="timeline">
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
