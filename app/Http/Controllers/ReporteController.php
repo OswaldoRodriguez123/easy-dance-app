@@ -645,7 +645,7 @@ class ReporteController extends BaseController
                     $end = Carbon::now()->endOfMonth()->toDateString();  
                 }else if($request->tipo == 3){
                     $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
                 $query->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end]);
@@ -2173,7 +2173,7 @@ public function PresencialesFiltros(Request $request)
                     $end = Carbon::now()->endOfMonth()->toDateString();  
                 }else if($request->tipo == 3){
                     $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
                 $query->whereBetween('created_at', [$start,$end]);
@@ -2279,7 +2279,7 @@ public function PresencialesFiltros(Request $request)
                     $end = Carbon::now()->endOfMonth()->toDateString();  
                 }else if($request->tipo == 3){
                     $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                    $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
                 $query->whereBetween('asistencias.fecha', [$start,$end]);
