@@ -61,42 +61,49 @@
                         <div class="col-sm-12">
                             <form name="formFiltro" id="formFiltro">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <label>Participantes</label>
-
-                                    <select name="estatus_alumno_id" id="estatus_alumno_id" data-live-search="true">
-                                      <option value="1">Activos</option>
-                                      <option value="2">Riesgo de ausencia</option>
-                                      <option value="3">Inactivos</option>
-                                      <option value="0">Todos</option>
-                                    </select>
-
-                                &nbsp; &nbsp; &nbsp; <label>Clase Grupal</label> &nbsp; &nbsp; &nbsp;
-
-
-                                <select name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
-
-                                    <option value="0">Todas</option>
-                                    @foreach ($clases_grupales as $clase)
-                                        <?php $id = $clase['id']; ?>
-                                        <option value="{{$id}}">                       
-                                            {{$clase['nombre']}} - {{$clase['dia']}} - 
-                                            {{$clase['hora_inicio']}}/ 
-                                            {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
-                                            {{$clase['instructor_apellido']}}
-                                        </option>
-                                    @endforeach                                
-                                </select> 
                                 
-                                 <div class="clearfix m-b-10"></div>
-                                 <div class="has-error" id="error-linea">
-                                  <span>
-                                      <small class="help-block error-span" id="error-linea_mensaje" ></small>      
-                                  </span>
-                                 </div>
 
-                                 <div class="clearfix m-b-10"></div> 
+                                <div class="col-sm-6">
+                                    <label>Participantes</label>
+                                    <div class="fg-line">
+                                        <div class="select">
+                                            <select class="selectpicker" name="estatus_alumno_id" id="estatus_alumno_id" data-live-search="true">
+                                              <option value="1">Activos</option>
+                                              <option value="2">Riesgo de ausencia</option>
+                                              <option value="3">Inactivos</option>
+                                              <option value="0">Todos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                 <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+                                
+
+
+                                <div class="col-sm-6">
+                                    <label>Clase Grupal</label>
+                                    <div class="fg-line">
+                                        <div class="select">
+                                            <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
+
+                                                <option value="0">Todas</option>
+                                                @foreach ($clases_grupales as $clase)
+                                                    <?php $id = $clase['id']; ?>
+                                                    <option value="{{$id}}">                       
+                                                        {{$clase['nombre']}} - {{$clase['dia']}} - 
+                                                        {{$clase['hora_inicio']}}/ 
+                                                        {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
+                                                        {{$clase['instructor_apellido']}}
+                                                    </option>
+                                                @endforeach                                
+                                            </select> 
+                                        </div>
+                                    </div>
+                                </div>
+                                 
+                                <div class ="clearfix m-b-20"></div>
+
+                                <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
 
                                 <div class ="clearfix m-b-10"></div>
                                 <div class ="clearfix m-b-10"></div>
@@ -157,6 +164,8 @@
                     </div>
                 </div>
             </section>
+
+            <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
 @stop
 
 @section('js') 

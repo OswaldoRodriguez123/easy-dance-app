@@ -1709,6 +1709,11 @@
                                                 <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/agregar/{{$clasegrupal->id}}"><i class="icon_a-examen f-16 m-r-10 boton blue"></i> Valorar</a>
                                             </li>
 
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$clasegrupal->id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i>Ver Agenda</a>
+                                            </li>
+
+                                          
                                             @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
                                               <li class="hidden-xs">

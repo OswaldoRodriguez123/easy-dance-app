@@ -76,7 +76,7 @@
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="rapidez" id="2" value="2" type="radio">
                                         <i class="input-helper"></i>  
-                                        Rapido
+                                        Rápido
                                     </label>
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="rapidez" id="3" value="3" type="radio">

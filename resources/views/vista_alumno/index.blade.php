@@ -357,7 +357,7 @@
 
 
 
-              <span class="mostrar f-16 c-morado f-700 pointer">Mostrar mas</span>
+              <span class="mostrar f-16 c-morado f-700 pointer">Mostrar más</span>
 
               </div>
             @endif
