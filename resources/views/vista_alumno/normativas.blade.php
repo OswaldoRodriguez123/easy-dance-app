@@ -490,7 +490,7 @@
                                         </div>
                                     </div>
                                 </div> -->
-
+<!-- 
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
                                         <a href="" class="tvh-user pull-left">
@@ -506,17 +506,6 @@
                                        
                                     
                                         <div class="clearfix"></div>
-
-                                        <!-- <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
-
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
                                         
                                         <br>
 
@@ -524,7 +513,7 @@
                                             <span data-toggle="modal" href="#modalTaller" class="f-18 p-t-0 c-morado pointer"> Ver Normativas</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="t-view" data-tv-type="text">
                                     <div class="tv-header media">
