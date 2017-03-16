@@ -63,6 +63,7 @@ class ExamenController extends BaseController {
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();
 
         $array = array();
@@ -141,6 +142,7 @@ class ExamenController extends BaseController {
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();
 
         $array = array();
@@ -593,6 +595,7 @@ class ExamenController extends BaseController {
                 ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
                 ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                 ->where('clases_grupales.deleted_at', '=', null)
+                ->orderBy('clases_grupales.hora_inicio', 'asc')
             ->get();
 
             $array = array();
@@ -641,7 +644,7 @@ class ExamenController extends BaseController {
 
             $config_examenes = ConfigTipoExamen::all();
 
-            return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen, 'genero'=>$generos, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
+            return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen, 'genero'=>$generos, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
 
         }else{
            return redirect("especiales/examenes"); 

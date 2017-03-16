@@ -105,6 +105,7 @@ class ReporteController extends BaseController
             ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
       ->get();
 
     $config_examenes = ConfigTipoExamen::all();
@@ -1544,6 +1545,7 @@ public function PresencialesFiltros(Request $request)
                          'instructores.nombre as instructor_nombre',
                          'instructores.apellido as instructor_apellido')
                 ->where('clases_grupales.academia_id','=',Auth::user()->academia_id)
+                ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();
 
         foreach($clases_grupales as $clase){
@@ -1790,6 +1792,7 @@ public function PresencialesFiltros(Request $request)
             ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();  
 
         $servicios = ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -2029,6 +2032,7 @@ public function PresencialesFiltros(Request $request)
             ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
       ->get();   
 
       $array = array();
@@ -2238,6 +2242,7 @@ public function PresencialesFiltros(Request $request)
             ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();
 
                         
