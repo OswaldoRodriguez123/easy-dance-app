@@ -1046,7 +1046,7 @@
                                <span class="f-14"> Cargos de Staff </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
-                            </tr
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalReferir-Academia">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
