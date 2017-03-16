@@ -486,7 +486,9 @@
 
                                   <br><br> -->
 
-                                  @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  @endif
+                                  @if(!$tiene_cuenta && ($tipo == 1 OR $tipo == 2)) 
+                                    <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  
+                                  @endif
 
                                   
 
@@ -518,7 +520,7 @@
                                         </div>
                                     </div>
                                     <div class="tv-body">
-                                        <p class="f-14" id="Cobro">Hola, el siguiente comunicado es para informarte que para la fecha del  (_/_/_/) deberás realizar la cancelación de los servicios ofrecidos  y  así seguir disfrutando de nuestras clases  .</p>
+                                        <p class="f-14" id="Cobro">Hola, el siguiente comunicado es para informarte que para la fecha del (_/_/_/) deberás realizar el pago de los servicios ofrecidos y así seguir disfrutando de nuestras clases.</p>
                                     
                                         <div class="clearfix"></div>
 
@@ -551,7 +553,7 @@
                                         </div>
                                     </div>
                                     <div class="tv-body">
-                                        <p class="f-14" id="happyBirth">¡Feliz cumpleaños!  ,  En este día tan especial para ti, deseamos que pases un cumpleaños lleno de mucha alegría  y prosperidad y que la vida te brinde muchos años más al lado de tus seres queridos. </p>
+                                        <p class="f-14" id="happyBirth">¡Feliz cumpleaños!. En este día tan especial para ti, deseamos que pases un cumpleaños lleno de mucha alegría y prosperidad; y que la vida te brinde muchos años más al lado de tus seres queridos.</p>
                                     
                                         <div class="clearfix"></div>
 
@@ -584,7 +586,7 @@
                                         </div>
                                     </div>
                                     <div class="tv-body">
-                                        <p class="f-14" id="Suspension">Saludos, te informamos que por razones ajena a nuestra voluntad la clase establecida para la fecha (_/_/_/) ha sido pospuesta,  te pedimos disculpa por los cambios ocurridos y esperamos verte en la siguiente clase  para seguir  bailando.  </p>
+                                        <p class="f-14" id="Suspension">Saludos, te informamos que por razones ajenas a nuestra voluntad la clase establecida para la fecha (_/_/_/) ha sido pospuesta, te pedimos disculpas por los cambios realizados y esperamos verte en la siguiente clase para seguir bailando.</p>
                                     
                                         <div class="clearfix"></div>
 
@@ -617,7 +619,7 @@
                                         </div>
                                     </div>
                                     <div class="tv-body">
-                                        <p class="f-14" id="Adelanto">Hola te informamos  que el inicio de nivel establecido  para la fecha (_/_/_/) lo adelantaremos para la fecha (_/_/_/) debido a que los cupos ofrecidos fueron  ocupados rápidamente , por tal motivo la organización toma la iniciativa de empezar  su nivel antes del tiempo previsto , esperamos verte en clases. </p>
+                                        <p class="f-14" id="Adelanto">Hola te informamos que el inicio de nivel establecido para la fecha (_/_/_/) lo adelantaremos para la fecha (_/_/_/) debido a que los cupos ofrecidos fueron ocupados rápidamente, por tal motivo la organización toma la iniciativa de empezar su nivel antes del tiempo previsto, esperamos verte en clases.</p>
                                     
                                         <div class="clearfix"></div>
 
@@ -650,7 +652,7 @@
                                         </div>
                                     </div>
                                     <div class="tv-body">
-                                        <p class="f-14" id="Ausencia">Hola, el motivo de nuestro mensaje, es que notamos  con preocupación que  no has asistido a las clases últimamente.  Te invito a ponerte en contacto con nosotros  para brindarte el apoyo y puedas recuperar las clases perdidas. </p>
+                                        <p class="f-14" id="Ausencia">Hola, el motivo de nuestro mensaje es que notamos con preocupación que no has asistido a las clases últimamente. Te invitamos a ponerte en contacto con nosotros para brindarte el apoyo y que puedas recuperar las clases perdidas.</p>
                                     
                                         <div class="clearfix"></div>
 
