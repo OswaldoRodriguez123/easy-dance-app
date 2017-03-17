@@ -138,7 +138,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
 
-			Route::get('administrativo/egresos/generales', 'AcademiaConfiguracionController@egresos');
+
+			//EGRESOS
+
+			Route::get('administrativo/egresos/generales', 'EgresoController@generales');
+			Route::get('administrativo/egresos/talleres', 'EgresoController@talleres');
+			Route::get('administrativo/egresos/campañas', 'EgresoController@campanas');
+			Route::get('administrativo/egresos/fiestas', 'EgresoController@fiestas');
+
 			Route::post('administrativo/egresos/generales/agregar-egreso', 'AcademiaConfiguracionController@agregar_egreso');
 			Route::delete('administrativo/egresos/generales/eliminar-egreso/{id}', 'AcademiaConfiguracionController@eliminar_egreso');
 

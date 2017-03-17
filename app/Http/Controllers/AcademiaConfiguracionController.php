@@ -1617,14 +1617,6 @@ class AcademiaConfiguracionController extends BaseController {
 
     }
 
-    public function egresos()
-    {
-
-        $egresos = EgresosGeneral::where('academia_id',Auth::user()->academia_id)->get();
-        $total = EgresosGeneral::where('academia_id',Auth::user()->academia_id)->sum('cantidad');
-        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total]);
-          
-    }
 
     public function agregar_egreso(Request $request)
     {

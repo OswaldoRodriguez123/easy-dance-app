@@ -162,9 +162,7 @@ public function todos_con_robert()
 
     public function index(){
 
-        $campanas = DB::table('campanas')
-            ->select('campanas.*')
-            ->where('campanas.academia_id' , '=' , Auth::user()->academia_id)
+        $campanas = Campana::where('campanas.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('campanas.created_at')
         ->get();
 

@@ -54,11 +54,11 @@
 
                 <div class="clearfix p-b-35"></div>
                 
-                <div class="f-700 f-25 text-center">{{Auth::user()->nombre}}  ¿Estás Preparado(a)  para personalizar  tu academia?</div>
+                <div class="f-700 f-25 text-center">{{Auth::user()->nombre}}  ¿Que egreso deseas agregar?</div>
                 
                 <br>
 
-                <div class="opaco-0-8 f-20 text-center">Con sólo 4 pasos fáciles y listo.</div>
+                <!-- <div class="opaco-0-8 f-20 text-center">Con sólo 4 pasos fáciles y listo.</div> -->
 
                 <div class="clearfix p-b-35"></div>
                 <div class="clearfix p-b-35"></div>
@@ -71,13 +71,13 @@
                                 <a href="{{url('/')}}/administrativo/egresos/generales">
                                     <span class="ca-icon-j" > <i class="icon_d-personaliza"></i> </span>
                                     <div class="ca-content-j">
-                                        <h2 class="ca-main-j">Generales</h2>
+                                        <h2 class="ca-main-j">Academia</h2>
                                     </div>
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{url('/')}}/configuracion/clases-grupales" class="mousehand">
+                                <a href="{{url('/')}}/administrativo/egresos/talleres" class="mousehand">
                                     <span class="ca-icon-j"><i class="icon_a-talleres"></i></span>
                                     <div class="ca-content">
                                         <h2 class="ca-main-j">Talleres</h2>
@@ -87,7 +87,7 @@
                             </li>
 
                             <li>
-                                <a href="{{url('/')}}/configuracion/clases-personalizadas" class="mousehand">
+                                <a href="{{url('/')}}/administrativo/egresos/fiestas" class="mousehand">
                                     <span class="ca-icon-j"><i class="icon_a-fiesta"></i></span>
                                     <div class="ca-content">
                                         <h2 class="ca-main-j">Fiestas y Eventos</h2>
@@ -96,7 +96,7 @@
                             </li>
                           
         					<li>
-                                <a href="{{url('/')}}/configuracion/servicios">
+                                <a href="{{url('/')}}/administrativo/egresos/campañas">
                                     <span class="ca-icon-j" style=""><i class="icon_a-campana"></i></span>
                                     <div class="ca-content-j">
                                         <h2 class="ca-main-j">Campañas</h2>
