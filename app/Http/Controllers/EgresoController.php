@@ -6,6 +6,7 @@ use App\Campana;
 use App\Patrocinador;
 use App\Fiesta;
 use App\Academia;
+use App\ConfigEgreso;
 use Illuminate\Support\Facades\Auth;
 
 class EgresoController extends BaseController {
@@ -18,11 +19,19 @@ class EgresoController extends BaseController {
 
     public function generales()
     {
+        $config_egresos = ConfigEgreso::all();
 
-        $egresos = EgresosGeneral::where('academia_id',Auth::user()->academia_id)->get();
-        $total = EgresosGeneral::where('academia_id',Auth::user()->academia_id)->sum('cantidad');
+        $egresos = EgresosGeneral::Leftjoin('config_egresos', 'egresos_generales.tipo' , '=', 'config_egresos.id')
+            ->select('egresos_generales.*', 'config_egresos.nombre as tipo')
+            ->where('academia_id',Auth::user()->academia_id)
+        ->get();
 
-        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total]);
+        $total = EgresosGeneral::Leftjoin('config_egresos', 'egresos_generales.tipo' , '=', 'config_egresos.id')
+            ->select('egresos_generales.*', 'config_egresos.nombre as tipo')
+            ->where('academia_id',Auth::user()->academia_id)
+        ->sum('cantidad');
+
+        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
           
     }
 

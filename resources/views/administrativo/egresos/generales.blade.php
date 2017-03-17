@@ -46,6 +46,30 @@
                        <div class="clearfix m-b-20"></div> 
 
                        <div class="col-sm-12">
+                                 
+                          <label for="tipo" id="id-tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de egreso" title="" data-original-title="Ayuda"></i>
+
+
+                          <div class="fg-line">
+                            <div class="select">
+                              <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                                <option value="">Selecciona</option>
+                                @foreach ( $config_egresos as $tipo )
+                                <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                          <div class="has-error" id="error-tipo">
+                            <span >
+                              <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                           
+                            </span>
+                          </div>
+                        </div>
+     
+                      <div class="clearfix p-b-35"></div>
+
+                       <div class="col-sm-12">
                          <div class="form-group fg-line">
                             <label for="concepto" id="id-concepto">Concepto</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el concepto de la factura" title="" data-original-title="Ayuda"></i>
                             <input type="text" class="form-control input-sm" name="concepto" id="concepto" placeholder="Ej. Sillas">
@@ -139,6 +163,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="factura" data-order="desc">Factura</th>
+                                    <th class="text-center" data-column-id="tipo">Tipo</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -150,6 +175,7 @@
                                 <?php $id = $egreso->id; ?>
                                 <tr id="{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$egreso->factura}}</td>
+                                    <td class="text-center previa">{{$egreso->tipo}}</td>
                                     <td class="text-center previa">{{$egreso->concepto}}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
@@ -253,10 +279,17 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
+                var tipo = respuesta.array.tipo;
+
+                expresion = "#tipo option[value="+tipo+"]";
+                tipo = $(expresion).text();
+
+
                 var rowId=respuesta.array.id;
 
                 var rowNode=t.row.add( [
                   ''+respuesta.array.factura+'',
+                  ''+tipo+'',
                   ''+respuesta.array.concepto+'',
                   ''+formatmoney(parseFloat(respuesta.array.cantidad))+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
@@ -393,7 +426,7 @@
     });
 
     function limpiarMensaje(){
-        var campo = ["factura", "concepto", "cantidad"];
+        var campo = ["factura", "tipo", "concepto", "cantidad"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

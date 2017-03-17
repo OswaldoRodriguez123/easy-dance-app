@@ -1623,6 +1623,7 @@ class AcademiaConfiguracionController extends BaseController {
 
         $rules = [
             'factura' => 'required',
+            'tipo' => 'required',
             'concepto' => 'required',
             'cantidad' => 'required',
         ];
@@ -1630,6 +1631,7 @@ class AcademiaConfiguracionController extends BaseController {
         $messages = [
 
             'factura.required' => 'Ups! La factura es requerida ',
+            'tipo.required' => 'Ups! El tipo es requerido',
             'concepto.required' => 'Ups! El concepto es requerido',
             'cantidad.required' => 'Ups! La cantidad es requerida',
         ];
@@ -1647,6 +1649,7 @@ class AcademiaConfiguracionController extends BaseController {
             $general = new EgresosGeneral;
 
             $general->factura = $request->factura;
+            $general->tipo = $request->tipo;
             $general->concepto = $request->concepto;
             $general->cantidad = $request->cantidad;
             $general->academia_id = Auth::user()->academia_id;

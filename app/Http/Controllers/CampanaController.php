@@ -18,6 +18,7 @@ use App\UsuarioExterno;
 use App\TransferenciaCampana;
 use App\DatosBancariosCampana;
 use App\EgresosCampana;
+use App\ConfigEgreso;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -2350,9 +2351,20 @@ public function todos_con_robert()
         $campana = Campana::find($id);
 
         if($campana){
-            $egresos = EgresosCampana::where('campana_id',$id)->get();
-            $total = EgresosCampana::where('campana_id',$id)->sum('cantidad');
-            return view('especiales.campana.egresos')->with(['campana' => $campana, 'egresos' => $egresos, 'total' => $total]);
+
+            $config_egresos = ConfigEgreso::all();
+
+            $egresos = EgresosCampana::Leftjoin('config_egresos', 'egresos_campanas.tipo' , '=', 'config_egresos.id')
+                ->select('egresos_campanas.*', 'config_egresos.nombre as tipo')
+                ->where('campana_id',$id)
+            ->get();
+
+            $total = EgresosCampana::Leftjoin('config_egresos', 'egresos_campanas.tipo' , '=', 'config_egresos.id')
+                ->select('egresos_campanas.*', 'config_egresos.nombre as tipo')
+                ->where('campana_id',$id)
+            ->sum('cantidad');
+
+            return view('especiales.campana.egresos')->with(['campana' => $campana, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
         }else{
            return redirect("especiales/campañas"); 
         }
@@ -2363,6 +2375,7 @@ public function todos_con_robert()
 
         $rules = [
             'factura' => 'required',
+            'tipo' => 'required',
             'concepto' => 'required',
             'cantidad' => 'required',
         ];
@@ -2370,6 +2383,7 @@ public function todos_con_robert()
         $messages = [
 
             'factura.required' => 'Ups! La factura es requerida ',
+            'tipo.required' => 'Ups! El tipo es requerido',
             'concepto.required' => 'Ups! El concepto es requerido',
             'cantidad.required' => 'Ups! La cantidad es requerida',
         ];
@@ -2387,6 +2401,7 @@ public function todos_con_robert()
             $campana = new EgresosCampana;
 
             $campana->factura = $request->factura;
+            $campana->tipo = $request->tipo;
             $campana->concepto = $request->concepto;
             $campana->cantidad = $request->cantidad;
             $campana->campana_id = $request->campana_id;

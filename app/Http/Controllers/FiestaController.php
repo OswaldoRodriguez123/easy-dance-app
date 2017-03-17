@@ -12,6 +12,7 @@ use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\Instructor;
 use App\EgresosFiesta;
+use App\ConfigEgreso;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -737,9 +738,20 @@ class FiestaController extends BaseController {
         $fiesta = Fiesta::find($id);
 
         if($fiesta){
-            $egresos = EgresosFiesta::where('fiesta_id',$id)->get();
-            $total = EgresosFiesta::where('fiesta_id',$id)->sum('cantidad');
-            return view('agendar.fiesta.egresos')->with(['fiesta' => $fiesta, 'egresos' => $egresos, 'total' => $total]);
+
+            $config_egresos = ConfigEgreso::all();
+
+            $egresos = EgresosFiesta::Leftjoin('config_egresos', 'egresos_fiestas.tipo' , '=', 'config_egresos.id')
+                ->select('egresos_fiestas.*', 'config_egresos.nombre as tipo')
+                ->where('fiesta_id',$id)
+            ->get();
+
+            $total = EgresosFiesta::Leftjoin('config_egresos', 'egresos_fiestas.tipo' , '=', 'config_egresos.id')
+                ->select('egresos_fiestas.*', 'config_egresos.nombre as tipo')
+                ->where('fiesta_id',$id)
+            ->sum('cantidad');
+            
+            return view('agendar.fiesta.egresos')->with(['fiesta' => $fiesta, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
         }else{
            return redirect("agendar/fiestas"); 
         }
@@ -750,6 +762,7 @@ class FiestaController extends BaseController {
 
         $rules = [
             'factura' => 'required',
+            'tipo' => 'required',
             'concepto' => 'required',
             'cantidad' => 'required',
         ];
@@ -757,6 +770,7 @@ class FiestaController extends BaseController {
         $messages = [
 
             'factura.required' => 'Ups! La factura es requerida ',
+            'tipo.required' => 'Ups! El tipo es requerido',
             'concepto.required' => 'Ups! El concepto es requerido',
             'cantidad.required' => 'Ups! La cantidad es requerida',
         ];
@@ -774,6 +788,7 @@ class FiestaController extends BaseController {
             $fiesta = new EgresosFiesta;
 
             $fiesta->factura = $request->factura;
+            $fiesta->tipo = $request->tipo;
             $fiesta->concepto = $request->concepto;
             $fiesta->cantidad = $request->cantidad;
             $fiesta->fiesta_id = $request->fiesta_id;

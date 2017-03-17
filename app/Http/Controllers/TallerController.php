@@ -16,6 +16,7 @@ use App\DiasDeSemana;
 use App\InscripcionTaller;
 use App\ItemsFacturaProforma;
 use App\EgresosTaller;
+use App\ConfigEgreso;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -1242,9 +1243,17 @@ class TallerController extends BaseController {
         $taller = Taller::find($id);
 
         if($taller){
-            $egresos = EgresosTaller::where('taller_id',$id)->get();
-            $total = EgresosTaller::where('taller_id',$id)->sum('cantidad');
-            return view('agendar.taller.egresos')->with(['taller' => $taller, 'egresos' => $egresos, 'total' => $total]);
+            $config_egresos = ConfigEgreso::all();
+            $egresos = EgresosTaller::Leftjoin('config_egresos', 'egresos_talleres.tipo' , '=', 'config_egresos.id')
+                ->select('egresos_talleres.*', 'config_egresos.nombre as tipo')
+                ->where('taller_id',$id)
+            ->get();
+
+            $total = EgresosTaller::Leftjoin('config_egresos', 'egresos_talleres.tipo' , '=', 'config_egresos.id')
+                ->where('taller_id',$id)
+            ->sum('cantidad');
+
+            return view('agendar.taller.egresos')->with(['taller' => $taller, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
         }else{
            return redirect("agendar/talleres"); 
         }
@@ -1255,6 +1264,7 @@ class TallerController extends BaseController {
 
         $rules = [
             'factura' => 'required',
+            'tipo' => 'required',
             'concepto' => 'required',
             'cantidad' => 'required',
         ];
@@ -1262,6 +1272,7 @@ class TallerController extends BaseController {
         $messages = [
 
             'factura.required' => 'Ups! La factura es requerida ',
+            'tipo.required' => 'Ups! El tipo es requerido',
             'concepto.required' => 'Ups! El concepto es requerido',
             'cantidad.required' => 'Ups! La cantidad es requerida',
         ];
@@ -1279,6 +1290,7 @@ class TallerController extends BaseController {
             $taller = new EgresosTaller;
 
             $taller->factura = $request->factura;
+            $taller->tipo = $request->tipo;
             $taller->concepto = $request->concepto;
             $taller->cantidad = $request->cantidad;
             $taller->taller_id = $request->taller_id;
