@@ -852,9 +852,7 @@ public function PresencialesFiltros(Request $request)
                     $end = $actual->endOfMonth()->toDateString();  
                 }else if($request->tipo == 3){
                     $start = $actual->startOfMonth()->subMonth()->toDateString();
-                    $end = $actual->endOfMonth()->subMonth()->toDateString();  
-
-                    dd($start . ' ' . $end);
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
                 $query->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end]);
