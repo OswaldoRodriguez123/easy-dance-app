@@ -2367,17 +2367,162 @@ public function PresencialesFiltros(Request $request)
             $egresos_campanas = 0;
         }
 
-        $inscritos_mujeres = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->where('alumnos.academia_id', Auth::user()->academia_id)->whereBetween('inscripcion_clase_grupal.created_at', [$start,$end])->where('alumnos.sexo','F')->count();
+        $visitantes_mujeres = 0;
+        $visitantes_hombres = 0;
 
-        $inscritos_hombres = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->where('alumnos.academia_id', Auth::user()->academia_id)->whereBetween('inscripcion_clase_grupal.created_at', [$start,$end])->where('alumnos.sexo','M')->count();
+        $inscritos_mujeres = 0;
+        $inscritos_hombres = 0;
 
-        $visitantes_mujeres = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->count();
+        $referidos_mujeres = 0;
+        $referidos_hombres = 0;
 
-        $visitantes_hombres = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','M')->count();
+        $inscritos= Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->where('alumnos.academia_id', Auth::user()->academia_id)->whereBetween('inscripcion_clase_grupal.created_at', [$start,$end])->get();
 
-        $referidos_mujeres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->where('referido_id', '!=', null)->count();
+        $cantidad_1 = 0;
+        $cantidad_2 = 0;
+        $cantidad_3 = 0;
+        $cantidad_4 = 0;
+        $cantidad_5 = 0;
 
-        $referidos_hombres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','M')->where('referido_id', '!=', null)->count();
+        foreach($inscritos as $inscrito){
+
+            if($inscrito->sexo == 'F'){
+                $inscritos_mujeres++;
+            }else{
+                $inscritos_hombres++;
+            }
+
+            $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            
+            if($edad >= 3 AND $edad <= 10 ){
+                $cantidad_1++;
+            }else if($edad >= 11 AND $edad <= 20 ){
+                $cantidad_2++;
+            }else if($edad >= 21 AND $edad <= 35 ){
+                $cantidad_3++;
+            }else if($edad >= 36 AND $edad <= 50 ){
+                $cantidad_4++;
+            }else{
+                $cantidad_5++;
+            }
+        }
+
+        $array_inscrito = array();
+
+        $array_3 = array('3 - 10', $cantidad_1);
+        $array_11 = array('11 - 20', $cantidad_2);
+        $array_21 = array('21 - 35', $cantidad_3);
+        $array_36 = array('36 - 50', $cantidad_4);
+        $array_51 = array('+51', $cantidad_5);
+
+        array_push($array_inscrito, $array_3);
+        array_push($array_inscrito, $array_11);
+        array_push($array_inscrito, $array_21);
+        array_push($array_inscrito, $array_36);
+        array_push($array_inscrito, $array_51);
+
+
+        $visitantes = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+
+        $amigo = 0;
+        $redes = 0;
+        $prensa = 0;
+        $television = 0;
+        $radio = 0;
+        $lugar = 0;
+        $otros = 0;
+
+        $visitantes_mujeres = 0;
+        $visitantes_hombres = 0;
+
+        foreach($visitantes as $presencial){
+
+            if($presencial->sexo == 'F'){
+                $visitantes_mujeres++;
+            }else{
+                $visitantes_hombres++;
+            }
+            
+            if($presencial->como_nos_conociste_id == 1){
+                $amigo++;
+            }else if($presencial->como_nos_conociste_id == 2){
+                $redes++;
+            }else if($presencial->como_nos_conociste_id == 3){
+                $prensa++;
+            }else if($presencial->como_nos_conociste_id == 4){
+                $television++;
+            }else if($presencial->como_nos_conociste_id == 5){
+                $radio++;
+            }else if($presencial->como_nos_conociste_id == 6){
+                $lugar++;
+            }else{
+                $otros++;
+            }
+        }
+
+        $array_conociste = array();
+
+        $array_amigo = array('Por un amigo', $amigo);
+        $array_redes = array('Redes sociales / internet', $redes);
+        $array_prensas = array('Prensa', $prensa);
+        $array_television = array('Televisión', $television);
+        $array_radios = array('Radio', $radio);
+        $array_lugar = array('Ubicación/Lugar', $lugar);
+        $array_otros = array('Otros', $otros);
+
+        array_push($array_conociste, $array_amigo);
+        array_push($array_conociste, $array_redes);
+        array_push($array_conociste, $array_prensas);
+        array_push($array_conociste, $array_television);
+        array_push($array_conociste, $array_radios);
+        array_push($array_conociste, $array_lugar);
+        array_push($array_conociste, $array_otros);
+
+        $referidos = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('referido_id', '!=', null)->get();
+
+        $cantidad_1 = 0;
+        $cantidad_2 = 0;
+        $cantidad_3 = 0;
+        $cantidad_4 = 0;
+        $cantidad_5 = 0;
+
+        foreach($referidos as $inscrito){
+
+            if($inscrito->sexo == 'F'){
+                $referidos_mujeres++;
+            }else{
+                $referidos_hombres++;
+            }
+
+            $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            
+            if($edad >= 3 AND $edad <= 10 ){
+                $cantidad_1++;
+            }else if($edad >= 11 AND $edad <= 20 ){
+                $cantidad_2++;
+            }else if($edad >= 21 AND $edad <= 35 ){
+                $cantidad_3++;
+            }else if($edad >= 36 AND $edad <= 50 ){
+                $cantidad_4++;
+            }else{
+                $cantidad_5++;
+            }
+        }
+
+        $array_referido = array();
+
+        $array_3 = array('3 - 10', $cantidad_1);
+        $array_11 = array('11 - 20', $cantidad_2);
+        $array_21 = array('21 - 35', $cantidad_3);
+        $array_36 = array('36 - 50', $cantidad_4);
+        $array_51 = array('+51', $cantidad_5);
+
+        array_push($array_referido, $array_3);
+        array_push($array_referido, $array_11);
+        array_push($array_referido, $array_21);
+        array_push($array_referido, $array_36);
+        array_push($array_referido, $array_51);
+
 
         $ingresos = Factura::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
 
@@ -2402,8 +2547,249 @@ public function PresencialesFiltros(Request $request)
             }
         }
 
-        return view('reportes.master')->with(['talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'campanas' => $campanas, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'egresos_campanas' => $egresos_campanas, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres]);
+        return view('reportes.master')->with(['talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'campanas' => $campanas, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'egresos_campanas' => $egresos_campanas, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres, 'array_visitante' => $array_conociste, 'array_inscrito' => $array_inscrito, 'array_referido' => $array_referido]);
 
+    }
+
+    public function MasterFiltros(Request $request){
+
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+        }else{
+
+            if($request->tipo){
+
+                $actual = Carbon::now();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+                $actual->tz = $geoip->getTimezone();
+
+                if($request->tipo == 1){
+                    $start = $actual->toDateString();
+                    $end = $actual->toDateString();  
+                }else if($request->tipo == 2){
+                    $start = $actual->startOfMonth()->toDateString();
+                    $end = $actual->endOfMonth()->toDateString();  
+                }else if($request->tipo == 3){
+                    $start = $actual->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                }
+            }
+        }
+        
+
+        $talleres = 0;
+        $eventos = 0;
+        $generales = 0;
+        $campanas = 0;
+
+        $egresos_talleres = EgresosTaller::join('talleres', 'egresos_talleres.taller_id', '=', 'talleres.id')->where('talleres.academia_id', Auth::user()->academia_id)->whereBetween('egresos_talleres.created_at', [$start,$end])->sum('egresos_talleres.cantidad');
+
+        if(!$egresos_talleres){
+            $egresos_talleres = 0;
+        }
+
+        $egresos_eventos = EgresosFiesta::join('fiestas', 'egresos_fiestas.fiesta_id', '=', 'fiestas.id')->where('fiestas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_fiestas.created_at', [$start,$end])->sum('egresos_fiestas.cantidad');
+
+        if(!$egresos_eventos){
+            $egresos_eventos = 0;
+        }
+
+        $egresos_generales = EgresosGeneral::where('egresos_generales.academia_id', Auth::user()->academia_id)->whereBetween('egresos_generales.created_at', [$start,$end])->sum('egresos_generales.cantidad');
+
+        if(!$egresos_generales){
+            $egresos_generales = 0;
+        }
+
+        $egresos_campanas = EgresosCampana::join('campanas', 'egresos_campanas.campana_id', '=', 'campanas.id')->where('campanas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_campanas.created_at', [$start,$end])->sum('egresos_campanas.cantidad');
+
+        if(!$egresos_campanas){
+            $egresos_campanas = 0;
+        }
+
+        $visitantes_mujeres = 0;
+        $visitantes_hombres = 0;
+
+        $inscritos_mujeres = 0;
+        $inscritos_hombres = 0;
+
+        $referidos_mujeres = 0;
+        $referidos_hombres = 0;
+
+        $inscritos= Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->where('alumnos.academia_id', Auth::user()->academia_id)->whereBetween('inscripcion_clase_grupal.created_at', [$start,$end])->get();
+
+        $cantidad_1 = 0;
+        $cantidad_2 = 0;
+        $cantidad_3 = 0;
+        $cantidad_4 = 0;
+        $cantidad_5 = 0;
+
+        foreach($inscritos as $inscrito){
+
+            if($inscrito->sexo == 'F'){
+                $inscritos_mujeres++;
+            }else{
+                $inscritos_hombres++;
+            }
+
+            $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            
+            if($edad >= 3 AND $edad <= 10 ){
+                $cantidad_1++;
+            }else if($edad >= 11 AND $edad <= 20 ){
+                $cantidad_2++;
+            }else if($edad >= 21 AND $edad <= 35 ){
+                $cantidad_3++;
+            }else if($edad >= 36 AND $edad <= 50 ){
+                $cantidad_4++;
+            }else{
+                $cantidad_5++;
+            }
+        }
+
+        $array_inscrito = array();
+
+        $array_3 = array('3 - 10', $cantidad_1);
+        $array_11 = array('11 - 20', $cantidad_2);
+        $array_21 = array('21 - 35', $cantidad_3);
+        $array_36 = array('36 - 50', $cantidad_4);
+        $array_51 = array('+51', $cantidad_5);
+
+        array_push($array_inscrito, $array_3);
+        array_push($array_inscrito, $array_11);
+        array_push($array_inscrito, $array_21);
+        array_push($array_inscrito, $array_36);
+        array_push($array_inscrito, $array_51);
+
+
+        $visitantes = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+
+        $amigo = 0;
+        $redes = 0;
+        $prensa = 0;
+        $television = 0;
+        $radio = 0;
+        $lugar = 0;
+        $otros = 0;
+
+        $visitantes_mujeres = 0;
+        $visitantes_hombres = 0;
+
+        foreach($visitantes as $presencial){
+
+            if($presencial->sexo == 'F'){
+                $visitantes_mujeres++;
+            }else{
+                $visitantes_hombres++;
+            }
+            
+            if($presencial->como_nos_conociste_id == 1){
+                $amigo++;
+            }else if($presencial->como_nos_conociste_id == 2){
+                $redes++;
+            }else if($presencial->como_nos_conociste_id == 3){
+                $prensa++;
+            }else if($presencial->como_nos_conociste_id == 4){
+                $television++;
+            }else if($presencial->como_nos_conociste_id == 5){
+                $radio++;
+            }else if($presencial->como_nos_conociste_id == 6){
+                $lugar++;
+            }else{
+                $otros++;
+            }
+        }
+
+        $array_conociste = array();
+
+        $array_amigo = array('Por un amigo', $amigo);
+        $array_redes = array('Redes sociales / internet', $redes);
+        $array_prensas = array('Prensa', $prensa);
+        $array_television = array('Televisión', $television);
+        $array_radios = array('Radio', $radio);
+        $array_lugar = array('Ubicación/Lugar', $lugar);
+        $array_otros = array('Otros', $otros);
+
+        array_push($array_conociste, $array_amigo);
+        array_push($array_conociste, $array_redes);
+        array_push($array_conociste, $array_prensas);
+        array_push($array_conociste, $array_television);
+        array_push($array_conociste, $array_radios);
+        array_push($array_conociste, $array_lugar);
+        array_push($array_conociste, $array_otros);
+
+        $referidos = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('referido_id', '!=', null)->get();
+
+        $cantidad_1 = 0;
+        $cantidad_2 = 0;
+        $cantidad_3 = 0;
+        $cantidad_4 = 0;
+        $cantidad_5 = 0;
+
+        foreach($referidos as $inscrito){
+
+            if($inscrito->sexo == 'F'){
+                $referidos_mujeres++;
+            }else{
+                $referidos_hombres++;
+            }
+
+            $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            
+            if($edad >= 3 AND $edad <= 10 ){
+                $cantidad_1++;
+            }else if($edad >= 11 AND $edad <= 20 ){
+                $cantidad_2++;
+            }else if($edad >= 21 AND $edad <= 35 ){
+                $cantidad_3++;
+            }else if($edad >= 36 AND $edad <= 50 ){
+                $cantidad_4++;
+            }else{
+                $cantidad_5++;
+            }
+        }
+
+        $array_referido = array();
+
+        $array_3 = array('3 - 10', $cantidad_1);
+        $array_11 = array('11 - 20', $cantidad_2);
+        $array_21 = array('21 - 35', $cantidad_3);
+        $array_36 = array('36 - 50', $cantidad_4);
+        $array_51 = array('+51', $cantidad_5);
+
+        array_push($array_referido, $array_3);
+        array_push($array_referido, $array_11);
+        array_push($array_referido, $array_21);
+        array_push($array_referido, $array_36);
+        array_push($array_referido, $array_51);
+
+        $ingresos = Factura::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+
+        foreach($ingresos as $ingreso){
+            $facturas = ItemsFactura::where('factura_id', $ingreso->id)->get();
+            foreach($facturas as $factura){
+                if($factura->tipo == 5){
+
+                    $talleres += floatval($factura->importe_neto);
+
+                }else if($factura->tipo == 14){
+
+                    $eventos += floatval($factura->importe_neto);
+
+                }else if($factura->tipo == 11 OR $factura->tipo == 12){
+
+                    $campanas += floatval($factura->importe_neto);
+
+                }else{
+                    $generales += floatval($factura->importe_neto);
+                }
+            }
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'campanas' => $campanas, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'egresos_campanas' => $egresos_campanas, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres, 'array_visitante' => $array_conociste, 'array_inscrito' => $array_inscrito, 'array_referido' => $array_referido, 200]);
     }
 
 }

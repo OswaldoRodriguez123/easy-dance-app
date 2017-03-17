@@ -61,6 +61,79 @@
                                                          
                         </div>
 
+                         <div class="col-sm-12">
+                            <form name="formFiltro" id="formFiltro">
+
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
+
+                                <div class="col-md-6">
+                                    <label>Fecha</label> &nbsp; &nbsp; &nbsp;
+
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                            <option value="2">Mes Actual</option>
+                                            <option value="3">Mes Pasado</option>
+                                        </select>
+                                      </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group fg-line">
+                                        <label for="nombre">Personalizar</label>
+                                        <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-collapse">
+                                                <div class="panel-heading" role="tab" id="headingTwo">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                          <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+
+                                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="panel-body">
+
+                                                        <div class="clearfix m-b-20"></div>
+                                                    
+
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                            <div class="fg-line">
+                                                                    <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar">
+                                                            </div>
+                                                        </div>
+
+            
+
+                                                        
+                                                    </div>
+
+                                                    <div class="clearfix p-b-35"></div>
+                                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>   
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+   
+
+                                 <div class="clearfix m-b-10"></div>
+
+                                 
+
+                                 <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+
+                                <div class ="clearfix m-b-10"></div>
+                                <div class ="clearfix m-b-10"></div>
+
+                            </form>
+                        </div>
+
+
                         <div class ="clearfix"></div>
 
                         <div class="table-responsive">
@@ -84,42 +157,42 @@
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos academia</span></td>
-                                            <td>{{ number_format($generales, 2, '.' , '.') }}</td>
+                                            <td id="generales">{{ number_format($generales, 2, '.' , '.') }}</td>
                                             <td>Egresos academia</td>
-                                            <td>{{ number_format($egresos_generales, 2, '.' , '.') }}</td>
-                                            <td>{{ number_format($generales - $egresos_generales, 2, '.' , '.') }}</td>
+                                            <td id="egresos_generales">{{ number_format($egresos_generales, 2, '.' , '.') }}</td>
+                                            <td id="total_generales">{{ number_format($generales - $egresos_generales, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos eventos</span></td>
-                                            <td>{{ number_format($eventos, 2, '.' , '.') }}</td>
+                                            <td id="eventos">{{ number_format($eventos, 2, '.' , '.') }}</td>
                                             <td>Egresos eventos</td>
-                                            <td>{{ number_format($egresos_eventos, 2, '.' , '.') }}</td>
-                                            <td>{{ number_format($eventos - $egresos_eventos, 2, '.' , '.') }}</td>
+                                            <td id="egresos_eventos">{{ number_format($egresos_eventos, 2, '.' , '.') }}</td>
+                                            <td id="total_eventos">{{ number_format($eventos - $egresos_eventos, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos talleres</span></td>
-                                            <td>{{ number_format($talleres, 2, '.' , '.') }}</td>
+                                            <td id="talleres">{{ number_format($talleres, 2, '.' , '.') }}</td>
                                             <td>Egresos talleres</td>
-                                            <td>{{ number_format($egresos_talleres, 2, '.' , '.') }}</td>
-                                            <td>{{ number_format($talleres - $egresos_talleres, 2, '.' , '.') }}</td>
+                                            <td id="egresos_talleres">{{ number_format($egresos_talleres, 2, '.' , '.') }}</td>
+                                            <td id="total_talleres">{{ number_format($talleres - $egresos_talleres, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos campañas</span></td>
-                                            <td>{{ number_format($campanas, 2, '.' , '.') }}</td>
+                                            <td id="campanas">{{ number_format($campanas, 2, '.' , '.') }}</td>
                                             <td>Egresos campañas</td>
-                                            <td>{{ number_format($egresos_campanas, 2, '.' , '.') }}</td>
-                                            <td>{{ number_format($campanas - $egresos_campanas, 2, '.' , '.') }}</td>
+                                            <td id="egresos_campanas">{{ number_format($egresos_campanas, 2, '.' , '.') }}</td>
+                                            <td id="total_campanas">{{ number_format($campanas - $egresos_campanas, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">TOTALES:</span></td>
-                                            <td>{{number_format($total, 2, '.' , '.')}}</td>
+                                            <td id="total_ingresos">{{number_format($total, 2, '.' , '.')}}</td>
                                             <td>TOTALES:</td>
-                                            <td>{{number_format($total_egresos, 2, '.' , '.')}}</td>
-                                            <td>{{number_format($total - $total_egresos, 2, '.' , '.') }}</td>
+                                            <td id="total_egresos">{{number_format($total_egresos, 2, '.' , '.')}}</td>
+                                            <td id="total">{{number_format($total - $total_egresos, 2, '.' , '.') }}</td>
                                         </tr>     
                                     </tbody>
                                 </table>
@@ -129,36 +202,44 @@
 
                         <div class="clearfix"></div>
                         
-                        <div class="col-md-4">
-                            <div>
-                                <table class="table display cell-border" id="visitantes" >
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" data-column-id="visitantes">Visitantes Presenciales</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                        <div class="col-md-4" style="margin-top: 11%">
 
-                                        <tr>
-                                            <td><span style="padding-left: 3%">Mujer: {{$visitantes_mujeres}}</span></td>
-                                        </tr>
+                            <table class="table display cell-border" id="visitantes" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" data-column-id="visitantes">Visitantes Presenciales</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                        <tr>
-                                            <td><span style="padding-left: 3%">Hombre: {{$visitantes_hombres}}</span></td>
-                                        </tr>
+                                    <tr>
+                                        <td><span style="padding-left: 3%">Mujer: <span id="visitantes_mujeres">{{$visitantes_mujeres}}</span></span></td>
+                                    </tr>
 
-                                        <tr>
-                                            <td><span style="padding-left: 3%">TOTAL: {{$visitantes_hombres + $visitantes_mujeres}}</span></td>
-                                        </tr>
-    
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <tr>
+                                        <td><span style="padding-left: 3%">Hombre: <span id="visitantes_hombres">{{$visitantes_hombres}}</span></span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><span style="padding-left: 3%">TOTAL: <span id="visitantes_totales">{{$visitantes_hombres + $visitantes_mujeres}}</span></span></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+       
+
+                        <div class="col-md-6 col-md-offset-2">
+                            <h2 class="text-center">Informe de Visitantes</h2>
+                            <hr>
+                            <div id="pie-chart-visitantes" class="flot-chart"></div>
+                            <div  id="flc-pie-visitantes" class="flc-pie hidden-xs"></div>
+
                         </div>
 
-                        <div class="clearfix"></div>
+                        <div class="clearfix m-b-30"></div>
                         
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="margin-top: 11%">
                             <div>
                                 <table class="table display cell-border" id="inscritos" >
                                     <thead>
@@ -169,15 +250,15 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer: {{$inscritos_mujeres}}</span></td>
+                                            <td><span style="padding-left: 3%">Mujer: <span id="inscritos_mujeres">{{$inscritos_mujeres}}</span></span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre: {{$inscritos_hombres}}</span></td>
+                                            <td><span style="padding-left: 3%">Hombre: <span id="inscritos_hombres">{{$inscritos_hombres}}</span></span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">TOTAL: {{$inscritos_mujeres + $inscritos_hombres}}</span></td>
+                                            <td><span style="padding-left: 3%">TOTAL: <span id="inscritos_totales">{{$inscritos_mujeres + $inscritos_hombres}}</span></span></td>
                                         </tr>
     
                                     </tbody>
@@ -185,9 +266,17 @@
                             </div>
                         </div>
 
-                        <div class="clearfix"></div>
+                        <div class="col-md-6 col-md-offset-2">
+                            <h2 class="text-center">Informe de Inscritos</h2>
+                            <hr>
+                            <div id="pie-chart-inscritos" class="flot-chart"></div>
+                            <div id="flc-pie-inscritos" class="flc-pie hidden-xs"></div>
+
+                        </div>
+
+                        <div class="clearfix m-b-30"></div>
                         
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="margin-top: 11%">
                             <div>
                                 <table class="table display cell-border" id="referidos" >
                                     <thead>
@@ -198,20 +287,28 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer: {{$referidos_mujeres}}</span></td>
+                                            <td><span style="padding-left: 3%">Mujer: <span id="referidos_mujeres">{{$referidos_mujeres}}</span></span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre: {{$referidos_hombres}}</span></td>
+                                            <td><span style="padding-left: 3%">Hombre: <span id="referidos_hombres">{{$referidos_hombres}}</span></span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">TOTAL: {{$referidos_mujeres + $referidos_hombres}}</span></td>
+                                            <td><span style="padding-left: 3%">TOTAL: <span id="referidos_totales">{{$referidos_mujeres + $referidos_hombres}}</span></span></td>
                                         </tr>
     
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+
+                        <div class="col-md-6 col-md-offset-2">
+                            <h2 class="text-center">Informe de Referidos</h2>
+                            <hr>
+                            <div id="pie-chart-referidos" class="flot-chart"></div>
+                            <div  id="flc-pie-referidos" class="flc-pie hidden-xs"></div>
+
                         </div>
 
                         <div class="card-body p-b-20">
@@ -234,154 +331,587 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+<script type="text/javascript">
 
-        $(document).ready(function(){
+    route_filtrar="{{url('/')}}/reportes/master";
 
+    color2 = "#2196f3"
+    color1 = "#FF4081"
 
-        t=$('#tablelistar').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25, 
-            bPaginate: false,
-            bInfo: false,
-            bFilter:false, 
-            bSort:false, 
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
+    $(document).ready(function(){
 
 
-            });
+        //DateRangePicker
+        $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "right",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
 
-            h=$('#visitantes').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25, 
-            bPaginate: false,
-            bInfo: false,
-            bFilter:false, 
-            bSort:false, 
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-
-
-            });
-
-            i=$('#inscritos').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25, 
-            bPaginate: false,
-            bInfo: false,
-            bFilter:false, 
-            bSort:false, 
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-
-
-            });
-
-            j=$('#referidos').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25, 
-            bPaginate: false,
-            bInfo: false,
-            bFilter:false, 
-            bSort:false, 
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-
-
-            });
-
-
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
 
         });
+
+        var pieData1 = [
+            
+            @foreach ($array_visitante as $data)
+                {data: {{$data[1]}}, label: '{{$data[0]}}'},
+            @endforeach
+            
+        ];
+
+        var pieData2 = [
+            
+            @foreach ($array_inscrito as $data)
+                {data: {{$data[1]}}, label: '{{$data[0]}}'},
+            @endforeach
+            
+        ];
+
+        var pieData3 = [
+            
+            @foreach ($array_referido as $data)
+                {data: {{$data[1]}}, label: '{{$data[0]}}'},
+            @endforeach
+            
+        ];
+        
+        // var values = [
+        //     {{$visitantes_mujeres}},
+        //     {{$visitantes_hombres}}
+                         
+        // ];
+
+
+        $.plot('#pie-chart-visitantes', pieData1, {
+            series: {
+                pie: {
+                    show: true,
+                    stroke: { 
+                        width: 2,
+                    },
+                },
+            },
+            legend: {
+                container: '#flc-pie-visitantes',
+                backgroundOpacity: 0.5,
+                noColumns: 0,
+                backgroundColor: "white",
+                lineWidth: 0
+            },
+            grid: {
+                hoverable: true,
+                clickable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: false,
+                cssClass: 'flot-tooltip'
+            },
+            
+        });
+
+        $.plot('#pie-chart-inscritos', pieData2, {
+            series: {
+                pie: {
+                    show: true,
+                    stroke: { 
+                        width: 2,
+                    },
+                },
+            },
+            legend: {
+                container: '#flc-pie-inscritos',
+                backgroundOpacity: 0.5,
+                noColumns: 0,
+                backgroundColor: "white",
+                lineWidth: 0
+            },
+            grid: {
+                hoverable: true,
+                clickable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: false,
+                cssClass: 'flot-tooltip'
+            },
+            
+        });
+
+        $.plot('#pie-chart-referidos', pieData3, {
+            series: {
+                pie: {
+                    show: true,
+                    stroke: { 
+                        width: 2,
+                    },
+                },
+            },
+            legend: {
+                container: '#flc-pie-referidos',
+                backgroundOpacity: 0.5,
+                noColumns: 0,
+                backgroundColor: "white",
+                lineWidth: 0
+            },
+            grid: {
+                hoverable: true,
+                clickable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: false,
+                cssClass: 'flot-tooltip'
+            },
+            
+        });
+
+
+    });
+
+    t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25, 
+        bPaginate: false,
+        bInfo: false,
+        bFilter:false, 
+        bSort:false, 
+        language: {
+            processing:     "Procesando ...",
+            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+            searchPlaceholder: "BUSCAR",
+            lengthMenu:     " ",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+        }
+
+
+    });
+
+    h=$('#visitantes').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25, 
+        bPaginate: false,
+        bInfo: false,
+        bFilter:false, 
+        bSort:false, 
+        language: {
+            processing:     "Procesando ...",
+            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+            searchPlaceholder: "BUSCAR",
+            lengthMenu:     " ",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+        }
+
+
+    });
+
+    i=$('#inscritos').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25, 
+        bPaginate: false,
+        bInfo: false,
+        bFilter:false, 
+        bSort:false, 
+        language: {
+            processing:     "Procesando ...",
+            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+            searchPlaceholder: "BUSCAR",
+            lengthMenu:     " ",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+        }
+
+
+    });
+
+    j=$('#referidos').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25, 
+        bPaginate: false,
+        bInfo: false,
+        bFilter:false, 
+        bSort:false, 
+        language: {
+            processing:     "Procesando ...",
+            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+            searchPlaceholder: "BUSCAR",
+            lengthMenu:     " ",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+        }
+
+
+    });
+
+    function collapse_minus(collaps){
+        $('#'+collaps).collapse('hide');
+    }   
+
+    $('#collapseTwo').on('show.bs.collapse', function () {
+        $("#boolean_fecha").val('1');
+        setTimeout(function(){ 
+            $("#fecha").click();
+        }, 500);
+    })
+
+    $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#boolean_fecha").val('0');
+    })
+
+
+    $("#guardar").click(function(){
+
+            var route = route_filtrar;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#formFiltro" ).serialize();
+
+            procesando(); 
+
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+
+                      var nType = 'success';
+                      var nTitle="Ups! ";
+                      var nMensaje=respuesta.mensaje;
+
+                    $('#talleres').text(formatmoney(respuesta.talleres))
+                    $('#campanas').text(formatmoney(respuesta.campanas))
+                    $('#eventos').text(formatmoney(respuesta.eventos))
+                    $('#generales').text(formatmoney(respuesta.generales))
+
+                    $('#egresos_generales').text(formatmoney(respuesta.egresos_generales))
+                    $('#egresos_campanas').text(formatmoney(respuesta.egresos_campanas))
+                    $('#egresos_talleres').text(formatmoney(respuesta.egresos_talleres))
+                    $('#egresos_eventos').text(formatmoney(respuesta.egresos_eventos))
+
+                    total_generales = parseFloat(respuesta.generales - respuesta.egresos_generales);
+                    total_campanas = parseFloat(respuesta.campanas - respuesta.egresos_campanas);
+                    total_eventos = parseFloat(respuesta.eventos - respuesta.egresos_eventos);
+                    total_talleres = parseFloat(respuesta.talleres - respuesta.egresos_talleres);
+
+                    $('#total_generales').text(formatmoney(total_generales))
+                    $('#total_campanas').text(formatmoney(total_campanas))
+                    $('#total_eventos').text(formatmoney(total_eventos))
+                    $('#total_talleres').text(formatmoney(total_talleres))
+
+                    $('#total_ingresos').text(formatmoney(respuesta.talleres + respuesta.campanas + respuesta.eventos + respuesta.generales))
+                    $('#total_egresos').text(formatmoney(respuesta.egresos_generales + respuesta.egresos_campanas + respuesta.egresos_eventos + respuesta.egresos_talleres))
+                    $('#total').text(formatmoney(total_generales + total_campanas + total_eventos + total_talleres))
+
+                    $('#visitantes_mujeres').text(respuesta.visitantes_mujeres);
+                    $('#visitantes_hombres').text(respuesta.visitantes_hombres);
+                    $('#visitantes_totales').text(parseInt(respuesta.visitantes_mujeres + respuesta.visitantes_hombres));
+
+                    $('#inscritos_mujeres').text(respuesta.inscritos_mujeres);
+                    $('#inscritos_hombres').text(respuesta.inscritos_hombres);
+                    $('#inscritos_totales').text(parseInt(respuesta.inscritos_mujeres + respuesta.inscritos_hombres));
+
+                    $('#referidos_mujeres').text(respuesta.referidos_mujeres);
+                    $('#referidos_hombres').text(respuesta.referidos_hombres);
+                    $('#referidos_totales').text(parseInt(respuesta.referidos_mujeres + respuesta.referidos_hombres));
+
+
+                    datos = JSON.parse(JSON.stringify(respuesta));
+
+                    var pieData1 = ''
+                    pieData1 += '[';
+                    $.each( datos.array_visitante, function( i, item ) {
+                        var label = item[0];
+                        var cant = item[1];
+                        pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
+                    });
+                    pieData1 = pieData1.substring(0, pieData1.length -1);
+                    pieData1 += ']';
+
+                    // --
+
+                    var pieData2 = ''
+                    pieData2 += '[';
+                    $.each( datos.array_inscrito, function( i, item ) {
+                        var label = item[0];
+                        var cant = item[1];
+                        pieData2 += '{"data":"'+cant+'","label":"'+label+'"},';
+                    });
+                    pieData2 = pieData2.substring(0, pieData2.length -1);
+                    pieData2 += ']';
+
+                    // --
+
+                    var pieData3 = ''
+                    pieData3 += '[';
+                    $.each( datos.array_referido, function( i, item ) {
+                        var label = item[0];
+                        var cant = item[1];
+                        pieData3 += '{"data":"'+cant+'","label":"'+label+'"},';
+                    });
+                    pieData3 = pieData3.substring(0, pieData3.length -1);
+                    pieData3 += ']';
+
+                    $(".flot-chart").html('');
+                    $(".flc-pie").html('');
+
+                    $.plot('#pie-chart-visitantes', $.parseJSON(pieData1), {
+                        series: {
+                            pie: {
+                                show: true,
+                                stroke: { 
+                                    width: 2,
+                                },
+                            },
+                        },
+                        legend: {
+                            container: '#flc-pie-visitantes',
+                            backgroundOpacity: 0.5,
+                            noColumns: 0,
+                            backgroundColor: "white",
+                            lineWidth: 0
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true
+                        },
+                        tooltip: true,
+                        tooltipOpts: {
+                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                            shifts: {
+                                x: 20,
+                                y: 0
+                            },
+                            defaultTheme: false,
+                            cssClass: 'flot-tooltip'
+                        },
+                        
+                    });
+
+                    $.plot('#pie-chart-inscritos', $.parseJSON(pieData2), {
+                        series: {
+                            pie: {
+                                show: true,
+                                stroke: { 
+                                    width: 2,
+                                },
+                            },
+                        },
+                        legend: {
+                            container: '#flc-pie-inscritos',
+                            backgroundOpacity: 0.5,
+                            noColumns: 0,
+                            backgroundColor: "white",
+                            lineWidth: 0
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true
+                        },
+                        tooltip: true,
+                        tooltipOpts: {
+                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                            shifts: {
+                                x: 20,
+                                y: 0
+                            },
+                            defaultTheme: false,
+                            cssClass: 'flot-tooltip'
+                        },
+                        
+                    });
+
+                    $.plot('#pie-chart-referidos', $.parseJSON(pieData3), {
+                        series: {
+                            pie: {
+                                show: true,
+                                stroke: { 
+                                    width: 2,
+                                },
+                            },
+                        },
+                        legend: {
+                            container: '#flc-pie-referidos',
+                            backgroundOpacity: 0.5,
+                            noColumns: 0,
+                            backgroundColor: "white",
+                            lineWidth: 0
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true
+                        },
+                        tooltip: true,
+                        tooltipOpts: {
+                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                            shifts: {
+                                x: 20,
+                                y: 0
+                            },
+                            defaultTheme: false,
+                            cssClass: 'flot-tooltip'
+                        },
+                        
+                    });
+            
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }
+
+                finprocesado();                       
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                  window.location = "{{url('/')}}/error";
+                }
+                if(msj.responseJSON.status=="ERROR"){
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }
+
+                finprocesado();
+
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+
+    });
+
+    function formatmoney(n) {
+        return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    }
 
 </script>
 
