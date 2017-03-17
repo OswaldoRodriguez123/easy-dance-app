@@ -2367,9 +2367,9 @@ public function PresencialesFiltros(Request $request)
             $egresos_campanas = 0;
         }
 
-        $inscritos_mujeres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->count();
+        $inscritos_mujeres = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->where('alumnos.academia_id', Auth::user()->academia_id)->whereBetween('inscripcion_clase_grupal.created_at', [$start,$end])->where('alumnos.sexo','F')->count();
 
-        $inscritos_hombres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','M')->count();
+        $inscritos_hombres = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')->where('alumnos.academia_id', Auth::user()->academia_id)->whereBetween('inscripcion_clase_grupal.created_at', [$start,$end])->where('alumnos.sexo','M')->count();
 
         $visitantes_mujeres = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->count();
 
