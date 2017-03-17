@@ -159,6 +159,32 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
+                                 
+                                    <label for="tipo" id="id-tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de producto" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                                          <option value="2">General</option>
+                                          <option value="5">Taller</option>
+                                          <option value="14">Fiesta y Evento</option>
+                                          
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-tipo">
+                                      <span >
+                                        <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
                                        <div class="form-group fg-line ">
                                           <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
                                           

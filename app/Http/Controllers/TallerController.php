@@ -328,6 +328,7 @@ class TallerController extends BaseController {
             $servicio->imagen = '';
             $servicio->descripcion = $descripcion;
             $servicio->incluye_iva = 1;
+            $servicio->tipo = 5;
 
             $servicio->save();
 

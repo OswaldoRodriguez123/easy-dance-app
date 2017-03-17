@@ -24,6 +24,7 @@ use App\ConfigTipoExamen;
 use App\ConfigServicios;
 use App\ComoNosConociste;
 use App\EgresosFiesta;
+use App\EgresosCampana;
 use Mail;
 use DB;
 use Validator;
@@ -2333,11 +2334,23 @@ public function PresencialesFiltros(Request $request)
         $talleres = 0;
         $eventos = 0;
         $generales = 0;
+        $campanas = 0;
 
         $egresos_talleres = 0;
 
         $egresos_eventos = EgresosFiesta::join('fiestas', 'egresos_fiestas.fiesta_id', '=', 'fiestas.id')->where('fiestas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_fiestas.created_at', [$start,$end])->sum('egresos_fiestas.cantidad');
+
+        if(!$egresos_eventos){
+            $egresos_eventos = 0;
+        }
+
         $egresos_generales = 0;
+
+        $egresos_campanas = EgresosCampana::join('campanas', 'egresos_campanas.campana_id', '=', 'campanas.id')->where('campanas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_campanas.created_at', [$start,$end])->sum('egresos_campanas.cantidad');
+
+        if(!$egresos_campanas){
+            $egresos_campanas = 0;
+        }
 
         $inscritos_mujeres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->count();
 
@@ -2360,13 +2373,21 @@ public function PresencialesFiltros(Request $request)
 
                     $talleres += floatval($factura->importe_neto);
 
+                }else if($factura->tipo == 14){
+
+                    $eventos += floatval($factura->importe_neto);
+
+                }else if($factura->tipo == 11 OR $factura->tipo == 12){
+
+                    $campanas += floatval($factura->importe_neto);
+
                 }else{
                     $generales += floatval($factura->importe_neto);
                 }
             }
         }
 
-        return view('reportes.master')->with(['talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres]);
+        return view('reportes.master')->with(['talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'campanas' => $campanas, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'egresos_campanas' => $egresos_campanas, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres]);
 
     }
 

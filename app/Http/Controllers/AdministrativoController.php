@@ -258,7 +258,7 @@ class AdministrativoController extends BaseController {
         foreach($config_servicio as $item){
 
             $iva = $item['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'costo' => $item['costo'], 'iva' => $iva, 'incluye_iva' => $item['incluye_iva']);
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'costo' => $item['costo'], 'iva' => $iva, 'incluye_iva' => $item['incluye_iva'], 'tipo' => $item['tipo']);
 
             $collection=collect($tmp);
             $grouped = $collection->groupBy('id');     
@@ -274,7 +274,7 @@ class AdministrativoController extends BaseController {
         foreach($config_producto as $items){
 
             $iva = $items['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp2[]=array('id' => $items['id'], 'nombre' => $items['nombre'] , 'costo' => $items['costo'], 'iva' => $iva, 'incluye_iva' => $items['incluye_iva'], 'disponibilidad' => $items['cantidad']);
+            $tmp2[]=array('id' => $items['id'], 'nombre' => $items['nombre'] , 'costo' => $items['costo'], 'iva' => $iva, 'incluye_iva' => $items['incluye_iva'], 'disponibilidad' => $items['cantidad'], 'tipo' => $items['tipo']);
 
             $collection2=collect($tmp2);
             $grouped2 = $collection2->groupBy('id');     
@@ -1436,7 +1436,7 @@ class AdministrativoController extends BaseController {
             $item_factura->fecha = Carbon::now()->toDateString();
             $item_factura->item_id = $id[0];
             $item_factura->nombre = $servicio->nombre;
-            $item_factura->tipo = 1;
+            $item_factura->tipo = $id[2];
             $item_factura->cantidad = $request->cantidad;
             $item_factura->precio_neto = $servicio->costo;
             $item_factura->impuesto = $request->impuesto;
@@ -1445,7 +1445,7 @@ class AdministrativoController extends BaseController {
                         
             $item_factura->save();
 
-            $array = array(['id' =>  $item_factura->id, 'item_id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+            $array = array(['id' =>  $item_factura->id, 'item_id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => $id[2], 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
 
             }else if($request->tipo == "producto"){
 
@@ -1467,7 +1467,7 @@ class AdministrativoController extends BaseController {
                 $item_factura->fecha = Carbon::now()->toDateString();
                 $item_factura->item_id = $id[0];
                 $item_factura->nombre = $producto->nombre;
-                $item_factura->tipo = 2;
+                $item_factura->tipo = $id[2];
                 $item_factura->cantidad = $request->cantidad;
                 $item_factura->precio_neto = $producto->costo;
                 $item_factura->impuesto = $request->impuesto;
@@ -1476,7 +1476,7 @@ class AdministrativoController extends BaseController {
                             
                 $item_factura->save();
 
-                $array = array(['id' => $item_factura->id, 'item_id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto , 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+                $array = array(['id' => $item_factura->id, 'item_id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => $id[2], 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto , 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
                 }
 
                  $last_proforma = DB::table('items_factura_proforma')

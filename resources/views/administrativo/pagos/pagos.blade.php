@@ -1107,8 +1107,7 @@
     $('#combo').append( new Option("Selecciona",""));
     $.each(servicio, function (index, array) {
       $.each(array, function (index, arreglo) {
-      
-        $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo));
+        $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo + "-" + arreglo.tipo));
       });
     });
     $('input[name="importe_neto"]').val(0)
@@ -1124,7 +1123,7 @@
     $('#combo').append( new Option("Selecciona",""));
     $.each(producto, function (index, array) {
       $.each(array, function (index, arreglo) {
-        $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo));
+        $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo + "-" + arreglo.tipo));
       });
     });
 

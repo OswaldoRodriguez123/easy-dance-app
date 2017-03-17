@@ -67,6 +67,7 @@ class ConfigProductosController extends BaseController {
         $producto->imagen = $request->imagen;
         $producto->descripcion = $descripcion;
         $producto->incluye_iva = $request->incluye_iva;
+        $producto->tipo = $request->tipo;
 
         if($producto->save()){
 

@@ -76,36 +76,50 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
+                                        <?php 
+                                            $total = $generales + $talleres + $eventos + $campanas;
+                                            $total_egresos = $egresos_generales + $egresos_talleres + $egresos_eventos + $egresos_campanas;
+                                        ?>
+
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos academia</span></td>
-                                            <td>{{$generales}}</td>
+                                            <td>{{ number_format($generales, 2, '.' , '.') }}</td>
                                             <td>Egresos academia</td>
-                                            <td>{{$egresos_generales}}</td>
-                                            <td></td>
+                                            <td>{{ number_format($egresos_generales, 2, '.' , '.') }}</td>
+                                            <td>{{ number_format($generales - $egresos_generales, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos eventos</span></td>
-                                            <td>{{$eventos}}</td>
+                                            <td>{{ number_format($eventos, 2, '.' , '.') }}</td>
                                             <td>Egresos eventos</td>
-                                            <td>{{$egresos_eventos}}</td>
-                                            <td></td>
+                                            <td>{{ number_format($egresos_eventos, 2, '.' , '.') }}</td>
+                                            <td>{{ number_format($eventos - $egresos_eventos, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos talleres</span></td>
-                                            <td>{{$talleres}}</td>
+                                            <td>{{ number_format($talleres, 2, '.' , '.') }}</td>
                                             <td>Egresos talleres</td>
-                                            <td>{{$egresos_talleres}}</td>
-                                            <td></td>
+                                            <td>{{ number_format($egresos_talleres, 2, '.' , '.') }}</td>
+                                            <td>{{ number_format($talleres - $egresos_talleres, 2, '.' , '.') }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><span style="padding-left: 3%">Ingresos campañas</span></td>
+                                            <td>{{ number_format($campanas, 2, '.' , '.') }}</td>
+                                            <td>Egresos campañas</td>
+                                            <td>{{ number_format($egresos_campanas, 2, '.' , '.') }}</td>
+                                            <td>{{ number_format($campanas - $egresos_campanas, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">TOTALES:</span></td>
-                                            <td>{{$generales + $talleres + $eventos}}</td>
+                                            <td>{{number_format($total, 2, '.' , '.')}}</td>
                                             <td>TOTALES:</td>
-                                            <td>{{$egresos_generales + $egresos_talleres + $egresos_eventos}}</td>
-                                            <td></td>
+                                            <td>{{number_format($total_egresos, 2, '.' , '.')}}</td>
+                                            <td>{{number_format($total - $total_egresos, 2, '.' , '.') }}</td>
                                         </tr>     
                                     </tbody>
                                 </table>
