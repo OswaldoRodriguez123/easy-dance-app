@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Alumno;
+use App\Factura;
 use App\ClaseGrupal;
 use App\Examen;
 use App\Instructor;
@@ -22,6 +23,7 @@ use App\Asistencia;
 use App\ConfigTipoExamen;
 use App\ConfigServicios;
 use App\ComoNosConociste;
+use App\EgresosFiesta;
 use Mail;
 use DB;
 use Validator;
@@ -2325,7 +2327,46 @@ public function PresencialesFiltros(Request $request)
 
     public function Master(){
 
-        return view('reportes.master')->with([]);
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth(); 
+
+        $talleres = 0;
+        $eventos = 0;
+        $generales = 0;
+
+        $egresos_talleres = 0;
+
+        $egresos_eventos = EgresosFiesta::join('fiestas', 'egresos_fiestas.fiesta_id', '=', 'fiestas.id')->where('fiestas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_fiestas.created_at', [$start,$end])->sum('egresos_fiestas.cantidad');
+        $egresos_generales = 0;
+
+        $inscritos_mujeres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->count();
+
+        $inscritos_hombres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','M')->count();
+
+        $visitantes_mujeres = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->count();
+
+        $visitantes_hombres = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','M')->count();
+
+        $referidos_mujeres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','F')->where('referido_id', '!=', null)->count();
+
+        $referidos_hombres = Alumno::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->where('sexo','M')->where('referido_id', '!=', null)->count();
+
+        $ingresos = Factura::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+
+        foreach($ingresos as $ingreso){
+            $facturas = ItemsFactura::where('factura_id', $ingreso->id)->get();
+            foreach($facturas as $factura){
+                if($factura->tipo == 5){
+
+                    $talleres += floatval($factura->importe_neto);
+
+                }else{
+                    $generales += floatval($factura->importe_neto);
+                }
+            }
+        }
+
+        return view('reportes.master')->with(['talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres]);
 
     }
 

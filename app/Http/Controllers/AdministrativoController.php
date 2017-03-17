@@ -945,8 +945,12 @@ class AdministrativoController extends BaseController {
                         }else if($item_proforma->tipo == 4){
 
                             $inscripcion_clase_grupal = InscripcionClaseGrupal::find($item_proforma->item_id);
-                            $inscripcion_clase_grupal->tiene_mora = 0;
-                            $inscripcion_clase_grupal->save();
+                            
+                            if($inscripcion_clase_grupal){
+                                $inscripcion_clase_grupal->tiene_mora = 0;
+                                $inscripcion_clase_grupal->save();
+                            }
+                            
                         }
 
                         $item_proforma->delete();
@@ -960,7 +964,7 @@ class AdministrativoController extends BaseController {
                     $item_factura->factura_id = $factura_id;
                     $item_factura->item_id = $factura->id;
                     $item_factura->nombre = 'Abono Factura ' . $numero_factura;
-                    $item_factura->tipo = 11;
+                    $item_factura->tipo = 13;
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;
                     $item_factura->impuesto = 0;

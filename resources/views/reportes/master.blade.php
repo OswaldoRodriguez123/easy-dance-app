@@ -78,33 +78,33 @@
                                     <tbody>
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos academia</span></td>
-                                            <td>4444</td>
+                                            <td>{{$generales}}</td>
                                             <td>Egresos academia</td>
-                                            <td>4444</td>
+                                            <td>{{$egresos_generales}}</td>
                                             <td></td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos eventos</span></td>
-                                            <td>4444</td>
+                                            <td>{{$eventos}}</td>
                                             <td>Egresos eventos</td>
-                                            <td>4444</td>
+                                            <td>{{$egresos_eventos}}</td>
                                             <td></td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">Ingresos talleres</span></td>
-                                            <td>4444</td>
+                                            <td>{{$talleres}}</td>
                                             <td>Egresos talleres</td>
-                                            <td>4444</td>
+                                            <td>{{$egresos_talleres}}</td>
                                             <td></td>
                                         </tr>
 
                                         <tr>
                                             <td><span style="padding-left: 3%">TOTALES:</span></td>
-                                            <td>4444</td>
+                                            <td>{{$generales + $talleres + $eventos}}</td>
                                             <td>TOTALES:</td>
-                                            <td>4444</td>
+                                            <td>{{$egresos_generales + $egresos_talleres + $egresos_eventos}}</td>
                                             <td></td>
                                         </tr>     
                                     </tbody>
@@ -126,15 +126,15 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer</span></td>
+                                            <td><span style="padding-left: 3%">Mujer: {{$visitantes_mujeres}}</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre</span></td>
+                                            <td><span style="padding-left: 3%">Hombre: {{$visitantes_hombres}}</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">TOTAL:</span></td>
+                                            <td><span style="padding-left: 3%">TOTAL: {{$visitantes_hombres + $visitantes_mujeres}}</span></td>
                                         </tr>
     
                                     </tbody>
@@ -155,15 +155,15 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer</span></td>
+                                            <td><span style="padding-left: 3%">Mujer: {{$inscritos_mujeres}}</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre</span></td>
+                                            <td><span style="padding-left: 3%">Hombre: {{$inscritos_hombres}}</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">TOTAL:</span></td>
+                                            <td><span style="padding-left: 3%">TOTAL: {{$inscritos_mujeres + $inscritos_hombres}}</span></td>
                                         </tr>
     
                                     </tbody>
@@ -184,15 +184,15 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer</span></td>
+                                            <td><span style="padding-left: 3%">Mujer: {{$referidos_mujeres}}</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre</span></td>
+                                            <td><span style="padding-left: 3%">Hombre: {{$referidos_hombres}}</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">TOTAL:</span></td>
+                                            <td><span style="padding-left: 3%">TOTAL: {{$referidos_mujeres + $referidos_hombres}}</span></td>
                                         </tr>
     
                                     </tbody>
