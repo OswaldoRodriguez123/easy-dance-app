@@ -36,6 +36,7 @@ use App\ReservacionVisitante;
 use App\CredencialAlumno;
 use App\Codigo;
 use App\Patrocinador;
+use App\EgresosGeneral;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -1614,6 +1615,70 @@ class AcademiaConfiguracionController extends BaseController {
 
         return $this->index();
 
+    }
+
+    public function egresos()
+    {
+
+        $egresos = EgresosGeneral::where('academia_id',Auth::user()->academia_id)->get();
+        $total = EgresosGeneral::where('academia_id',Auth::user()->academia_id)->sum('cantidad');
+        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total]);
+          
+    }
+
+    public function agregar_egreso(Request $request)
+    {
+
+        $rules = [
+            'factura' => 'required',
+            'concepto' => 'required',
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'factura.required' => 'Ups! La factura es requerida ',
+            'concepto.required' => 'Ups! El concepto es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $general = new EgresosGeneral;
+
+            $general->factura = $request->factura;
+            $general->concepto = $request->concepto;
+            $general->cantidad = $request->cantidad;
+            $general->academia_id = Auth::user()->academia_id;
+
+            if($general->save()){
+                
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $general, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_egreso($id)
+    {
+        $general = EgresosGeneral::find($id);
+
+        $cantidad = $general->cantidad;
+        
+        if($general->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Fiesta o Evento se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
 }

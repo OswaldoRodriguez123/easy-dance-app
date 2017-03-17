@@ -137,7 +137,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		//RUTAS QUE SOLAMENTE PODRA TENER ACCESO EL ROL ADMIN
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
-				
+
+			Route::get('administrativo/egresos/generales', 'AcademiaConfiguracionController@egresos');
+			Route::post('administrativo/egresos/generales/agregar-egreso', 'AcademiaConfiguracionController@agregar_egreso');
+			Route::delete('administrativo/egresos/generales/eliminar-egreso/{id}', 'AcademiaConfiguracionController@eliminar_egreso');
 
 			// ---- CONFIGURACION ----
 
@@ -298,6 +301,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('administrativo/pagos/agregarcliente', 'AdministrativoController@AgregarCliente');
 
 			//PAGO CON MERCADOPAGO
+			//
 			Route::post('administrativo/pagos/facturamercadopago', 'AdministrativoController@storeMercadopago');
 
 			Route::get('administrativo/pagar/{id}', 'AdministrativoController@pagar');
@@ -323,6 +327,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('administrativo/presupuestos/agregaritem', 'AdministrativoController@agregaritempresupuesto');
 			Route::post('administrativo/presupuestos/eliminaritem/{id}', 'AdministrativoController@eliminaritempresupuesto');
 			Route::delete('administrativo/presupuestos/eliminar/{id}', 'AdministrativoController@eliminarpresupuesto');
+
+			Route::get('administrativo/egresos', 'EgresoController@principal');
 
 			//FACTURA
 
@@ -594,6 +600,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/talleres/eliminarinscripcion/{id}', 'TallerController@eliminarinscripcion');
 			Route::post('agendar/talleres/inscribir', 'TallerController@storeInscripcion')
 			;
+			Route::get('agendar/talleres/egresos/{id}', 'TallerController@egresos');
+			Route::post('agendar/talleres/agregar-egreso', 'TallerController@agregar_egreso');
+			Route::delete('agendar/talleres/eliminar-egreso/{id}', 'TallerController@eliminar_egreso');
 
 			Route::put('agendar/talleres/update/nombre', 'TallerController@updateNombre');
 			Route::put('agendar/talleres/update/costo', 'TallerController@updateCosto');

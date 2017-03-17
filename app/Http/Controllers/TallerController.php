@@ -15,6 +15,7 @@ use App\Instructor;
 use App\DiasDeSemana;
 use App\InscripcionTaller;
 use App\ItemsFacturaProforma;
+use App\EgresosTaller;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -1233,6 +1234,74 @@ class TallerController extends BaseController {
 
         }else{
             return response()->json(['error_mensaje'=> 'Ups! Este taller no puede ser eliminado ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
+        }
+    }
+
+    public function egresos($id)
+    {
+        $taller = Taller::find($id);
+
+        if($taller){
+            $egresos = EgresosTaller::where('taller_id',$id)->get();
+            $total = EgresosTaller::where('taller_id',$id)->sum('cantidad');
+            return view('agendar.taller.egresos')->with(['taller' => $taller, 'egresos' => $egresos, 'total' => $total]);
+        }else{
+           return redirect("agendar/talleres"); 
+        }
+    }
+
+    public function agregar_egreso(Request $request)
+    {
+
+        $rules = [
+            'factura' => 'required',
+            'concepto' => 'required',
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'factura.required' => 'Ups! La factura es requerida ',
+            'concepto.required' => 'Ups! El concepto es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $taller = new EgresosTaller;
+
+            $taller->factura = $request->factura;
+            $taller->concepto = $request->concepto;
+            $taller->cantidad = $request->cantidad;
+            $taller->taller_id = $request->taller_id;
+
+            if($taller->save()){
+                
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $taller, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_egreso($id)
+    {
+        $taller = EgresosTaller::find($id);
+
+        $cantidad = $taller->cantidad;
+        
+        if($taller->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Fiesta o Evento se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 

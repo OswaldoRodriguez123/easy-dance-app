@@ -25,6 +25,8 @@ use App\ConfigServicios;
 use App\ComoNosConociste;
 use App\EgresosFiesta;
 use App\EgresosCampana;
+use App\EgresosGeneral;
+use App\EgresosTaller;
 use Mail;
 use DB;
 use Validator;
@@ -2336,7 +2338,11 @@ public function PresencialesFiltros(Request $request)
         $generales = 0;
         $campanas = 0;
 
-        $egresos_talleres = 0;
+        $egresos_talleres = EgresosTaller::join('talleres', 'egresos_talleres.taller_id', '=', 'talleres.id')->where('talleres.academia_id', Auth::user()->academia_id)->whereBetween('egresos_talleres.created_at', [$start,$end])->sum('egresos_talleres.cantidad');
+
+        if(!$egresos_talleres){
+            $egresos_talleres = 0;
+        }
 
         $egresos_eventos = EgresosFiesta::join('fiestas', 'egresos_fiestas.fiesta_id', '=', 'fiestas.id')->where('fiestas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_fiestas.created_at', [$start,$end])->sum('egresos_fiestas.cantidad');
 
@@ -2344,7 +2350,11 @@ public function PresencialesFiltros(Request $request)
             $egresos_eventos = 0;
         }
 
-        $egresos_generales = 0;
+        $egresos_generales = EgresosGeneral::where('egresos_generales.academia_id', Auth::user()->academia_id)->whereBetween('egresos_generales.created_at', [$start,$end])->sum('egresos_generales.cantidad');
+
+        if(!$egresos_generales){
+            $egresos_generales = 0;
+        }
 
         $egresos_campanas = EgresosCampana::join('campanas', 'egresos_campanas.campana_id', '=', 'campanas.id')->where('campanas.academia_id', Auth::user()->academia_id)->whereBetween('egresos_campanas.created_at', [$start,$end])->sum('egresos_campanas.cantidad');
 
