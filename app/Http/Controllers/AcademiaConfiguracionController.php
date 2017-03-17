@@ -86,7 +86,7 @@ class AcademiaConfiguracionController extends BaseController {
             $nombre = explode(" ", $factura->nombre);
 
             if($nombre[0] == "Boleta"){
-                $factura->tipo = 13;
+                $factura->tipo = 14;
                 $factura->save();
             }
         }
@@ -97,7 +97,7 @@ class AcademiaConfiguracionController extends BaseController {
             $nombre = explode(" ", $factura->nombre);
 
             if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
-                $factura->tipo = 13;
+                $factura->tipo = 14;
                 $factura->save();
             }
         }
@@ -108,7 +108,7 @@ class AcademiaConfiguracionController extends BaseController {
             $nombre = explode(" ", $factura->nombre);
 
             if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
-                $factura->tipo = 13;
+                $factura->tipo = 14;
                 $factura->save();
             }
         }
