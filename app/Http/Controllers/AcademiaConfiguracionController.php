@@ -80,27 +80,27 @@ class AcademiaConfiguracionController extends BaseController {
         // 	$patrocinador->save();
         // }
 
-        $facturas = ItemsFactura::all();
+        // $facturas = ItemsFactura::all();
 
-        foreach($facturas as $factura){
-            $nombre = explode(" ", $factura->nombre);
+        // foreach($facturas as $factura){
+        //     $nombre = explode(" ", $factura->nombre);
 
-            if($nombre[0] == "Abono"){
-                $factura->tipo = 13;
-                $factura->save();
-            }
-        }
+        //     if($nombre[0] == "Abono"){
+        //         $factura->tipo = 13;
+        //         $factura->save();
+        //     }
+        // }
 
-        $facturas = ItemsFacturaProforma::all();
+        // $facturas = ItemsFacturaProforma::all();
 
-        foreach($facturas as $factura){
-            $nombre = explode(" ", $factura->nombre);
+        // foreach($facturas as $factura){
+        //     $nombre = explode(" ", $factura->nombre);
 
-            if($nombre[0] == "Abono"){
-                $factura->tipo = 13;
-                $factura->save();
-            }
-        }
+        //     if($nombre[0] == "Abono"){
+        //         $factura->tipo = 13;
+        //         $factura->save();
+        //     }
+        // }
 
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
