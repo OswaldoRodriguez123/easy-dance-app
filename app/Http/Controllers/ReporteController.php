@@ -853,6 +853,8 @@ public function PresencialesFiltros(Request $request)
                 }else if($request->tipo == 3){
                     $start = $actual->startOfMonth()->subMonth()->toDateString();
                     $end = $actual->endOfMonth()->subMonth()->toDateString();  
+
+                    dd($start . ' ' . $end);
                 }
 
                 $query->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end]);
