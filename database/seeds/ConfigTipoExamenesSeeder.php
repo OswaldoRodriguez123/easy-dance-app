@@ -40,7 +40,7 @@ class ConfigTipoExamenesSeeder extends Seeder
 	    ));
 
 	    ConfigTipoExamen::create(array(
-	      'nombre' => 'Diagnóstico Recurrente',
+	      'nombre' => 'Valoración Recurrente',
 
 	    ));
     }

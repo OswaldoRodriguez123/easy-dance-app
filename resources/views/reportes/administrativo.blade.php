@@ -52,7 +52,7 @@
                     <div class="card">
 
                         <div class="card-header text-right">
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_d icon_d-reporte f-25"></i> Informe Administrativo</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a icon_a-punto-de-venta f-25"></i> Informe Administrativo</p>
                             <hr class="linea-morada">
                         </div>
 

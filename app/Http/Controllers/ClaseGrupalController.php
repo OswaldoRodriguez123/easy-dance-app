@@ -3025,7 +3025,13 @@ class ClaseGrupalController extends BaseController {
 
                 }
             }else{
-                $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+
+                if(Carbon::now()->toDateString() != $fecha_a_comparar){
+                    $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                }else{
+                    $asistio = '';
+                }
+                
                 $hora = '';
                 $dia = '';
             }
@@ -3081,7 +3087,11 @@ class ClaseGrupalController extends BaseController {
 
                     }
                 }else{
-                    $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                    if(Carbon::now()->toDateString() != $fecha_a_comparar){
+                        $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                    }else{
+                        $asistio = '';
+                    }
                     $hora = '';
                     $dia = '';
                 }

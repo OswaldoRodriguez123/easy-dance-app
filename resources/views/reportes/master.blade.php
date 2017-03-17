@@ -56,7 +56,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-productos f-25"></i> Reporte Master</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_d-reporte f-25"></i> Reporte Master</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -213,11 +213,11 @@
                                 <tbody>
 
                                     <tr>
-                                        <td><span style="padding-left: 3%">Mujer: <span id="visitantes_mujeres">{{$visitantes_mujeres}}</span></span></td>
+                                        <td><span style="padding-left: 3%"><i class="zmdi zmdi-female c-rosado f-25" style="padding-right: 2%"></i> <span id="visitantes_mujeres">{{$visitantes_mujeres}}</span></span></td>
                                     </tr>
 
                                     <tr>
-                                        <td><span style="padding-left: 3%">Hombre: <span id="visitantes_hombres">{{$visitantes_hombres}}</span></span></td>
+                                        <td><span style="padding-left: 3%"><i class="zmdi zmdi-male-alt c-azul f-25" style="padding-right: 2%"></i> <span id="visitantes_hombres">{{$visitantes_hombres}}</span></span></td>
                                     </tr>
 
                                     <tr>
@@ -250,11 +250,11 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer: <span id="inscritos_mujeres">{{$inscritos_mujeres}}</span></span></td>
+                                            <td><span style="padding-left: 3%"><i class="zmdi zmdi-female c-rosado f-25" style="padding-right: 2%"></i> <span id="inscritos_mujeres">{{$inscritos_mujeres}}</span></span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre: <span id="inscritos_hombres">{{$inscritos_hombres}}</span></span></td>
+                                            <td><span style="padding-left: 3%"><i class="zmdi zmdi-male-alt c-azul f-25" style="padding-right: 2%"></i> <span id="inscritos_hombres">{{$inscritos_hombres}}</span></span></td>
                                         </tr>
 
                                         <tr>
@@ -287,11 +287,11 @@
                                     <tbody>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Mujer: <span id="referidos_mujeres">{{$referidos_mujeres}}</span></span></td>
+                                            <td><span style="padding-left: 3%"><i class="zmdi zmdi-female c-rosado f-25" style="padding-right: 2%"></i> <span id="referidos_mujeres">{{$referidos_mujeres}}</span></span></td>
                                         </tr>
 
                                         <tr>
-                                            <td><span style="padding-left: 3%">Hombre: <span id="referidos_hombres">{{$referidos_hombres}}</span></span></td>
+                                            <td><span style="padding-left: 3%"><i class="zmdi zmdi-male-alt c-azul f-25" style="padding-right: 2%"></i> <span id="referidos_hombres">{{$referidos_hombres}}</span></span></td>
                                         </tr>
 
                                         <tr>
@@ -439,6 +439,7 @@
                 defaultTheme: false,
                 cssClass: 'flot-tooltip'
             },
+            colors: ["rgb(237,194,64)", "rgb(175,216,248)", "rgb(203,75,75)", "rgb(77,167,77)", "rgb(148,64,237)", "rgb(31,64,163)", "rgb(140,172,198)"],
             
         });
 
@@ -800,6 +801,7 @@
                             defaultTheme: false,
                             cssClass: 'flot-tooltip'
                         },
+                        colors: ["rgb(237,194,64)", "rgb(175,216,248)", "rgb(203,75,75)", "rgb(77,167,77)", "rgb(148,64,237)", "rgb(31,64,163)", "rgb(140,172,198)"],
                         
                     });
 
