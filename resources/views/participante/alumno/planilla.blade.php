@@ -1113,18 +1113,18 @@
 
                                    
                                   
-                                  <table class="table table-striped table-bordered historial">
-                                   <tr class="detalle historial">
-                                   <td class = "historial"></td>
-                                   <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700 historial">Balance E: </span><span class = "f-12 f-700 historial" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($total) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5 historial"></i></td>
-                                  </tr>
+                                  <table class="table table-striped table-bordered">
+                                    <tr class="detalle historial">
+                                      <td></td>
+                                      <td class="f-14 m-l-15" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Balance E: </span><span class = "f-12 f-700" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($total) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5"></i></td>
+                                    </tr>
                                   </table>
 
                                   <table class="table table-striped table-bordered">
-                                   <tr class="disabled">
-                                   <td class = ""></td>
-                                   <td class="f-14 m-l-15"><span class="f-12 f-700">Puntos Acumulados: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos"></span> <i id="estatus-puntos_referidos" class="zmdi zmdi-money {{ empty($puntos_referidos) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
-                                  </tr>
+                                    <tr class="disabled">
+                                      <td></td>
+                                      <td class="f-14 m-l-15"><span class="f-12 f-700">Puntos A: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos"></span> <i id="estatus-puntos_referidos" class="zmdi zmdi-money {{ empty($puntos_referidos) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
+                                    </tr>
                                   </table>
 
 
@@ -1386,10 +1386,6 @@
       $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
     }
 
-      function formatmoney(n) {
-        return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-      }
-
       if(total){
         $("#total").text(formatmoney(parseFloat(total)));
       }
@@ -1399,7 +1395,7 @@
 
 
       if(puntos_referidos){
-        $("#puntos_referidos").text(puntos_referidos);
+        $("#puntos_referidos").text(formatmoney(parseFloat(puntos_referidos)));
       }
       else{
         $("#puntos_referidos").text(0);
@@ -1612,12 +1608,13 @@
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
 
-             $("#alumno-"+c.name).text(texto);
+            $("#alumno-"+c.name).text(texto);
+
           }else if(c.name=='cantidad_actual'){
 
-            console.log(puntos_referidos + ' ' + c.value)
-            
-            $('#puntos_referidos').text(parseInt(puntos_referidos) + parseInt(c.value))
+            puntos_totales = parseInt(puntos_referidos) + parseInt(c.value)
+
+            $('#puntos_referidos').text(formatmoney(parseFloat(puntos_totales)))
             $("#estatus-puntos_referidos").removeClass('c-youtube');
             $("#estatus-puntos_referidos").addClass('c-verde');
 
@@ -2340,6 +2337,11 @@
         }
       })
     })
+
+    
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    }
 
    </script> 
   

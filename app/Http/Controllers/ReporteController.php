@@ -2323,4 +2323,10 @@ public function PresencialesFiltros(Request $request)
         
     }
 
+    public function Master(){
+
+        return view('reportes.master')->with([]);
+
+    }
+
 }
