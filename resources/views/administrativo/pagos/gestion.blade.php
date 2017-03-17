@@ -129,7 +129,7 @@
                             </div>
 
                             <div class="col-sm-3 text-center">
-                                <input type="text" data-mask="000.000.000.000" reverse= "true" class="form-control input-sm" name="monto" id="monto" placeholder="Ej. 100">
+                                <input type="text" data-mask="000,000,000,000" reverse= "true" class="form-control input-sm" name="monto" id="monto" placeholder="Ej. 100">
                             </div>
 
                             <div class="clearfix p-b-35"></div>
@@ -271,7 +271,7 @@
   }
 
   function formatDot (n) {
-    return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+    return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 }
 
   $( document ).ready(function() {
@@ -542,7 +542,7 @@
         $("#add").click(function(){
 
           monto = $("#monto").val();
-          monto = monto.replace(/\./g,'')
+          monto = monto.replace(/,/g,'')
 
           if(parseFloat(monto) <= totalglobal){
 

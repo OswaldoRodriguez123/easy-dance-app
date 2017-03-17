@@ -627,14 +627,13 @@ class AdministrativoController extends BaseController {
     $rules = [
 
         'forma_pago_id' => 'required',
-        'monto' => 'required|numeric|min:1',
+        'monto' => 'required|min:1',
     ];
 
     $messages = [
 
         'forma_pago_id.required' => 'Ups! La forma de pago es requerida',
         'monto.required' => 'Ups! El Monto es invalido, solo se aceptan numeros',
-        'monto.numeric' => 'Ups! El Monto es requerido',
         'monto.min' => 'El mínimo de cantidad permitida es 1',
     ];
 
@@ -648,7 +647,7 @@ class AdministrativoController extends BaseController {
 
     else{
 
-        $monto = str_replace('.', '', $request->monto);
+        $monto = str_replace(',', '', $request->monto);
 
         if($request->forma_pago_id == 4){
             $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$request->alumno_id)->first();
