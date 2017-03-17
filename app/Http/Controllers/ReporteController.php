@@ -2335,8 +2335,8 @@ public function PresencialesFiltros(Request $request)
         $geoip->setIp($request->ip());
         $actual->tz = $geoip->getTimezone();
 
-        $start = $actual->startOfMonth();
-        $end = $actual->endOfMonth(); 
+        $start = $actual->startOfMonth()->toDateString();
+        $end = $actual->endOfMonth()->toDateString(); 
 
         $talleres = 0;
         $eventos = 0;
