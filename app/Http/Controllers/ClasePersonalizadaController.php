@@ -55,7 +55,22 @@ class ClasePersonalizadaController extends BaseController {
 
 
         foreach($activas as $activa){
+
+            $horarios = HorarioClasePersonalizada::where('clase_personalizada_id',$activa->id)->get();
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $activa->fecha_inicio);
+
+            if($horarios){
+                
+                foreach($horarios as $horario){
+
+                    $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+
+                    if($fecha_horario > $fecha_inicio){
+                        $fecha_inicio = $fecha_horario;
+                    }
+                }
+            }
+
             if($fecha_inicio <= $fechaActual->format('Y-m-d')){
 
                 if($fecha_inicio < $fechaActual->format('Y-m-d')){

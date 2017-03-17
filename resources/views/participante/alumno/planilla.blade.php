@@ -1348,6 +1348,7 @@
     route_email="{{url('/')}}/correo/sesion/";
     route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
     route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
+    route_cancelar_cantidad="{{url('/')}}/participante/alumno/cancelar_cantidad";
 
 
     total = "{{$total}}";
@@ -2310,6 +2311,35 @@
         }
       }
     });
+
+    $('#modalReferido-Alumno').on('hidden.bs.modal', function (event) {
+      limpiarMensaje();
+      var token = $('input:hidden[name=_token]').val();
+      $("#cantidad_actual").val(0); 
+      $('#edit_referido_alumno')[0].reset();
+      $.ajax({
+        url: route_cancelar_cantidad,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',                
+        success: function (data) {
+          if(data.status=='OK'){
+
+            t.clear().draw();
+
+          }else{
+            swal(
+              'Solicitud no procesada',
+              'Ha ocurrido un error, intente nuevamente por favor',
+              'error'
+            );
+          }
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+        }
+      })
+    })
 
    </script> 
   

@@ -400,6 +400,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::post('participante/alumno/agregar_cantidad', 'AlumnoController@agregar_cantidad');
 			Route::post('participante/alumno/eliminar_cantidad/{id}', 'AlumnoController@eliminar_cantidad');
+			Route::post('participante/alumno/cancelar_cantidad', 'AlumnoController@cancelar_cantidad');
 
 			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
 

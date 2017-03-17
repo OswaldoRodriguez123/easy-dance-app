@@ -1417,5 +1417,13 @@ class AlumnoController extends BaseController
 
     }
 
+    public function cancelar_cantidad(){
+
+        Session::forget('puntos_referidos');
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
 
 }

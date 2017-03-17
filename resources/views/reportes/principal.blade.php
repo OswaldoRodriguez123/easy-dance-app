@@ -84,6 +84,11 @@
                   <li data-hovercolor="#f44336">
                       <a data-toggle="modal" href="{{url('/')}}/reportes/credenciales"><h2 data-type="mText" class="sti-item">Credenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes7 sti-item"></span></a>
                   </li>
+
+
+                  <li data-hovercolor="#f44336">
+                      <a data-toggle="modal" href="{{url('/')}}/reportes/administrativo"><h2 data-type="mText" class="sti-item">Administrativo</h2><span data-type="icon" class="sti-icon sti-icon-reportes10 sti-item"></span></a>
+                  </li>
                 </ul>
               </div>
             </div>
