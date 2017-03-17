@@ -2328,10 +2328,15 @@ public function PresencialesFiltros(Request $request)
         
     }
 
-    public function Master(){
+    public function Master(Request $request){
 
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth(); 
+        $actual = Carbon::now();
+        $geoip = new GeoIP();
+        $geoip->setIp($request->ip());
+        $actual->tz = $geoip->getTimezone();
+
+        $start = $actual->startOfMonth();
+        $end = $actual->endOfMonth(); 
 
         $talleres = 0;
         $eventos = 0;
