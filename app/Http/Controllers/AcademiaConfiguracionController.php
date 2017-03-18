@@ -180,6 +180,12 @@ class AcademiaConfiguracionController extends BaseController {
 
         if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
 
+            $alumno = Alumno::find(Auth::user()->usuario_id);
+
+            if(!$alumno){
+                return view('inicio.cuenta-deshabilitada');
+            }
+
             //ALUMNOS
             if(Auth::user()->boolean_condiciones){
 
@@ -320,20 +326,6 @@ class AcademiaConfiguracionController extends BaseController {
                    Session::put('fecha_sesion',$fecha_sesion);
                 }
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
-
-                if(!$alumno->codigo_referido){
-
-                    do{
-                        $codigo_referido = str_random(8);
-                        $find = Alumno::where('codigo_referido', $codigo_referido)->first();
-                    }while ($find);
-
-                    $alumno->codigo_referido;
-                    $alumno->save();
-
-                }
-
                 $credenciales_alumno = CredencialAlumno::join('instructores','credenciales_alumno.instructor_id','=','instructores.id')
                     ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo')
                     ->where('credenciales_alumno.alumno_id',Auth::user()->usuario_id)
@@ -377,6 +369,10 @@ class AcademiaConfiguracionController extends BaseController {
 
 
             $instructor = Instructor::find(Auth::user()->usuario_id);
+
+            if(!$instructor){
+                return view('inicio.cuenta-deshabilitada');
+            }
 
             return view('vista_instructor.index')->with(['academia' => $academia, 'instructor' => $instructor]);  
         }
