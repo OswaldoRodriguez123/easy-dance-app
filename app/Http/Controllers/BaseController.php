@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use View;
 use App\Alumno;
+use App\User;
+use App\Academia;
 use App\AlumnoRemuneracion;
 use App\Instructor;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +15,29 @@ use PulkitJalan\GeoIP\GeoIP;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 
 
 class BaseController extends Controller {
 
-    public function __construct() {
+    public function __construct(Request $request) {
 
     if (Auth::check()) { 
+
+        $usuario = User::find(Auth::user()->id);
+
+        $academia = Academia::find($usuario->academia_id);
+
+        if($academia->pais_id == 11){
+
+            $timezone = 'America/Bogota';
+
+        }else{
+
+            $timezone = 'America/Caracas';
+        }
+
+        date_default_timezone_set($timezone);
 
         $notificaciones = DB::table('notificacion_usuario')
             ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
