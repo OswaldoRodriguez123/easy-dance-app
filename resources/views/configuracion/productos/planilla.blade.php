@@ -503,6 +503,14 @@
                              </td>
                              <td id="producto-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$producto->descripcion}}">{{ str_limit($producto->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalTipo-Producto">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo" class="zmdi {{ empty($producto->tipo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
+                               <span class="f-14"> Tipo </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="producto-costo"><span>{{$producto->tipo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImpuesto-Producto">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-impuesto" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>

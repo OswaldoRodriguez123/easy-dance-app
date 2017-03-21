@@ -74,6 +74,7 @@ class ConfigServiciosController extends BaseController {
         $servicio->meses_expiracion = $request->meses_expiracion;
         $servicio->meses_despues = $request->meses_despues;
         $servicio->incluye_iva = $request->incluye_iva;
+        $servicio->tipo = $request->tipo;
 
         if($servicio->save()){
 

@@ -167,10 +167,10 @@
                                     <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
-                                          <option value="2">General</option>
+                                          <option value="2">Academia</option>
+                                          <option value="14">Fiesta</option>
                                           <option value="5">Taller</option>
-                                          <option value="14">Fiesta y Evento</option>
-                                          
+                                          <option value="11">Campaña</option>
                                         </select>
                                       </div>
                                     </div>

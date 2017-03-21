@@ -38,9 +38,7 @@ class EgresoController extends BaseController {
             ->where('tipo',1)
         ->sum('cantidad');
 
-        $proveedores = Proveedor::where('academia_id',Auth::user()->academia_id)->get();
-
-        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => Auth::user()->academia_id, 'proveedores' => $proveedores]);
+        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => Auth::user()->academia_id]);
           
     }
 

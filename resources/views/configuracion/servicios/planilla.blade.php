@@ -487,6 +487,14 @@
                              </td>
                              <td id="servicio-descripcion" class="f-14 m-l-15" data-valor="{{$servicio->descripcion}}" ><span ><span>{{ str_limit($servicio->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalTipo-Servicio">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo" class="zmdi {{ empty($servicio->tipo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
+                               <span class="f-14"> Tipo </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="servicio-tipo"><span>{{$servicio->tipo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
 <!--                             <tr class="detalle" data-toggle="modal" href="#modalOpciones-Servicio">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-opciones" class="zmdi {{ empty($servicio->numero_sesiones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
