@@ -103,20 +103,31 @@
                                         <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
                                             <option value="0">Todas</option>
                                             <option value="1">Academia</option>
-                                            <option value="2">Talleres</option>
-                                            <option value="3">Eventos</option>
-                                            <option value="4">Campañas</option>
+                                            <option value="14">Eventos</option>
+                                            <option value="5">Talleres</option>
+                                            <option value="11">Campañas</option>
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="clearfix m-b-20"></div> 
 
                                 <div class="col-md-4">
                                     <label>Detalle</label>
 
                                     <div class="fg-line">
                                         <div class="select">
-                                            <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id">
-                                                <option value="0">Todas</option>
+                                            <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id" multiple="" data-max-options="5" title="Todas">
+
+                                                @foreach ($linea_servicio as $servicio)
+                                                    <?php 
+                                                        $id = $servicio['id']; 
+                                                        $tipo = $servicio['tipo'];
+                                                    ?>
+                                                    <option value="{{$id}}-{{$tipo}}">                       
+                                                        {{$servicio['nombre']}}
+                                                    </option>
+                                                @endforeach 
                                             </select>
                                         </div>
                                     </div>
@@ -127,7 +138,7 @@
                                     <label>Fecha</label>
 
                                     <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                        <select class="selectpicker" data-live-search="true" name="fecha" id="fecha">
                                             <option value="1">Hoy</option>
                                             <option value="2">Mes Actual</option>
                                             <option value="3">Mes Pasado</option>
@@ -157,7 +168,7 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
                                                             <div class="fg-line">
-                                                                    <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar">
+                                                                    <input type="text" name = "fecha2" id="fecha2" class="form-control" placeholder="Personalizar">
                                                             </div>
                                                         </div>
 
@@ -192,10 +203,8 @@
                                 <table class="table table-striped table-bordered text-center " id="tablelistar" >
                                     <thead>
                                         <tr>
-                                            <th class="text-center" data-column-id="factura" data-order="asc" id="factura">Factura</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
                                             <th class="text-center" data-column-id="concepto">Concepto</th>
-                                            <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
                                             <th class="text-center" data-column-id="total">Total</th>
                                         </tr>
                                     </thead>
@@ -245,6 +254,8 @@
     route_filtrar = "{{url('/')}}/reportes/administrativo";
     route_detalle="{{url('/')}}/administrativo/factura";
 
+    var linea_servicio = <?php echo json_encode($linea_servicio);?>;
+
     var nFrom = $(this).attr('data-from');
     var nAlign = $(this).attr('data-align');
     var nIcons = $(this).attr('data-icon');
@@ -291,8 +302,6 @@
             }
 
         });
-
-        document.getElementById('factura').innerHTML = '#'; 
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -369,13 +378,18 @@
         $("#guardar").click(function(){
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
-            procesando();
+
+            var tipo_id = [];
+            $('#tipo_id option:selected').each(function() {
+              tipo_id.push($(this).text());
+            });
+            // procesando();
             $.ajax({
                 url: route_filtrar,
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
                 dataType: 'json',
-                data: datos,
+                data: datos+"&tipo_id="+tipo_id,
                 success:function(respuesta){
 
                     var nType = 'success';
@@ -386,10 +400,8 @@
 
                     $.each(respuesta.facturas, function (index, array) {
                         var rowNode=t.row.add( [
-                        ''+array.id+'',
                         ''+array.cliente+'',
                         ''+array.nombre+'',
-                        ''+array.fecha_vencimiento+'',
                         ''+formatmoney(parseFloat(array.importe_neto))+''
                         ] ).draw(false).node();
                         $( rowNode )
@@ -422,6 +434,41 @@
             window.location=route;
 
         }
+
+        $('#tipo_servicio').on('change', function(){
+
+            id = $(this).val();
+
+            if(id != 0){
+                tmp = [];
+
+                if(id == 1){
+                    $.each(linea_servicio, function (index, array) {  
+                        not_in = [5,11,14]
+                        tipo = array.tipo
+                        if($.inArray(tipo, not_in)){
+                            tmp.push(array);
+                        }                   
+                    });
+                }else{
+                    $.each(linea_servicio, function (index, array) {  
+                        if(array.tipo == id){
+                            tmp.push(array);
+                        }                   
+                    });
+                }
+            }else{
+                tmp = linea_servicio
+            }
+
+            $('#tipo_id').empty();
+
+            $.each(tmp, function (index, array) {                     
+              $('#tipo_id').append( new Option(array.nombre,array.id+'-'+array.tipo));
+            });
+
+            $('#tipo_id').selectpicker('refresh');
+        });
 
 
         </script>

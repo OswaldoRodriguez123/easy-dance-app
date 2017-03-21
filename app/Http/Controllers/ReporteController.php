@@ -21,9 +21,11 @@ use App\Academia;
 use App\Visitante;
 use App\Asistencia;
 use App\ConfigTipoExamen;
+use App\ConfigProductos;
 use App\ConfigServicios;
 use App\ComoNosConociste;
 use App\Egreso;
+use App\TipoEgreso;
 use Mail;
 use DB;
 use Validator;
@@ -1862,7 +1864,25 @@ public function PresencialesFiltros(Request $request)
 
         }
 
-        return view('reportes.administrativo')->with(['total'=>$total_de_informe, 'clases_grupales' => $array, 'servicios' => $servicios]);
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($config_servicio as $item){
+
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+        }
+
+        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($config_producto as $items){
+
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+           
+        }
+
+        $collection=collect($tmp);   
+        $linea_servicio = $collection->toArray();
+
+        return view('reportes.administrativo')->with(['total'=>$total_de_informe, 'clases_grupales' => $array, 'servicios' => $servicios, 'linea_servicio' => $linea_servicio]);
     }
 
     public function AdministrativoFiltros(Request $request)
@@ -1870,63 +1890,171 @@ public function PresencialesFiltros(Request $request)
 
         $array = array();
         $total = 0;
+        $total_ingreso = 0;
+        $total_egreso = 0;
 
-        $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
-                ->select('alumnos.id as id',
-                         'alumnos.nombre',
-                         'alumnos.apellido')
-                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
-                ->orderBy('nombre', 'asc');
-                
+        //INGRESOS
 
-        if($request->clase_grupal_id)
-        {
-            $query->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+
+        if($request->tipo == 1 OR $request->tipo == 2){
+
+            $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+            ->select('alumnos.id as id',
+                     'alumnos.nombre',
+                     'alumnos.apellido')
+            ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+            ->orderBy('nombre', 'asc');
+                    
+            //CLASE GRUPAL
+
+            if($request->clase_grupal_id)
+            {
+                $query->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+            }
+
+            $query->distinct('id');
+
+            $alumnos = $query->get();
+
+            foreach($alumnos as $alumno){
+
+                $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')->where('alumno_id', $alumno->id);
+
+                //LINEA DE SERVICIO
+
+                if($request->tipo_servicio)
+                {
+
+                    if($request->tipo_servicio == 1)
+                    {
+                        $not_in = array(5,11,14);
+                        $query->whereNotIn('items_factura.tipo', $not_in);
+                    }else{
+                        $query->where('items_factura.tipo', $request->tipo_servicio);
+                    }
+                }
+
+                //DETALLE
+
+                if($request->tipo_id)
+                {
+                    $array_explode = explode(",", $request->tipo_id);
+                    $tipo = array();
+
+                    foreach($array_explode as $explode){
+                        $tipo[] = $explode;
+                    }
+
+                    $query->whereIn('items_factura.nombre', $tipo);
+                }
+
+                //FECHA
+
+                if($request->boolean_fecha){
+                    $fecha = explode(' - ', $request->fecha2);
+                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                    $query->whereBetween('items_factura.created_at', [$start,$end]);
+                }else{
+
+                    if($request->tipo){
+                        if($request->fecha == 1){
+                            $start = Carbon::now()->toDateString();
+                            $end = Carbon::now()->toDateString();  
+                        }else if($request->fecha == 2){
+                            $start = Carbon::now()->startOfMonth()->toDateString();
+                            $end = Carbon::now()->endOfMonth()->toDateString();  
+                        }else if($request->fecha == 3){
+                            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                            $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                        }
+
+                        $query->whereBetween('items_factura.created_at', [$start,$end]);
+                    }
+                }
+
+                $facturas = $query->get();
+
+                foreach($facturas as $factura){
+
+                    $collection=collect($factura);     
+                    $factura_array = $collection->toArray();
+                    $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
+                    $array[$factura->id] = $factura_array;
+
+                    $total_ingreso = $total_ingreso + $factura->importe_neto;
+
+                }
+            }
         }
 
-        $query->distinct('id');
+        if($request->tipo == 1 OR $request->tipo == 3){
 
-        $alumnos = $query->get();
+            //EGRESOS
 
-        foreach($alumnos as $alumno){
+            $query = Egreso::join('tipos_egresos', 'egresos.tipo', '=', 'tipos_egresos.id')
+            ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso')
+            ->where('egresos.academia_id', '=', Auth::user()->academia_id);
 
-            $query = ItemsFacturaProforma::where('alumno_id', $alumno->id);
+            //LINEA DE SERVICIO
 
-            if($request->servicio_id)
+            if($request->tipo_servicio)
             {
 
-                $servicio = explode("-", $request->servicio_id);
-                $servicio_tmp = ConfigServicios::find($servicio[0]);
-
-                if($servicio_tmp)
+                if($request->tipo_servicio == 1)
                 {
-                    $query->where('nombre','=', $servicio_tmp->nombre);
+                    $query->where('egresos.tipo', 1);
+                }else if($request->tipo_servicio == 14){
+                    $query->where('egresos.tipo', 2);
+                }else if($request->tipo_servicio == 5){
+                    $query->where('egresos.tipo', 3);
                 }else{
-                    $query->where('tipo','=', $servicio[1]);
-                    $query->where('item_id','=', $servicio[0]);
+                    $query->where('egresos.tipo', 4);
                 }
             }
 
-            if($request->tipo == 1)
-            {
-                $query->where('fecha_vencimiento','<=', Carbon::now()->toDateString());
+            //FECHA
+
+            if($request->boolean_fecha){
+                    $fecha = explode(' - ', $request->fecha2);
+                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                    $query->whereBetween('egresos.created_at', [$start,$end]);
             }else{
-                $query->where('fecha_vencimiento','>=', Carbon::now()->toDateString());
+
+                if($request->fecha){
+                    if($request->fecha == 1){
+                        $start = Carbon::now()->toDateString();
+                        $end = Carbon::now()->toDateString();  
+                    }else if($request->fecha == 2){
+                        $start = Carbon::now()->startOfMonth()->toDateString();
+                        $end = Carbon::now()->endOfMonth()->toDateString();  
+                    }else if($request->fecha == 3){
+                        $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                        $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                    }
+
+                    $query->whereBetween('egresos.created_at', [$start,$end]);
+                }
             }
 
-            $facturas = $query->get();
+            $egresos = $query->get();
 
-            foreach($facturas as $factura){
+            foreach($egresos as $egreso){
 
-                $collection=collect($factura);     
-                $factura_array = $collection->toArray();
-                $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
-                $array[$factura->id] = $factura_array;
+                $collection=collect($egreso);     
+                $egreso_array = $collection->toArray();
+                $egreso_array['cliente'] = $egreso->nombre_egreso;
+                $egreso_array['nombre'] = $egreso->concepto;
+                $egreso_array['importe_neto'] = $egreso->cantidad;
+                $array['2-'.$egreso->id] = $egreso_array;
 
-                $total = $total + $factura->importe_neto;
+                $total_egreso = $total_egreso + $egreso->cantidad;
 
             }
         }
+
+        $total = $total_ingreso - $total_egreso;
 
         return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total' => $total, 200]);
 
