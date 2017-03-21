@@ -759,65 +759,6 @@ class FiestaController extends BaseController {
         }
     }
 
-    public function agregar_egreso(Request $request)
-    {
-
-        $rules = [
-            'factura' => 'required',
-            'tipo' => 'required',
-            'concepto' => 'required',
-            'cantidad' => 'required',
-        ];
-
-        $messages = [
-
-            'factura.required' => 'Ups! La factura es requerida ',
-            'tipo.required' => 'Ups! El tipo es requerido',
-            'concepto.required' => 'Ups! El concepto es requerido',
-            'cantidad.required' => 'Ups! La cantidad es requerida',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $egreso = new Egreso;
-
-            $egreso->academia_id = Auth::user()->academia_id;
-            $egreso->factura = $request->factura;
-            $egreso->config_tipo = $request->tipo;
-            $egreso->concepto = $request->concepto;
-            $egreso->cantidad = $request->cantidad;
-            $egreso->tipo = 2;
-            $egreso->tipo_id = $request->fiesta_id;
-
-            if($egreso->save()){
-                
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $egreso, 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
-        }
-    }
-
-    public function eliminar_egreso($id)
-    {
-        $fiesta = Egreso::find($id);
-
-        $cantidad = $fiesta->cantidad;
-        
-        if($fiesta->delete()){
-            return response()->json(['mensaje' => '¡Excelente! La Fiesta o Evento se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-    }
 
     /**
      * Update the specified resource in storage.

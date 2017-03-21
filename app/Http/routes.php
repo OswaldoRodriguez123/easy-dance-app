@@ -138,17 +138,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
 
-
-			//EGRESOS
-
-			Route::get('administrativo/egresos/generales', 'EgresoController@generales');
-			Route::get('administrativo/egresos/talleres', 'EgresoController@talleres');
-			Route::get('administrativo/egresos/campañas', 'EgresoController@campanas');
-			Route::get('administrativo/egresos/fiestas', 'EgresoController@fiestas');
-
-			Route::post('administrativo/egresos/agregar-egreso', 'EgresoController@agregar_egreso');
-			Route::delete('administrativo/egresos/eliminar-egreso/{id}', 'EgresoController@eliminar_egreso');
-
 			// ---- CONFIGURACION ----
 
 			Route::get('configuracion', 'AcademiaConfiguracionController@principal');
@@ -335,7 +324,16 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('administrativo/presupuestos/eliminaritem/{id}', 'AdministrativoController@eliminaritempresupuesto');
 			Route::delete('administrativo/presupuestos/eliminar/{id}', 'AdministrativoController@eliminarpresupuesto');
 
+			//EGRESOS
+
 			Route::get('administrativo/egresos', 'EgresoController@principal');
+			Route::get('administrativo/egresos/generales', 'EgresoController@generales');
+			Route::get('administrativo/egresos/talleres', 'EgresoController@talleres');
+			Route::get('administrativo/egresos/campañas', 'EgresoController@campanas');
+			Route::get('administrativo/egresos/fiestas', 'EgresoController@fiestas');
+
+			Route::post('administrativo/egresos/agregar-egreso', 'EgresoController@agregar_egreso');
+			Route::delete('administrativo/egresos/eliminar-egreso/{id}', 'EgresoController@eliminar_egreso');
 
 			//FACTURA
 
@@ -609,8 +607,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/talleres/inscribir', 'TallerController@storeInscripcion')
 			;
 			Route::get('agendar/talleres/egresos/{id}', 'TallerController@egresos');
-			Route::post('agendar/talleres/agregar-egreso', 'TallerController@agregar_egreso');
-			Route::delete('agendar/talleres/eliminar-egreso/{id}', 'TallerController@eliminar_egreso');
 
 			Route::put('agendar/talleres/update/nombre', 'TallerController@updateNombre');
 			Route::put('agendar/talleres/update/costo', 'TallerController@updateCosto');
@@ -644,8 +640,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/fiestas/agregarhorario', 'FiestaController@agregarhorario');
 			Route::post('agendar/fiestas/eliminarhorario/{id}', 'FiestaController@eliminarhorario');
 			Route::get('agendar/fiestas/egresos/{id}', 'FiestaController@egresos');
-			Route::post('agendar/fiestas/agregar-egreso', 'FiestaController@agregar_egreso');
-			Route::delete('agendar/fiestas/eliminar-egreso/{id}', 'FiestaController@eliminar_egreso');
 
 			Route::put('agendar/fiestas/update/nombre', 'FiestaController@updateNombre');
 			Route::put('agendar/fiestas/update/descripcion', 'FiestaController@updateDescripcion');
@@ -727,8 +721,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		    Route::post('especiales/campañas/eliminardatosfijos/{id}', 'CampanaController@eliminardatosfijos');
 
 		    Route::get('especiales/campañas/egresos/{id}', 'CampanaController@egresos');
-			Route::post('especiales/campañas/agregar-egreso', 'CampanaController@agregar_egreso');
-			Route::delete('especiales/campañas/eliminar-egreso/{id}', 'CampanaController@eliminar_egreso');
 
 		    //PATROCINADORES
 
