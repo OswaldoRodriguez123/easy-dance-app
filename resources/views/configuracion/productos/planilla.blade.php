@@ -390,6 +390,66 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalTipo-Producto" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Producto<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_tipo_producto" id="edit_tipo_producto"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                    <label for="tipo">Tipo</label>
+                                    <div class="select">
+                                          <select class="form-control" id="tipo" name="tipo">
+                                            <option value="1">Academia</option>
+                                            <option value="14">Fiesta</option>
+                                            <option value="5">Taller</option>
+                                            <option value="11">Campaña</option>
+                                          </select>
+                                      </div> 
+                                    </div>
+                                    <div class="has-error" id="error-tipo">
+                                      <span >
+                                          <small id="error-tipo_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$producto->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                             <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_tipo_producto" data-update="tipo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -509,7 +569,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Tipo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="producto-costo"><span>{{$producto->tipo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="producto-tipo"><span>{{$tipo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImpuesto-Producto">
                              <td>
@@ -660,6 +720,13 @@
             }else{
               $("#producto-"+c.name).text('No');
             }
+          }else if (c.name=='tipo'){
+
+            expresion = "#"+c.name+ " option[value="+c.value+"]";
+            texto = $(expresion).text();
+            
+            $("#producto-"+c.name).text(texto);
+
           }else if(c.name==='costo'){
              $("#producto-"+c.name).text(formatmoney(parseFloat(c.value)));
           }else if(c.name==='cantidad'){

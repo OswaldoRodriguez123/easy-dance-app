@@ -189,6 +189,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/productos/update/descripcion', 'ConfigProductosController@updateDescripcion');
 			Route::put('configuracion/productos/update/impuesto', 'ConfigProductosController@updateImpuesto');
 			Route::put('configuracion/productos/update/imagen', 'ConfigProductosController@updateImagen');
+			Route::put('configuracion/productos/update/tipo', 'ConfigProductosController@updateTipo');
 
 			// SERVICIOS
 
@@ -204,6 +205,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/servicios/update/opciones', 'ConfigServiciosController@updateOpciones');
 			Route::put('configuracion/servicios/update/impuesto', 'ConfigServiciosController@updateImpuesto');
 			Route::put('configuracion/servicios/update/imagen', 'ConfigServiciosController@updateImagen');
+			Route::put('configuracion/servicios/update/tipo', 'ConfigServiciosController@updateTipo');
 
 			// CLASES GRUPALES
 

@@ -119,8 +119,18 @@ class ConfigServiciosController extends BaseController {
         $servicio = ConfigServicios::find($id);
 
         if($servicio){
+
+            if($servicio->tipo == 5){
+                $tipo = "Taller";
+            }else if($servicio->tipo == 14){
+                $tipo = "Fiesta";
+            }else if($servicio->tipo == 11){
+                $tipo = "Campaña";
+            }else{
+                $tipo = "Academia";
+            }
             
-            return view('configuracion.servicios.planilla')->with(['servicio' => $servicio , 'id' => $id]);
+            return view('configuracion.servicios.planilla')->with(['servicio' => $servicio , 'id' => $id, 'tipo' => $tipo]);
         }else{
            return redirect("configuracion/servicios"); 
         }
@@ -280,6 +290,18 @@ class ConfigServiciosController extends BaseController {
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function updateTipo(Request $request){
+
+        $servicio = ConfigServicios::find($request->id);
+        $servicio->tipo = $request->tipo;
+
+        if($servicio->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+    
     public function destroy($id)
     {
 

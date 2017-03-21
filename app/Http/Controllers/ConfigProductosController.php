@@ -113,7 +113,17 @@ class ConfigProductosController extends BaseController {
         Session::forget('cantidad_productos');
 
         if($producto){
-            return view('configuracion.productos.planilla')->with(['producto' => $producto , 'id' => $id]);
+
+            if($producto->tipo == 5){
+                $tipo = "Taller";
+            }else if($producto->tipo == 14){
+                $tipo = "Fiesta";
+            }else if($producto->tipo == 11){
+                $tipo = "Campaña";
+            }else{
+                $tipo = "Academia";
+            }
+            return view('configuracion.productos.planilla')->with(['producto' => $producto , 'id' => $id, 'tipo' => $tipo]);
         }else{
            return redirect("configuracion/productos"); 
         }
@@ -263,6 +273,18 @@ class ConfigProductosController extends BaseController {
         $producto->save();
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function updateTipo(Request $request){
+
+        $producto = ConfigProductos::find($request->id);
+        $producto->tipo = $request->tipo;
+
+        if($producto->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function destroy($id)
