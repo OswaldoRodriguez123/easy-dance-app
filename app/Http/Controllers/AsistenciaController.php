@@ -855,7 +855,15 @@ class AsistenciaController extends BaseController
     public function consulta_clase_personalizadas_alumno(Request $request)
     {
 
-    $inscripciones = DB::table('inscripcion_clase_personalizada')
+    $inscripciones = DB::table('inscripcion_clase_grupal')
+        ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
+        ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+        ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+    ->get();
+
+    $clases_personalizadas = DB::table('inscripcion_clase_personalizada')
       ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
       ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
       ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
@@ -865,7 +873,16 @@ class AsistenciaController extends BaseController
       ->where('inscripcion_clase_personalizada.estatus','=', 1)
     ->get();
 
-
+    $horarios = DB::table('horarios_clases_personalizadas')
+      ->join('inscripcion_clase_personalizada', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
+      ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
+      ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+      ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
+      ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','horarios_clases_personalizadas.hora_inicio','horarios_clases_personalizadas.hora_final', 'inscripcion_clase_personalizada.id', 'horarios_clases_personalizadas.fecha', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
+      ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
+      ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->format('Y-m-d'))
+      ->where('inscripcion_clase_personalizada.estatus','=', 1)
+    ->get();
 
       $array = array();
 
@@ -905,10 +922,13 @@ class AsistenciaController extends BaseController
 
         }
 
+        $diferencia = Carbon::createFromFormat('Y-m-d',$inscripcion->fecha_pago)->diffInDays(Carbon::now());
+
         $collection=collect($inscripcion);     
         $inscripcion_array = $collection->toArray();
             
         $inscripcion_array['dia']=$dia;
+        $inscripcion_array['diferencia']=$diferencia;
         $array[$inscripcion->id] = $inscripcion_array;
       }
   
@@ -921,7 +941,7 @@ class AsistenciaController extends BaseController
 
       $collection = collect($inscripciones);
 
-      foreach ($inscripciones as $grupal) {
+      foreach ($clases_personalizadas as $grupal) {
 
         $fecha_start=explode('-',$grupal->fecha_inicio);
         $fecha_end=explode('-',$grupal->fecha_inicio);
@@ -942,7 +962,30 @@ class AsistenciaController extends BaseController
 
         }
         
-    }
+      }
+
+      foreach ($horarios as $grupal) {
+
+        $fecha_start=explode('-',$grupal->fecha);
+        $fecha_end=explode('-',$grupal->fecha);
+        $id=$grupal->id;
+        $nombre=$grupal->nombre;
+        $descripcion=$grupal->descripcion;
+        $hora_inicio=$grupal->hora_inicio;
+        $hora_final=$grupal->hora_final;
+        $etiqueta=$grupal->color_etiqueta;
+        $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
+
+
+        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha)->format('Y-m-d');
+
+        if($fechaActual->format('Y-m-d')==$fecha_inicio){       
+
+          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha,"fecha_final"=>$grupal->fecha, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 3, 'tipo_id' => $id);
+
+        }
+        
+      }
         
 
     $deuda=$this->deuda($request->id);

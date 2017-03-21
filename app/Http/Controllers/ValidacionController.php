@@ -115,6 +115,7 @@ class ValidacionController extends BaseController {
                             if($reservacion->tipo_reservacion == 1){
 
                                 $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', $alumno->id)->where('clase_grupal_id', $reservacion->tipo_id)->first();
+                                
                                 if(!$alumnosclasegrupal){
 
                                     $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
@@ -176,6 +177,7 @@ class ValidacionController extends BaseController {
                                 }
 
                             }else{
+
                                 $alumnostaller = InscripcionTaller::where('alumno_id', $alumno->id)->where('clase_grupal_id', $reservacion->tipo_id)->first();
                                 
                                 if(!$alumnostaller){
