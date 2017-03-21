@@ -38,7 +38,9 @@ class EgresoController extends BaseController {
             ->where('tipo',1)
         ->sum('cantidad');
 
-        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => Auth::user()->academia_id]);
+        $proveedores = Proveedor::where('academia_id',Auth::user()->academia_id)->get();
+
+        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => Auth::user()->academia_id, 'proveedores' => $proveedores]);
           
     }
 
@@ -110,6 +112,7 @@ class EgresoController extends BaseController {
         $rules = [
             'factura' => 'required',
             'config_tipo' => 'required',
+            'proveedor' => 'required',
             'concepto' => 'required',
             'cantidad' => 'required',
         ];
@@ -118,6 +121,7 @@ class EgresoController extends BaseController {
 
             'factura.required' => 'Ups! La factura es requerida ',
             'config_tipo.required' => 'Ups! El tipo es requerido',
+            'proveedor.required' => 'Ups! El proveedor es requerido',
             'concepto.required' => 'Ups! El concepto es requerido',
             'cantidad.required' => 'Ups! La cantidad es requerida',
         ];
@@ -139,6 +143,7 @@ class EgresoController extends BaseController {
             $egreso->academia_id = Auth::user()->academia_id;
             $egreso->factura = $request->factura;
             $egreso->config_tipo = $request->config_tipo;
+            $egreso->proveedor = $request->proveedor;
             $egreso->concepto = $request->concepto;
             $egreso->cantidad = $request->cantidad;
             $egreso->fecha = $fecha;

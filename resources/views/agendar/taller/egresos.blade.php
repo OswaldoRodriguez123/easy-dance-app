@@ -71,6 +71,20 @@
      
                       <div class="clearfix p-b-35"></div>
 
+                      <div class="col-sm-12">
+                         <div class="form-group fg-line">
+                            <label for="proveedor" id="id-proveedor">Proveedor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el proveedor de la factura" title="" data-original-title="Ayuda"></i>
+                            <input type="text" class="form-control input-sm" name="proveedor" id="proveedor" placeholder="Ej. Sillas">
+                         </div>
+                         <div class="has-error" id="error-proveedor">
+                              <span >
+                                  <small class="help-block error-span" id="error-proveedor_mensaje" ></small>                                
+                              </span>
+                          </div>
+                       </div>
+     
+                      <div class="clearfix p-b-35"></div>
+
                        <div class="col-sm-12">
                          <div class="form-group fg-line">
                             <label for="concepto" id="id-concepto">Concepto</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el concepto de la factura" title="" data-original-title="Ayuda"></i>
@@ -184,6 +198,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="factura" data-order="desc">Factura</th>
                                     <th class="text-center" data-column-id="tipo">Tipo</th>
+                                    <th class="text-center" data-column-id="proveedor">Proveedor</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
@@ -197,6 +212,7 @@
                                 <tr id="{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$egreso->factura}}</td>
                                     <td class="text-center previa">{{$egreso->config_tipo}}</td>
+                                    <td class="text-center previa">{{$egreso->proveedor}}</td>
                                     <td class="text-center previa">{{$egreso->concepto}}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$egreso->fecha}}</td>
@@ -312,6 +328,7 @@
                 var rowNode=t.row.add( [
                   ''+respuesta.array.factura+'',
                   ''+config_tipo+'',
+                  ''+respuesta.array.proveedor+'',
                   ''+respuesta.array.concepto+'',
                   ''+formatmoney(parseFloat(respuesta.array.cantidad))+'',
                   ''+respuesta.fecha+'',
