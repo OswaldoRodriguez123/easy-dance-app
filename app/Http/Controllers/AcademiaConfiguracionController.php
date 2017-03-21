@@ -118,73 +118,73 @@ class AcademiaConfiguracionController extends BaseController {
         //     }
         // }
 
-        // $egresos = EgresosGeneral::all();
+        $egresos = EgresosGeneral::all();
 
-        // foreach($egresos as $old){
+        foreach($egresos as $old){
             
-        //     $egreso = new Egreso;
-        //     $egreso->academia_id = $old->academia_id;
-        //     $egreso->tipo = 1;
-        //     $egreso->tipo_id = $old->academia_id;
-        //     $egreso->factura = $old->factura;
-        //     $egreso->config_tipo = $old->tipo;
-        //     $egreso->concepto = $old->concepto;
-        //     $egreso->cantidad = $old->cantidad;
-        //     $egreso->save();           
-        // }
+            $egreso = new Egreso;
+            $egreso->academia_id = $old->academia_id;
+            $egreso->tipo = 1;
+            $egreso->tipo_id = $old->academia_id;
+            $egreso->factura = $old->factura;
+            $egreso->config_tipo = $old->tipo;
+            $egreso->concepto = $old->concepto;
+            $egreso->cantidad = $old->cantidad;
+            $egreso->save();           
+        }
 
 
-        // $egresos = EgresosFiesta::all();
+        $egresos = EgresosFiesta::all();
 
-        // foreach($egresos as $old){
+        foreach($egresos as $old){
 
-        //     $tmp = Fiesta::find($old->fiesta_id);
+            $tmp = Fiesta::find($old->fiesta_id);
             
-        //     $egreso = new Egreso;
-        //     $egreso->academia_id = $tmp->academia_id;
-        //     $egreso->tipo = 2;
-        //     $egreso->tipo_id = $old->fiesta_id;
-        //     $egreso->factura = $old->factura;
-        //     $egreso->config_tipo = $old->tipo;
-        //     $egreso->concepto = $old->concepto;
-        //     $egreso->cantidad = $old->cantidad;
-        //     $egreso->save();            
-        // }
+            $egreso = new Egreso;
+            $egreso->academia_id = $tmp->academia_id;
+            $egreso->tipo = 2;
+            $egreso->tipo_id = $old->fiesta_id;
+            $egreso->factura = $old->factura;
+            $egreso->config_tipo = $old->tipo;
+            $egreso->concepto = $old->concepto;
+            $egreso->cantidad = $old->cantidad;
+            $egreso->save();            
+        }
 
-        // $egresos = EgresosTaller::all();
+        $egresos = EgresosTaller::all();
 
-        // foreach($egresos as $old){
+        foreach($egresos as $old){
 
-        //     $tmp = Taller::find($old->taller_id);
+            $tmp = Taller::find($old->taller_id);
             
-        //     $egreso = new Egreso;
-        //     $egreso->academia_id = $tmp->academia_id;
-        //     $egreso->tipo = 3;
-        //     $egreso->tipo_id = $old->taller_id;
-        //     $egreso->factura = $old->factura;
-        //     $egreso->config_tipo = $old->tipo;
-        //     $egreso->concepto = $old->concepto;
-        //     $egreso->cantidad = $old->cantidad;
-        //     $egreso->save();
-        // }
+            $egreso = new Egreso;
+            $egreso->academia_id = $tmp->academia_id;
+            $egreso->tipo = 3;
+            $egreso->tipo_id = $old->taller_id;
+            $egreso->factura = $old->factura;
+            $egreso->config_tipo = $old->tipo;
+            $egreso->concepto = $old->concepto;
+            $egreso->cantidad = $old->cantidad;
+            $egreso->save();
+        }
 
-        // $egresos = EgresosCampana::all();
+        $egresos = EgresosCampana::all();
 
-        // foreach($egresos as $old){
+        foreach($egresos as $old){
 
-        //     $tmp = Campana::find($old->campana_id);
+            $tmp = Campana::find($old->campana_id);
             
-        //     $egreso = new Egreso;
-        //     $egreso->academia_id = $tmp->academia_id;
-        //     $egreso->tipo = 4;
-        //     $egreso->tipo_id = $old->campana_id;
-        //     $egreso->factura = $old->factura;
-        //     $egreso->config_tipo = $old->tipo;
-        //     $egreso->concepto = $old->concepto;
-        //     $egreso->cantidad = $old->cantidad;
-        //     $egreso->save();
+            $egreso = new Egreso;
+            $egreso->academia_id = $tmp->academia_id;
+            $egreso->tipo = 4;
+            $egreso->tipo_id = $old->campana_id;
+            $egreso->factura = $old->factura;
+            $egreso->config_tipo = $old->tipo;
+            $egreso->concepto = $old->concepto;
+            $egreso->cantidad = $old->cantidad;
+            $egreso->save();
 
-        // }
+        }
 
 
         //ADMINISTRADOR
