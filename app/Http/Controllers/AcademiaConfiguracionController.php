@@ -114,12 +114,12 @@ class AcademiaConfiguracionController extends BaseController {
         //     }
         // }
 
-        $egresos = Egreso::all();
+        // $egresos = Egreso::all();
 
-        foreach($egresos as $egreso){
-            $egreso->fecha = $egreso->created_at;
-            $egreso->save();
-        }
+        // foreach($egresos as $egreso){
+        //     $egreso->fecha = $egreso->created_at;
+        //     $egreso->save();
+        // }
         
 
         //ADMINISTRADOR

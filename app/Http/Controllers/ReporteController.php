@@ -2790,7 +2790,7 @@ public function PresencialesFiltros(Request $request)
         array_push($array_inscrito, $array_51);
 
 
-        $visitantes = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+        $visitantes = Visitante::where('academia_id', Auth::user()->academia_id)->whereBetween('fecha_registro', [$start,$end])->get();
 
         $amigo = 0;
         $redes = 0;
