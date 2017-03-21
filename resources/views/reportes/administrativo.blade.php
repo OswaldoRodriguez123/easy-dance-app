@@ -60,6 +60,21 @@
                             <form name="formFiltro" id="formFiltro">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
+
+                                <div class="col-md-4">
+                                    <label>Tipo</label>
+
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo" data-live-search="true">
+                                            <option value="1">Todo</option>
+                                            <option value="2">Ingresos</option>
+                                            <option value="3">Egresos</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                
                                 <div class="col-md-4">
                                     <label>Clase Grupal</label>
 
@@ -82,33 +97,83 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label>Servicios</label>
+                                    <label>Linea de Servicio</label>
+
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                            <option value="0">Todas</option>
+                                            <option value="1">Academia</option>
+                                            <option value="2">Talleres</option>
+                                            <option value="3">Eventos</option>
+                                            <option value="4">Campañas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Detalle</label>
 
                                     <div class="fg-line">
                                         <div class="select">
-                                            <select class="selectpicker" data-live-search="true" name="servicio_id" id="servicio_id">
+                                            <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id">
                                                 <option value="0">Todas</option>
-                                                @foreach ($servicios as $servicio)
-                                                    <option value="{{$servicio->id}}-{{$servicio->tipo}}">
-                                                        {{$servicio->nombre}}
-                                                    </option>
-                                                @endforeach 
                                             </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label>Tipo</label>
+
+                                 <div class="col-md-4">
+                                    <label>Fecha</label>
 
                                     <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo" data-live-search="true">
-                                            <option value="1">Vencidas</option>
-                                            <option value="2">Actuales</option>
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                            <option value="1">Hoy</option>
+                                            <option value="2">Mes Actual</option>
+                                            <option value="3">Mes Pasado</option>
                                         </select>
-                                    </div>
+                                      </div>
                                 </div>
 
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line">
+                                        <label for="nombre">Personalizar</label>
+                                        <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-collapse">
+                                                <div class="panel-heading" role="tab" id="headingTwo">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                          <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+
+                                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="panel-body">
+
+                                                        <div class="clearfix m-b-20"></div>
+                                                    
+
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                            <div class="fg-line">
+                                                                    <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar">
+                                                            </div>
+                                                        </div>
+
+            
+
+                                                        
+                                                    </div>
+
+                                                    <div class="clearfix p-b-35"></div>
+                                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>   
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                        
                                 <div class="clearfix m-b-10"></div> 
 
@@ -188,6 +253,44 @@
     var nAnimOut = "animated flipOutY"; 
 
     $(document).ready(function(){
+
+
+        //DateRangePicker
+        $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "right",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
+
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+
+        });
 
         document.getElementById('factura').innerHTML = '#'; 
 

@@ -16,6 +16,7 @@ use App\DiasDeSemana;
 use App\InscripcionTaller;
 use App\ItemsFacturaProforma;
 use App\EgresosTaller;
+use App\Egreso;
 use App\ConfigEgreso;
 use Validator;
 use DB;
@@ -1244,13 +1245,17 @@ class TallerController extends BaseController {
 
         if($taller){
             $config_egresos = ConfigEgreso::all();
-            $egresos = EgresosTaller::Leftjoin('config_egresos', 'egresos_talleres.tipo' , '=', 'config_egresos.id')
-                ->select('egresos_talleres.*', 'config_egresos.nombre as tipo')
-                ->where('taller_id',$id)
+
+            $egresos = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+                ->select('egresos.*', 'config_egresos.nombre as config_tipo')
+                ->where('tipo_id',$id)
+                ->where('tipo',3)
             ->get();
 
-            $total = EgresosTaller::Leftjoin('config_egresos', 'egresos_talleres.tipo' , '=', 'config_egresos.id')
-                ->where('taller_id',$id)
+            $total = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+                ->select('egresos.*', 'config_egresos.nombre as config_tipo')
+                ->where('tipo_id',$id)
+                ->where('tipo',3)
             ->sum('cantidad');
 
             return view('agendar.taller.egresos')->with(['taller' => $taller, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
@@ -1287,17 +1292,19 @@ class TallerController extends BaseController {
 
         else{
 
-            $taller = new EgresosTaller;
+            $egreso = new Egreso;
 
-            $taller->factura = $request->factura;
-            $taller->tipo = $request->tipo;
-            $taller->concepto = $request->concepto;
-            $taller->cantidad = $request->cantidad;
-            $taller->taller_id = $request->taller_id;
+            $egreso->academia_id = Auth::user()->academia_id;
+            $egreso->factura = $request->factura;
+            $egreso->config_tipo = $request->tipo;
+            $egreso->concepto = $request->concepto;
+            $egreso->cantidad = $request->cantidad;
+            $egreso->tipo = 3;
+            $egreso->tipo_id = $request->taller_id;
 
-            if($taller->save()){
+            if($egreso->save()){
                 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $taller, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $egreso, 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -1306,7 +1313,7 @@ class TallerController extends BaseController {
 
     public function eliminar_egreso($id)
     {
-        $taller = EgresosTaller::find($id);
+        $taller = Egreso::find($id);
 
         $cantidad = $taller->cantidad;
         

@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\EgresosGeneral;
+use App\Egreso;
 use App\Taller;
 use App\Campana;
 use App\Patrocinador;
@@ -21,14 +22,18 @@ class EgresoController extends BaseController {
     {
         $config_egresos = ConfigEgreso::all();
 
-        $egresos = EgresosGeneral::Leftjoin('config_egresos', 'egresos_generales.tipo' , '=', 'config_egresos.id')
-            ->select('egresos_generales.*', 'config_egresos.nombre as tipo')
+        $egresos = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+            ->select('egresos.*', 'config_egresos.nombre as config_tipo')
             ->where('academia_id',Auth::user()->academia_id)
+            ->where('tipo_id',Auth::user()->academia_id)
+            ->where('tipo',1)
         ->get();
 
-        $total = EgresosGeneral::Leftjoin('config_egresos', 'egresos_generales.tipo' , '=', 'config_egresos.id')
-            ->select('egresos_generales.*', 'config_egresos.nombre as tipo')
+        $total = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+            ->select('egresos.*', 'config_egresos.nombre as config_tipo')
             ->where('academia_id',Auth::user()->academia_id)
+            ->where('tipo_id',Auth::user()->academia_id)
+            ->where('tipo',1)
         ->sum('cantidad');
 
         return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);

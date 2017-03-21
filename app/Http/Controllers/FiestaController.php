@@ -12,6 +12,7 @@ use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\Instructor;
 use App\EgresosFiesta;
+use App\Egreso;
 use App\ConfigEgreso;
 use Validator;
 use DB;
@@ -741,14 +742,16 @@ class FiestaController extends BaseController {
 
             $config_egresos = ConfigEgreso::all();
 
-            $egresos = EgresosFiesta::Leftjoin('config_egresos', 'egresos_fiestas.tipo' , '=', 'config_egresos.id')
-                ->select('egresos_fiestas.*', 'config_egresos.nombre as tipo')
-                ->where('fiesta_id',$id)
+            $egresos = Egreso::Leftjoin('config_egresos', 'egresos.config_tipo' , '=', 'config_egresos.id')
+                ->select('egresos.*', 'config_egresos.nombre as config_tipo')
+                ->where('tipo_id',$id)
+                ->where('tipo',2)
             ->get();
 
-            $total = EgresosFiesta::Leftjoin('config_egresos', 'egresos_fiestas.tipo' , '=', 'config_egresos.id')
-                ->select('egresos_fiestas.*', 'config_egresos.nombre as tipo')
-                ->where('fiesta_id',$id)
+            $total = Egreso::Leftjoin('config_egresos', 'egresos.config_tipo' , '=', 'config_egresos.id')
+                ->select('egresos.*', 'config_egresos.nombre as config_tipo')
+                ->where('tipo_id',$id)
+                ->where('tipo',2)
             ->sum('cantidad');
             
             return view('agendar.fiesta.egresos')->with(['fiesta' => $fiesta, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
@@ -785,17 +788,19 @@ class FiestaController extends BaseController {
 
         else{
 
-            $fiesta = new EgresosFiesta;
+            $egreso = new Egreso;
 
-            $fiesta->factura = $request->factura;
-            $fiesta->tipo = $request->tipo;
-            $fiesta->concepto = $request->concepto;
-            $fiesta->cantidad = $request->cantidad;
-            $fiesta->fiesta_id = $request->fiesta_id;
+            $egreso->academia_id = Auth::user()->academia_id;
+            $egreso->factura = $request->factura;
+            $egreso->config_tipo = $request->tipo;
+            $egreso->concepto = $request->concepto;
+            $egreso->cantidad = $request->cantidad;
+            $egreso->tipo = 2;
+            $egreso->tipo_id = $request->fiesta_id;
 
-            if($fiesta->save()){
+            if($egreso->save()){
                 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $fiesta, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $egreso, 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -804,7 +809,7 @@ class FiestaController extends BaseController {
 
     public function eliminar_egreso($id)
     {
-        $fiesta = EgresosFiesta::find($id);
+        $fiesta = Egreso::find($id);
 
         $cantidad = $fiesta->cantidad;
         

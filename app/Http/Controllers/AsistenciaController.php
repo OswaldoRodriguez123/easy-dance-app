@@ -1002,7 +1002,7 @@ class AsistenciaController extends BaseController
       $geoip->setIp($request->ip());
       $fechaActual->tz = $geoip->getTimezone();
       
-    $inscripciones = DB::table('citas')
+    $citas = DB::table('citas')
       ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
       ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
       ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
@@ -1012,11 +1012,19 @@ class AsistenciaController extends BaseController
       ->where('citas.fecha', '=', $fechaActual->format('Y-m-d'))
     ->get();
 
+    $inscripciones = DB::table('inscripcion_clase_grupal')
+        ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
+        ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+        ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+    ->get();
+
       $array = array();
 
       foreach($inscripciones as $inscripcion){
 
-      $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha);
+        $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
       
         $i = $fecha->dayOfWeek;
 
@@ -1050,10 +1058,13 @@ class AsistenciaController extends BaseController
 
         }
 
+        $diferencia = Carbon::createFromFormat('Y-m-d',$inscripcion->fecha_pago)->diffInDays(Carbon::now());
+
         $collection=collect($inscripcion);     
         $inscripcion_array = $collection->toArray();
             
         $inscripcion_array['dia']=$dia;
+        $inscripcion_array['diferencia']=$diferencia;
         $array[$inscripcion->id] = $inscripcion_array;
       }
   
@@ -1066,7 +1077,7 @@ class AsistenciaController extends BaseController
 
       $collection = collect($inscripciones);
 
-      foreach ($inscripciones as $grupal) {
+      foreach ($citas as $grupal) {
 
         $fecha_start=explode('-',$grupal->fecha);
         $fecha_end=explode('-',$grupal->fecha);

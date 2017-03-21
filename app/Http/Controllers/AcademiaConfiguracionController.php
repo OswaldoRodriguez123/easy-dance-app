@@ -37,6 +37,10 @@ use App\CredencialAlumno;
 use App\Codigo;
 use App\Patrocinador;
 use App\EgresosGeneral;
+use App\EgresosCampana;
+use App\EgresosFiesta;
+use App\EgresosTaller;
+use App\Egreso;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -81,38 +85,106 @@ class AcademiaConfiguracionController extends BaseController {
         // 	$patrocinador->save();
         // }
 
-        $facturas = ItemsFactura::all();
+        // $facturas = ItemsFactura::all();
 
-        foreach($facturas as $factura){
-            $nombre = explode(" ", $factura->nombre);
+        // foreach($facturas as $factura){
+        //     $nombre = explode(" ", $factura->nombre);
 
-            if($nombre[0] == "Boleta"){
-                $factura->tipo = 14;
-                $factura->save();
-            }
-        }
+        //     if($nombre[0] == "Boleta"){
+        //         $factura->tipo = 14;
+        //         $factura->save();
+        //     }
+        // }
 
-        $facturas = ItemsFacturaProforma::all();
+        // $facturas = ItemsFacturaProforma::all();
 
-        foreach($facturas as $factura){
-            $nombre = explode(" ", $factura->nombre);
+        // foreach($facturas as $factura){
+        //     $nombre = explode(" ", $factura->nombre);
 
-            if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
-                $factura->tipo = 14;
-                $factura->save();
-            }
-        }
+        //     if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
+        //         $factura->tipo = 14;
+        //         $factura->save();
+        //     }
+        // }
 
-        $facturas = ConfigProductos::all();
+        // $facturas = ConfigProductos::all();
 
-        foreach($facturas as $factura){
-            $nombre = explode(" ", $factura->nombre);
+        // foreach($facturas as $factura){
+        //     $nombre = explode(" ", $factura->nombre);
 
-            if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
-                $factura->tipo = 14;
-                $factura->save();
-            }
-        }
+        //     if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
+        //         $factura->tipo = 14;
+        //         $factura->save();
+        //     }
+        // }
+
+        // $egresos = EgresosGeneral::all();
+
+        // foreach($egresos as $old){
+            
+        //     $egreso = new Egreso;
+        //     $egreso->academia_id = $old->academia_id;
+        //     $egreso->tipo = 1;
+        //     $egreso->tipo_id = $old->academia_id;
+        //     $egreso->factura = $old->factura;
+        //     $egreso->config_tipo = $old->tipo;
+        //     $egreso->concepto = $old->concepto;
+        //     $egreso->cantidad = $old->cantidad;
+        //     $egreso->save();           
+        // }
+
+
+        // $egresos = EgresosFiesta::all();
+
+        // foreach($egresos as $old){
+
+        //     $tmp = Fiesta::find($old->fiesta_id);
+            
+        //     $egreso = new Egreso;
+        //     $egreso->academia_id = $tmp->academia_id;
+        //     $egreso->tipo = 2;
+        //     $egreso->tipo_id = $old->fiesta_id;
+        //     $egreso->factura = $old->factura;
+        //     $egreso->config_tipo = $old->tipo;
+        //     $egreso->concepto = $old->concepto;
+        //     $egreso->cantidad = $old->cantidad;
+        //     $egreso->save();            
+        // }
+
+        // $egresos = EgresosTaller::all();
+
+        // foreach($egresos as $old){
+
+        //     $tmp = Taller::find($old->taller_id);
+            
+        //     $egreso = new Egreso;
+        //     $egreso->academia_id = $tmp->academia_id;
+        //     $egreso->tipo = 3;
+        //     $egreso->tipo_id = $old->taller_id;
+        //     $egreso->factura = $old->factura;
+        //     $egreso->config_tipo = $old->tipo;
+        //     $egreso->concepto = $old->concepto;
+        //     $egreso->cantidad = $old->cantidad;
+        //     $egreso->save();
+        // }
+
+        // $egresos = EgresosCampana::all();
+
+        // foreach($egresos as $old){
+
+        //     $tmp = Campana::find($old->campana_id);
+            
+        //     $egreso = new Egreso;
+        //     $egreso->academia_id = $tmp->academia_id;
+        //     $egreso->tipo = 4;
+        //     $egreso->tipo_id = $old->campana_id;
+        //     $egreso->factura = $old->factura;
+        //     $egreso->config_tipo = $old->tipo;
+        //     $egreso->concepto = $old->concepto;
+        //     $egreso->cantidad = $old->cantidad;
+        //     $egreso->save();
+
+        // }
 
 
         //ADMINISTRADOR
@@ -1654,17 +1726,19 @@ class AcademiaConfiguracionController extends BaseController {
 
         else{
 
-            $general = new EgresosGeneral;
+            $egreso = new Egreso;
 
-            $general->factura = $request->factura;
-            $general->tipo = $request->tipo;
-            $general->concepto = $request->concepto;
-            $general->cantidad = $request->cantidad;
-            $general->academia_id = Auth::user()->academia_id;
+            $egreso->academia_id = Auth::user()->academia_id;
+            $egreso->factura = $request->factura;
+            $egreso->config_tipo = $request->tipo;
+            $egreso->concepto = $request->concepto;
+            $egreso->cantidad = $request->cantidad;
+            $egreso->tipo = 1;
+            $egreso->tipo_id = Auth::user()->academia_id;
 
-            if($general->save()){
+            if($egreso->save()){
                 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $general, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $egreso, 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -1673,7 +1747,7 @@ class AcademiaConfiguracionController extends BaseController {
 
     public function eliminar_egreso($id)
     {
-        $general = EgresosGeneral::find($id);
+        $general = Egreso::find($id);
 
         $cantidad = $general->cantidad;
         
