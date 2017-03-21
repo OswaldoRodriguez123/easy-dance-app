@@ -176,7 +176,7 @@
                                 <?php $id = $egreso->id; ?>
                                 <tr id="{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$egreso->factura}}</td>
-                                    <td class="text-center previa">{{$egreso->tipo}}</td>
+                                    <td class="text-center previa">{{$egreso->config_tipo}}</td>
                                     <td class="text-center previa">{{$egreso->concepto}}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
