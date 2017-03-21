@@ -11,7 +11,6 @@ use App\ConfigBoletos;
 use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\Instructor;
-use App\EgresosFiesta;
 use App\Egreso;
 use App\ConfigEgreso;
 use Validator;

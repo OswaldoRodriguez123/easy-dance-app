@@ -17,7 +17,6 @@ use App\MercadopagoMovs;
 use App\UsuarioExterno;
 use App\TransferenciaCampana;
 use App\DatosBancariosCampana;
-use App\EgresosCampana;
 use App\Egreso;
 use App\ConfigEgreso;
 use Validator;

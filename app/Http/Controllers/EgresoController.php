@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\EgresosGeneral;
 use App\Egreso;
 use App\Taller;
 use App\Campana;

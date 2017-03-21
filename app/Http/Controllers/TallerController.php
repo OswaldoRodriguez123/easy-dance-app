@@ -15,7 +15,6 @@ use App\Instructor;
 use App\DiasDeSemana;
 use App\InscripcionTaller;
 use App\ItemsFacturaProforma;
-use App\EgresosTaller;
 use App\Egreso;
 use App\ConfigEgreso;
 use Validator;
