@@ -753,7 +753,7 @@ class FiestaController extends BaseController {
                 ->where('tipo',2)
             ->sum('cantidad');
             
-            return view('agendar.fiesta.egresos')->with(['fiesta' => $fiesta, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
+            return view('agendar.fiesta.egresos')->with(['fiesta' => $fiesta, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => $id]);
         }else{
            return redirect("agendar/fiestas"); 
         }

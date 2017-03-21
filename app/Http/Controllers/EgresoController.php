@@ -8,6 +8,9 @@ use App\Fiesta;
 use App\Academia;
 use App\ConfigEgreso;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Validator;
+use Carbon\Carbon;
 
 class EgresoController extends BaseController {
 
@@ -35,7 +38,7 @@ class EgresoController extends BaseController {
             ->where('tipo',1)
         ->sum('cantidad');
 
-        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
+        return view('administrativo.egresos.generales')->with(['egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => Auth::user()->academia_id]);
           
     }
 
@@ -98,5 +101,69 @@ class EgresoController extends BaseController {
 
         return view('administrativo.egresos.campanas')->with(['campanas' => $array, 'academia' => $academia]);
 
+    }
+
+
+    public function agregar_egreso(Request $request)
+    {
+
+        $rules = [
+            'factura' => 'required',
+            'config_tipo' => 'required',
+            'concepto' => 'required',
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'factura.required' => 'Ups! La factura es requerida ',
+            'config_tipo.required' => 'Ups! El tipo es requerido',
+            'concepto.required' => 'Ups! El concepto es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+
+            $egreso = new Egreso;
+
+            $egreso->academia_id = Auth::user()->academia_id;
+            $egreso->factura = $request->factura;
+            $egreso->config_tipo = $request->config_tipo;
+            $egreso->concepto = $request->concepto;
+            $egreso->cantidad = $request->cantidad;
+            $egreso->fecha = $fecha;
+            $egreso->tipo = $request->tipo;
+            $egreso->tipo_id = $request->tipo_id;
+
+            if($egreso->save()){
+                
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $egreso, 'fecha' => $fecha->toDateString(), 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_egreso($id)
+    {
+        $egreso = Egreso::find($id);
+
+        $cantidad = $egreso->cantidad;
+        
+        if($egreso->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Fiesta o Evento se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 }

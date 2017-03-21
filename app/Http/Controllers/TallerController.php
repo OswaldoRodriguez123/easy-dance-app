@@ -1257,7 +1257,7 @@ class TallerController extends BaseController {
                 ->where('tipo',3)
             ->sum('cantidad');
 
-            return view('agendar.taller.egresos')->with(['taller' => $taller, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
+            return view('agendar.taller.egresos')->with(['taller' => $taller, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => $id]);
         }else{
            return redirect("agendar/talleres"); 
         }

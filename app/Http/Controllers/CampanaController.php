@@ -2366,7 +2366,7 @@ public function todos_con_robert()
                 ->where('tipo',4)
             ->sum('cantidad');
 
-            return view('especiales.campana.egresos')->with(['campana' => $campana, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos]);
+            return view('especiales.campana.egresos')->with(['campana' => $campana, 'egresos' => $egresos, 'total' => $total, 'config_egresos' => $config_egresos, 'id' => $id]);
         }else{
            return redirect("especiales/campañas"); 
         }

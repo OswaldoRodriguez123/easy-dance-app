@@ -2019,7 +2019,7 @@ public function PresencialesFiltros(Request $request)
                     $fecha = explode(' - ', $request->fecha2);
                     $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
                     $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-                    $query->whereBetween('egresos.created_at', [$start,$end]);
+                    $query->whereBetween('egresos.fecha', [$start,$end]);
             }else{
 
                 if($request->fecha){
@@ -2034,7 +2034,7 @@ public function PresencialesFiltros(Request $request)
                         $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                     }
 
-                    $query->whereBetween('egresos.created_at', [$start,$end]);
+                    $query->whereBetween('egresos.fecha', [$start,$end]);
                 }
             }
 
@@ -2468,25 +2468,25 @@ public function PresencialesFiltros(Request $request)
         $generales = 0;
         $campanas = 0;
 
-        $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_generales){
             $egresos_generales = 0;
         }
 
-        $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_eventos){
             $egresos_eventos = 0;
         }
 
-        $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_talleres){
             $egresos_talleres = 0;
         }
 
-        $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_campanas){
             $egresos_campanas = 0;
@@ -2711,25 +2711,25 @@ public function PresencialesFiltros(Request $request)
         $generales = 0;
         $campanas = 0;
 
-        $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_generales){
             $egresos_generales = 0;
         }
 
-        $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_eventos){
             $egresos_eventos = 0;
         }
 
-        $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_talleres){
             $egresos_talleres = 0;
         }
 
-        $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.created_at', [$start,$end])->sum('egresos.cantidad');
+        $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
 
         if(!$egresos_campanas){
             $egresos_campanas = 0;

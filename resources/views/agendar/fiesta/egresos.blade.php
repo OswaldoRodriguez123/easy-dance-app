@@ -26,7 +26,8 @@
             </div>
             <form name="form_agregar" id="form_agregar"  >
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" id="fiesta_id" name="fiesta_id" value="{{$fiesta->id}}">
+                <input type="hidden" name="tipo_id" value="{{$id}}">
+                <input type="hidden" name="tipo" value="2">
                 <div class="modal-body">                           
                     <div class="row p-t-20 p-b-0">
 
@@ -48,12 +49,12 @@
 
                        <div class="col-sm-12">
                                  
-                          <label for="tipo" id="id-tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de egreso" title="" data-original-title="Ayuda"></i>
+                          <label for="config_tipo" id="id-config_tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de egreso" title="" data-original-title="Ayuda"></i>
 
 
                           <div class="fg-line">
                             <div class="select">
-                              <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                              <select class="selectpicker" name="config_tipo" id="config_tipo" data-live-search="true">
                                 <option value="">Selecciona</option>
                                 @foreach ( $config_egresos as $tipo )
                                 <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
@@ -61,9 +62,9 @@
                               </select>
                             </div>
                           </div>
-                          <div class="has-error" id="error-tipo">
+                          <div class="has-error" id="error-config_tipo">
                             <span >
-                              <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                           
+                              <small class="help-block error-span" id="error-config_tipo_mensaje" ></small>                                           
                             </span>
                           </div>
                         </div>
@@ -96,6 +97,24 @@
                               </span>
                           </div>
                         </div>
+
+                        <div class="clearfix p-b-35"></div>
+
+                        <div class="col-sm-12">      
+                          <label for="fecha" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la fecha en la que se realizó la factura" title="" data-original-title="Ayuda"></i>
+    
+                          <div class="dtp-container fg-line">
+                            <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text">
+                          </div>
+
+                          <div class="has-error" id="error-fecha">
+                              <span >
+                                  <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                           
+                              </span>
+                          </div>
+                        </div>
+
+              
 
                         <div class="clearfix"></div> 
 
@@ -167,6 +186,7 @@
                                     <th class="text-center" data-column-id="tipo">Tipo</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
+                                    <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -179,6 +199,7 @@
                                     <td class="text-center previa">{{$egreso->config_tipo}}</td>
                                     <td class="text-center previa">{{$egreso->concepto}}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
+                                    <td class="text-center previa">{{$egreso->fecha}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach  
@@ -207,8 +228,8 @@
 
 <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/agendar/fiestas/agregar-egreso";
-    route_eliminar="{{url('/')}}/agendar/fiestas/eliminar-egreso/";
+    route_agregar="{{url('/')}}/administrativo/egresos/agregar-egreso";
+    route_eliminar="{{url('/')}}/administrativo/egresos/eliminar-egreso/";
 
     var total = parseFloat("{{$total}}")
 
@@ -280,18 +301,20 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
-                var tipo = respuesta.array.tipo;
+                var config_tipo = respuesta.array.config_tipo;
 
-                expresion = "#tipo option[value="+tipo+"]";
-                tipo = $(expresion).text();
+                expresion = "#config_tipo option[value="+config_tipo+"]";
+                config_tipo = $(expresion).text();
+
 
                 var rowId=respuesta.array.id;
 
                 var rowNode=t.row.add( [
                   ''+respuesta.array.factura+'',
-                  ''+tipo+'',
+                  ''+config_tipo+'',
                   ''+respuesta.array.concepto+'',
                   ''+formatmoney(parseFloat(respuesta.array.cantidad))+'',
+                  ''+respuesta.fecha+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
@@ -300,6 +323,7 @@
 
                 total = total + parseFloat(respuesta.array.cantidad)
                 $("#form_agregar")[0].reset();
+                $('#config_tipo').selectpicker('refresh');
                 $('#total').text(formatmoney(parseFloat(total)))
 
                 $('.modal').modal('hide');
