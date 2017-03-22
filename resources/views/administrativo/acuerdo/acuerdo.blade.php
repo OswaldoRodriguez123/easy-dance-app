@@ -338,6 +338,32 @@
                                     <div class="clearfix p-b-35"></div>
                                     <div class="clearfix p-b-35"></div>
 
+                                     <div class="col-sm-12">
+                                 
+                                        <label for="tipo" id="id-tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de acuerdo" title="" data-original-title="Ayuda"></i>
+
+                                         <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                        <div class="fg-line">
+                                          <div class="select">
+                                            <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                                              <option value="6">Academia</option>
+                                              <option value="14">Fiesta</option>
+                                              <option value="5">Taller</option>
+                                              <option value="11">Campaña</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-tipo">
+                                          <span >
+                                            <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+                                   </div>
+
+                               <div class="clearfix p-b-35"></div>
+
                                     <div class="col-sm-12">
                                           <label for="id" id="id-porcentaje_retraso">Porcentaje de retraso de pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un porcentaje de mora por retraso de pago correspondiente al servicio que ofreces" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
@@ -778,6 +804,7 @@
                 id = $("#alumno_id").val()
                 porcentaje_retraso = $("#porcentaje_retraso").val()
                 tiempo_tolerancia = $("#tiempo_tolerancia").val()
+                tipo = $("#tipo").val()
 
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
@@ -793,7 +820,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&alumno_id="+id+"&porcentaje_retraso="+porcentaje_retraso+"&tiempo_tolerancia="+tiempo_tolerancia,
+                        data:"&alumno_id="+id+"&porcentaje_retraso="+porcentaje_retraso+"&tiempo_tolerancia="+tiempo_tolerancia+"&tipo="+tipo,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -820,9 +847,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -1131,29 +1158,28 @@
   });
 
   function collapse_minus(collaps){
-       $('#'+collaps).collapse('hide');
-      }
+   $('#'+collaps).collapse('hide');
+  }
 
-      // $('#collapseTwo').on('show.bs.collapse', function () {
-      //   $("#guardar").attr("disabled","disabled");
-      //   $("#guardar").css({"opacity": ("0.2")});
-      // })
+  $('#collapseTwo').on('show.bs.collapse', function () {
+    $("#guardar").attr("disabled","disabled");
+    $("#guardar").css({"opacity": ("0.2")});
+  })
 
-      // $('#collapseTwo').on('hide.bs.collapse', function () {
-      //   $("#guardar").removeAttr("disabled");
-      //   $("#guardar").css({"opacity": ("1")});
-      // })
-      function previa(t){
-        //$('#tablelistar tbody').on( 'click', 'i.zmdi-edit', function () {
-        var padre=$(t).closest('tr');
-        console.log(padre);
-        var td_fecha = $(padre).find('td:eq(1)').text();
-        var fecha = td_fecha.split("-")
-        $('#fecha_actualizada').val(fecha[0]+'/'+fecha[1]+'/'+fecha[2]);
-        $('input[name=id]').val($(t).closest('tr').attr('id'));
-        $('#modalFecha-Acuerdo').modal('show');
-        //});
-      }
+  $('#collapseTwo').on('hide.bs.collapse', function () {
+    $("#guardar").removeAttr("disabled");
+    $("#guardar").css({"opacity": ("1")});
+  })
+
+  function previa(t){
+    var padre=$(t).closest('tr');
+    console.log(padre);
+    var td_fecha = $(padre).find('td:eq(1)').text();
+    var fecha = td_fecha.split("-")
+    $('#fecha_actualizada').val(fecha[0]+'/'+fecha[1]+'/'+fecha[2]);
+    $('input[name=id]').val($(t).closest('tr').attr('id'));
+    $('#modalFecha-Acuerdo').modal('show');
+  }
 
 </script> 
 @stop
