@@ -338,7 +338,7 @@
                                             @endif
                                           @endforeach
                                           @if ($exist)
-                                              <option disabled title="My Title" data-content="<span title='Este alumno ya se encuentra en la clase grupal'><i class='glyphicon glyphicon-remove'></i> {{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</span>" value = "{{ $alumno['id'] }}"></option>
+                                              <option disabled title="Ya esta en la clase grupal" data-content="<span title='Este alumno ya se encuentra en la clase grupal'><i class='glyphicon glyphicon-remove'></i> {{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</span>" value = "{{ $alumno['id'] }}"></option>
                                           @else
                                               <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
                                           @endif

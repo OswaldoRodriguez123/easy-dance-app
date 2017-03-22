@@ -76,15 +76,13 @@
 
                        <div class="col-sm-9">
                            <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
-                           <div class="fg-line">
                               <div class="select">
-                                <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
+                                <select class="selectpicker form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
 
                                   <option value="">Selecciona</option>
                                   
                                 </select>
                               </div>
-                            </div>
                             <div class="has-error text-danger" id="error-asistencia_clase_grupal_id_mensaje">
                               <span >
                                   <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
@@ -145,16 +143,14 @@
 
                                            <div class="col-sm-9">
                                                <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
-                                               <div class="fg-line">
                                                   <div class="select">
-                                                    <select class="selectpickeraaa form-control" name="asistencia_clase_grupal_id_instructor" id="asistencia-clase_grupal_id_instructor" data-live-search="true">
+                                                    <select class="selectpicker form-control" name="asistencia-clase_grupal_id_instructor" id="asistencia-clase_grupal_id_instructor" data-live-search="true">
 
                                                       <option value="">Selecciona</option>
                                                       
                                                     
                                                     </select>
                                                   </div>
-                                                </div>
                                                 <div class="has-error" id="error-asistencia_clase_grupal_id_mensaje">
                                                   <span >
                                                       <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
@@ -264,6 +260,21 @@
                     <!-- <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                     </div>  -->
+
+                    <div class="block-header">
+                       <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                            
+                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                            
+                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                            
+                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                           
+                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                        </ul>
+                    </div> 
+                    <div class="clearfix"></div>
                     
                     <div class="card">
                         <div class="card-header">
@@ -770,10 +781,26 @@ $("#permitir_staff").on('click',function(){
             
             $('#asistencia-clase_grupal_id_instructor').empty();        
             $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
-            $.each(respuesta.clases_grupales, function (index, array) {                     
-              $('#asistencia-clase_grupal_id_instructor').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
+
+            $.each(respuesta.clases_grupales, function (index, array) { 
+
+              var opt = document.createElement('option');
+              opt.value = array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id;
+
+              if(!array.bloqueado){
+                valor = array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor
+              }else{
+                valor = "<span title='Clase Bloqueada' class='c-youtube'><i class='glyphicon glyphicon-remove'></i> "+array.nombre +"  -   Desde:"+array.hora_inicio+"  /   Hasta:"+array.hora_final + "  -  "+ array.instructor+"</span>"
+                opt.setAttribute('disabled', true);
+              } 
+
+              opt.setAttribute('data-content', valor);
+
+              $('#asistencia-clase_grupal_id_instructor').append(opt);    
 
             });
+
+            $('#asistencia-clase_grupal_id_instructor').selectpicker('refresh')
 
             finprocesado();
             $('#modalAsistenciaInstructor').modal('show');
@@ -848,11 +875,30 @@ $("#permitir_staff").on('click',function(){
               }
             });
             
-            $('#asistencia-clase_grupal_id').empty();        
+            $('#asistencia-clase_grupal_id').empty();   
             $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
-            $.each(respuesta.clases_grupales, function (index, array) {                   
-              $('#asistencia-clase_grupal_id').append( new Option(array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
+
+            $.each(respuesta.clases_grupales, function (index, array) { 
+
+              var opt = document.createElement('option');
+              opt.value = array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id;
+
+              if(!array.bloqueado){
+                valor = array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor
+              }else{
+                valor = "<span title='Clase Bloqueada' class='c-youtube'><i class='glyphicon glyphicon-remove'></i> "+array.nombre +"  -   Desde:"+array.hora_inicio+"  /   Hasta:"+array.hora_final + "  -  "+ array.instructor+"</span>"
+                opt.setAttribute('disabled', true);
+              } 
+
+              opt.setAttribute('data-content', valor);
+
+              $('#asistencia-clase_grupal_id').append(opt);    
+
+              // $('#asistencia-clase_grupal_id').append( new Option(valor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
             });
+
+            $('#asistencia-clase_grupal_id').selectpicker('refresh')
+
 
             $('#asistencia-estado_economico').text(respuesta.deuda);
             if(respuesta.deuda > 0){

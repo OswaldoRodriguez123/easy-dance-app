@@ -38,6 +38,8 @@ use App\Staff;
 
 use App\CredencialAlumno;
 
+use App\HorarioBloqueado;
+
 use Carbon\Carbon;
 
 use DB;
@@ -665,9 +667,22 @@ class AsistenciaController extends BaseController
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
         $dia_de_semana = $fecha_inicio->dayOfWeek;
 
-        if($diaActual==$dia_de_semana){      
+        if($diaActual==$dia_de_semana){   
 
-          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id);
+          $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', Carbon::now()->toDateString())
+            ->where('fecha_final', '>=', Carbon::now()->toDateString())
+            ->where('tipo_id', $id)
+            ->where('tipo', 1)
+          ->first();  
+
+          if(!$horario_bloqueado){
+            $bloqueado = 0;
+
+          }else{
+            $bloqueado = 1;
+          }
+
+          $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id, 'bloqueado' => $bloqueado);
 
           }
         }
@@ -688,9 +703,22 @@ class AsistenciaController extends BaseController
           $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
           $dia_de_semana = $fecha_inicio->dayOfWeek;
 
-          if($diaActual==$dia_de_semana){       
+          if($diaActual==$dia_de_semana){ 
 
-            $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id);
+            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', Carbon::now()->toDateString())
+              ->where('fecha_final', '>=', Carbon::now()->toDateString())
+              ->where('tipo_id', $id)
+              ->where('tipo', 1)
+            ->first();  
+
+            if(!$horario_bloqueado){
+              $bloqueado = 0;
+
+            }else{
+              $bloqueado = 1;
+            }      
+
+            $arrayClaseGrupal[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id, 'bloqueado' => $bloqueado);
 
           }
         
@@ -810,9 +838,22 @@ class AsistenciaController extends BaseController
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
         $dia_de_semana = $fecha_inicio->dayOfWeek;
 
-        if($diaActual==$dia_de_semana){   		
+        if($diaActual==$dia_de_semana){   	
 
-     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id);
+          $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', Carbon::now()->toDateString())
+            ->where('fecha_final', '>=', Carbon::now()->toDateString())
+            ->where('tipo_id', $id)
+            ->where('tipo', 1)
+          ->first();  
+
+          if(!$horario_bloqueado){
+            $bloqueado = 0;
+
+          }else{
+            $bloqueado = 1;
+          } 	
+
+     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id, 'bloqueado' => $bloqueado);
 
      	  }
 		    
@@ -834,9 +875,22 @@ class AsistenciaController extends BaseController
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
         $dia_de_semana = $fecha_inicio->dayOfWeek;
 
-        if($diaActual==$dia_de_semana){       
+        if($diaActual==$dia_de_semana){
 
-          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id);
+          $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', Carbon::now()->toDateString())
+            ->where('fecha_final', '>=', Carbon::now()->toDateString())
+            ->where('tipo_id', $id)
+            ->where('tipo', 1)
+          ->first();  
+
+          if(!$horario_bloqueado){
+            $bloqueado = 0;
+
+          }else{
+            $bloqueado = 1;
+          }          
+
+          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id, 'bloqueado' => $bloqueado);
 
         }
         
