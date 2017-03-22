@@ -578,12 +578,18 @@
 
     $('#collapseTwo').on('show.bs.collapse', function () {
         $("#boolean_fecha").val('1');
+        $("#tipo").attr('disabled',true);
+        $("#tipo").addClass('disabled');
+        $("#tipo").selectpicker('refresh');
         setTimeout(function(){ 
             $("#fecha").click();
         }, 500);
     })
 
     $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#tipo").attr('disabled',false);
+        $("#tipo").removeClass('disabled');
+        $("#tipo").selectpicker('refresh');
         $("#boolean_fecha").val('0');
     })
 
