@@ -30,7 +30,16 @@
                         <div class="text-center">
                             <span class="f-25 c-morado text-center">Hola <b>{{Auth::user()->nombre}}</b></span>  
                             <br></br>   
-                            <span class="f-16 c-morado">Bienvenido a la Academia <b>{{$academia->nombre}}</b></span> 
+                            <span class="f-16 c-morado">
+
+                            @if(Auth::user()->sexo == 'M')
+                              Bienvenido
+                            @else
+                              Bienvenida
+                            @endif
+
+
+                            a la Academia <b>{{$academia->nombre}}</b></span> 
 
                             <br></br>   
                             <span class="f-16 c-morado">A traves de la aplicacion <b>Easy Dance</b> podras reservar clases, ver asistencias, <br> reportes administrativas, agendar activdades y otras funcionalidades mas.</span> 
