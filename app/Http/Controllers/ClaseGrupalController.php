@@ -2944,6 +2944,7 @@ class ClaseGrupalController extends BaseController {
         $alumno_id = $inscripcion_clase_grupal->alumno_id;
         $clase_grupal_id = $inscripcion_clase_grupal->clase_grupal_id;
         $fecha_clase_grupal = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+        $fecha_principal = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
         $i = $fecha_clase_grupal->dayOfWeek;
 
@@ -2985,6 +2986,7 @@ class ClaseGrupalController extends BaseController {
 
         while($fecha_clase_grupal < Carbon::now())
         {
+            
             $fecha_a_comparar = $fecha_clase_grupal;
             $fecha_a_comparar = $fecha_a_comparar->toDateString();
             $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
@@ -3047,6 +3049,11 @@ class ClaseGrupalController extends BaseController {
 
             while($fecha_horario < Carbon::now())
             {
+                if($fecha_principal < $fecha_horario)
+                {
+                    continue;
+                }
+                
                 $fecha_a_comparar = $fecha_horario;
                 $fecha_a_comparar = $fecha_a_comparar->toDateString();
                 $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
