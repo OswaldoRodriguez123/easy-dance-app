@@ -2986,6 +2986,10 @@ class ClaseGrupalController extends BaseController {
 
         while($fecha_clase_grupal < Carbon::now())
         {
+            if($fecha_principal < $fecha_clase_grupal)
+            {
+                continue;
+            }
             
             $fecha_a_comparar = $fecha_clase_grupal;
             $fecha_a_comparar = $fecha_a_comparar->toDateString();
@@ -3053,7 +3057,7 @@ class ClaseGrupalController extends BaseController {
                 {
                     continue;
                 }
-                
+
                 $fecha_a_comparar = $fecha_horario;
                 $fecha_a_comparar = $fecha_a_comparar->toDateString();
                 $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
