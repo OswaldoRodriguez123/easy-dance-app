@@ -163,6 +163,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('configuracion/academia/eliminarnivel/{id}','AcademiaConfiguracionController@eliminarniveles');
 			Route::post('configuracion/academia/cargo','AcademiaConfiguracionController@agregarcargo');
 			Route::post('configuracion/academia/eliminarcargo/{id}','AcademiaConfiguracionController@eliminarcargo');
+			Route::post('configuracion/academia/formula','AcademiaConfiguracionController@agregarformula');
+			Route::post('configuracion/academia/eliminarformula/{id}','AcademiaConfiguracionController@eliminarformula');
 			Route::post('configuracion/academia/completar','AcademiaConfiguracionController@store');
 
 			Route::put('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');

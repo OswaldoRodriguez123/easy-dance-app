@@ -37,6 +37,7 @@ use App\CredencialAlumno;
 use App\Codigo;
 use App\Patrocinador;
 use App\Egreso;
+use App\ConfigFormulaExito;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -572,6 +573,7 @@ class AcademiaConfiguracionController extends BaseController {
             $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
             $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
             $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
+            $config_formula = ConfigFormulaExito::where('academia_id' , Auth::user()->academia_id)->get();
 
         //Simple Marker
         // $config['center'] = '10.6913156,-71.6800493';
@@ -588,12 +590,12 @@ class AcademiaConfiguracionController extends BaseController {
 
         if($academia->correo)
         {
-            return view('configuracion.academia.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff]);
+            return view('configuracion.academia.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula]);
         }
 
         else{
 
-            return view('configuracion.academia.configuracion')->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles, 'config_staff' => $config_staff]);
+            return view('configuracion.academia.configuracion')->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles, 'config_staff' => $config_staff, 'config_formula' => $config_formula]);
         }
 
         
@@ -1193,6 +1195,53 @@ class AcademiaConfiguracionController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
+
+    Public function agregarformula(Request $request){
+        
+    $rules = [
+
+        'nombre_formula' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_formula.required' => 'Ups! El Nombre es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = title_case($request->nombre_formula);
+
+        $formula = new ConfigFormulaExito;
+                                        
+        $formula->academia_id = Auth::user()->academia_id;
+        $formula->nombre = $nombre;
+
+        $formula->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $formula, 'id' => $formula->id, 200]);
+
+        }
+    }
+
+    public function eliminarformula($id){
+
+        $formula = ConfigFormulaExito::find($id);
+
+        $formula->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
 
 	/**
 	 * Update the specified resource in storage.

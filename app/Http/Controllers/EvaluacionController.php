@@ -14,6 +14,8 @@ use App\DetalleEvaluacion;
 use App\Examen;
 use App\Notificacion;
 use App\NotificacionUsuario;
+use App\ConfigFormulaExito;
+use App\FormulaEvaluacion;
 use Validator;
 use DB;
 use Session;
@@ -159,6 +161,7 @@ class EvaluacionController extends BaseController
      */
     public function store(Request $request)
     {
+
         $rules = [
             'alumno_id' => 'required',
             'total_nota' => 'required',
@@ -195,13 +198,14 @@ class EvaluacionController extends BaseController
             $evaluacion->porcentaje = $request->barra_de_progreso;
 
             $evaluacion->cantidad_horas_practica = $request->cantidad_horas_practica;
-            $evaluacion->asistencia_taller = $request->asistencia_taller;
-            $evaluacion->practica_horas_personalizadas = $request->practica_horas_personalizadas;
-            $evaluacion->participacion_evento = $request->participacion_evento;
-            $evaluacion->participacion_fiesta_social = $request->participacion_fiesta_social;
+            $evaluacion->asistencia_taller = $request->taller_formula;
+            $evaluacion->practica_horas_personalizadas = $request->personalizada_formula;
+            $evaluacion->participacion_evento = $request->evento_formula;
+            $evaluacion->participacion_fiesta_social = $request->fiesta_formula;
 
             if($evaluacion->save()){
                 $items_examenes = ItemsExamenes::where('examen_id', '=' , $request->examen)->get();
+
                 for ($i=0; $i < count($detalle_nota)-1; $i++) {
                     $detalles = new DetalleEvaluacion;
 
@@ -209,6 +213,20 @@ class EvaluacionController extends BaseController
                     $detalles->nota = $detalle_nota[$i];
                     $detalles->evaluacion_id = $evaluacion->id;
                     $detalles->save();
+                }
+
+                $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();
+
+                foreach($formulas as $formula){
+                    $config_formula = $formula->id."_formula";
+                    if($request->$config_formula == 1){
+
+                        $formula_evaluacion = new FormulaEvaluacion;
+                        $formula_evaluacion->evaluacion_id = $evaluacion->id;
+                        $formula_evaluacion->nombre = $formula->nombre;
+                        $formula_evaluacion->save();
+                        
+                    }
                 }
 
                 $notificacion = new Notificacion; 
@@ -356,27 +374,33 @@ class EvaluacionController extends BaseController
             
         //DATOS DE DETALLE
         $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
-                            ->where('evaluacion_id','=',$id)
-                            ->get();
+            ->where('evaluacion_id','=',$id)
+        ->get();
+
+        $formulas = FormulaEvaluacion::select('nombre')
+            ->where('evaluacion_id','=',$id)
+        ->get();
+
         $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
         
         return view('especiales.evaluaciones.detalle')->with([
-                'alumno'           => $alumno, 
-                'academia'         => $academia, 
-                'detalle_notas'    => $detalles_notas,
-                'nota_final'       => $nota_final->total,
-                'observacion'      => $nota_final->observacion,
-                'fecha'            => $nota_final->created_at,
-                'genero_examen'    => $examen->genero,
-                'porcentaje'       => $examen->porcentaje,
-                'edad'             => $edad,
-                'clase_grupal_nombre'     => $clase_grupal_nombre,
-                'instructor'              => $instructor,
-                'horario'          => $horario,
-                'fecha_ingreso'    => $fecha_ingreso,
-                'fecha_siguiente'  => $examen->proxima_fecha,
-                'examen' => $examen
-                ]);
+            'alumno'                    => $alumno, 
+            'academia'                  => $academia, 
+            'detalle_notas'             => $detalles_notas,
+            'nota_final'                => $nota_final->total,
+            'observacion'               => $nota_final->observacion,
+            'fecha'                     => $nota_final->created_at,
+            'genero_examen'             => $examen->genero,
+            'porcentaje'                => $examen->porcentaje,
+            'edad'                      => $edad,
+            'clase_grupal_nombre'       => $clase_grupal_nombre,
+            'instructor'                => $instructor,
+            'horario'                   => $horario,
+            'fecha_ingreso'             => $fecha_ingreso,
+            'fecha_siguiente'           => $examen->proxima_fecha,
+            'examen'                    => $examen,
+            'formulas'                  => $formulas
+        ]);
     }
 
     /**

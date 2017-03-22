@@ -12,6 +12,7 @@ use App\Instructor;
 use App\ItemsExamenes;
 use App\ConfigEspecialidades;
 use App\ConfigTipoExamen;
+use App\ConfigFormulaExito;
 use Validator;
 use Session;
 use Carbon\Carbon;
@@ -817,10 +818,12 @@ class ExamenController extends BaseController {
 
         $alumno_id = Session::get('id_alumno');
 
+        $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();
+
         //dd($arrays_de_items);
 
         return view('especiales.examen.evaluar')
-               ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id]);
+               ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas]);
     }
 
     public function actualizar_item(Request $request){

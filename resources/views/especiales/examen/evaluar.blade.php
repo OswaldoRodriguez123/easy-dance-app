@@ -141,7 +141,7 @@
 
                                   <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Fórmula</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde este campo podrás crear distintos instructores, especialidades, horarios y días de la semana de la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Fórmula</label>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">
@@ -162,7 +162,7 @@
 
                               <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label id="id-cantidad_horas_practica" for="">Cantidad adicional de horas de práctica semanales</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          <label id="id-cantidad_horas_practica" for="">Cantidad adicional de horas de práctica semanales</label>
                                           
 		                                      <div class="fg-line">
 		                                      <input type="text" class="form-control input-sm input-mask" name="cantidad_horas_practica" id="cantidad_horas_practica" data-mask="0000" placeholder="Ej: 3">
@@ -181,10 +181,10 @@
 
                                      <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label id="id-asistencia_taller" for="">Asistencia en taller de preparación especial</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          <label id="id-taller_formula" for="">Asistencia en taller de preparación especial</label>
                                           
                                           <br></br>
-                                          <input type="text" id="asistencia_taller" name="asistencia_taller" value="" hidden="hidden">
+                                          <input type="text" id="taller_formula" name="taller_formula" value="" hidden="hidden">
                                           <div class="p-t-10">
                                             <div class="toggle-switch" data-ts-color="purple">
                                             <span class="p-r-10 f-700 f-16">No</span><input id="taller-switch" type="checkbox">
@@ -194,22 +194,17 @@
                                           </div>
                                           
                                        </div>
-                                       <div class="has-error" id="error-asistencia_taller">
-                                            <span >
-                                                <small class="help-block error-span" id="error-asistencia_taller_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
                                      </div>
 
                                
-                            <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
 
-                            <div class="col-sm-12">
+                                    <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label id="id-practica_horas_personalizadas">Práctica de horas personalizadas</label > <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          <label id="id-personalizada_formula">Práctica de horas personalizadas</label >
                                           
                                           <br></br>
-                                          <input type="text" id="practica_horas_personalizadas" name="practica_horas_personalizadas" value="" hidden="hidden">
+                                          <input type="text" id="personalizada_formula" name="personalizada_formula" value="" hidden="hidden">
                                           <div class="p-t-10">
                                             <div class="toggle-switch" data-ts-color="purple">
                                             <span class="p-r-10 f-700 f-16">No</span><input id="personalizada-switch" type="checkbox">
@@ -219,22 +214,17 @@
                                           </div>
                                           
                                        </div>
-                                       <div class="has-error" id="error-practica_horas_personalizadas">
-                                            <span >
-                                                <small class="help-block error-span" id="error-practica_horas_personalizadas_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                     </div>
+                                    </div>
 
                                
                             <div class="clearfix p-b-35"></div>
 
                             <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label id="id-participacion_evento">Participación evento</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          <label id="id-evento_formula">Participación evento</label>
                                           
                                           <br></br>
-                                          <input type="text" id="participacion_evento" name="participacion_evento" value="" hidden="hidden">
+                                          <input type="text" id="evento_formula" name="evento_formula" value="" hidden="hidden">
                                           <div class="p-t-10">
                                             <div class="toggle-switch" data-ts-color="purple">
                                             <span class="p-r-10 f-700 f-16">No</span><input id="evento-switch" type="checkbox">
@@ -244,11 +234,6 @@
                                           </div>
                                           
                                        </div>
-                                       <div class="has-error" id="error-participacion_evento">
-                                            <span >
-                                                <small class="help-block error-span" id="error-participacion_evento_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
                                      </div>
 
                                
@@ -257,10 +242,10 @@
 
                             <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label  id="id-participacion_fiesta_social">Participación en fiesta social</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Los clientes  podrán ver tu perfil como bailarín o instructor  al compartir las actividades en las res sociales" title="" data-original-title="Ayuda"></i>
+                                          <label  id="id-fiesta_formula">Participación en fiesta social</label>
                                           
                                           <br></br>
-                                          <input type="text" id="participacion_fiesta_social" name="participacion_fiesta_social" value="" hidden="hidden">
+                                          <input type="text" id="fiesta_formula" name="fiesta_formula" value="" hidden="hidden">
                                           <div class="p-t-10">
                                             <div class="toggle-switch" data-ts-color="purple">
                                             <span class="p-r-10 f-700 f-16">No</span><input id="fiesta-switch" type="checkbox">
@@ -270,13 +255,31 @@
                                           </div>
                                           
                                        </div>
-                                       <div class="has-error" id="error-participacion_fiesta_social">
-                                            <span >
-                                                <small class="help-block error-span" id="error-participacion_fiesta_social_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
                                      </div>
 
+                                     <div class="clearfix p-b-35"></div>
+
+
+                                    @foreach( $formulas as $formula)
+
+                                      <div class="col-sm-12">
+                                        <label>{{$formula->nombre}}</label>
+                                        
+                                        <br></br>
+                                        <input type="text" id="{{$formula->id}}_formula" name="{{$formula->id}}_formula" value="" hidden="hidden">
+                                        <div class="p-t-10">
+                                          <div class="toggle-switch" data-ts-color="purple">
+                                          <span class="p-r-10 f-700 f-16">No</span><input id="{{$formula->id}}-switch" type="checkbox">
+                                          
+                                          <label class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                    @endforeach
+                                          
                                
                             <div class="clearfix p-b-35"></div>
                             <div class="clearfix p-b-35"></div>
@@ -483,12 +486,6 @@ $(document).ready(function() {
                 var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen+'&nota_detalle='+arrayNotas+'&nombre_detalle='+itemsExamenes; 
                 $("#guardar").attr("disabled","disabled");
                 procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');
                 limpiarMensaje();
                 $.ajax({
 
@@ -633,37 +630,17 @@ $(document).ready(function() {
         $("#guardar").css({"opacity": ("1")});
       })
 
-      $("#taller-switch").on('change', function(){
-	      if ($("#taller-switch").is(":checked")){
-	        $("#asistencia_taller").val('1');
-	      }else{
-	        $("#asistencia_taller").val('0');
-	      }     
-	    });
-
-      $("#personalizada-switch").on('change', function(){
-	      if ($("#personalizada-switch").is(":checked")){
-	        $("#practica_horas_personalizadas").val('1');
-	      }else{
-	        $("#practica_horas_personalizadas").val('0');
-	      }     
-	    });
-
-      $("#evento-switch").on('change', function(){
-	      if ($("#evento-switch").is(":checked")){
-	        $("#participacion_evento").val('1');
-	      }else{
-	        $("#participacion_evento").val('0');
-	      }     
-	    });
-
-      $("#fiesta-switch").on('change', function(){
-	      if ($("#fiesta-switch").is(":checked")){
-	        $("#participacion_fiesta_social").val('1');
-	      }else{
-	        $("#participacion_fiesta_social").val('0');
-	      }     
-	    });
+      $(":checkbox").on('change', function(){
+        id = $(this).attr('id')
+        split = id.split("-"); 
+        formula = '#'+split[0]+'_formula'
+        if ($(this).is(":checked")){
+          $(formula).val('1')
+          console.log(formula)
+        }else{
+          $(formula).val('0')
+        }     
+      });
 
       function collapse_minus(collaps){
        $('#'+collaps).collapse('hide');

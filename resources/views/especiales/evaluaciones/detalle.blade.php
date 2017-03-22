@@ -198,59 +198,50 @@
 
                             <hr class="linea-morada">
 
-                            ✔   Cantidad adicional de horas de práctica semanales: {{$examen->cantidad_horas_practica}} Horas </br>
+                            @if($examen->cantidad_horas_practica)
+
+                                ✔   Cantidad adicional de horas de práctica semanales: {{$examen->cantidad_horas_practica}} Horas </br>
 
 
-                            ✔   Asistencia en taller de preparación especial:   
+                            @endif
 
                             @if($examen->asistencia_taller)
 
-                                <b class="text-success">--Recomendado--</b></br>
+                                ✔   Asistencia en taller de preparación especial:   <b class="text-success">--Recomendado--</b></br>
 
-                            @else
-
-                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
 
                             @endif
-                            ✔   Práctica de horas personalizadas: 
+                           
 
                             @if($examen->practica_horas_personalizadas)
 
-                                 <b class="text-success">--Recomendado--</b></br>
-
-                            @else
-
-                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
+                                 ✔   Práctica de horas personalizadas:  <b class="text-success">--Recomendado--</b></br>
 
                             @endif
 
-
-                            ✔   Participación evento: 
 
                             @if($examen->participacion_evento)
 
-                                 <b class="text-success">--Recomendado--</b></br>
-
-                            @else
-
-                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
-
+                                ✔   Participación evento: <b class="text-success">--Recomendado--</b></br>
+                                
                             @endif
 
-                            ✔   Participación en fiesta social: 
-
+                            
                             @if($examen->participacion_fiesta_social)
 
-                                 <b class="text-success">--Recomendado--</b></br>
-
-                            @else
-
-                                <i class="glyphicon glyphicon-remove" style="color:red"></i><br>
+                                ✔   Participación en fiesta social: <b class="text-success">--Recomendado--</b></br>
 
                             @endif
+
+                            @foreach($formulas as $formula)
+
+                                ✔   {{$formula->nombre}}: <b class="text-success">--Recomendado--</b></br>
+
+                            @endforeach
 
 
                             <br><br>
+
                             Realizado por : {{$examen->instructor_nombre}} {{$examen->instructor_apellido}}
 
                             @if($examen->telefono OR $examen->celular)
