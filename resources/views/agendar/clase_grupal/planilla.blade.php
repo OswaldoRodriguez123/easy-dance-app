@@ -137,14 +137,14 @@
 
                                             @if($clasegrupal->fecha_inicio)
 
-                                              <input type="hidden" name="fecha" id="fecha" value="{{$clasegrupal->fecha_inicio}}"></input>  
+                                              <input type="hidden" name="fecha_cancelacion" id="fecha_cancelacion" value="{{$clasegrupal->fecha_inicio}}"></input>  
 
                                               {{$clasegrupal->fecha_inicio}}
 
                                             @else
 
                                               <div class="dtp-container">
-                                                <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" style="padding-top: 0; width: 85%">
+                                                <input name="fecha_cancelacion" id="fecha_cancelacion" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" style="padding-top: 0; width: 85%">
                                               </div>
 
                                             @endif

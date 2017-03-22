@@ -2637,13 +2637,13 @@ class ClaseGrupalController extends BaseController {
 
             $rules = [
 
-                'fecha' => 'required',
+                'fecha_cancelacion' => 'required',
 
             ];
 
             $messages = [
 
-                'fecha.required' => 'Ups! La fecha es requerida',
+                'fecha_cancelacion.required' => 'Ups! La fecha es requerida',
 
             ];
 
@@ -2657,7 +2657,7 @@ class ClaseGrupalController extends BaseController {
 
             $fecha = explode(" - ", $request->fecha);
 
-            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha);
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_cancelacion);
             $fecha_final = $fecha_inicio;
             
 
