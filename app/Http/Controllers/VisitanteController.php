@@ -159,6 +159,7 @@ class VisitanteController extends BaseController {
         $visitante->especialidad_id = $request->especialidad_id;
         $visitante->fecha_registro = Carbon::now();
         $visitante->instructor_id = $request->instructor_id;
+        $visitante->interes_id = $request->interes_id;
 
 
         if($visitante->save()){
@@ -378,6 +379,18 @@ class VisitanteController extends BaseController {
         }
     }
 
+    public function updateInteres(Request $request){
+        $visitante = Visitante::find($request->id);
+        $visitante->interes_id = $request->interes_id;
+
+        // return redirect("alumno/edit/{$request->id}");
+        if($visitante->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -407,7 +420,7 @@ class VisitanteController extends BaseController {
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
             ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
             ->Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'visitantes_presenciales.interes_id')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 

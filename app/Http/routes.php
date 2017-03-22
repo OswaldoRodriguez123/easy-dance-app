@@ -470,6 +470,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('participante/visitante/update/especialidad','VisitanteController@updateEspecialidad');
 			Route::put('participante/visitante/update/promotor','VisitanteController@updatePromotor');
 			Route::put('participante/visitante/update/dias','VisitanteController@updateDiasDeClase');
+			Route::put('participante/visitante/update/interes','VisitanteController@updateInteres');
 
 			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 			Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');

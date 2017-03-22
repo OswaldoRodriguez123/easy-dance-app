@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -311,6 +312,34 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
+
+
+                              <div class="col-sm-12">
+                               
+                                  <label for="apellido" id="id-interes_id">Tipo de Interes</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de interes del visitante" title="" data-original-title="Ayuda"></i>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <div class="p-t-10">
+                                  <label class="radio radio-inline m-r-20">
+                                      <input checked name="interes_id" id="adulto" value="1" type="radio">
+                                      <i class="input-helper"></i>  
+                                      Adulto <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                  </label>
+                                  <label class="radio radio-inline m-r-20 ">
+                                      <input name="interes_id" id="niño" value="2" type="radio">
+                                      <i class="input-helper"></i>  
+                                      Niño <i class="zmdi fa fa-child p-l-5 f-15"></i>
+                                  </label>
+                                  </div>
+                                  </div>
+                               <div class="has-error" id="error-interes_id">
+                                    <span >
+                                        <small class="help-block error-span" id="error-interes_id_mensaje" ></small>                                
+                                    </span>
+                                </div>
+                             </div>
+                             <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">

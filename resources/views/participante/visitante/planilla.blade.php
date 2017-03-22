@@ -4,6 +4,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -616,6 +617,70 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalInteres-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_interes_alumno" id="edit_interes_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group fg-line ">
+                                    <label for="sexo p-t-10">Sexo</label>
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="interes_id" id="adulto" value="1" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Adulto <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="interes_id" id="niño" value="2" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Niño <i class="zmdi fa fa-child p-l-5 f-15"></i>
+                                    </label>
+                                    </div>
+                                  </div>
+                               <div class="has-error" id="error-interes_id">
+                                    <span >
+                                        <small class="help-block error-span" id="error-interes_id_mensaje" ></small>                                
+                                    </span>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_interes_alumno" data-update="interes" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                             
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
     
     
             <section id="content">
@@ -781,6 +846,21 @@
                              </td>
                              <td id="visitante-direccion" class="f-14 m-l-15" data-valor="{{$visitante->direccion}}" ><span ><span>{{ str_limit($visitante->direccion, $limit = 30, $end = '...') }}</span></span></td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalInteres-Visitante">
+                             <td> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-interes_id" class="zmdi {{ empty($visitante->interes_id) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                              <span class="m-l-10 m-r-10"> <i class="zmdi icon_a-especialidad f-22"></i> </span>
+                              <span class="f-14"> Tipo de Interes </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-interes_id" data-valor="{{$visitante->interes_id}}">
+                              @if($visitante->interes_id=='1')
+                                <i class="zmdi zmdi-male-alt p-l-5 f-25"></i> </span>
+                                  
+                              @else
+                                <i class="zmdi fa fa-child p-l-5 f-20"></i> </span>
+                              @endif
+                             </span></td>
+                            </tr>
 
 
                            </table>
@@ -893,6 +973,17 @@
       
     })
 
+    $('#modalInteres-Visitante').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var interes=$("#visitante-interes_id").data('valor');
+      if(interes=="1"){
+        $("#adulto").prop("checked", true);
+      }else{
+        $("#niño").prop("checked", true);
+      }
+      
+    })
+
     function limpiarMensaje(){
         var campo = ["nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
         fLen = campo.length;
@@ -922,6 +1013,15 @@
               var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
             }else if(c.value=='F'){
               var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+            }
+            $("#visitante-"+c.name).data('valor',c.value);
+            $("#visitante-"+c.name).html(valor);
+          }if(c.name=='interes_id'){       
+                                
+            if(c.value=='1'){              
+              var valor='<i class="zmdi zmdi-male-alt p-l-5 f-25"></i> </span>';                              
+            }else if(c.value=='2'){
+              var valor='<i class="zmdi fa fa-child p-l-5 f-20"></i> </span>';
             }
             $("#visitante-"+c.name).data('valor',c.value);
             $("#visitante-"+c.name).html(valor);
