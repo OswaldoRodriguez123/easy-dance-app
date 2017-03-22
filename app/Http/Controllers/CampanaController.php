@@ -1446,7 +1446,7 @@ public function todos_con_robert()
         $now = Carbon::now();
         $recaudado = 0;
         $array = array(2,4);
-        $patrocinador_array = array();
+        $array_patrocinador = array();
 
         foreach($patrocinadores as $patrocinador){
 
