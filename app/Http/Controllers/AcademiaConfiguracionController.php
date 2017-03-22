@@ -123,26 +123,26 @@ class AcademiaConfiguracionController extends BaseController {
         //     $egreso->save();
         // }
         
-        $facturas = ItemsFacturaProforma::where('tipo',6)->get();
+        // $facturas = ItemsFacturaProforma::where('tipo',6)->get();
 
-        foreach($facturas as $factura){
+        // foreach($facturas as $factura){
             
-            $item_acuerdo = new ItemsAcuerdo;
+        //     $item_acuerdo = new ItemsAcuerdo;
                         
-            $item_acuerdo->acuerdo_id = $factura->item_id;
-            $item_acuerdo->fecha = $factura->fecha;
-            $item_acuerdo->item_id = $factura->id;
-            $item_acuerdo->nombre = $factura->nombre;
-            $item_acuerdo->tipo = $factura->tipo;
-            $item_acuerdo->cantidad = $factura->cantidad;
-            $item_acuerdo->precio_neto = $factura->precio_neto;
-            $item_acuerdo->impuesto = $factura->impuesto;
-            $item_acuerdo->importe_neto = $factura->importe_neto;
-            $item_acuerdo->fecha_vencimiento = $factura->fecha_vencimiento;
+        //     $item_acuerdo->acuerdo_id = $factura->item_id;
+        //     $item_acuerdo->fecha = $factura->fecha;
+        //     $item_acuerdo->item_id = $factura->id;
+        //     $item_acuerdo->nombre = $factura->nombre;
+        //     $item_acuerdo->tipo = $factura->tipo;
+        //     $item_acuerdo->cantidad = $factura->cantidad;
+        //     $item_acuerdo->precio_neto = $factura->precio_neto;
+        //     $item_acuerdo->impuesto = $factura->impuesto;
+        //     $item_acuerdo->importe_neto = $factura->importe_neto;
+        //     $item_acuerdo->fecha_vencimiento = $factura->fecha_vencimiento;
 
-            $item_acuerdo->save();
+        //     $item_acuerdo->save();
 
-        }
+        // }
 
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
