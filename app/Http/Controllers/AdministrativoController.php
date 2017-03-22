@@ -2157,7 +2157,12 @@ class AdministrativoController extends BaseController {
 
     public function eliminaracuerdo($id)
     {
-        $items_acuerdo = ItemsFacturaProforma::where('item_id',$id)->where('tipo', 6)->delete();
+        $items_acuerdo = ItemsAcuerdo::where('acuerdo_id',$id)->get();
+        
+        foreach($items_acuerdo as $item){
+            $proforma = ItemsFacturaProforma::find($item->item_id)->delete();
+            $item->delete();
+        }
 
         $acuerdo = Acuerdo::find($id);
         
