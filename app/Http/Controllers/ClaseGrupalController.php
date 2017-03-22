@@ -2986,12 +2986,6 @@ class ClaseGrupalController extends BaseController {
 
         while($fecha_clase_grupal < Carbon::now())
         {
-            if($fecha_principal < $fecha_clase_grupal)
-            {
-                continue;
-            }
-
-            dd($fecha_a_comparar);
             
             $fecha_a_comparar = $fecha_clase_grupal;
             $fecha_a_comparar = $fecha_a_comparar->toDateString();
@@ -3055,7 +3049,7 @@ class ClaseGrupalController extends BaseController {
 
             while($fecha_horario < Carbon::now())
             {
-                if($fecha_principal < $fecha_horario)
+                if($fecha_principal > $fecha_horario)
                 {
                     continue;
                 }
