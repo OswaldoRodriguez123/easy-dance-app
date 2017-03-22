@@ -103,7 +103,7 @@
                                         <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
                                             <option value="0">Todas</option>
                                             <option value="1">Academia</option>
-                                            <option value="14">Eventos</option>
+                                            <option value="14">Fiestas y Eventos</option>
                                             <option value="5">Talleres</option>
                                             <option value="11">Campañas</option>
                                         </select>
