@@ -160,7 +160,7 @@
                                             <td id="generales">{{ number_format($generales, 2, '.' , '.') }}</td>
                                             <td>Egresos academia</td>
                                             <td id="egresos_generales">{{ number_format($egresos_generales, 2, '.' , '.') }}</td>
-                                            <td id="total_generales">{{ number_format($generales - $egresos_generales, 2, '.' , '.') }}</td>
+                                            <td class="f-700 f-15" id="total_generales">{{ number_format($generales - $egresos_generales, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
@@ -168,7 +168,7 @@
                                             <td id="eventos">{{ number_format($eventos, 2, '.' , '.') }}</td>
                                             <td>Egresos eventos</td>
                                             <td id="egresos_eventos">{{ number_format($egresos_eventos, 2, '.' , '.') }}</td>
-                                            <td id="total_eventos">{{ number_format($eventos - $egresos_eventos, 2, '.' , '.') }}</td>
+                                            <td class="f-700 f-15" id="total_eventos">{{ number_format($eventos - $egresos_eventos, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
@@ -176,7 +176,7 @@
                                             <td id="talleres">{{ number_format($talleres, 2, '.' , '.') }}</td>
                                             <td>Egresos talleres</td>
                                             <td id="egresos_talleres">{{ number_format($egresos_talleres, 2, '.' , '.') }}</td>
-                                            <td id="total_talleres">{{ number_format($talleres - $egresos_talleres, 2, '.' , '.') }}</td>
+                                            <td class="f-700 f-15" id="total_talleres">{{ number_format($talleres - $egresos_talleres, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
@@ -184,7 +184,7 @@
                                             <td id="campanas">{{ number_format($campanas, 2, '.' , '.') }}</td>
                                             <td>Egresos campañas</td>
                                             <td id="egresos_campanas">{{ number_format($egresos_campanas, 2, '.' , '.') }}</td>
-                                            <td id="total_campanas">{{ number_format($campanas - $egresos_campanas, 2, '.' , '.') }}</td>
+                                            <td class="f-700 f-15" id="total_campanas">{{ number_format($campanas - $egresos_campanas, 2, '.' , '.') }}</td>
                                         </tr>
 
                                         <tr>
@@ -192,7 +192,7 @@
                                             <td id="total_ingresos">{{number_format($total, 2, '.' , '.')}}</td>
                                             <td>TOTALES:</td>
                                             <td id="total_egresos">{{number_format($total_egresos, 2, '.' , '.')}}</td>
-                                            <td id="total">{{number_format($total - $total_egresos, 2, '.' , '.') }}</td>
+                                            <td class="f-700 f-15" id="total">{{number_format($total - $total_egresos, 2, '.' , '.') }}</td>
                                         </tr>     
                                     </tbody>
                                 </table>
