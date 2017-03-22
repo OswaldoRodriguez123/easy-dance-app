@@ -3051,6 +3051,7 @@ class ClaseGrupalController extends BaseController {
             {
                 if($fecha_principal > $fecha_horario)
                 {
+                    $fecha_horario->addWeek();
                     continue;
                 }
 
