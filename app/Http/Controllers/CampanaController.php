@@ -248,10 +248,10 @@ public function todos_con_robert()
     public function principalpatrocinadores($id){
 
         $patrocinadores = DB::table('patrocinadores')
-             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
-             //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->select('patrocinadores.*', 'usuario_externos.nombre')
-             ->where('patrocinadores.campana_id', '=', $id)
+            // ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+            ->join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
+            ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido')
+            ->where('patrocinadores.campana_id', '=', $id)
          ->get();
 
         return view('especiales.campana.patrocinadores')->with(['patrocinadores' => $patrocinadores, 'id' => $id]);
@@ -351,13 +351,31 @@ public function todos_con_robert()
 
         $patrocinador = Patrocinador::find($id);
         $usuario_externo = UsuarioExterno::find($patrocinador->externo_id);
+
+        if($usuario_externo){
+            $usuario_externo->delete();
+        }
+
+        $item_factura = ItemsFactura::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+
+        if($item_factura){
+            $factura = Factura::find($item_factura->factura_id);
+            $item_factura->delete();
+
+            $items_factura = ItemsFactura::where('factura_id',$factura->id)->get();
+            if(!$items_factura){
+                $factura->delete();
+            }
+        }
+
+        $proforma = ItemsFacturaProforma::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+        if($proforma){
+            $proforma->delete();
+        }
+        
             
         if($patrocinador->delete()){
-            if($usuario_externo->delete()){
-                return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -781,6 +799,11 @@ public function todos_con_robert()
                     $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
                     if($item_factura->save()){
+
+                        $item_factura->item_id = $item_factura->id;
+                        $item_factura->save();
+                        $patrocinador->item_id = $item_factura->id;
+                        $patrocinador->save();
 
                         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
                     }
@@ -2299,11 +2322,12 @@ public function todos_con_robert()
     public function ReenviarCorreoPatrocinador($id){
             
         $patrocinador = DB::table('patrocinadores')
-             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
-             ->join('campanas','patrocinadores.campana_id', '=', 'campanas.id')
-             //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-             ->select('patrocinadores.*', 'usuario_externos.nombre', 'usuario_externos.correo', 'campanas.nombre as campana_nombre')
-             ->where('patrocinadores.id', '=', $id)
+            // ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+            ->join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
+            ->join('campanas','patrocinadores.campana_id', '=', 'campanas.id')
+            ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id', 'alumnos.correo', 'campanas.nombre as campana_nombre')
+            // ->select('patrocinadores.*', 'usuario_externos.nombre', 'usuario_externos.correo', 'campanas.nombre as campana_nombre')
+            ->where('patrocinadores.id', '=', $id)
          ->first();
 
         if($patrocinador){
@@ -2320,7 +2344,7 @@ public function todos_con_robert()
 
                 $array = [
 
-                   'nombre' => $patrocinador->nombre,
+                   'nombre' => $patrocinador->nombre . ' ' .$patrocinador->apellido,
                    'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$patrocinador->campana_id,
                    'correo' => $patrocinador->correo,
                    'subj' => $subj,

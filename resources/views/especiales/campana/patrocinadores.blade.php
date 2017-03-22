@@ -38,6 +38,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="monto" data-order="desc">Monto</th>
+                                    <th class="text-center" data-column-id="monto" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -47,8 +48,9 @@
 
                                 <?php $id = $patrocinador->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$patrocinador->nombre}}</td>
+                                    <td class="text-center previa">{{$patrocinador->nombre}} {{$patrocinador->apellido}}</td>
                                     <td class="text-center previa">{{$patrocinador->monto}}</td>
+                                    <td class="text-center previa">{{$patrocinador->cantidad}}</td>
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td>
 
                                   </tr>
@@ -164,7 +166,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Eliminar!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
           if (isConfirm) {
             var nFrom = $(this).attr('data-from');
@@ -175,16 +177,16 @@
             var nAnimOut = $(this).attr('data-animation-out')
                         
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        procesando();
                         eliminar(id, element);
           }
                 });
             });
       
         function eliminar(id, element){
-        procesando();
-        $(".sweet-alert").hide();
-         var route = route_eliminar + id;
-         var token = "{{ csrf_token() }}";
+
+        var route = route_eliminar + id;
+        var token = "{{ csrf_token() }}";
                 
                 $.ajax({
                     url: route,
@@ -233,7 +235,7 @@
         element = this;
 
         swal({   
-            title: "Desea re-enviar el correo de confirmación?",   
+            title: "Desea re-enviar el correo de patrocinador?",   
             text: "Confirmar re-envio!",   
             type: "warning",   
             showCancelButton: true,   
@@ -295,5 +297,5 @@
       }
 
 
-        </script>
+    </script>
 @stop
