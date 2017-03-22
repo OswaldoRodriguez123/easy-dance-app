@@ -410,7 +410,7 @@
                                     <div class="select">
                                           <select class="form-control" id="tipo" name="tipo">
                                             <option value="1">Academia</option>
-                                            <option value="14">Fiesta</option>
+                                            <option value="14">Fiesta y Eventos</option>
                                             <option value="5">Taller</option>
                                             <option value="11">Campaña</option>
                                           </select>
