@@ -204,6 +204,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center" data-column-id="fecha">Fecha</th>
+                                            <th class="text-center" data-column-id="hora">Hora</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
                                             <th class="text-center" data-column-id="concepto">Concepto</th>
                                             <th class="text-center" data-column-id="total">Total</th>
@@ -231,8 +232,11 @@
                                             <br><br>
 
                                             <p>
-                                                <span class="f-15">Total</span>
-                                                <span class="f-15" id = "total">0</span>
+                                                <span class="f-15">Totales</span>
+                                                <br>
+                                                <span class="f-15" id = "total_ingreso">0</span>
+                                                <br>
+                                                <span class="f-15" id = "total_egreso">0</span>
                                             </p>
                                         </div>
                                     </div>
@@ -268,7 +272,7 @@
 
 
         //DateRangePicker
-        $('#fecha').daterangepicker({
+        $('#fecha2').daterangepicker({
             "autoApply" : false,
             "opens": "right",
             "applyClass": "bgm-morado waves-effect",
@@ -337,44 +341,7 @@
                         }
                     }
         });
-
-        //DateRangePicker
-        $('#personalizar').daterangepicker({
-            "autoApply" : false,
-            "opens": "left",
-            "applyClass": "bgm-morado waves-effect",
-            locale : {
-                format: 'DD/MM/YYYY',
-                applyLabel : 'Aplicar',
-                cancelLabel : 'Cancelar',
-                daysOfWeek : [
-                    "Dom",
-                    "Lun",
-                    "Mar",
-                    "Mie",
-                    "Jue",
-                    "Vie",
-                    "Sab"
-                ],
-
-                monthNames: [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ],        
-            }
-        });
     });
-
 
         $("#guardar").click(function(){
             var token = $('input:hidden[name=_token]').val();
@@ -402,6 +369,7 @@
                     $.each(respuesta.facturas, function (index, array) {
                         var rowNode=t.row.add( [
                         ''+array.fecha+'',
+                        ''+array.hora+'',
                         ''+array.cliente+'',
                         ''+array.nombre+'',
                         ''+formatmoney(parseFloat(array.importe_neto))+''
@@ -412,7 +380,8 @@
                     });
 
 
-                    $('#total').text(formatmoney(parseFloat(respuesta.total)))
+                    $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
+                    $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
 
                     finprocesado();                       
                     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
@@ -471,6 +440,27 @@
 
             $('#tipo_id').selectpicker('refresh');
         });
+
+        function collapse_minus(collaps){
+            $('#'+collaps).collapse('hide');
+        }   
+
+        $('#collapseTwo').on('show.bs.collapse', function () {
+            $("#boolean_fecha").val('1');
+            $("#fecha").attr('disabled',true);
+            $("#fecha").addClass('disabled');
+            $("#fecha").selectpicker('refresh');
+            setTimeout(function(){ 
+                $("#fecha2").click();
+            }, 500);
+        })
+
+        $('#collapseTwo').on('hide.bs.collapse', function () {
+            $("#fecha").attr('disabled',false);
+            $("#fecha").removeClass('disabled');
+            $("#fecha").selectpicker('refresh');
+            $("#boolean_fecha").val('0');
+        })
 
 
         </script>

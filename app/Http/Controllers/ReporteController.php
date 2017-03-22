@@ -1980,6 +1980,7 @@ public function PresencialesFiltros(Request $request)
                     $factura_array = $collection->toArray();
                     $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
                     $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
+                    $factura_array['hora'] = Carbon::parse($factura->created_at)->toTimeString();
                     $array[$factura->id] = $factura_array;
 
                     $total_ingreso = $total_ingreso + $factura->importe_neto;
@@ -2048,6 +2049,7 @@ public function PresencialesFiltros(Request $request)
                 $egreso_array['nombre'] = $egreso->concepto;
                 $egreso_array['importe_neto'] = $egreso->cantidad;
                 $egreso_array['fecha'] = Carbon::parse($egreso->fecha)->toDateString();
+                $egreso_array['hora'] = Carbon::parse($egreso->created_at)->toTimeString();
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;
@@ -2055,9 +2057,7 @@ public function PresencialesFiltros(Request $request)
             }
         }
 
-        $total = $total_ingreso - $total_egreso;
-
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total' => $total, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 200]);
 
     }
 
