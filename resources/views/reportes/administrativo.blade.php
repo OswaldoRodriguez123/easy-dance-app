@@ -203,6 +203,7 @@
                                 <table class="table table-striped table-bordered text-center " id="tablelistar" >
                                     <thead>
                                         <tr>
+                                            <th class="text-center" data-column-id="fecha">Fecha</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
                                             <th class="text-center" data-column-id="concepto">Concepto</th>
                                             <th class="text-center" data-column-id="total">Total</th>
@@ -383,7 +384,7 @@
             $('#tipo_id option:selected').each(function() {
               tipo_id.push($(this).text());
             });
-            // procesando();
+            procesando();
             $.ajax({
                 url: route_filtrar,
                 headers: {'X-CSRF-TOKEN': token},
@@ -400,6 +401,7 @@
 
                     $.each(respuesta.facturas, function (index, array) {
                         var rowNode=t.row.add( [
+                        ''+array.fecha+'',
                         ''+array.cliente+'',
                         ''+array.nombre+'',
                         ''+formatmoney(parseFloat(array.importe_neto))+''

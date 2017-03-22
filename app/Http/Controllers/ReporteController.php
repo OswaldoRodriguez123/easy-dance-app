@@ -1895,7 +1895,6 @@ public function PresencialesFiltros(Request $request)
 
         //INGRESOS
 
-
         if($request->tipo == 1 OR $request->tipo == 2){
 
             $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
@@ -1954,7 +1953,7 @@ public function PresencialesFiltros(Request $request)
                     $fecha = explode(' - ', $request->fecha2);
                     $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
                     $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-                    $query->whereBetween('items_factura.created_at', [$start,$end]);
+                    $query->whereBetween('facturas.fecha', [$start,$end]);
                 }else{
 
                     if($request->tipo){
@@ -1969,7 +1968,7 @@ public function PresencialesFiltros(Request $request)
                             $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                         }
 
-                        $query->whereBetween('items_factura.created_at', [$start,$end]);
+                        $query->whereBetween('facturas.fecha', [$start,$end]);
                     }
                 }
 
@@ -1980,6 +1979,7 @@ public function PresencialesFiltros(Request $request)
                     $collection=collect($factura);     
                     $factura_array = $collection->toArray();
                     $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
+                    $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
                     $array[$factura->id] = $factura_array;
 
                     $total_ingreso = $total_ingreso + $factura->importe_neto;
@@ -2047,6 +2047,7 @@ public function PresencialesFiltros(Request $request)
                 $egreso_array['cliente'] = $egreso->nombre_egreso;
                 $egreso_array['nombre'] = $egreso->concepto;
                 $egreso_array['importe_neto'] = $egreso->cantidad;
+                $egreso_array['fecha'] = Carbon::parse($egreso->fecha)->toDateString();
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;
