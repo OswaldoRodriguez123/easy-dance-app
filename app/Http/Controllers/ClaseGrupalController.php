@@ -2990,6 +2990,8 @@ class ClaseGrupalController extends BaseController {
             {
                 continue;
             }
+
+            dd($fecha_a_comparar);
             
             $fecha_a_comparar = $fecha_clase_grupal;
             $fecha_a_comparar = $fecha_a_comparar->toDateString();
