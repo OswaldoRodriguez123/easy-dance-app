@@ -144,17 +144,6 @@ class AcademiaConfiguracionController extends BaseController {
 
         // }
 
-        $reservaciones = ReservacionVisitante::all();
-
-        foreach($reservaciones as $reservacion){
-            $fecha_vencimiento = Carbon::parse($reservacion->fecha_vencimiento);
-            if(Carbon::now() > $fecha_vencimiento){
-                $reservacion->deleted_at = Carbon::now();
-                $reservacion->save();
-            }
-
-        }
-
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
@@ -163,34 +152,13 @@ class AcademiaConfiguracionController extends BaseController {
 
             if($fecha_comprobacion < $hoy){
 
-                $reservaciones_clases_grupales = ReservacionVisitante::join('clases_grupales', 'reservaciones_visitantes.tipo_id', '=', 'clases_grupales.id')
-                    ->select('reservaciones_visitantes.id', 'reservaciones_visitantes.fecha_vencimiento')
-                    ->where('reservaciones_visitantes.tipo_reservacion', 1)
-                    ->where('clases_grupales.academia_id', Auth::user()->academia_id)
-                ->get();
+                $reservaciones = ReservacionVisitante::all();
 
-                foreach($reservaciones_clases_grupales as $reservacion){
-                    $fecha = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                    if($fecha > Carbon::now()){
-                        $reservacion_clase_grupal = ReservacionVisitante::find($reservacion->id);
-                        $codigo = Codigo::where('item_id', $reservacion_clase_grupal->id)->where('tipo',2)->delete();
-                        $reservacion_clase_grupal->delete();
-                    }
-
-                }
-
-                $reservaciones_talleress = ReservacionVisitante::join('talleres', 'reservaciones_visitantes.tipo_id', '=', 'talleres.id')
-                    ->select('reservaciones_visitantes.id', 'reservaciones_visitantes.fecha_vencimiento')
-                    ->where('reservaciones_visitantes.tipo_reservacion', 2)
-                    ->where('talleres.academia_id', Auth::user()->academia_id)
-                ->get();
-
-                foreach($reservaciones_talleress as $reservacion){
-                    $fecha = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                    if($fecha > Carbon::now()){
-                        $reservacion_taller = ReservacionVisitante::find($reservacion->id);
-                        $codigo = Codigo::where('item_id', $reservacion_taller->id)->where('tipo',2)->delete();
-                        $reservacion_taller->delete();
+                foreach($reservaciones as $reservacion){
+                    $fecha_vencimiento = Carbon::parse($reservacion->fecha_vencimiento);
+                    if(Carbon::now() > $fecha_vencimiento){
+                        $reservacion->deleted_at = Carbon::now();
+                        $reservacion->save();
                     }
 
                 }

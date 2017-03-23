@@ -796,32 +796,53 @@
                     </div>  
                     
                     <div class="card">
-                        <div class="card-header">
-                          <div class="text-right">
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-                              <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
-                            @endif
+                      <div class="card-header">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
-                            <hr class="linea-morada">
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
-                            <div class="col-sm-6 text-left">
-                              <div class="p-t-10"> 
-                                <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
-                                <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
-                              </div>
-                            </div>
+                          <div class="col-sm-6 text-left">
+                            <ul class="top-menu">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                       <span class="f-15 f-700" style="color:black"> 
+                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                       </span>
+                                    </a>
+                                    <ul class="dropdown-menu dm-icon pull-right">
+                                        <li class="hidden-xs">
+                                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/reservaciones/vencidas/{{$id}}"><i name="inactivos" id="inactivos" class="tm-icon zmdi zmdi-label-alt-outline f-25 pointer inactivos detalle"></i> Reservaciones Vencidas</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                          </div>
 
-                            @if(Auth::user()->usuario_tipo == 3)
-                              <div class="col-sm-6 text-right">
+                          <div class="col-sm-6 text-right">
+                            <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
+                          </div>
 
-                                <span class="f-15">Total Credenciales:<span class="f-15" id="total_credenciales">{{$total_credenciales}}</span>
-                                
+                        @endif
 
-                              </div> 
-                            @endif
-                          </div>                                                        
+
+
+                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales p-r-5"></i> Clase: {{$clasegrupal->nombre}}</p>
+                        <hr class="linea-morada">
+
+                        <div class="col-sm-6 text-left">
+                          <div class="p-t-10"> 
+                            <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
+                            <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
+                          </div>
                         </div>
+
+                        @if(Auth::user()->usuario_tipo == 3)
+                          <div class="col-sm-6 text-right">
+
+                            <span class="f-15">Total Credenciales:<span class="f-15" id="total_credenciales">{{$total_credenciales}}</span></span>
+
+                          </div>
+                        @endif
+                      </div>                                                        
 
                         <div class="clearfix p-b-35"></div>
 

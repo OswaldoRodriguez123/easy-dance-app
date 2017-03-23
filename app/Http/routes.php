@@ -1065,6 +1065,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
 			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+			Route::get('agendar/clases-grupales/reservaciones/vencidas/{id}', 'ClaseGrupalController@reservaciones_vencidas');
 			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			
 				

@@ -3239,5 +3239,17 @@ class ClaseGrupalController extends BaseController {
         return view('agendar.clase_grupal.agenda')->with(['fechas' => $arrayClases, 'nombre' => $nombre, 'id' => $id]);
     }
 
+    public function reservaciones_vencidas($id){
+
+        $reservaciones = ReservacionVisitante::onlyTrashed()
+            ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
+            ->where('reservaciones_visitantes.tipo_id', '=', $id)
+            ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+            ->whereNotNull('reservaciones_visitantes.deleted_at')
+        ->get();
+
+        return view('agendar.clase_grupal.reservaciones_vencidas')->with(['reservaciones' => $reservaciones, 'id' => $id]);
+    }
 
 }
