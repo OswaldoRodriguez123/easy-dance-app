@@ -885,7 +885,9 @@
       visual:"ring cap-round invert progressgradient-fb1a1b_fc1eda ring-width-custom align-center gap-0"
     });
 
-    if("0" >= 100){
+
+
+    if("{{$porcentaje}}" >= 100){
       $("#barra-progreso").removeClass('progress-bar-morado');
       $("#barra-progreso").addClass('progress-bar-success');
     }else{
