@@ -144,6 +144,17 @@ class AcademiaConfiguracionController extends BaseController {
 
         // }
 
+        $reservaciones = ReservacionVisitante::all();
+
+        foreach($reservaciones as $reservacion){
+            $fecha_vencimiento = Carbon::parse($reservacion->fecha_vencimiento);
+            if(Carbon::now() > $fecha_vencimiento){
+                $reservacion->deleted_at = Carbon::now();
+                $reservacion->save();
+            }
+
+        }
+
         //ADMINISTRADOR
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
