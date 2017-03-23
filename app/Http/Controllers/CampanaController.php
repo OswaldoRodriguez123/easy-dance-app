@@ -300,23 +300,54 @@ public function todos_con_robert()
         else{
 
             $patrocinador = Patrocinador::find($request->id);
+
+            $monto_anterior = $patrocinador->monto;
+            $cantidad_anterior = $patrocinador->cantidad;
+
             $patrocinador->cantidad = $request->cantidad;
             $patrocinador->monto = $request->monto;
 
             if($patrocinador->save()){
 
-                $item_factura = ItemsFactura::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+                // $item_factura = ItemsFactura::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
 
-                if($item_factura){
-                    $item_factura->importe_neto = $request->monto;
-                    $item_factura->save();
-                }
+                // if($item_factura){
+                //     $item_factura->importe_neto = $request->monto;
+                //     $item_factura->save();
+                // }
 
                 $proforma = ItemsFacturaProforma::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
 
                 if($proforma){
                     $proforma->importe_neto = $request->monto;
                     $proforma->save();
+                }else{
+                    $monto = $request->monto - $monto_anterior;
+
+                    if($cantidad_anterior != $request->cantidad)
+                    {
+                        $cantidad = $request->cantidad - $cantidad_anterior;
+                    }else{
+                        $cantidad = $request->cantidad;
+                    }
+                    
+                    if($monto > 0){
+
+                        $item_factura = new ItemsFacturaProforma;
+                    
+                        $item_factura->alumno_id = $patrocinador->usuario_id;
+                        $item_factura->academia_id = Auth::user()->academia_id;
+                        $item_factura->fecha = Carbon::now()->toDateString();
+                        $item_factura->item_id = $patrocinador->item_id;
+                        $item_factura->nombre = 'Campaña - Contribucion';
+                        $item_factura->tipo = 11;
+                        $item_factura->cantidad = $cantidad;
+                        $item_factura->precio_neto = 0;
+                        $item_factura->impuesto = 0;
+                        $item_factura->importe_neto = $monto;
+                        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                    }
+                    
                 }
 
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'patrocinador' => $patrocinador, 200]);
