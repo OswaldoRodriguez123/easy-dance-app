@@ -16,6 +16,74 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
+
+            <div class="modal fade" id="modalPatrocinador" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1100 !important;">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Patrocinador <span id="patrocinador_nombre"></span><button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_patrocinador" id="edit_patrocinador"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="monto">Monto</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="monto" id="monto" data-mask="00000000" placeholder="Ej. 5000">
+                                 </div>
+                                 <div class="has-error" id="error-monto">
+                                      <span >
+                                          <small class="help-block error-span" id="error-monto_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix m-b-20"></div> 
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="cantidad">Cantidad</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000" placeholder="Ej. 15">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" id="id" name="id"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+                              <button type="button" class="btn btn-blanco m-r-10 f-12" id="guardar" name="guardar">Guardar</button>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -47,13 +115,12 @@
                             @foreach ($patrocinadores as $patrocinador)
 
                                 <?php $id = $patrocinador->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" data-patrocinador ="{{$patrocinador->nombre}} {{$patrocinador->apellido}}" data-monto ="{{$patrocinador->monto}}" data-cantidad ="{{$patrocinador->cantidad}}">
                                     <td class="text-center previa">{{$patrocinador->nombre}} {{$patrocinador->apellido}}</td>
                                     <td class="text-center previa">{{$patrocinador->monto}}</td>
                                     <td class="text-center previa">{{$patrocinador->cantidad}}</td>
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td>
-
-                                  </tr>
+                                </tr>
                             @endforeach 
                                                            
                             </tbody>
@@ -81,8 +148,8 @@
             
         <script type="text/javascript">
 
+        route_update="{{url('/')}}/especiales/campañas/patrocinadores/update/patrocinador";
         route_eliminar="{{url('/')}}/especiales/campañas/patrocinadores/eliminar/";
-        route_detalle="{{url('/')}}/especiales/campañas/patrocinadores/detalle";
         route_enviar="{{url('/')}}/especiales/campañas/patrocinadores/enviar/";
 
         $(document).ready(function(){
@@ -104,7 +171,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -290,11 +357,144 @@
 
 
       function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+row;
+        var row = $(t).closest('tr');
+        
+        var id = row.attr('id')
+        var monto = row.data('monto')
+        var cantidad = row.data('cantidad')
+        var patrocinador = row.data('patrocinador')
 
-        window.location=route;
+        $('#id').val(id)
+        $('#monto').val(monto)
+        $('#cantidad').val(cantidad)
+        $('#patrocinador').text(patrocinador)
+
+
+        $('#modalPatrocinador').modal('show')
       }
+
+      $("#guardar").click(function(){
+            swal({   
+                    title: "¿Seguro deseas modificar al patrocinador ?",   
+                    text: "Confirmar el cambio",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#ec6c62",   
+                    confirmButtonText: "Sí, modificar",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+            if (isConfirm) {
+
+                var route = route_update;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#edit_patrocinador" ).serialize(); 
+                procesando();      
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          
+                          var tr_edicion = $("#"+respuesta.patrocinador.id);
+
+                          tr_edicion.find("td").eq(1).text(respuesta.patrocinador.monto);
+                          tr_edicion.find("td").eq(2).text(respuesta.patrocinador.cantidad);
+
+                          tr_edicion.data('cantidad', respuesta.patrocinador.cantidad)
+                          tr_edicion.data('monto', respuesta.patrocinador.monto)
+
+                          finprocesado();
+                          $('#modalPatrocinador').modal('hide');
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          finprocesado();
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        finprocesado();
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }            
+
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+              }
+            });
+        });
+
+    function limpiarMensaje(){
+        var campo = ["monto", "cantidad"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
+        }
+      }
+
+    function errores(merror){
+      var elemento="";
+      var contador=0;
+      $.each(merror, function (n, c) {
+      if(contador==0){
+      elemento=n;
+      }
+      contador++;
+
+       $.each(this, function (name, value) {              
+          var error=value;
+          $("#error-"+n+"_mensaje").html(error);             
+       });
+    });
+
+      $('html,body').animate({
+            scrollTop: $("#id-"+elemento).offset().top-90,
+      }, 1000);          
+
+  }
 
 
     </script>

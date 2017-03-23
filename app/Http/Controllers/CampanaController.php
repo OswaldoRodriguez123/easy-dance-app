@@ -274,6 +274,58 @@ public function todos_con_robert()
         }
     }
 
+    public function updatePatrocinador(Request $request){
+
+        $rules = [
+            'monto' => 'required|numeric',
+            'cantidad' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+            'cantidad.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $patrocinador = Patrocinador::find($request->id);
+            $patrocinador->cantidad = $request->cantidad;
+            $patrocinador->monto = $request->monto;
+
+            if($patrocinador->save()){
+
+                $item_factura = ItemsFactura::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+
+                if($item_factura){
+                    $item_factura->importe_neto = $request->monto;
+                    $item_factura->save();
+                }
+
+                $proforma = ItemsFacturaProforma::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+
+                if($proforma){
+                    $proforma->importe_neto = $request->monto;
+                    $proforma->save();
+                }
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'patrocinador' => $patrocinador, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
     public function updateMontoPatrocinador(Request $request){
 
         $rules = [
