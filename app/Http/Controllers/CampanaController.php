@@ -319,6 +319,7 @@ public function todos_con_robert()
                 $proforma = ItemsFacturaProforma::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
 
                 if($proforma){
+                    $proforma->cantidad = $request->cantidad;
                     $proforma->importe_neto = $request->monto;
                     $proforma->save();
                 }else{
