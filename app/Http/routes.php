@@ -18,8 +18,6 @@ Route::get('/confirmacion/{token}', [
     'as'   => 'confirmacion'
 ]);
 
-Route::get('todos-con-robert', 'CampanaController@todos_con_robert');
-
 Route::auth();
 
 // FLUJO DE REGISTRO
