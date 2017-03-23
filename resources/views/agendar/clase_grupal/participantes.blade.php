@@ -20,6 +20,122 @@
 @stop
 @section('content')
 
+ <div class="modal fade" id="modalAlumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Participante: <span class="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                        <label for="id" id="id-identificacion_participante">Id - Pasaporte</label>
+                                        <input type="text" class="form-control input-sm" name="identificacion_participante" id="identificacion_participante" data-mask="00000000000000000000" placeholder="Ej. 16234987" disabled>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre" id="id-nombre_participante">Nombre</label>
+                                    <input type="text" class="form-control input-sm" name="nombre_participante" id="nombre_participante" placeholder="Ej. Valeria" disabled>
+                                 </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="id-apellido" id="id-apellido_participante">Apellido</label>
+                                    <input type="text" class="form-control input-sm" name="apellido_participante" id="apellido_participante" placeholder="Ej. Sánchez" disabled>
+                                 </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label>
+                                            <div class="dtp-container fg-line">
+                                            <input name="fecha_nacimiento_participante" id="fecha_nacimiento_participante" class="form-control date-picker" placeholder="Seleciona" type="text" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div> 
+           
+                                                               
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <label for="sexo p-t-10" id="id-sexo_participante">Sexo</label>
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="sexo_participante" id="mujer" value="F" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="sexo_participante" id="hombre" value="M" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                 </div>
+                               </div>
+
+                               <div class="col-sm-12">
+
+                               <label for="apellido" id="id-correo_participante">Correo Electrónico</label>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm proceso" name="correo_participante" id="correo_participante" placeholder="Ej. easydance@gmail.com" disabled>
+                                      </div>
+      
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="apellido" id="id-celular_participante">Teléfono Móvil</label>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm input-mask" name="celular_participante" id="celular_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
+                                      </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="apellido" id="id-telefono_participante">Teléfono Local</label> 
+
+                                    <div class="form-group fg-line ">
+                                      <input disabled type="text" class="form-control input-sm input-mask" name="telefono_participante" id="telefono_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
+                                      </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+                            </div>
+                        </div>
+
+                            
+                    </div>
+                </div>
+            </div>
+
 <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -516,7 +632,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno: <span id="span_alumno" name="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno: <span class="span_alumno" name="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edicion_alumno" id="edicion_alumno"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -731,7 +847,7 @@
                                 <?php $alumno_id = $alumno['id'];?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}">
+                                  <tr id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}">
 
 
                                       @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
@@ -995,8 +1111,8 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -1832,19 +1948,56 @@
 
         function previa(t){
 
-            var id = $(t).closest('tr').attr('id');
-            var fecha_pago = $(t).closest('tr').data('fecha');
-            var costo_mensualidad = $(t).closest('tr').data('mensualidad');
-            var nombre = $(t).closest('tr').data('nombre');
+            var identificacion = $(t).closest('tr').data('identificacion');
+            var nombre_apellido = $(t).closest('tr').data('nombre');
+            var apellido_nombre = nombre_apellido.split(" ")
+            var correo = $(t).closest('tr').data('correo');
+            var fecha_nacimiento = $(t).closest('tr').data('fecha_nacimiento');
+            var sexo = $(t).closest('tr').data('sexo');
+            var telefono = $(t).closest('tr').data('telefono');
+            var celular = $(t).closest('tr').data('celular');
 
-
-            $('.id_edicion').val(id);
-            $('#costo_mensualidad_edicion').val(costo_mensualidad);
-            $('#fecha_pago_edicion').val(fecha_pago);
-            $('#span_alumno').text(nombre);
+            if(sexo=="M"){
+              $("#hombre").prop("checked", true);
+            }else{
+              $("#mujer").prop("checked", true);
+            }
             
-            $('#modalEdicion').modal('show');
+            $('.span_alumno').text(nombre_apellido)
+            $('#identificacion_participante').val(identificacion);
+            $('#nombre_participante').val(apellido_nombre[0]);
+            $('#apellido_participante').val(apellido_nombre[1]);
+            $('#correo_participante').val(correo);
+            $('#fecha_nacimiento_participante').val(fecha_nacimiento);
+            $('#identificacion_participante').val(identificacion);
+            $('#telefono_participante').val(telefono);
+            $('#celular_participante').val(celular);
+            
+            $('#modalAlumno').modal('show');
         }
+
+        // function previa(t){
+
+        //     var id = $(t).closest('tr').attr('id');
+        //     var fecha_pago = $(t).closest('tr').data('fecha');
+        //     var costo_mensualidad = $(t).closest('tr').data('mensualidad');
+        //     var nombre = $(t).closest('tr').data('nombre');
+
+
+        //     $('.id_edicion').val(id);
+        //     $('#costo_mensualidad_edicion').val(costo_mensualidad);
+        //     $('#fecha_pago_edicion').val(fecha_pago);
+        //     $('#span_alumno').text(nombre);
+            
+        //     $('#modalEdicion').modal('show');
+        // }
+
+        // function previa(t){
+        //   var id = $(t).closest('tr').data('id');
+        //   var route =route_detalle+"/"+id;
+        //   window.location=route;
+        // }
+
 
           $('.eliminar').on('click', function () {
         // $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
@@ -2045,12 +2198,6 @@
     }
 
     });
-
-    function previa(t){
-      var id = $(t).closest('tr').data('id');
-      var route =route_detalle+"/"+id;
-      window.location=route;
-    }
 
     $(".activar").click(function(){
 
