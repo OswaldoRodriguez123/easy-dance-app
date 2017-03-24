@@ -121,6 +121,7 @@ class AgendarController extends BaseController
 
     			
     			while($dt->timestamp<$df->timestamp){
+                    $nombre = $clase->nombre;
     				$fecha="";
     				$fecha=$dt->addWeek()->toDateString();
 
