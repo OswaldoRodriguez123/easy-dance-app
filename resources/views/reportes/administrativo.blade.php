@@ -106,42 +106,39 @@
                                 <div class="col-md-4">
                                     <label>Clase Grupal</label>
 
-                                    <div class="fg-line">
-                                        <div class="select">
-                                            <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
-                                                <option value="0">Todas</option>
-                                                @foreach ($clases_grupales as $clase)
-                                                    <?php $id = $clase['id']; ?>
-                                                    <option value="{{$id}}">                       
-                                                        {{$clase['nombre']}} - {{$clase['dia']}} - 
-                                                        {{$clase['hora_inicio']}}/ 
-                                                        {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
-                                                        {{$clase['instructor_apellido']}}
-                                                    </option>
-                                                @endforeach 
-                                            </select>
-                                        </div>
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id" disabled>
+                                            <option value="0">Todas</option>
+                                            @foreach ($clases_grupales as $clase)
+                                                <?php $id = $clase['id']; ?>
+                                                <option value="{{$id}}">                       
+                                                    {{$clase['nombre']}} - {{$clase['dia']}} - 
+                                                    {{$clase['hora_inicio']}}/ 
+                                                    {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
+                                                    {{$clase['instructor_apellido']}}
+                                                </option>
+                                            @endforeach 
+                                        </select>
                                     </div>
+                         
                                 </div>
 
                                 <div class="col-md-4">
                                     <label>Detalle</label>
 
-                                    <div class="fg-line">
-                                        <div class="select">
-                                            <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id" multiple="" data-max-options="5" title="Todas">
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id" multiple="" data-max-options="5" title="Todas">
 
-                                                @foreach ($linea_servicio as $servicio)
-                                                    <?php 
-                                                        $id = $servicio['id']; 
-                                                        $tipo = $servicio['tipo'];
-                                                    ?>
-                                                    <option value="{{$id}}-{{$tipo}}">                       
-                                                        {{$servicio['nombre']}}
-                                                    </option>
-                                                @endforeach 
-                                            </select>
-                                        </div>
+                                            @foreach ($linea_servicio as $servicio)
+                                                <?php 
+                                                    $id = $servicio['id']; 
+                                                    $tipo = $servicio['tipo'];
+                                                ?>
+                                                <option value="{{$id}}-{{$tipo}}">                       
+                                                    {{$servicio['nombre']}}
+                                                </option>
+                                            @endforeach 
+                                        </select>
                                     </div>
                                 </div>
 
@@ -405,6 +402,21 @@
             window.location=route;
 
         }
+
+        $('#tipo').on('change', function(){
+
+            id = $(this).val();
+
+            if(id != 2){
+
+                $('#clase_grupal_id').attr('disabled','disabled')
+ 
+            }else{
+                $("#clase_grupal_id").removeAttr("disabled");
+            }
+
+            $('#clase_grupal_id').selectpicker('refresh');
+        });
 
         $('#tipo_servicio').on('change', function(){
 

@@ -235,7 +235,7 @@
                                 <table class="table table-striped table-bordered text-center " id="tablelistar" >
                                     <thead>
                                         <tr>
-                                            <th class="text-center" data-column-id="cliente"></th>
+                                            <th class="text-center" data-column-id="cliente" id="cliente">Cli</th>
                                             <th class="text-center" data-column-id="fecha">Fecha</th>
                                             <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                             <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
@@ -303,79 +303,80 @@
 
         $(document).ready(function(){
 
+            //DateRangePicker
+            $('#fecha').daterangepicker({
+                "autoApply" : false,
+                "opens": "right",
+                "applyClass": "bgm-morado waves-effect",
+                locale : {
+                    format: 'DD/MM/YYYY',
+                    applyLabel : 'Aplicar',
+                    cancelLabel : 'Cancelar',
+                    daysOfWeek : [
+                        "Dom",
+                        "Lun",
+                        "Mar",
+                        "Mie",
+                        "Jue",
+                        "Vie",
+                        "Sab"
+                    ],
 
-        //DateRangePicker
-        $('#fecha').daterangepicker({
-            "autoApply" : false,
-            "opens": "right",
-            "applyClass": "bgm-morado waves-effect",
-            locale : {
-                format: 'DD/MM/YYYY',
-                applyLabel : 'Aplicar',
-                cancelLabel : 'Cancelar',
-                daysOfWeek : [
-                    "Dom",
-                    "Lun",
-                    "Mar",
-                    "Mie",
-                    "Jue",
-                    "Vie",
-                    "Sab"
-                ],
+                    monthNames: [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ],        
+                }
 
-                monthNames: [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ],        
-            }
+            });
 
-        });
-
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25, 
-        order: [[1, 'desc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center, disabled" );
-          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 25, 
+            order: [[1, 'desc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center, disabled" );
+              // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     " ",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
 
 
-        });
+            });
+
+            document.getElementById('cliente').innerHTML = '';
     
         });
 
