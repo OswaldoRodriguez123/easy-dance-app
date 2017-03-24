@@ -627,6 +627,7 @@
 
                 $('[data-toggle="popover"]').popover(); 
 
+        
 
             });   
 

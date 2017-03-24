@@ -95,8 +95,14 @@ class AgendarController extends BaseController
                 $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
                 $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
+                if($dt <= Carbon::now()){
+                    $nombre_principal = $clase->nombre;
+                }else{
+                    $nombre_principal = $clase->nombre . ' ★'; 
+                }
+
         		$id=$clase->id;
-        		$nombre=$clase->nombre;
+        		$nombre=$nombre_principal;
         		$descripcion=$clase->descripcion;
         		$hora_inicio=$clase->hora_inicio;
         		$hora_final=$clase->hora_final;
@@ -109,7 +115,7 @@ class AgendarController extends BaseController
                     $etiqueta=$clase->clase_etiqueta;
                 }
 
-        		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
+        		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-grupales/operaciones/".$id);
 
     			$c=0;
 
