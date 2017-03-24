@@ -75,15 +75,15 @@
                        
 
                        <div class="col-sm-9">
-                           <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
+                           <label for="asistencia_clase_grupal_id" class="f-16">Nombre de la clase</label>
                               <div class="select">
-                                <select class="selectpicker form-control" name="asistencia_clase_grupal_id" id="asistencia-clase_grupal_id" data-live-search="true">
+                                <select class="selectpicker form-control" name="asistencia_clase_grupal_id" id="asistencia_clase_grupal_id" data-live-search="true">
 
                                   <option value="">Selecciona</option>
                                   
                                 </select>
                               </div>
-                            <div class="has-error text-danger" id="error-asistencia_clase_grupal_id_mensaje">
+                            <div class="has-error text-danger" id="error-asistencia_clase_grupal_id">
                               <span >
                                   <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
                               </span>
@@ -142,18 +142,18 @@
                                            </div>
 
                                            <div class="col-sm-9">
-                                               <label for="asistencia-clase_grupal_id" class="f-16">Nombre de la clase</label>
+                                               <label for="asistencia_clase_grupal_id_instructor" class="f-16">Nombre de la clase</label>
                                                   <div class="select">
-                                                    <select class="selectpicker form-control" name="asistencia-clase_grupal_id_instructor" id="asistencia-clase_grupal_id_instructor" data-live-search="true">
+                                                    <select class="selectpicker form-control" name="asistencia_clase_grupal_id_instructor" id="asistencia_clase_grupal_id_instructor" data-live-search="true">
 
                                                       <option value="">Selecciona</option>
                                                       
                                                     
                                                     </select>
                                                   </div>
-                                                <div class="has-error" id="error-asistencia_clase_grupal_id_mensaje">
+                                                <div class="has-error" id="error-asistencia_clase_grupal_id_instructor">
                                                   <span >
-                                                      <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
+                                                      <small class="help-block error-span" id="error-asistencia_clase_grupal_id_instructor_mensaje" ></small>                                
                                                   </span>
                                               </div>
                                             </div>
@@ -685,7 +685,7 @@ $("#permitir_staff").on('click',function(){
     });
     
 
-    $('#asistencia-clase_grupal_id').on('change', function(){
+    $('#asistencia_clase_grupal_id').on('change', function(){
 
       alumno_id = $('#asistencia_id_alumno').val();
       clase_grupal_id = $(this).val();
@@ -719,7 +719,7 @@ $("#permitir_staff").on('click',function(){
     });
 
 
-     $('#asistencia-clase_grupal_id_instructor').on('change', function(){
+     $('#asistencia_clase_grupal_id_instructor').on('change', function(){
       if ($(this).val()=='') {
         $("#asistencia-horario-instructor").text("---");           
       }else{
@@ -779,8 +779,8 @@ $("#permitir_staff").on('click',function(){
           dataType: 'json',
           success:function(respuesta){
             
-            $('#asistencia-clase_grupal_id_instructor').empty();        
-            $('#asistencia-clase_grupal_id_instructor').append( new Option("Selecciona",""));
+            $('#asistencia_clase_grupal_id_instructor').empty();        
+            $('#asistencia_clase_grupal_id_instructor').append( new Option("Selecciona",""));
 
             $.each(respuesta.clases_grupales, function (index, array) { 
 
@@ -796,11 +796,11 @@ $("#permitir_staff").on('click',function(){
 
               opt.setAttribute('data-content', valor);
 
-              $('#asistencia-clase_grupal_id_instructor').append(opt);    
+              $('#asistencia_clase_grupal_id_instructor').append(opt);    
 
             });
 
-            $('#asistencia-clase_grupal_id_instructor').selectpicker('refresh')
+            $('#asistencia_clase_grupal_id_instructor').selectpicker('refresh')
 
             finprocesado();
             $('#modalAsistenciaInstructor').modal('show');
@@ -875,8 +875,8 @@ $("#permitir_staff").on('click',function(){
               }
             });
             
-            $('#asistencia-clase_grupal_id').empty();   
-            $('#asistencia-clase_grupal_id').append( new Option("Selecciona",""));
+            $('#asistencia_clase_grupal_id').empty();   
+            $('#asistencia_clase_grupal_id').append( new Option("Selecciona",""));
 
             $.each(respuesta.clases_grupales, function (index, array) { 
 
@@ -892,12 +892,12 @@ $("#permitir_staff").on('click',function(){
 
               opt.setAttribute('data-content', valor);
 
-              $('#asistencia-clase_grupal_id').append(opt);    
+              $('#asistencia_clase_grupal_id').append(opt);    
 
               // $('#asistencia-clase_grupal_id').append( new Option(valor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
             });
 
-            $('#asistencia-clase_grupal_id').selectpicker('refresh')
+            $('#asistencia_clase_grupal_id').selectpicker('refresh')
 
 
             $('#asistencia-estado_economico').text(respuesta.deuda);
