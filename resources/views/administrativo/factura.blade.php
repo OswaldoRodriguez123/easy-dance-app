@@ -28,34 +28,24 @@
 
                 <div class="container invoice">
 
-                    <div class="block-header">
-                        <h2>Factura <!--<small>Print ready simple and sleek invoice template. Please use Google Chrome or any other Webkit browsers for better printing.</small>--></h2>
-                
-                        <!-- <ul class="actions">
-                            <li>
-                                <a href="#">
-                                    <i class="zmdi zmdi-trending-up"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="zmdi zmdi-check-all"></i>
-                                </a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" data-toggle="dropdown">
-                                    <i class="zmdi zmdi-more-vert"></i>
-                                </a>
-                
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li>
-                                        <a href="#" id="refresh">Refresh</a>
-                                    </li>
+                    <div class="block-header hidden-print">
 
-                                </ul>
-                            </li>
-                        </ul> -->
-                
+    
+                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                            
+                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                            
+                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                            
+                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                           
+                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                        </ul>
+                    </div> 
+
+                    <div class="block-header">
+                        <h2>Factura</h2>
                     </div>
                     
                     <div class="card">
@@ -164,9 +154,6 @@
                                             <td class="disabled">{{$academia->pais_moneda}} {{ number_format($detalle->importe_neto,2,",",".") }}</td>
                                             <td class="disabled">% {{$detalle->impuesto}} </td>
                                             <td class="highlight disabled">{{$academia->pais_moneda}} {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
-                                            <!--<td class="text-center previa"><label class="label label-success f-13">Activo</label></td>
-                                            <td class="text-center previa"><label class="label label-success f-13">Bien</label></td>-->
-                                            <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-wrench f-20 p-r-10 operacionModal"></i></td>-->
                                         </tr>
                                        
                                     @endforeach 
@@ -175,82 +162,13 @@
                                             <td> TOTAL FACTURA </td>
                                             <td class="highlight">{{$academia->pais_moneda}} {{ number_format($total,2,",",".") }}</td>
                                         </tr>
-                                    </thead>
-
-
-
-
-                                <!--    <thead>
-                                        <tr>
-                                            <td width="50%">
-                                                <h5 class="text-uppercase f-400">Curabitur lobortis</h5>
-                                                <p class="text-muted">Nullam consectetur dolor nec ullamcorper finibus. Quisque a porta mauris, non venenatis mi. Pellentesque habitant morbi tristique</p>
-                                            </td>
-                                            
-                                            <td>$450.00</td>
-                                            <td>05</td>
-                                            <td class="highlight">$2250.00</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <td>
-                                                <h5 class="text-uppercase f-400">Phasellus idarcu suscipit nun</h5>
-                                                <p class="text-muted">Pellentesque habitant morbi tristique senectus</p>
-                                            </td>
-                                            <td>$20.00</td>
-                                            <td>02</td>
-                                            <td class="highlight">$40.00</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <td>
-                                                <h5 class="text-uppercase f-400">Vivamus</h5>
-                                                <p class="text-muted">Maecenas nec faucibus lectus. Ut cursus elit ante, rutrum pretium augue tincidunt ut. Suspendisse ultrices sapien sit amet</p>
-                                            </td>
-                                            <td>$2322.00</td>
-                                            <td>01</td>
-                                            <td class="highlight">$2322.00</td>
-                                        </tr>
-                                        
-                                        <tr>
-                                            <td>
-                                                <h5 class="text-uppercase f-400">Nullam consectetur dolor</h5>
-                                                <p class="text-muted">Quisque a porta mauris, non venenatis mi. Pellentesque habitant morbi</p>
-                                            </td>
-                                            <td>$1290.00</td>
-                                            <td>12</td>
-                                            <td class="highlight">$15,480.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3"></td>
-                                            <td class="highlight">$20,092.00</td>
-                                        </tr>
-                                    </thead> -->
                                 </tbody>
                             </table>
                             
                             <div class="clearfix"></div>
                             
-                            <!-- <div class="p-25">
-                                <h4 class="c-green f-400">REMARKS</h4>
-                                <p class="c-gray">Ornare non tortor. Nam quis ipsum vitae dolor porttitor interdum. Curabitur faucibus erat vel ante fermentum lacinia. Integer porttitor laoreet suscipit. Sed cursus cursus massa ut pellentesque. Phasellus vehicula dictum arcu, eu interdum massa bibendum.</p>
-                                
-                                <br/>
-                                
-                                <h4 class="c-green f-400">MERCY FOR YOUR BUSINESS</h4>
-                                <p class="c-gray">Proin ac iaculis metus. Etiam nisi nulla, fermentum blandit consectetur sed, ornare non tortor. Nam quis ipsum vitae dolor porttitor interdum. Curabitur faucibus erat vel ante fermentum lacinia. Integer porttitor laoreet suscipit. Sed cursus cursus massa ut pellentesque. Phasellus vehicula dictum arcu, eu interdum massa bibendum sit amet.</p>
-                            </div> -->
                         </div>
-                        
-                        <!-- <footer class="m-t-15 p-20">
-                            <ul class="list-inline text-center list-unstyled">
-                                <li class="m-l-5 m-r-5"><small>support@company.com</small></li>
-                                <li class="m-l-5 m-r-5"><small>00971 452 9900</small></li>
-                                <li class="m-l-5 m-r-5"><small>www.company.com</small></li>
-                            </ul>
-                        </footer> -->
                     </div>
-                    
                 </div>
                 
                 <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>

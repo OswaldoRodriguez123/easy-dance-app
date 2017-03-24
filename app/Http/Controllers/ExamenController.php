@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use App\Academia;
 use App\Examen;
 use App\User;
 use App\ClaseGrupal;
@@ -663,49 +664,22 @@ class ExamenController extends BaseController {
 
         $examen = Examen::find($id);
 
-        $array_alumno = array();
+        if($examen){
 
-        $array = array(2,4);
+            $array_alumno = array();
 
-        if($examen->boolean_grupal){
+            $array = array(2,4);
 
-            $alumnos = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-              ->select('alumnos.*')
-              ->where('inscripcion_clase_grupal.clase_grupal_id', '=' , $examen->clase_grupal_id)
-              ->where('alumnos.deleted_at', '=', null)
-              ->orderBy('nombre', 'asc')
-          ->get();
+            if($examen->boolean_grupal){
 
-          foreach($alumnos as $alumno){
+                $alumnos = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                  ->select('alumnos.*')
+                  ->where('inscripcion_clase_grupal.clase_grupal_id', '=' , $examen->clase_grupal_id)
+                  ->where('alumnos.deleted_at', '=', null)
+                  ->orderBy('nombre', 'asc')
+              ->get();
 
-            $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
-
-            if($usuario){
-
-              if($usuario->imagen){
-                $imagen = $usuario->imagen;
-              }else{
-                $imagen = '';
-              }
-
-            }
-
-            $collection=collect($alumno);     
-            $alumno_array = $collection->toArray();
-                
-            $alumno_array['imagen']=$imagen;
-            $array_alumno[$alumno->id] = $alumno_array;
-
-
-          }
-
-        }else{
-
-            $alumnos = Alumno::where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
-                ->orderBy('nombre', 'asc')
-            ->get();
-
-            foreach($alumnos as $alumno){
+              foreach($alumnos as $alumno){
 
                 $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
 
@@ -726,104 +700,136 @@ class ExamenController extends BaseController {
                 $array_alumno[$alumno->id] = $alumno_array;
 
 
+              }
+
+            }else{
+
+                $alumnos = Alumno::where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->orderBy('nombre', 'asc')
+                ->get();
+
+                foreach($alumnos as $alumno){
+
+                    $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+
+                    if($usuario){
+
+                      if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                      }else{
+                        $imagen = '';
+                      }
+
+                    }
+
+                    $collection=collect($alumno);     
+                    $alumno_array = $collection->toArray();
+                        
+                    $alumno_array['imagen']=$imagen;
+                    $array_alumno[$alumno->id] = $alumno_array;
+
+
+                }
             }
-        }
 
-        //dd($alumnos);
-        Session::put('id_evaluar', $id);
-        $examen_join = DB::table('examenes')
-            ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
-            ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
-            ->where('examenes.id', '=', $id)
-        ->first();
+            //dd($alumnos);
+            Session::put('id_evaluar', $id);
+            $examen_join = DB::table('examenes')
+                ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+                ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
+                ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
+                ->where('examenes.id', '=', $id)
+            ->first();
 
-        $arrays_de_items=array();
-        $i=0;
+            $arrays_de_items=array();
+            $i=0;
 
-        if($examen_join->tiempos_musicales == 1){
-            $arrays_de_items[$i]="Tiempos musicales";
-            $i++;
-        }
-        if($examen_join->compromiso == 1){
-            $arrays_de_items[$i]="Compromiso";
-            $i++;
-        }
-        if($examen_join->condicion == 1){
-            $arrays_de_items[$i]="Condiciones";
-            $i++;
-        }
-        if($examen_join->habilidades == 1){
-            $arrays_de_items[$i]="Habilidades";
-            $i++;
-        }
-        if($examen_join->disciplina == 1){
-            $arrays_de_items[$i]="Disciplina";
-            $i++;
-        }
-        if($examen_join->expresion_corporal == 1){
-            $arrays_de_items[$i]="Expresion corporal";
-            $i++;
-        }
-        if($examen_join->expresion_facial == 1){
-            $arrays_de_items[$i]="Expresion facial";
-            $i++;
-        }
-        if($examen_join->respeto == 1){
-            $arrays_de_items[$i]="Respeto";
-            $i++;
-        }
-        if($examen_join->destreza == 1){
-            $arrays_de_items[$i]="Destreza";
-            $i++;
-        }
-        if($examen_join->dedicacion == 1){
-            $arrays_de_items[$i]="Dedicacion";
-            $i++;
-        }
-        if($examen_join->oido_musical == 1){
-            $arrays_de_items[$i]="Oido musical";
-            $i++;
-        }
-        if($examen_join->postura == 1){
-            $arrays_de_items[$i]="Postura";
-            $i++;
-        }
-        if($examen_join->elasticidad == 1){
-            $arrays_de_items[$i]="Elasticidad";
-            $i++;
-        }
-        if($examen_join->complejidad_de_movimientos == 1){
-            $arrays_de_items[$i]="Complejidad de movimientos";
-            $i++;
-        }
-        if($examen_join->asistencia == 1){
-            $arrays_de_items[$i]="Asistencia";
-            $i++;
-        }
-        if($examen_join->estilo == 1){
-            $arrays_de_items[$i]="Estilo";
-            $i++;
-        }
-        
-        $hoy = Carbon::now()->format('d-m-Y');
+            if($examen_join->tiempos_musicales == 1){
+                $arrays_de_items[$i]="Tiempos musicales";
+                $i++;
+            }
+            if($examen_join->compromiso == 1){
+                $arrays_de_items[$i]="Compromiso";
+                $i++;
+            }
+            if($examen_join->condicion == 1){
+                $arrays_de_items[$i]="Condiciones";
+                $i++;
+            }
+            if($examen_join->habilidades == 1){
+                $arrays_de_items[$i]="Habilidades";
+                $i++;
+            }
+            if($examen_join->disciplina == 1){
+                $arrays_de_items[$i]="Disciplina";
+                $i++;
+            }
+            if($examen_join->expresion_corporal == 1){
+                $arrays_de_items[$i]="Expresion corporal";
+                $i++;
+            }
+            if($examen_join->expresion_facial == 1){
+                $arrays_de_items[$i]="Expresion facial";
+                $i++;
+            }
+            if($examen_join->respeto == 1){
+                $arrays_de_items[$i]="Respeto";
+                $i++;
+            }
+            if($examen_join->destreza == 1){
+                $arrays_de_items[$i]="Destreza";
+                $i++;
+            }
+            if($examen_join->dedicacion == 1){
+                $arrays_de_items[$i]="Dedicacion";
+                $i++;
+            }
+            if($examen_join->oido_musical == 1){
+                $arrays_de_items[$i]="Oido musical";
+                $i++;
+            }
+            if($examen_join->postura == 1){
+                $arrays_de_items[$i]="Postura";
+                $i++;
+            }
+            if($examen_join->elasticidad == 1){
+                $arrays_de_items[$i]="Elasticidad";
+                $i++;
+            }
+            if($examen_join->complejidad_de_movimientos == 1){
+                $arrays_de_items[$i]="Complejidad de movimientos";
+                $i++;
+            }
+            if($examen_join->asistencia == 1){
+                $arrays_de_items[$i]="Asistencia";
+                $i++;
+            }
+            if($examen_join->estilo == 1){
+                $arrays_de_items[$i]="Estilo";
+                $i++;
+            }
+            
+            $hoy = Carbon::now()->format('d-m-Y');
 
 
-        $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();
+            $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();
 
-        foreach ($items_examenes as $key) {
-            $arrays_de_items[$i]=$key->nombre;
-            $i++;
+            foreach ($items_examenes as $key) {
+                $arrays_de_items[$i]=$key->nombre;
+                $i++;
+            }
+
+            $alumno_id = Session::get('id_alumno');
+
+            $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            return view('especiales.examen.evaluar')
+                   ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas, 'academia' => $academia]);
+        }else{
+           return redirect("especiales/examenes"); 
         }
-
-        $alumno_id = Session::get('id_alumno');
-
-        $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();
-
-        //dd($arrays_de_items);
-
-        return view('especiales.examen.evaluar')
-               ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas]);
     }
 
     public function actualizar_item(Request $request){

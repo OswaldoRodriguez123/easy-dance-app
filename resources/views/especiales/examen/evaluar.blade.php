@@ -25,60 +25,75 @@
 	<section id="content">
 		<div class="container">
 			<div class="block-header">
+        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/detalle/{{$id}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
-                        <?php $url = "/especiales/examenes/detalle/{{$id}}" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-            </div>
-	        <div class="card">
-	            <div class="card-header ch-alt text-center">
-	                <!--<div class="f-45 f-500 text-center">Logo Academia</div>-->
-	                <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
-	            </div>
+        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                            
+            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                            
+            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                            
+            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                           
+            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+        </ul>
+                
+      </div>
+
+	    <div class="card">
+        <div class="card-header ch-alt text-center">
+            @if ($academia->imagen_academia)
+                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+            @else
+                <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+            @endif
+        </div>
 		
 				<div class="card-body card-padding">
-					<form
-					 name="agregar_evaluacion" id="agregar_evaluacion">
+					<form name="agregar_evaluacion" id="agregar_evaluacion">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	                    <div class="row m-b-25">
-	                        <div class="col-xs-6">
-	                            <div class="text-left m-l-25">
-	                                <!--<p class="c-gray">Invoice from</p>-->
-	                                
-	                                <h4 id="id-evaluacion">Evaluación: "{{ $examen->nombre }}"</h4>
-	                                <div class="clearfix"></div>
-									<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
-									<div class="clearfix"></div>
-									<h4>Tipo de Evaluación: {{ $tipo_de_evaluacion }}</h4>
-									<div class="clearfix"></div>
-									<h4>Generos: <div class="clearfix"></div> {{ $examen->generos }}</h4>
-									<div class="clearfix"></div>
-									<h5 id="id-alumno_id">Seleccione un Alumno: </h5>
-									<div class="clearfix"></div>
-				                    <div class="select">
-				                        <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
-					                        <option value="">Seleccione</option>
-					                        @foreach ( $alumnos as $alumno )
-					                        	<option data-imagen = "{{$alumno['imagen']}}" data-sexo = "{{$alumno['sexo']}}" value = "{!! $alumno['id'] !!}">{!! $alumno['nombre'] !!} {!! $alumno['apellido'] !!} {!! $alumno['identificacion'] !!}</option>
-					                        @endforeach 
-				                        </select>
-				                    </div>
+            <div class="row m-b-25">
+              <div class="col-xs-6">
+                <div class="text-left m-l-25">
+  
+                  
+                  <h4 id="id-evaluacion">Evaluación: "{{ $examen->nombre }}"</h4>
 
-	                                 <div class="has-error" id="error-alumno_id">
-	                                      <span >
-	                                          <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                
-	                                      </span>
-	                                  </div>				                    
+                  <div class="clearfix"></div>
+                	<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
+                	<div class="clearfix"></div>
+                	<h4>Tipo de Evaluación: {{ $tipo_de_evaluacion }}</h4>
+                	<div class="clearfix"></div>
+                	<h4>Generos: <div class="clearfix"></div> {{ $examen->generos }}</h4>
+                	<div class="clearfix"></div>
+                	<h5 id="id-alumno_id">Seleccione un Alumno: </h5>
+                	<div class="clearfix"></div>
+                  <div class="select">
+                      <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
+                        <option value="">Seleccione</option>
+                        @foreach ( $alumnos as $alumno )
+                        	<option data-imagen = "{{$alumno['imagen']}}" data-sexo = "{{$alumno['sexo']}}" value = "{!! $alumno['id'] !!}">{!! $alumno['nombre'] !!} {!! $alumno['apellido'] !!} {!! $alumno['identificacion'] !!}</option>
+                        @endforeach 
+                      </select>
+                  </div>
 
-	                            </div>
-	                        </div>
-	                        
-	                        <div class="col-xs-6">
-	                            <div class="i-to">
-	                                <h5>Fecha: {{ $fecha }}</h5>
-									 <img class="img-responsive img-circle" style="width:60px; height:60px" id="imagen_evaluar" src="" alt="">
-	                            </div>
-	                        </div>
-	                    </div>
+                  <div class="has-error" id="error-alumno_id">
+                      <span >
+                          <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                
+                      </span>
+                  </div>				                    
+
+                </div>
+              </div>
+                
+              <div class="col-xs-6">
+                  <div class="i-to">
+                    <h5>Fecha: {{ $fecha }}</h5>
+                    <img class="img-responsive img-circle" style="width:60px; height:60px" id="imagen_evaluar" src="" alt="">
+                  </div>
+              </div>
+            </div>
 
 	                    <!-- SECCION ITEMS A EVALUAR --> 
 						<div class="row">

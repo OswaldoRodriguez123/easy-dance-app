@@ -73,8 +73,36 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-4">
+                                    <label>Linea de Servicio</label>
+
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                            <option value="0">Todas</option>
+                                            <option value="1">Academia</option>
+                                            <option value="14">Fiestas y Eventos</option>
+                                            <option value="5">Talleres</option>
+                                            <option value="11">Campañas</option>
+                                        </select>
+                                    </div>
+                                </div>
 
                                 
+                                 <div class="col-md-4">
+                                    <label>Fecha</label>
+
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="fecha" id="fecha">
+                                            <option value="1">Hoy</option>
+                                            <option value="2">Mes Actual</option>
+                                            <option value="3">Mes Pasado</option>
+                                        </select>
+                                      </div>
+                                </div>
+
+                                <div class="clearfix m-b-20"></div> 
+
+
                                 <div class="col-md-4">
                                     <label>Clase Grupal</label>
 
@@ -97,22 +125,6 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label>Linea de Servicio</label>
-
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
-                                            <option value="0">Todas</option>
-                                            <option value="1">Academia</option>
-                                            <option value="14">Fiestas y Eventos</option>
-                                            <option value="5">Talleres</option>
-                                            <option value="11">Campañas</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix m-b-20"></div> 
-
-                                <div class="col-md-4">
                                     <label>Detalle</label>
 
                                     <div class="fg-line">
@@ -133,18 +145,6 @@
                                     </div>
                                 </div>
 
-
-                                 <div class="col-md-4">
-                                    <label>Fecha</label>
-
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="fecha" id="fecha">
-                                            <option value="1">Hoy</option>
-                                            <option value="2">Mes Actual</option>
-                                            <option value="3">Mes Pasado</option>
-                                        </select>
-                                      </div>
-                                </div>
 
                                 <div class="col-sm-4">
                                     <div class="form-group fg-line">
