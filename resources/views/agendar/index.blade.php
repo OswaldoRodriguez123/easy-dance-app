@@ -378,19 +378,30 @@
                         @foreach ($clases_grupales as $clase)
                             {
                             <?php
-                            $fecha_start=explode('-',$clase['fecha_inicio']);
-                            $fecha_end=explode('-',$clase['fecha_final']);
-                            $hora_start=explode(':',$clase['hora_inicio']);
-                            $hora_end=explode(':',$clase['hora_final']);
+                                $fecha_start=explode('-',$clase['fecha_inicio']);
+                                $fecha_end=explode('-',$clase['fecha_final']);
+                                $hora_start=explode(':',$clase['hora_inicio']);
+                                $hora_end=explode(':',$clase['hora_final']);
+
+                                if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
+                                    $etiqueta = $clase['etiqueta'];
+                                    $actividad = 'actividad';
+                                    $url = $clase['url'];
+                                }else{
+                                    $etiqueta = '#B8B8B8';
+                                    $actividad = 'disabled';
+                                    $url = '';
+                                }
                             ?>
+
                             id: 'clase-{{$clase['id']}}',
                             title: '{{$clase['nombre']}}',
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
                             allDay: false,
-                            backgroundColor:'{{$clase['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{$clase['url']}}'
+                            backgroundColor:'{{$etiqueta}}',
+                            className: '{{$actividad}}',
+                            url: '{{$url}}'
                             },
                         @endforeach
 
@@ -477,37 +488,41 @@
                         // console.log(calEvent.start);
                         // 
                         // 
-                        var check = calEvent.url
-                        var tmp = check.split("!"); 
-                        console.log(tmp)
 
-                        if(!tmp[1]){
+                        if(!$(this).hasClass('disabled')){
 
-                            $('#fecha_inicio').val(calEvent.start);
-                            var token = $('input:hidden[name=_token]').val();
+                            var check = calEvent.url
+                            var tmp = check.split("!"); 
+                            console.log(tmp)
 
-                            $.ajax({
-                                url: "{{url('/')}}/guardar-fecha",
-                                    headers: {'X-CSRF-TOKEN': token},
-                                    type: 'POST',
-                                dataType: 'json',
-                                data:"fecha_inicio="+$('#fecha_inicio').val(),
-                                success:function(respuesta){
+                            if(!tmp[1]){
 
-                                    window.location = calEvent.url
+                                $('#fecha_inicio').val(calEvent.start);
+                                var token = $('input:hidden[name=_token]').val();
 
-                                }
-                            });
-                        }else{
-                            var fecha = tmp[3]
-                            var hora = tmp[4]
-                            var instructor = tmp[2]
-                            var cancelacion = tmp[1]
-                            $('.span_fecha').text(fecha)
-                            $('.span_hora').text(hora)
-                            $('.span_instructor').text(instructor)
-                            $('#razon_cancelacion').text(cancelacion)
-                            $("#modalCancelar" ).modal('show');
+                                $.ajax({
+                                    url: "{{url('/')}}/guardar-fecha",
+                                        headers: {'X-CSRF-TOKEN': token},
+                                        type: 'POST',
+                                    dataType: 'json',
+                                    data:"fecha_inicio="+$('#fecha_inicio').val(),
+                                    success:function(respuesta){
+
+                                        window.location = calEvent.url
+
+                                    }
+                                });
+                            }else{
+                                var fecha = tmp[3]
+                                var hora = tmp[4]
+                                var instructor = tmp[2]
+                                var cancelacion = tmp[1]
+                                $('.span_fecha').text(fecha)
+                                $('.span_hora').text(hora)
+                                $('.span_instructor').text(instructor)
+                                $('#razon_cancelacion').text(cancelacion)
+                                $("#modalCancelar" ).modal('show');
+                            }
                         }
                         //console.log(jsEvent);
                         //console.log(view);
@@ -601,6 +616,16 @@
                     e.preventDefault();
                      
                 });
+
+                $('.disabled').attr('data-trigger','hover');
+                $('.disabled').attr('data-toggle','popover');
+                $('.disabled').attr('data-placement','right');
+                $('.disabled').attr('data-content','<p class="c-negro">Esta clase esta vencida</p>');
+                $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+                $('.disabled').attr('data-html','true');
+                $('.disabled').attr('title','');
+
+                $('[data-toggle="popover"]').popover(); 
 
 
             });   

@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Taller;
+use App\ClaseGrupal;
+use App\ClasePersonalizada;
+use App\Cita;
 use App\ConfigClasesPersonalizadas;
+use App\Fiesta;
 
 use DB;
 
@@ -36,7 +40,10 @@ class AgendarController extends BaseController
         if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
         {
 
-        	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)
+                ->where('talleres.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
+            ->get();
+
         	foreach ($talleres as $taller) {
         		$fecha_start=explode('-',$taller['fecha_inicio']);
         		$fecha_end=explode('-',$taller['fecha_final']);
@@ -65,19 +72,14 @@ class AgendarController extends BaseController
 
     		}
 
-    		// $clases_grupales=ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-
-    		$clasegrupal = DB::table('config_clases_grupales')
-                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+    		$clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                     ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                     ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
                     ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_grupales.deleted_at', '=', null)
             ->get();
 
-            $horarios_clasegrupal = DB::table('config_clases_grupales')
-                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+            $horarios_clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                     ->join('horario_clase_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
                     ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
                     ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
@@ -189,17 +191,16 @@ class AgendarController extends BaseController
 
             $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
 
-    		$clasespersonalizadas = DB::table('clases_personalizadas')
-                    ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+    		$clasespersonalizadas = ClasePersonalizada::join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
     				->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
                     ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.*')
                     ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
+                    ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
             ->get();
 
-            $horarios_clasespersonalizadas = DB::table('clases_personalizadas')
-                    ->join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+            $horarios_clasespersonalizadas = ClasePersonalizada::join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
                     ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
                     ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
                     ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.fecha')
@@ -207,6 +208,7 @@ class AgendarController extends BaseController
                     ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
+                    ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->format('Y-m-d'))
             ->get();
 
 
@@ -266,10 +268,9 @@ class AgendarController extends BaseController
 
             }
 
-    		$fiestas = DB::table('fiestas')
-                    ->select('fiestas.*')
-                    ->where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
-                    ->where('fiestas.deleted_at', '=', null)
+    		$fiestas = Fiesta::where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
+                ->where('fiestas.deleted_at', '=', null)
+                ->where('fiestas.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
             ->get();
 
         	foreach ($fiestas as $fiesta) {
@@ -299,14 +300,14 @@ class AgendarController extends BaseController
 
     		}
 
-            $citas = DB::table('citas')
-                ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+            $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
                 ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
                 ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
                 ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta')
                 ->where('citas.academia_id','=', Auth::user()->academia_id)
                 ->where('citas.estatus','=','1')
                 ->where('citas.boolean_mostrar','=','2')
+                ->where('citas.fecha', '>=', Carbon::now()->format('Y-m-d'))
             ->get();
 
             foreach ($citas as $cita) {

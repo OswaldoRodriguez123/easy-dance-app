@@ -61,12 +61,20 @@
 
                             @foreach ($fechas as $fecha)
                                 <?php $id = $fecha['id']; ?>
-                                <tr id="{{$id}}" class="seleccion" data-fecha="{{$fecha['fecha_inicio']}}"> 
+                                @if(\Carbon\Carbon::parse($fecha['fecha_inicio']) >= \Carbon\Carbon::now())
+                                    <tr id="{{$id}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
+                                @else
+                                    <tr id="{{$id}}"" class="disabled seleccion_deleted"">
+                                @endif
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        @if(\Carbon\Carbon::parse($fecha['fecha_inicio']) >= \Carbon\Carbon::now())
+                                            <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach  
                                                            

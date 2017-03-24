@@ -29,5 +29,9 @@ class ConfigEgresosTableSeeder extends Seeder
   	    ConfigEgreso::create(array(
   	      'nombre' => 'Viáticos',
   	    ));
+
+        ConfigEgreso::create(array(
+          'nombre' => 'Prestamos',
+        ));
     }
 }
