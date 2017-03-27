@@ -15,7 +15,29 @@ class ConfigProductosController extends BaseController {
 
 	public function principalproductos()
 	{
-		return view('configuracion.productos.principal')->with('productos', ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        $tmp = ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $productos = array();
+
+        foreach($tmp as $producto){
+            if($producto->tipo == 14){
+                $tipo = 'Fiesta y Eventos';
+            }else if($producto->tipo == 5){
+                $tipo = 'Taller';
+            }else if($producto->tipo == 11){
+                $tipo = 'Campaña';
+            }else{
+                $tipo = 'Academia';
+            }
+
+
+            $collection=collect($producto);     
+            $array = $collection->toArray();
+            
+            $array['tipo']=$tipo;
+            $productos[$producto->id] = $array;
+        }
+        
+		return view('configuracion.productos.principal')->with('productos', $productos);
 	}
 
     public function agregarproductos()
@@ -117,7 +139,7 @@ class ConfigProductosController extends BaseController {
             if($producto->tipo == 5){
                 $tipo = "Taller";
             }else if($producto->tipo == 14){
-                $tipo = "Fiesta";
+                $tipo = "Fiesta y Eventos";
             }else if($producto->tipo == 11){
                 $tipo = "Campaña";
             }else{

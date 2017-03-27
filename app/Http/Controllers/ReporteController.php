@@ -26,6 +26,7 @@ use App\ConfigServicios;
 use App\ComoNosConociste;
 use App\Egreso;
 use App\TipoEgreso;
+use App\Pago;
 use Mail;
 use DB;
 use Validator;
@@ -736,47 +737,11 @@ class ReporteController extends BaseController
     */    
 	public function Presenciales(){
 
-		$presenciales = DB::table('visitantes_presenciales')
-            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id','visitantes_presenciales.cliente')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-        ->get();
-
-        $total = DB::table('visitantes_presenciales')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->where('visitantes_presenciales.cliente','=', 1)
-        ->count();
-
-
-        $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->groupBy('visitantes_presenciales.sexo')
-            ->get();
-
-        $mujeres = Visitante::where('sexo', 'F')->where('academia_id',Auth::user()->academia_id)->count();
-        $hombres = Visitante::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->count();
-
-        $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
 
         $como_nos_conociste = ComoNosConociste::all();
-                        
+        $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
 
-        $forAge = DB::select('SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN "3 - 10"
-                            WHEN age BETWEEN 11 and 20 THEN "11 - 20"
-                            WHEN age BETWEEN 21 and 35 THEN "21 - 35"
-                            WHEN age BETWEEN 36 and 50 THEN "36 - 50"
-                            WHEN age >= 51 THEN "+51"
-                            WHEN age IS NULL THEN "Sin fecha (NULL)"
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM visitantes_presenciales
-                        LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id)  as visitantes
-                        GROUP BY age_range
-                        ORDER BY age_range');
-
-        return view('reportes.presenciales')->with(['presenciales' => $presenciales, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'promotores' => $promotores, 'como_nos_conociste' => $como_nos_conociste]);
+        return view('reportes.presenciales')->with([ 'promotores' => $promotores, 'como_nos_conociste' => $como_nos_conociste]);
 	}
 
 public function PresencialesFiltros(Request $request)
@@ -816,7 +781,7 @@ public function PresencialesFiltros(Request $request)
 
         $query = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente', 'visitantes_presenciales.como_nos_conociste_id')
+            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente', 'visitantes_presenciales.como_nos_conociste_id', 'visitantes_presenciales.interes_id', 'visitantes_presenciales.dias_clase_id', 'visitantes_presenciales.fecha_nacimiento', 'visitantes_presenciales.instructor_id')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id);
 
         if($request->instructor_id)
@@ -839,9 +804,9 @@ public function PresencialesFiltros(Request $request)
             if($request->tipo){
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
 
                 if($request->tipo == 1){
                     $start = $actual->toDateString();
@@ -863,7 +828,8 @@ public function PresencialesFiltros(Request $request)
 
         $array = array();
 
-        $total = 0;
+        $total_clientes = 0;
+        $total_visitantes = 0;
         $mujeres = 0;
         $hombres = 0;
         
@@ -876,16 +842,59 @@ public function PresencialesFiltros(Request $request)
         $lugar = 0;
         $otros = 0;
 
+        $niños = 0;
+        $adultos = 0;
+
+        $entre_semana = 0;
+        $fines_de_semana = 0;
+        $ambos = 0;
+        $total_dias_clase = 0;
+
+        $cantidad_1 = 0;
+        $cantidad_2 = 0;
+        $cantidad_3 = 0;
+        $cantidad_4 = 0;
+        $cantidad_5 = 0;
+
+        $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
+
+        $array_promotor = array();
+
+        foreach($promotores as $promotor){
+            $array_promotor[$promotor->id] = ['nombre' => $promotor->nombre . ' ' . $promotor->apellido, 'cantidad' => 0];
+
+        }
+
         foreach($presenciales as $presencial){
 
-            if($presencial->cliente){
-                $total = $total + 1;
+            if($presencial->instructor_id){
+                $array_promotor[$presencial->instructor_id]['cantidad']++;
+                $total_clientes = $total_clientes + 1;
+            }
+
+            $total_visitantes = $total_visitantes + 1;
+
+            if($presencial->interes_id == '1'){
+                $adultos++;
+            }else{
+                $niños++;
             }
 
             if($presencial->sexo == 'F'){
                 $mujeres++;
             }else{
                 $hombres++;
+            }
+
+            if($presencial->dias_clase_id == '1'){
+                $entre_semana++;
+                $total_dias_clase++;
+            }else if($presencial->dias_clase_id == '2'){
+                $fines_de_semana++;
+                $total_dias_clase++;
+            }else if($presencial->dias_clase_id == '3'){
+                $ambos++;
+                $total_dias_clase++;
             }
             
             if($presencial->como_nos_conociste_id == 1){
@@ -904,16 +913,32 @@ public function PresencialesFiltros(Request $request)
                 $otros++;
             }
 
+            $edad = Carbon::createFromFormat('Y-m-d', $presencial->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            
+            if($edad >= 3 AND $edad <= 10 ){
+                $cantidad_1++;
+            }else if($edad >= 11 AND $edad <= 20 ){
+                $cantidad_2++;
+            }else if($edad >= 21 AND $edad <= 35 ){
+                $cantidad_3++;
+            }else if($edad >= 36 AND $edad <= 50 ){
+                $cantidad_4++;
+            }else{
+                $cantidad_5++;
+            }
+        
             $collection=collect($presencial);     
             $presencial_array = $collection->toArray();
             if($presencial->especialidad == '' OR $presencial->especialidad == null){
                 $presencial_array['especialidad']='Sin Especificar';
             }   
+
             $array[$presencial->id] = $presencial_array;
         }
 
-        // $array_sexo = array();
         $array_conociste = array();
+        $array_edad = array();
+        $array_dias = array();
 
         $array_amigo = array('Por un amigo', $amigo);
         $array_redes = array('Redes sociales / internet', $redes);
@@ -931,35 +956,43 @@ public function PresencialesFiltros(Request $request)
         array_push($array_conociste, $array_lugar);
         array_push($array_conociste, $array_otros);
 
-        // $array_hombres = array('M', $hombres);
-        // $array_mujeres = array('F', $mujeres);
+        $array_3 = array('3 - 10', $cantidad_1);
+        $array_11 = array('11 - 20', $cantidad_2);
+        $array_21 = array('21 - 35', $cantidad_3);
+        $array_36 = array('36 - 50', $cantidad_4);
+        $array_51 = array('+51', $cantidad_5);
 
-        // array_push($array_sexo, $array_hombres);
-        // array_push($array_sexo, $array_mujeres);   
+        array_push($array_edad, $array_3);
+        array_push($array_edad, $array_11);
+        array_push($array_edad, $array_21);
+        array_push($array_edad, $array_36);
+        array_push($array_edad, $array_51);
 
+        $array_entre_semana = array('Entre Semana', $entre_semana);
+        $array_fines_de_semana = array('Fines de Semana', $fines_de_semana);
+        $array_ambos = array('Ambos', $ambos);
 
-        // $forAge = DB::select("SELECT CASE
-        //     WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-        //     WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-        //     WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-        //     WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-        //     WHEN age >= 51 THEN '+51'
-        //     WHEN age IS NULL THEN 'Sin fecha (NULL)'
-        // END as age_range, COUNT(*) AS count
-        // FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-        // FROM visitantes_presenciales
-        // LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
-        // WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."')  as visitantes
-        // GROUP BY age_range
-        // ORDER BY age_range");
+        array_push($array_dias, $array_entre_semana);
+        array_push($array_dias, $array_fines_de_semana);
+        array_push($array_dias, $array_ambos);
 
         return response()->json(
             [
                 'presenciales'      => $array,
                 'mujeres'           => $mujeres,
                 'hombres'           => $hombres,
-                'total'             => $total,
+                'adultos'           => $adultos,
+                'niños'             => $niños,
+                'entre_semana'      => $entre_semana,
+                'fines_de_semana'   => $fines_de_semana,
+                'ambos'             => $ambos,
+                'total_dias_clase'  => $total_dias_clase,
+                'total_clientes'    => $total_clientes,
+                'total_visitantes'  => $total_visitantes,
                 'conociste'         => $array_conociste,
+                'edades'            => $array_edad,
+                'dias'              => $array_dias,
+                'promotores'        => $array_promotor,
                 'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
 
             ]);
@@ -1799,9 +1832,8 @@ public function PresencialesFiltros(Request $request)
             ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();  
 
-        $servicios = ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
         $array = array();
+
         foreach($clases_grupales as $clase_grupal){
 
             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
@@ -1845,25 +1877,6 @@ public function PresencialesFiltros(Request $request)
 
         }
 
-        $factura_join = DB::table('facturas')
-            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
-            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
-            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->where('alumnos.deleted_at' , '=' , null)
-            ->OrderBy('facturas.created_at')
-        ->get();
-
-        $total_de_informe=0;
-
-        foreach($factura_join as $factura){
-
-            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-            $total_de_informe+=$total;
-
-        }
-
         $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
         foreach($config_servicio as $item){
@@ -1882,7 +1895,7 @@ public function PresencialesFiltros(Request $request)
         $collection=collect($tmp);   
         $linea_servicio = $collection->toArray();
 
-        return view('reportes.administrativo')->with(['total'=>$total_de_informe, 'clases_grupales' => $array, 'servicios' => $servicios, 'linea_servicio' => $linea_servicio]);
+        return view('reportes.administrativo')->with(['clases_grupales' => $array, 'linea_servicio' => $linea_servicio]);
     }
 
     public function AdministrativoFiltros(Request $request)
@@ -1976,11 +1989,23 @@ public function PresencialesFiltros(Request $request)
 
                 foreach($facturas as $factura){
 
+                    $tipo_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
+                        ->where('factura_id', $factura->factura_id)
+                    ->get();
+
+                    if(count($tipo_pago) <= 1){
+                        $pago = $tipo_pago[0]->nombre;
+                    }else{
+                        $pago = $tipo_pago[0]->nombre . ' ...';
+                    }
+
                     $collection=collect($factura);     
                     $factura_array = $collection->toArray();
                     $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
                     $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
                     $factura_array['hora'] = Carbon::parse($factura->created_at)->toTimeString();
+                    $factura_array['tipo_pago']=$pago;
+                    $factura_array['tipo']=1;
                     $array[$factura->id] = $factura_array;
 
                     $total_ingreso = $total_ingreso + $factura->importe_neto;
@@ -2050,6 +2075,8 @@ public function PresencialesFiltros(Request $request)
                 $egreso_array['importe_neto'] = $egreso->cantidad;
                 $egreso_array['fecha'] = Carbon::parse($egreso->fecha)->toDateString();
                 $egreso_array['hora'] = Carbon::parse($egreso->created_at)->toTimeString();
+                $egreso_array['tipo_pago'] = '';
+                $factura_array['tipo']=2;
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;

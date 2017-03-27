@@ -82,7 +82,7 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="costo">Costo</label>
-                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="00000000" placeholder="Ej. 5000" value="{{$producto->costo}}">
+                                    <input type="text" class="form-control input-sm input-mask" name="costo" id="costo" data-mask="00000000" placeholder="Ej. 5000">
                                  </div>
                                  <div class="has-error" id="error-costo">
                                       <span >
@@ -406,7 +406,7 @@
                                     <label for="tipo">Tipo</label>
                                     <div class="select">
                                           <select class="form-control" id="tipo" name="tipo">
-                                            <option value="1">Academia</option>
+                                            <option value="2">Academia</option>
                                             <option value="14">Fiesta y Eventos</option>
                                             <option value="5">Taller</option>
                                             <option value="11">Campaña</option>
@@ -569,7 +569,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Tipo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="producto-tipo"><span>{{$tipo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="producto-tipo" data-valor="{{$producto->tipo}}">{{$tipo}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImpuesto-Producto">
                              <td>
@@ -676,6 +676,17 @@
     $('#modalNombre-Producto').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#nombre").val($("#producto-nombre").text()); 
+    })
+
+    $('#modalCosto-Producto').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#costo").val($("#producto-costo").text()); 
+    })
+
+    $('#modalTipo-Producto').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var tipo=$("#producto-tipo").data('valor');
+      $("#tipo").val(tipo); 
     })
 
     $('#modalDescripcion-Producto').on('show.bs.modal', function (event) {

@@ -1077,7 +1077,45 @@
                           </div>
 
                           <div class="col-sm-12">
-                           <table class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered">
+                              <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Si deseas cambiar estos datos ponte en contacto con el administrador" title="" data-original-title="Ayuda">
+                                <td>
+                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($academia->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                  <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-nombres f-22"></i> </span>
+                                  <span class="f-14"> Nombre </span>
+                                </td>
+                                <td class="f-14 m-l-15" ><span id="academia-nombre">{{$academia->nombre}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                              </tr>
+
+                              <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Si deseas cambiar estos datos ponte en contacto con el administrador" title="" data-original-title="Ayuda">
+                                <td>
+                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($academia->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                  <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-nombres f-22"></i> </span>
+                                  <span class="f-14"> Identificación </span>
+                                </td>
+                                <td class="f-14 m-l-15" ><span id="academia-identificacion">{{$academia->identificacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                              </tr>
+
+                              <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Si deseas cambiar estos datos ponte en contacto con el administrador" title="" data-original-title="Ayuda">
+                                <td>
+                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-especialidades_id" class="zmdi {{ empty($academia->especialidades_id) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                  <span class="m-l-10 m-r-10"> <i class="icon_b icon_a-especialidad f-22"></i> </span>
+                                  <span class="f-14"> Especialidad </span>
+                                </td>
+                                <td class="f-14 m-l-15" ><span id="academia-especialidades_id">{{$academia->especialidades_id}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                              </tr>
+
+
+                              <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Si deseas cambiar estos datos ponte en contacto con el administrador" title="" data-original-title="Ayuda">
+                                <td>
+                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-pais_id" class="zmdi {{ empty($academia->pais_id) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-flag f-22"></i> </span>
+                                  <span class="f-14"> Pais </span>
+                                </td>
+                                <td class="f-14 m-l-15" ><span id="academia-pais_id">{{$academia->pais_id}}</span> / <span id="academia-estado">{{$academia->estado}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                              </tr>
+
+
                             <tr class="detalle" data-toggle="modal" href="#modalContacto-Academia">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($academia->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>

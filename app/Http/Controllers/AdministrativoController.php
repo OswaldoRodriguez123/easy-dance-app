@@ -135,63 +135,17 @@ class AdministrativoController extends BaseController {
 
     public function principalpagos()
     {
-        // $factura_join = DB::table('facturas')
-        //     ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-        //     ->join('items_factura', 'facturas.id', '=', 'items_factura.factura_id')
-        //     ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha')
-        //     ->orderBy(DB::raw('sum(\'items_factura.importe_neto\')'))
-        // ->get();
 
-
-        //PENDIENTE
-
-        // $total = Factura::with(['items_factura' => function($query){
-        //     $query->sum('factura_id');
-        // }])->get();
-
-
-        // for($i=0; $i<=$total.length; $i++)
-        // {
-        //     for($j=0; $j<=$total[$i]['items_factura'].length; $j++)
-        //     {
-        //         $total = $total[2]['items_factura'];
-        //     }
-            
-        // }
-        
-
-        // $total = DB::table('items_factura')
-        // ->orderBy(DB::raw('sum(\'items_factura.factura_id\')'))
-        // ->get();
-
-        // $total = Pago::groupBy('id')->sum('monto')->get();
-
-        // $total = Pago::groupBy('factura_id')
-        //    ->selectRaw('sum(monto) as sum, factura_id')
-        //    ->lists('sum','factura_id');
-
-        // dd($total);
-
-        // $factura_join = DB::table('facturas')
-        //     ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-        //     ->join('pagos', 'facturas.id', '=', 'pagos.factura_id')
-        //     ->selectRaw('sum(pagos.monto) as monto')
-        //     ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.fecha as fecha', 'facturas.id', 'facturas.numero_factura', 'sum(monto)')
-        //     ->groupBy('factura_id')
-        // // ->lists('nombre')
-        // ->get();
-        // 
-        
         $array = array();
 
-        $factura_join = DB::table('facturas')
-            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
-            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
-            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->OrderBy('facturas.created_at')
-        ->get();
+        // $factura_join = DB::table('facturas')
+        //     ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+        //     ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+        //     // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+        //     ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
+        //     ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+        //     ->OrderBy('facturas.created_at')
+        // ->get();
 
         // $patrocinadores = DB::table('patrocinadores')
         //      ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
@@ -202,14 +156,31 @@ class AdministrativoController extends BaseController {
         //      ->orderBy('patrocinadores.monto', 'desc')
         //  ->get();
 
+        $factura_join = Factura::join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id') 
+            ->selectRaw('CONCAT(alumnos.nombre, " " , alumnos.apellido) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
+            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
+            ->OrderBy('facturas.created_at')
+        ->get();
+
+
         foreach($factura_join as $factura){
 
+            $tipo_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
+                ->where('factura_id', $factura->id)
+            ->get();
+
+            if(count($tipo_pago) <= 1){
+                $pago = $tipo_pago[0]->nombre;
+            }else{
+                $pago = $tipo_pago[0]->nombre . ' ...';
+            }
 
             $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
             $collection=collect($factura);     
             $factura_array = $collection->toArray();
             
             $factura_array['total']=$total;
+            $factura_array['tipo_pago']=$pago;
             $array[$factura->id] = $factura_array;
 
         }
@@ -221,9 +192,9 @@ class AdministrativoController extends BaseController {
         ->get();
 
         $total = DB::table('items_factura_proforma')
-        ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-        ->where('items_factura_proforma.academia_id', Auth::user()->academia_id)
-        ->where('alumnos.deleted_at' , '=' , null)
+            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->where('items_factura_proforma.academia_id', Auth::user()->academia_id)
+            ->where('alumnos.deleted_at' , '=' , null)
         ->sum('.items_factura_proforma.importe_neto');
 
         return view('administrativo.pagos.principal')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total]);

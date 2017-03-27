@@ -458,6 +458,18 @@
                 
                     <div class="block-header">
                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/servicios" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Servicio</a>
+
+                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                            
+                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                            
+                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                            
+                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                           
+                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                        </ul>
                     </div> 
                     
                     <div class="card">
@@ -545,7 +557,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Descripción </span>
                              </td>
-                             <td id="servicio-descripcion" class="f-14 m-l-15" data-valor="{{$servicio->descripcion}}" ><span ><span>{{ str_limit($servicio->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="servicio-descripcion" class="f-14 m-l-15" data-valor="{{$servicio->descripcion}}"><span ><span>{{ str_limit($servicio->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalTipo-Servicio">
                              <td>
@@ -553,7 +565,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Tipo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="servicio-tipo"><span>{{$tipo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="servicio-tipo" data-valor="{{$servicio->tipo}}">{{$tipo}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 <!--                             <tr class="detalle" data-toggle="modal" href="#modalOpciones-Servicio">
                              <td>
@@ -667,6 +679,17 @@
     $('#modalNombre-Servicio').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#nombre").val($("#servicio-nombre").text()); 
+    })
+
+    $('#modalCosto-Servicio').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#costo").val($("#servicio-costo").text()); 
+    })
+
+    $('#modalTipo-Servicio').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var tipo=$("#servicio-tipo").data('valor');
+      $("#tipo").val(tipo); 
     })
 
     $('#modalDescripcion-Servicio').on('show.bs.modal', function (event) {

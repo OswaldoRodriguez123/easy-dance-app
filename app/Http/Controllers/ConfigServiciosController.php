@@ -16,7 +16,29 @@ class ConfigServiciosController extends BaseController {
 
 	public function principalservicios()
     {
-        return view('configuracion.servicios.principal')->with('servicios', ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        $tmp = ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $servicios = array();
+
+        foreach($tmp as $servicio){
+            if($servicio->tipo == 14){
+                $tipo = 'Fiesta y Eventos';
+            }else if($servicio->tipo == 5){
+                $tipo = 'Taller';
+            }else if($servicio->tipo == 11){
+                $tipo = 'Campaña';
+            }else{
+                $tipo = 'Academia';
+            }
+
+
+            $collection=collect($servicio);     
+            $array = $collection->toArray();
+            
+            $array['tipo']=$tipo;
+            $servicios[$servicio->id] = $array;
+        }
+
+        return view('configuracion.servicios.principal')->with('servicios', $servicios);
     }
 
     public function agregarservicios()
@@ -123,7 +145,7 @@ class ConfigServiciosController extends BaseController {
             if($servicio->tipo == 5){
                 $tipo = "Taller";
             }else if($servicio->tipo == 14){
-                $tipo = "Fiesta";
+                $tipo = "Fiesta y Eventos";
             }else if($servicio->tipo == 11){
                 $tipo = "Campaña";
             }else{

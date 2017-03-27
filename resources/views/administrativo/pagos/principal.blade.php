@@ -114,6 +114,7 @@
                                         <tr>
                                             <th id="factura" class="text-center" data-column-id="factura" data-order="asc">Factura</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
+                                            <th class="text-center" data-column-id="cliente">Tipo de Pago</th>
                                             <th class="text-center" data-column-id="concepto">Concepto</th>
                                             <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
                                             <th class="text-center" data-column-id="total">Total</th>
@@ -128,12 +129,14 @@
                                             <tr id="{{$id}}" class="seleccion">
                                                 <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
                                                 <td class="text-center previa">{{$factura['nombre']}}</td>
-                                                <td class="text-center previa">
-                                                {{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}</td>
+                                                <td class="text-center previa">{{$factura['tipo_pago']}}</td>
+                                                <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}
+                                                </td>
                                                 <td class="text-center previa">{{$factura['fecha']}}</td>
                                                 <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
-                                                <td class="text-center previa"><i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i></td>
-                                              
+                                                <td class="text-center previa">
+                                                    <i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>
+                                                </td>
                                             </tr>
 
                                         @endforeach
@@ -149,15 +152,13 @@
 
 @section('js') 
             
-        <script type="text/javascript">
-            route_detalle="{{url('/')}}/administrativo/factura";
-            route_enviar="{{url('/')}}/administrativo/factura/enviar/";
-            route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
-            route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
+    <script type="text/javascript">
+        route_detalle="{{url('/')}}/administrativo/factura";
+        route_enviar="{{url('/')}}/administrativo/factura/enviar/";
+        route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
+        route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
 
         tipo = 'pagadas';
-
-        
 
         var proforma = <?php echo json_encode($proforma);?>;
         var factura = <?php echo json_encode($facturas);?>;
@@ -171,18 +172,9 @@
             serverSide: false,
             pageLength: 25, 
             order: [[0, 'desc']],
-            fnDrawCallback: function() {
-                $('.dataTables_paginate').show();
-              /*if ("{{count($proforma)}}" < 25) {
-                  $('.dataTables_paginate').hide();
-                  $('#tablelistar_length').hide();
-              }else{
-                  $('.dataTables_paginate').show();
-              }*/
-            },
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
             },
             language: {
                             processing:     "Procesando ...",
@@ -261,9 +253,11 @@
         function rechargeFactura(){
 
             setTimeout(function(){
-                $('#monto').hide();
 
+                $('#monto').hide();
                 $('#checkbox_tipo').hide();
+
+                t.column(2).visible(true);
 
                 document.getElementById('fecha').innerHTML = 'Fecha'; 
 
@@ -276,6 +270,7 @@
                     var rowNode=t.row.add( [
                     ''+pad(array.factura, 10)+'',
                     ''+array.nombre+'',
+                    ''+array.tipo_pago+'',
                     ''+concepto+'',
                     ''+array.fecha+'',
                     ''+formatmoney(parseFloat(array.total))+'',
@@ -299,6 +294,8 @@
             
                 $('#monto').show();
 
+                t.column(2).visible(false);
+
                 document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento';
 
                 var total = 0 
@@ -310,6 +307,7 @@
                     var rowNode=t.row.add( [
                     ''+array.id+'',
                     ''+array.nombre+ ' '+array.apellido+'',
+                    '',
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
@@ -347,6 +345,7 @@
                     var rowNode=t.row.add( [
                     ''+array.id+'',
                     ''+array.nombre+ ' '+array.apellido+'',
+                    '',
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
@@ -381,6 +380,7 @@
                     var rowNode=t.row.add( [
                     ''+array.id+'',
                     ''+array.nombre+ ' '+array.apellido+'',
+                    '',
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
@@ -414,6 +414,7 @@
                     var rowNode=t.row.add( [
                     ''+array.id+'',
                     ''+array.nombre+ ' '+array.apellido+'',
+                    '',
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
@@ -619,10 +620,10 @@
                 });
       }
 
-      function pad (str, max) {
+    function pad (str, max) {
       str = str.toString();
       return str.length < max ? pad("0" + str, max) : str;
     }
 
-        </script>
+    </script>
 @stop

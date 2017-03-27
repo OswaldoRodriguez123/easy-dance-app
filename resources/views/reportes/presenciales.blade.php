@@ -68,10 +68,7 @@
 
                                 <div class="col-md-4">
                                     <label>Promotor</label>
-
-
-                                    <div class="fg-line">
-                                      <div class="select">
+                                    <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="instructor_id" id="instructor_id">
                                           <option value="0">Todos</option>
                                           @foreach ( $promotores as $promotor )
@@ -79,28 +76,23 @@
 
                                           @endforeach
                                         </select>
-                                      </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <label>Fecha</label> &nbsp; &nbsp; &nbsp;
-
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
                                             <option value="1">Hoy</option>
                                             <option value="2">Mes Actual</option>
                                             <option value="3">Mes Pasado</option>
                                         </select>
-                                      </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <label>¿Cómo se enteró?</label>
-
-
-                                    <div class="fg-line">
-                                      <div class="select">
+                                    <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="como_nos_conociste_id" id="como_nos_conociste_id">
                                           <option value="0">Todos</option>
                                           @foreach ( $como_nos_conociste as $como_se_entero )
@@ -108,7 +100,6 @@
 
                                           @endforeach
                                         </select>
-                                      </div>
                                     </div>
                                 </div>
 
@@ -169,40 +160,36 @@
                             </form>
                         </div>
 
-                       
-                        <div class="col-md-6">
-                            <h2>Informe de Presenciales</h2>
-                            <hr>
-                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                            <div class="flc-pie hidden-xs"></div>
+                        <div class="clearfix"></div>
 
+                       
+                        <div class="col-md-4">
+
+                            <table class="table display cell-border" id="promotores">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" data-column-id="promotores">Promotores</th>
+                                        <th class="text-center" data-column-id="cantidad"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Total</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%">0</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
 
-
-                        <div class="col-md-6">
-                            <h2>Información</h2>
-                            <hr>
-                            
-                            <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">    
-                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
-                            </div>
-                            <div class="clearfix"></div>    
-
-                            <div class="mini-charts-item bgm-blue">
-                                <div class="clearfix">
-                                    <div class="count">
-                                        <small>Total Presenciales:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30"></h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30"></h2>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="clearfix m-b-20"></div>
+                        <div class="col-md-6 col-md-offset-2">
 
                             <div class="text-center">
                                 <div class="text-center f-700" >Porcentaje de Efectividad</div>
@@ -229,7 +216,197 @@
                             </div>
                         </div>
 
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4" style="margin-top: 11%">
+
+
+                            <table class="table display cell-border" id="mujeres_hombres">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" data-column-id="mujeres_hombres">Interesado en clases para:</th>
+                                        <th class="text-center" data-column-id="cantidad"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%"><i class="zmdi zmdi-female c-rosado f-25" style="padding-right: 2%"></i></span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="mujeres">0</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%"><i class="zmdi zmdi-male-alt c-azul f-25" style="padding-right: 2%"></i></span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="hombres">0</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Total</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" class="total_visitantes" id="total_visitantes">0</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6 col-md-offset-2">
+                         
+                            <h2 class="text-center">Informe de Como se enteró</h2>
+                            <hr>
+                            <div id="pie-chart-entero" class="flot-chart"></div>
+                            <div  id="flc-pie-entero" class="flc-pie hidden-xs"></div>
+                        </div>
+
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4" style="margin-top: 11%">
+
+                            <table class="table display cell-border" id="adultos_niños" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" data-column-id="adultos_niños">Interesado en clases para:</th>
+                                        <th class="text-center" data-column-id="cantidad"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Adultos</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="adultos">0</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Niños</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="niños">0</span>
+                                        </td>
+                                    </tr>
+
+
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Total</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" class ="total_visitantes" id="total_visitantes">0</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6 col-md-offset-2">
+
+                            <h2 class="text-center">Informe por Edades</h2>
+                            <hr>
+                            <div id="pie-chart-edades" class="flot-chart"></div>
+                            <div  id="flc-pie-edades" class="flc-pie hidden-xs"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4" style="margin-top: 11%">
+
+                            <table class="table display cell-border" id="dias_de_clase" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" data-column-id="dias_de_clase">Interesados en los días de  clases  :</th>
+                                        <th class="text-center" data-column-id="cantidad"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Entre Semana</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="entre_semana">0</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Fines de Semana</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="fines_de_semana">0</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Ambos</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="ambos">0</span>
+                                        </td>
+                                    </tr>
+
+
+
+                                    <tr>
+                                        <td>
+                                            <span style="padding-left: 3%">Total</span>
+                                        </td>
+
+                                        <td>
+                                            <span style="padding-left: 3%" id="total_dias_clase">0</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        
+                        <div class="col-md-6 col-md-offset-2">
+
+                            <h2 class="text-center">Informe de Dias de clase</h2>
+                            <hr>
+                            <div id="pie-chart-dias" class="flot-chart"></div>
+                            <div  id="flc-pie-dias" class="flc-pie hidden-xs"></div>
+
+                        </div>
+
                         <div class ="clearfix"></div>
+
                         <div class="table-responsive row">
                             <div class="col-md-12">
                                 <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -287,16 +464,6 @@
 @section('js') 
             
         <script type="text/javascript">
-
-        var clase_grupal_array = [];
-
-        if("{{$sexos[0]->sexo}}" == 'F'){
-            color2 = "#2196f3"
-            color1 = "#FF4081"
-        }else{
-            color1 = "#2196f3"
-            color2 = "#FF4081"
-        }
 
         route_filtrar="{{url('/')}}/reportes/presenciales";
         route_detalle="{{url('/')}}/participante/visitante/detalle";
@@ -377,6 +544,148 @@
             });
 
             document.getElementById('cliente').innerHTML = '';
+
+            h=$('#promotores').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25, 
+                bPaginate: false,
+                bInfo: false,
+                bFilter:false, 
+                bSort:false, 
+                language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     " ",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+
+
+            });
+
+            i=$('#mujeres_hombres').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25, 
+                bPaginate: false,
+                bInfo: false,
+                bFilter:false, 
+                bSort:false, 
+                language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     " ",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+
+
+            });
+
+            k=$('#adultos_niños').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25, 
+                bPaginate: false,
+                bInfo: false,
+                bFilter:false, 
+                bSort:false, 
+                language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     " ",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+
+
+            });
+
+            l=$('#dias_de_clase').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25, 
+                bPaginate: false,
+                bInfo: false,
+                bFilter:false, 
+                bSort:false, 
+                language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     " ",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+
+
+            });
+
+           
     
         });
 
@@ -386,7 +695,7 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            procesando(); 
+            // procesando(); 
 
             $.ajax({
                     url: route_filtrar,
@@ -408,6 +717,7 @@
                             var nMensaje=respuesta.mensaje;
 
                             t.clear().draw();
+                            h.clear().draw();
 
                             $('#total').text(respuesta.total)
                             finprocesado();
@@ -451,6 +761,24 @@
                                     .attr('id',array.id)
                                     .addClass('seleccion');
                             });
+
+                            $.each(respuesta.promotores, function (index, array) {
+
+
+                                var rowNode=h.row.add( [
+                                '&nbsp;&nbsp;'+array.nombre+'',
+                                ''+array.cantidad+'',
+                                ] ).draw(false).node();
+                                $( rowNode )
+                                    .addClass('seleccion');
+                            });
+
+                            var rowNode=h.row.add( [
+                                '&nbsp;&nbsp;Total:',
+                                ''+respuesta.total_clientes+'',
+                                ] ).draw(false).node();
+                                $( rowNode )
+                                    .addClass('seleccion');
 
                             porcentaje = (cliente_valor/total)*100
                             porcentaje = parseInt(porcentaje)
@@ -529,32 +857,31 @@
 
                             $("#mujeres").text(datos.mujeres);
                             $("#hombres").text(datos.hombres);
+                            $(".total_visitantes").text(datos.total_visitantes);
 
-                            // sexos = respuesta.sexos
+                            $("#adultos").text(datos.adultos);
+                            $("#niños").text(datos.niños);
 
-                            // if(sexos[1]){
-                            //     if(sexos[1][0] == 'F'){
-                            //         color1 = "#2196f3"
-                            //         color2 = "#FF4081"
-                            //     }else{
-                            //         color2 = "#2196f3"
-                            //         color1 = "#FF4081"
-                            //     }
-                            // }
+                            $("#entre_semana").text(datos.entre_semana);
+                            $("#fines_de_semana").text(datos.fines_de_semana);
+                            $("#ambos").text(datos.ambos);
+                            $("#total_dias_clase").text(datos.total_dias_clase);
 
-                            var data1 = ''
-                            data1 += '[';
+                            $(".flot-chart").html('');
+                            $(".flc-pie").html('');
+
+
+                            var pieData1 = ''
+                            pieData1 += '[';
                             $.each( datos.conociste, function( i, item ) {
                                 var label = item[0];
                                 var cant = item[1];
-                                data1 += '{"data":"'+cant+'","label":"'+label+'"},';
+                                pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
                             });
-                            data1 = data1.substring(0, data1.length -1);
-                            data1 += ']';
+                            pieData1 = pieData1.substring(0, pieData1.length -1);
+                            pieData1 += ']';
 
-                            $("#pie-chart-procesos").html('');
-                            $(".flc-pie").html('');
-                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                            $.plot('#pie-chart-entero', $.parseJSON(pieData1), {
                                 series: {
                                     pie: {
                                         show: true,
@@ -564,7 +891,7 @@
                                     },
                                 },
                                 legend: {
-                                    container: '.flc-pie',
+                                    container: '#flc-pie-entero',
                                     backgroundOpacity: 0.5,
                                     noColumns: 0,
                                     backgroundColor: "white",
@@ -585,15 +912,108 @@
                                     cssClass: 'flot-tooltip'
                                 },
                                 colors: ["rgb(237,194,64)", "rgb(175,216,248)", "rgb(203,75,75)", "rgb(77,167,77)", "rgb(148,64,237)", "rgb(31,64,163)", "rgb(140,172,198)"],
+                                
                             });
 
+                            // --
 
-                            finprocesado();
+                            var pieData2 = ''
+                            pieData2 += '[';
+                            $.each( datos.edades, function( i, item ) {
+                                var label = item[0];
+                                var cant = item[1];
+                                pieData2 += '{"data":"'+cant+'","label":"'+label+'"},';
+                            });
+                            pieData2 = pieData2.substring(0, pieData2.length -1);
+                            pieData2 += ']';
 
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                            $.plot('#pie-chart-edades', $.parseJSON(pieData2), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '#flc-pie-edades',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                },
+                                
+                            });
 
-                      }, 1000);
-                    },
+                            // --
+
+                            var pieData3 = ''
+                            pieData3 += '[';
+                            $.each( datos.dias, function( i, item ) {
+                                var label = item[0];
+                                var cant = item[1];
+                                pieData3 += '{"data":"'+cant+'","label":"'+label+'"},';
+                            });
+                            pieData3 = pieData3.substring(0, pieData3.length -1);
+                            pieData3 += ']';
+
+                            $.plot('#pie-chart-dias', $.parseJSON(pieData3), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '#flc-pie-dias',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                },
+                                
+                            });
+
+                            // --
+
+                                    finprocesado();
+
+                                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                              }, 1000);
+                            },
+
                     error:function(msj){
                         setTimeout(function(){ 
                             // if (typeof msj.responseJSON === "undefined") {
@@ -634,74 +1054,12 @@
 
     }
 
-    // //PLOTS
-    //     var pieData1 = [
-    //             @foreach ($sexos as $sexo)
-    //                 {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-    //             @endforeach
-    //         ];
-        
-    //     var values = [
-    //         @foreach ($sexos as $sexo)        
-    //                {{$sexo->CantSex}} ,
-    //         @endforeach                    
-    //         ];
-
-
-    //     $.plot('#pie-chart-procesos', pieData1, {
-    //         series: {
-    //             pie: {
-    //                 show: true,
-    //                 stroke: { 
-    //                     width: 2,
-    //                 },
-    //             },
-    //         },
-    //         legend: {
-    //             container: '.flc-pie',
-    //             backgroundOpacity: 0.5,
-    //             noColumns: 0,
-    //             backgroundColor: "white",
-    //             lineWidth: 0
-    //         },
-    //         grid: {
-    //             hoverable: true,
-    //             clickable: true
-    //         },
-    //         tooltip: true,
-    //         tooltipOpts: {
-    //             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-    //             shifts: {
-    //                 x: 20,
-    //                 y: 0
-    //             },
-    //             defaultTheme: false,
-    //             cssClass: 'flot-tooltip'
-    //         },
-    //         colors: [color1, color2],
-            
-    //     });
-
      function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
         window.location=route;
       }
 
-    // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
-
-    //     function sparklinePie(id, values, width, height, sliceColors) {
-    //         $('.'+id).sparkline(values, {
-    //             type: 'pie',
-    //             width: width,
-    //             height: height,
-    //             sliceColors: sliceColors,
-    //             offset: 0,
-    //             borderWidth: 0
-    //         });
-    //     }   
-    //     
-    
     function collapse_minus(collaps){
         $('#'+collaps).collapse('hide');
     }   

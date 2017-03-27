@@ -23,7 +23,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Configuración</a>
+                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -52,6 +52,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="descripcion">Nombre</th>
+                                    <th class="text-center" data-column-id="descripcion">Tipo</th>
                                     <th class="text-center" data-column-id="costo" data-type="numeric">Costo</th>
                                     <th class="text-center" data-column-id="costo" data-type="numeric">Cantidad</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -63,6 +64,7 @@
                                 <?php $id = $producto['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$producto['nombre']}}</td>
+                                    <td class="text-center previa">{{$producto['tipo']}}</td>
                                     <td class="text-center previa">{{ number_format($producto['costo'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$producto['cantidad']}}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
@@ -116,8 +118,8 @@
               searchPlaceholder: "Buscar"
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

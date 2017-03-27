@@ -23,7 +23,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -134,15 +134,6 @@
         serverSide: false,
         pageLength: 25,   
         order: [[0, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($activas)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -173,26 +164,10 @@
         });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            rechargeActivas();
+        rechargeActivas();
 
 
-            });
+    });
 
     function previa(t){
             var row = $(t).closest('tr');
@@ -223,8 +198,6 @@
       $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
                 var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
                 element = this;
 
                 swal({   
@@ -312,27 +285,34 @@
       }
 
 
-      function clear(){
+        function clear(){
 
             t.clear().draw();
-            // t.destroy();
-         }
+        }
 
-         $('input[name="tipo"]').on('change', function(){
+        $('input[name="tipo"]').on('change', function(){
             clear();
             if ($(this).val()=='activas') {
-                  tipo = 'activas';
-                  rechargeActivas();
+                tipo = 'activas';
+                rechargeActivas();
             } else if($(this).val()=='finalizadas')  {
-                  tipo= 'finalizadas';
-                  rechargeFinalizadas();
+                tipo= 'finalizadas';
+                rechargeFinalizadas();
             }else{
-                  tipo= 'canceladas';
-                  rechargeCanceladas();
+                tipo= 'canceladas';
+                rechargeCanceladas();
             }
          });
 
-         function rechargeActivas(){
+        function rechargeActivas(){
+
+            if(activas.length > 25){
+                $('.dataTables_paginate').show();
+                $('.dataTables_length').show();
+            }else{
+                $('.dataTables_paginate').hide();
+                $('.dataTables_length').hide();
+            }
 
             $.each(activas, function (index, array) {
 
@@ -362,6 +342,14 @@
         }
 
         function rechargeFinalizadas(){
+
+            if(finalizadas.length > 25){
+                $('.dataTables_paginate').show();
+                $('.dataTables_length').show();
+            }else{
+                $('.dataTables_paginate').hide();
+                $('.dataTables_length').hide();
+            }
 
             $.each(finalizadas, function (index, array) {
 
@@ -397,6 +385,14 @@
         }
 
         function rechargeCanceladas(){
+
+            if(canceladas.length > 25){
+                $('.dataTables_paginate').show();
+                $('.dataTables_length').show();
+            }else{
+                $('.dataTables_paginate').hide();
+                $('.dataTables_length').hide();
+            }
     
             $.each(canceladas, function (index, array) {
 

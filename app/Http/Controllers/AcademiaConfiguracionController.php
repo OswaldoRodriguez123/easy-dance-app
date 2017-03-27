@@ -565,7 +565,11 @@ class AcademiaConfiguracionController extends BaseController {
         //     Session::forget('niveles'); 
         // }
         
-        $academia = Academia::find(Auth::user()->academia_id);
+        $academia = Academia::join('paises', 'academias.pais_id','=','paises.id')
+            ->join('config_especialidades', 'academias.especialidades_id','=','config_especialidades.id')
+            ->select('academias.*', 'paises.nombre as pais_id', 'config_especialidades.nombre as especialidades_id')
+            ->where('academias.id', Auth::user()->academia_id)
+        ->first();
 
 
         if($academia){
@@ -832,14 +836,12 @@ class AcademiaConfiguracionController extends BaseController {
         $academia->porcentaje_impuesto = $porcentaje_impuesto->impuesto;
 
         if($academia->save()){
-            // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("/home");
-        //return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
         }
     }
 

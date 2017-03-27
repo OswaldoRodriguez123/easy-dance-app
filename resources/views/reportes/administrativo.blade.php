@@ -203,6 +203,7 @@
                                             <th class="text-center" data-column-id="fecha">Fecha</th>
                                             <th class="text-center" data-column-id="hora">Hora</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
+                                            <th class="text-center" data-column-id="tipo">Tipo</th>
                                             <th class="text-center" data-column-id="concepto">Concepto</th>
                                             <th class="text-center" data-column-id="total">Total</th>
                                         </tr>
@@ -364,12 +365,19 @@
                     t.clear().draw();
 
                     $.each(respuesta.facturas, function (index, array) {
+
+                        if(array.tipo == 1){
+                            monto = '+'+formatmoney(parseFloat(array.importe_neto))
+                        }else{
+                            monto = '-'+formatmoney(parseFloat(array.importe_neto))
+                        }
                         var rowNode=t.row.add( [
                         ''+array.fecha+'',
                         ''+array.hora+'',
                         ''+array.cliente+'',
+                        ''+array.tipo_pago+'',
                         ''+array.nombre+'',
-                        ''+formatmoney(parseFloat(array.importe_neto))+''
+                        ''+monto+''
                         ] ).draw(false).node();
                         $( rowNode )
                             .attr('id',array.id)

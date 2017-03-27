@@ -53,6 +53,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="nombre">Tipo</th>
                                     <th class="text-center" data-column-id="costo" data-type="numeric">Costo</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -63,6 +64,7 @@
                                 <?php $id = $servicio['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$servicio['nombre']}}</td>
+                                    <td class="text-center previa">{{$servicio['tipo']}}</td>
                                     <td class="text-center previa">{{ number_format($servicio['costo'], 2, '.' , '.') }} </td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
@@ -116,7 +118,7 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

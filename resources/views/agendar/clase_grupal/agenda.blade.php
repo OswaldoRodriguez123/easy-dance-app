@@ -43,8 +43,29 @@
   
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-fiesta f-25"></i> Clase Grupal: {{$nombre}}</p>
-                            <hr class="linea-morada">                                                           
+                            <hr class="linea-morada">
+
+                            <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="activas" value="activas" type="radio">
+                                            <i class="input-helper"></i>  
+                                            Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                        </label>
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="finalizadas" value="finalizadas" type="radio" checked >
+                                            <i class="input-helper"></i>  
+                                            Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                        </label>
+                                    </div>
+                                    
+                                </div>
+                            </div> 
+
+                            <div class="clearfix"></div>                                                                           
                         </div>
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -59,23 +80,17 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($fechas as $fecha)
-                                <?php $id = $fecha['id']; ?>
-                                @if(\Carbon\Carbon::parse($fecha['fecha_inicio']) >= \Carbon\Carbon::now())
-                                    <tr id="{{$id}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
-                                @else
-                                    <tr id="{{$id}}"" class="disabled seleccion_deleted"">
-                                @endif
+                            @foreach ($activas as $fecha)
+                                <tr class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
                                     <td class="text-center disabled"> 
-                                        @if(\Carbon\Carbon::parse($fecha['fecha_inicio']) >= \Carbon\Carbon::now())
-                                            <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
-                                        @endif
+                                        <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
                                     </td>
                                 </tr>
+
                             @endforeach  
                                                            
                             </tbody>
@@ -104,7 +119,13 @@
 
     route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones/";
 
+    var finalizadas = <?php echo json_encode($finalizadas);?>;
+    var activas = <?php echo json_encode($activas);?>;
+
     $(document).ready(function(){
+
+        $("#activas").prop("checked", true);
+
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
@@ -159,6 +180,83 @@
             }
         });        
     });
+
+    $("#activas").click(function(){
+        $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#activas2" ).addClass( "c-verde" );
+    });
+
+    $("#finalizadas").click(function(){
+        $( "#finalizadas2" ).addClass( "c-verde" );
+        $( "#activas2" ).removeClass( "c-verde" );
+    });
+
+
+     function rechargeActivas(){
+
+            if(activas.length > 25){
+                $('.dataTables_paginate').show();
+                $('.dataTables_length').show();
+            }else{
+                $('.dataTables_paginate').hide();
+                $('.dataTables_length').hide();
+            }
+
+            $.each(activas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.fecha_inicio+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.especialidad+'',
+                ''+array.instructor+'' ,
+                '<i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                    .addClass('disabled')
+                    .attr('data-fecha', array.fecha_inicio);
+            });
+        }
+
+        function rechargeFinalizadas(){
+
+            if(finalizadas.length > 25){
+                $('.dataTables_paginate').show();
+                $('.dataTables_length').show();
+            }else{
+                $('.dataTables_paginate').hide();
+                $('.dataTables_length').hide();
+            }
+
+            $.each(finalizadas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.fecha_inicio+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.especialidad+'',
+                ''+array.instructor+'' ,
+                ''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .addClass('disabled')
+                    .addClass('seleccion_deleted');
+            });
+        }
+
+        function clear(){
+
+            t.clear().draw();
+        }
+
+        $('input[name="tipo"]').on('change', function(){
+            clear();
+            if ($(this).val()=='activas') {
+                tipo = 'activas';
+                rechargeActivas();
+            } else if($(this).val()=='finalizadas')  {
+                tipo= 'finalizadas';
+                rechargeFinalizadas();
+            }
+         });
 
     </script>
 @stop

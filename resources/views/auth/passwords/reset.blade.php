@@ -22,9 +22,6 @@
   
     
     <div class="container">
-    <div class="block-header">
- <!--      <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a> -->
-      </div> 
       <div class="card">
         <div class="card-header">
             <div class="clearfix"></div><br>
