@@ -1487,9 +1487,9 @@
                                       </div> 
 
                                  </div>
-                                 <div class="has-error" id="error-clasegrupal_id">
+                                 <div class="has-error" id="error-clase_grupal_id">
                                       <span >
-                                          <small class="help-block error-span" id="error-clasegrupal_id_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -1516,7 +1516,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Trasladar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -1710,18 +1710,21 @@
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$clasegrupal->id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i>Ver Agenda</a>
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
                                             </li>
-
-                                          
+                                        
                                             @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                                              <li class="hidden-xs">
+                                                <a class="pointer modal_trasladar"><i class="zmdi zmdi-trending-up f-16 boton blue"></i>Trasladar</a>
+                                              </li>
 
                                               <li class="hidden-xs">
                                                 <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
                                               </li>
 
                                               <li class="hidden-xs">
-                                                  <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$clasegrupal->id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i>Ver Agenda</a>
                                               </li>
 
                                               <li class="hidden-xs">
@@ -2825,6 +2828,12 @@
       $('.cancelar').click(function(){
 
         $('#modalCancelar').modal('show')
+
+      });
+
+      $('.modal_trasladar').click(function(){
+
+        $('#modalTrasladar-ClaseGrupal').modal('show')
 
       });
 

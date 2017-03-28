@@ -22,678 +22,601 @@
 
 @section('content')
 
-<div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <!--<h4 class="modal-title">Agendar</h4>-->
-                                    <i class="icon_a-agendar f-35" ></i>
-                                    <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                </div>
-                                <div class="modal-body m-b-20">
-                                    <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}.</p> 
-                                    <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para bloquear una clase?...</p>
-                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <div class="col-sm-4">
-                                      <ul class="ca-menu" style="margin: 0 auto;">
-                                        <li style="height: 250px;">
-                                            <a href="#modalCancelarUna" data-toggle="modal" class="agendar" data-agendar="clases-grupales">
-                                                <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-1-una-clase"></i></span>
-                                                <div class="ca-content" style="top: 35%;">
-                                                    <h2 class="ca-main f-20">Bloquear una clase</h2>
-                                                    <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                      <ul class="ca-menu" style="margin: 0 auto;">
-                                        <li style="height: 250px;">
-                                            <a href="#modalCancelarVarias" data-toggle="modal" class="agendar" data-agendar="clases-personalizadas">
-                                                <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-varias-clases"></i></span>
-                                                <div class="ca-content" style="top: 35%;">
-                                                    <h2 class="ca-main f-20">Bloquear varias Clases</h2>
-                                                    <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                      <ul class="ca-menu" style="margin: 0 auto;">
-                                        <li style="height: 250px;">
-                                            <a href="#modalCancelarPermanente" data-toggle="modal" class="agendar" data-agendar="talleres" >
-                                                <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-eliminar-todas"></i></span>
-                                                <div class="ca-content" style="top: 35%;">
-                                                    <h2 class="ca-main f-20">Bloquear clases permanentemente</h2>
-                                                    <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-
-                                    <div class="clearfix p-b-10"></div>
-
-                                        
-                                        <input type="hidden" id="getStart" name="getStart" />
-                                        <input type="hidden" id="getEnd" name="getEnd" />
-                                        <input type="hidden" id="agendar" name="agendar" />
-                                    </form>
-                                </div>
-                                
-                                <div class="modal-footer">
-                                    <!--<button type="submit" class="btn btn-link" id="addEvent">Add Event</button>
-                                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-<div class="modal fade" id="modalCancelarUna" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Bloquear una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_una_clase" id="cancelar_una_clase"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <input type="hidden" name="id" id="id" value="{{$id}}"></input>  
-                                       
-                                       <div class="modal-body">  
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}  </span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-3">
-  
-                                                <span class="f-15 f-700">{{$clasegrupal->nombre}}</span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-6">
-                                             
-                                            <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasegrupal->hora_inicio}} - {{$clasegrupal->hora_final}}</span></p>
-
-                                            <p class="f-16"> <span class="f-700 span_hora" style="float:left; padding-top: 0.5%">Fecha: 
-
-                                            @if($fecha_inicio)
-
-                                              <input type="hidden" name="fecha_cancelacion" id="fecha_cancelacion" value="{{$fecha_inicio}}"></input>  
-
-                                              {{$fecha_inicio}}
-
-                                            @else
-
-                                              <div class="dtp-container">
-                                                <input name="fecha_cancelacion" id="fecha_cancelacion" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" style="padding-top: 0; width: 85%">
-                                              </div>
-
-                                            @endif
-
-
-
-                                            </span></p>
-
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>                         
-
-                                       <div class="row p-t-20 p-b-0">
-
-                     
-
-                               <div class="clearfix p-b-35"></div>
-
-
-            
-
-                                      <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
-                                          </div>
-                                        <div class="has-error" id="error-razon_cancelacion">
-                                          <span >
-                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                      <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
-                                          
-                                          <br></br>
-                                          <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
-                                            
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                       <div class="has-error" id="error-boolean_mostrar">
-                                            <span >
-                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                     </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-6 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-6">                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_una_clase" > Completar el bloqueo</button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="modal fade" id="modalCancelarVarias" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Bloquear varias clases <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_varias_clases" id="cancelar_varias_clases"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <input type="hidden" name="id" id="id" value="{{$id}}"></input>  
-                                       
-                                       <div class="modal-body">  
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}  </span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-3">
-  
-                                                <span class="f-15 f-700">{{$clasegrupal->nombre}}</span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-6">
-                                             
-                                            <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasegrupal->hora_inicio}} - {{$clasegrupal->hora_final}}</span></p>
-
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>                         
-
-                                       <div class="row p-t-20 p-b-0">
-
-                     
-
-                               <div class="clearfix p-b-35"></div>
-
-
-            
-
-                                      <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
-                                          </div>
-                                        <div class="has-error" id="error-razon_cancelacion">
-                                          <span >
-                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                      <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <div class="form-group fg-line">
-                                            <label for="fecha_inicio">Fecha</label>
-                                            <div class="fg-line">
-                                                <input type="text" id="fecha2" name="fecha2" class="form-control pointer" placeholder="Selecciona la fecha">
-                                            </div>
-                                         </div>
-                                            <div class="has-error" id="error-fecha2">
-                                              <span >
-                                                  <small id="error-fecha2_mensaje" class="help-block error-span" ></small>                                           
-                                              </span>
-                                            </div>
-                                        </div>
-                                       </div>
-
-                                      <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
-                                          
-                                          <br></br>
-                                          <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
-                                            
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                       <div class="has-error" id="error-boolean_mostrar">
-                                            <span >
-                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                     </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-6 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-6">                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_varias_clases" > Completar el bloqueo</button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="modalCancelarPermanente" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Bloquear la clase permanentemente <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_permanentemente" id="cancelar_permanentemente"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <input type="hidden" name="id" id="id" value="{{$id}}"></input>  
-                                       
-                                       <div class="modal-body">  
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}  </span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-3">
-  
-                                                <span class="f-15 f-700">{{$clasegrupal->nombre}}</span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-6">
-                                             
-                                            <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasegrupal->hora_inicio}} - {{$clasegrupal->hora_final}}</span></p>
-
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>                         
-
-                                       <div class="row p-t-20 p-b-0">
-
-                     
-
-                               <div class="clearfix p-b-35"></div>
-
-
-            
-
-                                      <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
-                                          </div>
-                                        <div class="has-error" id="error-razon_cancelacion">
-                                          <span >
-                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                      <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
-                                          
-                                          <br></br>
-                                          <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
-                                            
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                       <div class="has-error" id="error-boolean_mostrar">
-                                            <span >
-                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                     </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-6 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-6">                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_permanentemente" > Completar el bloqueo</button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
-
-
-<div class="modal fade" id="modalTrasladar-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+            <div class="modal-header">
+                <!--<h4 class="modal-title">Agendar</h4>-->
+                <i class="icon_a-agendar f-35" ></i>
+                <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
-            <form name="form_trasladar" id="form_trasladar"  >
-               <input type="hidden" name="_token" value="{{ csrf_token() }}">
-               <div class="modal-body">                           
-               <div class="row p-t-20 p-b-0">
-                   <div class="col-sm-12">
-                     <div class="form-group fg-line">
-                        <label for="nombre">Clases Grupales</label>
-
-                          <div class="select">
-                              <select class="form-control" id="clasegrupal_id" name="clasegrupal_id">
-                              @foreach ( $grupales as $grupal )
-                              <option value = "{{ $grupal['id'] }}">{{ $grupal['nombre'] }} - {{ $grupal['hora_inicio'] }} / {{ $grupal['hora_final'] }} - {{ $grupal['dia_de_semana'] }} - {{ $grupal['instructor'] }} - {{ $grupal['especialidad'] }}</option>
-                              @endforeach 
-                              </select>
-                          </div> 
-
-                     </div>
-                     <div class="has-error" id="error-clasegrupal_id">
-                          <span >
-                              <small class="help-block error-span" id="error-clasegrupal_id_mensaje" ></small>                                
-                          </span>
-                      </div>
-                   </div>
-
-
-                   <input type="hidden" name="id" value="{{$id}}"></input>
-                
-
-                   <div class="clearfix"></div> 
-                  
-              </div>
-               
-            </div>
-            <div class="modal-footer p-b-20 m-b-20">
-                <div class="col-sm-12 text-left">
-                  <div class="procesando hidden">
-                  <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                  <div class="preloader pls-purple">
-                      <svg class="pl-circular" viewBox="25 25 50 50">
-                          <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                      </svg>
-                  </div>
-                  </div>
-                </div>
-                <div class="col-sm-12">                            
-
-                  <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                </div>
-            </div></form>
-        </div>
-    </div>
-</div>
-
-<section id="content">
-        <div class="container">
-           <div class="block-header">
-                <div class="col-sm-6">
-                <?php $url = "/agendar/clases-grupales" ?>
-                  <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-                </div>
-                <div class="col-sm-6 text-right">
-                  <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-                </div>
-            </div> 
-
-            <br>
-            
-            <h4 class ="c-morado text-right">Clase Grupal: {{$clasegrupal->nombre}}</h4> 
-            <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
-            <hr class="linea-morada">
-            <br>
-            <div class="card-body p-b-20">
-
-              <div class="col-sm-5"></div>
-
-              <ul class="top-menu">
-                <li class="dropdown" style="width: 19.5%">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
-                     <span class="f-15 f-700"> 
-                       <ul class="ca-menu-c">
-                          <li>
-                              <span class="ca-icon-c"><i class="zmdi zmdi-wrench f-35 boton blue sa-warning"></i></span>
-                              <div class="ca-content-c">
-                                  <h2 class="ca-main-c f-20">Operaciones</h2>
-                                  <h3 class="ca-sub-c"></h3>
-                              </div>
-                          </li>
-                        </ul>
-                     </span>
-                  </a>
-                  <ul class="dropdown-menu dm-icon pull-right">
-                      <li class="hidden-xs">
-                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}"><i class="icon_a-niveles f-16 m-r-10 boton blue"></i>&nbsp;Nivelaciones</a>
-                      </li>
-
-                      <li class="hidden-xs">
-                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}"><i class="icon_a-participantes f-16 m-r-10 boton blue"></i> Participantes</a>
-                      </li>
-
-                      <li class="hidden-xs">
-                          <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/agregar/{{$id}}"><i class="icon_a-examen f-16 m-r-10 boton blue"></i> Valorar</a>
-                      </li>
-
-                      @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-
-                        <li class="hidden-xs">
-                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
-                        </li>
-
-                        <li class="hidden-xs">
-                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
-                        </li>
-
-                        <li class="hidden-xs">
-                            <a class="cancelar pointer"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
-                        </li>
-
-                      @endif
-                  </ul>
-                </li>
-              </ul>
-
-                <!-- <li data-ripplecator class ="dark-ripples">
-                        <a class="nivelaciones">
-                            <span class="ca-icon-c"><i class="icon_a-niveles f-35 boton blue sa-warning" data-original-title="Nivelaciones" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c f-20">Nivelaciones</h2>
-                                <h3 class="ca-sub-c"></h3>
+            <div class="modal-body m-b-20">
+                <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}.</p> 
+                <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para bloquear una clase?...</p>
+                <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="col-sm-4">
+                  <ul class="ca-menu" style="margin: 0 auto;">
+                    <li style="height: 250px;">
+                        <a href="#modalCancelarUna" data-toggle="modal" class="agendar" data-agendar="clases-grupales">
+                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-1-una-clase"></i></span>
+                            <div class="ca-content" style="top: 35%;">
+                                <h2 class="ca-main f-20">Bloquear una clase</h2>
+                                <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
                             </div>
                         </a>
-                </li>
+                    </li>
+                </ul>
+                </div>
+                <div class="col-sm-4">
+                  <ul class="ca-menu" style="margin: 0 auto;">
+                    <li style="height: 250px;">
+                        <a href="#modalCancelarVarias" data-toggle="modal" class="agendar" data-agendar="clases-personalizadas">
+                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-varias-clases"></i></span>
+                            <div class="ca-content" style="top: 35%;">
+                                <h2 class="ca-main f-20">Bloquear varias Clases</h2>
+                                <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </div>
+                <div class="col-sm-4">
+                  <ul class="ca-menu" style="margin: 0 auto;">
+                    <li style="height: 250px;">
+                        <a href="#modalCancelarPermanente" data-toggle="modal" class="agendar" data-agendar="talleres" >
+                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-eliminar-todas"></i></span>
+                            <div class="ca-content" style="top: 35%;">
+                                <h2 class="ca-main f-20">Bloquear clases permanentemente</h2>
+                                <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </div>
 
-                <li data-ripplecator class ="dark-ripples">
-                    <a class="participantes">
-                        <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" data-original-title="Ver Participantes" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                        <div class="ca-content-c">
-                            <h2 class="ca-main-c f-20">Participantes</h2>
-                            <h3 class="ca-sub-c"></h3>
-                        </div>
-                    </a>
-                </li>
-
-                <li data-ripplecator class ="dark-ripples">
-                    <a class = "valorar">
-                        <span class="ca-icon-c"><i class="icon_a-examen f-35 boton blue sa-warning" 
-                               data-original-title="Valorar" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                        <div class="ca-content-c">
-                            <h2 class="ca-main-c">Valorar</h2>
-                            <h3 class="ca-sub-c"></h3>
-                        </div>
-                    </a>
-                </li>
-
-                @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-
-                
-                  <div class="clearfix"></div>
-
-                  <li data-ripplecator class ="dark-ripples">
-                          <a data-toggle="modal" href="#modalTrasladar-ClaseGrupal">
-                              <span class="ca-icon-c"><i class="zmdi zmdi-trending-up f-35 boton blue sa-warning" data-original-title="Trasladar" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                              <div class="ca-content-c">
-                                  <h2 class="ca-main-c f-20">Trasladar</h2>
-                                  <h3 class="ca-sub-c"></h3>
-                              </div>
-                          </a>
-                  </li>
-
-
-                  <li data-ripplecator class ="dark-ripples">
-                          <a class="multihorario">
-                              <span class="ca-icon-c"><i class="zmdi zmdi-calendar-note f-35 boton blue sa-warning" data-original-title="Ver Multihorario" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                              <div class="ca-content-c">
-                                  <h2 class="ca-main-c f-20">Multihorario</h2>
-                                  <h3 class="ca-sub-c"></h3>
-                              </div>
-                          </a>
-                  </li>
-
-                      <li data-ripplecator class ="dark-ripples">
-                          <a class = "progreso">
-                              <span class="ca-icon-c"><i class="icon_e-ver-progreso f-35 boton blue sa-warning" 
-                                     data-original-title="Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                              <div class="ca-content-c">
-                                  <h2 class="ca-main-c">Ver Progreso</h2>
-                                  <h3 class="ca-sub-c"></h3>
-                              </div>
-                          </a>
-                      </li>
-
-                      <li data-ripplecator class ="dark-ripples">
-                          <a data-toggle="modal" href="#modalCancelar">
-                              <span class="ca-icon-c"><i  class="zmdi zmdi-close-circle-o f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
-                              <div class="ca-content-c">
-                                  <h2 class="ca-main-c">Cancelar Clase</h2>
-                                  <h3 class="ca-sub-c"></h3>
-                              </div>
-                          </a>
-                      </li>
-
-                    @endif
-
- -->
+                <div class="clearfix p-b-10"></div>
 
                     
-                
+                    <input type="hidden" id="getStart" name="getStart" />
+                    <input type="hidden" id="getEnd" name="getEnd" />
+                    <input type="hidden" id="agendar" name="agendar" />
+                </form>
+            </div>
             
+            <div class="modal-footer">
+                <!--<button type="submit" class="btn btn-link" id="addEvent">Add Event</button>
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>-->
             </div>
         </div>
-</section>
+    </div>
+  </div>
+
+
+    <div class="modal fade" id="modalCancelarUna" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                    <h4 class="modal-title c-negro"> Bloquear una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                </div>
+                <form name="cancelar_una_clase" id="cancelar_una_clase"  >
+                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                   <input type="hidden" name="id" id="id" value="{{$id}}"></input>  
+                   
+                   <div class="modal-body">  
+
+                   <div class="row p-t-20 p-b-0">
+
+                       <div class="col-sm-3">
+
+                            <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                            <div class="clearfix p-b-15"></div>
+
+                            <span class="f-15 f-700 span_instructor">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}  </span>
+
+                              
+                       </div>
+
+                       <div class="col-sm-3">
+
+                            <span class="f-15 f-700">{{$clasegrupal->nombre}}</span>
+
+                              
+                       </div>
+
+                       <div class="col-sm-6">
+                         
+                        <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasegrupal->hora_inicio}} - {{$clasegrupal->hora_final}}</span></p>
+
+                        <p class="f-16"> <span class="f-700 span_hora" style="float:left; padding-top: 0.5%">Fecha: 
+
+                        @if($fecha_inicio)
+
+                          <input type="hidden" name="fecha_cancelacion" id="fecha_cancelacion" value="{{$fecha_inicio}}"></input>  
+
+                          {{$fecha_inicio}}
+
+                        @else
+
+                          <div class="dtp-container">
+                            <input name="fecha_cancelacion" id="fecha_cancelacion" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" style="padding-top: 0; width: 85%">
+                          </div>
+
+                        @endif
+
+
+
+                        </span></p>
+
+
+                           <div class="clearfix"></div> 
+                           <div class="clearfix p-b-15"></div>
+
+
+                       </div>
+
+                       
+                   </div>                         
+
+                   <div class="row p-t-20 p-b-0">
+
+ 
+
+                  <div class="clearfix p-b-35"></div>
+
+
+
+
+                  <div class="col-sm-12">
+             
+                    <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                    <br></br>
+
+                    <div class="fg-line">
+                      <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                      </div>
+                    <div class="has-error" id="error-razon_cancelacion">
+                      <span >
+                        <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                   <div class="form-group fg-line ">
+                      <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
+                      
+                      <br></br>
+                      <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
+                      <div class="p-t-10">
+                        <div class="toggle-switch" data-ts-color="purple">
+                        <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
+                        
+                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                        </div>
+                      </div>
+                      
+                   </div>
+                   <div class="has-error" id="error-boolean_mostrar">
+                        <span >
+                            <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
+                        </span>
+                    </div>
+                 </div>
+
+                   </div>
+                   
+                </div>
+                <div class="modal-footer p-b-20 m-b-20">
+                    <div class="col-sm-6 text-left">
+                      <div class="procesando hidden">
+                      <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                      <div class="preloader pls-purple">
+                          <svg class="pl-circular" viewBox="25 25 50 50">
+                              <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                          </svg>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">                          
+                      <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_una_clase" > Completar el bloqueo</button>
+                      <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                    </div>
+                </div></form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalCancelarVarias" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                    <h4 class="modal-title c-negro"> Bloquear varias clases <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                </div>
+                <form name="cancelar_varias_clases" id="cancelar_varias_clases"  >
+                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                   <input type="hidden" name="id" id="id" value="{{$id}}"></input>  
+                   
+                   <div class="modal-body">  
+
+                   <div class="row p-t-20 p-b-0">
+
+                       <div class="col-sm-3">
+
+                            <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                            <div class="clearfix p-b-15"></div>
+
+                            <span class="f-15 f-700 span_instructor">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}  </span>
+
+                              
+                       </div>
+
+                       <div class="col-sm-3">
+
+                            <span class="f-15 f-700">{{$clasegrupal->nombre}}</span>
+
+                              
+                       </div>
+
+                       <div class="col-sm-6">
+                         
+                        <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasegrupal->hora_inicio}} - {{$clasegrupal->hora_final}}</span></p>
+
+
+                           <div class="clearfix"></div> 
+                           <div class="clearfix p-b-15"></div>
+
+
+                       </div>
+
+                       
+                   </div>                         
+
+                   <div class="row p-t-20 p-b-0">
+
+ 
+
+                  <div class="clearfix p-b-35"></div>
+
+
+
+
+                  <div class="col-sm-12">
+             
+                    <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                    <br></br>
+
+                    <div class="fg-line">
+                      <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                      </div>
+                    <div class="has-error" id="error-razon_cancelacion">
+                      <span >
+                        <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="form-group fg-line">
+                        <label for="fecha_inicio">Fecha</label>
+                        <div class="fg-line">
+                            <input type="text" id="fecha2" name="fecha2" class="form-control pointer" placeholder="Selecciona la fecha">
+                        </div>
+                     </div>
+                        <div class="has-error" id="error-fecha2">
+                          <span >
+                              <small id="error-fecha2_mensaje" class="help-block error-span" ></small>                                           
+                          </span>
+                        </div>
+                    </div>
+                   </div>
+
+                  <div class="col-sm-12">
+                   <div class="form-group fg-line ">
+                      <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
+                      
+                      <br></br>
+                      <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
+                      <div class="p-t-10">
+                        <div class="toggle-switch" data-ts-color="purple">
+                        <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
+                        
+                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                        </div>
+                      </div>
+                      
+                   </div>
+                   <div class="has-error" id="error-boolean_mostrar">
+                        <span >
+                            <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
+                        </span>
+                    </div>
+                 </div>
+
+                   </div>
+                   
+                </div>
+                <div class="modal-footer p-b-20 m-b-20">
+                    <div class="col-sm-6 text-left">
+                      <div class="procesando hidden">
+                      <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                      <div class="preloader pls-purple">
+                          <svg class="pl-circular" viewBox="25 25 50 50">
+                              <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                          </svg>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">                          
+                      <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_varias_clases" > Completar el bloqueo</button>
+                      <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                    </div>
+                </div></form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCancelarPermanente" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                    <h4 class="modal-title c-negro"> Bloquear la clase permanentemente <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                </div>
+                <form name="cancelar_permanentemente" id="cancelar_permanentemente"  >
+                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                   <input type="hidden" name="id" id="id" value="{{$id}}"></input>  
+                   
+                   <div class="modal-body">  
+
+                   <div class="row p-t-20 p-b-0">
+
+                       <div class="col-sm-3">
+
+                            <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                            <div class="clearfix p-b-15"></div>
+
+                            <span class="f-15 f-700 span_instructor">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}  </span>
+
+                              
+                       </div>
+
+                       <div class="col-sm-3">
+
+                            <span class="f-15 f-700">{{$clasegrupal->nombre}}</span>
+
+                              
+                       </div>
+
+                       <div class="col-sm-6">
+                         
+                        <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasegrupal->hora_inicio}} - {{$clasegrupal->hora_final}}</span></p>
+
+
+                           <div class="clearfix"></div> 
+                           <div class="clearfix p-b-15"></div>
+
+
+                       </div>
+
+                       
+                   </div>                         
+
+                   <div class="row p-t-20 p-b-0">
+
+ 
+
+           <div class="clearfix p-b-35"></div>
+
+
+
+
+                  <div class="col-sm-12">
+             
+                    <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                    <br></br>
+
+                    <div class="fg-line">
+                      <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                      </div>
+                    <div class="has-error" id="error-razon_cancelacion">
+                      <span >
+                        <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                   <div class="form-group fg-line ">
+                      <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
+                      
+                      <br></br>
+                      <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
+                      <div class="p-t-10">
+                        <div class="toggle-switch" data-ts-color="purple">
+                        <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
+                        
+                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                        </div>
+                      </div>
+                      
+                   </div>
+                   <div class="has-error" id="error-boolean_mostrar">
+                        <span >
+                            <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
+                        </span>
+                    </div>
+                 </div>
+
+                   </div>
+                   
+                </div>
+                <div class="modal-footer p-b-20 m-b-20">
+                    <div class="col-sm-6 text-left">
+                      <div class="procesando hidden">
+                      <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                      <div class="preloader pls-purple">
+                          <svg class="pl-circular" viewBox="25 25 50 50">
+                              <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                          </svg>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">                          
+                      <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_permanentemente" > Completar el bloqueo</button>
+                      <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                    </div>
+                </div></form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalTrasladar-ClaseGrupal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                  <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Grupal<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+              </div>
+              <form name="form_trasladar" id="form_trasladar"  >
+                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                 <div class="modal-body">                           
+                 <div class="row p-t-20 p-b-0">
+                     <div class="col-sm-12">
+                       <div class="form-group fg-line">
+                          <label for="nombre">Clases Grupales</label>
+
+                            <div class="select">
+                                <select class="form-control" id="clase_grupal_id" name="clase_grupal_id">
+                                @foreach ( $grupales as $grupal )
+                                <option value = "{{ $grupal['id'] }}">{{ $grupal['nombre'] }} - {{ $grupal['hora_inicio'] }} / {{ $grupal['hora_final'] }} - {{ $grupal['dia_de_semana'] }} - {{ $grupal['instructor'] }} - {{ $grupal['especialidad'] }}</option>
+                                @endforeach 
+                                </select>
+                            </div> 
+
+                       </div>
+                       <div class="has-error" id="error-clase_grupal_id">
+                            <span >
+                                <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
+                            </span>
+                        </div>
+                     </div>
+
+
+                     <input type="hidden" name="id" value="{{$clasegrupal->id}}"></input>
+                  
+
+                     <div class="clearfix"></div> 
+                    
+                </div>
+                 
+              </div>
+              <div class="modal-footer p-b-20 m-b-20">
+                  <div class="col-sm-12 text-left">
+                    <div class="procesando hidden">
+                    <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                    <div class="preloader pls-purple">
+                        <svg class="pl-circular" viewBox="25 25 50 50">
+                            <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                        </svg>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">                            
+
+                    <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Trasladar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                  </div>
+              </div></form>
+          </div>
+      </div>
+  </div>
+
+  <section id="content">
+          <div class="container">
+             <div class="block-header">
+                  <div class="col-sm-6">
+                  <?php $url = "/agendar/clases-grupales" ?>
+                    <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                  </div>
+                  <div class="col-sm-6 text-right">
+                    <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                  </div>
+              </div> 
+
+              <br>
+              
+              <h4 class ="c-morado text-right">Clase Grupal: {{$clasegrupal->nombre}}</h4> 
+              <br><br><h1 class="text-center c-morado"><i class="zmdi zmdi-wrench p-r-5"></i> Sección de Operaciones</h1>
+              <hr class="linea-morada">
+              <br>
+              <div class="card-body p-b-20">
+
+                <div class="col-sm-5"></div>
+
+                <ul class="top-menu">
+                  <li class="dropdown" style="width: 19.5%">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                       <span class="f-15 f-700"> 
+                         <ul class="ca-menu-c">
+                            <li>
+                                <span class="ca-icon-c"><i class="zmdi zmdi-wrench f-35 boton blue sa-warning"></i></span>
+                                <div class="ca-content-c">
+                                    <h2 class="ca-main-c f-20">Operaciones</h2>
+                                    <h3 class="ca-sub-c"></h3>
+                                </div>
+                            </li>
+                          </ul>
+                       </span>
+                    </a>
+                    <ul class="dropdown-menu dm-icon pull-right">
+                        <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$clasegrupal->id}}"><i class="icon_a-niveles f-16 m-r-10 boton blue"></i>&nbsp;Nivelaciones</a>
+                        </li>
+
+                        <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$clasegrupal->id}}"><i class="icon_a-participantes f-16 m-r-10 boton blue"></i> Participantes</a>
+                        </li>
+
+                        <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/agregar/{{$clasegrupal->id}}"><i class="icon_a-examen f-16 m-r-10 boton blue"></i> Valorar</a>
+                        </li>
+
+                        <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
+                        </li>
+                    
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+
+                          <li class="hidden-xs">
+                            <a class="pointer modal_trasladar"><i class="zmdi zmdi-trending-up f-16 boton blue"></i>Trasladar</a>
+                          </li>
+
+                          <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
+                          </li>
+
+                          <li class="hidden-xs">
+                            <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$clasegrupal->id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i>Ver Agenda</a>
+                          </li>
+
+                          <li class="hidden-xs">
+                              <a class="cancelar pointer"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
+                          </li>
+
+                        @endif
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+          </div>
+  </section>
 @stop
+
 @section('js') 
 	<script type="text/javascript">
 
@@ -1105,6 +1028,12 @@
       $('#modalCancelar').modal('show')
 
     });
+
+    $('.modal_trasladar').click(function(){
+
+        $('#modalTrasladar-ClaseGrupal').modal('show')
+
+      });
 
 
   
