@@ -194,6 +194,24 @@
                         </div>
 
                         <div class="clearfix"></div>
+
+                        <div class="col-md-6">
+                            <h2>Informe de Ingresos</h2>
+                            <hr>
+                            <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
+                            <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <h2>Informe de Egresos</h2>
+                            <hr>
+                            <div id="pie-chart-egresos" class="flot-chart-pie"></div>
+                            <div id="flc-pie-egresos" class="flc-pie hidden-xs"></div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
                         
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -387,6 +405,99 @@
 
                     $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
                     $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
+
+                    datos = JSON.parse(JSON.stringify(respuesta));
+
+                    var pieData1 = ''
+                    pieData1 += '[';
+                    $.each( datos.array_ingreso, function( i, item ) {
+                        var label = item.nombre;
+                        var cant = item.cantidad;
+                        pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
+                    });
+                    pieData1 = pieData1.substring(0, pieData1.length -1);
+                    pieData1 += ']';
+
+                    // --
+
+                    var pieData2 = ''
+                    pieData2 += '[';
+                    $.each( datos.array_egreso, function( i, item ) {
+                        var label = item.nombre;
+                        var cant = item.cantidad;
+                        pieData2 += '{"data":"'+cant+'","label":"'+label+'"},';
+                    });
+                    pieData2 = pieData2.substring(0, pieData2.length -1);
+                    pieData2 += ']';
+
+                    $(".flot-chart").html('');
+                    $(".flc-pie").html('');
+
+                    $.plot('#pie-chart-ingresos', $.parseJSON(pieData1), {
+                        series: {
+                            pie: {
+                                show: true,
+                                stroke: { 
+                                    width: 2,
+                                },
+                            },
+                        },
+                        legend: {
+                            container: '#flc-pie-ingresos',
+                            backgroundOpacity: 0.5,
+                            noColumns: 0,
+                            backgroundColor: "white",
+                            lineWidth: 0
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true
+                        },
+                        tooltip: true,
+                        tooltipOpts: {
+                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                            shifts: {
+                                x: 20,
+                                y: 0
+                            },
+                            defaultTheme: false,
+                            cssClass: 'flot-tooltip'
+                        },
+                        
+                    });
+
+                    $.plot('#pie-chart-egresos', $.parseJSON(pieData2), {
+                        series: {
+                            pie: {
+                                show: true,
+                                stroke: { 
+                                    width: 2,
+                                },
+                            },
+                        },
+                        legend: {
+                            container: '#flc-pie-egresos',
+                            backgroundOpacity: 0.5,
+                            noColumns: 0,
+                            backgroundColor: "white",
+                            lineWidth: 0
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true
+                        },
+                        tooltip: true,
+                        tooltipOpts: {
+                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                            shifts: {
+                                x: 20,
+                                y: 0
+                            },
+                            defaultTheme: false,
+                            cssClass: 'flot-tooltip'
+                        },
+                        
+                    });
 
                     finprocesado();                       
                     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);

@@ -30,5 +30,13 @@ class FormasPagoSeeder extends Seeder
 	      'nombre' => 'Puntos Acumulados',
 	    ));
 
+	    FormasPago::create(array(
+	      'nombre' => 'Cheques',
+	    ));
+
+	    FormasPago::create(array(
+	      'nombre' => 'Otros',
+	    ));
+
     }
 }

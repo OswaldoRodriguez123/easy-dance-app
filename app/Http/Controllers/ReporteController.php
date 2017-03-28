@@ -27,6 +27,7 @@ use App\ComoNosConociste;
 use App\Egreso;
 use App\TipoEgreso;
 use App\Pago;
+use App\FormasPago;
 use Mail;
 use DB;
 use Validator;
@@ -868,7 +869,12 @@ public function PresencialesFiltros(Request $request)
         foreach($presenciales as $presencial){
 
             if($presencial->instructor_id){
-                $array_promotor[$presencial->instructor_id]['cantidad']++;
+
+                if($array_promotor[$presencial->instructor_id])
+                {
+                    $array_promotor[$presencial->instructor_id]['cantidad']++;
+                }
+                
                 $total_clientes = $total_clientes + 1;
             }
 
@@ -1987,16 +1993,31 @@ public function PresencialesFiltros(Request $request)
 
                 $facturas = $query->get();
 
+                $tipos_pago = FormasPago::all();
+
+                $array_pago = array();
+
+                foreach($tipos_pago as $tipo_pago){
+                    $array_pago[$tipo_pago->id] = ['nombre' => $tipo_pago->nombre, 'cantidad' => 0];
+
+                }
+
                 foreach($facturas as $factura){
 
-                    $tipo_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
+                    $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
                         ->where('factura_id', $factura->factura_id)
                     ->get();
 
-                    if(count($tipo_pago) <= 1){
-                        $pago = $tipo_pago[0]->nombre;
+                    foreach($tipos_pago as $tipo_pago){
+
+                        $array_pago[$tipo_pago->forma_pago]['cantidad'] += $tipo_pago->monto;
+                        
+                    }
+
+                    if(count($tipos_pago) <= 1){
+                        $pago = $tipos_pago[0]->nombre;
                     }else{
-                        $pago = $tipo_pago[0]->nombre . ' ...';
+                        $pago = $tipos_pago[0]->nombre . ' ...';
                     }
 
                     $collection=collect($factura);     
@@ -2066,7 +2087,18 @@ public function PresencialesFiltros(Request $request)
 
             $egresos = $query->get();
 
+            $tipos_egresos = TipoEgreso::all();
+
+            $array_egreso = array();
+
+            foreach($tipos_egresos as $tipo_egreso){
+                $array_egreso[$tipo_egreso->id] = ['nombre' => $tipo_egreso->nombre, 'cantidad' => 0];
+
+            }
+
             foreach($egresos as $egreso){
+
+                $array_egreso[$egreso->tipo]['cantidad']++;
 
                 $collection=collect($egreso);     
                 $egreso_array = $collection->toArray();
@@ -2084,7 +2116,7 @@ public function PresencialesFiltros(Request $request)
             }
         }
 
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'array_ingreso' => $array_pago, 'array_egreso' => $array_egreso, 200]);
 
     }
 
