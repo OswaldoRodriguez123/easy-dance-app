@@ -415,8 +415,23 @@ class ClaseGrupalController extends BaseController {
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        $reservaciones = DB::table('reservaciones_visitantes')
-            ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+        $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
+            ->where('reservaciones_visitantes.tipo_id', '=', $id)
+            ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+        ->get();
+
+        foreach($reservaciones as $reservacion){
+            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $reservacion->fecha_vencimiento);
+            if($fecha_vencimiento < Carbon::now()->format('Y-m-d')){
+
+                $reservacion->deleted_at = Carbon::now();
+                $reservacion->save();
+         
+            }
+        }
+
+        $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
             ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
             ->where('reservaciones_visitantes.tipo_id', '=', $id)
             ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')

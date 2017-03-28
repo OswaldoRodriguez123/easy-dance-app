@@ -976,26 +976,26 @@ public function PresencialesFiltros(Request $request)
         array_push($array_dias, $array_fines_de_semana);
         array_push($array_dias, $array_ambos);
 
-        return response()->json(
-            [
-                'presenciales'      => $array,
-                'mujeres'           => $mujeres,
-                'hombres'           => $hombres,
-                'adultos'           => $adultos,
-                'niños'             => $niños,
-                'entre_semana'      => $entre_semana,
-                'fines_de_semana'   => $fines_de_semana,
-                'ambos'             => $ambos,
-                'total_dias_clase'  => $total_dias_clase,
-                'total_clientes'    => $total_clientes,
-                'total_visitantes'  => $total_visitantes,
-                'conociste'         => $array_conociste,
-                'edades'            => $array_edad,
-                'dias'              => $array_dias,
-                'promotores'        => $array_promotor,
-                'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
+        return response()->json([
+            
+            'presenciales'      => $array,
+            'mujeres'           => $mujeres,
+            'hombres'           => $hombres,
+            'adultos'           => $adultos,
+            'niños'             => $niños,
+            'entre_semana'      => $entre_semana,
+            'fines_de_semana'   => $fines_de_semana,
+            'ambos'             => $ambos,
+            'total_dias_clase'  => $total_dias_clase,
+            'total_clientes'    => $total_clientes,
+            'total_visitantes'  => $total_visitantes,
+            'conociste'         => $array_conociste,
+            'edades'            => $array_edad,
+            'dias'              => $array_dias,
+            'promotores'        => $array_promotor,
+            'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
 
-            ]);
+        ]);
 
     }
 
