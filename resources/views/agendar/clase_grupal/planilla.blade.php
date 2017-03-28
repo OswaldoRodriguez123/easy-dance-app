@@ -1479,7 +1479,7 @@
                                     <label for="nombre">Clases Grupales</label>
 
                                       <div class="select">
-                                          <select class="form-control" id="clasegrupal_id" name="clasegrupal_id">
+                                          <select class="form-control" id="clase_grupal_id" name="clase_grupal_id">
                                           @foreach ( $grupales as $grupal )
                                           <option value = "{{ $grupal['id'] }}">{{ $grupal['nombre'] }} - {{ $grupal['hora_inicio'] }} / {{ $grupal['hora_final'] }} - {{ $grupal['dia_de_semana'] }} - {{ $grupal['instructor'] }} - {{ $grupal['especialidad'] }}</option>
                                           @endforeach 

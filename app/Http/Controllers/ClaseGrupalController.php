@@ -2397,13 +2397,13 @@ class ClaseGrupalController extends BaseController {
     {
     	$rules = [
 
-	        'clasegrupal_id' => 'required',
+	        'clase_grupal_id' => 'required',
 	        'id' => 'required',
         ];
 
         $messages = [
 
-            'clasegrupal_id.required' => 'Ups! La Clase Grupal es requerida',
+            'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
             'id.required' => 'Ups! La Clase Grupal es requerida',
             
         ];
@@ -2421,22 +2421,24 @@ class ClaseGrupalController extends BaseController {
 
 	        if($clasegrupal)
 	        {
-		        if($inscritos)
-		        {
+		        
 
-		        	$config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
+	        	$config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
 
-		        	foreach($inscritos as $inscrito){
-		        		$existe = InscripcionClaseGrupal::where('alumno_id', $inscrito->alumno_id)->where('clase_grupal_id', $request->clasegrupal_id)->first();
-		        		if(!$existe){
-		        			$inscrito->clase_grupal_id = $request->clasegrupal_id;
-		        			$inscrito->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
-		        			$inscrito->save();
-		        		}else{
-		        			$inscrito->delete();
-		        		}
-		        	}
-		        }
+	        	foreach($inscritos as $inscrito){
+
+	        		$existe = InscripcionClaseGrupal::where('alumno_id', $inscrito->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+
+	        		if(!$existe){
+	        			$inscrito->clase_grupal_id = $request->clase_grupal_id;
+	        			$inscrito->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+	        			$inscrito->save();
+	        		}else{
+
+                        $delete = InscripcionClaseGrupal::where('alumno_id', $inscrito->alumno_id)->where('clase_grupal_id', $request->id)->delete();
+	        		}
+	        	}
+		        
 
 		        $horarios = HorarioClaseGrupal::where('clase_grupal_id', $request->id)->delete();
 		        $asistencias = Asistencia::where('clase_grupal_id', $request->id)->delete();
