@@ -804,9 +804,9 @@ public function PresencialesFiltros(Request $request)
             if($request->tipo){
 
                 $actual = Carbon::now();
-                // $geoip = new GeoIP();
-                // $geoip->setIp($request->ip());
-                // $actual->tz = $geoip->getTimezone();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+                $actual->tz = $geoip->getTimezone();
 
                 if($request->tipo == 1){
                     $start = $actual->toDateString();

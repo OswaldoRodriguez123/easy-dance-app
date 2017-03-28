@@ -695,7 +695,7 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            // procesando(); 
+            procesando(); 
 
             $.ajax({
                     url: route_filtrar,
@@ -718,9 +718,6 @@
 
                             t.clear().draw();
                             h.clear().draw();
-
-                            $('#total').text(respuesta.total)
-                            finprocesado();
 
                             total = 0
                             cliente_valor = 0
@@ -763,7 +760,6 @@
                             });
 
                             $.each(respuesta.promotores, function (index, array) {
-
 
                                 var rowNode=h.row.add( [
                                 '&nbsp;&nbsp;'+array.nombre+'',
@@ -1005,14 +1001,14 @@
                                 
                             });
 
-                            // --
+  
 
-                                    finprocesado();
+                            finprocesado();
 
-                                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
 
-                              }, 1000);
-                            },
+                      }, 1000);
+                    },
 
                     error:function(msj){
                         setTimeout(function(){ 

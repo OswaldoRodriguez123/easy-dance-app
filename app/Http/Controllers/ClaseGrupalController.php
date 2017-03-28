@@ -378,21 +378,19 @@ class ClaseGrupalController extends BaseController {
     public function participantes($id)
     {
 
-        $clasegrupal = DB::table('config_clases_grupales')
-                ->join('clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
         $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
+            ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
             ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
             ->where('inscripcion_clase_grupal.deleted_at', '=', null)
         ->get();
 
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->select('inscripcion_clase_grupal.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())

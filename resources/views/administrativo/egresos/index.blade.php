@@ -45,7 +45,7 @@
                 <div class="clearfix p-b-35"></div>
 
                 <div class="text-center">
-                    <i class="tm-icon icon_d-reporte f-60 text-center c-morado"></i>
+                    <i class="tm-icon icon_d-reporte f-60 text-center c-morado" id="egreso"></i>
                 </div>
 
                 <div class="col-md-5"></div>
@@ -121,6 +121,22 @@
 
 
 @section('js') 
+
+<script>
+
+    $(document).ready(function(){
+
+        setTimeout(function(){ 
+
+            $('html,body').animate({
+                scrollTop: $("#egreso").offset().top-90,
+            }, 1000);
+
+        }, 1000);
+
+    });
+
+</script>
 
 
 @stop
