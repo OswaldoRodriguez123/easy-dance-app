@@ -511,7 +511,6 @@
             });
       function eliminar(id){
         procesando();
-        $(".sweet-alert").hide();
          var route = route_eliminar + id;
          var token = $('input:hidden[name=_token]').val();
                 

@@ -1007,7 +1007,6 @@
           closeOnConfirm: true 
       }, function(isConfirm){   
           if (isConfirm) {
-            $(".sweet-alert").hide();
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
             var nIcons = $(this).attr('data-icon');

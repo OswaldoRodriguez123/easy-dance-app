@@ -321,7 +321,6 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-            $(".sweet-alert").hide();
         
             var route = route_enviar + id;
             var token = "{{ csrf_token() }}";
