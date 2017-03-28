@@ -151,7 +151,7 @@
                                             <div class="panel panel-collapse">
                                                 <div class="panel-heading" role="tab" id="headingTwo">
                                                     <h4 class="panel-title">
-                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        <a id="personalizar" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                           <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
                                                         </a>
                                                     </h4>
@@ -196,7 +196,7 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 ingresos_egresos" style="display:none">
                             <h2>Informe de Ingresos</h2>
                             <hr>
                             <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
@@ -204,7 +204,7 @@
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 ingresos_egresos" style="display:none">
                             <h2>Informe de Egresos</h2>
                             <hr>
                             <div id="pie-chart-egresos" class="flot-chart-pie"></div>
@@ -246,15 +246,24 @@
                                         <div class="col-sm-12">
                                             <span id = "totales" class="f-30">Total</span>
 
-                                            <br><br>
+                                            <br>
 
-                                            <p>
-                                                <span class="f-15">Totales</span>
+                                            <span class="f-15">Totales</span>
+
+                                            <div class="ingresos_egresos" style="display:none">
                                                 <br>
                                                 <span class="f-15" id = "total_ingreso">0</span>
+                                            </div>
+
+                                            <div class="ingresos_egresos" style="display:none">
                                                 <br>
                                                 <span class="f-15" id = "total_egreso">0</span>
-                                            </p>
+                                            </div>
+                                            <div class="proforma" style="display:none">
+                                                <br>
+                                                <span class="f-15">0</span>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -332,7 +341,6 @@
         order: [[0, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -385,11 +393,14 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-                        if(array.tipo == 1 || array.tipo == 3){
+                        if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
-                        }else{
+                        }else if(array.tipo == 2){
                             monto = '-'+formatmoney(parseFloat(array.importe_neto))
+                        }else{
+                            monto = formatmoney(parseFloat(array.importe_neto))
                         }
+
                         var rowNode=t.row.add( [
                         ''+array.fecha+'',
                         ''+array.hora+'',
@@ -404,105 +415,127 @@
                     });
 
 
-                    $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
-                    $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
+                    tipo = $('#tipo').val()
 
-                    finprocesado();                       
+                    if(tipo != 4){
+
+                        $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
+                        $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
+
+                        datos = JSON.parse(JSON.stringify(respuesta));
+
+                        $(".flot-chart").html('');
+                        $(".flc-pie").html('');
+
+                        ingresos = $(datos.array_ingreso).toArray().length;
+                        egresos = $(datos.array_egreso).toArray().length;
+
+                        if(ingresos > 0)
+                        {
+                            var pieData1 = ''
+                            pieData1 += '[';
+                            $.each( datos.array_ingreso, function( i, item ) {
+                                console.log(item)
+                                var label = item.nombre;
+                                var cant = item.cantidad;
+                                pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
+                            });
+                            pieData1 = pieData1.substring(0, pieData1.length -1);
+                            pieData1 += ']';
+
+                            $.plot('#pie-chart-ingresos', $.parseJSON(pieData1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '#flc-pie-ingresos',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                },
+                                
+                            });
+
+                        }
+
+                        if(egresos > 0)
+                        {
+                            var pieData2 = ''
+                            pieData2 += '[';
+                            $.each( datos.array_egreso, function( i, item ) {
+                                var label = item.nombre;
+                                var cant = item.cantidad;
+                                pieData2 += '{"data":"'+cant+'","label":"'+label+'"},';
+                            });
+                            pieData2 = pieData2.substring(0, pieData2.length -1);
+                            pieData2 += ']';
+
+                            $.plot('#pie-chart-egresos', $.parseJSON(pieData2), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
+                                    },
+                                },
+                                legend: {
+                                    container: '#flc-pie-egresos',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                },
+                                
+                            });
+                        }
+
+                        $('.ingresos_egresos').show();
+                        $('.proforma').hide();
+
+                    }else{
+                        $('.ingresos_egresos').hide();
+                        $('.proforma').show();
+                        $('.proforma').text(formatmoney(parseFloat(respuesta.total_proforma)))
+                    }
+
+                    finprocesado();       
                     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
 
-                    datos = JSON.parse(JSON.stringify(respuesta));
-
-                    var pieData1 = ''
-                    pieData1 += '[';
-                    $.each( datos.array_ingreso, function( i, item ) {
-                        console.log(item)
-                        var label = item.nombre;
-                        var cant = item.cantidad;
-                        pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
-                    });
-                    pieData1 = pieData1.substring(0, pieData1.length -1);
-                    pieData1 += ']';
-
-                    // --
-
-                    var pieData2 = ''
-                    pieData2 += '[';
-                    $.each( datos.array_egreso, function( i, item ) {
-                        var label = item.nombre;
-                        var cant = item.cantidad;
-                        pieData2 += '{"data":"'+cant+'","label":"'+label+'"},';
-                    });
-                    pieData2 = pieData2.substring(0, pieData2.length -1);
-                    pieData2 += ']';
-
-                    $(".flot-chart").html('');
-                    $(".flc-pie").html('');
-
-                    $.plot('#pie-chart-ingresos', $.parseJSON(pieData1), {
-                        series: {
-                            pie: {
-                                show: true,
-                                stroke: { 
-                                    width: 2,
-                                },
-                            },
-                        },
-                        legend: {
-                            container: '#flc-pie-ingresos',
-                            backgroundOpacity: 0.5,
-                            noColumns: 0,
-                            backgroundColor: "white",
-                            lineWidth: 0
-                        },
-                        grid: {
-                            hoverable: true,
-                            clickable: true
-                        },
-                        tooltip: true,
-                        tooltipOpts: {
-                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                            shifts: {
-                                x: 20,
-                                y: 0
-                            },
-                            defaultTheme: false,
-                            cssClass: 'flot-tooltip'
-                        },
-                        
-                    });
-
-                    $.plot('#pie-chart-egresos', $.parseJSON(pieData2), {
-                        series: {
-                            pie: {
-                                show: true,
-                                stroke: { 
-                                    width: 2,
-                                },
-                            },
-                        },
-                        legend: {
-                            container: '#flc-pie-egresos',
-                            backgroundOpacity: 0.5,
-                            noColumns: 0,
-                            backgroundColor: "white",
-                            lineWidth: 0
-                        },
-                        grid: {
-                            hoverable: true,
-                            clickable: true
-                        },
-                        tooltip: true,
-                        tooltipOpts: {
-                            content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                            shifts: {
-                                x: 20,
-                                y: 0
-                            },
-                            defaultTheme: false,
-                            cssClass: 'flot-tooltip'
-                        },
-                        
-                    });
 
                 }
             });
@@ -535,6 +568,17 @@
                 $('#clase_grupal_id').attr('disabled','disabled')
             }
 
+            if(id == 4){
+                $('#fecha').attr('disabled','disabled')
+                $('#personalizar').addClass('disabled')
+                $('#personalizar').attr('href','')
+            }else{
+                $("#fecha").removeAttr("disabled");
+                $("#personalizar").removeClass("disabled");
+                $('#personalizar').attr('href','#collapseTwo')
+            }
+
+            $('#fecha').selectpicker('refresh');
             $('#clase_grupal_id').selectpicker('refresh');
         });
 

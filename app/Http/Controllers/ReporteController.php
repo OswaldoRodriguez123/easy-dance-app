@@ -2109,7 +2109,7 @@ public function PresencialesFiltros(Request $request)
                 $egreso_array['fecha'] = Carbon::parse($egreso->fecha)->toDateString();
                 $egreso_array['hora'] = Carbon::parse($egreso->created_at)->toTimeString();
                 $egreso_array['tipo_pago'] = $egreso->nombre_egreso;
-                $factura_array['tipo']=2;
+                $egreso_array['tipo'] = 2;
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;
@@ -2173,28 +2173,28 @@ public function PresencialesFiltros(Request $request)
 
                 //FECHA
 
-                if($request->boolean_fecha){
-                    $fecha = explode(' - ', $request->fecha2);
-                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
-                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-                    $query->whereBetween('fecha', [$start,$end]);
-                }else{
+                // if($request->boolean_fecha){
+                //     $fecha = explode(' - ', $request->fecha2);
+                //     $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                //     $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                //     $query->whereBetween('fecha', [$start,$end]);
+                // }else{
 
-                    if($request->tipo){
-                        if($request->fecha == 1){
-                            $start = Carbon::now()->toDateString();
-                            $end = Carbon::now()->toDateString();  
-                        }else if($request->fecha == 2){
-                            $start = Carbon::now()->startOfMonth()->toDateString();
-                            $end = Carbon::now()->endOfMonth()->toDateString();  
-                        }else if($request->fecha == 3){
-                            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                            $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
-                        }
+                //     if($request->tipo){
+                //         if($request->fecha == 1){
+                //             $start = Carbon::now()->toDateString();
+                //             $end = Carbon::now()->toDateString();  
+                //         }else if($request->fecha == 2){
+                //             $start = Carbon::now()->startOfMonth()->toDateString();
+                //             $end = Carbon::now()->endOfMonth()->toDateString();  
+                //         }else if($request->fecha == 3){
+                //             $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                //             $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                //         }
 
-                        $query->whereBetween('fecha', [$start,$end]);
-                    }
-                }
+                //         $query->whereBetween('fecha', [$start,$end]);
+                //     }
+                // }
 
                 $proformas = $query->get();
 
@@ -2206,7 +2206,7 @@ public function PresencialesFiltros(Request $request)
                     $proforma_array['fecha'] = Carbon::parse($proforma->fecha)->toDateString();
                     $proforma_array['hora'] = Carbon::parse($proforma->created_at)->toTimeString();
                     $proforma_array['tipo_pago']='Cuentas por Cobrar';
-                    $proforma_array['tipo']=3;
+                    $proforma_array['tipo'] = 3;
                     $array['3-'.$proforma->id] = $proforma_array;
 
                     $total_proforma = $total_proforma + $proforma->importe_neto;
@@ -2215,7 +2215,7 @@ public function PresencialesFiltros(Request $request)
             }
         }
 
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'array_ingreso' => $array_pago, 'array_egreso' => $array_egreso, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_ingreso' => $array_pago, 'array_egreso' => $array_egreso, 200]);
 
     }
 
