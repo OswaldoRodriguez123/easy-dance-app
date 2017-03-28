@@ -905,7 +905,32 @@
 
                           </div>
                         @endif
-                      </div>                                                        
+                      </div>
+
+                      <div class="clearfix"></div>        
+
+                      <div class="col-sm-12">
+                          <div class="form-group fg-line ">
+                              <div class="p-t-10">
+                              <label class="radio radio-inline m-r-20">
+                                  <input name="tipo" id="todos" value="T" type="radio" checked >
+                                  <i class="input-helper"></i>  
+                                  Todos <i id="todos2" name="todos2" class="zmdi zmdi-male-female zmdi-hc-fw c-verde f-20"></i>
+                              </label>
+                              <label class="radio radio-inline m-r-20">
+                                  <input name="tipo" id="mujeres" value="F" type="radio">
+                                  <i class="input-helper"></i>  
+                                  Mujeres <i id="mujeres2" name="mujeres2" class="zmdi zmdi-female zmdi-hc-fw f-20"></i>
+                              </label>
+                              <label class="radio radio-inline m-r-20">
+                                  <input name="tipo" id="hombres" value="M" type="radio">
+                                  <i class="input-helper"></i>  
+                                  Hombres <i id="hombres2" name="hombres2" class="zmdi zmdi-male-alt zmdi-hc-fw f-20"></i>
+                              </label>
+                              </div>
+                              
+                          </div>
+                        </div>
 
                         <div class="clearfix p-b-35"></div>
 
@@ -950,9 +975,9 @@
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
-                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> 
+                                        <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> 
                                       @else
-                                        <i class="zmdi zmdi-male-alt f-25 c-azul"></i>
+                                        <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i>
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
@@ -1020,9 +1045,9 @@
                                       <td class="text-center previa">{{$alumno['fecha_vencimiento']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
-                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                       @else
-                                        <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
@@ -2481,6 +2506,45 @@
           }
       });
     }
+
+    $('input[name="tipo"]').on('change', function(){
+
+        if($(this).val() == 'T'){
+
+            $( "#hombres2" ).removeClass( "c-verde" );
+            $( "#mujeres2" ).removeClass( "c-verde" );
+            $( "#todos2" ).addClass( "c-verde" );
+
+            t
+            .columns(2)
+            .search('')
+            .draw(); 
+
+        }else if($(this).val() == 'F'){
+
+            $( "#hombres2" ).removeClass( "c-verde" );
+            $( "#mujeres2" ).addClass( "c-verde" );
+            $( "#todos2" ).removeClass( "c-verde" );
+
+            t
+            .columns(2)
+            .search($(this).val())
+            .draw();
+
+        }else{
+
+            $( "#hombres2" ).addClass( "c-verde" );
+            $( "#mujeres2" ).removeClass( "c-verde" );
+            $( "#todos2" ).removeClass( "c-verde" );
+
+            t
+            .columns(2)
+            .search($(this).val())
+            .draw();
+
+        }
+
+    });
 
     
     </script>

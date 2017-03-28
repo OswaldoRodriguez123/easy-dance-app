@@ -24,7 +24,6 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -41,10 +40,7 @@
                     
                     <div class="card">
                         <div class="card-header">
-
-                            
                             <div class ="col-md-6 text-left">  
-
 
                                 <ul class="top-menu">
                                     <li class="dropdown">
@@ -80,6 +76,31 @@
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-alumnos f-25"></i> Sección de Alumnos</p>
                             <hr class="linea-morada">
+
+                            <div class="col-sm-12">
+                                <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="todos" value="T" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Todos <i id="todos2" name="todos2" class="zmdi zmdi-male-female zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="mujeres" value="F" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Mujeres <i id="mujeres2" name="mujeres2" class="zmdi zmdi-female zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="hombres" value="M" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Hombres <i id="hombres2" name="hombres2" class="zmdi zmdi-male-alt zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div> 
                                                          
                         </div>
                         <div class="table-responsive row">
@@ -110,25 +131,25 @@
                                     <td class="text-center previa">
                                         @if($alumno['edad'] >= 18)
                                             @if($alumno['sexo']=='F')
-                                                <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                                <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                             @else
-                                                <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                                <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                             @endif
                                         @else
                                             @if($alumno['sexo']=='F')
-                                                <i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                                <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
                                             @else
-                                                <i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                                <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
                                             @endif
                                         @endif
                                     </td>
 
-                                    <?php $tmp = explode(" ", $alumno['nombre']);
-                                    $nombre_alumno = $tmp[0];
+                                    <?php 
+                                        $tmp = explode(" ", $alumno['nombre']);
+                                        $nombre_alumno = $tmp[0];
 
-                                    $tmp = explode(" ", $alumno['apellido']);
-                                    $apellido_alumno = $tmp[0];
-
+                                        $tmp = explode(" ", $alumno['apellido']);
+                                        $apellido_alumno = $tmp[0];
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
@@ -269,6 +290,44 @@
             window.location=route;
         });
 
+        $('input[name="tipo"]').on('change', function(){
+
+            if($(this).val() == 'T'){
+
+                $( "#hombres2" ).removeClass( "c-verde" );
+                $( "#mujeres2" ).removeClass( "c-verde" );
+                $( "#todos2" ).addClass( "c-verde" );
+
+                t
+                .columns(2)
+                .search('')
+                .draw(); 
+
+            }else if($(this).val() == 'F'){
+
+                $( "#hombres2" ).removeClass( "c-verde" );
+                $( "#mujeres2" ).addClass( "c-verde" );
+                $( "#todos2" ).removeClass( "c-verde" );
+
+                t
+                .columns(2)
+                .search($(this).val())
+                .draw();
+
+            }else{
+
+                $( "#hombres2" ).addClass( "c-verde" );
+                $( "#mujeres2" ).removeClass( "c-verde" );
+                $( "#todos2" ).removeClass( "c-verde" );
+
+                t
+                .columns(2)
+                .search($(this).val())
+                .draw();
+
+            }
+    
+        });
 
         </script>
 

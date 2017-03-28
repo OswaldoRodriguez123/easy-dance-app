@@ -263,13 +263,11 @@
                                                 <br>
                                                 <span class="f-15">0</span>
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         </div>  
                     </div>
                 </div>
