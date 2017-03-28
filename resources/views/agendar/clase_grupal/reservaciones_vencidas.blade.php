@@ -50,7 +50,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="fecha">Fecha de Inactividad</th>
+                                    <th class="text-center" data-column-id="fecha">Fecha de Vencimiento</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>     
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Apellido</th>                               
