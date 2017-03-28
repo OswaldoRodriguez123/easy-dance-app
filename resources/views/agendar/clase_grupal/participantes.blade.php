@@ -968,12 +968,12 @@
                                 @else
                                   <tr data-tipo ="{{$alumno['tipo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
                                       <td class="text-center previa"><span class="c-amarillo"><b>R</b></span></td>
-                                      <td class="text-center previa"></td>
+                                      <td class="text-center previa">{{$alumno['fecha_vencimiento']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
-                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                       @else
-                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
