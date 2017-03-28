@@ -1117,7 +1117,7 @@
         serverSide: false,
         pageLength: 25,  
         paging: false,
-        order: [[1, 'asc']],
+        order: [[0, 'desc']],
         fnDrawCallback: function() {
           $('.dataTables_paginate').hide();
         /*if ($('#tablelistar tr').length < 25) {
