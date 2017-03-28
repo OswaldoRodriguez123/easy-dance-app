@@ -549,6 +549,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/congelar-alumno', 'ClaseGrupalController@congelarInscripcion');
 
 			Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');
+			Route::post('agendar/clases-grupales/transferir', 'ClaseGrupalController@Transferir');
 
 			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
 

@@ -74,7 +74,6 @@
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="fecha" id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="total">Total</th>
-                                    <!-- <th class="text-center" data-column-id="operacion">Acciones</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -226,7 +225,6 @@
                 ''+array.concepto+'',
                 ''+array.fecha+'',
                 ''+formatmoney(parseFloat(array.total))+''
-                // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -246,7 +244,6 @@
                 ''+array.cantidad+ ' ' +array.concepto+'',
                 ''+array.fecha_vencimiento+'',
                 ''+formatmoney(parseFloat(array.total))+''
-                // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -264,86 +261,10 @@
             $( "#pendientes2" ).addClass( "c-verde" );
         });
 
-        $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
-            var id = $(this).closest('tr').attr('id');
-            window.location = route_gestion + id;
-        });
-
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-email', function () {
-
-                var id = $(this).closest('tr').attr('id');
-                element = this;
-
-                swal({   
-                    title: "Desea re-enviar la factura por correo electrónico?",   
-                    text: "Confirmar re-envio!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Re-Enviar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","El correo ha sido enviado!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        enviar(id, element);
-          }
-                });
-            });
-      
-        function enviar(id, element){
-         var route = route_enviar + id;
-         var token = "{{ csrf_token() }}";
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-
-                          // t.row( $(element).parents('tr') )
-                          //   .remove()
-                          //   .draw();
-                        
-                        }
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
-
-      function pad (str, max) {
-      str = str.toString();
-      return str.length < max ? pad("0" + str, max) : str;
-    }
+        function pad (str, max) {
+          str = str.toString();
+          return str.length < max ? pad("0" + str, max) : str;
+        }
 
         </script>
 

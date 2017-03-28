@@ -765,6 +765,69 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalTransferir" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Transferir Alumno: <span class="span_alumno" id="span_alumno"></span><button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_transferir" id="form_transferir"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Clases Grupales</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="clase_grupal_id" name="clase_grupal_id">
+                                          @foreach ($clases_grupales as $clase_grupal )
+                                            <option value = "{{ $clase_grupal['id'] }}">
+                                              {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['instructor'] }} - {{ $clase_grupal['especialidad'] }}
+                                            </option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-clase_grupal_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$clasegrupal->clase_grupal_id}}"></input>
+                               <input type="hidden" name="alumno_id"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 transferir" href="#"> Transferir <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <section id="content">
                 <div class="container">
@@ -887,9 +950,9 @@
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
-                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> 
+                                        <i class="zmdi zmdi-female f-25 c-rosado"></i> 
                                       @else
-                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i>
+                                        <i class="zmdi zmdi-male-alt f-25 c-azul"></i>
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
@@ -899,24 +962,6 @@
                                       <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                       </td>
                                       <td class="text-center"> 
-
-                                        <!-- @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-
-                                          <i class="zmdi zmdi-close-circle-o congelar_alumno f-20 p-r-10"></i>
-
-                                        @else
-
-                                          <i class="zmdi icon_a-examen valorar f-20 p-r-10" data-html="true" data-original-title="" data-content="Valorar" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i>
-
-                                          
-
-                                          @if(isset($activacion[$alumno_id])) 
-
-                                            <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 activar" data-html="true" data-original-title="" data-content="Activar Cuenta" data-toggle="popover" data-placement="left" title="" type="button" data-trigger="hover"></i> 
-
-                                          @endif
-
-                                        @endif -->
 
                                           <ul class="top-menu">
                                             <li class="dropdown">
@@ -939,6 +984,10 @@
                                                         </li>
 
                                                       @endif
+
+                                                      <li class="hidden-xs">
+                                                          <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
+                                                      </li>
 
                                                       <li class="hidden-xs">
                                                           <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
@@ -1021,6 +1070,7 @@
         route_valorar="{{url('/')}}/especiales/examenes/evaluar";
         route_examen="{{url('/')}}/especiales/examenes/agregar";
         route_alumno="{{url('/')}}/guardar-alumno";
+        route_transferir="{{url('/')}}/agendar/clases-grupales/transferir";
 
         var hombres = "{{$hombres}}";
         var mujeres = "{{$mujeres}}";
@@ -2044,7 +2094,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Eliminar!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
           if (isConfirm) {
             var nFrom = $(this).attr('data-from');
@@ -2231,7 +2281,7 @@
             confirmButtonColor: "#DD6B55",   
             confirmButtonText: "Enviar!",  
             cancelButtonText: "Cancelar",         
-            closeOnConfirm: false 
+            closeOnConfirm: true 
         }, function(isConfirm){   
         if (isConfirm) {
 
@@ -2324,19 +2374,6 @@
      
     });
 
-    // $(".dropdown-toggle").on('mouseleave', function() {
-
-
-
-    //   if($('.dropdown').hasClass('open')){
-
-    //     setTimeout(function(){
-    //       $('body').click();
-    //     }, 1500);
-
-    //   }
-
-    // });
     $('.table-responsive').on('show.bs.dropdown', function () {
       $('.table-responsive').css( "overflow", "inherit" );
     });
@@ -2344,6 +2381,107 @@
     $('.table-responsive').on('hide.bs.dropdown', function () {
       $('.table-responsive').css( "overflow", "auto" );
     })
+
+    $('.modal_transferir').click(function(){
+
+      var alumno_id = $(this).closest('tr').data('alumno_id');
+      var nombre = $(this).closest('tr').data('nombre');
+
+      $('.span_alumno').text(nombre);
+      $('input[name=alumno_id]').val(alumno_id)
+
+      $('#modalTransferir').modal('show')
+
+    });
+
+    $(".transferir").click(function(){
+      nombre = $('#span_alumno').text();
+      swal({   
+          title: "Desea transferir a "+nombre+" a la clase grupal seleccionada?",   
+          text: "Confirmar transferencia!",     
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Transferir!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                      
+            transferir();
+            procesando();
+            }
+        });
+    });
+
+    function transferir(){
+      var route = route_transferir;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_transferir" ).serialize();
+              
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+          dataType: 'json',
+          data:datos,
+          success:function(respuesta){
+
+            element = $('#'+respuesta.id)
+                          
+            var sexo = $(element).closest('tr').data('sexo');
+
+            t.row( $(element).parents('tr') )
+              .remove()
+              .draw();
+
+            if(sexo == 'F'){
+
+              mujeres = mujeres - 1
+
+              $('#span_mujeres').text(mujeres)
+
+            }else{
+              hombres = hombres - 1
+
+              $('#span_hombres').text(hombres)
+            }
+
+            finprocesado();
+
+            swal("Exito!","El alumno ha sido transferido!","success");
+
+          },
+          error:function (msj, ajaxOptions, thrownError){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nType = 'danger';
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              finprocesado();
+                
+            }, 1000);             
+          }
+      });
+    }
+
     
     </script>
 

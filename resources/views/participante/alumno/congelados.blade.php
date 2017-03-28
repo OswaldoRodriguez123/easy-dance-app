@@ -236,7 +236,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Descongelar!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
           if (isConfirm) {
             var nFrom = $(this).attr('data-from');
@@ -296,7 +296,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Eliminar!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
           if (isConfirm) {
             var nFrom = $(this).attr('data-from');

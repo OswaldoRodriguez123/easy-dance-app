@@ -384,177 +384,241 @@ class ClaseGrupalController extends BaseController {
                 ->where('clases_grupales.id', '=', $id)
         ->first();
 
-        $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
-            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-            ->where('inscripcion_clase_grupal.deleted_at', '=', null)
-        ->get();
+        if($clasegrupal){
 
-        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->select('inscripcion_clase_grupal.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
-            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-        ->get();
+            $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
+                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+            ->get();
 
-        $collection=collect($alumnod);
-        $grouped = $collection->groupBy('id');     
-        $deuda = $grouped->toArray();
+            $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('inscripcion_clase_grupal.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
+                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+                ->where('alumnos.deleted_at', '=', null)
+            ->get();
 
-        $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->where('users.usuario_tipo', '=', 2)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
+            $collection=collect($alumnod);
+            $grouped = $collection->groupBy('id');     
+            $deuda = $grouped->toArray();
 
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
+            $alumnoc = DB::table('users')
+                ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+                ->select('alumnos.id as id')
+                ->where('users.academia_id','=', Auth::user()->academia_id)
+                ->where('alumnos.deleted_at', '=', null)
+                ->where('users.usuario_tipo', '=', 2)
+                ->where('users.confirmation_token', '!=', null)
+            ->get();
 
-        $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
-            ->where('reservaciones_visitantes.tipo_id', '=', $id)
-            ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
-        ->get();
+            $collection=collect($alumnoc);
+            $grouped = $collection->groupBy('id');     
+            $activacion = $grouped->toArray();
 
-        foreach($reservaciones as $reservacion){
-            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $reservacion->fecha_vencimiento);
-            if($fecha_vencimiento < Carbon::now()->format('Y-m-d')){
+            $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+                ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
+                ->where('reservaciones_visitantes.tipo_id', '=', $id)
+                ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+            ->get();
 
-                $reservacion->deleted_at = Carbon::now();
-                $reservacion->save();
-         
-            }
-        }
+            foreach($reservaciones as $reservacion){
+                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $reservacion->fecha_vencimiento);
+                if($fecha_vencimiento < Carbon::now()->format('Y-m-d')){
 
-        $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
-            ->where('reservaciones_visitantes.tipo_id', '=', $id)
-            ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
-        ->get();
-
-        $array = array();
-        $mujeres = 0;
-        $hombres = 0;
-
-        $fecha_de_inicio = Carbon::parse($clasegrupal->fecha_inicio);
-        $fecha_de_finalizacion = Carbon::parse($clasegrupal->fecha_final);
-        $asistencia_roja = $clasegrupal->asistencia_rojo;
-        $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
-
-        foreach($alumnos_inscritos as $alumno){
-
-            $clases_completadas = 0;
-                
-            $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
-
-            if($ultima_asistencia){
-
-                $fecha = Carbon::parse($ultima_asistencia->fecha);
-
-            }else{
-                $fecha = $fecha_de_inicio;
-            }
-
-            if(Carbon::now() < $fecha_de_finalizacion){
-                while($fecha < Carbon::now()){
-                    $clases_completadas++;
-                    $fecha->addWeek();
-                }
-            }else{
-                while($fecha < $fecha_de_finalizacion){
-                    $clases_completadas++;
-                    $fecha->addWeek();
+                    $reservacion->deleted_at = Carbon::now();
+                    $reservacion->save();
+             
                 }
             }
 
-            if($clases_completadas >= $asistencia_roja){
-                $estatus="c-youtube";
+            $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
+                ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
+                ->where('reservaciones_visitantes.tipo_id', '=', $id)
+                ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+            ->get();
 
-                if($asistencia_roja > 0)
-                {
-                    $alumno->deleted_at = Carbon::now();
-                    $alumno->save();
+            $array = array();
+            $mujeres = 0;
+            $hombres = 0;
+
+            $fecha_de_inicio = Carbon::parse($clasegrupal->fecha_inicio);
+            $fecha_de_finalizacion = Carbon::parse($clasegrupal->fecha_final);
+            $asistencia_roja = $clasegrupal->asistencia_rojo;
+            $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
+
+            foreach($alumnos_inscritos as $alumno){
+
+                $clases_completadas = 0;
+                    
+                $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+                if($ultima_asistencia){
+
+                    $fecha = Carbon::parse($ultima_asistencia->fecha);
+
+                }else{
+                    $fecha = $fecha_de_inicio;
                 }
-                
-                continue;
-            }else if($clases_completadas >= $asistencia_amarilla){
-                $estatus="c-amarillo";
+
+                if(Carbon::now() < $fecha_de_finalizacion){
+                    while($fecha < Carbon::now()){
+                        $clases_completadas++;
+                        $fecha->addWeek();
+                    }
+                }else{
+                    while($fecha < $fecha_de_finalizacion){
+                        $clases_completadas++;
+                        $fecha->addWeek();
+                    }
+                }
+
+                if($clases_completadas >= $asistencia_roja){
+                    $estatus="c-youtube";
+
+                    if($asistencia_roja > 0)
+                    {
+                        $alumno->deleted_at = Carbon::now();
+                        $alumno->save();
+                    }
+                    
+                    continue;
+                }else if($clases_completadas >= $asistencia_amarilla){
+                    $estatus="c-amarillo";
+                }else{
+                    $estatus="c-verde";
+                }
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+                $alumno_array['estatus'] = $estatus;
+
+                // ----------
+
+                $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
+
+                if(!$credencial){
+                    $credencial = new CredencialAlumno;
+
+                    $credencial->alumno_id = $alumno->id;
+                    $credencial->instructor_id = $clasegrupal->instructor_id;
+                    $credencial->cantidad = 0;
+                    $credencial->dias_vencimiento = 0;
+                    $credencial->fecha_vencimiento = Carbon::now();
+
+                    $credencial->save();
+                }
+
+                $alumno_array['tipo'] = 1;
+                $alumno_array['cantidad'] = $credencial->cantidad;
+                $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;
+
+                $array[$alumno->id] = $alumno_array;
+
+                if($alumno->sexo == 'F'){
+                    $mujeres++;
+                }else{
+                    $hombres++;
+                }
+
+            }
+
+            foreach($reservaciones as $alumno){
+
+                if($alumno->sexo == 'F'){
+                    $mujeres++;
+                }else{
+                    $hombres++;
+                }
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+
+                $alumno_array['tipo'] = 2;
+                $array['2-'.$alumno->id] = $alumno_array;
+            }
+
+            $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+            $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
+
+            if($examen){
+                $examen = $examen->id;
             }else{
-                $estatus="c-verde";
+                $examen = '';
             }
 
-            $collection=collect($alumno);     
-            $alumno_array = $collection->toArray();
-            $alumno_array['estatus'] = $estatus;
+            if(Auth::user()->usuario_tipo == 3){
+                $credenciales = CredencialInstructor::where('instructor_id',Auth::user()->usuario_id)->first();
 
-            // ----------
-
-            $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
-
-            if(!$credencial){
-                $credencial = new CredencialAlumno;
-
-                $credencial->alumno_id = $alumno->id;
-                $credencial->instructor_id = $clasegrupal->instructor_id;
-                $credencial->cantidad = 0;
-                $credencial->dias_vencimiento = 0;
-                $credencial->fecha_vencimiento = Carbon::now();
-
-                $credencial->save();
-            }
-
-            $alumno_array['tipo'] = 1;
-            $alumno_array['cantidad'] = $credencial->cantidad;
-            $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;
-
-            $array[$alumno->id] = $alumno_array;
-
-            if($alumno->sexo == 'F'){
-                $mujeres++;
+                $total_credenciales = $credenciales->cantidad;
             }else{
-                $hombres++;
+                $total_credenciales = 0;
             }
 
-        }
+            $clases_grupales = ClaseGrupal::join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+                ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'config_clases_grupales.nombre as clase_grupal_nombre', 'config_especialidades.nombre as especialidad_nombre' , 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+                ->where('clases_grupales.id', '!=' , $id)
+                ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->get();
 
-        foreach($reservaciones as $alumno){
+            $array_clase_grupal = array();
 
-            if($alumno->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
+            foreach($clases_grupales as $clase_grupal)
+            {
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+      
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $array_clase_grupal[$clase_grupal->id] = array(
+                    'nombre' => $clase_grupal->clase_grupal_nombre,
+                    'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido,
+                    'dia_de_semana' => $dia,
+                    'especialidad' => $clase_grupal->especialidad_nombre,
+                    'hora_inicio' => $clase_grupal->hora_inicio,
+                    'hora_final' => $clase_grupal->hora_final,
+                    'id'=>$clase_grupal->id
+                );
             }
 
-            $collection=collect($alumno);     
-            $alumno_array = $collection->toArray();
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal]);
 
-            $alumno_array['tipo'] = 2;
-            $array['2-'.$alumno->id] = $alumno_array;
-        }
-
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-        $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
-
-        if($examen){
-            $examen = $examen->id;
         }else{
-            $examen = '';
+            return redirect("agendar/clases-grupales"); 
         }
-
-        if(Auth::user()->usuario_tipo == 3){
-            $credenciales = CredencialInstructor::where('instructor_id',Auth::user()->usuario_id)->first();
-
-            $total_credenciales = $credenciales->cantidad;
-        }else{
-            $total_credenciales = 0;
-        }
-
-        return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales]);
+        
     }
 
     public function eliminarinscripcion($id)
@@ -2454,6 +2518,63 @@ class ClaseGrupalController extends BaseController {
 		    }
 	    }
 	}
+
+    public function Transferir(Request $request)
+    {
+        $rules = [
+            'id' => 'required',
+            'alumno_id' => 'required',
+            'clase_grupal_id' => 'required',
+        ];
+
+        $messages = [
+
+            'id.required' => 'Ups! La Clase Grupal es requerida',
+            'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
+            'alumno_id.required' => 'Ups! El alumno es requerido',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
+
+        }else{
+
+            $inscripcion = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->id)->first();
+
+            $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
+
+            if($clasegrupal && $inscripcion)
+            {
+
+                $id = $inscripcion->id;
+                
+                $existe = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+
+                if(!$existe){
+
+                    $config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
+
+                    $inscripcion->clase_grupal_id = $request->clase_grupal_id;
+                    $inscripcion->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+                    $inscripcion->save();
+                }else{
+
+                    $inscripcion->delete();
+                }
+                
+                
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
+                
+                    
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]); 
+            }
+        }
+    }
 
     public function nivelaciones($id)
     {

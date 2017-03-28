@@ -664,7 +664,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Inscribirse!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
 
                 if (isConfirm) {

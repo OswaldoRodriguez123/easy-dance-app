@@ -181,7 +181,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Eliminar!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
           if (isConfirm) {
             var nFrom = $(this).attr('data-from');
@@ -190,7 +190,7 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Done!","It was succesfully deleted!","success");
+                        swal("Listo!","El acuerdo fue eliminado!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                         eliminar(id, element);
           }

@@ -1309,7 +1309,7 @@
                     confirmButtonColor: "#DD6B55",   
                     confirmButtonText: "Enviar!",  
                     cancelButtonText: "Cancelar",         
-                    closeOnConfirm: false 
+                    closeOnConfirm: true 
                 }, function(isConfirm){   
           if (isConfirm) {
 
