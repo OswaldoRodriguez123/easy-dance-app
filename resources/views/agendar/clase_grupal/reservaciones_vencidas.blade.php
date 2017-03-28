@@ -61,7 +61,7 @@
                             @foreach ($reservaciones as $alumno)
                                 <?php $id = $alumno->id; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center disabled">{{$alumno->deleted_at}}</td>
+                                    <td class="text-center disabled">{{$alumno->fecha_vencimiento}}</td>
                                     <td class="text-center disabled">
                                         @if($alumno->sexo=='F')
                                             <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
