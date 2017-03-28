@@ -416,7 +416,7 @@ class ClaseGrupalController extends BaseController {
         $activacion = $grouped->toArray();
 
         $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id')
+            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
             ->where('reservaciones_visitantes.tipo_id', '=', $id)
             ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
         ->get();
