@@ -55,7 +55,7 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="tipo" id="pendientes" value="pendientes" type="radio">
                                         <i class="input-helper"></i>  
-                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw f-20"></i>
+                                        Cuentas por Cobrar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw f-20"></i>
                                     </label>
                                     </div>
                                     

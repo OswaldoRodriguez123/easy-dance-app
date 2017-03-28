@@ -69,6 +69,7 @@
                                             <option value="1">Todo</option>
                                             <option value="2">Ingresos</option>
                                             <option value="3">Egresos</option>
+                                            <option value="4">Cuentas por Cobrar</option>
                                         </select>
                                     </div>
                                 </div>
@@ -384,7 +385,7 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-                        if(array.tipo == 1){
+                        if(array.tipo == 1 || array.tipo == 3){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
                         }else{
                             monto = '-'+formatmoney(parseFloat(array.importe_neto))
@@ -406,11 +407,15 @@
                     $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
                     $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
 
+                    finprocesado();                       
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
                     datos = JSON.parse(JSON.stringify(respuesta));
 
                     var pieData1 = ''
                     pieData1 += '[';
                     $.each( datos.array_ingreso, function( i, item ) {
+                        console.log(item)
                         var label = item.nombre;
                         var cant = item.cantidad;
                         pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
@@ -499,8 +504,6 @@
                         
                     });
 
-                    finprocesado();                       
-                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                 }
             });
         });
@@ -526,12 +529,10 @@
 
             id = $(this).val();
 
-            if(id != 2){
-
-                $('#clase_grupal_id').attr('disabled','disabled')
- 
-            }else{
+            if(id == 2 || id == 4){
                 $("#clase_grupal_id").removeAttr("disabled");
+            }else{
+                $('#clase_grupal_id').attr('disabled','disabled')
             }
 
             $('#clase_grupal_id').selectpicker('refresh');

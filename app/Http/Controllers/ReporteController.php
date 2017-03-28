@@ -1908,9 +1908,12 @@ public function PresencialesFiltros(Request $request)
     {
 
         $array = array();
+        $array_pago = array();
+        $array_egreso = array();
         $total = 0;
         $total_ingreso = 0;
         $total_egreso = 0;
+        $total_proforma = 0;
 
         //INGRESOS
 
@@ -1933,6 +1936,13 @@ public function PresencialesFiltros(Request $request)
             $query->distinct('id');
 
             $alumnos = $query->get();
+            $tipos_pago = FormasPago::all();
+
+
+            foreach($tipos_pago as $tipo_pago){
+                $array_pago[$tipo_pago->id] = ['nombre' => $tipo_pago->nombre, 'cantidad' => 0];
+
+            }
 
             foreach($alumnos as $alumno){
 
@@ -1993,15 +2003,6 @@ public function PresencialesFiltros(Request $request)
 
                 $facturas = $query->get();
 
-                $tipos_pago = FormasPago::all();
-
-                $array_pago = array();
-
-                foreach($tipos_pago as $tipo_pago){
-                    $array_pago[$tipo_pago->id] = ['nombre' => $tipo_pago->nombre, 'cantidad' => 0];
-
-                }
-
                 foreach($facturas as $factura){
 
                     $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
@@ -2034,6 +2035,8 @@ public function PresencialesFiltros(Request $request)
                 }
             }
         }
+
+
 
         if($request->tipo == 1 OR $request->tipo == 3){
 
@@ -2089,8 +2092,6 @@ public function PresencialesFiltros(Request $request)
 
             $tipos_egresos = TipoEgreso::all();
 
-            $array_egreso = array();
-
             foreach($tipos_egresos as $tipo_egreso){
                 $array_egreso[$tipo_egreso->id] = ['nombre' => $tipo_egreso->nombre, 'cantidad' => 0];
 
@@ -2102,17 +2103,115 @@ public function PresencialesFiltros(Request $request)
 
                 $collection=collect($egreso);     
                 $egreso_array = $collection->toArray();
-                $egreso_array['cliente'] = $egreso->nombre_egreso;
+                $egreso_array['cliente'] = 'Egreso';
                 $egreso_array['nombre'] = $egreso->concepto;
                 $egreso_array['importe_neto'] = $egreso->cantidad;
                 $egreso_array['fecha'] = Carbon::parse($egreso->fecha)->toDateString();
                 $egreso_array['hora'] = Carbon::parse($egreso->created_at)->toTimeString();
-                $egreso_array['tipo_pago'] = '';
+                $egreso_array['tipo_pago'] = $egreso->nombre_egreso;
                 $factura_array['tipo']=2;
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;
 
+            }
+        }
+
+        //CUENTAS POR COBRAR
+
+        if($request->tipo == 1 OR $request->tipo == 4){
+
+            $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+            ->select('alumnos.id as id',
+                     'alumnos.nombre',
+                     'alumnos.apellido')
+            ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+            ->orderBy('nombre', 'asc');
+                    
+            //CLASE GRUPAL
+
+            if($request->clase_grupal_id)
+            {
+                $query->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+            }
+
+            $query->distinct('id');
+
+            $alumnos = $query->get();
+
+            foreach($alumnos as $alumno){
+
+                $query = ItemsFacturaProforma::where('alumno_id', $alumno->id);
+
+                //LINEA DE SERVICIO
+
+                if($request->tipo_servicio)
+                {
+
+                    if($request->tipo_servicio == 1)
+                    {
+                        $not_in = array(5,11,14);
+                        $query->whereNotIn('tipo', $not_in);
+                    }else{
+                        $query->where('tipo', $request->tipo_servicio);
+                    }
+                }
+
+                //DETALLE
+
+                if($request->tipo_id)
+                {
+                    $array_explode = explode(",", $request->tipo_id);
+                    $tipo = array();
+
+                    foreach($array_explode as $explode){
+                        $tipo[] = $explode;
+                    }
+
+                    $query->whereIn('nombre', $tipo);
+                }
+
+                //FECHA
+
+                if($request->boolean_fecha){
+                    $fecha = explode(' - ', $request->fecha2);
+                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                    $query->whereBetween('fecha', [$start,$end]);
+                }else{
+
+                    if($request->tipo){
+                        if($request->fecha == 1){
+                            $start = Carbon::now()->toDateString();
+                            $end = Carbon::now()->toDateString();  
+                        }else if($request->fecha == 2){
+                            $start = Carbon::now()->startOfMonth()->toDateString();
+                            $end = Carbon::now()->endOfMonth()->toDateString();  
+                        }else if($request->fecha == 3){
+                            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                            $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                        }
+
+                        $query->whereBetween('fecha', [$start,$end]);
+                    }
+                }
+
+                $proformas = $query->get();
+
+                foreach($proformas as $proforma){
+
+                    $collection=collect($proforma);     
+                    $proforma_array = $collection->toArray();
+                    $proforma_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
+                    $proforma_array['fecha'] = Carbon::parse($proforma->fecha)->toDateString();
+                    $proforma_array['hora'] = Carbon::parse($proforma->created_at)->toTimeString();
+                    $proforma_array['tipo_pago']='Cuentas por Cobrar';
+                    $proforma_array['tipo']=3;
+                    $array['3-'.$proforma->id] = $proforma_array;
+
+                    $total_proforma = $total_proforma + $proforma->importe_neto;
+
+                }
             }
         }
 
