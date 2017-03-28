@@ -69,7 +69,7 @@
                                     @if($instructor['sexo']=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
-                                    <i class="zmdi zmdi-male f-25 c-azul"></i> </span>
+                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
                                     <?php $tmp = explode(" ", $instructor['nombre']);

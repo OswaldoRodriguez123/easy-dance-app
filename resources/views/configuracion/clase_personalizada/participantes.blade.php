@@ -582,7 +582,7 @@
                               }
                               else
                               {
-                                sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                                sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
                               }
                              
                               var nombre = array.nombre;
@@ -694,7 +694,7 @@
               }
               else
               {
-                sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
               }
               
                 var rowNode=t.row.add( [
@@ -723,7 +723,7 @@
               }
               else
               {
-                sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i> </span>'
+                sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
               }
 
                 var rowNode=t.row.add( [

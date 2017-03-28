@@ -1438,7 +1438,7 @@
         $.each(form, function (n, c) {
           if(c.name=='sexo'){
             if(c.value=='M'){              
-              var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
+              var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
             }else if(c.value=='F'){
               var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
             }

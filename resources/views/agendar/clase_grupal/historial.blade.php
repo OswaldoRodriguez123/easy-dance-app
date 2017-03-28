@@ -304,7 +304,7 @@
                             sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i>'
                         }
                         else{
-                            sexo = '<i class="zmdi zmdi-male f-25 c-azul"></i>'
+                            sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i>'
                         }
 
 
