@@ -870,7 +870,7 @@ public function PresencialesFiltros(Request $request)
 
             if($presencial->instructor_id){
 
-                if($array_promotor[$presencial->instructor_id])
+                if(isset($array_promotor[$presencial->instructor_id]))
                 {
                     $array_promotor[$presencial->instructor_id]['cantidad']++;
                 }
