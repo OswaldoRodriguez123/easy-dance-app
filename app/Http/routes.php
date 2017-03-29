@@ -551,9 +551,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');
 			Route::post('agendar/clases-grupales/transferir', 'ClaseGrupalController@Transferir');
 
-			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
-
-
 			//MULTIHORARIO CLASES GRUPALES
 
 			Route::get('agendar/clases-grupales/multihorario/{id}', 'MultihorarioClaseGrupalController@principal');
@@ -666,7 +663,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/citas/agregar', 'CitaController@store');
 			Route::get('agendar/citas/agregar', 'CitaController@create');
 			Route::get('agendar/citas/detalle/{id}', 'CitaController@edit');
-			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			Route::delete('agendar/citas/eliminar/{id}', 'CitaController@destroy');
 
 			Route::put('agendar/citas/update/fecha', 'CitaController@updateFecha');
@@ -1066,8 +1062,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 			Route::get('agendar/clases-grupales/reservaciones/vencidas/{id}', 'ClaseGrupalController@reservaciones_vencidas');
 			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
-			
-				
+			Route::get('agendar/clases-grupales/canceladas/{id}', 'ClaseGrupalController@canceladas');
+			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
+			Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
+		
 
 		});//END MIDDLEWARE INSTRUCTOR
 

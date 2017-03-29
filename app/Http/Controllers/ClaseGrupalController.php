@@ -2212,6 +2212,27 @@ class ClaseGrupalController extends BaseController {
                 
     }
 
+    public function canceladas($id)
+    {   
+        $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
+            ->where('clases_grupales.id', '=', $id)
+            ->first();
+
+        if($clasegrupal)
+        {
+
+            $canceladas = HorarioBloqueado::where('tipo_id',$id)->where('tipo', 1)->get();
+            $fecha_inicio = Session::get('fecha_inicio');
+    
+            return view('agendar.clase_grupal.canceladas')->with(['id' => $id, 'clasegrupal' => $clasegrupal, 'canceladas' => $canceladas, 'fecha_inicio' => $fecha_inicio]);
+        }else{
+            return redirect("agendar/clases-grupales"); 
+        }
+                
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -2833,8 +2854,8 @@ class ClaseGrupalController extends BaseController {
             
         }else{
 
-            $fecha_inicio = "1969-01-31";
-            $fecha_final = "1969-01-31";
+            $fecha_inicio = Carbon::parse("1969-01-31");
+            $fecha_final = Carbon::parse("1969-01-31");
 
             $horario_clase_grupal = HorarioClaseGrupal::where('clase_grupal_id', $request->id)->delete();
             $clasegrupal = ClaseGrupal::find($request->id)->delete();
@@ -2850,10 +2871,25 @@ class ClaseGrupalController extends BaseController {
 
         if($clasegrupal->save()){
             Session::forget('fecha_inicio');
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han guardado satisfactoriamente', 'status' => 'OK', 'cancelada' => $clasegrupal, 'fecha_inicio' => $fecha_inicio->toDateString(), 'fecha_final' => $fecha_final->toDateString(), 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+        
+    }
+
+    public function eliminar_cancelacion($id)
+    {
+
+        
+        $clasegrupal = HorarioBloqueado::find($id);
+    
+        if($clasegrupal->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
         
     }
 

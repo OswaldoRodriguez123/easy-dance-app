@@ -930,16 +930,33 @@ class TallerController extends BaseController {
 
         $taller = Taller::find($id);
 
-        $alumnos_inscritos = DB::table('inscripcion_taller')
-                ->join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*')
+        if($taller){
+
+            $alumnos_inscritos = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_taller.alumno_id')
                 ->where('inscripcion_taller.taller_id', '=', $id)
                 ->where('inscripcion_taller.deleted_at', '=', null)
-        ->get();
+            ->get();
 
-        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-        return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos]);
+            $mujeres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                ->where('inscripcion_taller.taller_id', '=', $id)
+                ->where('inscripcion_taller.deleted_at', '=', null)
+                ->where('alumnos.sexo', '=', 'F')
+            ->count();
+
+            $hombres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                ->where('inscripcion_taller.taller_id', '=', $id)
+                ->where('inscripcion_taller.deleted_at', '=', null)
+                ->where('alumnos.sexo', '=', 'M')
+            ->count();
+
+            $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres]);
+        }else{
+            return redirect("agendar/talleres"); 
+        }
     }
 
     public function storeInscripcion(Request $request)

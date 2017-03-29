@@ -104,8 +104,18 @@
                                         <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
 
                                          @foreach ( $alumnos as $alumno )
-                                          <option class = "{{ empty($alumno->inscrito) ? '' : 'inscrito' }}" value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          <?php $exist = false; ?>
+                                          @foreach ( $alumnos_inscritos as $inscripcion)
+                                            @if ($inscripcion['alumno_id']==$alumno['id'])
+                                              <?php $exist = true; ?>
+                                            @endif
                                           @endforeach
+                                          @if ($exist)
+                                              <option disabled title="Ya esta en el taller" data-content="<span title='Este alumno ya se encuentra en el taller'><i class='glyphicon glyphicon-remove'></i> {{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</span>" value = "{{ $alumno['id'] }}"></option>
+                                          @else
+                                              <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                          @endif
+                                         @endforeach
                                         </select>
                                       </div>
                                     </div>
@@ -182,25 +192,72 @@
                 
                     <div class="block-header">
 
-                        <?php $url = "/agendar/taller/detalle/$id" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/talleres/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
-                        <!-- zmdi zmdi-money {{ empty($alumno->importe_neto) ? 'c-verde ' : 'c-youtube' }} zmdi-hc-fw f-20 p-r-3 operacionModal" -->
+                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
-                    </div> 
-                    
+                          <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+
+                              <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                              
+                              <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                              
+                              <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                              
+                              <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                             
+                              <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                              
+                          </ul>
+
+                        @endif
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
 
                             <div class="text-right">
-                            <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
+                              <a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>
+                            </div>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-talleres p-r-5"></i> Taller: {{$taller->nombre}}</p>
                             <hr class="linea-morada">
 
-                            </div>                                                        
-                        </div>
+                            <div class="col-sm-6 text-left">
+                              <div class="p-t-10"> 
+                                <i class="zmdi zmdi-female f-25 c-rosado"></i> <span class="f-15" id="span_mujeres" style="padding-left:5px"> {{$mujeres}}</span>
+                                <i class="zmdi zmdi-male-alt p-l-5 f-25 c-azul"></i> <span class="f-15" id="span_hombres" style="padding-left:5px"> {{$hombres}} </span>
+                              </div>
+                            </div>
+
+                            <div class="clearfix"></div>        
+
+                            <div class="col-sm-12">
+                                <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="todos" value="T" type="radio" checked >
+                                        <i class="input-helper"></i>  
+                                        Todos <i id="todos2" name="todos2" class="zmdi zmdi-male-female zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="mujeres" value="F" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Mujeres <i id="mujeres2" name="mujeres2" class="zmdi zmdi-female zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="hombres" value="M" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Hombres <i id="hombres2" name="hombres2" class="zmdi zmdi-male-alt zmdi-hc-fw f-20"></i>
+                                    </label>
+                                    </div>
+                                    
+                                </div>
+                              </div>                                               
+                          </div>
+
+                          <div class="clearfix p-b-35"></div>
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -209,7 +266,6 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Balance E</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -222,17 +278,18 @@
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
                                     @if($alumno->sexo=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
                                     <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                    <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                    <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                    <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i></td>
+                                    <td class="text-center previa">
+                                      <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                    </td>
+                                    <td class="text-center">
+                                      <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
+                                    </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -428,30 +485,40 @@
                             $("#modalAgregar").modal("hide");
 
                             $.each(respuesta.array, function (index, array) {
-                            console.log(index + ' ' +array);
-
-                              var identificacion = array.identificacion;
                               
                               if(array.sexo=='F')
                               {
+                                valor = $('#span_mujeres').html()
+                                valor = parseInt(valor) + 1;
+                                $('#span_mujeres').html(valor)
+
                                 sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
                               }
                               else
                               {
+                                valor = $('#span_hombres').html()
+                                valor = parseInt(valor) + 1;
+                                $('#span_hombres').html(valor)
                                 sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
                               }
                              
                               var nombre = array.nombre;
                               var apellido = array.apellido;
+                              var identificacion = array.identificacion;
+    
+                              if(respuesta.deuda > 0){
+                                deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
+                              }else{
+                                deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>'
+                              }
 
                               var rowId=array.id;
                               var rowNode=t.row.add( [
                               ''+identificacion+'',
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
-                              '<label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal c-verde"></i></label>',
-                              '<label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label>',
-                              '<i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>'
+                              ''+deuda+'',
+                              '<i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>'
                               ] ).draw(false).node();
                               $( rowNode )
                               .attr('id',rowId)
@@ -791,6 +858,46 @@
     
         // $(".test").text(selectedText);
     });
+
+    $('input[name="tipo"]').on('change', function(){
+
+        if($(this).val() == 'T'){
+
+            $( "#hombres2" ).removeClass( "c-verde" );
+            $( "#mujeres2" ).removeClass( "c-verde" );
+            $( "#todos2" ).addClass( "c-verde" );
+
+            t
+            .columns(1)
+            .search('')
+            .draw(); 
+
+        }else if($(this).val() == 'F'){
+
+            $( "#hombres2" ).removeClass( "c-verde" );
+            $( "#mujeres2" ).addClass( "c-verde" );
+            $( "#todos2" ).removeClass( "c-verde" );
+
+            t
+            .columns(1)
+            .search($(this).val())
+            .draw();
+
+        }else{
+
+            $( "#hombres2" ).addClass( "c-verde" );
+            $( "#mujeres2" ).removeClass( "c-verde" );
+            $( "#todos2" ).removeClass( "c-verde" );
+
+            t
+            .columns(1)
+            .search($(this).val())
+            .draw();
+
+        }
+
+    });
+
 
 
     </script>
