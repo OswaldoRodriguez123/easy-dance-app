@@ -1323,7 +1323,7 @@
 
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-clase_grupal_id" class="zmdi  {{ empty($clasegrupal->clase_grupal_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw""></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-clase_grupal_id"><span>{{$clasegrupal->clase_grupal_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>

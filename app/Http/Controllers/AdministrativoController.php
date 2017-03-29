@@ -1059,6 +1059,21 @@ class AdministrativoController extends BaseController {
         return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar una linea de pago']], 'status' => 'ERROR'],422);
     }
 
+    public function eliminar_factura($id)
+    {
+
+        $factura = Factura::find($id);
+
+        $pagos = Pago::where('factura_id',$id)->delete();
+        $items_factura = ItemsFactura::where('factura_id',$id)->delete();
+        
+        if($factura->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
 
     public function enviarfactura($id)
     {

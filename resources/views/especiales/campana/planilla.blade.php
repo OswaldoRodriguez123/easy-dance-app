@@ -1079,7 +1079,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Campana">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($campana->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_d-normativas f-22"></i> </span>
                                <span class="f-14"> Condiciones y Normativas </span>
                              </td>
                              <td id="campana-condiciones" class="f-14 m-l-15" data-valor="{{$campana->condiciones}}" ><span id="campana-condiciones"><span>{{ str_limit($campana->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>

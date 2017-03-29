@@ -572,7 +572,7 @@
                            <tr class="detalle" data-toggle="modal" href="#modalNombre-ClasePersonalizada">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($clasepersonalizada->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_d-servicios f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clase-personalizada f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-nombre" class="capitalize">{{$clasepersonalizada->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -615,7 +615,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalExpiracion-ClasePersonalizada">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tiempo_expiracion" class="zmdi {{ empty($clasepersonalizada->tiempo_expiracion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-hourglass-alt zmdi-hc-fw f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-cancelacion-temprana-tardia zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Cancelación temprana/ tardía </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-tiempo_expiracion"><span>{{$clasepersonalizada->tiempo_expiracion}} Horas</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>

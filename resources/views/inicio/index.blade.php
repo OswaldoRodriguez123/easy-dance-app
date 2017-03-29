@@ -208,7 +208,7 @@
                     </div>
                 </div>
             
-            <a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn" data-trigger="hover" data-toggle="popover" data-placement="left" data-content="" title="" data-original-title="Calendario"><i class="zmdi zmdi-calendar"></i></a>
+            <a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn" data-trigger="hover" data-toggle="popover" data-placement="left" data-content="" title="" data-original-title="Calendario"><i class="zmdi icon_a-agendar-1"></i></a>
             
             <div style="margin-top: -50px;"></div>
 

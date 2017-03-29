@@ -61,7 +61,7 @@
                                     <label for="nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase grupal, en caso de no haberla registrado o deseas crear un nuevo registro, debes dirigirte al área de configuración general en la sección de clases grupales y procede a crear el registro. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/clases-grupales/agregar' class='redirect pointer'> Llévame <i class='icon_b icon_b-nombres f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <span class="input-group-addon"><i class="icon_a-clases-grupales f-22"></i></span>
                                       <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" onchange="porcentaje" >

@@ -56,7 +56,7 @@
                                  <div class="form-group">
                                     <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase grupal" title="" data-original-title="Ayuda"></i>
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                      <span class="input-group-addon"><i class="icon_a-clases-grupales f-22"></i></span>
                                       <div class="fg-line">
                                       <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Aprendiendo a bailar">
                                       </div>

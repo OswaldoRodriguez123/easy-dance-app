@@ -627,7 +627,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalNombre-ClaseGrupal">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($clasegrupal->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_d-servicios f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
                                <span class="f-14"> Nombre </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-nombre" class="capitalize">{{$clasegrupal->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -667,7 +667,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalCondiciones-ClaseGrupal">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($clasegrupal->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_d-normativas f-22"></i> </span>
                                <span class="f-14"> Condiciones y Normativas </span>
                              </td>
                              <td id="clasegrupal-condiciones" class="f-14 m-l-15" data-valor="{{$clasegrupal->condiciones}}" ><span id="clasegrupal-condiciones"><span>{{ str_limit($clasegrupal->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>

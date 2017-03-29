@@ -135,7 +135,8 @@
                                                 <td class="text-center previa">{{$factura['fecha']}}</td>
                                                 <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
                                                 <td class="text-center previa">
-                                                    <i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>
+                                                    <i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>
+                                                    <i class="zmdi zmdi-delete f-20 p-r-10 pointer eliminar_factura"></i>
                                                 </td>
                                             </tr>
 
@@ -157,6 +158,7 @@
         route_enviar="{{url('/')}}/administrativo/factura/enviar/";
         route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
         route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
+        route_eliminar_factura="{{url('/')}}/administrativo/pagos/eliminar-factura/";
 
         tipo = 'pagadas';
 
@@ -274,7 +276,7 @@
                     ''+concepto+'',
                     ''+array.fecha+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                    '<i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i> <i class="eliminar_factura zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
@@ -311,7 +313,7 @@
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
@@ -349,7 +351,7 @@
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
@@ -384,7 +386,7 @@
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
@@ -418,7 +420,7 @@
                     ''+array.cantidad+ ' ' +concepto+'',
                     ''+array.fecha_vencimiento+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
@@ -547,7 +549,81 @@
                 });
       }
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablelistar tbody').on( 'click', 'i.eliminar_factura', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        element = this;
+
+        swal({   
+            title: "Desea eliminar la factura?",   
+            text: "Confirmar eliminación!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Eliminar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: true 
+        }, function(isConfirm){   
+            if (isConfirm) {
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'success';
+                var nAnimIn = $(this).attr('data-animation-in');
+                var nAnimOut = $(this).attr('data-animation-out')
+
+                eliminar_factura(id, element);
+            }
+        });
+    });
+      
+    function eliminar_factura(id, element){
+        var route = route_eliminar_factura + id;
+        var token = "{{ csrf_token() }}";
+        procesando();
+                
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+            dataType: 'json',
+            data:id,
+            success:function(respuesta){
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+                  finprocesado();
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+
+                  swal("Exito!","La factura ha sido eliminada!","success");
+
+                  t.row( $(element).parents('tr') )
+                    .remove()
+                    .draw();
+                
+                }
+            },
+            error:function(msj){
+                $("#msj-danger").fadeIn(); 
+                var text="";
+                console.log(msj);
+                var merror=msj.responseJSON;
+                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                $("#msj-error").html(text);
+
+                setTimeout(function(){
+                    $("#msj-danger").fadeOut();
+                }, 3000);
+            }
+        });
+    }
+
+      $('#tablelistar tbody').on( 'click', 'i.eliminar', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 // var temp = row.split('_');
@@ -619,6 +695,7 @@
                                 }
                 });
       }
+
 
     function pad (str, max) {
       str = str.toString();

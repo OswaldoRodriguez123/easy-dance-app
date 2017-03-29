@@ -779,7 +779,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($visitante->fecha_nacimiento) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-fecha-de-nacimiento f-22"></i> </span>
                                <span class="f-14"> Fecha de nacimiento  </span>
                              </td>
                              <td  class="f-14 m-l-15" id="visitante-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$visitante->fecha_nacimiento)->format('d/m/Y')}}</span></td>
