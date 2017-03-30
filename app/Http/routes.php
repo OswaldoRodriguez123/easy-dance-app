@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('error', 'AcademiaConfiguracionController@error');
+Route::get('error', 'AcademiaController@error');
 
 Route::get('/confirmacion/{token}', [
     'uses' => 'RegistroController@confirmacion',
@@ -138,7 +138,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			// ---- CONFIGURACION ----
 
-			Route::get('configuracion', 'AcademiaConfiguracionController@principal');
+			Route::get('configuracion', 'AcademiaController@principal');
 
 			// SUCURSAL
 
@@ -148,29 +148,29 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			// ACADEMIA
 
-			Route::get('configuracion/academia','AcademiaConfiguracionController@configuracion');
+			Route::get('configuracion/academia','AcademiaController@configuracion');
 
-			Route::post('configuracion/academia/primerpaso','AcademiaConfiguracionController@PrimerPaso');
+			Route::post('configuracion/academia/primerpaso','AcademiaController@PrimerPaso');
 
-			Route::post('configuracion/academia/contacto','AcademiaConfiguracionController@storeContacto');
-			Route::post('configuracion/academia/especiales','AcademiaConfiguracionController@storeEspeciales');
-			Route::post('configuracion/academia/administrativo','AcademiaConfiguracionController@storeAdministrativo');
-			Route::post('configuracion/academia/estudio','AcademiaConfiguracionController@agregarestudio');
-			Route::post('configuracion/academia/eliminarestudio/{id}','AcademiaConfiguracionController@eliminarestudio');
-			Route::post('configuracion/academia/nivel','AcademiaConfiguracionController@agregarnivel');
-			Route::post('configuracion/academia/eliminarnivel/{id}','AcademiaConfiguracionController@eliminarniveles');
-			Route::post('configuracion/academia/cargo','AcademiaConfiguracionController@agregarcargo');
-			Route::post('configuracion/academia/eliminarcargo/{id}','AcademiaConfiguracionController@eliminarcargo');
-			Route::post('configuracion/academia/formula','AcademiaConfiguracionController@agregarformula');
-			Route::post('configuracion/academia/eliminarformula/{id}','AcademiaConfiguracionController@eliminarformula');
-			Route::post('configuracion/academia/completar','AcademiaConfiguracionController@store');
+			Route::post('configuracion/academia/contacto','AcademiaController@storeContacto');
+			Route::post('configuracion/academia/especiales','AcademiaController@storeEspeciales');
+			Route::post('configuracion/academia/administrativo','AcademiaController@storeAdministrativo');
+			Route::post('configuracion/academia/estudio','AcademiaController@agregarestudio');
+			Route::post('configuracion/academia/eliminarestudio/{id}','AcademiaController@eliminarestudio');
+			Route::post('configuracion/academia/nivel','AcademiaController@agregarnivel');
+			Route::post('configuracion/academia/eliminarnivel/{id}','AcademiaController@eliminarniveles');
+			Route::post('configuracion/academia/cargo','AcademiaController@agregarcargo');
+			Route::post('configuracion/academia/eliminarcargo/{id}','AcademiaController@eliminarcargo');
+			Route::post('configuracion/academia/formula','AcademiaController@agregarformula');
+			Route::post('configuracion/academia/eliminarformula/{id}','AcademiaController@eliminarformula');
+			Route::post('configuracion/academia/completar','AcademiaController@store');
 
-			Route::put('configuracion/academia/update/contacto', 'AcademiaConfiguracionController@updateContacto');
-			Route::put('configuracion/academia/update/imagen', 'AcademiaConfiguracionController@updateImagen');
-			Route::put('configuracion/academia/update/redes', 'AcademiaConfiguracionController@updateRedes');
-			Route::post('configuracion/academia/update/especiales', 'AcademiaConfiguracionController@updateEspeciales');
-			Route::put('configuracion/academia/update/administrativo', 'AcademiaConfiguracionController@updateAdministrativo');
-			Route::put('configuracion/academia/update/referido', 'AcademiaConfiguracionController@updateReferido');
+			Route::put('configuracion/academia/update/contacto', 'AcademiaController@updateContacto');
+			Route::put('configuracion/academia/update/imagen', 'AcademiaController@updateImagen');
+			Route::put('configuracion/academia/update/redes', 'AcademiaController@updateRedes');
+			Route::post('configuracion/academia/update/especiales', 'AcademiaController@updateEspeciales');
+			Route::put('configuracion/academia/update/administrativo', 'AcademiaController@updateAdministrativo');
+			Route::put('configuracion/academia/update/referido', 'AcademiaController@updateReferido');
 
 			// PRODUCTOS
 
@@ -377,7 +377,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		-----------------------------------------------------------*/
 		Route::group(['middleware' => 'recepcionista'], function() {
 
-			Route::get('/listo', 'AcademiaConfiguracionController@listo');
+			Route::get('/listo', 'AcademiaController@listo');
 
 			//ALUMNO
 
@@ -898,9 +898,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		    // PRINCIPAL
 		    
-			Route::get('/inicio', 'AcademiaConfiguracionController@index');
+			Route::get('/inicio', 'AcademiaController@index');
 			Route::post('/inicio/condiciones', 'UsuarioController@aceptar_condiciones');
-			Route::get('/', 'AcademiaConfiguracionController@menu');
+			Route::get('/', 'AcademiaController@menu');
 			
 			//AGENDAR
 
@@ -1005,8 +1005,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		    // PRINCIPAL
 		    
-			Route::get('/inicio', 'AcademiaConfiguracionController@index');
-			Route::get('/', 'AcademiaConfiguracionController@menu');
+			Route::get('/inicio', 'AcademiaController@index');
+			Route::get('/', 'AcademiaController@menu');
 
 
 			//PERFIL Y PAGOS

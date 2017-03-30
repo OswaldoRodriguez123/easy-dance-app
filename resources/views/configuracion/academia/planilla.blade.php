@@ -440,14 +440,14 @@
                                          <div class="col-sm-12">
                                           <div class="form-group">
                                               <label class="m-b-10">Programación de clases</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación de clases, de modo que, tu equipo de instructores y alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>
-                                              <div class="fileinput fileinput-new" data-provides="fileinput">
+                                              <div id="fileinput" class="fileinput fileinput-new" data-provides="fileinput">
                                                   <span class="btn btn-lg btn-file m-r-10">
-                                                      <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
-                                                      <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
+                                                      <span id="fileinput-new" class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
+                                                      <span id="fileinput-exists" class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
                                                       <input type="file" name="programacion" id="programacion">
                                                   </span>
-                                                  <span class="fileinput-filename"></span>
-                                                  <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
+                                                  <span id="fileinput-filename" class="fileinput-filename"></span>
+                                                  <a id="fileinput-close" href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
                                               </div>
                                               <div class="has-error" id="error-programacion">
                                                 <span >
@@ -1226,6 +1226,28 @@
 
     $(document).ready(function(){
 
+
+      if("{{$academia->programacion}}"){
+        $('#fileinput').removeClass('fileinput-new')
+        $("input[name=programacion]").attr('name','')
+        $('#programacion').attr('name','programacion')
+        $('#fileinput').addClass('fileinput-exists')
+        $('#fileinput-new').hide();
+        $('#fileinput-exists').show();
+        $('#fileinput-filename').text("{{$academia->programacion}}");
+        $('#fileinput-close').show();
+      }
+
+      $("#programacion").on("DOMAttrModified", function (e) {
+
+        if($(this).attr('name') != ''){
+          $('#fileinput-new').hide();
+        }else{
+          $('#fileinput-new').show();
+        }
+
+      });
+
       $("#nombre_estudio").val('');
       $("#nombre_nivel").val('');
       $("#cantidad_estudio").val('');
@@ -1244,7 +1266,6 @@
         });
 
       $("#imagen").bind("change", function() {
-            //alert('algo cambio');
             
             setTimeout(function(){
               var imagen = $("#imagena img").attr('src');
@@ -1264,17 +1285,6 @@
             },500);
 
         });
-
-      // $("#programacion").bind("change", function() {
-      //       //alert('algo cambio');
-            
-      //       setTimeout(function(){
-      //         var programacion = document.getElementById('programacion');
-      //         var files = programacion.files;
-      //         var file64 = $("input:hidden[name=fileBase64]").val(files);
-      //       },500);
-
-      //   });
 
         $("#telefono").val("{{$academia->telefono}}");
         $("#celular").val("{{$academia->celular}}");
@@ -1572,7 +1582,10 @@
           tipo = 'POST';
           var data = new FormData();
           var programacion = document.getElementById('programacion');
-          data.append('programacion', programacion.files[0]);
+          if(programacion.files[0])
+          {
+            data.append('programacion', programacion.files[0]);
+          }
           data.append('normativa', $('#normativa').val());
           data.append('manual', $('#manual').val());
           var datos = data;
