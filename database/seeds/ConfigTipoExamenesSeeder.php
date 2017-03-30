@@ -16,31 +16,37 @@ class ConfigTipoExamenesSeeder extends Seeder
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Evaluacion',
+	      'academia_id' => null,
 
 	    ));
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Clase personalizada',
+	      'academia_id' => null,
 
 	    ));
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Casting',
+	      'academia_id' => null,
 
 	    ));
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Otros',
+	      'academia_id' => null,
 
 	    ));
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Diagnostico de Ingreso',
+	      'academia_id' => null,
 
 	    ));
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Valoración Recurrente',
+	      'academia_id' => null,
 
 	    ));
     }

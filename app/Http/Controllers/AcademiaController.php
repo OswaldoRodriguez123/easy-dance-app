@@ -18,6 +18,7 @@ use App\ConfigEspecialidades;
 use App\ConfigEstudios;
 use App\ConfigNiveles;
 use App\ConfigStaff;
+use App\ConfigTipoExamen;
 use App\Taller;
 use App\Fiesta;
 use App\Campana;
@@ -553,61 +554,25 @@ class AcademiaController extends BaseController {
 
     public function configuracion(){
 
-        // if (Session::has('academia')) {
-        //     Session::forget('academia'); 
-        // }
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        // if (Session::has('estudio')) {
-        //     Session::forget('estudio'); 
-        // }
+        $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
+        $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
+        $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
+        $config_formula = ConfigFormulaExito::where('academia_id' , Auth::user()->academia_id)->get();
+        $valoraciones = ConfigTipoExamen::where('academia_id' , Auth::user()->academia_id)->get();
 
-        // if (Session::has('niveles')) {
-        //     Session::forget('niveles'); 
-        // }
-        
-        $academia = Academia::join('paises', 'academias.pais_id','=','paises.id')
-            ->join('config_especialidades', 'academias.especialidades_id','=','config_especialidades.id')
-            ->select('academias.*', 'paises.nombre as pais_id', 'config_especialidades.nombre as especialidades_id')
-            ->where('academias.id', Auth::user()->academia_id)
-        ->first();
-
-
-        if($academia){
-
-            $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
-            $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
-            $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
-            $config_formula = ConfigFormulaExito::where('academia_id' , Auth::user()->academia_id)->get();
-
-        //Simple Marker
-        // $config['center'] = '10.6913156,-71.6800493';
-        // $config['zoom'] = 14;
-        // \Gmaps::initialize($config);
-
-        // $marker = array();
-        // $marker['position'] = '10.6913156,-71.6800493';
-        // $marker['draggable'] = true;
-        // $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-        // \Gmaps::add_marker($marker);
-
-        // $map = \Gmaps::create_map();
 
         if($academia->correo)
         {
-            return view('configuracion.academia.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula]);
+            return view('configuracion.academia.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones]);
         }
 
         else{
 
-            return view('configuracion.academia.configuracion')->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles, 'config_staff' => $config_staff, 'config_formula' => $config_formula]);
+            return view('configuracion.academia.configuracion')->with(['academia' => $academia , 'especialidades' => ConfigEspecialidades::all(), 'estudios' => $estudios, 'niveles' => $niveles, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones]);
         }
 
-        
-        
-
-        }else{
-           return redirect("/"); 
-        }
     }
 
 	/**
@@ -655,6 +620,7 @@ class AcademiaController extends BaseController {
     }
 
     public function error(){
+        
         return view('errors.error_sistema');
     }
 
@@ -665,7 +631,6 @@ class AcademiaController extends BaseController {
 
         $rules = [
             'correo' => 'required|email|max:255',
-            // 'telefono' => 'required',
             'celular' => 'required',
             'numero_factura' => 'numeric',
             'puntos_referencia' => 'numeric',
@@ -782,249 +747,64 @@ class AcademiaController extends BaseController {
         }
     }
 
-    public function PrimerPaso(Request $request)
+    public function CargaInicial(Request $request)
     {
-        //dd($request->all());
 
 
-    $rules = [
-        'nombre' => 'required|min:3|max:60',
-        'identificacion' => 'min:6|max:20',
-        'especialidades_id' => 'required',
-        'pais_id' => 'required',
-        'estado' => 'required|min:3|max:40',
-    ];
+        $rules = [
+            'nombre' => 'required|min:3|max:60',
+            'identificacion' => 'min:6|max:20',
+            'especialidades_id' => 'required',
+            'pais_id' => 'required',
+            'estado' => 'required|min:3|max:40',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'nombre.required' => 'Ups! El campo Nombre es requerido',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El maximo de caracteres permitidos son 60',
-        'indentificacion.min' => 'El mínimo de caracteres permitidos son 6',
-        'indentificacion.max' => 'El maximo de caracteres permitidos son 20',
-        'especialidades_id.required' => 'Ups! La Especialidad es requerida',
-        'pais_id.required' => 'Ups! El Pais es requerido',
-        'estado.required' => 'Ups! El Estado es requerido',
-        'estado.min' => 'El mínimo de caracteres permitidos son 3',
-        'estado.max' => 'El máximo de caracteres permitidos son 40',
-    ];
+            'nombre.required' => 'Ups! El campo Nombre es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El maximo de caracteres permitidos son 60',
+            'indentificacion.min' => 'El mínimo de caracteres permitidos son 6',
+            'indentificacion.max' => 'El maximo de caracteres permitidos son 20',
+            'especialidades_id.required' => 'Ups! La Especialidad es requerida',
+            'pais_id.required' => 'Ups! El Pais es requerido',
+            'estado.required' => 'Ups! El Estado es requerido',
+            'estado.min' => 'El mínimo de caracteres permitidos son 3',
+            'estado.max' => 'El máximo de caracteres permitidos son 40',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $academia = Academia::find(Auth::user()->academia_id);
-
-        $pais = Paises::find($request->pais_id);
-
-        $porcentaje_impuesto = Impuesto::where('pais_id' , '=', $request->pais_id)->first();
-
-        $nombre = title_case($request->nombre);
-
-        $academia->nombre = $nombre;
-        $academia->identificacion = $request->identificacion;
-        $academia->especialidades_id = $request->especialidades_id;
-        $academia->pais_id = $request->pais_id;
-        $academia->estado = $request->estado;
-        $academia->moneda = $pais->moneda;
-        $academia->porcentaje_impuesto = $porcentaje_impuesto->impuesto;
-
-        if($academia->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }
-    }
 
-	public function SegundoPaso(Request $request)
-	{
-		//dd($request->all());
+        else{
 
-    $rules = [
-    	'identificacion' => 'required|min:8|max:20|unique:academias,identificacion',
-        'imagen' => 'required',
-        'descripcion' => 'required|min:3|max:300',
-    ];
+            $academia = Academia::find(Auth::user()->academia_id);
 
-    $messages = [
+            $pais = Paises::find($request->pais_id);
 
-        'identificacion.required' => 'Ups! El campo RIF es requerido',
-        'identificacion.min' => 'El mínimo de caracteres permitidos son 8',
-        'identificacion.max' => 'El maximo de caracteres permitidos son 20',
-        'identificacion.unique' => 'Ups! Ya el campo RIF esta registrado, intente con otra identidad fiscal.',
-        'imagen.required' => 'Ups! La imagen es requerida',
-        'descripcion.required' => 'Ups! La Descripcion es requerida',
-        'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
-        'descripcion.max' => 'El máximo de caracteres permitidos son 300',
-    ];
+            $porcentaje_impuesto = Impuesto::where('pais_id' , '=', $request->pais_id)->first();
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+            $nombre = title_case($request->nombre);
 
-    if ($validator->fails()){
+            $academia->nombre = $nombre;
+            $academia->identificacion = $request->identificacion;
+            $academia->especialidades_id = $request->especialidades_id;
+            $academia->pais_id = $request->pais_id;
+            $academia->estado = $request->estado;
+            $academia->moneda = $pais->moneda;
+            $academia->porcentaje_impuesto = $porcentaje_impuesto->impuesto;
 
-        // return redirect("/home")
+            if($academia->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-        $academia = Academia::find($request->academia_id);
-
-		$academia->identificacion = $request->identificacion;
-		$academia->imagen = $request->imagen;
-		$academia->descripcion = $request->descripcion;
-
-		if($academia->save()){
-            // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-            return view('academia.contacto')->with('academia', $academia);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-	}
-	}
-
-	public function storeContacto(Request $request){
-
-    $request->merge(array('correo' => trim($request->correo)));
-
-    $rules = [
-        'correo' => 'required|email|max:255',
-        // 'telefono' => 'required',
-        'celular' => 'required',
-    ];
-
-    $messages = [
-
-        'correo.required' => 'Ups! El correo es requerido',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'telefono.required' => 'Ups! El Teléfono Local es requerido',
-        'celular.required' => 'Ups! El Teléfono Móvil es requerido',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-    }
-
-    else{
-
-        $array = array(['correo' => $request->correo , 'telefono' => $request->telefono , 'celular' => $request->celular, 'direccion' => $request->direccion, 'facebook' => $request->facebook, 'twitter' => $request->twitter, 'linkedin' => $request->linkedin, 'instagram' => $request->instagram, 'pagina_web' => $request->pagina_web, 'youtube' => $request->youtube]);
-
-            Session::put('academia', $array);
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-		}
-
-	public function storeEspeciales(Request $request){
-
-        // dd($request->all());
-
-        $arreglo = Session::get('academia');
-
-        $correo = $arreglo[0]['correo'];
-        $telefono = $arreglo[0]['telefono'];
-        $celular = $arreglo[0]['celular'];
-        $direccion = $arreglo[0]['direccion'];
-        $facebook = $arreglo[0]['facebook'];
-        $twitter = $arreglo[0]['twitter'];
-        $linkedin = $arreglo[0]['linkedin'];
-        $instagram = $arreglo[0]['instagram'];
-        $pagina_web = $arreglo[0]['pagina_web'];
-        $youtube = $arreglo[0]['youtube'];
-
-        $array = array(['correo' => $correo , 'telefono' => $telefono , 'celular' => $celular, 'direccion' => $direccion, 'facebook' => $facebook, 'twitter' => $twitter, 'linkedin' => $linkedin, 'instagram' => $instagram, 'pagina_web' => $pagina_web, 'youtube' => $youtube, 'normativa' => $request->normativa , 'manual' => $request->manual , 'programacion' => $request->programacion]);
-
-        Session::put('academia', $array);
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
-
-	}
-
-    public function storeAdministrativo(Request $request){
-
-        // dd($request->all());
-
-    $rules = [
-
-        'numero_factura' => 'numeric',
-
-    ];
-
-    $messages = [
-        
-        'porcentaje_retraso.numeric' => 'Ups! El campo de “ Porcentaje de retraso de pago ” es inválido , debe contener sólo números',
-        'numero_factura.numeric' => 'Ups! El campo de “ Próximo número de factura ” es inválido, debe contener sólo  números',
-        'tiempo_tolerancia.numeric' => 'Ups! El campo de “ Tiempo de Tolerancia ” es inválido, debe contener sólo  números',
-
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $arreglo = Session::get('academia');
-
-        $correo = $arreglo[0]['correo'];
-        $telefono = $arreglo[0]['telefono'];
-        $celular = $arreglo[0]['celular'];
-        $direccion = $arreglo[0]['direccion'];
-        $facebook = $arreglo[0]['facebook'];
-        $twitter = $arreglo[0]['twitter'];
-        $linkedin = $arreglo[0]['linkedin'];
-        $instagram = $arreglo[0]['instagram'];
-        $pagina_web = $arreglo[0]['pagina_web'];
-        $youtube = $arreglo[0]['youtube'];
-        $normativa = $arreglo[0]['normativa'];
-        $manual = $arreglo[0]['manual'];
-        $programacion = $arreglo[0]['programacion'];
-
-        $array = array(['correo' => $correo , 'telefono' => $telefono , 'celular' => $celular, 'direccion' => $direccion, 'facebook' => $facebook, 'twitter' => $twitter, 'linkedin' => $linkedin, 'instagram' => $instagram, 'pagina_web' => $pagina_web, 'youtube' => $youtube, 'normativa' => $normativa , 'manual' => $manual , 'programacion' => $programacion,  'numero_factura' => $request->numero_factura , 'incluye_iva' => $request->incluye_iva]);
-
-        Session::put('academia', $array);
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
-        // $academia = Academia::find($request->academia_id);
-
-        // $academia->porcentaje_impuesto = $request->porcentaje_impuesto;
-        // $academia->numero_factura = $request->numero_factura;
-
-        
-        // if($academia->save()){
-        //     // return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        //     return view('alumno.index')->with('academia', $academia);
-        // }else{
-        //     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        // }
-        // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -1239,6 +1019,52 @@ class AcademiaController extends BaseController {
         $formula = ConfigFormulaExito::find($id);
 
         $formula->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    Public function agregarvaloracion(Request $request){
+        
+    $rules = [
+
+        'nombre_valoracion' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_valoracion.required' => 'Ups! El Nombre es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = title_case($request->nombre_valoracion);
+
+        $valoracion = new ConfigTipoExamen;
+                                        
+        $valoracion->academia_id = Auth::user()->academia_id;
+        $valoracion->nombre = $nombre;
+
+        $valoracion->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $valoracion, 'id' => $valoracion->id, 200]);
+
+        }
+    }
+
+    public function eliminarvaloracion($id){
+
+        $valoracion = ConfigTipoExamen::find($id);
+
+        $valoracion->delete();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 

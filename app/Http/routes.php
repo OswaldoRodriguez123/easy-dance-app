@@ -150,7 +150,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('configuracion/academia','AcademiaController@configuracion');
 
-			Route::post('configuracion/academia/primerpaso','AcademiaController@PrimerPaso');
+			Route::post('configuracion/academia/carga-inicial','AcademiaController@CargaInicial');
 
 			Route::post('configuracion/academia/contacto','AcademiaController@storeContacto');
 			Route::post('configuracion/academia/especiales','AcademiaController@storeEspeciales');
@@ -163,6 +163,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('configuracion/academia/eliminarcargo/{id}','AcademiaController@eliminarcargo');
 			Route::post('configuracion/academia/formula','AcademiaController@agregarformula');
 			Route::post('configuracion/academia/eliminarformula/{id}','AcademiaController@eliminarformula');
+			Route::post('configuracion/academia/valoracion','AcademiaController@agregarvaloracion');
+			Route::post('configuracion/academia/eliminarvaloracion/{id}','AcademiaController@eliminarvaloracion');
 			Route::post('configuracion/academia/completar','AcademiaController@store');
 
 			Route::put('configuracion/academia/update/contacto', 'AcademiaController@updateContacto');

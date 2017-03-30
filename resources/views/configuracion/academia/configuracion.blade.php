@@ -298,7 +298,7 @@
                               <div class="clearfix p-b-35"></div>
                           
 
-                                    <div class="col-sm-12">
+                                    <!-- <div class="col-sm-12">
                                  
                                     <span class="f-30 text-center c-morado">Especiales</span>
                                     
@@ -311,15 +311,6 @@
                                     <div class="col-sm-12">
                                           <label class="m-b-10">Normativas de la academia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las normativas de tu academia, de modo que, tus alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución, este
                                           soporta sólo el tipo de documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                    
-                                          <!-- <div class="fileinput fileinput-new" data-provides="fileinput">
-                                              <span class="btn btn-lg btn-file m-r-10">
-                                                  <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Selecionar</span></span>
-                                                  <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
-                                                  <input type="file" name="normativa">
-                                              </span>
-                                              <span class="fileinput-filename"></span>
-                                              <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
-                                          </div> -->
                                           <textarea class="form-control" id="normativa" name="normativa" rows="5" placeholder="Ingresa las normativas de la academia"></textarea>
                                           <div class="has-error" id="error-normativa_movil">
                                             <span >
@@ -334,16 +325,7 @@
 
                                          <div class="col-sm-12">
                                           <div class="form-group">
-                                              <label class="m-b-10">Manuales de procedimientos de instructores</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los manuales de procedimiento de tu equipo de trabajo, de modo que, tu equipo de instructores pueda descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                    
-                                              <!-- <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                  <span class="btn btn-lg btn-file m-r-10">
-                                                      <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Selecionar</span></span>
-                                                      <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
-                                                      <input type="file" name="manual">
-                                                  </span>
-                                                  <span class="fileinput-filename"></span>
-                                                  <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
-                                              </div> -->
+                                              <label class="m-b-10">Manuales de procedimientos de instructores</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los manuales de procedimiento de tu equipo de trabajo, de modo que, tu equipo de instructores pueda descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                   
                                                <textarea class="form-control" id="manual" name="manual" rows="5" placeholder="Ingresa los manuales de procedimientos de la academia"></textarea>
                                               <div class="has-error" id="error-manual_movil">
                                                 <span >
@@ -376,7 +358,7 @@
                                           </div>
                                          </div>
                                         </div>
-
+ -->
 
                                <div class="clearfix p-b-35"></div>
 
@@ -772,19 +754,102 @@
 
                         </div>
                         </div>
-                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseFormula')" ></i></div>
 
+                        <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseFormula')" ></i></div>
+
+                      <div class="clearfix p-b-35"></div>
+                        <hr></hr>
+                  
+                          </div>
+                      </div>
+                      </div>
+                      </div>
+                   </div>
+
+                   <div class="clearfix p-b-35"></div>
+
+
+                                <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="id">Valoración</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de las distintos tipos de valoraciones que posees en tu academia" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseValoracion" aria-expanded="false" aria-controls="collapseTwo">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseValoracion" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    
                                     <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
-                                
-                                        </div>
+                                    
+                                    <div class="panel-body">
+                                    
+                                    <label for="nombre_formula" id="id-nombre_valoracion">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la valoración que deseas agregar" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_valoracion" id="nombre_valoracion" placeholder="Ej. Examen">
+                                      </div>
                                     </div>
-                                    </div>
-                                    </div>
-                                 </div>
+                                 <div class="has-error" id="error-nombre_valoracion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_valoracion_mensaje" ></small>                               
+                                      </span>
+                                  </div>
                                </div>
 
+                              <br>
 
+                              <div class="card-header text-left">
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" id="añadirvaloracion" name="añadirvaloracion" >Agregar Linea</button>
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablevaloracion" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="nombre"></th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                            @foreach ($valoraciones as $valoracion)
+                                <?php $id = $valoracion->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$valoracion->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                  </tr>
+                            @endforeach 
+                   
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                        </div>
+
+                        <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseValoracion')" ></i></div>
+
+                      <div class="clearfix p-b-35"></div>
+                        <hr></hr>
+                  
+                          </div>
+                      </div>
+                      </div>
+                      </div>
+                   </div>
+                               
+
+
+                </div> <!--  FINAL -->
 
 
                               <div class="clearfix p-b-35"></div>
@@ -1066,6 +1131,41 @@
                     }
         });
 
+   var m=$('#tablevaloracion').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+          //$('td:eq(1)', nRow).attr("onClick","eliminar(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
@@ -1148,9 +1248,9 @@
                     error:function(msj){
                       setTimeout(function(){ 
 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         
                         errores(msj.responseJSON.errores);
                         var nTitle="    Ups! "; 
@@ -1630,6 +1730,121 @@
               })
 
               l.row( $(this).parents('tr') )
+                .remove()
+                .draw();
+          });
+
+    $("#añadirvaloracion").click(function(){
+
+                var datos = "&nombre_valoracion="+$('#nombre_valoracion').val();
+                procesando();
+                var route = "{{url('/')}}/configuracion/academia/valoracion";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = datos;
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data: datos ,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var nombre = respuesta.array.nombre;
+
+                          var rowId=respuesta.id;
+                          var rowNode=m.row.add( [
+                          ''+nombre+'',
+                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    });
+
+    $('#tablevaloracion tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: "{{url('/')}}/configuracion/academia/eliminarvaloracion/"+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+                      
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+              m.row( $(this).parents('tr') )
                 .remove()
                 .draw();
           });

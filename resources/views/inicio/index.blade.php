@@ -293,7 +293,7 @@
 
          $("#guardar").click(function(){
 
-                var route = "{{url('/')}}/configuracion/academia/primerpaso";
+                var route = "{{url('/')}}/configuracion/academia/carga-inicial";
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#configurarAcademia" ).serialize(); 
                 $("#guardar").attr("disabled","disabled");
