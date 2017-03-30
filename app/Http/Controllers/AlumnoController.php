@@ -824,72 +824,66 @@ class AlumnoController extends BaseController
 
     public function updateCorreo(Request $request){
 
-    $rules = [
-        'correo' => 'email|max:255|unique:users,email, '.$request->id.'',
-    ];
+        $rules = [
+            'correo' => 'email|max:255|unique:users,email, '.$request->id.',usuario_id',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
-    ];
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
+        }
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        else{
 
-        //dd($validator);
+            $alumno = Alumno::withTrashed()->find($request->id);
+            $correo = strtolower($request->correo);
+            $alumno->correo = $correo;
 
-    }
+            if($alumno->save()){
 
-    else{
-        $alumno = Alumno::withTrashed()->find($request->id);
-        $correo = strtolower($request->correo);
-        $alumno->correo = $correo;
+                $tmp = User::where('usuario_id', $request->id)->first();
 
-        if($alumno->save()){
+                if($tmp){
+                    $es_representante = Familia::where('representante_id', $tmp->id)->first();
 
-            $tmp = User::where('usuario_id', $request->id)->first();
-
-            if($tmp){
-                $es_representante = Familia::where('representante_id', $tmp->id)->first();
-
-                if(!$es_representante){
-                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
-                }
-                else{
-                    $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
-                }
-
-                if($usuario){
-
-                    $usuario->email = $correo;
-
-                    if($usuario->save()){
-                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-                    }else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    if(!$es_representante){
+                        $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 2)->first();
+                    }
+                    else{
+                        $usuario = User::where('usuario_id' , $alumno->id)->where('usuario_tipo', 4)->first();
                     }
 
+                    if($usuario){
+
+                        $usuario->email = $correo;
+
+                        if($usuario->save()){
+                            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                        }else{
+                            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                        }
+
+                    }else{
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }
                 }else{
                     return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }
-            }else{
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            }
 
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function updateTelefono(Request $request){
