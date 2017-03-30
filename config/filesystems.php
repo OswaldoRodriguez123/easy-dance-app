@@ -107,6 +107,16 @@ return [
             'root' => public_path('assets/uploads/usuario'),
         ],
 
+        'normativa' => [
+            'driver' => 'local',
+            'root' => public_path('assets/uploads/normativa'),
+        ],
+
+        'manual' => [
+            'driver' => 'local',
+            'root' => public_path('assets/uploads/manual'),
+        ],
+
         'programacion' => [
             'driver' => 'local',
             'root' => public_path('assets/uploads/programacion'),

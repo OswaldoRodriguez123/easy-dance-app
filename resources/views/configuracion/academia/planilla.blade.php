@@ -392,16 +392,15 @@
                                <div class="col-sm-12">
                                           <label class="m-b-10">Normativas de la academia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las normativas de tu academia, de modo que, tus alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución, este
                                           soporta sólo el tipo de documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                    
-                                          <!-- <div class="fileinput fileinput-new" data-provides="fileinput">
+                                          <div id="normativa-fileinput" class="fileinput fileinput-new" data-provides="fileinput">
                                               <span class="btn btn-lg btn-file m-r-10">
-                                                  <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Selecionar</span></span>
-                                                  <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
-                                                  <input type="file" name="normativa">
+                                                  <span id="normativa-fileinput-new" class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
+                                                  <span id="normativa-fileinput-exists" class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
+                                                  <input type="file" name="normativa" id="normativa">
                                               </span>
-                                              <span class="fileinput-filename"></span>
-                                              <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
-                                          </div> -->
-                                          <textarea class="form-control caja" style="height: 100%" id="normativa" name="normativa" rows="5" placeholder="Ingresa las normativas de la academia">{{$academia->normativa}}</textarea>
+                                              <span id="normativa-fileinput-filename" class="fileinput-filename"></span>
+                                              <a id="normativa-fileinput-close" href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
+                                          </div>
                                           <div class="has-error" id="error-normativa">
                                             <span >
                                               <small id="error-normativa_mensaje" class="help-block error-span" ></small>                      
@@ -416,16 +415,16 @@
                                          <div class="col-sm-12">
                                           <div class="form-group">
                                               <label class="m-b-10">Manuales de procedimientos de instructores</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los manuales de procedimiento de tu equipo de trabajo, de modo que, tu equipo de instructores pueda descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>                                    
-                                              <!-- <div class="fileinput fileinput-new" data-provides="fileinput">
+    
+                                              <div id="manual-fileinput" class="fileinput fileinput-new" data-provides="fileinput">
                                                   <span class="btn btn-lg btn-file m-r-10">
-                                                      <span class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Selecionar</span></span>
-                                                      <span class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
-                                                      <input type="file" name="manual">
+                                                      <span id="manual-fileinput-new" class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
+                                                      <span id="manual-fileinput-exists" class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
+                                                      <input type="file" name="manual" id="manual">
                                                   </span>
-                                                  <span class="fileinput-filename"></span>
-                                                  <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
-                                              </div> -->
-                                               <textarea class="form-control caja" style="height: 100%" id="manual" name="manual" rows="5" placeholder="Ingresa los manuales de procedimientos de la academia">{{$academia->manual}}</textarea>
+                                                  <span id="manual-fileinput-filename" class="fileinput-filename"></span>
+                                                  <a id="manual-fileinput-close" href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
+                                              </div>
                                               <div class="has-error" id="error-manual">
                                                 <span >
                                                     <small id="error-manual_mensaje" class="help-block error-span" ></small>                                           
@@ -440,14 +439,14 @@
                                          <div class="col-sm-12">
                                           <div class="form-group">
                                               <label class="m-b-10">Programación de clases</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la programación de clases, de modo que, tu equipo de instructores y alumnos puedan descargar y conocer desde su panel de control las normas que rigen tu institución ingresa el documento en formato PDF" title="" data-original-title="Ayuda"></i><br>
-                                              <div id="fileinput" class="fileinput fileinput-new" data-provides="fileinput">
+                                              <div id="programacion-fileinput" class="fileinput fileinput-new" data-provides="fileinput">
                                                   <span class="btn btn-lg btn-file m-r-10">
-                                                      <span id="fileinput-new" class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
-                                                      <span id="fileinput-exists" class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
+                                                      <span id="programacion-fileinput-new" class="fileinput-new"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i> <br><span class="text-capitalize">Seleccionar</span></span>
+                                                      <span id="programacion-fileinput-exists" class="fileinput-exists"><i class="zmdi zmdi-collection-pdf zmdi-hc-fw f-100"></i></span>
                                                       <input type="file" name="programacion" id="programacion">
                                                   </span>
-                                                  <span id="fileinput-filename" class="fileinput-filename"></span>
-                                                  <a id="fileinput-close" href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
+                                                  <span id="programacion-fileinput-filename" class="fileinput-filename"></span>
+                                                  <a id="programacion-fileinput-close" href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>                                   
                                               </div>
                                               <div class="has-error" id="error-programacion">
                                                 <span >
@@ -1226,23 +1225,65 @@
 
     $(document).ready(function(){
 
+      if("{{$academia->normativa}}"){
+        $('#normativa-fileinput').removeClass('fileinput-new')
+        $("input[name=normativa]").attr('name','')
+        $('#normativa').attr('name','normativa')
+        $('#normativa-fileinput').addClass('fileinput-exists')
+        $('#normativa-fileinput-new').hide();
+        $('#normativa-fileinput-exists').show();
+        $('#normativa-fileinput-filename').text("{{$academia->normativa}}");
+        $('#normativa-fileinput-close').show();
+      }
+
+      if("{{$academia->manual}}"){
+        $('#manual-fileinput').removeClass('fileinput-new')
+        $("input[name=manual]").attr('name','')
+        $('#manual').attr('name','manual')
+        $('#manual-fileinput').addClass('fileinput-exists')
+        $('#manual-fileinput-new').hide();
+        $('#manual-fileinput-exists').show();
+        $('#manual-fileinput-filename').text("{{$academia->manual}}");
+        $('#manual-fileinput-close').show();
+      }
+
       if("{{$academia->programacion}}"){
-        $('#fileinput').removeClass('fileinput-new')
+        $('#programacion-fileinput').removeClass('fileinput-new')
         $("input[name=programacion]").attr('name','')
         $('#programacion').attr('name','programacion')
-        $('#fileinput').addClass('fileinput-exists')
-        $('#fileinput-new').hide();
-        $('#fileinput-exists').show();
-        $('#fileinput-filename').text("{{$academia->programacion}}");
-        $('#fileinput-close').show();
+        $('#programacion-fileinput').addClass('fileinput-exists')
+        $('#programacion-fileinput-new').hide();
+        $('#programacion-fileinput-exists').show();
+        $('#programacion-fileinput-filename').text("{{$academia->programacion}}");
+        $('#programacion-fileinput-close').show();
       }
+
+      $("#normativa").on("DOMAttrModified", function (e) {
+
+        if($(this).attr('name') != ''){
+          $('#normativa-fileinput-new').hide();
+        }else{
+          $('#normativa-fileinput-new').show();
+        }
+
+      });
+
+      $("#manual").on("DOMAttrModified", function (e) {
+
+        if($(this).attr('name') != ''){
+          $('#manual-fileinput-new').hide();
+        }else{
+          $('#manual-fileinput-new').show();
+        }
+
+      });
 
       $("#programacion").on("DOMAttrModified", function (e) {
 
         if($(this).attr('name') != ''){
-          $('#fileinput-new').hide();
+          $('#programacion-fileinput-new').hide();
         }else{
-          $('#fileinput-new').show();
+          $('#programacion-fileinput-new').show();
         }
 
       });
@@ -1448,7 +1489,7 @@
         });
 
     
-     $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
+    $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#correo").val($("#alumno-correo").text()); 
     })
@@ -1561,40 +1602,46 @@
         var nAnimIn = "animated flipInY";
         var nAnimOut = "animated flipOutY"; 
         limpiarMensaje();
-        $(".guardar").attr("disabled","disabled");
-         procesando();
-        $("#guardar").css({
-            "opacity": ("0.2")
-        });
-        $(".cancelar").attr("disabled","disabled");
-        $(".procesando").removeClass('hidden');
-        $(".procesando").addClass('show');
+        procesando();
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
         if(form != 'edit_especiales_academia'){
+
           var datos = $( "#"+form ).serialize();
           tipo = 'PUT';
           $.ajaxSetup({cache:false, contentType:"application/x-www-form-urlencoded; charset=UTF-8"});
+
         }
         else{
+          
           tipo = 'POST';
-          var data = new FormData();
+          var datos = new FormData();
+          var normativa = document.getElementById('normativa');
+          var manual = document.getElementById('manual');
           var programacion = document.getElementById('programacion');
+
+          if(normativa.files[0])
+          {
+            datos.append('normativa', normativa.files[0]);
+          }
+
+          if(manual.files[0])
+          {
+            datos.append('manual', manual.files[0]);
+          }
+
           if(programacion.files[0])
           {
-            data.append('programacion', programacion.files[0]);
+            datos.append('programacion', programacion.files[0]);
           }
-          data.append('normativa', $('#normativa').val());
-          data.append('manual', $('#manual').val());
-          var datos = data;
+
           $.ajaxSetup({cache:false, contentType: false})
         }
         
         var datos_array=  $( "#"+form ).serializeArray();
-        
         var route = route_update+"/"+update;
-        //inicia aqui
+
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
@@ -1618,22 +1665,15 @@
                 }
 
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                 $(".procesando").removeClass('show');
-                 $(".procesando").addClass('hidden');
-                 $(".guardar").removeAttr("disabled");
-                 finprocesado();
-                $("#guardar").css({
-                  "opacity": ("1")
-                });
-                 $(".cancelar").removeAttr("disabled");
-                 $('.modal').modal('hide');
+                finprocesado();
+                $('.modal').modal('hide');
               }, 1000);  
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                if (typeof msj.responseJSON === "undefined") {
-                          //window.location = "{{url('/')}}/error";
-                        }
+                // if (typeof msj.responseJSON === "undefined") {
+                //   //window.location = "{{url('/')}}/error";
+                // }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);
@@ -1644,15 +1684,10 @@
                   var nTitle=" Ups! "; 
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 }
-                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  $(".procesando").removeClass('show');
-                  $(".procesando").addClass('hidden');
-                  $(".guardar").removeAttr("disabled");
-                  finprocesado();
-                  $("#guardar").css({
-                    "opacity": ("1")
-                  });
-                  $(".cancelar").removeAttr("disabled");
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                finprocesado();
+                  
               }, 1000);             
             }
         })
@@ -2137,51 +2172,6 @@
                 .draw();
           });
 
-
-
-    // $(document).on("change", function(e){
-    // $("#programacion").bind("change", function() {
-  
-    //   var miurl="{{url('/')}}/configuracion/academia/update/especiales";
-
-    //   var data = new FormData();
-    //   var programacion = document.getElementById('programacion');
-    //   var files = programacion.files;
-    //   data.append('programacion', files);
-    
-    //   console.log(data);
-
-    //   $.ajaxSetup({
-    //       headers: {
-    //           'X-CSRF-TOKEN': $('input:hidden[name=_token]').val()
-    //       }
-    //   });
-
-    //  $.ajax({
-    //         url: miurl, 
-    //         type: 'POST',
-    
-    //         // Form data
-    //         //datos del formulario
-    //         data: data,
-    //         //necesario para subir archivos via ajax
-    //         cache: false,
-    //         contentType: false,
-    //         processData: false,
-
-    //         //una vez finalizado correctamente
-    //         success: function(data){
-    //           var codigo='<div class="mailbox-attachment-info"><a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i>'+ data +'</a><span class="mailbox-attachment-size"> </span></div>';
-    //           $("#"+divresul+"").html(codigo);
-                       
-    //         },
-    //         //si ha ocurrido un error
-    //         error: function(data){
-    //            $("#"+divresul+"").html(data);
-               
-    //         }
-    //     });
-    // })
     function countCharDir(val) {
         var len = val.value.length;
         if (len >= 180) {

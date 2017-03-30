@@ -1379,12 +1379,15 @@ class AcademiaController extends BaseController {
 
         $rules = [
 
+            'normativa' => 'mimes:pdf',
+            'manual' => 'mimes:pdf',
             'programacion' => 'mimes:pdf',
 
         ];
 
         $messages = [
-
+            'normativa.mimes' => 'Ups! Solo se aceptan archivos PDF',
+            'manual.mimes' => 'Ups! Solo se aceptan archivos PDF',
             'programacion.mimes' => 'Ups! Solo se aceptan archivos PDF',
         ];
 
@@ -1399,8 +1402,30 @@ class AcademiaController extends BaseController {
         else{
 
             $academia = Academia::find(Auth::user()->academia_id);
-            $academia->normativa = $request->normativa;
-            $academia->manual = $request->manual;
+
+            if($request->normativa){
+
+                $extension = $request->normativa->getClientOriginalExtension();
+                $nombre_archivo = 'normativa-'.Auth::user()->academia_id.'.'.$extension;
+
+                \Storage::disk('normativa')->put($nombre_archivo,  \File::get($request->normativa));
+
+                $academia->normativa = $nombre_archivo;
+            }else{
+                $academia->normativa = '';
+            }
+
+            if($request->manual){
+
+                $extension = $request->manual->getClientOriginalExtension();
+                $nombre_archivo = 'manual-'.Auth::user()->academia_id.'.'.$extension;
+
+                \Storage::disk('manual')->put($nombre_archivo,  \File::get($request->manual));
+
+                $academia->manual = $nombre_archivo;
+            }else{
+                $academia->manual = '';
+            }
 
             if($request->programacion){
 
