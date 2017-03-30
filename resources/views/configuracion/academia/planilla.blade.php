@@ -1226,7 +1226,7 @@
 
     $(document).ready(function(){
 
-      if("{{$academia->programacion}}" || "{{$academia->programacion}}" != "undefined"){
+      if("{{$academia->programacion}}"){
         $('#fileinput').removeClass('fileinput-new')
         $("input[name=programacion]").attr('name','')
         $('#programacion').attr('name','programacion')
