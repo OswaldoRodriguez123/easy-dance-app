@@ -117,7 +117,7 @@
 
                 @foreach($categorias as $categoria)
 
-                  <a href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a>
+                  <a href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
 
                 @endforeach
 

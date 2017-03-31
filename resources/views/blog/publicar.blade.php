@@ -88,7 +88,9 @@
                                       <select class="selectpicker" name="categoria" id="categoria" data-live-search="true">
 
                                         <option value="">Selecciona</option>
-                                        <option value="1">Academia</option>
+                                        @foreach($categorias as $categoria)
+                                          <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                                        @endforeach
                                         
                                       
                                       </select>
