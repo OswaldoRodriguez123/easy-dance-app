@@ -29,6 +29,10 @@
           <div class="col-sm-9">
 
             <p class="f-25 f-700" style="color:#5e5e5e">
+              @if($entrada['imagen'])
+                <img src="{{url('/')}}{{$entrada['imagen']}}" class="img-responsive opaco-0-8" alt="">
+                <br>
+              @endif
               <span class="f-25 f-700" style="color:#5e5e5e">{{$entrada['titulo']}}</span><br>
               <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por {{$entrada['nombre']}} {{$entrada['apellido']}}</span>
             </p>
