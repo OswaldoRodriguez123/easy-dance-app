@@ -1876,8 +1876,8 @@ align-items: center;
 
     float: left;
     margin: 0;
-    border: 1px solid #DDD;
-    width: 190px;
+    border-right: 1px solid #DDD;
+    width: 220px;
     height: 165px;
     overflow: hidden;
 }

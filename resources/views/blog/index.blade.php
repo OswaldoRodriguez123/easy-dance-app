@@ -33,7 +33,8 @@
 
            <div class ="entradas">
 
-            @foreach(array_slice($entradas, 0, 4) as $entrada)
+            @foreach($entradas as $entrada)
+            <!-- foreach(array_slice(entradas, 0, 4) as entrada) -->
               
               <div class="opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
@@ -43,7 +44,7 @@
                   <p class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por {{$entrada['nombre']}} {{$entrada['apellido']}}</p>
 
                   <div class="row">
-                    <div class="col-sm-3 imagen-blog-contenedor">
+                    <div class="col-sm-4 imagen-blog-contenedor">
 
                       <a href="{{$entrada['url']}}" class="imagen-blog-link">
 
@@ -54,7 +55,7 @@
 
                         @else
 
-                          <img class="imagen-blog-img" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="height:150px; width:350px" class="img-responsive" alt="">
+                          <img class="imagen-blog-img" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" class="img-responsive" alt="">
 
                           <br>
 
@@ -64,7 +65,7 @@
 
                     </div>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
 
                       
                       @if($entrada['contenido'])
@@ -88,9 +89,9 @@
 
           </div>
 
-          @if(count($entradas) > 4)
+          <!-- if(count($entradas) > 4)
 
-            <div class="text-center mostrar_mas"> <!-- MOSTRAR MAS -->
+            <div class="text-center mostrar_mas">
 
               <br><br>
 
@@ -99,7 +100,7 @@
               <span class="mostrar f-16 c-morado f-700 pointer">Mostrar más</span>
 
             </div>
-          @endif
+          endif -->
                         
            
         </div>
