@@ -140,7 +140,7 @@ class BlogController extends BaseController {
 
 			foreach($entradas as $entrada){
 
-				$contenido = File::get('assets\uploads\entradas\entrada-'.$entrada->id.'.txt');
+				$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
 				$collection=collect($entrada);     
 	            $entrada_array = $collection->toArray();
@@ -236,7 +236,7 @@ class BlogController extends BaseController {
 				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 			}
 
-			$contenido = File::get('assets\uploads\entradas\entrada-'.$entrada->id.'.txt');
+			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();
