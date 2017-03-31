@@ -397,18 +397,18 @@ class BlogController extends BaseController {
 
 	            }
 
-	   //          $array = [
-				// 	'imagen' => $imagen,
-				// 	'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
-				// 	'msj_html' => str_limit($request->contenido, $limit = 350, $end = '...'),
-				// 	'email' => 'coliseodelasalsa@gmail.com',
-				// 	'subj' => $request->titulo
-				// ];
+	            $array = [
+					'imagen' => $imagen,
+					'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+					'msj_html' => str_limit($request->contenido, $limit = 350, $end = '...'),
+					'email' => 'coliseodelasalsa@gmail.com',
+					'subj' => $request->titulo
+				];
 
-				// Mail::send('correo.personalizado', $array, function($msj) use ($array){
-				// 	$msj->subject($array['subj']);
-				//     $msj->to($array['email']);
-				// });
+				Mail::send('correo.personalizado', $array, function($msj) use ($array){
+					$msj->subject($array['subj']);
+				    $msj->to($array['email']);
+				});
 	            
 	            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 	        }else{
