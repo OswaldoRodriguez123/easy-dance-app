@@ -79,7 +79,7 @@
 
                                <div class="col-sm-12">
                                  
-                                  <label for="categoria">Categoria</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nombre_clase" id = "pop-nombre_clase" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la categoria de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <label for="categoria">Categoria</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la categoria de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
@@ -100,6 +100,33 @@
                                  <div class="has-error" id="error-categoria">
                                       <span >
                                           <small class="help-block error-span" id="error-categoria_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 
+                                  <label for="tipo">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegaran un correo al publicarse esta entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <div class="fg-line">
+                                    <div class="select">
+                                      <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+
+                                        <option value="1">Todos</option>
+                                        <option value="2">Visitantes Presenciales</option>
+                                        <option value="3">Alumnos</option>
+                                        
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                 <div class="has-error" id="error-tipo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
