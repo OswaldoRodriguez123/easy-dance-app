@@ -35,7 +35,8 @@ class BlogController extends BaseController {
 		$categorias = CategoriaBlog::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
 		foreach($categorias as $categoria){
-			$cantidad = EntradaBlog::where('categoria',$categoria->id)->count();
+
+			$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', Auth::user()->academia_id)->count();
 
 			$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 		}
@@ -134,7 +135,7 @@ class BlogController extends BaseController {
 			$categorias = CategoriaBlog::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
 			foreach($categorias as $categoria){
-				$cantidad = EntradaBlog::where('categoria',$categoria->id)->count();
+				$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', Auth::user()->academia_id)->count();
 
 				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 			}
@@ -232,7 +233,7 @@ class BlogController extends BaseController {
 			$categorias = CategoriaBlog::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
 			foreach($categorias as $categoria){
-				$cantidad = EntradaBlog::where('categoria',$categoria->id)->count();
+				$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', Auth::user()->academia_id)->count();
 
 				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 			}
