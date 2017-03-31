@@ -399,7 +399,7 @@ class BlogController extends BaseController {
 	            $array = [
 					'imagen' => $imagen,
 					'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
-					'msj_html' => str_limit($request->contenido, $limit = 150, $end = '...'),
+					'msj_html' => str_limit($request->contenido, $limit = 350, $end = '...'),
 					'email' => 'coliseodelasalsa@gmail.com',
 					'subj' => $request->titulo
 				];
