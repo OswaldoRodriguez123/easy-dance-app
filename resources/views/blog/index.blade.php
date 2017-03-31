@@ -40,7 +40,7 @@
 
                 <div style="padding: 10px">
 
-                  <p class="f-25 f-700" style="color:#5e5e5e">{{$entrada['titulo']}}</p>
+                  <a href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}}</a>
                   <p class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por {{$entrada['nombre']}} {{$entrada['apellido']}}</p>
 
                   <div class="row">
@@ -70,7 +70,7 @@
                       
                       @if($entrada['contenido'])
 
-                        <p class="f-15 f-700">{!! nl2br(str_limit($entrada['contenido'], $limit = 150, $end = '...')) !!}</p>
+                        <p class="f-15 f-700">{!! nl2br(str_limit($entrada['contenido'], $limit = 350, $end = '...')) !!}</p>
 
                       @endif
 
