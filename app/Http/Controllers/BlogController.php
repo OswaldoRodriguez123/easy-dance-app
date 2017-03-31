@@ -14,6 +14,7 @@ use App\EntradaBlog;
 use App\CategoriaBlog;
 use App\Academia;
 use File;
+use Mail;
 
 class BlogController extends BaseController {
 
@@ -388,7 +389,25 @@ class BlogController extends BaseController {
 	                $entrada->imagen = $nombre_img;
 	                $entrada->save();
 
+	               	$imagen = "http://app.easydancelatino.com/assets/uploads/entradas/".$nombre_img;
+
+	            }else{
+	            	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+
 	            }
+
+	            $array = [
+					'imagen' => $imagen,
+					'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+					'msj_html' => str_limit($request->contenido, $limit = 150, $end = '...'),
+					'email' => 'coliseodelasalsa@gmail.com',
+					'subj' => $request->titulo
+				];
+
+				Mail::send('correo.personalizado', $array, function($msj) use ($array){
+					$msj->subject($array['subj']);
+				    $msj->to($array['email']);
+				});
 	            
 	            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 	        }else{
