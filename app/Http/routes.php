@@ -121,6 +121,14 @@ Route::post('especiales/campañas/invitar', 'CampanaController@invitar');
 Route::get('especiales/campañas/invitacion/enhorabuena/{id}', 'CampanaController@enhorabuena_invitacion');
 Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enhorabuena_invitacion_sinid');
 
+//BLOG
+
+Route::get('blog', 'BlogController@index');
+Route::get('blog/publicar', 'BlogController@publicar');
+Route::post('blog/publicar', 'BlogController@store');
+Route::get('blog/entrada/{id}', 'BlogController@entrada');
+Route::get('blog/categoria/{id}', 'BlogController@categoria');
+
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('notificacion', 'NotificacionController@consulta');

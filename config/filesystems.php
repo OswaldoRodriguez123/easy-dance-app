@@ -121,6 +121,11 @@ return [
             'driver' => 'local',
             'root' => public_path('assets/uploads/programacion'),
         ],
+
+        'entradas' => [
+            'driver' => 'local',
+            'root' => public_path('assets/uploads/entradas'),
+        ],
     ],
 
 ];

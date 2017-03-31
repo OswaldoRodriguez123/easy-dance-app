@@ -838,11 +838,6 @@ class AcademiaController extends BaseController {
         
         $array = array(['nombre' => $nombre , 'cantidad' => $request->cantidad_estudio]);
 
-        // Session::push('estudio', $array);
-
-        // $contador = count(Session::get('estudio'));
-        // $contador = $contador - 1;
-        // 
         $estudio = new ConfigEstudios;
                                         
         $estudio->academia_id = Auth::user()->academia_id;
@@ -880,14 +875,6 @@ class AcademiaController extends BaseController {
 
         $nombre = title_case($request->nombre_nivel);
 
-        // $array = array(['nombre' => $nombre]);
-
-        // Session::push('niveles', $array);
-
-        // $contador = count(Session::get('niveles'));
-        // $contador = $contador - 1;
-        // 
-        
         $nivel = new ConfigNiveles;
                                         
         $nivel->academia_id = Auth::user()->academia_id;
@@ -902,11 +889,6 @@ class AcademiaController extends BaseController {
 
     public function eliminarestudio($id){
 
-        // $arreglo = Session::get('estudio');
-
-        // unset($arreglo[$id]);
-        // Session::put('estudio', $arreglo);
-        // 
         $estudio = ConfigEstudios::find($id);
 
         $estudio->delete();
@@ -917,16 +899,9 @@ class AcademiaController extends BaseController {
 
     public function eliminarniveles($id){
 
-        // $arreglo = Session::get('niveles');
-
-        // unset($arreglo[$id]);
-        // Session::put('niveles', $arreglo);
-        // 
-        
         $nivel = ConfigNiveles::find($id);
 
         $nivel->delete();
-
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
@@ -1096,14 +1071,7 @@ class AcademiaController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
-
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
 
@@ -1130,7 +1098,6 @@ class AcademiaController extends BaseController {
     public function updateImagen(Request $request)
     {       
             
-            //dd($request->all());
             if($request->imageBase64){
                     $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                     $path = storage_path();

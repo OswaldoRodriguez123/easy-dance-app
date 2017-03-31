@@ -1871,3 +1871,32 @@ align-items: center;
     float:left;
 }
 
+
+.imagen-blog-contenedor {
+
+    float: left;
+    margin: 0;
+    border: 1px solid #DDD;
+    width: 190px;
+    height: 165px;
+    overflow: hidden;
+}
+
+.imagen-blog-link {
+
+    width: 190px;
+    height: 165px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.imagen-blog-img {
+
+    width: 190px;
+    max-width: initial;
+    float: none;
+    margin: 0;
+}
+
+
+
