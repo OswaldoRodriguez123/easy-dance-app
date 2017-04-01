@@ -76,3 +76,5 @@
 
 
 @stop   
+
+@extends('layout.footer')

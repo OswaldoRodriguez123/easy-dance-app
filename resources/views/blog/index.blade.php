@@ -138,6 +138,8 @@
 
 @stop
 
+@extends('layout.footer')
+
 @section('js') 
         
         <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
