@@ -44,34 +44,32 @@
            
           </div>
 
-  
-
-            <div class="col-sm-3" style="background: #f8f8f8 ;  min-height: 600px">
-              <div style="padding-top:10px;">
-                <div class="pmo-block pmo-contact hidden-xs">
+          <div class="col-sm-3" style="background: #f8f8f8 ;  min-height: 600px">
+            <div style="padding-top:10px;">
+              <div class="pmo-block pmo-contact hidden-xs">
 
 
-                    <div class="pmo-block pmo-contact hidden-xs">
+                  <div class="pmo-block pmo-contact hidden-xs">
 
-                    <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
+                  <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
 
-                    @foreach($categorias as $categoria)
+                  @foreach($categorias as $categoria)
 
-                      <a href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
+                    <a href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
 
-                    @endforeach
+                  @endforeach
 
 
-                  </div>
+                </div>
 
-                    <div class="clearfix p-b-15"></div>
-                  </div>
+                  <div class="clearfix p-b-15"></div>
+                </div>
 
-              </div>
             </div>
           </div>
         </div>
-    </div>
+      </div>
+  </div>
 </div>
 
 
