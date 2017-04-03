@@ -13,6 +13,7 @@ use Image;
 use App\EntradaBlog;
 use App\CategoriaBlog;
 use App\Academia;
+use App\User;
 use File;
 use Mail;
 
@@ -32,7 +33,7 @@ class BlogController extends BaseController {
 		$array = array();
 
 		$entradas = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo')
+			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo')
 			->where('users.academia_id', $id)
 			->orderBy('entradas_blog.created_at', 'desc')
 		->get();
@@ -51,6 +52,15 @@ class BlogController extends BaseController {
 		$i = 1;
                 
 		foreach($entradas as $entrada){
+
+			$usuario = User::find($entrada->usuario_id);
+
+
+            if($usuario->imagen){
+                $usuario_imagen = $usuario->imagen;
+            }else{
+                $usuario_imagen = '';
+            }
 
 			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
@@ -115,6 +125,8 @@ class BlogController extends BaseController {
             $entrada_array['fecha'] = $fecha;  
             $entrada_array['contenido'] = $contenido;
             $entrada_array['imagen'] = $imagen;
+            $entrada_array['usuario_imagen'] = $usuario_imagen;
+            $entrada_array['sexo'] = $usuario->sexo;
             $entrada_array['url']= "/blog/entrada/{$entrada->id}";
             $entrada_array['contador'] = $i;
             $array[$entrada->id] = $entrada_array;
@@ -140,7 +152,7 @@ class BlogController extends BaseController {
 
 		$entradas = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo')
 			->where('users.academia_id', $academia_id)
 			->where('categorias_blog.nombre', $id)
 			->orderBy('entradas_blog.created_at', 'desc')
@@ -159,75 +171,91 @@ class BlogController extends BaseController {
 				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 			}
 
+			$i = 1;
+
 			foreach($entradas as $entrada){
 
-				$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+			$usuario = User::find($entrada->usuario_id);
 
-				$collection=collect($entrada);     
-	            $entrada_array = $collection->toArray();
 
-	            if($entrada->imagen){
-	                $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
-	            }else{
-	                $imagen = '';
-	            }
+            if($usuario->imagen){
+                $usuario_imagen = $usuario->imagen;
+            }else{
+                $usuario_imagen = '';
+            }
 
-	            $fecha_tmp = Carbon::parse($entrada->created_at);
+			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
-	            $dia = $fecha_tmp->format('d'); 
+			$collection=collect($entrada);     
+            $entrada_array = $collection->toArray();
 
-	            switch ($fecha_tmp->month) {
-	                case 1:
-	                    $mes = "Enero";
-	                    break;
-	                case 2:
-	                    $mes = "Febrero";
-	                    break;
-	                case 3:
-	                    $mes = "Marzo";
-	                    break;
-	                case 4:
-	                    $mes = "Abril";
-	                    break;
-	                case 5:
-	                    $mes = "Mayo";
-	                    break;
-	                case 6:
-	                    $mes = "Junio";
-	                    break;
-	                case 7:
-	                    $mes = "Julio";
-	                    break;
-	                case 8:
-	                    $mes = "Agosto";
-	                    break;
-	                case 9:
-	                    $mes = "Septiembre";
-	                    break;
-	                case 10:
-	                    $mes = "Octubre";
-	                    break;
-	                case 11:
-	                    $mes = "Noviembre";
-	                    break;
-	                case 12:
-	                    $mes = "Diciembre";
-	                    break;
-	            }
+            if($entrada->imagen){
+                $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
+            }else{
+                $imagen = '';
+            }
 
-	            $ano = $fecha_tmp->format('Y'); 
+            $fecha_tmp = Carbon::parse($entrada->created_at);
 
-	            $hora = Carbon::parse($entrada->created_at)->format('h:i:s A');
+            $dia = $fecha_tmp->format('d'); 
 
-	            $fecha = $dia . ' de ' . $mes . ' ' . $ano . ' ' . $hora;
-	            
-	            $entrada_array['fecha'] = $fecha;  
-	            $entrada_array['contenido'] = $contenido;
-	            $entrada_array['imagen'] = $imagen;
-	            $entrada_array['url']= "/blog/entrada/{$entrada->id}";
-	            $array[$entrada->id] = $entrada_array;
+            switch ($fecha_tmp->month) {
+                case 1:
+                    $mes = "Enero";
+                    break;
+                case 2:
+                    $mes = "Febrero";
+                    break;
+                case 3:
+                    $mes = "Marzo";
+                    break;
+                case 4:
+                    $mes = "Abril";
+                    break;
+                case 5:
+                    $mes = "Mayo";
+                    break;
+                case 6:
+                    $mes = "Junio";
+                    break;
+                case 7:
+                    $mes = "Julio";
+                    break;
+                case 8:
+                    $mes = "Agosto";
+                    break;
+                case 9:
+                    $mes = "Septiembre";
+                    break;
+                case 10:
+                    $mes = "Octubre";
+                    break;
+                case 11:
+                    $mes = "Noviembre";
+                    break;
+                case 12:
+                    $mes = "Diciembre";
+                    break;
+            }
 
-			}
+            $ano = $fecha_tmp->format('Y'); 
+
+            $hora = Carbon::parse($entrada->created_at)->format('h:i:s A');
+
+            $fecha = $dia . ' de ' . $mes . ' ' . $ano . ' ' . $hora;
+            
+            $entrada_array['fecha'] = $fecha;  
+            $entrada_array['contenido'] = $contenido;
+            $entrada_array['imagen'] = $imagen;
+            $entrada_array['usuario_imagen'] = $usuario_imagen;
+            $entrada_array['sexo'] = $usuario->sexo;
+            $entrada_array['url']= "/blog/entrada/{$entrada->id}";
+            $entrada_array['contador'] = $i;
+            $array[$entrada->id] = $entrada_array;
+
+            $i = $i + 1;
+
+		}
 
 	    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array]);
 	    }else{
@@ -240,14 +268,28 @@ class BlogController extends BaseController {
 
 
 		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo')
 			->where('entradas_blog.id', $id)
 		->first();
 
-		$academia = Academia::find($entrada->academia_id);
-
 		if($entrada)
 		{
+			$usuario = User::find($entrada->usuario_id);
+
+            if($usuario->imagen){
+                $usuario_imagen = $usuario->imagen;
+            }else{
+                $usuario_imagen = '';
+            }
+
+			$academia = Academia::find($entrada->academia_id);
+
+			$entradas = EntradaBlog::where('academia_id', $entrada->academia_id)
+				->orderBy('created_at', 'desc')
+			->get();
+
+			$entradas = $entradas->toArray();
+
 			$categoria_array = array();
 
 			$categorias = CategoriaBlog::where('academia_id', $entrada->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
@@ -321,9 +363,10 @@ class BlogController extends BaseController {
             $entrada_array['fecha'] = $fecha;  
             $entrada_array['contenido'] = $contenido;
             $entrada_array['imagen'] = $imagen;
+            $entrada_array['usuario_imagen'] = $usuario_imagen;
             $entrada_array['url']= "/blog/entrada/{$entrada->id}";
 
-            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array]);
+            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas]);
 
 		}else{
 			return redirect("blog"); 
