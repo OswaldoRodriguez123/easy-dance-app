@@ -85,10 +85,7 @@
                       
    
 
-                      <p>{!! nl2br(str_limit($entrada['contenido'], $limit = 350, $end = '...')) !!}</p>
-
-                      <div class="clearfix"></div>
-
+                      <p>{!! nl2br($entrada['contenido']) !!}</p>
 
                       <a href="{{$entrada['url']}}">Ver mas</a>
 
