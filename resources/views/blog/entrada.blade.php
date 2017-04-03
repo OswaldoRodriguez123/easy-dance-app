@@ -40,6 +40,8 @@
             <hr style="border-bottom: 1px solid #ccc">
 
             <p class="f-15 f-700">{!! nl2br($entrada['contenido']) !!}</p>
+
+            <div class="clearfix"></div>
                         
            
           </div>
