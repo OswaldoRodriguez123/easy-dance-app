@@ -366,6 +366,7 @@
   $("#guardar").click(function(){
 
                 var contenido = $('#contenido').summernote('code');
+                contenido = encodeURIComponent(contenido);
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_entrada" ).serialize(); 
