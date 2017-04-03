@@ -44,10 +44,10 @@
                   <a href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}}</a>
                   <p class="f-15 f-400" style="color:#5e5e5e">
 
-                    Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}}</b> {{$entrada['apellido']}}
+                    Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}} {{$entrada['apellido']}}</b>
 
                     @if($entrada['usuario_imagen'])
-                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$entrada['imagen']}}" alt="">
+                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$entrada['usuario_imagen']}}" alt="">
                       @else
                           @if($entrada['sexo'] == 'M')
                             <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
