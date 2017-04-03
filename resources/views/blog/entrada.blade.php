@@ -51,6 +51,12 @@
             <p class="f-15 f-700">{!! nl2br($entrada['contenido']) !!}</p>
 
             <div class="clearfix"></div>
+
+            @if($entrada['imagen_footer'])
+              <br>
+
+              <img src="{{url('/')}}{{$entrada['imagen_footer']}}" class="img-responsive opaco-0-8" alt="">
+            @endif
                         
            
           </div>

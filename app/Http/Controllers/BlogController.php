@@ -268,7 +268,7 @@ class BlogController extends BaseController {
 
 
 		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.imagen_footer')
 			->where('entradas_blog.id', $id)
 		->first();
 
@@ -309,6 +309,12 @@ class BlogController extends BaseController {
                 $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
             }else{
                 $imagen = '';
+            }
+
+            if($entrada->imagen_footer){
+                $imagen_footer = "/assets/uploads/entradas/{$entrada->imagen_footer}";
+            }else{
+                $imagen_footer = '';
             }
 
             $fecha_tmp = Carbon::parse($entrada->created_at);
@@ -362,6 +368,7 @@ class BlogController extends BaseController {
             
             $entrada_array['fecha'] = $fecha;  
             $entrada_array['contenido'] = $contenido;
+            $entrada_array['imagen_footer'] = $imagen_footer;
             $entrada_array['imagen'] = $imagen;
             $entrada_array['usuario_imagen'] = $usuario_imagen;
             $entrada_array['url']= "/blog/entrada/{$entrada->id}";
@@ -457,6 +464,33 @@ class BlogController extends BaseController {
 
 	            }else{
 	            	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+
+	            }
+
+	            if($request->imageFooter64){
+
+	                $base64_string = substr($request->imageFooter64, strpos($request->imageFooter64, ",")+1);
+	                $path = storage_path();
+	                $split = explode( ';', $request->imageFooter64 );
+	                $type =  explode( '/',  $split[0]);
+	                $ext = $type[1];
+	                
+	                if($ext == 'jpeg' || 'jpg'){
+	                    $extension = '.jpg';
+	                }
+
+	                if($ext == 'png'){
+	                    $extension = '.png';
+	                }
+
+	                $nombre_img = "imagen_footer-". $entrada->id . $extension;
+	                $image = base64_decode($base64_string);
+
+	                $img = Image::make($image)->resize(1440, 500);
+	                $img->save('assets/uploads/entradas/'.$nombre_img);
+
+	                $entrada->imagen_footer = $nombre_img;
+	                $entrada->save();
 
 	            }
 
