@@ -36,7 +36,7 @@
               <span class="f-25 f-700" style="color:#5e5e5e">{{$entrada['titulo']}}</span><br>
               <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}} {{$entrada['apellido']}}</b></span> 
               @if($entrada['usuario_imagen'])
-                  <img class="lv-img-sm" src="{{$entrada['imagen']}}" alt="">
+                  <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$entrada['usuario_imagen']}}" alt="">
                 @else
                     @if($entrada['sexo'] == 'M')
                       <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
