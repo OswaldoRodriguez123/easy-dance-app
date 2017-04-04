@@ -148,6 +148,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('blog/entrada/update/titulo', 'BlogController@updateTitulo');
 			Route::put('blog/entrada/update/categoria', 'BlogController@updateCategoria');
 			Route::put('blog/entrada/update/imagen', 'BlogController@updateImagen');
+			Route::put('blog/entrada/update/imagen_poster', 'BlogController@updateImagenPoster');
 			Route::put('blog/entrada/update/mostrar', 'BlogController@updateMostrar');
 			Route::put('blog/entrada/update/contenido', 'BlogController@updateContenido');
 			Route::delete('blog/entrada/eliminar/{id}', 'BlogController@destroy');

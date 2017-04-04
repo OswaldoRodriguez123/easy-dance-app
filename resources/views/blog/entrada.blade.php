@@ -66,12 +66,6 @@
 
             <div class="clearfix"></div>
 
-            @if($entrada['imagen_footer'])
-              <br>
-
-              <img src="{{url('/')}}{{$entrada['imagen_footer']}}" class="img-responsive opaco-0-8" alt="">
-            @endif
-                        
            
           </div>
 
@@ -99,7 +93,36 @@
 
                   @foreach(array_slice($entradas, 0, 4) as $tmp)
 
-                    <a class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
+                    
+                    <div class="row">
+                      <div class="col-sm-5">
+
+                        <a onclick="procesando()" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">
+
+                          @if($tmp['imagen_poster'])
+                            <img class="img-responsive" src="{{url('/')}}/assets/uploads/entradas/{{$tmp['imagen_poster']}}" alt="">
+
+                          @else
+
+                            <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+
+                          @endif
+
+                          <br>
+
+                        </a>
+
+                      </div>
+
+                      <div class="col-sm-7">
+     
+
+                        <a onclick="procesando()" class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
+
+
+                      </div>
+
+                    </div>
 
                   @endforeach
 

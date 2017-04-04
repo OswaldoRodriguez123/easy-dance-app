@@ -175,6 +175,33 @@
 
                           <div class="clearfix p-b-35"></div>
 
+                          <div class="col-sm-12">
+                                <label for="apellido" id="id-imagen_poster">Imagen Poster</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen poster de la entrada" title="" data-original-title="Ayuda"></i>
+                                
+                                <div class="clearfix p-b-15"></div>
+                                  
+                                <input type="hidden" name="imagePoster64" id="imagePoster64">
+                                  <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                    <div>
+                                        <span class="btn btn-info btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imagen_poster" id="imagen_poster" >
+                                        </span>
+                                        <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                    </div>
+                                </div>
+                                  <div class="has-error" id="error-imagen_poster">
+                                  <span >
+                                      <small class="help-block error-span" id="error-imagen_poster_mensaje"  ></small>
+                                  </span>
+                                </div>
+                              </div>
+
+
+                          <div class="clearfix p-b-35"></div>
+
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
@@ -248,6 +275,28 @@
      
             var newimage = canvas.toDataURL("image/jpeg", 0.8);
             var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+          },500);
+
+      });
+
+      $("#imagen_poster").bind("change", function() {
+          //alert('algo cambio');
+          
+          setTimeout(function(){
+            var imagen = $("#imagenb img").attr('src');
+            var canvas = document.createElement("canvas");
+   
+            var context=canvas.getContext("2d");
+            var img = new Image();
+            img.src = imagen;
+            
+            canvas.width  = img.width;
+            canvas.height = img.height;
+
+            context.drawImage(img, 0, 0);
+     
+            var newimage = canvas.toDataURL("image/jpeg", 0.8);
+            var image64 = $("input:hidden[name=imagePoster64]").val(newimage);
           },500);
 
       });

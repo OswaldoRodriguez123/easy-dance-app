@@ -311,6 +311,78 @@
             </div>
 
 
+            <div class="modal fade" id="modal-ImagenPoster" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_imagen_poster" id="edit_imagen_poster"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Cargar Imagen</label>
+                                        <div class="clearfix p-b-15"></div>
+                                        <input type="hidden" name="imagePoster64" id="imagePoster64">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($entrada->imagen_poster)
+                                          <img src="{{url('/')}}/assets/uploads/entradas/{{$entrada->imagen_poster}}" style="line-height: 150px;">
+                                          @endif
+                                        </div>
+                                        <div>
+                                            <span class="btn btn-info btn-file">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="imagen_poster" id="imagen_poster" >
+                                            </span>
+                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="has-error" id="error-imagen_poster">
+                                      <span >
+                                          <small id="error-imagen_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$entrada->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-morado m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_imagen_poster" data-update="imagen_poster" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+
             <section id="content">
                 <div class="container">
                 
@@ -415,9 +487,17 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($entrada->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Imagen </span>
+                               <span class="f-14"> Imagen Principal </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="entrada-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modal-ImagenPoster">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen_poster" class="zmdi {{ empty($entrada->imagen_poster) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Imagen Poster </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="entrada-imagen_poster"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modal-Mostrar">
                              <td> 
@@ -500,6 +580,28 @@
           var newimage = canvas.toDataURL("image/jpeg", 0.8);
           var image64 = $("input:hidden[name=imageBase64]").val(newimage);
         },500);
+
+      });
+
+      $("#imagen_poster").bind("change", function() {
+          //alert('algo cambio');
+          
+          setTimeout(function(){
+            var imagen = $("#imagenb img").attr('src');
+            var canvas = document.createElement("canvas");
+   
+            var context=canvas.getContext("2d");
+            var img = new Image();
+            img.src = imagen;
+            
+            canvas.width  = img.width;
+            canvas.height = img.height;
+
+            context.drawImage(img, 0, 0);
+     
+            var newimage = canvas.toDataURL("image/jpeg", 0.8);
+            var image64 = $("input:hidden[name=imagePoster64]").val(newimage);
+          },500);
 
       });
 

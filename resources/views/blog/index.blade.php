@@ -174,9 +174,38 @@
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Articulos Recientes</h2>
 
-                  @foreach(array_slice($entradas, 0, 4) as $tmp)
+                  @foreach(array_slice($entradas, 0, 4) as $entrada)
 
-                    <a onclick="procesando()" class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
+                    
+                    <div class="row">
+                      <div class="col-sm-5">
+
+                        <a onclick="procesando()" href="{{$entrada['url']}}">
+
+                          @if($entrada['imagen'])
+                            <img class="img-responsive" src="{{url('/')}}{{$entrada['imagen']}}" alt="">
+
+                          @else
+
+                            <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+
+                          @endif
+
+                          <br>
+
+                        </a>
+
+                      </div>
+
+                      <div class="col-sm-7">
+     
+
+                        <a onclick="procesando()" class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$entrada['id']}}">{{$entrada['titulo']}}</a><br><br>
+
+
+                      </div>
+
+                    </div>
 
                   @endforeach
 

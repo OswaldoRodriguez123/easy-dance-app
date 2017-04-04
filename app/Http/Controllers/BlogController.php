@@ -35,7 +35,7 @@ class BlogController extends BaseController {
 		$array = array();
 
 		$query = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo', 'entradas_blog.boolean_mostrar')
+			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
 			->where('users.academia_id', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
 
@@ -85,8 +85,8 @@ class BlogController extends BaseController {
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();
 
-            if($entrada->imagen){
-                $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
+            if($entrada->imagen_poster){
+                $imagen = "/assets/uploads/entradas/{$entrada->imagen_poster}";
             }else{
                 $imagen = '';
             }
@@ -172,7 +172,7 @@ class BlogController extends BaseController {
 
 		$query = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
 			->where('users.academia_id', $academia_id)
 			->where('categorias_blog.nombre', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
@@ -223,8 +223,8 @@ class BlogController extends BaseController {
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();
 
-            if($entrada->imagen){
-                $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
+            if($entrada->imagen_poster){
+                $imagen = "/assets/uploads/entradas/{$entrada->imagen_poster}";
             }else{
                 $imagen = '';
             }
@@ -300,14 +300,14 @@ class BlogController extends BaseController {
 
  		if(Auth::check()){
 			$usuario_tipo = Auth::user()->usuario_tipo;
-			$id = Auth::user()->academia_id;
+			$academia_id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;
-			$id = 7;
+			$academia_id = 7;
 		}
 
 		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.imagen_footer', 'entradas_blog.boolean_mostrar')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster', 'entradas_blog.id')
 			->where('entradas_blog.id', $id)
 		->first();
 
@@ -337,7 +337,7 @@ class BlogController extends BaseController {
 
 			foreach($categorias as $categoria){
 
-				$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+				$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $academia_id);
 
 				if(!$usuario_tipo){
 					$query->where('entradas_blog.boolean_mostrar', 1);
@@ -359,12 +359,6 @@ class BlogController extends BaseController {
                 $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
             }else{
                 $imagen = '';
-            }
-
-            if($entrada->imagen_footer){
-                $imagen_footer = "/assets/uploads/entradas/{$entrada->imagen_footer}";
-            }else{
-                $imagen_footer = '';
             }
 
             $fecha_tmp = Carbon::parse($entrada->created_at);
@@ -418,10 +412,8 @@ class BlogController extends BaseController {
             
             $entrada_array['fecha'] = $fecha;  
             $entrada_array['contenido'] = $contenido;
-            $entrada_array['imagen_footer'] = $imagen_footer;
             $entrada_array['imagen'] = $imagen;
             $entrada_array['usuario_imagen'] = $usuario_imagen;
-            $entrada_array['url']= "/blog/entrada/{$entrada->id}";
 
             return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total]);
 
@@ -514,6 +506,33 @@ class BlogController extends BaseController {
 
 	            }else{
 	            	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+
+	            }
+
+	            if($request->imagePoster64){
+
+	                $base64_string = substr($request->imagePoster64, strpos($request->imagePoster64, ",")+1);
+	                $path = storage_path();
+	                $split = explode( ';', $request->imagePoster64 );
+	                $type =  explode( '/',  $split[0]);
+	                $ext = $type[1];
+	                
+	                if($ext == 'jpeg' || 'jpg'){
+	                    $extension = '.jpg';
+	                }
+
+	                if($ext == 'png'){
+	                    $extension = '.png';
+	                }
+
+	                $nombre_img = "imagen_poster-". $entrada->id . $extension;
+	                $image = base64_decode($base64_string);
+
+	                $img = Image::make($image)->resize(300, 300);
+	                $img->save('assets/uploads/entradas/'.$nombre_img);
+
+	                $entrada->imagen_poster = $nombre_img;
+	                $entrada->save();
 
 	            }
 
@@ -651,6 +670,45 @@ class BlogController extends BaseController {
         }
 
         $entrada->imagen = $nombre_img;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateImagenPoster(Request $request)
+    {
+        $entrada = EntradaBlog::find($request->id);
+        
+        if($request->imagePoster64){
+            $base64_string = substr($request->imagePoster64, strpos($request->imagePoster64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imagePoster64 );
+            $type =  explode( '/',  $split[0]);
+
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
+
+            if($ext == 'png'){
+                $extension = '.png';
+            }
+
+            $nombre_img = "imagen_poster-". $entrada->id . $extension;
+            $image = base64_decode($base64_string);
+
+            $img = Image::make($image)->resize(300, 300);
+            $img->save('assets/uploads/entradas/'.$nombre_img);
+        }
+        else{
+            $nombre_img = "";
+        }
+
+        $entrada->imagen_poster = $nombre_img;
 
         if($entrada->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
