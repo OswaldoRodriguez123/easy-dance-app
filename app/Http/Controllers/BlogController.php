@@ -23,20 +23,27 @@ class BlogController extends BaseController {
 	public function index(){
 
 		if(Auth::check()){
+			$usuario_tipo = Auth::user()->usuario_tipo;
 			$id = Auth::user()->academia_id;
 		}else{
-			$id = 1;
+			$usuario_tipo = 0;
+			$id = 7;
 		}
 
 		$academia = Academia::find($id);
 
 		$array = array();
 
-		$entradas = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
+		$query = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo', 'entradas_blog.boolean_mostrar')
 			->where('users.academia_id', $id)
-			->orderBy('entradas_blog.created_at', 'desc')
-		->get();
+			->orderBy('entradas_blog.created_at', 'desc');
+
+		if(!$usuario_tipo){
+			$query->where('entradas_blog.boolean_mostrar', 1)
+		}
+
+		$entradas = $query->get();
 
 		$categoria_array = array();
 
@@ -46,7 +53,14 @@ class BlogController extends BaseController {
 
 		foreach($categorias as $categoria){
 
-			$cantidad = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id)->count();
+
+			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+
+			if(!$usuario_tipo){
+				$query->where('entradas_blog.boolean_mostrar', 1)
+			}
+
+			$cantidad = $query->count();
 
 			$cantidad_total = $cantidad_total + $cantidad;
 
@@ -145,45 +159,55 @@ class BlogController extends BaseController {
  	public function categoria($id){
 
 		if(Auth::check()){
-			$academia_id = Auth::user()->academia_id;
+			$usuario_tipo = Auth::user()->usuario_tipo;
+			$id = Auth::user()->academia_id;
 		}else{
-			$academia_id = 7;
+			$usuario_tipo = 0;
+			$id = 7;
 		}
 
 		$academia = Academia::find($academia_id);
 
 		$array = array();
 
-		$entradas = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
+		$query = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
 			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar')
 			->where('users.academia_id', $academia_id)
 			->where('categorias_blog.nombre', $id)
-			->orderBy('entradas_blog.created_at', 'desc')
-		->get();
+			->orderBy('entradas_blog.created_at', 'desc');
 
-		if($entradas){
+		if(!$usuario_tipo){
+			$query->where('entradas_blog.boolean_mostrar', 1)
+		}
 
+		$entradas = $query->get();
 
-			$categoria_array = array();
+		$categoria_array = array();
 
-			$categorias = CategoriaBlog::where('academia_id', $academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
+		$categorias = CategoriaBlog::where('academia_id', $academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
-			$cantidad_total = 0;
-			
+		$cantidad_total = 0;
+		
 
-			foreach($categorias as $categoria){
+		foreach($categorias as $categoria){
 
-				$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', $academia_id)->count();
+			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
 
-				$cantidad_total = $cantidad_total + $cantidad;
-
-				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
+			if(!$usuario_tipo){
+				$query->where('entradas_blog.boolean_mostrar', 1)
 			}
 
-			$i = 1;
+			$cantidad = $query->count();
 
-			foreach($entradas as $entrada){
+			$cantidad_total = $cantidad_total + $cantidad;
+
+			$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
+		}
+
+		$i = 1;
+
+		foreach($entradas as $entrada){
 
 			$usuario = User::find($entrada->usuario_id);
 
@@ -267,16 +291,21 @@ class BlogController extends BaseController {
 
 		}
 
-	    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
-	    }else{
-	    	return redirect("blog"); 
-	    }
-
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
+	    
  	}
 
  	public function entrada($id){
 
 
+ 		if(Auth::check()){
+			$usuario_tipo = Auth::user()->usuario_tipo;
+			$id = Auth::user()->academia_id;
+		}else{
+			$usuario_tipo = 0;
+			$id = 7;
+		}
+		
 		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.imagen_footer', 'entradas_blog.boolean_mostrar')
 			->where('entradas_blog.id', $id)
@@ -308,7 +337,13 @@ class BlogController extends BaseController {
 
 			foreach($categorias as $categoria){
 
-				$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', $entrada->academia_id)->count();
+				$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+
+				if(!$usuario_tipo){
+					$query->where('entradas_blog.boolean_mostrar', 1)
+				}
+
+				$cantidad = $query->count();
 
 				$cantidad_total = $cantidad_total + $cantidad;
 
