@@ -1,13 +1,13 @@
 @extends('layout.master')
 
 @section('css_vendor')
-<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 
-<!--     <link href="{{url('/')}}/assets/css/styles.min.css" rel="stylesheet"> -->
-    <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
-    <!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet"> -->
+  <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
+  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
+
 
 
 @stop
@@ -33,7 +33,21 @@
                 <img src="{{url('/')}}{{$entrada['imagen']}}" class="img-responsive opaco-0-8" alt="">
                 <br>
               @endif
-              <span class="f-25 f-700" style="color:#5e5e5e">{{$entrada['titulo']}}</span><br>
+              <span class="f-25 f-700" style="color:#5e5e5e">{{$entrada['titulo']}} </span>
+
+
+              @if(Auth::check())
+                @if(Auth::user()->usuario_tipo == 1)
+                  @if($entrada['boolean_mostrar'])
+                    <i class="zmdi zmdi-check f-15 c-verde"></i>
+                  @else
+                    <i class="fa fa-hourglass f-15 c-youtube"></i>
+                  @endif
+                @endif
+              @endif
+              
+              <br>
+
               <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}} {{$entrada['apellido']}}</b></span> 
               @if($entrada['usuario_imagen'])
                   <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$entrada['usuario_imagen']}}" alt="">
@@ -69,6 +83,8 @@
                   <div class="pmo-block pmo-contact hidden-xs">
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
+
+                  <a href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 
                   @foreach($categorias as $categoria)
 

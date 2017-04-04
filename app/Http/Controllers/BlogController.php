@@ -25,7 +25,7 @@ class BlogController extends BaseController {
 		if(Auth::check()){
 			$id = Auth::user()->academia_id;
 		}else{
-			$id = 7;
+			$id = 1;
 		}
 
 		$academia = Academia::find($id);
@@ -33,7 +33,7 @@ class BlogController extends BaseController {
 		$array = array();
 
 		$entradas = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo')
+			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo', 'entradas_blog.boolean_mostrar')
 			->where('users.academia_id', $id)
 			->orderBy('entradas_blog.created_at', 'desc')
 		->get();
@@ -42,9 +42,13 @@ class BlogController extends BaseController {
 
 		$categorias = CategoriaBlog::where('academia_id', $id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
+		$cantidad_total = 0;
+
 		foreach($categorias as $categoria){
 
 			$cantidad = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id)->count();
+
+			$cantidad_total = $cantidad_total + $cantidad;
 
 			$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 		}
@@ -135,7 +139,7 @@ class BlogController extends BaseController {
 
 		}
 
-    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array]);
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
  	}
 
  	public function categoria($id){
@@ -152,7 +156,7 @@ class BlogController extends BaseController {
 
 		$entradas = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar')
 			->where('users.academia_id', $academia_id)
 			->where('categorias_blog.nombre', $id)
 			->orderBy('entradas_blog.created_at', 'desc')
@@ -165,8 +169,14 @@ class BlogController extends BaseController {
 
 			$categorias = CategoriaBlog::where('academia_id', $academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
+			$cantidad_total = 0;
+			
+
 			foreach($categorias as $categoria){
+
 				$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', $academia_id)->count();
+
+				$cantidad_total = $cantidad_total + $cantidad;
 
 				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 			}
@@ -257,7 +267,7 @@ class BlogController extends BaseController {
 
 		}
 
-	    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array]);
+	    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
 	    }else{
 	    	return redirect("blog"); 
 	    }
@@ -268,7 +278,7 @@ class BlogController extends BaseController {
 
 
 		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.imagen_footer')
+			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.imagen_footer', 'entradas_blog.boolean_mostrar')
 			->where('entradas_blog.id', $id)
 		->first();
 
@@ -294,8 +304,13 @@ class BlogController extends BaseController {
 
 			$categorias = CategoriaBlog::where('academia_id', $entrada->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
+			$cantidad_total = 0;
+
 			foreach($categorias as $categoria){
+
 				$cantidad = EntradaBlog::where('categoria',$categoria->id)->where('academia_id', $entrada->academia_id)->count();
+
+				$cantidad_total = $cantidad_total + $cantidad;
 
 				$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
 			}
@@ -373,7 +388,7 @@ class BlogController extends BaseController {
             $entrada_array['usuario_imagen'] = $usuario_imagen;
             $entrada_array['url']= "/blog/entrada/{$entrada->id}";
 
-            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas]);
+            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total]);
 
 		}else{
 			return redirect("blog"); 
@@ -467,33 +482,6 @@ class BlogController extends BaseController {
 
 	            }
 
-	            if($request->imageFooter64){
-
-	                $base64_string = substr($request->imageFooter64, strpos($request->imageFooter64, ",")+1);
-	                $path = storage_path();
-	                $split = explode( ';', $request->imageFooter64 );
-	                $type =  explode( '/',  $split[0]);
-	                $ext = $type[1];
-	                
-	                if($ext == 'jpeg' || 'jpg'){
-	                    $extension = '.jpg';
-	                }
-
-	                if($ext == 'png'){
-	                    $extension = '.png';
-	                }
-
-	                $nombre_img = "imagen_footer-". $entrada->id . $extension;
-	                $image = base64_decode($base64_string);
-
-	                $img = Image::make($image)->resize(1440, 500);
-	                $img->save('assets/uploads/entradas/'.$nombre_img);
-
-	                $entrada->imagen_footer = $nombre_img;
-	                $entrada->save();
-
-	            }
-
 	            $array = [
 					'imagen' => $imagen,
 					'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
@@ -513,4 +501,208 @@ class BlogController extends BaseController {
 	        }
 	    }
     }
+
+    public function edit($id){
+
+		$entrada = EntradaBlog::join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
+			->select('entradas_blog.*', 'categorias_blog.nombre as categoria', 'categorias_blog.id as categoria_id')
+			->where('entradas_blog.id', $id)
+		->first();
+
+		if($entrada)
+		{
+			$categorias = CategoriaBlog::where('academia_id', $id)->orWhere('academia_id', null)->orderBy('nombre')->get();
+			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+
+            return view('blog.planilla')->with(['contenido' => $contenido, 'entrada' => $entrada, 'categorias' => $categorias, 'id' => $id]);
+
+		}else{
+			return redirect("blog"); 
+		}
+ 	}
+
+ 	public function updateTitulo(Request $request){
+
+	    $rules = [
+	        'titulo' => 'required|min:3|max:20',
+	    ];
+
+	    $messages = [
+
+	        'titulo.required' => 'Ups! El Nombre  es requerido ',
+	        'titulo.min' => 'El mínimo de caracteres permitidos son 3',
+	        'titulo.max' => 'El máximo de caracteres permitidos son 20',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+        $entrada = EntradaBlog::find($request->id);;
+
+        $entrada->titulo = $request->titulo;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateCategoria(Request $request){
+
+	    $rules = [
+
+	        'categoria' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'categoria.required' => 'Ups! La categoria es requerida',
+
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+        $entrada = EntradaBlog::find($request->id);;
+
+        $entrada->categoria = $request->categoria;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateImagen(Request $request)
+    {
+        $entrada = EntradaBlog::find($request->id);
+        
+        if($request->imageBase64){
+            $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imageBase64 );
+            $type =  explode( '/',  $split[0]);
+
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
+
+            if($ext == 'png'){
+                $extension = '.png';
+            }
+
+            $nombre_img = "imagen_entrada-". $entrada->id . $extension;
+            $image = base64_decode($base64_string);
+
+            $img = Image::make($image)->resize(1440, 500);
+            $img->save('assets/uploads/entradas/'.$nombre_img);
+        }
+        else{
+            $nombre_img = "";
+        }
+
+        $entrada->imagen = $nombre_img;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateMostrar(Request $request){
+
+	    $rules = [
+
+	        'boolean_mostrar' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'boolean_mostrar.required' => 'Ups! La categoria es requerida',
+
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+        $entrada = EntradaBlog::find($request->id);
+
+        $entrada->boolean_mostrar = $request->boolean_mostrar;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateContenido(Request $request){
+
+	    $rules = [
+
+	        'contenido' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'contenido.required' => 'Ups! El contenido es requerida',
+
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+        $entrada = EntradaBlog::find($request->id);
+
+        $nombre_archivo = 'entrada-'.$entrada->id.'.txt';
+
+	    \Storage::disk('entradas')->put($nombre_archivo,  $request->contenido);
+
+	    $entrada->contenido = $nombre_archivo;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function destroy($id)
+    {
+
+        $entrada = EntradaBlog::find($id);
+        
+        if($entrada->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    
 }

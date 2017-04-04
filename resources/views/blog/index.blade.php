@@ -6,6 +6,7 @@
   <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
   <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
   <link href="{{url('/')}}/assets/css/rrssb.css" rel="stylesheet"/>
+  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 
 @stop
 
@@ -25,6 +26,21 @@
   @endif
 @endif
 
+<?php 
+
+  if(Auth::check()){
+
+    if(isset(Auth::user()->usuario_tipo)){
+      $usuario_tipo = Auth::user()->usuario_tipo;
+    }else{
+      $usuario_tipo = 0;
+    }
+  }else{
+    $usuario_tipo = 0;
+  }
+
+?>
+
   <div class="container">
     <div class="card">
       <div class="card-body p-b-20">
@@ -41,7 +57,20 @@
 
                 <div style="padding: 10px">
 
-                  <a href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}}</a>
+                  <a onclick="procesando()" href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}} 
+
+                  @if(Auth::check())
+                    @if(Auth::user()->usuario_tipo == 1)
+                      @if($entrada['boolean_mostrar'])
+                        <i class="zmdi zmdi-check f-15 c-verde"></i>
+                      @else
+                        <i class="fa fa-hourglass f-15 c-youtube"></i>
+                      @endif
+                    @endif
+                  @endif
+
+                  </a>
+
                   <p class="f-15 f-400" style="color:#5e5e5e">
 
                     Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}} {{$entrada['apellido']}}</b>
@@ -61,33 +90,37 @@
                   <div class="row">
                     <div class="col-sm-4 imagen-blog-contenedor">
 
-                      <a href="{{$entrada['url']}}" class="imagen-blog-link">
+                      <a onclick="procesando()" href="{{$entrada['url']}}" class="imagen-blog-link">
 
                         @if($entrada['imagen'])
                           <img class="imagen-blog-img img-responsive" src="{{url('/')}}{{$entrada['imagen']}}" alt="">
-
-                          <br>
 
                         @else
 
                           <img class="imagen-blog-img img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
 
-                          <br>
-
                         @endif
+
+                        <br>
 
                       </a>
 
                     </div>
 
                     <div class="col-sm-8">
-
-                      
    
 
                       <p>{!! nl2br($entrada['contenido']) !!}</p>
 
-                      <a href="{{$entrada['url']}}">Ver mas</a>
+                      <a onclick="procesando()" href="{{$entrada['url']}}">Ver mas</a>
+
+                      @if(Auth::check())
+                        @if(Auth::user()->usuario_tipo == 1)
+
+                          <a onclick="procesando()" class="btn-blanco bottom-align-text" href="{{url('/')}}/blog/entrada/editar/{{$entrada['id']}}">Editar</a>
+                   
+                        @endif
+                      @endif
 
                     </div>
 
@@ -108,8 +141,6 @@
 
               <br><br>
 
-
-
               <span class="mostrar f-16 c-morado f-700 pointer">Mostrar más</span>
 
             </div>
@@ -129,9 +160,11 @@
 
                 <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
 
+                <a onclick="procesando()" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
+
                 @foreach($categorias as $categoria)
 
-                  <a href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
+                  <a onclick="procesando()" href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
 
                 @endforeach
 
@@ -142,7 +175,7 @@
 
                   @foreach(array_slice($entradas, 0, 4) as $tmp)
 
-                    <a class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
+                    <a onclick="procesando()" class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
 
                   @endforeach
 
@@ -274,23 +307,40 @@
               }
             }
 
+            if("{{$usuario_tipo}}" == 1){
+              if(entrada.boolean_mostrar){
+                icono = '<i class="zmdi zmdi-check f-15 c-verde"></i>'
+              }
+              else{
+                icono ='<i class="fa fa-hourglass f-15 c-youtube"></i>'
+              }
+            }else{
+              icono = ''
+            }
+
+            if("{{$usuario_tipo}}" == 1){
+              editar = '<a class="btn-blanco bottom-align-text" href="{{url('/')}}/blog/entrada/editar/'+entrada.id+'">Editar</a>'
+            }else{
+              editar = ''
+            }
+
             entrada_contenido = nl2br(entrada.contenido)
             entrada_contenido = entrada_contenido.toLowerCase().substr(0, 350) + "..."
 
             contenido += '<div class="opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">'
             contenido += '<div style="padding: 10px">'
-            contenido += '<a href="'+entrada.url+'" class="f-25 f-700">'+entrada.titulo+'</a>'
+            contenido += '<a onclick="procesando()" href="'+entrada.url+'" class="f-25 f-700">'+entrada.titulo+' '+icono+'</a>'
             contenido += '<p class="f-15 f-400" style="color:#5e5e5e">Creado el '+entrada.fecha+' por <b>'+entrada.nombre+' '+entrada.apellido+'</b>'
             contenido += '<img class="lv-img-sm" src="'+usuario_imagen+'" alt=""></p>'
             contenido += '<div class="row">'
             contenido += '<div class="col-sm-4 imagen-blog-contenedor">'
-            contenido += '<a href="'+entrada.url+'" class="imagen-blog-link">'
+            contenido += '<a onclick="procesando()" href="'+entrada.url+'" class="imagen-blog-link">'
             contenido += '<img class="imagen-blog-img img-responsive" src="'+imagen+'" alt=""></a></div>'
             contenido += '<div class="col-sm-8">'
             contenido += '<p>'+entrada_contenido
-            contenido += '</p><a href="'+entrada.url+'">Ver mas</a>'
+            contenido += '</p><a onclick="procesando()" href="'+entrada.url+'">Ver mas</a>'
+            contenido +=  editar
             contenido += '</div></div></div></div>'
-
 
             $(".entradas").append(contenido)
 

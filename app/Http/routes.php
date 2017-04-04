@@ -132,17 +132,25 @@ Route::get('blog/categoria/{id}', 'BlogController@categoria');
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('notificacion', 'NotificacionController@consulta');
-
 		Route::get('/logout', 'Auth\AuthController@getLogout');
 
 		// DESDE AQUI NECESITAN ESTAR AUTENTICADO
-
 
 		/*------------------------------------------------------
 		//MIDDLEWARE ADMINISTRADOR
 		//RUTAS QUE SOLAMENTE PODRA TENER ACCESO EL ROL ADMIN
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
+
+			//BLOG
+
+			Route::get('blog/entrada/editar/{id}', 'BlogController@edit');
+			Route::put('blog/entrada/update/titulo', 'BlogController@updateTitulo');
+			Route::put('blog/entrada/update/categoria', 'BlogController@updateCategoria');
+			Route::put('blog/entrada/update/imagen', 'BlogController@updateImagen');
+			Route::put('blog/entrada/update/mostrar', 'BlogController@updateMostrar');
+			Route::put('blog/entrada/update/contenido', 'BlogController@updateContenido');
+			Route::delete('blog/entrada/eliminar/{id}', 'BlogController@destroy');
 
 			// ---- CONFIGURACION ----
 
