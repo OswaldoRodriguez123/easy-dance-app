@@ -40,7 +40,7 @@ class BlogController extends BaseController {
 			->orderBy('entradas_blog.created_at', 'desc');
 
 		if(!$usuario_tipo){
-			$query->where('entradas_blog.boolean_mostrar', 1)
+			$query->where('entradas_blog.boolean_mostrar', 1);
 		}
 
 		$entradas = $query->get();
@@ -57,7 +57,7 @@ class BlogController extends BaseController {
 			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
 
 			if(!$usuario_tipo){
-				$query->where('entradas_blog.boolean_mostrar', 1)
+				$query->where('entradas_blog.boolean_mostrar', 1);
 			}
 
 			$cantidad = $query->count();
@@ -178,7 +178,7 @@ class BlogController extends BaseController {
 			->orderBy('entradas_blog.created_at', 'desc');
 
 		if(!$usuario_tipo){
-			$query->where('entradas_blog.boolean_mostrar', 1)
+			$query->where('entradas_blog.boolean_mostrar', 1);
 		}
 
 		$entradas = $query->get();
@@ -195,7 +195,7 @@ class BlogController extends BaseController {
 			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
 
 			if(!$usuario_tipo){
-				$query->where('entradas_blog.boolean_mostrar', 1)
+				$query->where('entradas_blog.boolean_mostrar', 1);
 			}
 
 			$cantidad = $query->count();
@@ -305,7 +305,7 @@ class BlogController extends BaseController {
 			$usuario_tipo = 0;
 			$id = 7;
 		}
-		
+
 		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
 			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.imagen_footer', 'entradas_blog.boolean_mostrar')
 			->where('entradas_blog.id', $id)
@@ -340,7 +340,7 @@ class BlogController extends BaseController {
 				$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
 
 				if(!$usuario_tipo){
-					$query->where('entradas_blog.boolean_mostrar', 1)
+					$query->where('entradas_blog.boolean_mostrar', 1);
 				}
 
 				$cantidad = $query->count();
