@@ -84,15 +84,15 @@
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
 
-                  <a href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
+                  <a class="f-15 f-700" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 
                   @foreach($categorias as $categoria)
 
-                    <a href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
+                    <a class="f-15 f-700" href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
 
                   @endforeach
 
-                  <br>
+                  <hr class="linea_transparente">
 
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Articulos Recientes</h2>
@@ -103,7 +103,7 @@
 
                   @endforeach
 
-                  <br>
+                  <hr class="linea_transparente">
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Contacto</h2>
 

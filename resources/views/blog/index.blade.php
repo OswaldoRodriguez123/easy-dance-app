@@ -3,10 +3,11 @@
 @section('css_vendor')
 
   <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
-  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
-  <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
-  <link href="{{url('/')}}/assets/css/rrssb.css" rel="stylesheet"/>
   <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 
 @stop
 
@@ -22,7 +23,7 @@
 
 @if(Auth::check())
   @if(Auth::user()->usuario_tipo == 1)
-    <a href="{{url('/')}}/blog/publicar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+    <a href="{{url('/')}}/blog/publicar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus" style="margin-top: 25%"></i></a>
   @endif
 @endif
 
@@ -160,15 +161,15 @@
 
                 <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
 
-                <a onclick="procesando()" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
+                <a class="f-15 f-700" onclick="procesando()" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 
                 @foreach($categorias as $categoria)
 
-                  <a onclick="procesando()" href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
+                  <a class="f-15 f-700" onclick="procesando()" href="{{url('/')}}/blog/categoria/{{$categoria['nombre']}}">{{$categoria['nombre']}} ({{$categoria['cantidad']}})</a><br>
 
                 @endforeach
 
-                <br>
+                <hr class="linea_transparente">
 
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Articulos Recientes</h2>
@@ -179,7 +180,7 @@
 
                   @endforeach
 
-                  <br>
+                <hr class="linea_transparente">
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Contacto</h2>
 

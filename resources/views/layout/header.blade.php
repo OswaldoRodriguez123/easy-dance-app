@@ -55,6 +55,10 @@
                                         <li class="hidden-xs">
                                             <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
                                         </li>
+
+                                        <li class="hidden-xs">
+                                            <a href="{{url('blog')}}"><i class="zmdi zmdi-key f-16"></i> Blog</a>
+                                        </li>
                                     </ul>
                                 </li>
 

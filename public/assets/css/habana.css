@@ -1907,5 +1907,13 @@ a{
     float:right;
 }
 
+.linea_transparente {
+  border:none;
+  border-top:1px solid #ccc;
+  color:#fff;
+  background-color:#fff;
+  height:1px;
+}
+
 
 
