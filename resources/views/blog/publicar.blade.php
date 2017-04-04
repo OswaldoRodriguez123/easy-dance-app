@@ -188,7 +188,7 @@
                             </div>
                             <div class="col-sm-12 text-left">                           
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Publicar</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar Borrador</button>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
 
