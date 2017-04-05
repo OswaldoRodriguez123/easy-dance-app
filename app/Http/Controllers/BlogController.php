@@ -14,6 +14,7 @@ use App\EntradaBlog;
 use App\CategoriaBlog;
 use App\Academia;
 use App\User;
+use App\Blogger;
 use File;
 use Mail;
 
@@ -34,9 +35,9 @@ class BlogController extends BaseController {
 
 		$array = array();
 
-		$query = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id','users.sexo', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
-			->where('users.academia_id', $id)
+		$query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'bloggers.nombre', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
+			->where('entradas_blog.academia_id', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
 
 		if(!$usuario_tipo){
@@ -71,8 +72,7 @@ class BlogController extends BaseController {
                 
 		foreach($entradas as $entrada){
 
-			$usuario = User::find($entrada->usuario_id);
-
+			$usuario = Blogger::find($entrada->usuario_id);
 
             if($usuario->imagen){
                 $usuario_imagen = $usuario->imagen;
@@ -144,7 +144,6 @@ class BlogController extends BaseController {
             $entrada_array['contenido'] = $contenido;
             $entrada_array['imagen'] = $imagen;
             $entrada_array['usuario_imagen'] = $usuario_imagen;
-            $entrada_array['sexo'] = $usuario->sexo;
             $entrada_array['url']= "/blog/entrada/{$entrada->id}";
             $entrada_array['contador'] = $i;
             $array[$entrada->id] = $entrada_array;
@@ -170,10 +169,10 @@ class BlogController extends BaseController {
 
 		$array = array();
 
-		$query = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
+		$query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
-			->where('users.academia_id', $academia_id)
+			->select('bloggers.nombre', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
+			->where('entradas_blog.academia_id', $academia_id)
 			->where('categorias_blog.nombre', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
 
@@ -209,7 +208,7 @@ class BlogController extends BaseController {
 
 		foreach($entradas as $entrada){
 
-			$usuario = User::find($entrada->usuario_id);
+			$usuario = Blogger::find($entrada->usuario_id);
 
 
             if($usuario->imagen){
@@ -282,7 +281,6 @@ class BlogController extends BaseController {
             $entrada_array['contenido'] = $contenido;
             $entrada_array['imagen'] = $imagen;
             $entrada_array['usuario_imagen'] = $usuario_imagen;
-            $entrada_array['sexo'] = $usuario->sexo;
             $entrada_array['url']= "/blog/entrada/{$entrada->id}";
             $entrada_array['contador'] = $i;
             $array[$entrada->id] = $entrada_array;
@@ -306,19 +304,16 @@ class BlogController extends BaseController {
 			$academia_id = 7;
 		}
 
-		$entrada = EntradaBlog::join('users', 'entradas_blog.usuario_id' , '=', 'users.id')
-			->select('users.nombre', 'users.apellido', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.academia_id', 'entradas_blog.usuario_id', 'users.sexo', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster', 'entradas_blog.id')
-			->where('entradas_blog.id', $id)
-		->first();
+		$entrada = EntradaBlog::find($id);
 
 		if($entrada)
 		{
-			$usuario = User::find($entrada->usuario_id);
+			$usuario = Blogger::find($entrada->usuario_id);
 
             if($usuario->imagen){
-                $usuario_imagen = $usuario->imagen;
+                $usuario_imagen = "assets/uploads/bloggers/{$usuario->imagen}";
             }else{
-                $usuario_imagen = '';
+                $usuario_imagen = "assets/img/EASY_DANCE_3_.jpg";
             }
 
 			$academia = Academia::find($entrada->academia_id);
@@ -355,12 +350,6 @@ class BlogController extends BaseController {
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();
 
-            if($entrada->imagen){
-                $imagen = "/assets/uploads/entradas/{$entrada->imagen}";
-            }else{
-                $imagen = '';
-            }
-
             $fecha_tmp = Carbon::parse($entrada->created_at);
 
             $dia = $fecha_tmp->format('d'); 
@@ -412,10 +401,8 @@ class BlogController extends BaseController {
             
             $entrada_array['fecha'] = $fecha;  
             $entrada_array['contenido'] = $contenido;
-            $entrada_array['imagen'] = $imagen;
-            $entrada_array['usuario_imagen'] = $usuario_imagen;
 
-            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total]);
+            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total, 'usuario_imagen' => $usuario_imagen, 'blogger' => $usuario]);
 
 		}else{
 			return redirect("blog"); 
@@ -425,9 +412,11 @@ class BlogController extends BaseController {
 
 	public function publicar(){
 
+        $bloggers = Blogger::where('academia_id', Auth::user()->academia_id)->get();
+
 		$categorias = CategoriaBlog::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
-    	return view('blog.publicar')->with(['categorias' => $categorias]);
+    	return view('blog.publicar')->with(['categorias' => $categorias, 'bloggers' => $bloggers]);
  	}
 
  	public function store(Request $request)
@@ -596,7 +585,7 @@ class BlogController extends BaseController {
 
 	    }
 
-        $entrada = EntradaBlog::find($request->id);;
+        $entrada = EntradaBlog::find($request->id);
 
         $entrada->titulo = $request->titulo;
 
@@ -628,7 +617,7 @@ class BlogController extends BaseController {
 
 	    }
 
-        $entrada = EntradaBlog::find($request->id);;
+        $entrada = EntradaBlog::find($request->id);
 
         $entrada->categoria = $request->categoria;
 

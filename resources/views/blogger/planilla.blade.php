@@ -19,13 +19,13 @@
 @section('content')
 
           
-            <div class="modal fade" id="modal-Titulo" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modal-Nombre" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Blogger<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_titulo" id="edit_titulo"  >
+                        <form name="edit_nombre" id="edit_nombre"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -33,19 +33,18 @@
                                  <div class="form-group">
                                     <label for="nombre">Titulo</label>
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="titulo" name="titulo" rows="2" placeholder="60 Caracteres" maxlength="60" onkeyup="countChar(this)"></textarea>
+                                      <input type="text" class="form-control input-sm input-mask" name="nombre" id="nombre" placeholder="Ej: Valeria Zambrano">
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">{{60 - count($entrada->titulo)}}</span> Caracteres</div>
                                   </div>
-                                 <div class="has-error" id="error-titulo">
+                                 <div class="has-error" id="error-nombre">
                                       <span >
-                                          <small class="help-block error-span" id="error-titulo_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
 
 
-                               <input type="hidden" name="id" value="{{$entrada->id}}"></input>
+                               <input type="hidden" name="id" value="{{$blogger->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -68,67 +67,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_titulo" data-update="titulo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modal-Categoria" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_categoria" id="edit_categoria"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                 <div class="form-group">
-                                    <label for="nombre">Categoria</label>
-
-                                      <div class="select">
-                                          <select class="form-control" id="categoria" name="categoria">
-                                          @foreach ( $categorias as $categoria )
-                                          <option value = "{{ $categoria['id'] }}">{{ $categoria['nombre'] }}</option>
-                                          @endforeach 
-                                          </select>
-                                      </div> 
-
-                                 </div>
-                                 <div class="has-error" id="error-categoria">
-                                      <span >
-                                          <small class="help-block error-span" id="error-categoria_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-
-                               <input type="hidden" name="id" value="{{$entrada->id}}"></input>
-                            
-
-                               <div class="clearfix"></div> 
-                              
-                          </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_categoria" data-update="categoria" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_nombre" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -140,7 +79,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Blogger<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_imagen" id="edit_imagen"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -153,9 +92,9 @@
                                         <div class="clearfix p-b-15"></div>
                                         <input type="hidden" name="imageBase64" id="imageBase64">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
-                                          @if($entrada->imagen)
-                                          <img src="{{url('/')}}/assets/uploads/entradas/{{$entrada->imagen}}" style="line-height: 150px;">
+                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                          @if($blogger->imagen)
+                                            <img src="{{url('/')}}/assets/uploads/bloggers/{{$blogger->imagen}}" style="line-height: 150px;">
                                           @endif
                                         </div>
                                         <div>
@@ -176,7 +115,7 @@
                                 </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$entrada->id}}"></input>
+                               <input type="hidden" name="id" value="{{$blogger->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -207,164 +146,43 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modal-Contenido" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modal-Descripcion" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editar Entrada <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Blogger<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <div>
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>  
-
-                          <div class="col-md-12">
-                              <div id="contenido">{!!$contenido!!}</div>
-                          </div>
-
-                           <div class="clearfix p-b-15"></div>
-                           <div class="clearfix p-b-15"></div>
-
-                           <div class="modal-footer p-b-20 m-b-20">
-                              <div class="col-sm-12 text-left">
-                                <div class="procesando hidden">
-                                <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                <div class="preloader pls-purple">
-                                    <svg class="pl-circular" viewBox="25 25 50 50">
-                                        <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                    </svg>
-                                </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-12">                            
-
-                                <a class="btn-morado m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_contenido" data-update="contenido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                              </div>
-                          </div>
-
-
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modal-Mostrar" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog ">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_mostrar" id="edit_mostrar"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                              <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label for="">Mostrar en el blog</label id="id-boolean_mostrar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar esta entrada en el blog" title="" data-original-title="Ayuda"></i>
-                                          
-                                          <br></br>
-                                          <input type="text" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="mostrar" type="checkbox">
-                                            
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                       <div class="has-error" id="error-boolean_mostrar">
-                                            <span >
-                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                     </div>
-
-
-                               <input type="hidden" name="id" value="{{$entrada->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_mostrar" data-update="mostrar" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="modal fade" id="modal-ImagenPoster" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Entrada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_imagen_poster" id="edit_imagen_poster"  >
+                        <form name="edit_descripcion" id="edit_descripcion"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                <div class="form-group text-center">
-                                    <div class="form-group fg-line">
-                                        <label for="id">Cargar Imagen</label>
-                                        <div class="clearfix p-b-15"></div>
-                                        <input type="hidden" name="imagePoster64" id="imagePoster64">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput">
-                                          @if($entrada->imagen_poster)
-                                          <img src="{{url('/')}}/assets/uploads/entradas/{{$entrada->imagen_poster}}" style="line-height: 150px;">
-                                          @endif
-                                        </div>
-                                        <div>
-                                            <span class="btn btn-info btn-file">
-                                                <span class="fileinput-new">Seleccionar Imagen</span>
-                                                <span class="fileinput-exists">Cambiar</span>
-                                                <input type="file" name="imagen_poster" id="imagen_poster" >
-                                            </span>
-                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                        </div>
+                                 <div class="form-group">
+                                    <label for="correo">Descripción</label>
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="350 Caracteres" maxlength="350" onkeyup="countChar(this)"></textarea>
                                     </div>
-                                    </div>
-                                    <div class="has-error" id="error-imagen_poster">
+                                 </div>
+                                 
+                                 <div class="opaco-0-8 text-right">Resta <span id="charNum">350</span> Caracteres</div>
+                                 <div class="has-error" id="error-descripcion">
                                       <span >
-                                          <small id="error-imagen_mensaje" class="help-block error-span" ></small>                                           
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
                                       </span>
-                                    </div>
-                                </div>
+                                  </div>
                                </div>
-
-                               <input type="hidden" name="id" value="{{$entrada->id}}"></input>
-                              
+                                     
 
                                <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$blogger->id}}"></input>
 
                                
                                
                            </div>
                            
                         </div>
-                        <div class="modal-footer p-b-20 m-b-20">
+                       <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
                               <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
@@ -377,7 +195,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-morado m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_imagen_poster" data-update="imagen_poster" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_descripcion" data-update="descripcion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -385,6 +203,155 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modal-Redes" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Blogger<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_redes" id="edit_redes"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="id" value="{{$blogger->id}}"></input>
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-6">
+                                             <label for="id">Facebook  </label>
+                                             <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-facebook-box f-20 c-facebook"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                               <input type="text" class="form-control caja input-sm" name="facebook" id="facebook" placeholder="Ingresa la url" value="{{$blogger->facebook}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-facebook">
+                                                <span >
+                                                    <small id="error-facebook_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+                                         <div class="col-sm-6">
+                                              <label for="id">Twitter</label>
+                                              <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-twitter-box f-20 c-twitter"></i>
+                                              </span>
+                                              <div class="fg-line">
+                                                  
+                                                  <input type="text" class="form-control caja input-sm" name="twitter" id="twitter" placeholder="Ingresa la url" value="{{$blogger->twitter}}">
+                                              </div>
+                                              </div>
+                                              <div class="has-error" id="error-twitter">
+                                                <span >
+                                                    <small id="error-twitter_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+
+                                         <div class="clearfix p-b-35"></div>
+
+                                         <div class="col-sm-6">
+                                          <label for="id">Instagram</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-instagram f-20 c-instagram"></i>
+                                              </span>
+                                              <div class=" fg-line">
+                                                  
+                                                  <input type="text" class="form-control caja input-sm" name="instagram" id="instagram" placeholder="Ingresa la url" value="{{$blogger->instagram}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-instagram">
+                                                <span >
+                                                    <small id="error-instagram_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+                                         <div class="col-sm-6">
+                                            <label for="id">Página web</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-link f-20 c-morado"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                                  <input type="text" class="form-control caja input-sm" name="web" id="web" placeholder="Ej: www.easydancelatino.com" value="{{$blogger->pagina_web}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-web">
+                                                <span >
+                                                    <small id="error-web_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+
+                                         <div class="clearfix p-b-35"></div>
+
+                                         <div class="col-sm-6">
+                                            <label for="id">Linkedin</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-linkedin-box f-20 c-linkedin"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                                  <input type="text" class="form-control caja input-sm" name="linkedin" id="linkedin" placeholder="Ingresa la url" value="{{$blogger->linkedin}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-linkedin">
+                                                <span >
+                                                    <small id="error-linkedin_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                          
+                                         </div>
+                                         <div class="col-sm-6">
+                                              
+                                            <label for="id">Youtube</label>
+                                            <div class="input-group">
+                                              <span class="input-group-addon">
+                                              <i class="zmdi zmdi-collection-video f-20 c-youtube"></i>
+                                              </span>
+                                              <div class="fg-line">                       
+                                                  <input type="text" class="form-control caja input-sm" name="youtube" id="youtube" placeholder="Ingresa la url" value="{{$blogger->youtube}}">
+                                              </div>
+                                            </div>
+                                              <div class="has-error" id="error-youtube">
+                                                <span >
+                                                    <small id="error-youtube_mensaje" class="help-block error-span" ></small>                                           
+                                                </span>
+                                              </div>
+                                         </div>
+
+
+                               <div class="clearfix"></div> 
+                              
+                               
+                           </div>
+                           
+                        </div>
+                       <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_redes" data-update="redes" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
 
             <section id="content">
                 <div class="container">
@@ -424,8 +391,8 @@
                                         <a href="#" class="mousehand disabled">
                                             <span class="ca-icon-planilla"><i class="glyphicon glyphicon-book"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Entrada</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo entrada</h3>
+                                                <h2 class="ca-main-planilla">Vista Blogero</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo blogero</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -457,64 +424,42 @@
 					           	<div class="col-sm-9">
 
                         <div class="col-sm-12">
-                            <p class="text-center opaco-0-8 f-22">Datos de la Entrada</p>
+                            <p class="text-center opaco-0-8 f-22">Datos del Blogero</p>
                         </div>
 
                         <div class="col-sm-12">
                           <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modal-Titulo">
+                            <tr class="detalle" data-toggle="modal" href="#modal-Nombre">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-titulo" class="zmdi {{ empty($entrada->titulo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($blogger->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
-                               <span class="f-14"> Titulo </span>
+                               <span class="f-14"> Nombre </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="entrada-titulo" class="capitalize">{{$entrada->titulo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="blogger-nombre" class="capitalize">{{$blogger->nombre}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modal-Categoria">
+                            <tr class="detalle" data-toggle="modal" href="#modal-Descripcion">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-categoria" class="zmdi {{ empty($entrada->categoria) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
-                               <span class="f-14"> Categoría </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($blogger->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Descripción </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="entrada-categoria" data-valor="{{$entrada->categoria_id}}"><span>{{$entrada->categoria}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modal-Contenido">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-contenido" class="zmdi {{ empty($contenido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Contenido </span>
-                             </td>
-                             <td class="f-14 m-l-15"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                             <td id="blogger-descripcion" class="f-14 m-l-15" data-valor="{{$blogger->descripcion}}" >{{ str_limit($blogger->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modal-Imagen">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($entrada->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($blogger->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Imagen Principal </span>
+                               <span class="f-14"> Imagen </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="entrada-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modal-ImagenPoster">
+                            <tr class="detalle" data-toggle="modal" href="#modal-Redes">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagePoster64" class="zmdi {{ empty($entrada->imagen_poster) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Imagen Poster </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-facebook" class="zmdi {{ empty($blogger->facebook) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-share zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Redes Sociales </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="entrada-imagen_poster"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modal-Mostrar">
-                             <td> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-boolean_mostrar" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                              <span class="m-l-10 m-r-10"> <i class="icon_a-estatus-de-clases f-20"></i> </span>
-                              <span class="f-14"> Mostrar en el Blog</span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="entrada-boolean_mostrar" data-valor="{{$entrada->boolean_mostrar}}">
-                               @if($entrada->boolean_mostrar==1)
-                                  <i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i> </span>
-                               @else
-                                  <i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i></span>
-                               @endif
-                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                           </table>
                         </div>
@@ -540,30 +485,18 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/blog/entrada/update";
-    route_eliminar="{{url('/')}}/blog/entrada/eliminar/";
-    route_principal="{{url('/')}}/blog";
+    route_update="{{url('/')}}/configuracion/blogeros/update";
+    route_eliminar="{{url('/')}}/configuracion/blogeros/eliminar/";
+    route_principal="{{url('/')}}/configuracion/blogeros";
 
     $(document).ready(function(){
 
-      if("{{$entrada->boolean_mostrar}}" == 1){
-        $("#boolean_mostrar").val('1');  //VALOR POR DEFECTO
-        $("#mostrar").attr("checked", true); //VALOR POR DEFECTO
-      }
+      $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-      $("#mostrar").on('change', function(){
-        if ($("#mostrar").is(":checked")){
-          $("#boolean_mostrar").val('1');
-        }else{
-          $("#boolean_mostrar").val('0');
-        }    
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+        }
+
       });
-
-      $('#contenido').summernote({
-          height: 400,
-          dialogsInBody: true,
-          lang: 'es-ES'
-      }); 
 
       $("#imagen").bind("change", function() {
           
@@ -586,27 +519,6 @@
 
       });
 
-      $("#imagen_poster").bind("change", function() {
-          //alert('algo cambio');
-          
-          setTimeout(function(){
-            var imagen = $("#imagenb img").attr('src');
-            var canvas = document.createElement("canvas");
-   
-            var context=canvas.getContext("2d");
-            var img = new Image();
-            img.src = imagen;
-            
-            canvas.width  = img.width;
-            canvas.height = img.height;
-
-            context.drawImage(img, 0, 0);
-     
-            var newimage = canvas.toDataURL("image/jpeg", 0.8);
-            var image64 = $("input:hidden[name=imagePoster64]").val(newimage);
-          },500);
-
-      });
 
 
       $('body,html').animate({scrollTop : 0}, 500);
@@ -625,19 +537,19 @@
 
     });
 
-    $('#modal-Titulo').on('show.bs.modal', function (event) {
+    $('#modal-Nombre').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#titulo").val($("#entrada-titulo").text()); 
+      $("#nombre").val($("#blogger-nombre").text()); 
     })
 
-    $('#modal-Categoria').on('show.bs.modal', function (event) {
+    $('#modal-Descripcion').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#categoria").val($("#entrada-categoria").data('valor')); 
-      $("#categoria").selectpicker('refresh');
+       var descripcion=$("#blogger-descripcion").data('valor');
+       $("#descripcion").val(descripcion);
     })
 
     function limpiarMensaje(){
-        var campo = ["titulo", "categoria", "contenido", "boolean_mostrar", "imagen"];
+        var campo = ["nombre", "descripcion", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -658,26 +570,11 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-          if(c.name=='categoria'){
-            
-            expresion = "#"+c.name+ " option[value="+c.value+"]";
-            texto = $(expresion).text();
-            $('#entrada-'+c.name).data('valor',c.value)
-
-            $("#entrada-"+c.name).text(texto);
-
-          }else if(c.name == 'boolean_mostrar'){
-
-            if(c.value==1){              
-              var valor='<i class="zmdi zmdi-mood zmdi-hc-fw f-22 c-verde"></i>';                              
-            }else{
-              var valor='<i class="zmdi zmdi-mood-bad zmdi-hc-fw f-22 c-youtube"></i>';
-            }
-
-            $("#entrada-"+c.name).html(valor);
-
-          }else{
-            $("#entrada-"+c.name).text(c.value);
+          if(c.name=='descripcion'){
+             $("#blogger-"+c.name).data('valor',c.value);
+             $("#blogger-"+c.name).html(c.value.substr(0, 30) + "...");
+           }else{
+            $("#blogger-"+c.name).text(c.value);
           }
           
           if(c.value == ''){
@@ -743,15 +640,8 @@
         procesando();
         form=$(this).data('formulario');
         update=$(this).data('update');
-
-        if(form != 'edit_contenido'){
-          var datos = $( "#"+form ).serialize();
-        }else{
-          var contenido = $('#contenido').summernote('code');
-          contenido = encodeURIComponent(contenido);
-          var datos = "&contenido="+contenido+"&id={{$id}}"
-        }
-
+        var datos = $( "#"+form ).serialize();
+        
         var token = $('input:hidden[name=_token]').val();
         var datos_array=  $( "#"+form ).serializeArray();
         
@@ -808,7 +698,7 @@
 
     $("i[name=eliminar]").click(function(){
       swal({   
-          title: "Desea eliminar la entrada?",   
+          title: "Desea eliminar al blogero?",   
           text: "Confirmar eliminación!",   
           type: "warning",   
           showCancelButton: true,   
@@ -854,10 +744,10 @@
 
   function countChar(val) {
     var len = val.value.length;
-    if (len >= 60) {
-      val.value = val.value.substring(0, 60);
+    if (len >= 350) {
+      val.value = val.value.substring(0, 350);
     } else {
-      $('#charNum').text(60 - len);
+      $('#charNum').text(350 - len);
     }
   };
 

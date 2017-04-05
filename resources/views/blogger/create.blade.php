@@ -49,55 +49,43 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="glyphicon glyphicon-book f-25" id="id-entrada"></i> Agregar Entrada </span>                                                         
+                            <span class="f-25 c-morado"><i class="glyphicon glyphicon-book f-25" id="id-entrada"></i> Agregar Blogero </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
-                          <form name="agregar_entrada" id="agregar_entrada"  >
+                          <form name="agregar_blogero" id="agregar_blogero"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-                            <div class="col-sm-12">
+                              <div class="col-sm-12">
                                  
-                                  <label for="usuario_id">Autor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el autor de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del blogero" title="" data-original-title="Ayuda" data-html="true"></i>
 
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
-                                    <div class="fg-line">
-                                    <div class="select">
-                                      <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true">
-
-                                        <option value="">Selecciona</option>
-                                        @foreach($bloggers as $blogger)
-                                          <option value="{{$blogger->id}}">{{$blogger->nombre}}</option>
-                                        @endforeach
-                                        
-                                      
-                                      </select>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="nombre" id="nombre" placeholder="Ej: Valeria Zambrano">
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                                 <div class="has-error" id="error-usuario_id">
+                                 <div class="has-error" id="error-nombre">
                                       <span >
-                                          <small class="help-block error-span" id="error-usuario_id_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
 
                                <div class="clearfix p-b-35"></div>
 
-                              <div class="col-sm-12">
+                               <div class="col-sm-12">
                                  
-                                    <label for="titulo" id="id-titulo">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el titulo de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción del blogero" title="" data-original-title="Ayuda" data-html="true"></i>
 
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="glyphicon glyphicon-book f-22"></i></span>
-                                      <div class="fg-line">
-                                        <textarea class="form-control" id="titulo" name="titulo" rows="2" placeholder="60 Caracteres" maxlength="60" onkeyup="countChar(this)"></textarea>
-                                      </div>
-                                      <div class="opaco-0-8 text-right">Resta <span id="charNum">60</span> Caracteres</div>
+                                     
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="350 Caracteres" maxlength="350" onkeyup="countChar(this)"></textarea>
                                     </div>
+                                 
                                  <div class="has-error" id="error-titulo">
                                       <span >
                                           <small class="help-block error-span" id="error-titulo_mensaje" ></small>                                
@@ -107,112 +95,15 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                  <label for="categoria">Categoría</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la categoria de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
 
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                    <div class="select">
-                                      <select class="selectpicker" name="categoria" id="categoria" data-live-search="true">
-
-                                        <option value="">Selecciona</option>
-                                        @foreach($categorias as $categoria)
-                                          <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
-                                        @endforeach
-                                        
-                                      
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                 <div class="has-error" id="error-categoria">
-                                      <span >
-                                          <small class="help-block error-span" id="error-categoria_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 
-                                  <label for="tipo">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegaran un correo al publicarse esta entrada" title="" data-original-title="Ayuda" data-html="true"></i>
-
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                    <div class="select">
-                                      <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
-
-                                        <option value="1">Todos</option>
-                                        <option value="2">Visitantes Presenciales</option>
-                                        <option value="3">Alumnos</option>
-                                        <option value="4">En Espera</option>
-                                        
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                 <div class="has-error" id="error-tipo">
-                                      <span >
-                                          <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-                               
-                               <div class="col-sm-12">
-                                 
-                                      <label for="fecha_inicio" id="id-contenido">Contenido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el contenido de la entrada" title="" data-original-title="Ayuda"></i>
-
-                                      <div id="contenido"></div>
-                                 <div class="has-error" id="error-contenido">
-                                      <span >
-                                          <small class="help-block error-span" id="error-contenido_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-    
-                              <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen">Imagen Principal</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen principal de la entrada" title="" data-original-title="Ayuda"></i>
+                          <div class="col-sm-12">
+                                <label for="apellido" id="id-imagen_poster">Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen del blogero" title="" data-original-title="Ayuda"></i>
                                 
                                 <div class="clearfix p-b-15"></div>
                                   
                                 <input type="hidden" name="imageBase64" id="imageBase64">
                                   <div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
-                                    <div>
-                                        <span class="btn btn-info btn-file">
-                                            <span class="fileinput-new">Seleccionar Imagen</span>
-                                            <span class="fileinput-exists">Cambiar</span>
-                                            <input type="file" name="imagen" id="imagen" >
-                                        </span>
-                                        <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                    </div>
-                                </div>
-                                  <div class="has-error" id="error-imagen">
-                                  <span >
-                                      <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
-                                  </span>
-                                </div>
-                              </div>
-
-
-                          <div class="clearfix p-b-35"></div>
-
-                          <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen_poster">Imagen Poster</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen poster de la entrada" title="" data-original-title="Ayuda"></i>
-                                
-                                <div class="clearfix p-b-15"></div>
-                                  
-                                <input type="hidden" name="imagePoster64" id="imagePoster64">
-                                  <div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <div id="imagenb" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                    <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
                                     <div>
                                         <span class="btn btn-info btn-file">
                                             <span class="fileinput-new">Seleccionar Imagen</span>
@@ -230,6 +121,123 @@
                               </div>
 
 
+                              <h4 class="p-l-15 m-t-20">Redes sociales y web <hr></h4>
+
+
+                               <div class="col-sm-6">
+                                   <label for="id">Facebook  </label>
+                                   <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="zmdi zmdi-facebook-box f-20 c-facebook"></i>
+                                    </span>
+                                    <div class="fg-line">                       
+                                     <input type="text" class="form-control caja input-sm" name="facebook" id="facebook" placeholder="Ingresa la url">
+                                    </div>
+                                  </div>
+                                    <div class="has-error" id="error-facebook">
+                                      <span >
+                                          <small id="error-facebook_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+
+                               <div class="col-sm-6">
+                                    <label for="id">Twitter</label>
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="zmdi zmdi-twitter-box f-20 c-twitter"></i>
+                                    </span>
+                                    <div class="fg-line">
+                                        
+                                        <input type="text" class="form-control caja input-sm" name="twitter" id="twitter" placeholder="Ingresa la url">
+                                    </div>
+                                    </div>
+                                    <div class="has-error" id="error-twitter">
+                                      <span >
+                                          <small id="error-twitter_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-6">
+                                <label for="id">Instagram</label>
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="zmdi zmdi-instagram f-20 c-instagram"></i>
+                                    </span>
+                                    <div class=" fg-line">
+                                        
+                                        <input type="text" class="form-control caja input-sm" name="instagram" id="instagram" placeholder="Ingresa la url">
+                                    </div>
+                                  </div>
+                                    <div class="has-error" id="error-instagram">
+                                      <span >
+                                          <small id="error-instagram_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+                               <div class="col-sm-6">
+                                  <label for="id">Página web</label>
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="zmdi zmdi-link f-20 c-morado"></i>
+                                    </span>
+                                    <div class="fg-line">                       
+                                        <input type="text" class="form-control caja input-sm" name="pagina_web" id="pagina_web" placeholder="Ej: www.easydancelatino.com">
+                                    </div>
+                                  </div>
+                                    <div class="has-error" id="error-pagina_web">
+                                      <span >
+                                          <small id="error-pagina_web_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-6">
+                                  <label for="id">Linkedin</label>
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="zmdi zmdi-linkedin-box f-20 c-linkedin"></i>
+                                    </span>
+                                    <div class="fg-line">                       
+                                        <input type="text" class="form-control caja input-sm" name="linkedin" id="linkedin" placeholder="Ingresa la url">
+                                    </div>
+                                  </div>
+                                    <div class="has-error" id="error-linkedin">
+                                      <span >
+                                          <small id="error-linkedin_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+                               <div class="col-sm-6">
+                                    
+                                  <label for="id">Youtube</label>
+                                  <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="zmdi zmdi-collection-video f-20 c-youtube"></i>
+                                    </span>
+                                    <div class="fg-line">                       
+                                        <input type="text" class="form-control caja input-sm" name="youtube" id="youtube" placeholder="Ingresa la url">
+                                    </div>
+                                  </div>
+                                    <div class="has-error" id="error-youtube">
+                                      <span >
+                                          <small id="error-youtube_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                
+                               </div>
+
+
                           <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
@@ -245,7 +253,7 @@
                             </div>
                             <div class="col-sm-12 text-left">                           
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar Borrador</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
 
@@ -267,25 +275,17 @@
 @section('js') 
 <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/blog/publicar";
-    route_principal="{{url('/')}}/blog";
+    route_agregar="{{url('/')}}/configuracion/blogeros/agregar";
+    route_principal="{{url('/')}}/configuracion/blogeros";
 
   $(document).ready(function(){
 
-      $('#contenido').summernote({
-          height: 400,
-          dialogsInBody: true,
-          // toolbar: [
-          //   ['style', ['bold', 'italic', 'underline']],
-          //   ['fontsize', ['fontsize']],
-          //   ['color', ['color']],
-          //   ['para', ['ul', 'ol', 'paragraph']],
-          //   ['height', ['height']],
-          //   ['link', ['link']],
-          // ],
-          lang: 'es-ES'
+      $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-      }); 
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+        }
+
+      });
 
       $("#imagen").bind("change", function() {
           //alert('algo cambio');
@@ -305,28 +305,6 @@
      
             var newimage = canvas.toDataURL("image/jpeg", 0.8);
             var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-          },500);
-
-      });
-
-      $("#imagen_poster").bind("change", function() {
-          //alert('algo cambio');
-          
-          setTimeout(function(){
-            var imagen = $("#imagenb img").attr('src');
-            var canvas = document.createElement("canvas");
-   
-            var context=canvas.getContext("2d");
-            var img = new Image();
-            img.src = imagen;
-            
-            canvas.width  = img.width;
-            canvas.height = img.height;
-
-            context.drawImage(img, 0, 0);
-     
-            var newimage = canvas.toDataURL("image/jpeg", 0.8);
-            var image64 = $("input:hidden[name=imagePoster64]").val(newimage);
           },500);
 
       });
@@ -393,18 +371,16 @@
 
   $("#guardar").click(function(){
 
-                var contenido = $('#contenido').summernote('code');
-                contenido = encodeURIComponent(contenido);
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_entrada" ).serialize(); 
+                var datos = $( "#agregar_blogero" ).serialize(); 
                 procesando();
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos+"&contenido="+contenido,
+                        data:datos,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -458,7 +434,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["titulo", "contenido", "categoria"];
+      var campo = ["nombre", "descripcion", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -487,20 +463,20 @@
   }
 
   $( "#cancelar" ).click(function() {
-    $("#agregar_entrada")[0].reset();
+    $("#agregar_blogero")[0].reset();
     limpiarMensaje();
     $('html,body').animate({
-    scrollTop: $("#id-titulo").offset().top-90,
+    scrollTop: $("#id-nombre").offset().top-90,
     }, 1500);
     $("#titulo").focus();
   });
 
   function countChar(val) {
     var len = val.value.length;
-    if (len >= 60) {
-      val.value = val.value.substring(0, 60);
+    if (len >= 350) {
+      val.value = val.value.substring(0, 350);
     } else {
-      $('#charNum').text(60 - len);
+      $('#charNum').text(350 - len);
     }
   };
 

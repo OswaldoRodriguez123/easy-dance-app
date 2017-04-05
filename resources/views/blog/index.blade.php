@@ -74,16 +74,12 @@
 
                   <p class="f-15 f-400" style="color:#5e5e5e">
 
-                    Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}} {{$entrada['apellido']}}</b>
+                    Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}}</b>
 
                     @if($entrada['usuario_imagen'])
-                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$entrada['usuario_imagen']}}" alt="">
+                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/bloggers/{{$entrada['usuario_imagen']}}" alt="">
                       @else
-                          @if($entrada['sexo'] == 'M')
-                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                          @else
-                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                      @endif
+                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                     @endif
                   </p>
 
@@ -113,7 +109,7 @@
                       <p>{{ str_limit(strip_tags($entrada['contenido']), $limit = 350, $end = '...') }} </p>
 
 
-                      <a onclick="procesando()" href="{{$entrada['url']}}">Ver mas</a>
+                      <a onclick="procesando()" href="{{$entrada['url']}}">Ver más</a>
 
                       @if(Auth::check())
                         @if(Auth::user()->usuario_tipo == 1)
@@ -159,7 +155,7 @@
 
                 <div class="pmo-block pmo-contact hidden-xs">
 
-                <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
+                <h2 style="font-size: 16px; margin: 0 0 15px">Categorías</h2>
 
                 <a class="f-15 f-700" onclick="procesando()" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 

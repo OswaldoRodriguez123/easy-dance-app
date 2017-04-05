@@ -57,7 +57,7 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('blog')}}"><i class="zmdi zmdi-key f-16"></i> Blog</a>
+                                            <a href="{{url('blog')}}"><i class="zmdi glyphicon glyphicon-book f-16"></i> Blog</a>
                                         </li>
                                     </ul>
                                 </li>

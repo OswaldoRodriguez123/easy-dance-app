@@ -48,23 +48,28 @@
               
               <br>
 
-              <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por <b>{{$entrada['nombre']}} {{$entrada['apellido']}}</b></span> 
-              @if($entrada['usuario_imagen'])
-                  <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$entrada['usuario_imagen']}}" alt="">
-                @else
-                    @if($entrada['sexo'] == 'M')
-                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                    @else
-                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                @endif
-              @endif
+              <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por <b>{{$blogger->nombre}}</b></span> 
+
+              <img class="lv-img-sm" src="{{url('/')}}/{{$usuario_imagen}}" alt="">
+
             </p>
 
             <hr style="border-bottom: 1px solid #ccc">
 
             <p class="f-15 f-700">{!! nl2br($entrada['contenido']) !!}</p>
 
-            <div class="clearfix"></div>
+            <div class="clearfix p-b-20"></div>
+
+            
+            <table class="table_blogger">
+              <tbody>
+                <tr>
+                  <td>
+                    <img class="img_blogger" src="{{url('/')}}/{{$usuario_imagen}}?size=250" alt="{{$blogger->nombre}}" width="70" height="70" />Autor: <b><a title="{{$blogger->nombre}}" href="http://tuclasedebaile.com.co" target="_blank">{{$blogger->nombre}}</a></b> {{$blogger->descripcion}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
            
           </div>
@@ -76,7 +81,7 @@
 
                   <div class="pmo-block pmo-contact hidden-xs">
 
-                  <h2 style="font-size: 16px; margin: 0 0 15px">Categorias</h2>
+                  <h2 style="font-size: 16px; margin: 0 0 15px">Categorías</h2>
 
                   <a class="f-15 f-700" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 
