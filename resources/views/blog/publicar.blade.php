@@ -458,7 +458,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["titulo", "contenido", "categoria"];
+      var campo = ["usuario_id","titulo", "contenido", "categoria"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

@@ -705,7 +705,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["titulo", "categoria", "contenido", "boolean_mostrar", "imagen"];
+        var campo = ["usuario_id","titulo", "categoria", "contenido", "boolean_mostrar", "imagen"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

@@ -453,7 +453,7 @@ class BlogController extends BaseController {
 
 	        $titulo = title_case($request->titulo);
 
-	        $entrada->usuario_id = Auth::user()->id;
+	        $entrada->usuario_id = $request->usuario_id;
 	        $entrada->academia_id = Auth::user()->academia_id;
 	        $entrada->titulo = $titulo;
 	        $entrada->categoria = $request->categoria;
