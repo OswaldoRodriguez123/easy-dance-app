@@ -1303,7 +1303,7 @@
                             <tr class="detalle blogero">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10">  <i class="icon_a-niveles f-22"></i> </span>
+                               <span class="m-l-10 m-r-10">  <i class="glyphicon glyphicon-book f-22"></i> </span>
                                <span class="f-14"> Blogeros </span>
                              </td>
                              <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
