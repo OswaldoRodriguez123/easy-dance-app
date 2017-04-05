@@ -485,7 +485,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modal-Imagen">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($entrada->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($entrada->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Imagen Principal </span>
                              </td>
@@ -493,7 +493,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modal-ImagenPoster">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen_poster" class="zmdi {{ empty($entrada->imagen_poster) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagePoster64" class="zmdi {{ empty($entrada->imagen_poster) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Imagen Poster </span>
                              </td>
