@@ -423,13 +423,14 @@ class BlogController extends BaseController {
     {
 
 	    $rules = [
+            'usuario_id' => 'required',
 	        'titulo' => 'required|min:3|max:60',
 	        'categoria' => 'required',
 	        'contenido' => 'required',
 	    ];
 
 	    $messages = [
-
+            'usuario_id.required' => 'Ups! El Autor es requerido ',
 	        'titulo.required' => 'Ups! El Titulo es requerido ',
 	        'titulo.min' => 'El mínimo de caracteres permitidos son 3',
 	        'titulo.max' => 'El máximo de caracteres permitidos son 60',
@@ -548,21 +549,55 @@ class BlogController extends BaseController {
     public function edit($id){
 
 		$entrada = EntradaBlog::join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('entradas_blog.*', 'categorias_blog.nombre as categoria', 'categorias_blog.id as categoria_id')
+            ->join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+			->select('entradas_blog.*', 'categorias_blog.nombre as categoria', 'categorias_blog.id as categoria_id', 'bloggers.nombre as blogger')
 			->where('entradas_blog.id', $id)
 		->first();
 
 		if($entrada)
 		{
+            $bloggers = Blogger::where('academia_id', Auth::user()->academia_id)->get();
 			$categorias = CategoriaBlog::where('academia_id', $id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
-            return view('blog.planilla')->with(['contenido' => $contenido, 'entrada' => $entrada, 'categorias' => $categorias, 'id' => $id]);
+            return view('blog.planilla')->with(['contenido' => $contenido, 'entrada' => $entrada, 'categorias' => $categorias, 'id' => $id, 'bloggers' => $bloggers]);
 
 		}else{
 			return redirect("blog"); 
 		}
  	}
+
+    public function updateAutor(Request $request){
+
+        $rules = [
+
+            'usuario_id' => 'required',
+        ];
+
+        $messages = [
+
+            'usuario_id.required' => 'Ups! El Autor es requerido',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        $entrada = EntradaBlog::find($request->id);
+
+        $entrada->usuario_id = $request->usuario_id;
+
+        if($entrada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
 
  	public function updateTitulo(Request $request){
 

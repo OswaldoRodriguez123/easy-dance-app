@@ -145,6 +145,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			//BLOG
 
 			Route::get('blog/entrada/editar/{id}', 'BlogController@edit');
+			Route::put('blog/entrada/update/autor', 'BlogController@updateAutor');
 			Route::put('blog/entrada/update/titulo', 'BlogController@updateTitulo');
 			Route::put('blog/entrada/update/categoria', 'BlogController@updateCategoria');
 			Route::put('blog/entrada/update/imagen', 'BlogController@updateImagen');
