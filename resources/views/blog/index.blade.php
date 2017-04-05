@@ -110,8 +110,8 @@
 
                     <div class="col-sm-8">
    
+                      <p>{{ str_limit(strip_tags($entrada['contenido']), $limit = 350, $end = '...') }} </p>
 
-                      <p>{!! nl2br($entrada['contenido']) !!}</p>
 
                       <a onclick="procesando()" href="{{$entrada['url']}}">Ver mas</a>
 
@@ -354,8 +354,8 @@
               editar = ''
             }
 
-            entrada_contenido = nl2br(entrada.contenido)
-            entrada_contenido = entrada_contenido.toLowerCase().substr(0, 350) + "..."
+            entrada_contenido = stripTags(entrada.contenido)
+            entrada_contenido = entrada_contenido.substr(0, 350) + "..."
 
             contenido += '<div class="opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">'
             contenido += '<div style="padding: 10px">'
@@ -392,6 +392,10 @@
           var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
           return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
         }
+
+        function stripTags (html) {
+            return html.replace(/(<([^>]+)>)/ig,"");
+        };
 
         </script>
 @stop        
