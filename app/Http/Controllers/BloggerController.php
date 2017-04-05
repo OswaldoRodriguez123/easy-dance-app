@@ -223,7 +223,7 @@ class BloggerController extends BaseController {
             $nombre_img = "blogger-". $blogger->id . $extension;
             $image = base64_decode($base64_string);
 
-            $img = Image::make($image)->resize(1440, 500);
+            $img = Image::make($image)->resize(300, 300);
             $img->save('assets/uploads/bloggers/'.$nombre_img);
         }
         else{
