@@ -476,7 +476,7 @@ class BlogController extends BaseController {
 
 	        	$entrada->contenido = $nombre_archivo;
 
-	            if($request->imageBase64){
+	            if($request->imageBase64 && $request->imageBase64 != "data:,"){
 
 	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
 	                $path = storage_path();
@@ -509,7 +509,7 @@ class BlogController extends BaseController {
 
 	            }
 
-	            if($request->imagePoster64){
+	            if($request->imagePoster64 && $request->imagePoster64 != "data:,"){
 
 	                $base64_string = substr($request->imagePoster64, strpos($request->imagePoster64, ",")+1);
 	                $path = storage_path();
@@ -643,7 +643,7 @@ class BlogController extends BaseController {
     {
         $entrada = EntradaBlog::find($request->id);
         
-        if($request->imageBase64){
+        if($request->imageBase64 && $request->imageBase64 != "data:,"){
             $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
             $path = storage_path();
             $split = explode( ';', $request->imageBase64 );
@@ -682,7 +682,7 @@ class BlogController extends BaseController {
     {
         $entrada = EntradaBlog::find($request->id);
         
-        if($request->imagePoster64){
+        if($request->imagePoster64 && $request->imagePoster64 != "data:,"){
             $base64_string = substr($request->imagePoster64, strpos($request->imagePoster64, ",")+1);
             $path = storage_path();
             $split = explode( ';', $request->imagePoster64 );
