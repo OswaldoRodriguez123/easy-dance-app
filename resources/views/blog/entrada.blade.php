@@ -117,7 +117,7 @@
                       <div class="col-sm-7">
      
 
-                        <a onclick="procesando()" class ="f-15 f-700" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
+                        <a onclick="procesando()" class ="f-15" href="{{url('/')}}/blog/entrada/{{$tmp['id']}}">{{$tmp['titulo']}}</a><br><br>
 
 
                       </div>

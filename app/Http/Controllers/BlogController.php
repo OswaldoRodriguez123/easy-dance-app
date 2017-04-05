@@ -434,7 +434,7 @@ class BlogController extends BaseController {
     {
 
 	    $rules = [
-	        'titulo' => 'required|min:3|max:50',
+	        'titulo' => 'required|min:3|max:60',
 	        'categoria' => 'required',
 	        'contenido' => 'required',
 	    ];
@@ -443,7 +443,7 @@ class BlogController extends BaseController {
 
 	        'titulo.required' => 'Ups! El Titulo es requerido ',
 	        'titulo.min' => 'El mínimo de caracteres permitidos son 3',
-	        'titulo.max' => 'El máximo de caracteres permitidos son 50',
+	        'titulo.max' => 'El máximo de caracteres permitidos son 60',
 	        'categoria.required' => 'Ups! La categoria es requerida',
 	        'contenido.required' => 'Ups! El contenido es requerido',
 
@@ -578,14 +578,14 @@ class BlogController extends BaseController {
  	public function updateTitulo(Request $request){
 
 	    $rules = [
-	        'titulo' => 'required|min:3|max:20',
+	        'titulo' => 'required|min:3|max:60',
 	    ];
 
 	    $messages = [
 
 	        'titulo.required' => 'Ups! El Nombre  es requerido ',
 	        'titulo.min' => 'El mínimo de caracteres permitidos son 3',
-	        'titulo.max' => 'El máximo de caracteres permitidos son 20',
+	        'titulo.max' => 'El máximo de caracteres permitidos son 60',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
