@@ -60,7 +60,7 @@
                             <div class="clearfix p-b-15"></div>
                             <div class="col-sm-12">
                                  
-                                  <label for="usuario_id">Autor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el autor de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <label for="usuario_id" id="id-usuario_id">Autor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el autor de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
