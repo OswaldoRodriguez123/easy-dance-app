@@ -97,7 +97,7 @@
 
 
                           <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen_poster">Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen del blogero" title="" data-original-title="Ayuda"></i>
+                                <label for="apellido" id="id-imagen">Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen del blogero" title="" data-original-title="Ayuda"></i>
                                 
                                 <div class="clearfix p-b-15"></div>
                                   
@@ -108,14 +108,14 @@
                                         <span class="btn btn-info btn-file">
                                             <span class="fileinput-new">Seleccionar Imagen</span>
                                             <span class="fileinput-exists">Cambiar</span>
-                                            <input type="file" name="imagen_poster" id="imagen_poster" >
+                                            <input type="file" name="imagen" id="imagen" >
                                         </span>
                                         <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                     </div>
                                 </div>
-                                  <div class="has-error" id="error-imagen_poster">
+                                  <div class="has-error" id="error-imagen">
                                   <span >
-                                      <small class="help-block error-span" id="error-imagen_poster_mensaje"  ></small>
+                                      <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
                                   </span>
                                 </div>
                               </div>
