@@ -277,12 +277,12 @@
                                               <i class="zmdi zmdi-link f-20 c-morado"></i>
                                               </span>
                                               <div class="fg-line">                       
-                                                  <input type="text" class="form-control caja input-sm" name="web" id="web" placeholder="Ej: www.easydancelatino.com" value="{{$blogger->pagina_web}}">
+                                                  <input type="text" class="form-control caja input-sm" name="pagina_web" id="pagina_web" placeholder="Ej: www.easydancelatino.com" value="{{$blogger->pagina_web}}">
                                               </div>
                                             </div>
-                                              <div class="has-error" id="error-web">
+                                              <div class="has-error" id="error-pagina_web">
                                                 <span >
-                                                    <small id="error-web_mensaje" class="help-block error-span" ></small>                                           
+                                                    <small id="error-pagina_web_mensaje" class="help-block error-span" ></small>                                           
                                                 </span>
                                               </div>
                                           

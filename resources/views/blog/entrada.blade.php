@@ -65,7 +65,55 @@
               <tbody>
                 <tr>
                   <td>
-                    <img class="img_blogger" src="{{url('/')}}/{{$usuario_imagen}}?size=250" alt="{{$blogger->nombre}}" width="70" height="70" />Autor: <b><a title="{{$blogger->nombre}}" href="http://tuclasedebaile.com.co" target="_blank">{{$blogger->nombre}}</a></b> {{$blogger->descripcion}}
+                    <img class="img_blogger" src="{{url('/')}}/{{$usuario_imagen}}?size=250" alt="{{$blogger->nombre}}" width="70" height="70" />Autor: <b><a title="{{$blogger->nombre}}" href="{{ empty($blogger->pagina_web) ? 'http://tuclasedebaile.com.co' : $blogger->pagina_web}}" target="_blank">{{$blogger->nombre}}</a></b> {{$blogger->descripcion}} <br><br>
+
+
+                    @if($blogger->facebook)
+                      @if (!filter_var($blogger->facebook, FILTER_VALIDATE_URL) === false) 
+                        <a href="{{$blogger->facebook}}" target="_blank"><i class="zmdi zmdi-facebook-box f-25 c-facebook m-l-5"></i></a>
+                      @else
+                        <a href="https://www.facebook.com/{{$blogger->facebook}}" target="_blank"><i class="zmdi zmdi-facebook-box f-25 c-facebook m-l-5"></i></a>
+                      @endif
+                    @endif
+
+                    @if($blogger->twitter)
+                      @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
+                        <a href="{{$blogger->twitter}}" target="_blank"><i class="zmdi zmdi-twitter-box f-25 c-twitter m-l-5"></i></a>
+                      @else
+                        <a href="https://www.twitter.com/{{$blogger->twitter}}" target="_blank"><i class="zmdi zmdi-twitter-box f-25 c-twitter m-l-5"></i></a>
+                      @endif
+                    @endif
+
+                    @if($blogger->instagram)
+                      @if (!filter_var($blogger->instagram, FILTER_VALIDATE_URL) === false) 
+                        <a href="{{$blogger->instagram}}" target="_blank"><i class="zmdi zmdi-instagram f-25 c-instagram m-l-5"></i></a>
+                      @else
+                        <a href="https://www.instagram.com/{{$blogger->instagram}}" target="_blank"><i class="zmdi zmdi-instagram f-25 c-instagram m-l-5"></i></a>
+                      @endif
+                    @endif
+
+                    @if($blogger->linkedin)
+                      @if (!filter_var($blogger->linkedin, FILTER_VALIDATE_URL) === false) 
+                        <a href="{{$blogger->linkedin}}" target="_blank"><i class="zmdi zmdi-linkedin-box f-25 c-linkedin m-l-5"></i></a>
+                      @else
+                        <a href="https://www.linkedin.com/{{$blogger->linkedin}}" target="_blank"><i class="zmdi zmdi-linkedin-box f-25 c-linkedin m-l-5"></i></a>
+                      @endif
+                    @endif
+
+                    @if($blogger->youtube)
+                      @if (!filter_var($blogger->youtube, FILTER_VALIDATE_URL) === false) 
+                        <a href="{{$blogger->youtube}}" target="_blank"><i class="zmdi zmdi-collection-video f-25 c-youtube m-l-5"></i></a>
+                      @else
+                        <a href="https://www.youtube.com/{{$blogger->youtube}}" target="_blank"><i class="zmdi zmdi-collection-video f-25 c-youtube m-l-5"></i></a>
+                      @endif
+                    @endif
+
+                    @if($blogger->pagina_web)
+                        @if (!filter_var($blogger->pagina_web, FILTER_VALIDATE_URL) === false) 
+                          <a href="{{$blogger->pagina_web}}" target="_blank"><i class="zmdi zmdi-google-earth f-25 c-verde m-l-5"></i></a>
+                        @endif
+                    @endif
+
                   </td>
                 </tr>
               </tbody>
