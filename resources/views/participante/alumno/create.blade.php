@@ -56,7 +56,7 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
-                             <div class="col-sm-12">
+    <!--                          <div class="col-sm-12">
                                  
                                     <label for="especialidad" id="id-instructor_id">Promotor</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el promotor" title="" data-original-title="Ayuda"></i>
 
@@ -78,7 +78,7 @@
                                       </span>
                                     </div>
                                   </div>
-                               </div>
+                               </div> -->
 
                                <div class="clearfix p-b-35"></div>
                                
@@ -469,7 +469,6 @@
   $(document).ready(function(){
 
     sexo = "{{{ $visitante->sexo or 'Default' }}}";
-    instructor_id = "{{{ $visitante->instructor_id or 'Default' }}}";
 
     codigo_referido = "{{{ $codigo_referido or 'Default' }}}";
 
@@ -483,11 +482,13 @@
         
      }
 
-     if(instructor_id != 'Default'){
+    // instructor_id = "{{{ $visitante->instructor_id or 'Default' }}}";
 
-        $('#instructor_id').val(instructor_id);
-        $('#instructor_id').selectpicker('render');
-     }
+    //  if(instructor_id != 'Default'){
+
+    //     $('#instructor_id').val(instructor_id);
+    //     $('#instructor_id').selectpicker('render');
+    //  }
 
      if(codigo_referido != 'Default'){
         $('#codigo').val(codigo_referido);

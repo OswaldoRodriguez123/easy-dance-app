@@ -782,7 +782,7 @@ public function PresencialesFiltros(Request $request)
 
         $query = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente', 'visitantes_presenciales.como_nos_conociste_id', 'visitantes_presenciales.interes_id', 'visitantes_presenciales.dias_clase_id', 'visitantes_presenciales.fecha_nacimiento', 'visitantes_presenciales.instructor_id')
+            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente', 'visitantes_presenciales.como_nos_conociste_id', 'visitantes_presenciales.interes_id', 'visitantes_presenciales.dias_clase_id', 'visitantes_presenciales.fecha_nacimiento', 'visitantes_presenciales.instructor_id', 'visitantes_presenciales.alumno_id')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id);
 
         if($request->instructor_id)
@@ -805,9 +805,9 @@ public function PresencialesFiltros(Request $request)
             if($request->tipo){
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
 
                 if($request->tipo == 1){
                     $start = $actual->toDateString();
@@ -868,14 +868,29 @@ public function PresencialesFiltros(Request $request)
 
         foreach($presenciales as $presencial){
 
-            if($presencial->instructor_id){
+            // if($presencial->instructor_id){
 
-                if(isset($array_promotor[$presencial->instructor_id]))
-                {
-                    $array_promotor[$presencial->instructor_id]['cantidad']++;
-                }
+            //     if(isset($array_promotor[$presencial->instructor_id]))
+            //     {
+            //         $array_promotor[$presencial->instructor_id]['cantidad']++;
+            //     }
                 
-                $total_clientes = $total_clientes + 1;
+            //     $total_clientes = $total_clientes + 1;
+            // }
+
+            if($presencial->alumno_id){
+
+                $inscripcion = InscripcionClaseGrupal::where('alumno_id', $presencial->alumno_id)->first();
+
+                if($inscripcion){
+
+                    if(isset($array_promotor[$inscripcion->instructor_id]))
+                    {
+                        $array_promotor[$inscripcion->instructor_id]['cantidad']++;
+                    }
+                    
+                    $total_clientes = $total_clientes + 1;
+                }
             }
 
             $total_visitantes = $total_visitantes + 1;

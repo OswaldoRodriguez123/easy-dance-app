@@ -12,6 +12,7 @@ use App\DiasDeInteres;
 use App\EncuestaVisitante;
 use App\Llamada;
 use App\Academia;
+use App\Staff;
 use Validator;
 use Carbon\Carbon;
 use DB;
@@ -36,9 +37,9 @@ class VisitanteController extends BaseController {
         $geoip->setIp($request->ip());
 
 
-        $visitantes = Visitante::Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
+        $visitantes = Visitante::Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
             ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
-            ->select('visitantes_presenciales.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_como_nos_conociste.nombre as como_se_entero')
+            ->select('visitantes_presenciales.*', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'config_como_nos_conociste.nombre as como_se_entero')
             ->where('visitantes_presenciales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -68,7 +69,7 @@ class VisitanteController extends BaseController {
     public function create()
     {
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);;
     }
 
     public function operar($id)
@@ -419,8 +420,8 @@ class VisitanteController extends BaseController {
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
             ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
-            ->Leftjoin('instructores', 'visitantes_presenciales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'visitantes_presenciales.interes_id')
+            ->Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'visitantes_presenciales.interes_id')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 
@@ -445,7 +446,7 @@ class VisitanteController extends BaseController {
                 $especialidades = $visitante_join->especialidad_nombre;
             }
  
-           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
+           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
         }else{
            return redirect("participante/visitante"); 
         }

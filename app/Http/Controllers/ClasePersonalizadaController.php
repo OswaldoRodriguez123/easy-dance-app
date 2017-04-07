@@ -19,6 +19,8 @@ use App\ItemsFacturaProforma;
 use App\InscripcionClasePersonalizada;
 use App\User;
 use App\Asistencia;
+use App\Staff;
+use App\Visitante;
 use App\HorarioClasePersonalizada;
 use Mail;
 use Validator;
@@ -220,7 +222,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $alumno_id = Session::get('id_alumno');
 
-        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id]);
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
         
     }
 
@@ -924,9 +926,17 @@ class ClasePersonalizadaController extends BaseController {
         $clasepersonalizada->alumno_id = $request->alumno_id;
         $clasepersonalizada->especialidad_id = $request->especialidad_id;
         $clasepersonalizada->estudio_id = $request->estudio_id;
+        $clasepersonalizada->promotor_id =  $request->promotor_id;
 
         // return redirect("/home");
         if($clasepersonalizada->save()){
+
+            $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
+
+            if($visitante){
+                $visitante->cliente = 1;
+                $visitante->save();
+            }
 
             $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
             

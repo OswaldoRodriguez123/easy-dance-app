@@ -160,6 +160,37 @@
 
                             @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
+                            <div class="col-sm-12">
+                                 
+                                    <label for="instructor" id="id-promotor_id">Promotor</label> <span class="c-morado f-700 f-16">*</span> 
+
+
+                                    <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un promotor" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="promotor_id" id="promotor_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $promotores as $promotor )
+                                          <option value = "{{ $promotor['id'] }}">{{ $promotor['nombre'] }} {{ $promotor['apellido'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-promotor_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-promotor_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+
+
+                               <div class="clearfix p-b-35"></div>
+
 
                             <div class="col-sm-12">
                                  

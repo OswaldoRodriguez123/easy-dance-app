@@ -695,7 +695,7 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            procesando(); 
+            // procesando(); 
 
             $.ajax({
                     url: route_filtrar,
@@ -776,7 +776,7 @@
                                 $( rowNode )
                                     .addClass('seleccion');
 
-                            porcentaje = (cliente_valor/total)*100
+                            porcentaje = (respuesta.total_clientes/total)*100
                             porcentaje = parseInt(porcentaje)
 
                             if(isNaN(porcentaje)){
@@ -823,7 +823,7 @@
                             
                     
                             $('.progreso').text(porcentaje)
-                            $('.total').text(cliente_valor);
+                            $('.total').text(respuesta.total_clientes);
                             $('#barra_progreso').css('width',porcentaje+'%')
         
                             $("#text-progreso").text(porcentaje+"%");

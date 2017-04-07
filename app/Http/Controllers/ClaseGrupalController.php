@@ -36,6 +36,8 @@ use App\Codigo;
 use App\Examen;
 use App\CredencialAlumno;
 use App\CredencialInstructor;
+use App\Staff;
+use App\Visitante;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -621,7 +623,9 @@ class ClaseGrupalController extends BaseController {
                 );
             }
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal]);
+
+
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'deuda' => $deuda, 'activacion' => $activacion, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
@@ -1200,6 +1204,7 @@ class ClaseGrupalController extends BaseController {
     {
 
     $rules = [
+        'instructor_id' => 'required',
         'clase_grupal_id' => 'required',
         'alumno_id' => 'required',
         'costo_inscripcion' => 'required|numeric',
@@ -1208,7 +1213,7 @@ class ClaseGrupalController extends BaseController {
     ];
 
     $messages = [
-
+        'instructor_id.required' => 'Ups! El Promotor  es requerido',
         'clase_grupal_id.required' => 'Ups! El Nombre  es requerido',
         'alumno_id.required' => 'Ups! El Alumno es requerido',
         'costo_inscripcion.required' => 'Ups! El costo de la inscripción es requerido',
@@ -1330,6 +1335,7 @@ class ClaseGrupalController extends BaseController {
             // {
                 $inscripcion = new InscripcionClaseGrupal;
 
+                $inscripcion->instructor_id = $request->instructor_id;
                 $inscripcion->clase_grupal_id = $request->clase_grupal_id;
                 $inscripcion->alumno_id = $request->alumno_id;
                 $inscripcion->fecha_pago = $proxima_fecha;
@@ -1341,6 +1347,13 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion->talla_franela = $request->talla_franela;
 
                 $inscripcion->save();
+
+                $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
+
+                if($visitante){
+                    $visitante->cliente = 1;
+                    $visitante->save();
+                }
 
                 if($request->costo_inscripcion != 0)
                 {

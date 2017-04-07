@@ -435,6 +435,34 @@
                             <div class="row p-l-10 p-r-10">
                             <div class="clearfix p-b-15"></div>
                             <div class="clearfix p-b-15"></div>
+
+
+                             <div class="col-sm-12">
+                                 
+                                    <label for="instructor_id" class="c-morado f-22" id="id-instructor_id">Promotor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el promotor" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+                                          <!-- <option value="">Selecciona</option> -->
+                                          @foreach ( $instructores as $instructor )
+                                            <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-instructor_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-15"></div>
+
                                 <div class="col-sm-12">
                                  
                                      <label for="alumno" class="c-morado f-22">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual deseas asignar a la clase grupal" title="" data-original-title="Ayuda"></i>
@@ -1103,6 +1131,9 @@
 
         $(document).ready(function(){
 
+          $('#instructor_id').val(7)
+          $('#instructor_id').selectpicker('refresh')
+
           $('#fecha').daterangepicker({
             "autoApply" : false,
             "opens": "left",
@@ -1285,9 +1316,9 @@
                 var costo_mensualidad = $("#clasegrupal-costo_mensualidad").text();
                 var fecha_pago = $("#clasegrupal-fecha_inicio_preferencial").text();
 
-                var values = $('#alumno_id').val();
+                // var values = $('#alumno_id').val();
 
-                if(values){
+                // if(values){
                 
                 // var alumno = '';
                 
@@ -1301,12 +1332,14 @@
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
+                var alumno_id = $('#alumno_id').val();
+                var instructor_id = $('#instructor_id').val();
                 $("#guardar").attr("disabled","disabled");
                 $(".cancelar").attr("disabled","disabled");
                 $(".procesando").removeClass('hidden');
                 $(".procesando").addClass('show');         
                 limpiarMensaje();
-                var array = {clase_grupal_id: clase_grupal_id, alumno_id: values, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, "permitir": permitir, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val()};
+                var array = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, "permitir": permitir, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val()};
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -1472,12 +1505,12 @@
                       }, 1000);
                     }
                 });
-              }
-              else{
+              // }
+              // else{
 
-                $("#error-alumno_id_mensaje").html("Debe seleccionar un alumno primero");
+              //   $("#error-alumno_id_mensaje").html("Debe seleccionar un alumno primero");
 
-              }
+              // }
             });
 
         $("#guardar_inscripcion").click(function(){
@@ -2218,7 +2251,7 @@
 }, '.modal');
 
     function limpiarMensaje(){
-        var campo = ["alumno_id"];
+        var campo = ["alumno_id", "instructor_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -2227,7 +2260,6 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["alumno_id"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {

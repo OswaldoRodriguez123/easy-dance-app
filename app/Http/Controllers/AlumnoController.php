@@ -41,6 +41,7 @@ use App\Notificacion;
 use App\NotificacionUsuario;
 use App\Incidencia;
 use App\Sugerencia;
+use App\Staff;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
@@ -239,13 +240,6 @@ class AlumnoController extends BaseController
             return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
         }
 
-        if($request->visitante_id){
-            $visitante = Visitante::find($request->visitante_id);
-            $visitante->cliente = 1;
-
-            $visitante->save();
-        }
-
         $alumno = new Alumno;
 
         $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
@@ -270,11 +264,11 @@ class AlumnoController extends BaseController
             $direccion = '';
         }
 
-        if($request->instructor_id){
-            $instructor_id = $request->instructor_id;
-        }else{
-            $instructor_id = null;
-        }
+        // if($request->instructor_id){
+        //     $instructor_id = $request->instructor_id;
+        // }else{
+        //     $instructor_id = null;
+        // }
 
         do{
             $codigo_referido = str_random(8);
@@ -298,9 +292,16 @@ class AlumnoController extends BaseController
         $alumno->hipertension = $request->hipertension;
         $alumno->lesiones = $request->lesiones;
         $alumno->codigo_referido = $codigo_referido;
-        $alumno->instructor_id = $instructor_id;
 
         if($alumno->save()){
+
+            if($request->visitante_id){
+                
+                $visitante = Visitante::find($request->visitante_id);
+                $visitante->alumno_id = $alumno->id;
+
+                $visitante->save();
+            }
 
             if($request->codigo){
                 $referido=DB::table('alumnos')
@@ -431,7 +432,7 @@ class AlumnoController extends BaseController
     public function create()
     {
  
-        return view('participante.alumno.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
+        return view('participante.alumno.create')->with(['instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
     }
 
     public function agregarvisitante($id)
@@ -439,7 +440,7 @@ class AlumnoController extends BaseController
 
         $visitante = Visitante::find($id);
  
-        return view('participante.alumno.create')->with(['visitante' => $visitante, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
+        return view('participante.alumno.create')->with(['visitante' => $visitante, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
     }
 
     public function edit($id)
@@ -447,8 +448,8 @@ class AlumnoController extends BaseController
 
         Session::forget('puntos_referidos');
 
-        $alumno = Alumno::Leftjoin('instructores', 'alumnos.instructor_id', '=', 'instructores.id')
-            ->select('alumnos.*','instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido')
+        $alumno = Alumno::Leftjoin('staff', 'alumnos.instructor_id', '=', 'staff.id')
+            ->select('alumnos.*','staff.nombre as instructor_nombre','staff.apellido as instructor_apellido')
             ->where('alumnos.id',$id)
         ->first();
 
@@ -536,7 +537,7 @@ class AlumnoController extends BaseController
 
             $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
-           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'edad' => $edad]);
+           return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad]);
         }else{
            return redirect("participante/alumno"); 
         }
