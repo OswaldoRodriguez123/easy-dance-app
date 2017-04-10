@@ -217,10 +217,10 @@
                                 <tr>
                                     <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
+                                    <th class="text-center" data-column-id="cedula" data-order="desc">Identificación</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc"><span class="ocultar">Fecha Nacimiento</span></th>
                                     <th class="text-center" data-column-id="estatus_e"><span class="ocultar">Estatus E</span></th>
-                                    <th class="text-center" data-column-id="celular"><span class="ocultar">Contacto Móvil</span></th>
+                                    <th class="text-center" data-column-id="clase_grupal"><span class="ocultar">Clase Grupal</span></th>
                                     <th class="text-center" data-column-id="sexo"><span class="ocultar">Sexo</span></th>
                                     <th class="text-center" data-column-id="fecha"><span class="ocultar">Fecha</span></th>
                                     <th class="text-center" data-column-id="hora"><span class="ocultar">Hora</span></th>                                                                                                            
@@ -436,7 +436,7 @@
                         ''+array.identificacion+'',
                         ''+array.fecha_nacimiento+'',
                         ''+array.deuda+'',
-                        ''+array.celular+'',
+                        ''+array.clase_grupal_nombre+'',
                         ''+sexo+'',
                         ''+fecha+'',
                         ''+hora+'',
