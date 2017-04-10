@@ -715,6 +715,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/transmisiones', 'TransmisionController@index');
 			Route::post('agendar/transmisiones/agregar', 'TransmisionController@store');
 			Route::get('agendar/transmisiones/agregar', 'TransmisionController@create');
+			Route::get('agendar/transmisiones/detalle/{id}', 'TransmisionController@edit');
+			Route::put('agendar/transmisiones/update/tema', 'TransmisionController@updateTema');
+			Route::put('agendar/transmisiones/update/hora', 'TransmisionController@updateHora');
+			Route::put('agendar/transmisiones/update/fecha', 'TransmisionController@updateFecha');
+			Route::put('agendar/transmisiones/update/presentador', 'TransmisionController@updatePresentador');
+			Route::put('agendar/transmisiones/update/invitado', 'TransmisionController@updateInvitado');
+			Route::put('agendar/transmisiones/update/desarrollo', 'TransmisionController@updateDesarrollo');
+			Route::put('agendar/transmisiones/update/etiqueta', 'TransmisionController@updateEtiqueta');
 			Route::delete('agendar/transmisiones/eliminar/{id}', 'TransmisionController@destroy');
 
 			//ESPECIALES

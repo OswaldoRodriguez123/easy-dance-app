@@ -66,19 +66,19 @@
 
                                     @if($usuario->usuario_tipo == 1)
 
-                                    Administrador
+                                        Administrador
 
                                     @elseif($usuario->usuario_tipo == 5)
 
-                                    Sucursal
+                                        Sucursal
 
                                     @elseif($usuario->usuario_tipo == 6)
 
-                                    Recepcionista
+                                        Recepcionista
 
                                     @endif</td>
-                                    <td class="text-center previa">{{$usuario->email}}</td>
-                                    <td class="text-center previa">{{$usuario->direccion}}</td>
+                                    <td class="text-center previa">{{ str_limit($usuario->email, $limit = 30, $end = '...') }}</td>
+                                    <td class="text-center previa">{{ str_limit($usuario->direccion, $limit = 40, $end = '...') }}</td>
                                   </tr>
                             @endforeach 
                                                            
@@ -127,6 +127,7 @@
         paging: false,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -154,23 +155,7 @@
         });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            });
+    });
 
 
     </script>

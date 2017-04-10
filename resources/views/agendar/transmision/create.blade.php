@@ -165,7 +165,7 @@
 
                                             <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
                                             <div class="fg-line dropdown">
-                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#519ff0" data-toggle="dropdown">
                                                     
                                                 <div class="dropdown-menu">
                                                     <div class="color-picker" data-cp-default="#519ff0"></div>

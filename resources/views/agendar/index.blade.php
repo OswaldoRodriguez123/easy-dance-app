@@ -105,7 +105,7 @@
                                     <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="{{url('/')}}/agendar">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                                    <div class="col-sm-3 col-sm-offset-2">
+                                    <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
 		                                        <a href="#" class="agendar" data-agendar="clases-grupales">
@@ -147,10 +147,7 @@
 		                                </ul>
                                     </div>
 
-                                    <div class="clearfix p-b-20"></div>
-                                    <div class="clearfix p-b-20"></div>
-
-                                    <div class="col-sm-3 col-sm-offset-3">
+                                    <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
 		                                        <a href="#" class="agendar" data-agendar="citas">
@@ -162,20 +159,6 @@
 		                                        </a>
 		                                    </li>
 		                                </ul>
-                                    </div>
-
-                                    <div class="col-sm-3">
-                                        <ul class="ca-menu" style="margin: 0 auto;">
-                                            <li style="height: 250px;">
-                                                <a href="#" class="agendar" data-agendar="transmision">
-                                                    <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="zmdi zmdi-camera-add"></i></span>
-                                                    <div class="ca-content" style="top: 35%;">
-                                                        <h2 class="ca-main f-20">Transmisión</h2>
-                                                        <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </div>
 
                                     <div class="clearfix p-b-10"></div>

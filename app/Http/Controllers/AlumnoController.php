@@ -553,7 +553,7 @@ class AlumnoController extends BaseController
 
             $puntos_referidos = 0;
 
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->get();
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->where('remuneracion' ,">", 0)->get();
 
             foreach($alumno_remuneracion as $remuneracion){
                 $puntos_referidos = $puntos_referidos + $remuneracion->remuneracion;

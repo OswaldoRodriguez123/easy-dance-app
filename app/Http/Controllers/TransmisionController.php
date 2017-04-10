@@ -86,6 +86,238 @@ class TransmisionController extends BaseController {
 	    }
     }
 
+    public function edit($id)
+    {
+        $transmision = Transmision::find($id);
+
+        if($transmision){
+           return view('agendar.transmision.planilla')->with('transmision' , $transmision);
+        }else{
+           return redirect("agendar/transmisiones"); 
+        }
+    }
+
+    public function updateTema(Request $request){
+
+	    $rules = [
+	        'tema' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'tema.required' => 'Ups! El tema es requerido',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	        $transmision = Transmision::find($request->id);
+
+	        $transmision->tema = $request->tema;
+
+	        if($transmision->save()){
+	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+	    }
+    }
+
+    public function updatePresentador(Request $request){
+
+	    $rules = [
+	        'presentador' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'presentador.required' => 'Ups! El presentador es requerido',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	        $transmision = Transmision::find($request->id);
+
+	        $transmision->presentador = $request->presentador;
+
+	        if($transmision->save()){
+	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+	    }
+    }
+
+    public function updateInvitado(Request $request){
+
+	    $rules = [
+	        'invitado' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'invitado.required' => 'Ups! El tema es requerido',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	        $transmision = Transmision::find($request->id);
+
+	        $transmision->invitado = $request->invitado;
+
+	        if($transmision->save()){
+	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+	    }
+    }
+
+    public function updateHora(Request $request){
+
+	    $rules = [
+	        'hora' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'hora.required' => 'Ups! La hora es requerida',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	        $transmision = Transmision::find($request->id);
+
+	        $transmision->hora = $request->hora;
+
+	        if($transmision->save()){
+	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+	    }
+    }
+
+    public function updateFecha(Request $request){
+
+	    $rules = [
+	        'fecha' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'fecha.required' => 'Ups! La fecha es requerida',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	    	$fecha = Carbon::createFromFormat('d/m/Y', $request->fecha); 
+
+	        if($fecha < Carbon::now()){
+
+	            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la transmisión no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+	        }
+
+	        $fecha = $fecha->toDateString();
+
+	        $transmision = Transmision::find($request->id);
+
+	        $transmision->fecha = $fecha;
+
+	        if($transmision->save()){
+	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+	    }
+    }
+
+    public function updateEtiqueta(Request $request){
+
+	    $rules = [
+	        'color_etiqueta' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'color_etiqueta.required' => 'Ups! La etiqueta es requerida',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	        $transmision = Transmision::find($request->id);
+
+	        $transmision->color_etiqueta = $request->color_etiqueta;
+
+	        if($transmision->save()){
+	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+	    }
+    }
+
+    public function updateDesarrollo(Request $request){
+
+        $transmision = Transmision::find($request->id);
+
+        $transmision->desarrollo = $request->desarrollo;
+
+        if($transmision->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+	    
+    }
+
     public function destroy($id)
     {
         

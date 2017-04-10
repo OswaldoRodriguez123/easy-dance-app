@@ -83,6 +83,9 @@
                                         <li class="hidden-xs">
                                             <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Generar Citas</a>
                                         </li>
+                                        <li class="hidden-xs">
+                                            <a href="{{url('agendar/transmisiones')}}"><i class="zmdi zmdi-camera-add f-16"></i> Generar Transmisiones</a>
+                                        </li>
                                     </ul>
                                 </li>
 
