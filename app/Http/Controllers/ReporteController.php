@@ -1404,41 +1404,35 @@ public function PresencialesFiltros(Request $request)
 
                 if($asistio == 0)
                 {
-                    $pertenece = DB::table('inscripcion_clase_grupal')
-                        ->select('inscripcion_clase_grupal.*')
-                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $inscripcion->clase_grupal_id)
-                        ->where('inscripcion_clase_grupal.alumno_id', '=', $inscripcion->alumno_id)
+              
+
+                    $pertenece = '';
+
+                    $deuda = DB::table('items_factura_proforma')
+                        ->select('items_factura_proforma.*')
+                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                        ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
                     ->first();
 
-                    if($pertenece){
 
-                        $pertenece = '';
-
-                        $deuda = DB::table('items_factura_proforma')
-                            ->select('items_factura_proforma.*')
-                            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                            ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
-                        ->first();
-
-
-                        if($deuda){
-                            $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
-                        }else{
-                            $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
-                        }
-
-                        $collection=collect($inscripcion);     
-                        $inasistencias_array = $collection->toArray();
-                        $inasistencias_array['pertenece']=$pertenece;
-                        $inasistencias_array['deuda']=$deuda;
-                        $inasistencias[$inscripcion->id] = $inasistencias_array;
-
-                        if($inscripcion->sexo == 'F'){
-                            $mujeres = $mujeres + 1;
-                        }else{
-                            $hombres = $hombres + 1;
-                        }
+                    if($deuda){
+                        $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                    }else{
+                        $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
                     }
+
+                    $collection=collect($inscripcion);     
+                    $inasistencias_array = $collection->toArray();
+                    $inasistencias_array['pertenece']=$pertenece;
+                    $inasistencias_array['deuda']=$deuda;
+                    $inasistencias[$inscripcion->id] = $inasistencias_array;
+
+                    if($inscripcion->sexo == 'F'){
+                        $mujeres = $mujeres + 1;
+                    }else{
+                        $hombres = $hombres + 1;
+                    }
+                    
                 }               
             }
 
