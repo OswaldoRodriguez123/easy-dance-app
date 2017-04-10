@@ -169,7 +169,7 @@
 
                         <div class ="clearfix"></div>
 
-                        <div class="text-center">
+                        <div class="col-sm-12 text-center">
                             <div class="text-center f-700" >Porcentaje de Asistencias</div>
                             <hr class="linea-morada opaco-0-8">
 
