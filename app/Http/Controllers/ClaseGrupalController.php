@@ -3581,9 +3581,10 @@ class ClaseGrupalController extends BaseController {
 
                       $dia = 'Domingo';
 
-                      $total_asistencia = $total_asistencia + 1;
-
                     }
+
+                    $total_asistencia = $total_asistencia + 1;
+                    
                 }else{
 
                     if(Carbon::now()->toDateString() != $fecha_a_comparar){
