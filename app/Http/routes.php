@@ -179,22 +179,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			// ACADEMIA
 
 			Route::get('configuracion/academia','AcademiaController@configuracion');
-
 			Route::post('configuracion/academia/carga-inicial','AcademiaController@CargaInicial');
-
-			Route::post('configuracion/academia/contacto','AcademiaController@storeContacto');
-			Route::post('configuracion/academia/especiales','AcademiaController@storeEspeciales');
-			Route::post('configuracion/academia/administrativo','AcademiaController@storeAdministrativo');
-			Route::post('configuracion/academia/estudio','AcademiaController@agregarestudio');
-			Route::post('configuracion/academia/eliminarestudio/{id}','AcademiaController@eliminarestudio');
-			Route::post('configuracion/academia/nivel','AcademiaController@agregarnivel');
-			Route::post('configuracion/academia/eliminarnivel/{id}','AcademiaController@eliminarniveles');
-			Route::post('configuracion/academia/cargo','AcademiaController@agregarcargo');
-			Route::post('configuracion/academia/eliminarcargo/{id}','AcademiaController@eliminarcargo');
-			Route::post('configuracion/academia/formula','AcademiaController@agregarformula');
-			Route::post('configuracion/academia/eliminarformula/{id}','AcademiaController@eliminarformula');
-			Route::post('configuracion/academia/valoracion','AcademiaController@agregarvaloracion');
-			Route::post('configuracion/academia/eliminarvaloracion/{id}','AcademiaController@eliminarvaloracion');
 			Route::post('configuracion/academia/completar','AcademiaController@store');
 
 			Route::put('configuracion/academia/update/contacto', 'AcademiaController@updateContacto');
@@ -202,7 +187,23 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/academia/update/redes', 'AcademiaController@updateRedes');
 			Route::post('configuracion/academia/update/especiales', 'AcademiaController@updateEspeciales');
 			Route::put('configuracion/academia/update/administrativo', 'AcademiaController@updateAdministrativo');
-			Route::put('configuracion/academia/update/referido', 'AcademiaController@updateReferido');
+
+			// HERRAMIENTAS
+
+			Route::get('configuracion/herramientas','HerramientaController@index');
+			Route::post('configuracion/academia/estudio','HerramientaController@agregarestudio');
+			Route::post('configuracion/academia/eliminarestudio/{id}','HerramientaController@eliminarestudio');
+			Route::post('configuracion/academia/nivel','HerramientaController@agregarnivel');
+			Route::post('configuracion/academia/eliminarnivel/{id}','HerramientaController@eliminarniveles');
+			Route::post('configuracion/academia/cargo','HerramientaController@agregarcargo');
+			Route::post('configuracion/academia/eliminarcargo/{id}','HerramientaController@eliminarcargo');
+			Route::post('configuracion/academia/formula','HerramientaController@agregarformula');
+			Route::post('configuracion/academia/eliminarformula/{id}','HerramientaController@eliminarformula');
+			Route::post('configuracion/academia/valoracion','HerramientaController@agregarvaloracion');
+			Route::post('configuracion/academia/eliminarvaloracion/{id}','HerramientaController@eliminarvaloracion');
+			Route::post('configuracion/academia/puntaje','HerramientaController@agregarpuntaje');
+			Route::post('configuracion/academia/eliminarpuntaje/{id}','HerramientaController@eliminarpuntaje');
+			Route::put('configuracion/academia/update/referido', 'HerramientaController@updateReferido');
 
 			// PRODUCTOS
 
@@ -451,6 +452,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('participante/alumno/cancelar_cantidad', 'AlumnoController@cancelar_cantidad');
 
 			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
+			Route::get('participante/alumno/puntos-acumulados/{id}', 'AlumnoController@puntos_acumulados');
+			Route::post('participante/alumno/puntos-acumulados/agregar', 'AlumnoController@agregar_remuneracion');
+			Route::post('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
 
 			//INSTRUCTOR
 
@@ -553,6 +557,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/agregarhorario', 'ClaseGrupalController@agregarhorario');
 			Route::post('agendar/clases-grupales/eliminarhorario/{id}', 'ClaseGrupalController@eliminarhorario');
 			Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
+			Route::get('agendar/clases-grupales/riesgo-ausencia', 'ClaseGrupalController@riesgo_ausencia');
 
 			Route::put('agendar/clases-grupales/update/nombre', 'ClaseGrupalController@updateNombre');
 			Route::put('agendar/clases-grupales/update/fecha', 'ClaseGrupalController@updateFecha');

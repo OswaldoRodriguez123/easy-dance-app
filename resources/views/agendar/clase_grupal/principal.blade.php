@@ -111,9 +111,9 @@
                             <div class="col-sm-6">
                                 <i class="zmdi zmdi-label-alt f-25 c-verde"></i> Activos: {{$activos}} 
                                 <div class="clearfix"></div>
-                                <i class="zmdi zmdi-label-alt f-25 c-amarillo"></i> Riesgo de Ausencial: {{$riesgo}} 
-                                <div class="clearfix"></div>
-                                Total: {{$activos + $riesgo}}
+                                <a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia"><i class="zmdi zmdi-label-alt f-25 c-amarillo"></i> Riesgo de Ausencia: {{$riesgo}}</a>
+                                <div class="clearfix m-b-20"></div>
+                                <span class="f-15">Total: {{$activos + $riesgo}}</span>
                             </div>
 
                             <div class="col-sm-6 text-right">

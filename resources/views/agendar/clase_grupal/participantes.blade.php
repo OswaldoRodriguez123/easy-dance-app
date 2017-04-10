@@ -20,6 +20,117 @@
 @stop
 @section('content')
 
+
+ <div class="modal fade" id="modalAlumno" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                    <h4 class="modal-title c-negro">Participante: <span class="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                </div>
+                <form name="agregar_asistencia" id="agregar_asistencia"  >
+                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                   <div class="modal-body">                           
+                   <div class="row p-t-20 p-b-0">
+
+                       <div class="col-sm-3">
+
+                            <img name = "alumno_imagen" id ="alumno_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                            <div class="clearfix p-b-15"></div>
+
+                            <p class="p-l-10 span_alumno" id="asistencia-nombre-alumno"></p>
+
+                            <span class="p-l-30" id="identificacion_participante"></span>
+
+                        
+                              
+                       </div>
+
+                       <div class="col-sm-5">
+                         <div class="form-group fg-line">
+
+                            <table class="table table-striped table-bordered historial">
+                             <tr class="detalle historial">
+                             <td class = "historial"></td>
+                             <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-16 f-700 historial">Balance Económico: </span><span class = "f-16 f-700 historial" id="asistencia-estado_economico" name="asistencia-estado_economico"></span> <i class="zmdi zmdi-money f-20 m-r-5 historial" name="status_economico" id="status_economico"></i></td>
+                            </tr>
+                            </table>
+                          </div>
+                       </div>
+
+                       <div class="col-sm-4">
+                         <div class="form-group fg-line">
+                            <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
+                            <div class="clearfix p-b-15"></div>
+                            <span class="text-center"><i id="asistencia-estado_ausencia" class="zmdi zmdi-label-alt-outline f-20"></i></span>
+                         </div>
+                       </div>
+                       
+
+                       <div class="col-sm-9">
+                          
+                          <div class="row p-t-20 p-b-0">
+
+                               <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label>
+                                            <div class="dtp-container fg-line">
+                                            <input name="fecha_nacimiento_participante" id="fecha_nacimiento_participante" class="form-control date-picker" placeholder="Seleciona" type="text" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div> 
+          
+                               <div class="col-sm-12">
+
+                               <label for="apellido" id="id-correo_participante">Correo Electrónico</label>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm proceso" name="correo_participante" id="correo_participante" placeholder="Ej. easydance@gmail.com" disabled>
+                                      </div>
+      
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="apellido" id="id-celular_participante">Teléfono Móvil</label>
+
+                                    <div class="form-group fg-line ">
+                                      <input type="text" class="form-control input-sm input-mask" name="celular_participante" id="celular_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
+                                      </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+                               <br>
+
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="apellido" id="id-telefono_participante">Teléfono Local</label> 
+
+                                    <div class="form-group fg-line ">
+                                      <input disabled type="text" class="form-control input-sm input-mask" name="telefono_participante" id="telefono_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
+                                      </div>
+                               </div>
+
+
+                       </div>
+
+                       <div class="clearfix"></div> 
+
+                   </div>
+                   
+                </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
  <div class="modal fade" id="modalAlumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -28,17 +139,6 @@
                         </div>
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
-
-                              <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group fg-line">
-                                        <label for="id" id="id-identificacion_participante">Id - Pasaporte</label>
-                                        <input type="text" class="form-control input-sm" name="identificacion_participante" id="identificacion_participante" data-mask="00000000000000000000" placeholder="Ej. 16234987" disabled>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -2091,14 +2191,15 @@
             }else{
               $("#mujer").prop("checked", true);
             }
+
+            console.log(identificacion)
             
             $('.span_alumno').text(nombre_apellido)
-            $('#identificacion_participante').val(identificacion);
+            $('#identificacion_participante').text(identificacion);
             $('#nombre_participante').val(apellido_nombre[0]);
             $('#apellido_participante').val(apellido_nombre[1]);
             $('#correo_participante').val(correo);
             $('#fecha_nacimiento_participante').val(fecha_nacimiento);
-            $('#identificacion_participante').val(identificacion);
             $('#telefono_participante').val(telefono);
             $('#celular_participante').val(celular);
             

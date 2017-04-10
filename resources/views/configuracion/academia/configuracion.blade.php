@@ -690,7 +690,7 @@
 
                                     <div class="col-sm-12">
                                     <div class="form-group fg-line">
-                                    <label for="id">Formula de Exito</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de las distintas formulas de exito que posees en tu academia" title="" data-original-title="Ayuda"></i>
+                                    <label for="id">Fórmula de Éxito</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de las distintas fórmulas de exito que posees en tu academia" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">

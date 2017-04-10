@@ -543,6 +543,29 @@ class AlumnoController extends BaseController
         }
     }
 
+    public function puntos_acumulados($id)
+    {   
+
+        $alumno = Alumno::find($id);
+
+
+        if($alumno){
+
+            $puntos_referidos = 0;
+
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->get();
+
+            foreach($alumno_remuneracion as $remuneracion){
+                $puntos_referidos = $puntos_referidos + $remuneracion->remuneracion;
+            }
+
+
+           return view('participante.alumno.puntos_acumulados')->with(['alumno' => $alumno , 'id' => $id, 'puntos_referidos' => $puntos_referidos, 'alumno_remuneracion' => $alumno_remuneracion]);
+        }else{
+           return redirect("participante/alumno"); 
+        }
+    }
+
     public function operar($id)
     {   
         $item_factura = DB::table('items_factura_proforma')
@@ -1071,69 +1094,83 @@ class AlumnoController extends BaseController
         
     }
 
-    public function updateReferido(Request $request){
-        $alumno = AlumnoRemuneracion::where('alumno_id', $request->id)->first();
-        $alumno->remuneracion = $request->cantidad_actual + $alumno->remuneracion;
+    public function agregar_remuneracion(Request $request){
 
-        if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        $rules = [
+            'concepto' => 'required',
+            'remuneracion' => 'required|numeric',
+            'fecha_vencimiento' => 'required',
+        ];
+
+        $messages = [
+            'concepto.required' => 'Ups! El concepto es requerido ',
+            'remuneracion.required' => 'Ups! El cantidad es requerida',
+            'remuneracion.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+            'fecha_vencimiento.required' => 'Ups! La fecha de vencimiento es requerida ',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+
+            $fecha_vencimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_vencimiento);
+
+            if($fecha_vencimiento < Carbon::now()){
+
+                return response()->json(['errores' => ['fecha_vencimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a hoy']], 'status' => 'ERROR'],422);
+            }
+
+            $fecha_vencimiento = $fecha_vencimiento->toDateString();
+
+            $remuneracion = new AlumnoRemuneracion;
+
+            $remuneracion->alumno_id = $request->id;
+            $remuneracion->concepto = $request->concepto;
+            $remuneracion->remuneracion = $request->remuneracion;
+            $remuneracion->fecha_vencimiento = $fecha_vencimiento;
+
+            if($remuneracion->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'array' => $remuneracion, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_remuneracion($id)
+    {
+        
+        $remuneracion = AlumnoRemuneracion::find($id);
+
+        $cantidad = $remuneracion->remuneracion;
+        
+        if($remuneracion->delete()){
+
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+
     }
 
     public function destroy($id)
     {
-        // $total = 0;
-
         
-        // $mensaje = 'Ups! Este alumno no puede ser eliminado ya que se encuentra registrado en alguna';
+        $alumno = Alumno::find($id);
         
-        // $exist = InscripcionClaseGrupal::where('alumno_id', $id)->first();
+        if($alumno->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
 
-        // if($exist)
-        // {
-        //     $total = 1;
-
-        //     $mensaje = $mensaje . ' clase grupal';
-        // }
-
-        // $exist = InscripcionTaller::where('alumno_id',$id)->first();
-        
-        // if($exist)
-        // {
-        //     $total = 1;
-
-        //     $mensaje = $mensaje . ', taller';
-        // }
-
-        // $exist = InscripcionCoreografia::where('alumno_id',$id)->first();
-        
-        // if($exist)
-        // {
-        //     $total = 1;
-
-        //     $mensaje = $mensaje . ' o coreografia';
-        // }
-
-        // $mensaje = $mensaje . ', para deshabilitarlo debe eliminarlo de la actividad donde se encuentra registrado';
-
-        // if($total == 0){
-
-            $alumno = Alumno::find($id);
-            
-            if($alumno->delete()){
-                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
-        // }
-        // else
-        // {
-        //     return response()->json(['error_mensaje'=> $mensaje , 'status' => 'ERROR-INSCRIPCION'],422);
-        // }
-
-        // return redirect("alumno");
     }
 
     public function restore($id)

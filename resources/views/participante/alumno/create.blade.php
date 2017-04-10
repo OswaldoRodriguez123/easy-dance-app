@@ -622,16 +622,7 @@
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_alumno" ).serialize();
-
-                
-                procesando();
-                // $("#guardar").attr("disabled","disabled");
-                // $("#guardar").css({
-                //   "opacity": ("0.2")
-                // });
-                // $(".cancelar").attr("disabled","disabled");
-                // $(".procesando").removeClass('hidden');
-                // $(".procesando").addClass('show');         
+                procesando();      
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -658,14 +649,6 @@
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
 
-                          // $(".procesando").removeClass('show');
-                          // $(".procesando").addClass('hidden');
-                          // $("#guardar").removeAttr("disabled");
-                          // $("#guardar").css({
-                          //   "opacity": ("1")
-                          // });
-                          // $(".cancelar").removeAttr("disabled");
-
                           finprocesado();
 
                           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
@@ -677,7 +660,7 @@
                       setTimeout(function(){ 
 
                         if (typeof msj.responseJSON === "undefined") {
-                          //window.location = "{{url('/')}}/error";
+                          window.location = "{{url('/')}}/error";
                         }
 
                         if(msj.responseJSON.status=="ERROR"){
@@ -689,13 +672,6 @@
                           var nTitle="   Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        // $("#guardar").removeAttr("disabled");
-                        // $("#guardar").css({
-                        //   "opacity": ("1")
-                        // });
-                        // $(".cancelar").removeAttr("disabled");
-                        // $(".procesando").removeClass('show');
-                        // $(".procesando").addClass('hidden');
                         finprocesado();
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');

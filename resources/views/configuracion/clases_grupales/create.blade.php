@@ -311,7 +311,7 @@
                                     <div class="col-sm-12">
                                           <label for="id" id="id-porcentaje_retraso">Porcentaje de retraso de pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa un porcentaje de mora por retraso de pago correspondiente al servicio que ofreces" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
-                                                <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                                <span class="input-group-addon"><i class="zmdi zmdi-undo f-22"></i></span>
                                                  <div class="fg-line"> 
                                                   
                                                   <input type="text" class="form-control input-sm input-mask" name="porcentaje_retraso" id="porcentaje_retraso" data-mask="00" placeholder="Ej. 20">
@@ -331,7 +331,7 @@
                                       <div class="col-sm-12">
                                           <label for="id" id="id-tiempo_tolerancia">Tiempo de Tolerancia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los días de tolerancia que ofreces a tus clientes para la gestión del pago del servicio, al vencerse dicha fecha el sistema generará una mora por retraso de pago, según el porcentaje que hayas indicado" title="" data-original-title="Ayuda"></i>
                                               <div class="input-group">
-                                                <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                                <span class="input-group-addon"><i class="zmdi zmdi-undo f-22"></i></span>
                                                  <div class="fg-line"> 
                                                   <input type="text" class="form-control input-sm input-mask" name="tiempo_tolerancia" id="tiempo_tolerancia" data-mask="00" placeholder="Ej. 20">
                                                   </div>

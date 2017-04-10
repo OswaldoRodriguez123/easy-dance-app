@@ -87,8 +87,7 @@
           <div class="container">
              <div class="block-header">
                   <div class="col-sm-6">
-                  <?php $url = "/agendar/clases-grupales" ?>
-                    <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                    <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Agenda</a>
                   </div>
                   <div class="col-sm-6 text-right">
                     <a class="btn-blanco m-r-10 f-16" style="text-align: right" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}"> Vista Previa <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>

@@ -48,7 +48,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="zmdi zmdi-email f-25" id="id-clase_grupal_id"></i> Seccion de Incidencias </span>                                                         
+                            <span class="f-25 c-morado"><i class="zmdi zmdi-email f-25" id="id-clase_grupal_id"></i> Sección de Incidencias </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">

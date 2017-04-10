@@ -3408,4 +3408,48 @@ class ClaseGrupalController extends BaseController {
         return view('agendar.clase_grupal.reservaciones_vencidas')->with(['reservaciones' => $reservaciones, 'id' => $id]);
     }
 
+    public function riesgo_ausencia(){
+
+        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        $asistencia_amarilla = 3;
+        $asistencia_roja = 6;
+
+        $array = array();
+
+        foreach($alumnos as $alumno){
+
+            $semanas = 0;
+
+            $ultima_asistencia = Asistencia::where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+            if($ultima_asistencia){
+
+                $fecha = Carbon::parse($ultima_asistencia->fecha);
+
+            }else{
+
+                // $array[] = $alumno;
+                continue;
+            }
+
+            while($fecha < Carbon::now())
+            {
+                $semanas++;
+                $fecha->addWeek();
+            }
+            
+            if($semanas >= $asistencia_roja){
+                // $array[] = $alumno;
+            }
+            else if($semanas >= $asistencia_amarilla){
+                $array[] = $alumno;
+            }
+
+        }
+
+        return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array]);
+
+    }
+
 }

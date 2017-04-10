@@ -753,22 +753,28 @@
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}" data-talla="{{$clase_grupal->talla_franela}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal->inscripcion_id}}">{{$clase_grupal->talla_franela}}</span></span>
+                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}" data-talla="{{$clase_grupal->talla_franela}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal->inscripcion_id}}">{{$clase_grupal->talla_franela}}</span>
 
-                              @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
-                                <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                              @else
-                                @if($clase_grupal->boolean_franela == 0 && $clase_grupal->boolean_programacion == 0)
-                                  <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
-                             
+                                 @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
+                                  <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                 @else
-                                    @if($clase_grupal->boolean_franela)
-                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
+                                  @if($clase_grupal->boolean_franela == 0 && $clase_grupal->boolean_programacion == 0)
+                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
+                               
                                   @else
-                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
+                                      @if($clase_grupal->boolean_franela)
+                                      <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
+                                    @else
+                                      <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
+                                    @endif
                                   @endif
                                 @endif
-                              @endif
+
+                                <span class="c-azul">Cambiar Talla y Programación</span>
+
+                              </span>
+
+                             
 
                               <div class="clearfix p-b-15"></div>
                               <div class="clearfix p-b-15"></div>
@@ -958,98 +964,14 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalReferido-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                    <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                  </div>
-                  <form name="edit_referido_alumno" id="edit_referido_alumno"  >
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" id="cantidad_actual" name="cantidad_actual" value="0">
-                    <input type="hidden" name="id" value="{{$alumno->id}}"></input>
-                    <div class="modal-body">                           
-                      <div class="row p-t-20 p-b-0">
-                        <div class="col-sm-12">
-                          <div class="form-group fg-line">
-                            <label for="cantidad" id="id-cantidad">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de referidos a agregar" title="" data-original-title="Ayuda"></i>
-
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
-                              <div class="fg-line">
-                                <input type="text" class="form-control input-sm input-mask proceso" data-mask="00" name="cantidad" id="cantidad" placeholder="Ej. 50">
-                              </div>
-                            </div>
-                            <div class="has-error" id="error-cantidad">
-                              <span >
-                                <small class="help-block error-span" id="error-cantidad_mensaje" ></small>
-                              </span>
-                            </div>
-                          </div>
-
-                          <br>
-
-                          <div class="card-header text-left">
-                            <button type="button" class="btn btn-blanco m-r-10 f-10" name= "agregar_cantidad" id="agregar_cantidad"> Agregar Linea</button>
-                          </div>
-
-                          <div class="clearfix p-b-35"></div>
-
-                          <div class="table-responsive row">
-                            <div class="col-md-12">
-                              <table class="table table-striped table-bordered text-center " id="tablelistar" >
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" data-column-id="cantidad"></th>
-                                        <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                       
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                
-                    <div class="clearfix p-b-35"></div>
-
-                    <div class="clearfix"></div> 
-                    <div class="modal-footer p-b-20 m-b-20">
-                      <div class="col-sm-12 text-left">
-                        <div class="procesando hidden">
-                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                          <div class="preloader pls-purple">
-                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                              </svg>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-12">                            
-
-                        <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" name="guardar" data-formulario="edit_referido_alumno" data-update="referido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                        <div class="clearfix p-b-35"></div>
-                
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
             <section id="content">
                 <div class="container">
-                
-
-
+              
                     <div class="block-header">
                        <?php $url = "/participante/alumno" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+                        <a class="btn-blanco m-r-10 f-16" href="{{ $url }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -1121,9 +1043,9 @@
                                   </table>
 
                                   <table class="table table-striped table-bordered">
-                                    <tr class="disabled">
+                                    <tr class="detalle remuneracion">
                                       <td></td>
-                                      <td class="f-14 m-l-15"><span class="f-12 f-700">Puntos A: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos"></span> <i id="estatus-puntos_referidos" class="zmdi zmdi-money {{ empty($puntos_referidos) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
+                                      <td class="f-14 m-l-15" data-original-title="" data-content="Ver puntos" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Puntos A: </span><span class = "f-12 f-700" id="puntos_referidos" name="puntos_referidos"></span> <i id="estatus-puntos_referidos" class="zmdi zmdi-money {{ empty($puntos_referidos) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
                                     </tr>
                                   </table>
 
@@ -1295,27 +1217,6 @@
                              <td class="f-14 m-l-15" ><span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">
                               <span id="alumno-nombre" class="capitalize">{{$alumno->codigo_referido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalReferido-Alumno">
-                              <td>
-                                <span class="m-l-10 m-r-5 f-16" >
-                                  <i class="zmdi c-verde zmdi-check zmdi-hc-fw">
-                                  </i>
-                                </span>
-                                <span class="m-l-10 m-r-10"> 
-                                  <i class="icon_b-nombres f-22">
-                                  </i> 
-                                </span>
-                                <span class="f-14">
-                                  Cantidad de Referidos
-                                </span>
-                              </td>
-
-                              <td class="f-14 m-l-15" >
-                                <span class="pull-right c-blanco">
-                                  <i class="zmdi zmdi-edit f-22"></i>
-                                </span> 
-                              </td>
-                            </tr>
                           </table>
                         </div>
                           
@@ -1345,6 +1246,7 @@
     route_principal="{{url('/')}}/participante/alumno";
     route_sesion="{{url('/')}}/participante/alumno/sesion";
     route_historial = "{{url('/')}}/participante/alumno/historial/";
+    route_remunacion = "{{url('/')}}/participante/alumno/puntos-acumulados/";
     route_email="{{url('/')}}/correo/sesion/";
     route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
     route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
@@ -1895,6 +1797,13 @@
           
       }); 
 
+      $(".remuneracion").click(function(){
+
+          var alumno = "{{$alumno->id}}";
+          window.location = route_remunacion + alumno;
+          
+      }); 
+
       function countChar(val) {
         var len = val.value.length;
         if (len >= 180) {
@@ -2308,36 +2217,6 @@
         }
       }
     });
-
-    $('#modalReferido-Alumno').on('hidden.bs.modal', function (event) {
-      limpiarMensaje();
-      var token = $('input:hidden[name=_token]').val();
-      $("#cantidad_actual").val(0); 
-      $('#edit_referido_alumno')[0].reset();
-      $.ajax({
-        url: route_cancelar_cantidad,
-        headers: {'X-CSRF-TOKEN': token},
-        type: 'POST',
-        dataType: 'json',                
-        success: function (data) {
-          if(data.status=='OK'){
-
-            t.clear().draw();
-
-          }else{
-            swal(
-              'Solicitud no procesada',
-              'Ha ocurrido un error, intente nuevamente por favor',
-              'error'
-            );
-          }
-        },
-        error:function (xhr, ajaxOptions, thrownError){
-          swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-        }
-      })
-    })
-
     
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");

@@ -81,7 +81,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="costo">Costo Inscripcion</label>
+                                    <label for="costo">Costo Inscripción</label>
                                     <input type="text" class="form-control input-sm input-mask" name="costo_inscripcion" id="costo_inscripcion" data-mask="00000000" placeholder="Ej. 5000" value="{{$clasegrupal->costo_inscripcion}}">
                                  </div>
                                  <div class="has-error" id="error-costo_inscripcion">
@@ -636,7 +636,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_inscripcion" class="zmdi {{ empty($clasegrupal->costo_inscripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
-                               <span class="f-14"> Costo Inscripcion </span>
+                               <span class="f-14"> Costo Inscripción </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion"><span>{{ number_format($clasegrupal->costo_inscripcion, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -698,7 +698,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalAvanzada-ClaseGrupal">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-porcentaje_retraso" class="zmdi {{ empty($clasegrupal->porcentaje_retraso) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-item-1 f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-undo f-22"></i> </span>
                                <span class="f-14"> Retraso de Pago </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-avanzado"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>

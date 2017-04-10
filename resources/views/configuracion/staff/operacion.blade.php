@@ -44,7 +44,7 @@
                     </li> -->
                     <li data-ripplecator class ="dark-ripples">
                         <a class = "incidencias">
-                            <span class="ca-icon-c"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-35 boton blue sa-warning" 
+                            <span class="ca-icon-c"><i class="icon_f-incidencias f-35 boton blue sa-warning" 
                                    data-original-title="Incidencia" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Incidencia</h2>

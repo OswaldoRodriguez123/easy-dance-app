@@ -501,13 +501,22 @@
 
   }
 
-       $( "#cancelar" ).click(function() {
-        $("#agregar_cita")[0].reset();
-        limpiarMensaje();
-        $('html,body').animate({
-        scrollTop: $("#id-cita_id").offset().top-90,
-        }, 1000);
-      });
+   $( "#cancelar" ).click(function() {
+    $("#agregar_cita")[0].reset();
+    limpiarMensaje();
+    $('html,body').animate({
+    scrollTop: $("#id-cita_id").offset().top-90,
+    }, 1000);
+  });
+
+   $("#tipo_id").on('change', function(){
+      nombre = $("#tipo_id option:selected").text();
+      if(nombre == 'Diagnóstico de Ingreso'){
+        $('#color_etiqueta').val('#ec5402')
+        $('.cp-value').css('background-color',"#ec5402")
+      }
+
+    });
 
 </script> 
 @stop

@@ -102,10 +102,10 @@
                             </li>
                           
         				   <li>
-                                <a href="{{url('/')}}/configuracion/servicios">
-                                    <span class="ca-icon-j" style=""><i class="icon_f-servicios"></i></span>
+                                <a href="{{url('/')}}/configuracion/herramientas">
+                                    <span class="ca-icon-j" style=""><i class="zmdi zmdi-settings"></i></span>
                                     <div class="ca-content-j">
-                                        <h2 class="ca-main-j">Incluye  servicios</h2>
+                                        <h2 class="ca-main-j">Herramientas Administrativas</h2>
                                         <h3 class="ca-sub-j">Paso 4</h3>
                                     </div>
                                 </a>

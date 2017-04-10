@@ -49,6 +49,10 @@
                                         </li>
 
                                         <li class="hidden-xs">
+                                            <a href="{{url('configuracion/servicios')}}"><i class="zmdi icon_f-servicios f-16"></i> Servicios</a>
+                                        </li>
+
+                                        <li class="hidden-xs">
                                             <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
                                         </li>
 
@@ -98,7 +102,7 @@
                                     </li>
 
                                 <li style="margin-top: 26px; right: 50%">
-                                    <a class="f-15 text-header f-700" href="{{url('/')}}/programacion"> MI PROGRAMACIÓN</a>
+                                    <a class="f-15 text-header f-700" href="{{url('/')}}/programacion">PASO A PASO</a>
                                 </li>
 
 

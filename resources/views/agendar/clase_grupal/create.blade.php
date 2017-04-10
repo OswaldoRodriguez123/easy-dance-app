@@ -1249,6 +1249,28 @@
             });
         });
 
+
+        $("#clase_grupal_id").on('change', function(){
+          nombre = $("#clase_grupal_id option:selected").text();
+          if(nombre == 'Cef'){
+            $('#color_etiqueta').val('#dae316')
+            $('.cp-value').css('background-color',"#dae316")
+          }else if(nombre == 'Ciclo Basico'){
+            $('#color_etiqueta').val('#14a927')
+            $('.cp-value').css('background-color',"#14a927")
+          }else if(nombre == 'Ciclo Intermedio'){
+            $('#color_etiqueta').val('#387993')
+            $('.cp-value').css('background-color',"#387993")
+          }else if(nombre == 'Chiquibaile'){
+            $('#color_etiqueta').val('#8c1fd1')
+            $('.cp-value').css('background-color',"#8c1fd1")
+          }else if(nombre == 'Repaso'){
+            $('#color_etiqueta').val('#882f0c')
+            $('.cp-value').css('background-color',"#882f0c")
+          }
+
+        });
+
 </script> 
 @stop
 

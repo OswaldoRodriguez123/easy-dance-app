@@ -61,7 +61,7 @@
                         <div class="card-header">
 
                             <div class="col-sm-4">
-                                <span class="f-16 opaco-0-8" style="text-decoration: underline;">PROGRAMACIÓN DE LAS CLASES</span>
+                                <span class="f-16 opaco-0-8" style="text-decoration: underline;">PASO A PASO</span>
                             </div>
 
 
