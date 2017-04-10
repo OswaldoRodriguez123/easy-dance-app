@@ -147,7 +147,7 @@ class ClaseGrupalController extends BaseController {
 
                 if($ultima_asistencia){
 
-                    $fecha = Carbon::parse($ultima_asistencia->fecha);
+                    $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia->fecha);
 
                 }else{
                     $inactivos = $inactivos + 1;
@@ -453,8 +453,10 @@ class ClaseGrupalController extends BaseController {
             $mujeres = 0;
             $hombres = 0;
 
-            $fecha_de_inicio = Carbon::parse($clasegrupal->fecha_inicio);
-            $fecha_de_finalizacion = Carbon::parse($clasegrupal->fecha_final);
+
+            $fecha_de_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
+            $fecha_de_finalizacion = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
+
             $asistencia_roja = $clasegrupal->asistencia_rojo;
             $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
 
@@ -466,7 +468,7 @@ class ClaseGrupalController extends BaseController {
 
                 if($ultima_asistencia){
 
-                    $fecha = Carbon::parse($ultima_asistencia->fecha);
+                    $fecha = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
 
                 }else{
                     $fecha = $fecha_de_inicio;
@@ -3237,7 +3239,7 @@ class ClaseGrupalController extends BaseController {
 
         foreach($horarios_clase_grupales as $horario){
 
-            $fecha_horario = Carbon::parse($horario->fecha);
+            $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
 
             while($fecha_horario < Carbon::now())
             {
@@ -3425,7 +3427,7 @@ class ClaseGrupalController extends BaseController {
 
             if($ultima_asistencia){
 
-                $fecha = Carbon::parse($ultima_asistencia->fecha);
+                $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia->fecha);
 
             }else{
 
