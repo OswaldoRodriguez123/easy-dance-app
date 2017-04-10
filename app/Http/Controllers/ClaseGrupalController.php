@@ -3579,6 +3579,8 @@ class ClaseGrupalController extends BaseController {
 
                       $dia = 'Domingo';
 
+                      $total_asistencia = $total_asistencia + 1;
+
                     }
                 }else{
 
@@ -3590,6 +3592,9 @@ class ClaseGrupalController extends BaseController {
                     
                     $hora = '';
                     $dia = '';
+
+                    $total_inasistencia = $total_inasistencia + 1;
+
                 }
                 $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
@@ -3665,7 +3670,9 @@ class ClaseGrupalController extends BaseController {
             }
         }
 
-        return view('agendar.clase_grupal.historial_general')->with(['asistencias' => $array, 'alumno' => $alumno]);
+        $porcentaje = ($total_asistencia / ($total_asistencia + $total_inasistencia)) * 100;
+
+        return view('agendar.clase_grupal.historial_general')->with(['asistencias' => $array, 'alumno' => $alumno, 'total_asistencia' => $total_asistencia, 'total_inasistencia' => $total_inasistencia, 'porcentaje' => $porcentaje]);
         
     }
 
