@@ -396,6 +396,14 @@ class ClaseGrupalController extends BaseController {
 
         if($clasegrupal){
 
+            $tipo_id = array($id);
+            $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $id)->get();
+
+            foreach($horarios_clases_grupales as $horario){
+                $tipo_id[] = $horario->id;
+
+            }
+
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
@@ -466,7 +474,7 @@ class ClaseGrupalController extends BaseController {
 
                 $tipo_clase = array(1,2);
                     
-                $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->where('tipo_id',$id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+                $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
                 if($ultima_asistencia){
 
