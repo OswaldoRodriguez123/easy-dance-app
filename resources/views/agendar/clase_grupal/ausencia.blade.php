@@ -74,7 +74,7 @@
                                     <td class="text-center disabled">{{$alumno->nombre}}</td>
                                     <td class="text-center disabled">{{$alumno->apellido}}</td>
                                     <td class="text-center disabled">{{$alumno->celular}}</td>
-                                    <td class="text-center disabled"><a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia/historial/{{$id}}"><i class="zmdi zmdi-shield-check"></i></a></td>
+                                    <td class="text-center disabled"><a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-15"></i></a></td>
                                 </tr>
                             @endforeach 
                                                            
