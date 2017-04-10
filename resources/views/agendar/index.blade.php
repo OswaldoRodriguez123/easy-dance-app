@@ -104,7 +104,8 @@
                                     </form>
                                     <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="{{url('/')}}/agendar">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <div class="col-sm-3">
+
+                                    <div class="col-sm-3 col-sm-offset-2">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
 		                                        <a href="#" class="agendar" data-agendar="clases-grupales">
@@ -117,6 +118,7 @@
 		                                    </li>
 		                                </ul>
                                     </div>
+
                                     <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
@@ -130,6 +132,7 @@
 		                                    </li>
 		                                </ul>
                                     </div>
+
                                     <div class="col-sm-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
@@ -143,7 +146,11 @@
 		                                    </li>
 		                                </ul>
                                     </div>
-                                    <div class="col-sm-3">
+
+                                    <div class="clearfix p-b-20"></div>
+                                    <div class="clearfix p-b-20"></div>
+
+                                    <div class="col-sm-3 col-sm-offset-3">
                                     	<ul class="ca-menu" style="margin: 0 auto;">
 		                                    <li style="height: 250px;">
 		                                        <a href="#" class="agendar" data-agendar="citas">
@@ -155,6 +162,20 @@
 		                                        </a>
 		                                    </li>
 		                                </ul>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <ul class="ca-menu" style="margin: 0 auto;">
+                                            <li style="height: 250px;">
+                                                <a href="#" class="agendar" data-agendar="transmision">
+                                                    <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="zmdi zmdi-camera-add"></i></span>
+                                                    <div class="ca-content" style="top: 35%;">
+                                                        <h2 class="ca-main f-20">Transmisión</h2>
+                                                        <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
 
                                     <div class="clearfix p-b-10"></div>
@@ -461,6 +482,26 @@
                             url: '{{url('/')}}{{$cita['url']}}'
                             },
                         @endforeach
+
+                        @foreach ($transmisiones as $transmision)
+                            {
+                                <?php
+                                $fecha_start=explode('-',$transmision['fecha']);
+                                $fecha_end=explode('-',$transmision['fecha']);
+                                $hora_start=explode(':',$transmision['hora']);
+                                $hora_end=explode(':',$transmision['hora']);
+                                ?>
+                                id: 'transmision-{{$transmision['id']}}',
+                                title: 'Transmisión',
+                                start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                                end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                                allDay: false,
+                                backgroundColor:'{{$transmision['etiqueta']}}',
+                                className: 'actividad',
+                                url: '{{url('/')}}/agendar/transmisiones/operaciones/{{$transmision['id']}}',
+
+                            },
+                        @endforeach
                     ],
                      
                     //On Day Select
@@ -527,7 +568,27 @@
                         //console.log(jsEvent);
                         //console.log(view);
 
-                    }
+                    },
+                    eventRender: function(event, eventElement) {
+                        var id = event.id
+                        var tipo = id.split("-"); 
+                        if (tipo[0] == 'transmision') {
+                            eventElement.find(".fc-title").append("  <i class='zmdi zmdi-camera-add'></i>");
+                        }else if (tipo[0] == 'clase'){
+                            eventElement.find(".fc-title").append("  <i class='icon_a-clases-grupales'></i>");
+                        }
+                        else if (tipo[0] == 'clasepersonalizada'){
+                            eventElement.find(".fc-title").append("  <i class='icon_a-clase-personalizada'></i>");
+                        }
+                        else if (tipo[0] == 'taller'){
+                            eventElement.find(".fc-title").append("  <i class='icon_a-talleres'></i>");
+                        }
+                        else if (tipo[0] == 'fiesta'){
+                            eventElement.find(".fc-title").append("  <i class='icon_a-fiesta'></i>");
+                        }else if (tipo[0] == 'cita') {
+                            eventElement.find(".fc-title").append("  <i class='zmdi zmdi-calendar-check'></i>");
+                        }
+                    },
                 });
 
                 //Create and ddd Action button with dropdown in Calendar header. 

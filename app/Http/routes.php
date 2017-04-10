@@ -710,6 +710,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/citas/update/horario', 'CitaController@updateHorario');
 			Route::put('agendar/citas/update/etiqueta', 'CitaController@updateEtiqueta');
 
+			//TRANSMISIONES
+
+			Route::get('agendar/transmisiones', 'TransmisionController@index');
+			Route::post('agendar/transmisiones/agregar', 'TransmisionController@store');
+			Route::get('agendar/transmisiones/agregar', 'TransmisionController@create');
+			Route::delete('agendar/transmisiones/eliminar/{id}', 'TransmisionController@destroy');
+
+			//ESPECIALES
+
 			//PROMOCIONES
 
 			Route::get('especiales/promociones', 'PromocionController@principal');

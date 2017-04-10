@@ -12,6 +12,7 @@ use App\ClasePersonalizada;
 use App\Cita;
 use App\ConfigClasesPersonalizadas;
 use App\Fiesta;
+use App\Transmision;
 
 use DB;
 
@@ -335,7 +336,9 @@ class AgendarController extends BaseController
 
             }
 
-            return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas]);
+            $transmisiones = Transmision::where('academia_id', Auth::user()->academia_id)->get();
+
+            return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $transmisiones]);
 
         }
 
@@ -598,6 +601,8 @@ class AgendarController extends BaseController
 	    }elseif($request->agendar=="citas"){
             Session::put('boolean_mostrar', 2);
             return redirect('agendar/citas/agregar')->with(compact('fecha_inicio'));
+        }elseif($request->agendar=="transmision"){
+            return redirect('agendar/transmisiones/agregar')->with(compact('fecha_inicio'));
         }else{
 	    	return redirect('agendar');
 	    }
