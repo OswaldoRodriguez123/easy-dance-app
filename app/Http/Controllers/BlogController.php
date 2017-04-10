@@ -293,6 +293,142 @@ class BlogController extends BaseController {
 	    
  	}
 
+ 	public function entradas_por_autor($id){
+
+		if(Auth::check()){
+			$usuario_tipo = Auth::user()->usuario_tipo;
+			$academia_id = Auth::user()->academia_id;
+		}else{
+			$usuario_tipo = 0;
+			$academia_id = 7;
+		}
+
+		$academia = Academia::find($academia_id);
+
+		$array = array();
+
+		$query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
+			->select('bloggers.nombre', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
+			->where('bloggers.id', $id)
+			->orderBy('entradas_blog.created_at', 'desc');
+
+		if(!$usuario_tipo){
+			$query->where('entradas_blog.boolean_mostrar', 1);
+		}
+
+		$entradas = $query->get();
+
+		$categoria_array = array();
+
+		$categorias = CategoriaBlog::where('academia_id', $academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
+
+		$cantidad_total = 0;
+		
+		foreach($categorias as $categoria){
+
+			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+
+			if(!$usuario_tipo){
+				$query->where('entradas_blog.boolean_mostrar', 1);
+			}
+
+			$cantidad = $query->count();
+
+			$cantidad_total = $cantidad_total + $cantidad;
+
+			$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
+		}
+
+		$i = 1;
+
+		foreach($entradas as $entrada){
+
+			$usuario = Blogger::find($entrada->usuario_id);
+
+
+            if($usuario->imagen){
+                $usuario_imagen = $usuario->imagen;
+            }else{
+                $usuario_imagen = '';
+            }
+
+			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+
+			$collection=collect($entrada);     
+            $entrada_array = $collection->toArray();
+
+            if($entrada->imagen_poster){
+                $imagen = "/assets/uploads/entradas/{$entrada->imagen_poster}";
+            }else{
+                $imagen = '';
+            }
+
+            $fecha_tmp = Carbon::parse($entrada->created_at);
+
+            $dia = $fecha_tmp->format('d'); 
+
+            switch ($fecha_tmp->month) {
+                case 1:
+                    $mes = "Enero";
+                    break;
+                case 2:
+                    $mes = "Febrero";
+                    break;
+                case 3:
+                    $mes = "Marzo";
+                    break;
+                case 4:
+                    $mes = "Abril";
+                    break;
+                case 5:
+                    $mes = "Mayo";
+                    break;
+                case 6:
+                    $mes = "Junio";
+                    break;
+                case 7:
+                    $mes = "Julio";
+                    break;
+                case 8:
+                    $mes = "Agosto";
+                    break;
+                case 9:
+                    $mes = "Septiembre";
+                    break;
+                case 10:
+                    $mes = "Octubre";
+                    break;
+                case 11:
+                    $mes = "Noviembre";
+                    break;
+                case 12:
+                    $mes = "Diciembre";
+                    break;
+            }
+
+            $ano = $fecha_tmp->format('Y'); 
+
+            $hora = Carbon::parse($entrada->created_at)->format('h:i:s A');
+
+            $fecha = $dia . ' de ' . $mes . ' ' . $ano . ' ' . $hora;
+            
+            $entrada_array['fecha'] = $fecha;  
+            $entrada_array['contenido'] = $contenido;
+            $entrada_array['imagen'] = $imagen;
+            $entrada_array['usuario_imagen'] = $usuario_imagen;
+            $entrada_array['url']= "/blog/entrada/{$entrada->id}";
+            $entrada_array['contador'] = $i;
+            $array[$entrada->id] = $entrada_array;
+
+            $i = $i + 1;
+
+		}
+
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
+	    
+ 	}
+
  	public function entrada($id){
 
 
@@ -821,5 +957,40 @@ class BlogController extends BaseController {
         }
     }
 
+    public function directorio()
+    {
+
+	    if(Auth::check()){
+			$usuario_tipo = Auth::user()->usuario_tipo;
+			$id = Auth::user()->academia_id;
+		}else{
+			$usuario_tipo = 0;
+			$id = 7;
+		}
+
+		$categorias = CategoriaBlog::where('academia_id', $id)->orWhere('academia_id', null)->orderBy('nombre')->get();
+
+		$cantidad_total = 0;
+
+		foreach($categorias as $categoria){
+
+
+			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+
+			if(!$usuario_tipo){
+				$query->where('entradas_blog.boolean_mostrar', 1);
+			}
+
+			$cantidad = $query->count();
+
+			$cantidad_total = $cantidad_total + $cantidad;
+
+			$categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
+		}
+
+	    $bloggers = Blogger::where('academia_id', $id)->get();
+
+	    return view('blog.autores')->with(['bloggers' => $bloggers,'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
+	}
     
 }

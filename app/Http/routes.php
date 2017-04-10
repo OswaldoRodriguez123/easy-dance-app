@@ -128,6 +128,8 @@ Route::get('blog/publicar', 'BlogController@publicar');
 Route::post('blog/publicar', 'BlogController@store');
 Route::get('blog/entrada/{id}', 'BlogController@entrada');
 Route::get('blog/categoria/{id}', 'BlogController@categoria');
+Route::get('blog/entradas/{id}', 'BlogController@entradas_por_autor');
+Route::get('blog/directorio', 'BlogController@directorio');
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 

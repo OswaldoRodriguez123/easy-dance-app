@@ -114,6 +114,10 @@
                         @endif
                     @endif
 
+                    <br><br><br>
+
+                    <a class="btn-blanco m-t-10" href="{{url('/')}}/blog/entradas/{{$blogger->id}}">Ver todos sus posts</a>
+
                   </td>
                 </tr>
               </tbody>

@@ -303,9 +303,7 @@
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 50, 
-        bInfo: false,
-        bPaginate: false,
+        pageLength: 25, 
         order: [[7, 'desc'], [8, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
