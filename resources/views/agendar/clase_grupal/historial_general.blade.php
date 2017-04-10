@@ -55,117 +55,11 @@
                         <div class="card-header">
 
                             Alumno: {{$alumno->nombre}} {{$alumno->apellido}}<br>
-                            Clase Grupal: {{$clase_grupal->nombre}}<br>
-                            Horario : {{$clase_grupal->hora_inicio}} - {{$clase_grupal->hora_final}}<br>
-                            Dia: {{$dia}}<br>
-                            Instructor : {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}}<br>
-
-                            <div class="clearfix"></div>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-shield-check f-25"></i> Historial de Asistencias</p>
                             <hr class="linea-morada">
                                                          
                         </div>
-
-               <!--          <div class="col-sm-12">
-                            <form name="formFiltro" id="formFiltro">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                            <div class="col-md-4">
-                                <label>Participantes</label>
-
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" data-live-search="true" name="participante_id" id="participante_id">
-                                        <option value="1">Asistentes</option>
-                                        <option value="2">Inasistentes</option>
-                                        <option value="0">Todos</option>
-                                    </select>
-                                  </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label>Fecha</label>
-
-                                <div class="fg-line">
-                                    <input type="text" id="fecha" name="fecha" class="date-picker form-control input-sm proceso pointer" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" placeholder="Selecciona la fecha"> 
-                                </div>
-                                <div class="has-error" id="error-linea">
-                                  <span>
-                                      <small class="help-block error-span" id="error-linea_mensaje" ></small>      
-                                  </span>
-                                 </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label>Clase Grupal</label>
-
-                                <div class="fg-line">
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
-                                        </select> 
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="clearfix"></div>
-
-                            <div class="col-md-4">
-                                <label>Tipo</label>
-
-                                <div class="fg-line">
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
-                                            <option value="1">General</option>
-                                            <option value="2">Valoracion</option>
-                                        </select>
-                                    </div>
-                                </div>    
-                            </div>
-
-
-                            <button type="button" class="btn btn-blanco m-t-10 m-l-10 f-10 guardar" id="guardar" >Filtrar</button>
-
-                            <div class ="clearfix m-b-10"></div>
-                            <div class ="clearfix m-b-10"></div>
-
-                            </form>
-                        </div> -->
-
-                       
-               <!--          <div class="col-md-6">
-                            <h2>Informe de Asistencias</h2>
-                            <hr>
-                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                            <div class="flc-pie hidden-xs"></div>
-
-                        </div>
-
-
-                        <div class="col-md-6">
-                            <h2>Información</h2>
-                            <hr>
-                            
-                            <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">    
-                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
-                            </div>
-                            <div class="clearfix"></div>    
-
-                            <div class="mini-charts-item bgm-blue">
-                                <div class="clearfix">
-                                    <div class="count">
-                                        <small>Total:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">{hombres}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">{mujeres}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
 
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
