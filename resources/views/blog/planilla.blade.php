@@ -148,7 +148,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                  <div class="form-group">
-                                    <label for="nombre">Categoria</label>
+                                    <label for="nombre">Tópico</label>
 
                                       <div class="select">
                                           <select class="form-control" id="categoria" name="categoria">
@@ -542,7 +542,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-categoria" class="zmdi {{ empty($entrada->categoria) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
-                               <span class="f-14"> Categoría </span>
+                               <span class="f-14"> Tópico </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="entrada-categoria" data-valor="{{$entrada->categoria_id}}"><span>{{$entrada->categoria}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>

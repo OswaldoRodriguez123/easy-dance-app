@@ -30,7 +30,7 @@
 
             <p class="f-25 f-700" style="color:#5e5e5e">
               @if($entrada['imagen'])
-                <img src="{{url('/')}}{{$entrada['imagen']}}" class="img-responsive opaco-0-8" alt="">
+                <img src="{{url('/')}}/assets/uploads/entradas/{{$entrada['imagen']}}" class="img-responsive opaco-0-8" alt="">
                 <br>
               @endif
               <span class="f-25 f-700" style="color:#5e5e5e">{{$entrada['titulo']}} </span>
@@ -129,7 +129,7 @@
 
                   <div class="pmo-block pmo-contact hidden-xs">
 
-                  <h2 style="font-size: 16px; margin: 0 0 15px">Categorías</h2>
+                  <h2 style="font-size: 16px; margin: 0 0 15px">Tópicos</h2>
 
                   <a class="f-15 f-700" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 

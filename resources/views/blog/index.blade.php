@@ -155,7 +155,7 @@
 
                 <div class="pmo-block pmo-contact hidden-xs">
 
-                <h2 style="font-size: 16px; margin: 0 0 15px">Categorías</h2>
+                <h2 style="font-size: 16px; margin: 0 0 15px">Tópicos</h2>
 
                 <a class="f-15 f-700" onclick="procesando()" href="{{url('/')}}/blog">Todas ({{$cantidad}})</a><br>
 
