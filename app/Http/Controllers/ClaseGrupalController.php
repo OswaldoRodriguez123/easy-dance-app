@@ -3153,6 +3153,9 @@ class ClaseGrupalController extends BaseController {
 
         $i = $fecha_clase_grupal->dayOfWeek;
 
+        $total_asistencia = 0;
+        $total_inasistencia = 0;
+
         if($i == 1){
 
           $dia = 'Lunes';
@@ -3231,6 +3234,8 @@ class ClaseGrupalController extends BaseController {
                   $dia = 'Domingo';
 
                 }
+
+                $total_asistencia = $total_asistencia + 1;
             }else{
 
                 if(Carbon::now()->toDateString() != $fecha_a_comparar){
@@ -3241,6 +3246,7 @@ class ClaseGrupalController extends BaseController {
                 
                 $hora = '';
                 $dia = '';
+                $total_inasistencia = $total_inasistencia + 1;
             }
             $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
@@ -3315,7 +3321,9 @@ class ClaseGrupalController extends BaseController {
             }
         }
 
-        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno, 'dia' => $dia_principal]);
+        $porcentaje = ($total_asistencia / ($total_asistencia + $total_inasistencia)) * 100;
+
+        return view('agendar.clase_grupal.historial')->with(['asistencias' => $array, 'clase_grupal' => $clase_grupal, 'alumno' => $alumno, 'dia' => $dia_principal, 'total_asistencia' => $total_asistencia, 'total_inasistencia' => $total_inasistencia, 'porcentaje' => $porcentaje]);
         
     }
 
