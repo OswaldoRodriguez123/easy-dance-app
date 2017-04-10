@@ -3478,6 +3478,8 @@ class ClaseGrupalController extends BaseController {
     public function historial_asistencia_general($id){
 
         $inscripciones = InscripcionClaseGrupal::where('alumno_id',$id)->get();
+        $total_asistencia = 0;
+        $total_inasistencia = 0;
 
         foreach($inscripciones as $inscripcion_clase_grupal){
 
