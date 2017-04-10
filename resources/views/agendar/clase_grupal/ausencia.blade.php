@@ -54,7 +54,8 @@
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>     
                                     <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                    <th class="text-center" data-column-id="celular" data-order="desc">Celular</th>                               
+                                    <th class="text-center" data-column-id="celular" data-order="desc">Celular</th>          
+                                    <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>                        
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,6 +74,7 @@
                                     <td class="text-center disabled">{{$alumno->nombre}}</td>
                                     <td class="text-center disabled">{{$alumno->apellido}}</td>
                                     <td class="text-center disabled">{{$alumno->celular}}</td>
+                                    <td class="text-center disabled"><a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia/historial/{{$id}}"><i class="zmdi zmdi-shield-check"></i></a></td>
                                 </tr>
                             @endforeach 
                                                            
