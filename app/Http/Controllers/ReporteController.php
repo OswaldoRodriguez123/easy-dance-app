@@ -1288,26 +1288,34 @@ public function PresencialesFiltros(Request $request)
         $query = Asistencia::join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre');
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre')
+            ->where('alumnos.deleted_at',null)
+            ->where('clases_grupales.deleted_at',null);
 
 
         $query2 = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id', 'config_clases_grupales.nombre as clase_grupal_nombre');
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id', 'config_clases_grupales.nombre as clase_grupal_nombre')
+            ->where('alumnos.deleted_at',null)
+            ->where('clases_grupales.deleted_at',null);
 
 
         if($request->clase_grupal_id)
         {
             $query->where('asistencias.clase_grupal_id','=', $request->clase_grupal_id);
             $query2->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+        }else{
+            $clases_grupales = explode(",", $request->clases_grupales);
+            $query->whereIn('asistencias.clase_grupal_id', $clases_grupales);
+            $query2->whereIn('inscripcion_clase_grupal.clase_grupal_id', $clases_grupales);
         }
 
-        if($request->alumno_id)
-        {
-            $query->where('asistencias.alumno_id','=', $request->alumno_id);
-            $query2->where('inscripcion_clase_grupal.alumno_id','=', $request->alumno_id);
-        }
+        // if($request->alumno_id)
+        // {
+        //     $query->where('asistencias.alumno_id','=', $request->alumno_id);
+        //     $query2->where('inscripcion_clase_grupal.alumno_id','=', $request->alumno_id);
+        // }
 
         if($request->fecha){
             $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
@@ -1394,18 +1402,11 @@ public function PresencialesFiltros(Request $request)
 
             foreach($inscripciones as $inscripcion){
 
-                $asistio = 0;
+                $asistio = Asistencia::where('clase_grupal_id', $inscripcion->clase_grupal_id)->where('alumno_id',$inscripcion->alumno_id)->where('fecha', $fecha)->first();
 
-                foreach($asistencias as $asistencia){
-                    if($asistencia->alumno_id == $inscripcion->alumno_id){
-                        $asistio = 1;
-                    }
-                }
-
-                if($asistio == 0)
+                if(!$asistio)
                 {
               
-
                     $pertenece = '';
 
                     $deuda = DB::table('items_factura_proforma')

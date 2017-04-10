@@ -383,13 +383,14 @@
 
             t.clear().draw();
 
+            var clases_grupales = $.map($('#clase_grupal_id option'), function(e) { return e.value; });
 
             $.ajax({
                 url: route,
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data:datos,
+                    data:datos+"&clases_grupales="+clases_grupales,
                 success:function(respuesta){
                   setTimeout(function(){ 
                     var nFrom = $(this).attr('data-from');
