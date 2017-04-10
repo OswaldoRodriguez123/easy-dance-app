@@ -82,9 +82,13 @@
                                     <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción del blogero" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      
+                                   <div class="form-group">
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="350 Caracteres" maxlength="350" onkeyup="countChar(this)"></textarea>
                                     </div>
+                                 </div>
+                                 
+                                 <div class="opaco-0-8 text-right">Resta <span id="charNum">350</span> Caracteres</div>
                                  
                                  <div class="has-error" id="error-titulo">
                                       <span >
@@ -479,6 +483,7 @@
       $('#charNum').text(350 - len);
     }
   };
+
 
     
 
