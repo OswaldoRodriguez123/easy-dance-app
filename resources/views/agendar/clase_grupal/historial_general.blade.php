@@ -63,6 +63,11 @@
 
                         <div class ="clearfix"></div>
 
+                        <div class="col-sm-12 m-l-10" style="padding-top: -10px">
+                            Asistencias : {{$total_asistencia}}<br>
+                            Inasistencias : {{$total_inasistencia}}
+                        </div>
+
                         <div class="col-sm-12 text-center">
                             <div class="text-center f-700" >Porcentaje de Asistencias</div>
                             <hr class="linea-morada opaco-0-8">
@@ -74,7 +79,7 @@
                         </div>
 
                         <div class ="clearfix"></div>
-                        
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
