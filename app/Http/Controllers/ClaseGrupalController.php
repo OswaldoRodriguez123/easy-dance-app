@@ -142,8 +142,9 @@ class ClaseGrupalController extends BaseController {
             foreach($alumnos as $alumno){
 
                 $semanas = 0;
-
-                $ultima_asistencia = Asistencia::where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+                $tipo_clase = array(1,2);
+                    
+                $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
                 if($ultima_asistencia){
 
@@ -3433,7 +3434,9 @@ class ClaseGrupalController extends BaseController {
 
             $semanas = 0;
 
-            $ultima_asistencia = Asistencia::where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+            $tipo_clase = array(1,2);
+                    
+            $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
             if($ultima_asistencia){
 
