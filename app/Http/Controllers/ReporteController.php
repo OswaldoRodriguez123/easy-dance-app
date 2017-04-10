@@ -1207,47 +1207,7 @@ public function PresencialesFiltros(Request $request)
             ->where('horario_clase_grupales.deleted_at', '=', null)
         ->get();
 
-        $sexo = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->groupBy('alumnos.sexo')
-        ->get();
-
-        $asistencias = DB::table('asistencias')
-                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id')
-                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        ->get();
-
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
-            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-        ->get();
-
-        $collection=collect($alumnod);
-        $grouped = $collection->groupBy('id');     
-        $deuda = $grouped->toArray();
-      
         $array = array();
-
-        $mujeres = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.*')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.sexo','=', 'F')
-        ->count();
-
-        $hombres = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.*')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.sexo','=', 'M')
-        ->count();
-
-
 
         foreach($clase_grupal_join as $clase_grupal){
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
@@ -1276,10 +1236,7 @@ public function PresencialesFiltros(Request $request)
             $array['2'.$clase_grupal->clase_grupal_id] = $clase_array;
         }
 
-        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-
-        //dd($asistencia);
-        return view('reportes.asistencias')->with(['clases_grupales' => $array, 'sexos' => $sexo, 'asistencias' => $asistencias, 'deuda' => $deuda, 'hombres' => $hombres, 'mujeres' => $mujeres, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'alumnos' => $alumnos]);
+        return view('reportes.asistencias')->with(['clases_grupales' => $array]);
     }
 
     public function AsistenciasFiltros(Request $request)

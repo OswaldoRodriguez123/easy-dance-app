@@ -78,22 +78,6 @@
                                     </div>
                                 </div>
 
-                 <!--                <div class="col-md-4">
-                                    <label>Alumnos</label>
-
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="alumno_id" id="alumno_id">
-                                            <option value="0">Todos</option>
-                                            @foreach($alumnos as $alumno)
-                                                <option value="{{$alumno->id}}">{{$alumno->nombre}} {{$alumno->apellido}} {{$alumno->identificacion}}</option>
-                                            @endforeach
-                                            
-                                        </select>
-                                      </div>
-                                    </div>
-                                </div> -->
-
                                 <div class="col-md-4">
                                     <label>Fecha</label>
 
@@ -198,8 +182,8 @@
                                        <!--  <div class="chart chart-pie inscritos-stats-pie"></div> -->
                                         <div class="count">
                                             <small>Total:</small>
-                                            <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
-                                            <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
+                                            <h2 id="hombres" class="pull-left m-l-30"></h2>
+                                            <h2 id="mujeres" class="pull-right m-r-30"></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -256,17 +240,8 @@
         <script type="text/javascript">
 
         var clases_grupales = <?php echo json_encode($clases_grupales);?>;
-        var instructores = <?php echo json_encode($instructores);?>;
         var clase_grupal_array = [];
         var sortable = [];
-
-        if("{{$sexos[0]->sexo}}" == 'F'){
-            color2 = "#2196f3"
-            color1 = "#FF4081"
-        }else{
-            color1 = "#2196f3"
-            color2 = "#FF4081"
-        }
 
         route_filtrar="{{url('/')}}/reportes/asistencias";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
@@ -384,6 +359,7 @@
             t.clear().draw();
 
             var clases_grupales = $.map($('#clase_grupal_id option'), function(e) { return e.value; });
+            clases_grupales.join(',');
 
             $.ajax({
                 url: route,
@@ -589,59 +565,11 @@
 
     }
 
-    //PLOTS
-        var pieData1 = [
-                @foreach ($sexos as $sexo)
-                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-                @endforeach
-            ];
-        
-        var values = [
-            @foreach ($sexos as $sexo)        
-                   {{$sexo->CantSex}} ,
-            @endforeach                    
-            ];
-
-
-        $.plot('#pie-chart-procesos', pieData1, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: { 
-                        width: 2,
-                    },
-                },
-            },
-            legend: {
-                container: '.flc-pie',
-                backgroundOpacity: 0.5,
-                noColumns: 0,
-                backgroundColor: "white",
-                lineWidth: 0
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s",
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: false,
-                cssClass: 'flot-tooltip'
-            },
-            colors: [color1, color2],
-            
-        });
-
-     function previa(t){
+    function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
         window.location=route;
-      }
+    }
 
 </script>
 
