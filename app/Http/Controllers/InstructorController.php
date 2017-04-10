@@ -1130,9 +1130,7 @@ class InstructorController extends BaseController {
 
             }else{
 
-                $clases_grupales = DB::table('clases_grupales')
-                        ->select('clases_grupales.id')
-                        ->where('clases_grupales.instructor_id', $request->id)
+                $clases_grupales = ClaseGrupal::where('clases_grupales.instructor_id', $request->id)
                     ->get();
 
                 foreach($clases_grupales as $clase_grupal){
