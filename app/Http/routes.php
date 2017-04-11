@@ -612,6 +612,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-personalizadas/inscribir', 'ClasePersonalizadaController@storeInscripcion');
 			Route::get('agendar/clases-personalizadas/detalle/{id}', 'ClasePersonalizadaController@edit');
 			Route::get('agendar/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
+			Route::get('agendar/clases-personalizadas/agenda/{id}', 'ClasePersonalizadaController@agenda');
 			Route::delete('agendar/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
 
 			Route::put('agendar/clases-personalizadas/update/alumno', 'ClasePersonalizadaController@updateAlumno');

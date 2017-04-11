@@ -112,15 +112,25 @@
             <div class="card-body p-b-20">
             <div>
 
-            <div class = "col-sm-3"></div>
+            <div class = "col-sm-1"></div>
 
-            <ul class="ca-menu-c col-sm-5" style="width: 720px;">
+            <ul class="ca-menu-c col-sm-7">
 
                     <li data-ripplecator class ="dark-ripples">
                         <a class="multihorario">
                             <span class="ca-icon-c"><i class="zmdi zmdi-calendar-note f-35 boton blue sa-warning" data-original-title="Ver Multihorario" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c f-20">Multihorario</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class="agenda">
+                            <span class="ca-icon-c"><i class="zmdi zmdi-eye f-35 boton blue sa-warning" data-original-title="Ver Agenda" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c f-20">Agenda</h2>
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
@@ -351,6 +361,12 @@
   $(".multihorario").click(function(){
                
     window.location = "{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$id}}";
+
+  });
+
+  $(".agenda").click(function(){
+               
+    window.location = "{{url('/')}}/agendar/clases-personalizadas/agenda/{{$id}}";
 
   });
 

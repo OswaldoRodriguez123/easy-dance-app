@@ -502,6 +502,7 @@
                                   <hr></hr>
                                   
                                   <a href="{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a href="{{url('/')}}/agendar/clases-personalizadas/agenda/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-eye f-16 m-r-5 boton blue"  data-original-title="Ver Agenda" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   '<i data-toggle="modal" href="#modalCancelar" name="operacion" class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 

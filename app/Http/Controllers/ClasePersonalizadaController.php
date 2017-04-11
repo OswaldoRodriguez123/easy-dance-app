@@ -1158,4 +1158,99 @@ class ClasePersonalizadaController extends BaseController {
         }
     }
 
+    public function agenda($id){
+
+        $clase = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+            ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad')
+            ->where('inscripcion_clase_personalizada.id', '=' ,  $id)
+        ->first();
+
+        $horarios = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
+            ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
+            ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad', 'horarios_clases_personalizadas.fecha')
+            ->where('inscripcion_clase_personalizada.id', '=' ,  $id)
+        ->get();
+
+        $activas = array();
+        $finalizadas = array();
+        $i = 0;
+
+        $nombre = $clase->nombre;
+
+        $fecha_start=explode('-',$clase->fecha_inicio);
+        $fecha_end=explode('-',$clase->fecha_final);
+
+        $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+        $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+        $hora_inicio=$clase->hora_inicio;
+        $hora_final=$clase->hora_final;
+        $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+
+        if($dt >= Carbon::now()){
+            $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+            $i++;
+        }else{
+            $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+            $i++;
+        }
+
+        while($dt->timestamp<$df->timestamp){
+
+            $fecha="";
+            $fecha=$dt->addWeek()->toDateString();
+
+            if($dt >= Carbon::now()){
+                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $i++;
+            }else{
+                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $i++;
+            }
+            
+        }
+ 
+        foreach ($horarios as $clase) {
+
+            $fecha_start=explode('-',$clase->fecha);
+            $fecha_end=explode('-',$clase->fecha);
+
+            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+            $hora_inicio=$clase->hora_inicio;
+            $hora_final=$clase->hora_final;
+            $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+
+            if($dt >= Carbon::now()){
+                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $i++;
+            }else{
+                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $i++;
+            }
+
+            
+            while($dt->timestamp<$df->timestamp){
+                $fecha="";
+                $fecha=$dt->addWeek()->toDateString();
+
+                if($dt >= Carbon::now()){
+                    $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                    $i++;
+                }else{
+                    $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
+                    $i++;
+                }
+            }
+
+        }
+
+        return view('agendar.clase_personalizada.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'nombre' => $nombre, 'id' => $id]);
+    }
+
 }
