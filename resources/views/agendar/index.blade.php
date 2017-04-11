@@ -632,24 +632,45 @@
                             titulo = eventElement.find(".fc-title").text()
 
                             if(titulo != "CANCELADA"){
+
+                                var tmp = id.split("!"); 
+                    
+                                var tmp2 = tmp[0].split('-')
+                                var instructor = tmp2[1]
+                                var especialidad = tmp[1]
+                                var nivel = tmp[2]
+
+
+                                var contenido = 'Instructor: ' + instructor + '<br>'
+                                contenido += 'Especialidad: ' + especialidad + '<br>'
+                                contenido += 'Nivel: ' + nivel + '<br>'
+
                                 eventElement.find(".fc-title").append("  <i class='icon_a-clases-grupales'></i>");
                             }else{
 
                                 var check = event.url
 
                                 var tmp = check.split("!"); 
-                 
-                                // var fecha = tmp[3]
-                                // var hora = tmp[4]
-                                // var instructor = tmp[2]
-                                var cancelacion = tmp[1]
+                
+                                var contenido = tmp[1]
 
-                                $(eventElement).tooltip({title: cancelacion});  
                                 eventElement.find(".fc-title").append("  <i class='zmdi zmdi-close-circle f-15'></i>");
                             }
                             
                         }
                         else if (tipo[0] == 'clasepersonalizada'){
+                            var tmp = id.split("!"); 
+                    
+                            var tmp2 = tmp[0].split('-')
+                            var instructor = tmp2[1]
+                            var especialidad = tmp[1]
+                            var nombre = tmp[2]
+
+
+                            var contenido = 'Instructor: ' + instructor + '<br>'
+                            contenido += 'Especialidad: ' + especialidad + '<br>'
+                            contenido += 'Nombre: ' + nombre + '<br>'
+
                             eventElement.find(".fc-title").append("  <i class='icon_a-clase-personalizada'></i>");
                         }
                         else if (tipo[0] == 'taller'){
@@ -658,8 +679,26 @@
                         else if (tipo[0] == 'fiesta'){
                             eventElement.find(".fc-title").append("  <i class='icon_a-fiesta'></i>");
                         }else if (tipo[0] == 'cita') {
+
+                            var tmp = id.split("!"); 
+                    
+                            var tmp2 = tmp[0].split('-')
+                            var instructor = tmp2[1]
+                            var tipo = tmp[1]
+
+                            var contenido = 'Instructor: ' + instructor + '<br>'
+                            contenido += 'Tipo: ' + tipo + '<br>'
+
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-calendar-check'></i>");
                         }
+
+                        $(eventElement).attr('data-trigger','hover');
+                        $(eventElement).attr('data-toggle','popover');
+                        $(eventElement).attr('data-placement','top');
+                        $(eventElement).attr('data-content','<p class="c-negro">'+contenido+'</p>');
+                        $(eventElement).attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+                        $(eventElement).attr('data-html','true');
+                        $(eventElement).attr('title','');
                     },
                 });
 
@@ -752,7 +791,7 @@
 
                 $('.disabled').attr('data-trigger','hover');
                 $('.disabled').attr('data-toggle','popover');
-                $('.disabled').attr('data-placement','right');
+                $('.disabled').attr('data-placement','top');
                 $('.disabled').attr('data-content','<p class="c-negro">Esta clase esta vencida</p>');
                 $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
                 $('.disabled').attr('data-html','true');
