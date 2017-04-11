@@ -69,19 +69,61 @@
 
                         <div class ="clearfix"></div>
 
-                        <div class="col-sm-12 m-l-10" style="padding-top: -10px">
-                            Asistencias : {{$total_asistencia}}<br>
-                            Inasistencias : {{$total_inasistencia}}
+                        <div class="col-sm-6">
+                            <div class="m-t-30">
+                                Asistencias : {{$total_asistencia}}<br>
+                                Inasistencias : {{$total_inasistencia}}
+                            </div>
                         </div>
 
-                        <div class="col-sm-12 text-center">
+                        <div class="col-sm-4 col-md-offset-2 text-center">
                             <div class="text-center f-700" >Porcentaje de Asistencias</div>
                             <hr class="linea-morada opaco-0-8">
 
                             <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
                                 <div class="progress-bar progress-bar-morado" id="barra_progreso" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentaje}}%;"></div>
                             </div>
+
                             <span class="f-700"><span class="progreso">{{$porcentaje}}</span>% de Asistencias</span>
+
+                            <div class="rating-list text-center">
+
+                              <br>
+                              <div class="rl-star">
+
+                                @if($porcentaje >= 10)
+                                    <i id="estrella_1" class="zmdi zmdi-star active"></i>
+                                @else
+                                    <i id="estrella_1" class="zmdi zmdi-star"></i>
+                                @endif
+
+                                @if($porcentaje >= 20)
+                                    <i id="estrella_2" class="zmdi zmdi-star active"></i>
+                                @else
+                                    <i id="estrella_2" class="zmdi zmdi-star"></i>
+                                @endif
+
+                                @if($porcentaje >= 30)
+                                    <i id="estrella_3" class="zmdi zmdi-star active"></i>
+                                @else
+                                    <i id="estrella_3" class="zmdi zmdi-star"></i>
+                                @endif
+
+                                @if($porcentaje >= 40)
+                                    <i id="estrella_4" class="zmdi zmdi-star active"></i>
+                                @else
+                                    <i id="estrella_4" class="zmdi zmdi-star"></i>
+                                @endif
+
+                                @if($porcentaje >= 50)
+                                    <i id="estrella_5" class="zmdi zmdi-star active"></i>
+                                @else
+                                    <i id="estrella_5" class="zmdi zmdi-star"></i>
+                                @endif
+
+                              </div>
+                            </div>
+
                         </div>
 
                         <div class ="clearfix"></div>

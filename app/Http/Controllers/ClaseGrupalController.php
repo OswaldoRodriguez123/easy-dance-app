@@ -3319,6 +3319,8 @@ class ClaseGrupalController extends BaseController {
                       $dia = 'Domingo';
 
                     }
+
+                    $total_asistencia = $total_asistencia + 1;
                 }else{
                     if(Carbon::now()->toDateString() != $fecha_a_comparar){
                         $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
@@ -3327,6 +3329,8 @@ class ClaseGrupalController extends BaseController {
                     }
                     $hora = '';
                     $dia = '';
+
+                    $total_inasistencia = $total_inasistencia + 1;
                 }
                 $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
@@ -3718,6 +3722,8 @@ class ClaseGrupalController extends BaseController {
                           $dia = 'Domingo';
 
                         }
+                        
+                        $total_asistencia = $total_asistencia + 1;
                     }else{
                         if(Carbon::now()->toDateString() != $fecha_a_comparar){
                             $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
@@ -3726,6 +3732,8 @@ class ClaseGrupalController extends BaseController {
                         }
                         $hora = '';
                         $dia = '';
+
+                        $total_inasistencia = $total_inasistencia + 1;
                     }
                     $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
 
