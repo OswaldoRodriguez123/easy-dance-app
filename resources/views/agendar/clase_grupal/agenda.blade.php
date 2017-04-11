@@ -81,16 +81,25 @@
                             <tbody class="text-center" >
 
                             @foreach ($activas as $fecha)
-                                <tr class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
+                                <tr id="{{$fecha['id']}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
                                     <td class="text-center disabled"> 
-                                        @if($fecha['tipo'] == 'cancelada')
-                                            <i class="zmdi zmdi-close-circle f-20 p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada" title="" data-original-title="Ayuda"></i>
+                                        @if($fecha['tipo'] == 'activa')
+                                            <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                            
+                                        @else
+                                            <i name = "pop-activar" id = "pop-activar" aria-describedby="popoveractivar" class="zmdi zmdi-close-circle f-20 c-youtube p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada, si desea activarla haga click en el siguiente enlace <br> 
+
+                                            <div class='text-center'>
+
+                                                <span id = '{{$fecha['bloqueo_id']}}' class='activar pointer f-700 c-azul'>Activar</span>
+
+                                            </div>" title="" data-original-title="Ayuda" data-html="true"></i>
                                         @endif
-                                        <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                        
                                     </td>
                                 </tr>
 
@@ -121,6 +130,7 @@
 <script type="text/javascript">
 
     route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones/";
+    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar-cancelacion/";
 
     var finalizadas = <?php echo json_encode($finalizadas);?>;
     var activas = <?php echo json_encode($activas);?>;
@@ -165,7 +175,7 @@
     });
 
 
-    $("i[name=operacion").click(function(){
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
 
         fecha = $(this).closest('tr').data('fecha')
 
@@ -260,6 +270,96 @@
                 rechargeFinalizadas();
             }
          });
+
+        $('#pop-activar').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).on( "mouseenter", function(e) {
+
+                    $(this).popover('show');
+
+                    e.preventDefault();
+          });
+
+        $('body').on('click', function (e) {
+            $('[data-toggle="popover"]').each(function () {
+                //the 'is' for buttons that trigger popups
+                //the 'has' for icons within a button that triggers a popup
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+
+    // $(".activar").click(function(){
+    $("html").click(function (e){
+        element = e.target
+        if($(element).hasClass('activar')){
+          swal({   
+              title: "Desea activar la clase?",   
+              text: "Confirmar activación!",   
+              type: "warning",   
+              showCancelButton: true,   
+              confirmButtonColor: "#DD6B55",   
+              confirmButtonText: "Activar!",  
+              cancelButtonText: "Cancelar",         
+              closeOnConfirm: true 
+          }, function(isConfirm){   
+            if (isConfirm) {
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'success';
+              var nAnimIn = $(this).attr('data-animation-in');
+              var nAnimOut = $(this).attr('data-animation-out')
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var bloqueo_id = $(element).attr('id');
+              var id = $(element).closest('tr').attr('id')
+              eliminar(bloqueo_id, id);
+            }
+          });
+        }
+    });
+
+    function eliminar(bloqueo_id, id){
+      var route = route_eliminar + bloqueo_id;
+      var token = "{{ csrf_token() }}";
+
+      procesando();
+
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'DELETE',
+        dataType: 'json',
+        success:function(respuesta){
+
+          swal("Hecho!","Activada con éxito!","success");
+
+          $("#"+id).find("td").eq(4).empty();   
+          $("#"+id).find("td").eq(4).html('<i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>');
+
+          finprocesado();
+
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+                   $("#msj-danger").fadeOut();
+                  }, 3000);
+        }
+      });
+    }
+
+    // $("html").click(function (e){
+    //     console.log(e.target)
+    // });
 
     </script>
 @stop
