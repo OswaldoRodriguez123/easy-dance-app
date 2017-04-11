@@ -3361,11 +3361,12 @@ class ClaseGrupalController extends BaseController {
         $hora_final=$clase->hora_final;
         $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
+        $tipo = 'activa';
 
         if($dt >= Carbon::now()){
-            $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+            $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
         }else{
-            $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+            $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
         }
 
         while($dt->timestamp<$df->timestamp){
@@ -3407,10 +3408,12 @@ class ClaseGrupalController extends BaseController {
             $hora_final=$clase->hora_final;
             $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
+            $tipo = 'activa';
+
             if($dt >= Carbon::now()){
-                $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
             }else{
-                $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
             }
 
             
