@@ -194,8 +194,8 @@
                                 <div class="clearfix">
                                     <div class="count">
                                         <small>Total Inscritos:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
+                                        <h2 id="hombres" class="pull-left m-l-30"></h2>
+                                        <h2 id="mujeres" class="pull-right m-r-30"></h2>
                                     </div>
                                 </div>
                             </div>
@@ -209,11 +209,9 @@
                                 <tr>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
                                     <th class="text-center" data-column-id="nac" data-order="desc">Nacimiento</th>
                                     <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>                    
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
-                                    <th class="text-center" data-column-id="especialidad">Especialidad</th>
                                     <th class="text-center" data-column-id="curso">Curso</th>
                                 </tr>
                             </thead>
@@ -246,14 +244,6 @@
         <script type="text/javascript">
 
         var clase_grupal_array = [];
-
-        if("{{$sexos[0]->sexo}}" == 'F'){
-            color2 = "#2196f3"
-            color1 = "#FF4081"
-        }else{
-            color1 = "#2196f3"
-            color2 = "#FF4081"
-        }
 
         route_filtrar="{{url('/')}}/reportes/inscritos";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
@@ -305,7 +295,6 @@
         order: [[1, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -382,7 +371,7 @@
                         
                         $.each(respuesta.inscritos, function (index, array) {
 
-
+                            contenido = ''
                             if(array.sexo=='F')
                               {
                                 sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
@@ -392,20 +381,48 @@
                                 sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
                               }
 
+
+
+                              contenido += 'Nombre: ' +array.curso+'<br>'
+                              contenido += 'Especialidad: ' +array.especialidad+'<br>'
+                              contenido += 'Nivel: ' +array.nivel+'<br>'
+                              contenido += 'Instructor: ' +array.instructor_nombre+' ' +array.instructor_apellido+'<br>'
+                              contenido += 'Horario: ' +array.hora_inicio+' - ' +array.hora_final+'<br>'
+                              contenido += 'Día: ' +array.dia
+
                             var rowNode=t.row.add( [
                             ''+array.fecha+'',
-                            ''+array.nombre+'',
-                            ''+array.apellido+'',
+                            ''+array.nombre+ ' ' +array.apellido+'',
                             ''+array.fecha_nacimiento+'',
                             ''+sexo+'',
                             ''+array.celular+'',
-                            ''+array.especialidad+'',
                             ''+array.curso+'',
                             ] ).draw(false).node();
                             $( rowNode )
                                 .attr('id',array.id)
-                                .addClass('seleccion');
+                                .attr('data-trigger','hover')
+                                .attr('data-toggle','popover')
+                                .attr('data-placement','top')
+                                .attr('data-content','<p class="c-negro">'+contenido+'</p>')
+                                .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+                                .attr('data-html','true')
+                                .attr('title','')
+                                .addClass('disabled');
                         });
+
+                        $('[data-toggle="popover"]').popover(); 
+
+                        sexos = respuesta.sexos
+
+                        if(sexos[1]){
+                            if(sexos[1][0] == 'F'){
+                                color1 = "#2196f3"
+                                color2 = "#FF4081"
+                            }else{
+                                color2 = "#2196f3"
+                                color1 = "#FF4081"
+                            }
+                        }
 
 
                         datos = JSON.parse(JSON.stringify(respuesta));
@@ -517,54 +534,6 @@
 
     }
 
-    //PLOTS
-        var pieData1 = [
-                @foreach ($sexos as $sexo)
-                    {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-                @endforeach
-            ];
-        
-        var values = [
-            @foreach ($sexos as $sexo)        
-                   {{$sexo->CantSex}} ,
-            @endforeach                    
-            ];
-
-
-        $.plot('#pie-chart-procesos', pieData1, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: { 
-                        width: 2,
-                    },
-                },
-            },
-            legend: {
-                container: '.flc-pie',
-                backgroundOpacity: 0.5,
-                noColumns: 0,
-                backgroundColor: "white",
-                lineWidth: 0
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                shifts: {
-                    x: 20,
-                    y: 0
-                },
-                defaultTheme: false,
-                cssClass: 'flot-tooltip'
-            },
-            colors: [color1, color2],
-            
-        });
-
      function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
@@ -591,6 +560,14 @@
         $("#tipo").removeClass('disabled');
         $("#tipo").selectpicker('refresh');
         $("#boolean_fecha").val('0');
+    })
+
+    $('.table-responsive').on('show.bs.popover', function () {
+      $('.table-responsive').css( "overflow", "inherit" );
+    });
+
+    $('.table-responsive').on('hide.bs.popover', function () {
+      $('.table-responsive').css( "overflow", "auto" );
     })
 
 </script>

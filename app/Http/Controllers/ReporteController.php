@@ -496,47 +496,7 @@ class ReporteController extends BaseController
 
 	public function Inscritos(){
 
-		$inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        ->get();
-
-        $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->groupBy('alumnos.sexo')
-            ->get();
-
-        $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.*')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.sexo','=', 'F')
-        ->count();
-
-        $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.*')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.sexo','=', 'M')
-        ->count();
-
-        $forAge = DB::select('SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN "3 - 10"
-                            WHEN age BETWEEN 11 and 20 THEN "11 - 20"
-                            WHEN age BETWEEN 21 and 35 THEN "21 - 35"
-                            WHEN age BETWEEN 36 and 50 THEN "36 - 50"
-                            WHEN age >= 51 THEN "+51"
-                            WHEN age IS NULL THEN "Sin fecha (NULL)"
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM inscripcion_clase_grupal
-                        INNER JOIN  alumnos ON alumno_id=alumnos.id)  as alumnos
-                        GROUP BY age_range
-                        ORDER BY age_range');       
-
-        return view('reportes.inscritos')->with(['inscritos' => $inscritos, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge]);
+        return view('reportes.inscritos')->with([]);
 	}
 
     // public function InscritosFiltros(Request $request)
@@ -628,7 +588,9 @@ class ReporteController extends BaseController
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular')
+            ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular', 'config_niveles_baile.nombre as nivel', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id);
 
         if($request->sexo)
@@ -670,6 +632,40 @@ class ReporteController extends BaseController
 
         foreach($inscritos as $inscrito){
 
+            $fecha = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_inicio);
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+ 
+
             if($inscrito->sexo == 'F'){
                 $mujeres++;
             }else{
@@ -684,18 +680,21 @@ class ReporteController extends BaseController
                     if($edad >= $request->edad_inicio && $edad <= $request->edad_final){
                         $collection=collect($inscrito);     
                         $inscrito_array = $collection->toArray();   
+                        $inscrito_array['dia'] = $dia;
                         $array[$inscrito->id] = $inscrito_array;
                     }
                 }else if($request->edad_inicio){
                    if($edad >= $request->edad_inicio){
                         $collection=collect($inscrito);     
                         $inscrito_array = $collection->toArray();   
+                        $inscrito_array['dia'] = $dia;
                         $array[$inscrito->id] = $inscrito_array;
                     } 
                 }else if($request->edad_final){
                     if($edad <= $request->edad_inicio){
                         $collection=collect($inscrito);     
-                        $inscrito_array = $collection->toArray();   
+                        $inscrito_array = $collection->toArray();  
+                        $inscrito_array['dia'] = $dia; 
                         $array[$inscrito->id] = $inscrito_array;
                     }
                 }
@@ -703,6 +702,7 @@ class ReporteController extends BaseController
             }else{
                 $collection=collect($inscrito);     
                 $inscrito_array = $collection->toArray();   
+                $inscrito_array['dia'] = $dia;
                 $array[$inscrito->id] = $inscrito_array;
             }
             
