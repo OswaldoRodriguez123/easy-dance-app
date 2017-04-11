@@ -1942,4 +1942,10 @@ a{
     max-width: 100%;
 }
 
+.recientes_populares{
+    font-size: 16px; 
+    margin: 0 0 15px;
+    font-weight: bold;
+}
+
 

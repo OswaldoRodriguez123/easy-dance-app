@@ -188,43 +188,49 @@
 
                 <hr class="linea_transparente">
 
+                  <div class="text-center">
+                    <span class="recientes_populares c-azul pointer checked" id="recientes">Recientes</span> / <span class="recientes_populares c-negro pointer" id="populares">Populares</span>
+                  </div>
 
-                  <h2 style="font-size: 16px; margin: 0 0 15px">Articulos Recientes</h2>
+                  <br><br>
+                  
+                  <div id="recientes_populares">
 
-                  @foreach(array_slice($entradas, 0, 4) as $entrada)
+                    @foreach($recientes as $entrada)
 
-                    
-                    <div class="row">
-                      <div class="col-sm-5">
+                      <div class="row">
+                        <div class="col-sm-5">
 
-                        <a onclick="procesando()" href="{{$entrada['url']}}">
+                          <a onclick="procesando()" href="{{url('/')}}/blog/entrada/{{$entrada['id']}}">
 
-                          @if($entrada['imagen'])
-                            <img class="img-responsive" src="{{url('/')}}{{$entrada['imagen']}}" alt="">
+                            @if($entrada['imagen_poster'])
+                              <img class="img-responsive" src="{{url('/')}}/assets/uploads/entradas/{{$entrada['imagen_poster']}}" alt="">
 
-                          @else
+                            @else
 
-                            <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+                              <img class="img-responsive" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
 
-                          @endif
+                            @endif
 
-                          <br>
+                            <br>
 
-                        </a>
+                          </a>
+
+                        </div>
+
+                        <div class="col-sm-7">
+       
+
+                          <a onclick="procesando()" class ="f-15" href="{{url('/')}}/blog/entrada/{{$entrada['id']}}">{{$entrada['titulo']}}</a><br><br>
+
+
+                        </div>
 
                       </div>
 
-                      <div class="col-sm-7">
-     
+                    @endforeach
 
-                        <a onclick="procesando()" class ="f-15" href="{{url('/')}}/blog/entrada/{{$entrada['id']}}">{{$entrada['titulo']}}</a><br><br>
-
-
-                      </div>
-
-                    </div>
-
-                  @endforeach
+                  </div>
 
                 <hr class="linea_transparente">
 
@@ -313,6 +319,8 @@
         <script type="text/javascript">
 
         var entradas = <?php echo json_encode($entradas);?>;
+        var populares = <?php echo json_encode($populares);?>;
+        var recientes = <?php echo json_encode($recientes);?>;
 
         var inicio = 10;
         var final = 13;
@@ -414,5 +422,72 @@
             return html.replace(/(<([^>]+)>)/ig,"");
         };
 
+        $(document).on( 'click', '.recientes_populares', function () {
+
+          if(!$(this).hasClass('checked')){
+
+            $('#recientes_populares').empty();
+
+            if($(this).attr('id') == 'populares'){
+
+              $.each(populares, function (index, entrada) {
+
+                contenido = '';
+                url = "http://"+location.host+"/blog/entrada/"+entrada.id;
+
+                if(entrada.imagen_poster){
+                  imagen = "http://"+location.host+"/assets/uploads/entradas/"+entrada.imagen_poster;
+                }else
+                {
+                  imagen = "{{url('/')}}/assets/img/EASY_DANCE_3_.jpg"
+                }
+
+                contenido += '<div class="row">'
+                contenido += '<div class="col-sm-5">'
+                contenido += '<a onclick="procesando()" href="'+url+'">'
+                contenido += '<img class="img-responsive" src="'+imagen+'" alt=""><br></a></div>'
+                contenido += '<div class="col-sm-7">'
+                contenido += '<a onclick="procesando()" class ="f-15" href="'+url+'">'+entrada.titulo+'</a><br><br></div></div>'
+
+                $('#recientes_populares').append(contenido)
+
+              });
+
+            }else{
+
+              $.each(recientes, function (index, entrada) {
+
+                contenido = '';
+                url = "http://"+location.host+"/blog/entrada/"+entrada.id;
+
+                if(entrada.imagen_poster){
+                  imagen = "http://"+location.host+"/assets/uploads/entradas/"+entrada.imagen_poster;
+                }else
+                {
+                  imagen = "{{url('/')}}/assets/img/EASY_DANCE_3_.jpg"
+                }
+
+                contenido += '<div class="row">'
+                contenido += '<div class="col-sm-5">'
+                contenido += '<a onclick="procesando()" href="'+url+'">'
+                contenido += '<img class="img-responsive" src="'+imagen+'" alt=""><br></a></div>'
+                contenido += '<div class="col-sm-7">'
+                contenido += '<a onclick="procesando()" class ="f-15" href="'+url+'">'+entrada.titulo+'</a><br><br></div></div>'
+                
+                $('#recientes_populares').append(contenido)
+
+              });
+            }
+
+            $('.recientes_populares').addClass('c-negro')
+            $('.recientes_populares').removeClass('c-azul')
+            $('.recientes_populares').removeClass('checked')
+            $(this).addClass('checked')
+            $(this).addClass('c-azul')
+            $(this).removeClass('c-negro')
+
+          }
+        });
+                                 
         </script>
 @stop        
