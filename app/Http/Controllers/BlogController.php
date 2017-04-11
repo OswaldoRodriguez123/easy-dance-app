@@ -36,7 +36,7 @@ class BlogController extends BaseController {
 		$array = array();
 
 		$query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
-			->select('entradas_blog.academia_id', 'entradas_blog.categoria', 'bloggers.nombre', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
+			->select('entradas_blog.*', 'bloggers.nombre')
 			->where('entradas_blog.academia_id', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
 
@@ -159,10 +159,10 @@ class BlogController extends BaseController {
 
 		if(Auth::check()){
 			$usuario_tipo = Auth::user()->usuario_tipo;
-			$id = Auth::user()->academia_id;
+			$academia_id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;
-			$id = 7;
+			$academia_id = 7;
 		}
 
 		$academia = Academia::find($academia_id);
@@ -171,7 +171,7 @@ class BlogController extends BaseController {
 
 		$query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('bloggers.nombre', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
+			->select('bloggers.nombre', 'entradas_blog.*')
 			->where('entradas_blog.academia_id', $academia_id)
 			->where('categorias_blog.nombre', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
@@ -191,7 +191,7 @@ class BlogController extends BaseController {
 
 		foreach($categorias as $categoria){
 
-			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+			$query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $academia_id);
 
 			if(!$usuario_tipo){
 				$query->where('entradas_blog.boolean_mostrar', 1);
@@ -309,7 +309,7 @@ class BlogController extends BaseController {
 
 		$query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
 			->join('categorias_blog', 'entradas_blog.categoria' , '=', 'categorias_blog.id')
-			->select('bloggers.nombre', 'entradas_blog.id', 'entradas_blog.created_at', 'entradas_blog.imagen', 'entradas_blog.contenido', 'entradas_blog.titulo', 'entradas_blog.usuario_id', 'entradas_blog.boolean_mostrar', 'entradas_blog.imagen_poster')
+			->select('bloggers.nombre', 'entradas_blog.*')
 			->where('bloggers.id', $id)
 			->orderBy('entradas_blog.created_at', 'desc');
 
@@ -537,6 +537,13 @@ class BlogController extends BaseController {
             
             $entrada_array['fecha'] = $fecha;  
             $entrada_array['contenido'] = $contenido;
+
+            if (!Session::has('entrada_'.$id)) {  
+                $entrada->cantidad_visitas = $entrada->cantidad_visitas + 1;
+                $entrada->save();
+                $fecha_sesion=Carbon::now();
+                Session::put('entrada_'.$id,$fecha_sesion);
+            }
 
             return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total, 'usuario_imagen' => $usuario_imagen, 'blogger' => $usuario]);
 

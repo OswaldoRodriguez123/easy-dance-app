@@ -100,6 +100,8 @@
                       @else
                         <img class="lv-img-sm" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                     @endif
+
+                    &nbsp; &nbsp; <i class="zmdi zmdi-eye"></i> {{$entrada['cantidad_visitas']}}</span> 
                   </p>
 
 

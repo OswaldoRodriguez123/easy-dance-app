@@ -48,9 +48,9 @@
               
               <br>
 
-              <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por <b>{{$blogger->nombre}}</b></span> 
+              <span class="f-15 f-400" style="color:#5e5e5e">Creado el {{$entrada['fecha']}} por <b>{{$blogger->nombre}}</b>
 
-              <img class="lv-img-sm" src="{{url('/')}}/{{$usuario_imagen}}" alt="">
+              <img class="lv-img-sm" src="{{url('/')}}/{{$usuario_imagen}}" alt=""> &nbsp; &nbsp; <i class="zmdi zmdi-eye"></i> {{$entrada['cantidad_visitas']}}</span> 
 
             </p>
 
