@@ -547,7 +547,7 @@
             
   <script type="text/javascript">
 
-    route_principal="{{url('/')}}/agendar/clases-grupales";
+    route_principal="{{url('/')}}/agendar";
     route_cancelar="{{url('/')}}/agendar/clases-grupales/cancelar";
     route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar-cancelacion/";
 
