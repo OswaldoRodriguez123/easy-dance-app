@@ -160,6 +160,7 @@ class AdministrativoController extends BaseController {
             ->selectRaw('CONCAT(alumnos.nombre, " " , alumnos.apellido) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
             ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('facturas.created_at')
+            ->limit(150)
         ->get();
 
 
