@@ -29,6 +29,7 @@
                                     </div>
                                     <form name="cancelar_clase" id="cancelar_clase"  >
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input type="hidden" name="id" id="id">
                                        <div class="modal-body">                           
                                        <div class="row p-t-20 p-b-0">
 
@@ -49,8 +50,21 @@
 
                                             <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
 
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
+                                           <div class="clearfix"></div> 
+                                           <div class="clearfix p-b-15"></div>
+
+                                            <div class="col-sm-12 text-right">
+                                                <label for="">Activar Clase</label>
+                                              
+                                                <br></br>
+                                                <div class="p-t-10">
+                                                    <div class="toggle-switch" data-ts-color="purple">
+                                                    <span class="p-r-10 f-700 f-16">No</span><input id="activar" type="checkbox">
+                                                    
+                                                    <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
                                            </div>
@@ -251,7 +265,62 @@
 
 @section('js')
 <script type="text/javascript">
+
+            route_principal="{{url('/')}}/agendar";
+            route_activar="{{url('/')}}/agendar/clases-grupales/eliminar-cancelacion/";
+
             $(document).ready(function() {
+
+                $("#activar").prop("checked", false);
+
+                $("#activar").on('change', function(){
+
+                    swal({   
+                        title: "Desea activar esta clase grupal",   
+                        text: "Confirmar activación!",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Activar!",  
+                        cancelButtonText: "Cancelar",         
+                        closeOnConfirm: true 
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            var nFrom = $(this).attr('data-from');
+                            var nAlign = $(this).attr('data-align');
+                            var nIcons = $(this).attr('data-icon');
+                            var nType = 'success';
+                            var nAnimIn = $(this).attr('data-animation-in');
+                            var nAnimOut = $(this).attr('data-animation-out')
+
+                            activar();
+                        }else{
+                            $("#activar").prop("checked", false)
+                        }
+                    });
+                });
+
+                function activar(){
+                    procesando();
+                    var route = route_activar + $('#id').val();
+                    var token = $('input:hidden[name=_token]').val();
+                        
+                    $.ajax({
+                        url: route,
+                            headers: {'X-CSRF-TOKEN': token},
+                            type: 'DELETE',
+                        dataType: 'json',
+                        success:function(respuesta){
+
+                            window.location=route_principal; 
+
+                        },
+                        error:function(msj){
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+                    });
+                }
+
                 var date = new Date();
                 var d = date.getDate();
                 var m = date.getMonth();
@@ -278,87 +347,6 @@
 
                     //Add Events
 
-                    /*
-                    events: [
-                        {
-                            title: 'Hangout with friends',
-                            start: new Date(y, m, 1),
-                            allDay: true,
-                            className: 'bgm-cyan'
-                        },
-                        {
-                            title: 'Meeting with client',
-                            start: new Date(y, m, 10),
-                            allDay: true,
-                            className: 'bgm-orange'
-                        },
-                        {
-                            title: 'Repeat Event',
-                            start: new Date(y, m, 18),
-                            allDay: true,
-                            className: 'bgm-amber'
-                        },
-                        {
-                            title: 'Semester Exam',
-                            start: new Date(y, m, 20),
-                            allDay: true,
-                            className: 'bgm-green'
-                        },
-                        {
-                            title: 'Soccor match',
-                            start: new Date(y, m, 5),
-                            allDay: true,
-                            className: 'bgm-lightblue'
-                        },
-                        {
-                            title: 'Coffee time',
-                            start: new Date(y, m, 21),
-                            allDay: true,
-                            className: 'bgm-orange'
-                        },
-                        {
-                            title: 'Job Interview',
-                            start: new Date(y, m, 5),
-                            allDay: true,
-                            className: 'bgm-amber'
-                        },
-                        {
-                            title: 'IT Meeting',
-                            start: new Date(y, m, 5),
-                            allDay: true,
-                            className: 'bgm-green'
-                        },
-                        {
-                            title: 'Brunch at Beach',
-                            start: new Date(y, m, 1),
-                            allDay: true,
-                            className: 'bgm-lightblue'
-                        },
-                        {
-                            title: 'Live TV Show',
-                            start: new Date(y, m, 15),
-                            allDay: true,
-                            className: 'bgm-cyan'
-                        },
-                        {
-                            title: 'Software Conference',
-                            start: new Date(y, m, 25),
-                            allDay: true,
-                            className: 'bgm-lightblue'
-                        },
-                        {
-                            title: 'Coffee time',
-                            start: new Date(y, m, 30),
-                            allDay: true,
-                            className: 'bgm-orange'
-                        },
-                        {
-                            title: 'Job Interview',
-                            start: new Date(y, m, 30),
-                            allDay: true,
-                            className: 'bgm-green'
-                        },
-                    ],*/
                     events: [
                         @foreach ($talleres as $taller)
                         {
@@ -517,7 +505,6 @@
 
                             var check = calEvent.url
                             var tmp = check.split("!"); 
-                            console.log(tmp)
 
                             if(!tmp[1]){
 
@@ -541,6 +528,8 @@
                                 var hora = tmp[4]
                                 var instructor = tmp[2]
                                 var cancelacion = tmp[1]
+                                var id = tmp[0]
+                                $('#id').val(id);
                                 $('.span_fecha').text(fecha)
                                 $('.span_hora').text(hora)
                                 $('.span_instructor').text(instructor)
@@ -665,7 +654,7 @@
 
                 $('.agendar').on('click', function(e){
                     e.preventDefault();
-                    console.log("estoy aqui");
+                    // console.log("estoy aqui");
                     var agendar = $(this).data('agendar');
 
                     $('#agendar').val(agendar);
