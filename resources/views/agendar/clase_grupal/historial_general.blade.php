@@ -85,31 +85,31 @@
                               <br>
                               <div class="rl-star">
 
-                                @if($porcentaje >= 10)
+                                @if($porcentaje >= 20)
                                     <i id="estrella_1" class="zmdi zmdi-star active"></i>
                                 @else
                                     <i id="estrella_1" class="zmdi zmdi-star"></i>
                                 @endif
 
-                                @if($porcentaje >= 20)
+                                @if($porcentaje >= 40)
                                     <i id="estrella_2" class="zmdi zmdi-star active"></i>
                                 @else
                                     <i id="estrella_2" class="zmdi zmdi-star"></i>
                                 @endif
 
-                                @if($porcentaje >= 30)
+                                @if($porcentaje >= 60)
                                     <i id="estrella_3" class="zmdi zmdi-star active"></i>
                                 @else
                                     <i id="estrella_3" class="zmdi zmdi-star"></i>
                                 @endif
 
-                                @if($porcentaje >= 40)
+                                @if($porcentaje >= 80)
                                     <i id="estrella_4" class="zmdi zmdi-star active"></i>
                                 @else
                                     <i id="estrella_4" class="zmdi zmdi-star"></i>
                                 @endif
 
-                                @if($porcentaje >= 50)
+                                @if($porcentaje >= 100)
                                     <i id="estrella_5" class="zmdi zmdi-star active"></i>
                                 @else
                                     <i id="estrella_5" class="zmdi zmdi-star"></i>
