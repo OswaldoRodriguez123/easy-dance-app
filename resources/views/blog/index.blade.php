@@ -42,6 +42,7 @@
 
 ?>
 
+<section id="content">
   <div class="container">
 
   <div class="block-header">
@@ -61,7 +62,9 @@
           
       </ul>
   </div>
+
   <div class="clearfix"></div>
+
     <div class="card">
       <div class="card-body p-b-20">
         <div class="row p-l-10 p-r-10">
@@ -71,7 +74,6 @@
            <div class ="entradas">
 
             @foreach(array_slice($entradas, 0, 10) as $entrada)
-            <!-- foreach(array_slice(entradas, 0, 4) as entrada) -->
               
               <div class="opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
@@ -129,7 +131,6 @@
    
                       <p>{{ str_limit(strip_tags($entrada['contenido']), $limit = 350, $end = '...') }} </p>
 
-
                       <a onclick="procesando()" href="{{$entrada['url']}}">Ver más</a>
 
                       @if(Auth::check())
@@ -139,13 +140,9 @@
                    
                         @endif
                       @endif
-
                     </div>
-
                   </div>
-                
                 </div>
-
               </div>
 
 
@@ -172,7 +169,6 @@
         <div class="col-sm-3" style="background: #f8f8f8 ;  min-height: 600px">
           <div style="padding-top:10px;">
             <div class="pmo-block pmo-contact hidden-xs">
-
 
                 <div class="pmo-block pmo-contact hidden-xs">
 
@@ -232,79 +228,79 @@
 
                   </div>
 
-                <hr class="linea_transparente">
+                  <hr class="linea_transparente">
 
                   <h2 style="font-size: 16px; margin: 0 0 15px">Contacto</h2>
 
-                    <ul>
-                      <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
-                      
-                      @if($academia->facebook)
-                        @if (!filter_var($academia->facebook, FILTER_VALIDATE_URL) === false) 
-                          <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">{{ str_limit($academia->facebook, $limit = 25, $end = '...') }}</a></li>
-                        @else
-                          <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$academia->facebook}}">https://www.facebook.com/...</a></li>
-                        @endif
+                  <ul>
+                    <li><i class="zmdi zmdi-email"></i> <a class ="enlace_gris" href="mailto:{{$academia->correo}}" target="_blank">{{$academia->correo}}</a></li>
+                    
+                    @if($academia->facebook)
+                      @if (!filter_var($academia->facebook, FILTER_VALIDATE_URL) === false) 
+                        <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="{{$academia->facebook}}">{{ str_limit($academia->facebook, $limit = 25, $end = '...') }}</a></li>
+                      @else
+                        <li><i class="zmdi zmdi-facebook-box"></i> <a class ="enlace_gris" href="https://www.facebook.com/{{$academia->facebook}}">https://www.facebook.com/...</a></li>
                       @endif
+                    @endif
 
-                      @if($academia->twitter)
+                    @if($academia->twitter)
 
-                        @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
-                          <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">https://www.twitter.com/{{$academia->twitter}}</a></li>
-                        @else
-                          <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">@ {{$academia->twitter}}</a></li>
-                        @endif
+                      @if (!filter_var($academia->twitter, FILTER_VALIDATE_URL) === false) 
+                        <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="{{$academia->twitter}}">https://www.twitter.com/{{$academia->twitter}}</a></li>
+                      @else
+                        <li><i class="zmdi zmdi-twitter"></i> <a class ="enlace_gris" href="https://www.twitter.com/{{$academia->twitter}}">@ {{$academia->twitter}}</a></li>
                       @endif
+                    @endif
 
-                      @if($academia->instagram)
-                        @if (!filter_var($academia->instagram, FILTER_VALIDATE_URL) === false) 
-                          <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">{{$academia->instagram}}</a></li>
-                        @else
-                          <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">@ {{$academia->instagram}}</a></li>
-                        @endif
+                    @if($academia->instagram)
+                      @if (!filter_var($academia->instagram, FILTER_VALIDATE_URL) === false) 
+                        <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="{{$academia->instagram}}">{{$academia->instagram}}</a></li>
+                      @else
+                        <li><i class="zmdi zmdi-instagram"></i> <a class ="enlace_gris" href="https://www.instagram.com/{{$academia->instagram}}">@ {{$academia->instagram}}</a></li>
                       @endif
+                    @endif
 
-                      @if($academia->linkedin)
-                      <li><i class="zmdi zmdi-linkedin-box"></i> <a class ="enlace_gris" href="{{$academia->linkedin}}">Linkedin</a></li>
-                      @endif
+                    @if($academia->linkedin)
+                    <li><i class="zmdi zmdi-linkedin-box"></i> <a class ="enlace_gris" href="{{$academia->linkedin}}">Linkedin</a></li>
+                    @endif
 
-                      @if($academia->youtube)
-                      <li><i class="zmdi zmdi-collection-video"></i> <a class ="enlace_gris" href="{{$academia->youtube}}">Youtube</a></li>
-                      @endif
+                    @if($academia->youtube)
+                    <li><i class="zmdi zmdi-collection-video"></i> <a class ="enlace_gris" href="{{$academia->youtube}}">Youtube</a></li>
+                    @endif
 
-                      @if($academia->pagina_web)
-                      <li><i class="zmdi zmdi-google-earth"></i> <a class ="enlace_gris" href="{{$academia->pagina_web}}">Pagina Web</a></li>
-                      @endif
+                    @if($academia->pagina_web)
+                    <li><i class="zmdi zmdi-google-earth"></i> <a class ="enlace_gris" href="{{$academia->pagina_web}}">Pagina Web</a></li>
+                    @endif
 
-                      @if($academia->direccion)
-                      <li>
-                          <i class="zmdi zmdi-pin"></i>
-                          <address class="m-b-0 ng-binding">
-                              {{$academia->direccion}}
-                          </address>
-                      </li>
-                      @endif
+                    @if($academia->direccion)
+                    <li>
+                        <i class="zmdi zmdi-pin"></i>
+                        <address class="m-b-0 ng-binding">
+                            {{$academia->direccion}}
+                        </address>
+                    </li>
+                    @endif
 
-                      @if($academia->celular)
-                      <li>
-                          <i class="icon_b-telefono"></i>
-                              {{$academia->celular}} - {{$academia->telefono}}
-                      </li>
-                      @endif
+                    @if($academia->celular)
+                    <li>
+                        <i class="icon_b-telefono"></i>
+                            {{$academia->celular}} - {{$academia->telefono}}
+                    </li>
+                    @endif
                   </ul>
-
-
-              </div>
+                </div>
 
                 <div class="clearfix p-b-15"></div>
+
               </div>
 
+            </div>
           </div>
-        </div>
+            </div>
           </div>
-        </div>
+      </div>
     </div>
-</div>
+</section>
 
 
 @stop
@@ -313,10 +309,7 @@
 
 @section('js') 
         
-        <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
-
-        <!-- Following is only for demo purpose. You may ignore this when you implement -->
-        <script type="text/javascript">
+      <script type="text/javascript">
 
         var entradas = <?php echo json_encode($entradas);?>;
         var populares = <?php echo json_encode($populares);?>;
@@ -412,11 +405,6 @@
           }
 
         });
-
-        function nl2br (str, is_xhtml) {   
-          var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
-          return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
-        }
 
         function stripTags (html) {
             return html.replace(/(<([^>]+)>)/ig,"");

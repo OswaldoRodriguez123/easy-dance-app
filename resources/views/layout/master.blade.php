@@ -8,24 +8,20 @@
 			<title>Easy Dance</title>
 			
 			<!-- Vendor CSS -->
+
 			<link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
-      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
-      <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
-<!--  <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
-      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
-      <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet"> -->
 			
 			@yield('css_vendor')
 				
 			<!-- CSS -->
-      <!--  <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
-      <link href="{{url('/')}}/assets/css/css_jn_02.css" rel="stylesheet" type="text/css">
-      <link href="{{url('/')}}/assets/css/ripple.css" rel="stylesheet"> -->
+      
+      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stylew.css" />
+      <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/stimenu.css" />
+      <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/app.min.1.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/app.min.2.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/css/easy_dance_ico_0.css" rel="stylesheet">
@@ -147,30 +143,17 @@
           </ul>
         </div>
         <div class="modal-footer">
+
+          <div class="clearfix p-b-35"></div>
+          <div class="clearfix p-b-35"></div>
+          <div class="clearfix p-b-35"></div>
+          <div class="clearfix p-b-35"></div>
           
         </div>
       </div>
     </div>
   </div>
-  <!--<div class="modal fade" id="modalParticipantes" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width: 75%">
-      <div class="modal-content">
-        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-          </div>
-            <div class="text-center icon_a icon_a-participantes f-40" style="color:#2196f3;  margin-bottom: -20px;"><p class="f-18">Gestiona el tipo de participante que desees </p></div>
-                <ul id="sti-menu"  class="sti-menu roww">
-                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/alumno"><h2 data-type="mText" class="sti-item">Alumno </h2><span data-type="icon" class="sti-icon sti-icon-alumno sti-item"></span></a></li>
-                          
-                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/instructor"><h2 data-type="mText" class="sti-item" align="center">Instructor </h2><span data-type="icon" class="sti-icon sti-icon-instructores sti-item"></span></a></li>
-                           
-                    <li data-hovercolor="#2196f3"><a href="{{url('/')}}/participante/visitante"><h2 data-type="mText" class="sti-item ">Visitante Presencial </h2><span data-type="icon" class="sti-icon sti-icon-visitantes sti-item"></span></a></li>
-  
-                    <li data-hovercolor="#2196f3"><a a href="{{url('/')}}/participante/familia"><h2 data-type="mText" class="sti-item">Familia </h2><span data-type="icon" class="sti-icon sti-icon-family sti-item"></span></a></li>
-                </ul>
-          </div>
-      </div>
-  </div>-->
+
   <div class="modal fade" id="modalAgendar" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -198,6 +181,11 @@
           </ul>
         </div>
         <div class="modal-footer">
+
+          <div class="clearfix p-b-35"></div>
+          <div class="clearfix p-b-35"></div>
+          <div class="clearfix p-b-35"></div>
+          <div class="clearfix p-b-35"></div>
           
         </div>
       </div>
@@ -228,6 +216,11 @@
           </ul>
         </div>
         <div class="modal-footer">
+
+        <div class="clearfix p-b-35"></div>
+        <div class="clearfix p-b-35"></div>
+        <div class="clearfix p-b-35"></div>
+        <div class="clearfix p-b-35"></div>
           
         </div>
       </div>
@@ -268,24 +261,9 @@
         <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="{{url('/')}}/assets/js/bootstrap-dropdownhover.min.js"></script>
-        
-
         <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-        <script src="{{url('/')}}/assets/js/functions.js"></script>
-
-        
-<!--         <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.resize.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
-        <script src="{{url('/')}}/assets/vendors/sparklines/jquery.sparkline.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script> -->
-
-   <!--      <script src="{{url('/')}}/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js"></script> -->
-        <!-- <script src="{{url('/')}}/assets/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js"></script> -->
         <script src="{{url('/')}}/assets/vendors/bower_components/moment/min/moment.min.js"></script>
-       
- 
         <script src="{{url('/')}}/assets/vendors/bower_components/Waves/dist/waves.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
@@ -293,6 +271,7 @@
     		<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
+        <script src="{{url('/')}}/assets/js/functions.js"></script>
 
 		
         
@@ -302,16 +281,8 @@
         <![endif]-->
 
         
-        
-<!--    <script src="{{url('/')}}/assets/js/flot-charts/curved-line-chart.js"></script>
-        <script src="{{url('/')}}/assets/js/flot-charts/line-chart.js"></script>
-        <script src="{{url('/')}}/assets/js/charts.js"></script> -->
-        
         @yield('js_vendor')
-    <!--     <script type="text/javascript" src="{{url('/')}}/assets/js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="{{url('/')}}/assets/js/jquery.iconmenu.js"></script> -->
 
-		
 		<script> 
     
       route_consultar_notificacion="{{url('/')}}/notificacion_nueva";
@@ -531,31 +502,6 @@
                     }
         });
 
-    function errores(merror){
-      var elemento="";
-      var contador=0;
-      $.each(merror, function (n, c) {
-      if(contador==0){
-      elemento=n;
-      }
-      contador++;
-
-       $.each(this, function (name, value) {              
-          var error=value;
-          $("#error-"+n+"_mensaje").html(error);             
-       });
-    });
-
-      $('html,body').animate({
-            scrollTop: $("#id-"+elemento).offset().top-90,
-      }, 1000);          
-
-  }
-
-  // $('#modalReportes').on('shown.bs.modal', function() {
-  //   procesando();
-  //   window.location = "{{url('/')}}/reportes"
-  // })
 
   $('.rojo').on('click', function(e) {
     e.preventDefault();
@@ -563,12 +509,9 @@
     window.location = "{{url('/')}}/reportes"
   })
 
-
-
-       
-    </script>
+  </script>
 		
-		@yield('js')
+	@yield('js')
 		
        
     </body>
