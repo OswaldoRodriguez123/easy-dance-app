@@ -343,7 +343,7 @@
       // procesando();
 
       var route = route_pagar;
-      var token = $('input:hidden[name=_token]').val();
+      var token = "{{ csrf_token() }}";
       var datos = "&asistencias="+getChecked();
       limpiarMensaje();
 
