@@ -13,7 +13,7 @@ use App\Cita;
 use App\ConfigClasesPersonalizadas;
 use App\Fiesta;
 use App\Transmision;
-
+use App\User;
 use DB;
 
 use Carbon\Carbon;
@@ -75,7 +75,7 @@ class AgendarController extends BaseController
 
     		$clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                     ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                    ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+                    ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo')
                     ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_grupales.deleted_at', '=', null)
             ->get();
@@ -83,7 +83,7 @@ class AgendarController extends BaseController
             $horarios_clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                     ->join('horario_clase_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
                     ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-                    ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+                    ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo')
                     ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_grupales.deleted_at', '=', null)
                     ->where('horario_clase_grupales.deleted_at', '=', null)
@@ -110,6 +110,15 @@ class AgendarController extends BaseController
                 $fecha_inicio = $dt->toDateString();
                 $fecha_final = $df->toDateString();
                 $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+                $sexo = $clase->sexo;
+                $instructor_usuario = User::where('usuario_id',$clase->instructor_id)->where('usuario_tipo',3)->first();
+
+                if($instructor_usuario->imagen){
+                    $imagen = $instructor_usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
                 if($clase->color_etiqueta){
                     $etiqueta=$clase->color_etiqueta;
                 }else{
@@ -138,7 +147,7 @@ class AgendarController extends BaseController
                     }else{
                         if($horario_bloqueado->boolean_mostrar == 1)
                         {
-                            $arrayClases[]=array("id"=>$id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final);
+                            $arrayClases[]=array("id"=>$id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
                          }
                     }
     				
@@ -163,7 +172,14 @@ class AgendarController extends BaseController
                 $fecha_final = $df->toDateString();
                 $etiqueta=$clase->color_etiqueta;
                 $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+                $sexo = $clase->sexo;
+                $instructor_usuario = User::where('usuario_id',$clase->instructor_id)->where('usuario_tipo',3)->first();
 
+                if($instructor_usuario->imagen){
+                    $imagen = $instructor_usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
 
                 $fecha_inicio = $dt->toDateString();
                 $fecha_final = $df->toDateString();
@@ -189,7 +205,7 @@ class AgendarController extends BaseController
                     }else{
                         if($horario_bloqueado->boolean_mostrar == 1)
                         {
-                            $arrayClases[]=array("id"=>$id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final);
+                            $arrayClases[]=array("id"=>$id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
                          }
                     }
                     $c++;

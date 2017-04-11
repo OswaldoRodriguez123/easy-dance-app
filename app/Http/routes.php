@@ -1122,6 +1122,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
 			Route::get('agendar/clases-grupales/canceladas/{id}', 'ClaseGrupalController@canceladas');
 			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
+			Route::post('agendar/clases-grupales/actualizar-cancelacion', 'ClaseGrupalController@update_cancelacion');
 			Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
 		
 

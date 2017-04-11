@@ -35,7 +35,7 @@
 
                                            <div class="col-sm-3">
   
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+                                                <img id="imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
 
                                                 <div class="clearfix p-b-15"></div>
     
@@ -82,11 +82,19 @@
                                         <br></br>
 
                                         <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" disabled></textarea>
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2"></textarea>
                                           </div>
                                       </div>
 
                                        </div>
+                                       </div>
+
+                                       <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-12">                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16 guardar" > Actualizar</button>
+                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                                        </div>
+                                    </div></form>
                                        
                                     </div>
                                 </div>
@@ -268,6 +276,7 @@
 
             route_principal="{{url('/')}}/agendar";
             route_activar="{{url('/')}}/agendar/clases-grupales/eliminar-cancelacion/";
+            route_update="{{url('/')}}/agendar/clases-grupales/actualizar-cancelacion";
 
             $(document).ready(function() {
 
@@ -296,6 +305,65 @@
                             activar();
                         }else{
                             $("#activar").prop("checked", false)
+                        }
+                    });
+                });
+
+                function activar(){
+                    procesando();
+                    var route = route_activar + $('#id').val();
+                    var token = $('input:hidden[name=_token]').val();
+                        
+                    $.ajax({
+                        url: route,
+                            headers: {'X-CSRF-TOKEN': token},
+                            type: 'DELETE',
+                        dataType: 'json',
+                        success:function(respuesta){
+
+                            window.location=route_principal; 
+
+                        },
+                        error:function(msj){
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+                    });
+                }
+
+                $(".guardar").on('click', function(){
+
+                    swal({   
+                        title: "Desea actualizar el bloqueo",   
+                        text: "Confirmar actualización!",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Actualizar!",  
+                        cancelButtonText: "Cancelar",         
+                        closeOnConfirm: true 
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+
+                            procesando();
+                            var route = route_update;
+                            var token = $('input:hidden[name=_token]').val();
+                            var datos = $( "#cancelar_clase" ).serialize(); 
+                                
+                            $.ajax({
+                                url: route,
+                                    headers: {'X-CSRF-TOKEN': token},
+                                    type: 'POST',
+                                dataType: 'json',
+                                data: datos,
+                                success:function(respuesta){
+
+                                    window.location=route_principal; 
+
+                                },
+                                error:function(msj){
+                                    swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                            });
                         }
                     });
                 });
@@ -526,6 +594,8 @@
                             }else{
                                 var fecha = tmp[3]
                                 var hora = tmp[4]
+                                var sexo = tmp[6]
+                                var imagen = tmp[5]
                                 var instructor = tmp[2]
                                 var cancelacion = tmp[1]
                                 var id = tmp[0]
@@ -534,6 +604,18 @@
                                 $('.span_hora').text(hora)
                                 $('.span_instructor').text(instructor)
                                 $('#razon_cancelacion').text(cancelacion)
+
+                                if(imagen){
+
+                                    $('#imagen').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+
+                                }else{
+                                    if(sexo == 'F'){
+                                        $('#imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+                                    }else{
+                                        $('#imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+                                    }
+                                }
                                 $("#modalCancelar" ).modal('show');
                             }
                         }

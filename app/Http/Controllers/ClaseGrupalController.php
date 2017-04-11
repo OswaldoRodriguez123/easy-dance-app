@@ -2904,6 +2904,20 @@ class ClaseGrupalController extends BaseController {
         
     }
 
+    public function update_cancelacion(Request $request)
+    {
+        $clasegrupal = HorarioBloqueado::find($request->id);
+
+        $clasegrupal->razon_cancelacion = $request->razon_cancelacion;
+    
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
+
     public function eliminar_cancelacion($id)
     {
 
