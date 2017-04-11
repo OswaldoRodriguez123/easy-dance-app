@@ -558,7 +558,25 @@
                         if (tipo[0] == 'transmision') {
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-camera-add'></i>");
                         }else if (tipo[0] == 'clase'){
-                            eventElement.find(".fc-title").append("  <i class='icon_a-clases-grupales'></i>");
+                            titulo = eventElement.find(".fc-title").text()
+
+                            if(titulo != "CANCELADA"){
+                                eventElement.find(".fc-title").append("  <i class='icon_a-clases-grupales'></i>");
+                            }else{
+
+                                var check = event.url
+
+                                var tmp = check.split("!"); 
+                 
+                                // var fecha = tmp[3]
+                                // var hora = tmp[4]
+                                // var instructor = tmp[2]
+                                var cancelacion = tmp[1]
+
+                                $(eventElement).tooltip({title: cancelacion});  
+                                eventElement.find(".fc-title").append("  <i class='zmdi zmdi-close-circle f-15'></i>");
+                            }
+                            
                         }
                         else if (tipo[0] == 'clasepersonalizada'){
                             eventElement.find(".fc-title").append("  <i class='icon_a-clase-personalizada'></i>");
