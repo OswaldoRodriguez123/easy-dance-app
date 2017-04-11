@@ -87,6 +87,9 @@
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
                                     <td class="text-center disabled"> 
+                                        @if($fecha['tipo'] == 'cancelada')
+                                            <i class="zmdi zmdi-close-circle f-20 p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada" title="" data-original-title="Ayuda"></i>
+                                        @endif
                                         <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
                                     </td>
                                 </tr>

@@ -3373,10 +3373,24 @@ class ClaseGrupalController extends BaseController {
             $fecha="";
             $fecha=$dt->addWeek()->toDateString();
 
-            if($dt >= Carbon::now()){
-                $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
+                ->where('fecha_final', '>=', $fecha)
+                ->where('tipo_id', $id)
+                ->where('tipo', 1)
+            ->first();
+
+            if(!$horario_bloqueado){
+
+                $tipo = 'activa';
             }else{
-                $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                
+                $tipo = 'cancelada';
+            }
+
+            if($dt >= Carbon::now()){
+                $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
+            }else{
+                $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
             }
             
         }
@@ -3404,10 +3418,24 @@ class ClaseGrupalController extends BaseController {
                 $fecha="";
                 $fecha=$dt->addWeek()->toDateString();
 
-                if($dt >= Carbon::now()){
-                    $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
+                    ->where('fecha_final', '>=', $fecha)
+                    ->where('tipo_id', $id)
+                    ->where('tipo', 1)
+                ->first();
+
+                if(!$horario_bloqueado){
+
+                    $tipo = 'activa';
                 }else{
-                    $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                    
+                    $tipo = 'cancelada';
+                }
+
+                if($dt >= Carbon::now()){
+                    $activas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
+                }else{
+                    $finalizadas[]=array("fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo);
                 }
             }
 
