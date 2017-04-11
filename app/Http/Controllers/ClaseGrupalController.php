@@ -727,7 +727,7 @@ class ClaseGrupalController extends BaseController {
 
     else{
 
-        $clasegrupal = InscripcionClaseGrupal::find($request->inscripcion_clase_grupal_id);
+        $clasegrupal = InscripcionClaseGrupal::withTrashed()->find($request->inscripcion_clase_grupal_id);
 
         $fecha = explode(" - ", $request->fecha);
 

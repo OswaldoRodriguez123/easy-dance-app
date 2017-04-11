@@ -1176,9 +1176,7 @@ class AlumnoController extends BaseController
     public function restore($id)
     {
             
-        $alumno = Alumno::onlyTrashed()
-            ->where('id', $id)
-            ->first();
+        $alumno = Alumno::withTrashed()->find($id);
         
         if($alumno->restore()){
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
@@ -1191,9 +1189,7 @@ class AlumnoController extends BaseController
     public function activar($id)
     {
         
-        $alumno = InscripcionClaseGrupal::onlyTrashed()
-            ->where('id', $id)
-            ->first();
+        $alumno = InscripcionClaseGrupal::withTrashed()->find($id);
         
         if($alumno->restore()){
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
@@ -1206,8 +1202,7 @@ class AlumnoController extends BaseController
     public function descongelar($id)
     {
             
-        $alumno = InscripcionClaseGrupal::where('id', $id)
-        ->first();
+        $alumno = InscripcionClaseGrupal::withTrashed()->find($id);
 
         $alumno->boolean_congelacion = 0;
         
@@ -1222,9 +1217,9 @@ class AlumnoController extends BaseController
     public function eliminar_inscripcion($id)
     {
             
-        $delete = InscripcionClaseGrupal::withTrashed()->where('id',$id)->first();
+        $alumno = InscripcionClaseGrupal::withTrashed()->find($id);
         
-        if($delete->forceDelete()){
+        if($alumno->forceDelete()){
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
