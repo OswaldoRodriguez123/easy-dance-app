@@ -131,6 +131,11 @@ Route::get('blog/categoria/{id}', 'BlogController@categoria');
 Route::get('blog/entradas/{id}', 'BlogController@entradas_por_autor');
 Route::get('blog/directorio', 'BlogController@directorio');
 
+//LIDERES EN ACCION
+
+Route::get('lideres-en-accion','LiderController@index');
+Route::get('lideres-en-accion/empezar','LiderController@empezar');
+
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('notificacion', 'NotificacionController@consulta');
