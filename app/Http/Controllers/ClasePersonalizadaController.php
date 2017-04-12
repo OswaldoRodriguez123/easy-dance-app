@@ -99,6 +99,7 @@ class ClasePersonalizadaController extends BaseController {
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
                 ->where('inscripcion_clase_personalizada.fecha_inicio','>=', Carbon::now()->toDateString())
+                ->where('inscripcion_clase_personalizada.estatus','!=', 0)
                 // ->orderBy('id', 'desc')->take(20)
             ->get();
 
@@ -108,6 +109,7 @@ class ClasePersonalizadaController extends BaseController {
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
                 ->where('inscripcion_clase_personalizada.fecha_inicio','<=', Carbon::now()->toDateString())
+                ->where('inscripcion_clase_personalizada.estatus','!=', 0)
                 // ->orderBy('id', 'desc')->take(20)
             ->get();
 
@@ -127,6 +129,7 @@ class ClasePersonalizadaController extends BaseController {
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
                 ->where('horarios_clases_personalizadas.fecha','>=', Carbon::now()->toDateString())
+                ->where('horarios_clases_personalizadas.estatus','!=', 0)
                 // ->orderBy('id', 'desc')->take(20)
             ->get();
 
@@ -137,6 +140,7 @@ class ClasePersonalizadaController extends BaseController {
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
                 ->where('horarios_clases_personalizadas.fecha','<=', Carbon::now()->toDateString())
+                ->where('horarios_clases_personalizadas.estatus','!=', 0)
                 // ->orderBy('id', 'desc')->take(20)
             ->get();
 
@@ -1053,18 +1057,35 @@ class ClasePersonalizadaController extends BaseController {
 
     public function cancelar(Request $request)
     {
-        $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($request->clasepersonalizada_id);
 
-        $clasepersonalizada = ClasePersonalizada::find($inscripcion_clase_personalizada->clase_personalizada_id);
+        if($request->tipo == 1){
 
-        $hora_string = $inscripcion_clase_personalizada->fecha_inicio . ' ' . $inscripcion_clase_personalizada->hora_inicio;
+            $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($request->clasepersonalizada_id);
+            $id = $inscripcion_clase_personalizada->id;
+
+            $clasepersonalizada = ClasePersonalizada::find($inscripcion_clase_personalizada->clase_personalizada_id);
+
+            $hora_string = $inscripcion_clase_personalizada->fecha_inicio . ' ' . $inscripcion_clase_personalizada->hora_inicio;
+        }else{
+            $inscripcion_clase_personalizada = HorarioClasePersonalizada::find($request->clasepersonalizada_id);
+
+            $tmp = InscripcionClasePersonalizada::find($inscripcion_clase_personalizada->clase_personalizada_id);
+
+            $id = $tmp->id;
+
+            $clasepersonalizada = ClasePersonalizada::find($tmp->clase_personalizada_id);
+
+            $hora_string = $inscripcion_clase_personalizada->fecha . ' ' . $inscripcion_clase_personalizada->hora_inicio;
+        }
+
+        
         
         $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
         $hora_limite = $hora->subHours($clasepersonalizada->tiempo_expiracion);
 
         if(Carbon::now() < $hora_limite)
         {
-            $item_proforma = ItemsFacturaProforma::where('tipo', 9)->where('item_id', $request->id)->first();
+            $item_proforma = ItemsFacturaProforma::where('tipo', 9)->where('item_id', $id)->first();
 
             if($item_proforma){
                 if($item_proforma->delete()){
@@ -1083,7 +1104,7 @@ class ClasePersonalizadaController extends BaseController {
                     $inscripcion_clase_personalizada->razon_cancelacion = $request->razon_cancelacion;
                     
                     if($inscripcion_clase_personalizada->save()){
-                        return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 200]);
+                        return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 200, 'id' => $inscripcion_clase_personalizada->id]);
                     }else{
                         return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                     }
@@ -1095,13 +1116,19 @@ class ClasePersonalizadaController extends BaseController {
 
     public function cancelarpermitir(Request $request)
     {
-        $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($request->id);
+        if($request->tipo == 1){
+
+            $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($request->clasepersonalizada_id);
+
+        }else{
+            $inscripcion_clase_personalizada = HorarioClasePersonalizada::find($request->clasepersonalizada_id);
+        }
 
         $inscripcion_clase_personalizada->estatus = 0;
         $inscripcion_clase_personalizada->razon_cancelacion = $request->razon_cancelacion;
             
         if($inscripcion_clase_personalizada->save()){
-            return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha cancelado satisfactoriamente', 'status' => 'OK', 'id' => $inscripcion_clase_personalizada->id, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -1194,12 +1221,13 @@ class ClasePersonalizadaController extends BaseController {
             ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
             ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
-            ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad', 'horarios_clases_personalizadas.fecha')
+            ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad', 'horarios_clases_personalizadas.fecha', 'horarios_clases_personalizadas.id', 'horarios_clases_personalizadas.estatus')
             ->where('inscripcion_clase_personalizada.id', '=' ,  $id)
         ->get();
 
         $activas = array();
         $finalizadas = array();
+        $canceladas = array();
         $i = 0;
 
         $nombre = $clase->nombre;
@@ -1214,12 +1242,19 @@ class ClasePersonalizadaController extends BaseController {
         $hora_final=$clase->hora_final;
         $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
-        if($dt >= Carbon::now()){
-            $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
-            $i++;
+
+        if($clase->estatus != 0){
+
+            if($dt >= Carbon::now()){
+                $activas[]=array("id" => $clase->id, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1);
+                $i++;
+            }else{
+                $finalizadas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1);
+                $i++;
+            }
         }else{
-            $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
-            $i++;
+            $canceladas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1);
+                $i++;
         }
 
         // while($dt->timestamp<$df->timestamp){
@@ -1249,11 +1284,19 @@ class ClasePersonalizadaController extends BaseController {
             $hora_final=$clase->hora_final;
             $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
-            if($dt >= Carbon::now()){
-                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
-                $i++;
+
+            if($clase->estatus != 0){
+        
+                if($dt >= Carbon::now()){
+                    $activas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2);
+                    $i++;
+                }else{
+                    $finalizadas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2);
+                    $i++;
+                }
+
             }else{
-                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido);
+                $canceladas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2);
                 $i++;
             }
 
@@ -1273,7 +1316,7 @@ class ClasePersonalizadaController extends BaseController {
 
         }
 
-        return view('agendar.clase_personalizada.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'nombre' => $nombre, 'id' => $id]);
+        return view('agendar.clase_personalizada.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'canceladas' => $canceladas, 'nombre' => $nombre, 'id' => $id]);
     }
 
 }

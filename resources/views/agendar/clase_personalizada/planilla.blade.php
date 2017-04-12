@@ -284,6 +284,7 @@
                                     <form name="cancelar_clase" id="cancelar_clase"  >
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                        <input type="hidden" name="clasepersonalizada_id" id="clasepersonalizada_id" value="{{$clasepersonalizada->id}}"></input>  
+                                      <input type="hidden" name="tipo" id="tipo" value="1"></input>  
                                        <div class="modal-body">                           
                                        <div class="row p-t-20 p-b-0">
 
@@ -503,7 +504,7 @@
                                   
                                   <a href="{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/agendar/clases-personalizadas/agenda/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-eye f-16 m-r-5 boton blue"  data-original-title="Ver Agenda" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  '<i data-toggle="modal" href="#modalCancelar" name="operacion" class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i data-toggle="modal" href="#modalCancelar" name="operacion" class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -621,8 +622,8 @@
     route_update="{{url('/')}}/agendar/clases-personalizadas/update";
     route_eliminar="{{url('/')}}/agendar/clases-personalizadas/eliminar/";
     route_principal="{{url('/')}}/agendar/clases-personalizadas";
-    route_cancelar="{{url('/')}}/configuracion/clases-personalizadas/cancelar/";
-    route_cancelarpermitir="{{url('/')}}/configuracion/clases-personalizadas/cancelarpermitir/";
+    route_cancelar="{{url('/')}}/agendar/clases-personalizadas/cancelar";
+    route_cancelarpermitir="{{url('/')}}/agendar/clases-personalizadas/cancelarpermitir";
     route_detalle="{{url('/')}}/agendar/clases-personalizadas/multihorario/detalle";
 
     $(document).ready(function(){
@@ -949,7 +950,7 @@
                 }, function(isConfirm){   
           if (isConfirm) {
           procesando();
-         var route = route_cancelar + "{{$clasepersonalizada->id}}";
+         var route = route_cancelar;
          var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_clase" ).serialize(); 
                 $.ajax({
@@ -1023,8 +1024,6 @@
       };
 
       $(".cancelar_clase").click(function(){
-
-        id = "{{$clasepersonalizada->id}}";
     
          swal({   
                     title: "Desea cancelar la clase personalizada",   
@@ -1038,7 +1037,7 @@
                 }, function(isConfirm){   
           if (isConfirm) {
           procesando();
-         var route = route_cancelar + id;
+         var route = route_cancelar;
          var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_clase" ).serialize(); 
                 $.ajax({

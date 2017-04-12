@@ -268,8 +268,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('configuracion/clases-personalizadas/detalle/{id}', 'ConfigClasePersonalizadaController@edit');
 			Route::get('configuracion/clases-personalizadas/operaciones/{id}', 'ConfigClasePersonalizadaController@operar');
 			Route::delete('configuracion/clases-personalizadas/eliminar/{id}', 'ConfigClasePersonalizadaController@destroy');
-			Route::post('configuracion/clases-personalizadas/cancelar/{id}', 'ConfigClasePersonalizadaController@cancelar');
-			Route::post('configuracion/clases-personalizadas/cancelarpermitir/{id}', 'ConfigClasePersonalizadaController@cancelarpermitir');
+
 
 			Route::put('configuracion/clases-personalizadas/update/nombre', 'ConfigClasePersonalizadaController@updateNombre');
 			Route::put('configuracion/clases-personalizadas/update/costo', 'ConfigClasePersonalizadaController@updateCosto');
@@ -614,6 +613,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('agendar/clases-personalizadas/operaciones/{id}', 'ClasePersonalizadaController@operar');
 			Route::get('agendar/clases-personalizadas/agenda/{id}', 'ClasePersonalizadaController@agenda');
 			Route::delete('agendar/clases-personalizadas/eliminar/{id}', 'ClasePersonalizadaController@destroy');
+			Route::post('agendar/clases-personalizadas/cancelar', 'ClasePersonalizadaController@cancelar');
+			Route::post('agendar/clases-personalizadas/cancelarpermitir', 'ClasePersonalizadaController@cancelarpermitir');
 
 			Route::put('agendar/clases-personalizadas/update/alumno', 'ClasePersonalizadaController@updateAlumno');
 			Route::put('agendar/clases-personalizadas/update/nombre', 'ClasePersonalizadaController@updateNombre');

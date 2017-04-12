@@ -152,7 +152,7 @@
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc" >Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc" >Hora</th>
-                                    <th class="text-center" data-column-id="operaciones" data-order="desc" >Operaciones</th>
+                                    <th class="text-center" data-column-id="operaciones" data-order="desc" id="operaciones">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -220,15 +220,6 @@
         serverSide: false,
         pageLength: 25,  
         order: [[4, 'desc'], [5, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($activas)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -579,12 +570,12 @@
                 ''+array.clase_personalizada_nombre+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.hora_inicio+' - '+array.hora_final+'',
                 ''
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
-                    .addClass('seleccion');
+                    .addClass('disabled');
             });
 
             $.each(finalizadas2, function (index, array) {
@@ -606,7 +597,7 @@
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
-                    .addClass('seleccion');
+                    .addClass('disabled');
             });
         }
 
@@ -625,13 +616,13 @@
                 ''+array.clase_personalizada_nombre+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.hora_inicio+' - '+array.hora_final+'',
                 ''
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
                     .attr('data-cancelacion',array.razon_cancelacion)
-                    .addClass('seleccion');
+                    .addClass('disabled');
             });
 
             $.each(canceladas2, function (index, array) {
@@ -653,7 +644,7 @@
                 $( rowNode )
                     .attr('id',array.id)
                     .attr('data-cancelacion',array.razon_cancelacion)
-                    .addClass('seleccion');
+                    .addClass('disabled');
             });
         }
 

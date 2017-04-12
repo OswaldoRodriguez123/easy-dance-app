@@ -16,6 +16,89 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
+            
+            <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Cancelar una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_clase" id="cancelar_clase"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input type="hidden" name="clasepersonalizada_id" id="clasepersonalizada_id"></input>  
+                                       <input type="hidden" name="tipo" id="tipo"></input>
+                                       <div class="modal-body">                           
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="f-15 f-700 span_instructor"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-9">
+                                             
+                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                                            <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
+
+                                            <p class="f-16">Especialidad: <span class="f-700 span_especialidad"></span></p>
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                       <hr style="margin-top:5px">
+
+                                       <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelar la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                                          </div>
+                                        <div class="has-error" id="error-razon_cancelacion">
+                                          <span >
+                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-6 text-left">
+                                          <div class="procesando hidden">
+                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                          <div class="preloader pls-purple">
+                                              <svg class="pl-circular" viewBox="25 25 50 50">
+                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                              </svg>
+                                          </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_clase" id="cancelar_clase" name="cancelar_clase" > Completar la cancelación</button>
+                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                                        </div>
+                                    </div></form>
+                                </div>
+                            </div>
+                        </div>
 
             <section id="content">
                 <div class="container">
@@ -58,6 +141,11 @@
                                             <i class="input-helper"></i>  
                                             Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
                                         </label>
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="canceladas" value="canceladas" type="radio" checked >
+                                            <i class="input-helper"></i>  
+                                            Canceladas <i id="canceladas2" name="canceladas2" class="zmdi zmdi-close zmdi-hc-fw f-20"></i>
+                                        </label>
                                     </div>
                                     
                                 </div>
@@ -75,16 +163,20 @@
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
+                                    <th class="text-center" data-column-id="operaciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
                             @foreach ($activas as $fecha)
-                                <tr id="{{$fecha['id']}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
+                                <tr id="{{$fecha['id']}}" class="disabled" data-instructor="{{$fecha['instructor']}}" data-especialidad="{{$fecha['especialidad']}}" data-fecha="{{$fecha['fecha_inicio']}}" data-hora="{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}" data-tipo="{{$fecha['tipo']}}">
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
+                                    <td class="text-center previa">
+                                        <i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                    </td>
                                 </tr>
 
                             @endforeach  
@@ -114,10 +206,12 @@
 <script type="text/javascript">
 
     route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones/";
-    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar-cancelacion/";
+    route_cancelar="{{url('/')}}/agendar/clases-personalizadas/cancelar";
+    route_cancelarpermitir="{{url('/')}}/agendar/clases-personalizadas/cancelarpermitir";
 
     var finalizadas = <?php echo json_encode($finalizadas);?>;
     var activas = <?php echo json_encode($activas);?>;
+    var canceladas = <?php echo json_encode($canceladas);?>;
 
     $(document).ready(function(){
 
@@ -158,46 +252,25 @@
         });
     });
 
-
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
-
-        fecha = $(this).closest('tr').data('fecha')
-
-        $.ajax({
-
-            url: "{{url('/')}}/guardar-fecha",
-            headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}" },
-            type: 'POST',
-            dataType: 'json',
-            data:"fecha_inicio="+fecha,
-            success:function(respuesta){
-
-                window.location = route_operacion + "{{$id}}"
-
-            }
-        });        
-    });
-
     $("#activas").click(function(){
         $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#canceladas2" ).removeClass( "c-verde" );
         $( "#activas2" ).addClass( "c-verde" );
-    });
 
+    });
+    $("#canceladas").click(function(){
+        $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#activas2" ).removeClass( "c-verde" );
+        $( "#canceladas2" ).addClass( "c-verde" );
+    });
     $("#finalizadas").click(function(){
         $( "#finalizadas2" ).addClass( "c-verde" );
+        $( "#canceladas2" ).removeClass( "c-verde" );
         $( "#activas2" ).removeClass( "c-verde" );
     });
 
 
      function rechargeActivas(){
-
-            if(activas.length > 25){
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
-            }else{
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
-            }
 
             $.each(activas, function (index, array) {
 
@@ -206,23 +279,20 @@
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
                 ''+array.especialidad+'',
                 ''+array.instructor+'' ,
-                '<i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                '<i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                     .addClass('disabled')
-                    .attr('data-fecha', array.fecha_inicio);
+                    .attr('id', array.id)
+                    .attr('data-tipo', array.tipo)
+                    .attr('data-instructor', array.instructor)
+                    .attr('data-especialidad', array.especialidad)
+                    .attr('data-fecha', array.fecha_inicio)
+                    .attr('data-hora', array.hora_inicio + ' - ' + array.hora_final);
             });
         }
 
         function rechargeFinalizadas(){
-
-            if(finalizadas.length > 25){
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
-            }else{
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
-            }
 
             $.each(finalizadas, function (index, array) {
 
@@ -235,7 +305,36 @@
                 ] ).draw(false).node();
                 $( rowNode )
                     .addClass('disabled')
-                    .addClass('seleccion_deleted');
+                    .addClass('seleccion_deleted')
+                    .attr('id', array.id)
+                    .attr('data-tipo', array.tipo)
+                    .attr('data-instructor', array.instructor)
+                    .attr('data-especialidad', array.especialidad)
+                    .attr('data-fecha', array.fecha_inicio)
+                    .attr('data-hora', array.hora_inicio + ' - ' + array.hora_final);
+            });
+        }
+
+        function rechargeCanceladas(){
+
+            $.each(canceladas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.fecha_inicio+'',
+                ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.especialidad+'',
+                ''+array.instructor+'' ,
+                ''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .addClass('disabled')
+                    .addClass('seleccion_deleted')
+                    .attr('id', array.id)
+                    .attr('data-tipo', array.tipo)
+                    .attr('data-instructor', array.instructor)
+                    .attr('data-especialidad', array.especialidad)
+                    .attr('data-fecha', array.fecha_inicio)
+                    .attr('data-hora', array.hora_inicio + ' - ' + array.hora_final);
             });
         }
 
@@ -252,98 +351,154 @@
             } else if($(this).val()=='finalizadas')  {
                 tipo= 'finalizadas';
                 rechargeFinalizadas();
+            }else if($(this).val()=='canceladas')  {
+                tipo= 'canceladas';
+                rechargeCanceladas();
             }
          });
 
-        $('#pop-activar').popover({
-                    html: true,
-                    trigger: 'manual'
-                }).on( "mouseenter", function(e) {
+        $(".cancelar_clase").click(function(){
 
-                    $(this).popover('show');
+        var id = $('#id').val();
+    
+        swal({   
+                    title: "Desea cancelar la clase personalizada",   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+        if (isConfirm) {
+        procesando();
+        var route = route_cancelar;
+        var token = '{{ csrf_token() }}';
+        var datos = $( "#cancelar_clase" ).serialize(); 
 
-                    e.preventDefault();
-          });
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nAnimIn = "animated flipInY";
+        var nAnimOut = "animated flipOutY"; 
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
 
-        $('body').on('click', function (e) {
-            $('[data-toggle="popover"]').each(function () {
-                //the 'is' for buttons that trigger popups
-                //the 'has' for icons within a button that triggers a popup
-                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                    $(this).popover('hide');
-                }
-            });
-        });
+                        var cancelada = $.grep(activas, function(e){ return e.id == respuesta.id; });
 
-    // $(".activar").click(function(){
-    $("html").click(function (e){
-        element = e.target
-        if($(element).hasClass('activar')){
-          swal({   
-              title: "Desea activar la clase?",   
-              text: "Confirmar activación!",   
-              type: "warning",   
-              showCancelButton: true,   
-              confirmButtonColor: "#DD6B55",   
-              confirmButtonText: "Activar!",  
-              cancelButtonText: "Cancelar",         
-              closeOnConfirm: true 
-          }, function(isConfirm){   
-            if (isConfirm) {
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'success';
-              var nAnimIn = $(this).attr('data-animation-in');
-              var nAnimOut = $(this).attr('data-animation-out')
-              var nTitle="Ups! ";
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              var bloqueo_id = $(element).attr('id');
-              var id = $(element).closest('tr').attr('id')
-              eliminar(bloqueo_id, id);
-            }
-          });
-        }
-    });
+                        canceladas.push(cancelada[0]);
 
-    function eliminar(bloqueo_id, id){
-      var route = route_eliminar + bloqueo_id;
-      var token = "{{ csrf_token() }}";
+                        indexes = $.map(activas, function(obj, index) {
+                            if(obj.id == respuesta.id){
+                                activas.splice( $.inArray(activas[index], activas), 1 );
 
-      procesando();
+                                t.row( $('#'+respuesta.id) )
+                                    .remove()
+                                    .draw();
+                            }
+                        })
+                      
+                      var nType = 'success';
+                      var nTitle="Ups! ";
+                      var nMensaje=respuesta.mensaje;
 
-      $.ajax({
-        url: route,
-        headers: {'X-CSRF-TOKEN': token},
-        type: 'DELETE',
-        dataType: 'json',
-        success:function(respuesta){
+                      finprocesado();
+                      $('#modalCancelar').modal('hide');
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
 
-          swal("Hecho!","Activada con éxito!","success");
+                    },
+                    error:function(msj){
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
+                    $(".modal").modal('hide');
+                    finprocesado();
+                    swal({ 
+                    title: 'El estatus de esta clase es de "cancelación tardía", al cancelarla de igual manera será debitada económicamente al participante. ¿ Desea proceder ?',   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true,
+                    html: true
+                }, function(isConfirm){   
+                  if (isConfirm) {
+                    procesando();
+                    var route = route_cancelarpermitir;
 
-          $("#"+id).find("td").eq(4).empty();   
-          $("#"+id).find("td").eq(4).html('<i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>');
+                    $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
 
-          finprocesado();
+                        var cancelada = $.grep(activas, function(e){ return e.id == respuesta.id; });
 
-        },
-        error:function(msj){
-          $("#msj-danger").fadeIn(); 
-          var text="";
-          console.log(msj);
-          var merror=msj.responseJSON;
-          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-          $("#msj-error").html(text);
-          setTimeout(function(){
-                   $("#msj-danger").fadeOut();
-                  }, 3000);
+                        canceladas.push(cancelada[0]);
+
+                        indexes = $.map(activas, function(obj, index) {
+                            if(obj.id == respuesta.id){
+                                activas.splice( $.inArray(activas[index], activas), 1 );
+
+                                t.row( $('#'+respuesta.id) )
+                                    .remove()
+                                    .draw();
+                            }
+                        }) 
+
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
+
+                        finprocesado();
+                        $('#modalCancelar').modal('hide');
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                    },
+                    error:function(msj){
+
+                            if (typeof msj.responseJSON === "undefined") {
+                                window.location = "{{url('/')}}/error";
+                             }
+
+
+    
+                            }
+                        });
+                    }
+                });
+             }
+         });
         }
       });
-    }
+    });
 
-    // $("html").click(function (e){
-    //     console.log(e.target)
-    // });
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-close-circle-o', function () {
+        var row = $(this).closest('tr');
+        var id = row.attr('id');
+        var tipo = row.data('tipo');
+        var fecha = row.data('fecha');
+        var hora = row.data('hora');
+        var instructor = row.data('instructor');
+        var especialidad = row.data('especialidad');
+        $('.span_fecha').text(fecha)
+        $('.span_hora').text(hora)
+        $('.span_instructor').text(instructor)
+        $('.span_especialidad').text(especialidad)
+        $('#clasepersonalizada_id').val(id)
+        $('#tipo').val(tipo)
+        $("#modalCancelar" ).modal('show');
+    });
 
     </script>
 @stop
