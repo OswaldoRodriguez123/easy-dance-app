@@ -2021,14 +2021,14 @@ public function PresencialesFiltros(Request $request)
             if($request->tipo_servicio)
             {
 
-                if($request->tipo_servicio == 1)
+                if($request->tipo_servicio == 99)
                 {
                     $query->where('egresos.tipo', 1);
                 }else if($request->tipo_servicio == 14){
                     $query->where('egresos.tipo', 2);
                 }else if($request->tipo_servicio == 5){
                     $query->where('egresos.tipo', 3);
-                }else{
+                }else if($request->tipo_servicio == 11){{
                     $query->where('egresos.tipo', 4);
                 }
             }
