@@ -159,7 +159,7 @@ class AdministrativoController extends BaseController {
         $factura_join = Factura::join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id') 
             ->selectRaw('CONCAT(alumnos.nombre, " " , alumnos.apellido) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
             ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->OrderBy('facturas.created_at', 'asc')
+            ->OrderBy('facturas.created_at', 'desc')
             ->limit(150)
         ->get();
 
