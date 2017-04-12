@@ -103,29 +103,35 @@ class AcademiaController extends BaseController {
         // 	$patrocinador->save();
         // }
 
-        // $facturas = ItemsFactura::all();
+        $facturas = ItemsFactura::all();
 
-        // foreach($facturas as $factura){
+        foreach($facturas as $factura){
 
-        //     if($factura->tipo == 9){
-        //         $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($factura->item_id);
-        //         $clase_personalizada = ClasePersonalizada::withTrashed()->find($inscripcion_clase_personalizada->clase_personalizada_id);
-        //         $factura->nombre = $clase_personalizada->nombre;
-        //         $factura->save();
-        //     }
-        // }
+            if($factura->tipo == 9){
+                $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($factura->item_id);
+                if($inscripcion_clase_personalizada){
 
-        // $facturas = ItemsFacturaProforma::all();
+                    $clase_personalizada = ClasePersonalizada::withTrashed()->find($inscripcion_clase_personalizada->clase_personalizada_id);
+                    $factura->nombre = $clase_personalizada->nombre;
+                    $factura->save();
+                }
+            }
+        }
 
-        // foreach($facturas as $factura){
+        $facturas = ItemsFacturaProforma::all();
 
-        //     if($factura->tipo == 9){
-        //         $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($factura->item_id);
-        //         $clase_personalizada = ClasePersonalizada::withTrashed()->find($inscripcion_clase_personalizada->clase_personalizada_id);
-        //         $factura->nombre = $clase_personalizada->nombre;
-        //         $factura->save();
-        //     }
-        // }
+        foreach($facturas as $factura){
+
+            if($factura->tipo == 9){
+                $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($factura->item_id);
+                if($inscripcion_clase_personalizada){
+
+                    $clase_personalizada = ClasePersonalizada::withTrashed()->find($inscripcion_clase_personalizada->clase_personalizada_id);
+                    $factura->nombre = $clase_personalizada->nombre;
+                    $factura->save();
+                }
+            }
+        }
 
         // $facturas = ItemsFacturaProforma::all();
 
