@@ -62,22 +62,22 @@ class AcademiaController extends BaseController {
 	{
         $academia = Academia::find(Auth::user()->academia_id);
 
-        // $clases_personalizadas = ClasePersonalizada::all();
+        $clases_personalizadas = ClasePersonalizada::all();
 
-        // foreach($clases_personalizadas as $clase_personalizada){
+        foreach($clases_personalizadas as $clase_personalizada){
 
-        //     $servicio = new ConfigServicios;
+            $servicio = new ConfigServicios;
             
-        //     $servicio->academia_id = Auth::user()->academia_id;
-        //     $servicio->nombre = $clase_personalizada->nombre;
-        //     $servicio->costo = $clase_personalizada->costo;
-        //     $servicio->imagen = '';
-        //     $servicio->descripcion = $clase_personalizada->descripcion;
-        //     $servicio->incluye_iva = 0;
-        //     $servicio->tipo = 9;
+            $servicio->academia_id = $clase_personalizada->academia_id;
+            $servicio->nombre = $clase_personalizada->nombre;
+            $servicio->costo = $clase_personalizada->costo;
+            $servicio->imagen = '';
+            $servicio->descripcion = $clase_personalizada->descripcion;
+            $servicio->incluye_iva = 0;
+            $servicio->tipo = 9;
 
-        //     $servicio->save();
-        // }
+            $servicio->save();
+        }
 
         // $servicios = ConfigServicios::all();
 
