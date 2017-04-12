@@ -54,7 +54,7 @@
 
                 <div class="clearfix p-b-35"></div>
                 
-                <div class="f-700 f-25 text-center">{{Auth::user()->nombre}}  ¿Que egreso deseas agregar?</div>
+                <div class="f-700 f-25 text-center">{{Auth::user()->nombre}} ¿Cual egreso deseas agregar?</div>
                 
                 <br>
 

@@ -25,8 +25,10 @@ class ConfigProductosController extends BaseController {
                 $tipo = 'Taller';
             }else if($producto->tipo == 11){
                 $tipo = 'Campaña';
+            }else if($producto->tipo == 9){
+                $tipo = "Clase Personalizada";
             }else{
-                $tipo = 'Academia';
+                $tipo = 'Producto';
             }
 
 
@@ -142,8 +144,10 @@ class ConfigProductosController extends BaseController {
                 $tipo = "Fiesta y Eventos";
             }else if($producto->tipo == 11){
                 $tipo = "Campaña";
+            }else if($producto->tipo == 9){
+                $tipo = "Clase Personalizada";
             }else{
-                $tipo = "Academia";
+                $tipo = "Producto";
             }
             return view('configuracion.productos.planilla')->with(['producto' => $producto , 'id' => $id, 'tipo' => $tipo]);
         }else{

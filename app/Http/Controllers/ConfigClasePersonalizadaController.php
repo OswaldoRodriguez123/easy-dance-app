@@ -10,6 +10,7 @@ use App\ConfigEstudios;
 use App\ConfigEspecialidades;
 use App\ConfigClasesPersonalizadas;
 use App\ConfigNiveles;
+use App\ConfigServicios;
 use App\Instructor;
 use App\Alumno;
 use App\Academia;
@@ -214,21 +215,33 @@ class ConfigClasePersonalizadaController extends BaseController {
         // return redirect("/home")
         if($clasepersonalizada->save()){
 
-             $precios = Session::get('precios');
+            $servicio = new ConfigServicios;
+            
+            $servicio->academia_id = Auth::user()->academia_id;
+            $servicio->nombre = $nombre;
+            $servicio->costo = $request->costo;
+            $servicio->imagen = '';
+            $servicio->descripcion = $request->descripcion;
+            $servicio->incluye_iva = 0;
+            $servicio->tipo = 9;
 
-                if(count($precios) > 0){
+            $servicio->save();
 
-                    foreach ($precios as $precio) {
+            $precios = Session::get('precios');
 
-                        $costo = new CostoClasePersonalizada;
+            if(count($precios) > 0){
 
-                        $costo->clase_personalizada_id = $clasepersonalizada->id;
-                        $costo->participantes = $precio[0]['participantes'];
-                        $costo->precio = $precio[0]['precio'];
-                        $costo->save();
-                    }
+                foreach ($precios as $precio) {
 
+                    $costo = new CostoClasePersonalizada;
+
+                    $costo->clase_personalizada_id = $clasepersonalizada->id;
+                    $costo->participantes = $precio[0]['participantes'];
+                    $costo->precio = $precio[0]['precio'];
+                    $costo->save();
                 }
+
+            }
 
 
             if($request->imageBase64){

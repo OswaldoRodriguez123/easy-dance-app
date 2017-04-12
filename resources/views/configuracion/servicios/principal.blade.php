@@ -45,7 +45,28 @@
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-servicios"></i> Área de Servicios</p>
                         <hr class="linea-morada">
                         <br>
-                                                              
+
+                        <div class="col-sm-4 text-left">
+                                 
+                            <label class="c-morado f-15">Filtro</label>
+
+                            <div class="fg-line">
+                              <div class="select">
+                                <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                                    <option value = "0">Todos</option>
+                                    <option value = "S">Servicio</option>
+                                    <option value = "I">Inscripción y Mensualidad</option>
+                                    <option value = "T">Taller</option>
+                                    <option value = "R">Clase Personalizada</option>
+                                    <option value = "C">Campaña</option>
+                                    <option value = "F">Fiesta y Eventos</option>
+                                
+                                </select>
+                              </div>
+                            </div>
+                            
+                        </div>
+                        <div class="clearfix"></div>                               
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -63,10 +84,32 @@
                             @foreach ($servicios as $servicio)
                                 <?php $id = $servicio['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$servicio['nombre']}}</td>
+                                    <td class="text-center previa">
+                                        {{$servicio['nombre']}}
+                                        
+                                        @if($servicio['tipo'] == 'Servicio')
+                                            <?php $tipo = 'S' ?>
+                                            <i class="icon_f-servicios f-20 p-r-10"></i>
+                                        @elseif($servicio['tipo'] == 'Inscripción y Mensualidad')
+                                            <?php $tipo = 'I' ?>
+                                            <i class="icon_a-clases-grupales f-20 p-r-10"></i>
+                                        @elseif($servicio['tipo'] == 'Taller')
+                                            <?php $tipo = 'T' ?>
+                                            <i class="icon_a-talleres f-20 p-r-10"></i>
+                                        @elseif($servicio['tipo'] == 'Clase Personalizada')
+                                            <?php $tipo = 'R' ?>
+                                            <i class="icon_a-clase-personalizada f-20 p-r-10"></i>
+                                        @elseif($servicio['tipo'] == 'Campaña')
+                                            <?php $tipo = 'C' ?>
+                                            <i class="icon_a-campana f-20 p-r-10"></i>
+                                        @elseif($servicio['tipo'] == 'Fiesta y Eventos')
+                                            <?php $tipo = 'F' ?>
+                                            <i class="icon_a-fiesta f-20 p-r-10"></i>
+                                        @endif
+                                    </td>
                                     <td class="text-center previa">{{$servicio['tipo']}}</td>
                                     <td class="text-center previa">{{ number_format($servicio['costo'], 2, '.' , '.') }} </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <span style="display: none">{{$tipo}}</span><i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -144,36 +187,8 @@
                         }
                     }
         });
-    
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-            });
-
+        });
    
 
         function previa(t){
@@ -249,7 +264,28 @@
                 });
       }
 
+      $('#tipo').on('change', function(){
 
-        </script>
+        tipo = $(this).val()
+
+        if(tipo == '0'){
+
+            t
+            .columns(3)
+            .search('')
+            .draw(); 
+
+        }else{
+
+            t
+            .columns(3)
+            .search(tipo)
+            .draw();
+
+        }
+
+    });
+
+    </script>
 
 @stop

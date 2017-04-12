@@ -44,7 +44,30 @@
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-productos zmdi-hc-fw p-r-5 f-25"></i> Área de Productos</p>
                         <hr class="linea-morada">
                         <br>
-                                                              
+
+                        <div class="col-sm-4 text-left">
+                                 
+                            <label class="c-morado f-15">Filtro</label>
+
+                            <div class="fg-line">
+                              <div class="select">
+                                <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                                    <option value = "0">Todos</option>
+                                    <option value = "P">Producto</option>
+                                    <option value = "I">Inscripción y Mensualidad</option>
+                                    <option value = "T">Taller</option>
+                                    <option value = "R">Clase Personalizada</option>
+                                    <option value = "C">Campaña</option>
+                                    <option value = "F">Fiesta y Eventos</option>
+                                
+                                </select>
+                              </div>
+                            </div>
+                            
+                           
+                          
+                        </div>
+                        <div class="clearfix"></div>                              
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -63,11 +86,37 @@
                             @foreach ($productos as $producto)
                                 <?php $id = $producto['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$producto['nombre']}}</td>
+                                    <td class="text-center previa">
+                                        {{$producto['nombre']}}
+
+                                        @if($producto['tipo'] == 'Servicio')
+                                            <?php $tipo = 'S' ?>
+                                            <i class="icon_f-servicios f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Producto')
+                                            <?php $tipo = 'P' ?>
+                                            <i class="icon_f-productos f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Inscripción y Mensualidad')
+                                            <?php $tipo = 'I' ?>
+                                            <i class="icon_a-clases-grupales f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Taller')
+                                            <?php $tipo = 'T' ?>
+                                            <i class="icon_a-talleres f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Clase Personalizada')
+                                            <?php $tipo = 'R' ?>
+                                            <i class="icon_a-clase-personalizada f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Campaña')
+                                            <?php $tipo = 'C' ?>
+                                            <i class="icon_a-campana f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Fiesta y Eventos')
+                                            <?php $tipo = 'F' ?>
+                                            <i class="icon_a-fiesta f-20 p-r-10"></i>
+                                        @endif
+
+                                    </td>
                                     <td class="text-center previa">{{$producto['tipo']}}</td>
                                     <td class="text-center previa">{{ number_format($producto['costo'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$producto['cantidad']}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled">  <span style="display: none">{{$tipo}}</span><i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -239,7 +288,30 @@
                 });
       }
 
+      $('#tipo').on('change', function(){
 
-        </script>
+        tipo = $(this).val()
+
+        if(tipo == '0'){
+
+            t
+            .columns(4)
+            .search('')
+            .draw(); 
+
+        }else{
+
+            t
+            .columns(4)
+            .search(tipo)
+            .draw();
+
+        }
+
+    });
+
+
+
+    </script>
 
 @stop

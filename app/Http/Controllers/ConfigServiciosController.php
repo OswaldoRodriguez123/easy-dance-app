@@ -26,8 +26,12 @@ class ConfigServiciosController extends BaseController {
                 $tipo = 'Taller';
             }else if($servicio->tipo == 11){
                 $tipo = 'Campaña';
+            }else if($servicio->tipo == 9){
+                $tipo = "Clase Personalizada";
+            }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
+                $tipo = "Inscripción y Mensualidad";
             }else{
-                $tipo = 'Academia';
+                $tipo = 'Servicio';
             }
 
 
@@ -148,8 +152,12 @@ class ConfigServiciosController extends BaseController {
                 $tipo = "Fiesta y Eventos";
             }else if($servicio->tipo == 11){
                 $tipo = "Campaña";
+            }else if($servicio->tipo == 9){
+                $tipo = "Clase Personalizada";
+            }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
+                $tipo = "Inscripción y Mensualidad";
             }else{
-                $tipo = "Academia";
+                $tipo = "Producto";
             }
             
             return view('configuracion.servicios.planilla')->with(['servicio' => $servicio , 'id' => $id, 'tipo' => $tipo]);

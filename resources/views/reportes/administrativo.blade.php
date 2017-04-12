@@ -80,7 +80,11 @@
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
                                             <option value="0">Todas</option>
-                                            <option value="1">Academia</option>
+                                            <option value="99">Academia</option>
+                                            <option value="1">Servicio</option>
+                                            <option value="2">Producto</option>
+                                            <option value="3">Inscripción y Mensualidad</option>
+                                            <option value="9">Clase Personalizada</option>
                                             <option value="14">Fiestas y Eventos</option>
                                             <option value="5">Talleres</option>
                                             <option value="11">Campañas</option>
@@ -370,9 +374,9 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            var tipo_id = [];
+            var nombre = [];
             $('#tipo_id option:selected').each(function() {
-              tipo_id.push($(this).text());
+              nombre.push($(this).text());
             });
             procesando();
             $.ajax({
@@ -380,7 +384,7 @@
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
                 dataType: 'json',
-                data: datos+"&tipo_id="+tipo_id,
+                data: datos+"&nombre="+nombre,
                 success:function(respuesta){
 
                     var nType = 'success';
@@ -433,7 +437,6 @@
                             var pieData1 = ''
                             pieData1 += '[';
                             $.each( datos.array_ingreso, function( i, item ) {
-                                console.log(item)
                                 var label = item.nombre;
                                 var cant = item.cantidad;
                                 pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
@@ -587,9 +590,9 @@
             if(id != 0){
                 tmp = [];
 
-                if(id == 1){
+                if(id == 99){
                     $.each(linea_servicio, function (index, array) {  
-                        not_in = [5,11,14]
+                        not_in = [1,2,3,4,9,5,11,14]
                         tipo = array.tipo
                         if($.inArray(tipo, not_in)){
                             tmp.push(array);

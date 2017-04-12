@@ -1859,7 +1859,7 @@ public function PresencialesFiltros(Request $request)
 
         $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        foreach($config_producto as $items){
+        foreach($config_producto as $item){
 
             $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
            
@@ -1920,10 +1920,13 @@ public function PresencialesFiltros(Request $request)
                 if($request->tipo_servicio)
                 {
 
-                    if($request->tipo_servicio == 1)
+                    if($request->tipo_servicio == 99)
                     {
-                        $not_in = array(5,11,14);
+                        $not_in = array(1,2,3,4,5,11,14);
                         $query->whereNotIn('items_factura.tipo', $not_in);
+                    }else if($request->tipo_servicio == 3){
+                        $in = array(3,4);
+                        $query->whereIn('tipo', $in);
                     }else{
                         $query->where('items_factura.tipo', $request->tipo_servicio);
                     }
@@ -1931,9 +1934,9 @@ public function PresencialesFiltros(Request $request)
 
                 //DETALLE
 
-                if($request->tipo_id)
+                if($request->nombre)
                 {
-                    $array_explode = explode(",", $request->tipo_id);
+                    $array_explode = explode(",", $request->nombre);
                     $tipo = array();
 
                     foreach($array_explode as $explode){
@@ -2115,10 +2118,13 @@ public function PresencialesFiltros(Request $request)
                 if($request->tipo_servicio)
                 {
 
-                    if($request->tipo_servicio == 1)
+                    if($request->tipo_servicio == 99)
                     {
-                        $not_in = array(5,11,14);
+                        $not_in = array(1,2,3,4,5,11,14);
                         $query->whereNotIn('tipo', $not_in);
+                    }else if($request->tipo_servicio == 3){
+                        $in = array(3,4);
+                        $query->whereIn('tipo', $in);
                     }else{
                         $query->where('tipo', $request->tipo_servicio);
                     }
@@ -2126,9 +2132,9 @@ public function PresencialesFiltros(Request $request)
 
                 //DETALLE
 
-                if($request->tipo_id)
+                if($request->nombre)
                 {
-                    $array_explode = explode(",", $request->tipo_id);
+                    $array_explode = explode(",", $request->nombre);
                     $tipo = array();
 
                     foreach($array_explode as $explode){
