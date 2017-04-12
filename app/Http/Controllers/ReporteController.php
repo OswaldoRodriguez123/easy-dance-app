@@ -2028,7 +2028,7 @@ public function PresencialesFiltros(Request $request)
                     $query->where('egresos.tipo', 2);
                 }else if($request->tipo_servicio == 5){
                     $query->where('egresos.tipo', 3);
-                }else if($request->tipo_servicio == 11){{
+                }else if($request->tipo_servicio == 11){
                     $query->where('egresos.tipo', 4);
                 }
             }
