@@ -1377,7 +1377,7 @@ class ClaseGrupalController extends BaseController {
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $request->clase_grupal_id;
-                    $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
+                    $item_factura->nombre = $clasegrupal->nombre;
                     $item_factura->tipo = 3;
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;
@@ -1398,7 +1398,7 @@ class ClaseGrupalController extends BaseController {
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $request->clase_grupal_id;
-                    $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                    $item_factura->nombre = $clasegrupal->nombre;
                     $item_factura->tipo = 4;
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;

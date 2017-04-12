@@ -987,7 +987,7 @@ class ClasePersonalizadaController extends BaseController {
             $item_factura->academia_id = Auth::user()->academia_id;
             $item_factura->fecha = Carbon::now()->toDateString();
             $item_factura->item_id = $clasepersonalizada->id;
-            $item_factura->nombre = 'Costo Clase Personalizada ' . $clase_personalizada->nombre;
+            $item_factura->nombre = $clase_personalizada->nombre;
             $item_factura->tipo = 9;
             $item_factura->cantidad = 1;
             $item_factura->precio_neto = 0;

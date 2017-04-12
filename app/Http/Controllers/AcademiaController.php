@@ -24,6 +24,7 @@ use App\Fiesta;
 use App\Campana;
 use App\ClasePersonalizada;
 use App\InscripcionClaseGrupal;
+use App\InscripcionClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\Paises;
 use App\Regalo;
@@ -102,16 +103,29 @@ class AcademiaController extends BaseController {
         // 	$patrocinador->save();
         // }
 
-        // $facturas = ItemsFactura::all();
+        $facturas = ItemsFactura::all();
 
-        // foreach($facturas as $factura){
-        //     $nombre = explode(" ", $factura->nombre);
+        foreach($facturas as $factura){
 
-        //     if($nombre[0] == "Boleta"){
-        //         $factura->tipo = 14;
-        //         $factura->save();
-        //     }
-        // }
+            if($factura->tipo == 9){
+                $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($factura->item_id);
+                $clase_personalizada = ClasePersonalizada::withTrashed()->find($inscripcion_clase_personalizada->clase_personalizada_id);
+                $factura->nombre = $clase_personalizada->nombre;
+                $factura->save();
+            }
+        }
+
+        $facturas = ItemsFacturaProforma::all();
+
+        foreach($facturas as $factura){
+
+            if($factura->tipo == 9){
+                $inscripcion_clase_personalizada = InscripcionClasePersonalizada::find($factura->item_id);
+                $clase_personalizada = ClasePersonalizada::withTrashed()->find($inscripcion_clase_personalizada->clase_personalizada_id);
+                $factura->nombre = $clase_personalizada->nombre;
+                $factura->save();
+            }
+        }
 
         // $facturas = ItemsFacturaProforma::all();
 
