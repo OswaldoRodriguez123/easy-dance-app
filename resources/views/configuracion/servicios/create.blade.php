@@ -147,6 +147,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
                                           <option value="1">Servicio</option>
+                                          <option value="3">Inscripción y Mensualidad</option>
+                                          <option value="9">Clase Personalizada</option>
                                           <option value="14">Fiesta y Eventos</option>
                                           <option value="5">Taller</option>
                                           <option value="11">Campaña</option>
