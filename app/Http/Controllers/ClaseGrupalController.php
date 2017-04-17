@@ -3211,78 +3211,17 @@ class ClaseGrupalController extends BaseController {
             
             $fecha_a_comparar = $fecha_clase_grupal;
             $fecha_a_comparar = $fecha_a_comparar->toDateString();
-            $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
-            if($asistencia){
-                $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
-                $hora = $asistencia->hora;
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
-                $i = $fecha->dayOfWeek;
+            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                ->where('fecha_final', '>=', $fecha_a_comparar)
+                ->where('tipo_id', $id)
+                ->where('tipo', 1)
+            ->first();
 
-                if($i == 1){
+            if(!$horario_bloqueado){
 
-                  $dia = 'Lunes';
+                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
 
-                }else if($i == 2){
-
-                  $dia = 'Martes';
-
-                }else if($i == 3){
-
-                  $dia = 'Miercoles';
-
-                }else if($i == 4){
-
-                  $dia = 'Jueves';
-
-                }else if($i == 5){
-
-                  $dia = 'Viernes';
-
-                }else if($i == 6){
-
-                  $dia = 'Sabado';
-
-                }else if($i == 0){
-
-                  $dia = 'Domingo';
-
-                }
-
-                $total_asistencia = $total_asistencia + 1;
-            }else{
-
-                if(Carbon::now()->toDateString() != $fecha_a_comparar){
-                    $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
-                }else{
-                    $asistio = '';
-                }
-                
-                $hora = '';
-                $dia = '';
-                $total_inasistencia = $total_inasistencia + 1;
-            }
-            $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
-
-            $fecha_clase_grupal->addWeek();
-            $j = $j + 1;
-        }
-
-        foreach($horarios_clase_grupales as $horario){
-
-            $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
-
-            while($fecha_horario < Carbon::now())
-            {
-                if($fecha_principal > $fecha_horario)
-                {
-                    $fecha_horario->addWeek();
-                    continue;
-                }
-
-                $fecha_a_comparar = $fecha_horario;
-                $fecha_a_comparar = $fecha_a_comparar->toDateString();
-                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
                 if($asistencia){
                     $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                     $hora = $asistencia->hora;
@@ -3322,20 +3261,107 @@ class ClaseGrupalController extends BaseController {
 
                     $total_asistencia = $total_asistencia + 1;
                 }else{
+
                     if(Carbon::now()->toDateString() != $fecha_a_comparar){
                         $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
                     }else{
                         $asistio = '';
                     }
+                    
                     $hora = '';
                     $dia = '';
-
                     $total_inasistencia = $total_inasistencia + 1;
                 }
                 $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+                $j = $j + 1;
+            }
+
+            $fecha_clase_grupal->addWeek();
+            
+        }
+
+        foreach($horarios_clase_grupales as $horario){
+
+            $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+
+            while($fecha_horario < Carbon::now())
+            {
+                if($fecha_principal > $fecha_horario)
+                {
+                    $fecha_horario->addWeek();
+                    continue;
+                }
+
+                $fecha_a_comparar = $fecha_horario;
+                $fecha_a_comparar = $fecha_a_comparar->toDateString();
+
+                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                    ->where('tipo_id', $id)
+                    ->where('tipo', 1)
+                ->first();
+
+                if(!$horario_bloqueado){
+
+                    $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
+
+                    if($asistencia){
+                        $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
+                        $hora = $asistencia->hora;
+
+                        $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                        $i = $fecha->dayOfWeek;
+
+                        if($i == 1){
+
+                          $dia = 'Lunes';
+
+                        }else if($i == 2){
+
+                          $dia = 'Martes';
+
+                        }else if($i == 3){
+
+                          $dia = 'Miercoles';
+
+                        }else if($i == 4){
+
+                          $dia = 'Jueves';
+
+                        }else if($i == 5){
+
+                          $dia = 'Viernes';
+
+                        }else if($i == 6){
+
+                          $dia = 'Sabado';
+
+                        }else if($i == 0){
+
+                          $dia = 'Domingo';
+
+                        }
+
+                        $total_asistencia = $total_asistencia + 1;
+                    }else{
+                        if(Carbon::now()->toDateString() != $fecha_a_comparar){
+                            $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                        }else{
+                            $asistio = '';
+                        }
+                        $hora = '';
+                        $dia = '';
+
+                        $total_inasistencia = $total_inasistencia + 1;
+                    }
+
+                    $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+
+                    $j = $j + 1;
+                }
 
                 $fecha_horario->addWeek();
-                $j = $j + 1;
+                
             }
         }
 
@@ -3611,81 +3637,17 @@ class ClaseGrupalController extends BaseController {
                 
                 $fecha_a_comparar = $fecha_clase_grupal;
                 $fecha_a_comparar = $fecha_a_comparar->toDateString();
-                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
-                if($asistencia){
-                    $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
-                    $hora = $asistencia->hora;
 
-                    $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
-                    $i = $fecha->dayOfWeek;
+                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                    ->where('tipo_id', $id)
+                    ->where('tipo', 1)
+                ->first();
 
-                    if($i == 1){
+                if(!$horario_bloqueado){
 
-                      $dia = 'Lunes';
-
-                    }else if($i == 2){
-
-                      $dia = 'Martes';
-
-                    }else if($i == 3){
-
-                      $dia = 'Miercoles';
-
-                    }else if($i == 4){
-
-                      $dia = 'Jueves';
-
-                    }else if($i == 5){
-
-                      $dia = 'Viernes';
-
-                    }else if($i == 6){
-
-                      $dia = 'Sabado';
-
-                    }else if($i == 0){
-
-                      $dia = 'Domingo';
-
-                    }
-
-                    $total_asistencia = $total_asistencia + 1;
+                    $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
                     
-                }else{
-
-                    if(Carbon::now()->toDateString() != $fecha_a_comparar){
-                        $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
-                    }else{
-                        $asistio = '';
-                    }
-                    
-                    $hora = '';
-                    $dia = '';
-
-                    $total_inasistencia = $total_inasistencia + 1;
-
-                }
-                $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
-
-                $fecha_clase_grupal->addWeek();
-                $j = $j + 1;
-            }
-
-            foreach($horarios_clase_grupales as $horario){
-
-                $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
-
-                while($fecha_horario < Carbon::now())
-                {
-                    if($fecha_principal > $fecha_horario)
-                    {
-                        $fecha_horario->addWeek();
-                        continue;
-                    }
-
-                    $fecha_a_comparar = $fecha_horario;
-                    $fecha_a_comparar = $fecha_a_comparar->toDateString();
-                    $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
                     if($asistencia){
                         $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                         $hora = $asistencia->hora;
@@ -3722,23 +3684,111 @@ class ClaseGrupalController extends BaseController {
                           $dia = 'Domingo';
 
                         }
-                        
+
                         $total_asistencia = $total_asistencia + 1;
+                        
                     }else{
+
                         if(Carbon::now()->toDateString() != $fecha_a_comparar){
                             $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
                         }else{
                             $asistio = '';
                         }
+                        
                         $hora = '';
                         $dia = '';
 
                         $total_inasistencia = $total_inasistencia + 1;
+
                     }
                     $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+                    $j = $j + 1;
+                   
+                }
+
+                $fecha_clase_grupal->addWeek();
+                
+            }
+
+            foreach($horarios_clase_grupales as $horario){
+
+                $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+
+                while($fecha_horario < Carbon::now())
+                {
+                    if($fecha_principal > $fecha_horario)
+                    {
+                        $fecha_horario->addWeek();
+                        continue;
+                    }
+
+                    $fecha_a_comparar = $fecha_horario;
+                    $fecha_a_comparar = $fecha_a_comparar->toDateString();
+
+                    $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                        ->where('fecha_final', '>=', $fecha_a_comparar)
+                        ->where('tipo_id', $id)
+                        ->where('tipo', 1)
+                    ->first();
+
+                    if(!$horario_bloqueado){
+
+                        $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
+                        if($asistencia){
+                            $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
+                            $hora = $asistencia->hora;
+
+                            $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                            $i = $fecha->dayOfWeek;
+
+                            if($i == 1){
+
+                              $dia = 'Lunes';
+
+                            }else if($i == 2){
+
+                              $dia = 'Martes';
+
+                            }else if($i == 3){
+
+                              $dia = 'Miercoles';
+
+                            }else if($i == 4){
+
+                              $dia = 'Jueves';
+
+                            }else if($i == 5){
+
+                              $dia = 'Viernes';
+
+                            }else if($i == 6){
+
+                              $dia = 'Sabado';
+
+                            }else if($i == 0){
+
+                              $dia = 'Domingo';
+
+                            }
+                            
+                            $total_asistencia = $total_asistencia + 1;
+                        }else{
+                            if(Carbon::now()->toDateString() != $fecha_a_comparar){
+                                $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
+                            }else{
+                                $asistio = '';
+                            }
+                            $hora = '';
+                            $dia = '';
+
+                            $total_inasistencia = $total_inasistencia + 1;
+                        }
+                        $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
+                        
+                        $j = $j + 1;
+                    }
 
                     $fecha_horario->addWeek();
-                    $j = $j + 1;
                 }
             }
         }
