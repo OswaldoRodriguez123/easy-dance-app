@@ -652,6 +652,7 @@
                                 var nivel = tmp[2]
                                 var imagen_instructor = tmp[3]
                                 var sexo = tmp[4]
+                                var hora = tmp[5]
 
                                 if(imagen_instructor){
                                     imagen = '/assets/uploads/usuario/'+imagen_instructor
@@ -674,6 +675,7 @@
                                 var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                                 contenido += 'Especialidad: ' + especialidad + '<br>'
                                 contenido += 'Nivel: ' + nivel + '<br>'
+                                contenido += 'Hora: ' + hora + '<br>'
 
                                 eventElement.find(".fc-title").append("  <i class='icon_a-clases-grupales'></i>");
                             }else{
@@ -698,6 +700,7 @@
 
                             var imagen_instructor = tmp[3]
                             var sexo = tmp[4]
+                            var hora = tmp[5]
 
                             if(imagen_instructor){
                                 imagen = '/assets/uploads/usuario/'+imagen_instructor
@@ -720,6 +723,7 @@
                             var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                             contenido += 'Especialidad: ' + especialidad + '<br>'
                             contenido += 'Nombre: ' + nombre + '<br>'
+                            contenido += 'Hora: ' + hora + '<br>'
 
                             eventElement.find(".fc-title").append("  <i class='icon_a-clase-personalizada'></i>");
                         }
@@ -737,6 +741,7 @@
                             var tipo = tmp[1]
                             var imagen_instructor = tmp[2]
                             var sexo = tmp[3]
+                            var hora = tmp[4]
 
                             if(imagen_instructor){
                                 imagen = '/assets/uploads/usuario/'+imagen_instructor
@@ -757,6 +762,7 @@
 
                             var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                             contenido += 'Tipo: ' + tipo + '<br>'
+                            contenido += 'Hora: ' + hora + '<br>'
 
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-calendar-check'></i>");
                         }

@@ -125,7 +125,7 @@ class AgendarController extends BaseController
                     $imagen = '';
                 }
 
-                $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo;
+                $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
                 if($clase->color_etiqueta){
                     $etiqueta=$clase->color_etiqueta;
@@ -190,7 +190,7 @@ class AgendarController extends BaseController
                     $imagen = '';
                 }
 
-                $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo;
+                $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
                 $fecha_inicio = $dt->toDateString();
                 $fecha_final = $df->toDateString();
@@ -275,7 +275,7 @@ class AgendarController extends BaseController
                     $imagen = '';
                 }
 
-                $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo;
+                $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
         		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id);
 
@@ -317,7 +317,7 @@ class AgendarController extends BaseController
                     $imagen = '';
                 }
 
-                $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo;
+                $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id);
 
@@ -399,7 +399,7 @@ class AgendarController extends BaseController
                     $imagen = '';
                 }
 
-                $id=$instructor."!".$descripcion."!".$imagen."!".$sexo;
+                $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
                 $arrayCitas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/citas/operaciones/".$cita->id);
 
