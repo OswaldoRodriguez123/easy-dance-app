@@ -3529,6 +3529,7 @@ class ClaseGrupalController extends BaseController {
         $asistencia_roja = 6;
 
         $array = array();
+        $array_inasistencia = array();
 
         foreach($alumnos as $alumno){
 
@@ -3575,11 +3576,12 @@ class ClaseGrupalController extends BaseController {
             }
             else if($semanas >= $asistencia_amarilla){
                 $array[] = $alumno;
+                $array_inasistencia[$alumno->id] = $semanas;
             }
 
         }
 
-        return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array]);
+        return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array, 'inasistencias' => $array_inasistencia]);
 
     }
 
