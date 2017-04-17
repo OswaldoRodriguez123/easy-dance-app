@@ -583,8 +583,9 @@
 
                             var check = calEvent.url
                             var tmp = check.split("!"); 
+                            var title = calEvent.title
 
-                            if(!tmp[1]){
+                            if(title != 'CANCELADA'){
 
                                 $('#fecha_inicio').val(calEvent.start);
                                 var token = $('input:hidden[name=_token]').val();

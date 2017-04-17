@@ -145,7 +145,7 @@ class AgendarController extends BaseController
 
                     $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
                         ->where('fecha_final', '>=', $fecha)
-                        ->where('tipo_id', $id)
+                        ->where('tipo_id', $clase->id)
                         ->where('tipo', 1)
                     ->first();
 
@@ -155,7 +155,7 @@ class AgendarController extends BaseController
                     }else{
                         if($horario_bloqueado->boolean_mostrar == 1)
                         {
-                            $arrayClases[]=array("id"=>$id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
+                            $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
                          }
                     }
     				
@@ -206,7 +206,7 @@ class AgendarController extends BaseController
 
                     $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
                         ->where('fecha_final', '>=', $fecha)
-                        ->where('tipo_id', $id)
+                        ->where('tipo_id', $clase->id)
                         ->where('tipo', 1)
                     ->first();
 
@@ -216,7 +216,7 @@ class AgendarController extends BaseController
                     }else{
                         if($horario_bloqueado->boolean_mostrar == 1)
                         {
-                            $arrayClases[]=array("id"=>$id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
+                            $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
                          }
                     }
                     $c++;
@@ -277,14 +277,14 @@ class AgendarController extends BaseController
 
                 $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo;
 
-        		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/agenda/".$clasepersonalizada->id);
+        		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id);
 
     			$c=0;
     			
     			while($dt->timestamp<$df->timestamp){
     				$fecha="";
     				$fecha=$dt->addWeek()->toDateString();
-    				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/agenda/".$clasepersonalizada->id);
+    				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id);
     				$c++;
     			}
 
@@ -319,14 +319,14 @@ class AgendarController extends BaseController
 
                 $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo;
 
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/agenda/".$clasepersonalizada->id);
+                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id);
 
                 $c=0;
                 
                 while($dt->timestamp<$df->timestamp){
                     $fecha="";
                     $fecha=$dt->addWeek()->toDateString();
-                    $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/agenda/".$clasepersonalizada->id);
+                    $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id);
                     $c++;
                 }
 
