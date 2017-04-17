@@ -230,7 +230,7 @@ class AgendarController extends BaseController
     				->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
                     ->join('config_especialidades', 'config_especialidades.id', '=', 'inscripcion_clase_personalizada.especialidad_id')
                     ->join('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
-                    ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.*', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id')
+                    ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.*', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
                     ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
@@ -242,7 +242,7 @@ class AgendarController extends BaseController
                     ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_personalizadas.especialidad_id')
                     ->join('instructores', 'instructores.id', '=', 'horarios_clases_personalizadas.instructor_id')
                     ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
-                    ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id')
+                    ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
                     ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                     ->where('clases_personalizadas.deleted_at', '=', null)
                     ->where('inscripcion_clase_personalizada.estatus', '=', 1)
@@ -266,6 +266,7 @@ class AgendarController extends BaseController
                 $especialidad = $clasepersonalizada->especialidad;    
                 $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
                 $instructor_usuario = User::where('usuario_id',$clasepersonalizada->instructor_id)->where('usuario_tipo',3)->first(); 
+                $sexo = $clasepersonalizada->sexo;
                 
 
                 if($instructor_usuario->imagen){
@@ -308,6 +309,7 @@ class AgendarController extends BaseController
                 $especialidad = $clasepersonalizada->especialidad;    
                 $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
                 $instructor_usuario = User::where('usuario_id',$clasepersonalizada->instructor_id)->where('usuario_tipo',3)->first(); 
+                $sexo = $clasepersonalizada->sexo;
                 
                 if($instructor_usuario->imagen){
                     $imagen = $instructor_usuario->imagen;
@@ -365,7 +367,7 @@ class AgendarController extends BaseController
             $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
                 ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
                 ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-                ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta', 'instructores.id as instructor_id')
+                ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta', 'instructores.id as instructor_id', 'instructores.sexo')
                 ->where('citas.academia_id','=', Auth::user()->academia_id)
                 ->where('citas.estatus','=','1')
                 ->where('citas.boolean_mostrar','=','2')
@@ -387,6 +389,7 @@ class AgendarController extends BaseController
                 $etiqueta=$cita->color_etiqueta;
                 $etiqueta=$cita->color_etiqueta;
                 $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
+                $sexo = $cita->sexo;
 
                 $instructor_usuario = User::where('usuario_id',$cita->instructor_id)->where('usuario_tipo',3)->first(); 
                 
