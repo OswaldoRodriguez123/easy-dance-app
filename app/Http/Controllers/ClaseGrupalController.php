@@ -3560,14 +3560,14 @@ class ClaseGrupalController extends BaseController {
 
             while($fecha_clase < Carbon::now())
             {
-                $semanas++;
                 $fecha_clase->addWeek();
+                $semanas++;
             }
 
             while($fecha_horario < Carbon::now())
             {
-                $semanas++;
                 $fecha_horario->addWeek();
+                $semanas++;
             }
             
             if($semanas >= $asistencia_roja){
