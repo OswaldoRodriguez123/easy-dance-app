@@ -3533,14 +3533,12 @@ class ClaseGrupalController extends BaseController {
         foreach($alumnos as $alumno){
 
             $semanas = 0;
-
-            $tipo_clase = array(1,2);
                     
-            $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+            $ultima_asistencia_clase = Asistencia::where('tipo',1)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
-            if($ultima_asistencia){
+            if($ultima_asistencia_clase){
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia->fecha);
+                $fecha_clase = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
 
             }else{
 
@@ -3548,10 +3546,28 @@ class ClaseGrupalController extends BaseController {
                 continue;
             }
 
-            while($fecha < Carbon::now())
+            $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
+            if($ultima_asistencia_horario){
+
+                $fecha_horario = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+
+            }else{
+
+                // $array[] = $alumno;
+                continue;
+            }
+
+            while($fecha_clase < Carbon::now())
             {
                 $semanas++;
-                $fecha->addWeek();
+                $fecha_clase->addWeek();
+            }
+
+            while($fecha_horario < Carbon::now())
+            {
+                $semanas++;
+                $fecha_horario->addWeek();
             }
             
             if($semanas >= $asistencia_roja){
