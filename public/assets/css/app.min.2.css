@@ -1554,6 +1554,11 @@ html.ismobile .page-loader {
   right: 12px;
 }
 
+#fc-tipo {
+  position: absolute;
+  bottom: 10px;
+}
+
 .fc {
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);

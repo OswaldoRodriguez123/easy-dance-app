@@ -106,7 +106,10 @@
                 <div class="container">
 
                 <?php //dd($talleres[0]->nombre); ?>
-<div id="calendar"></div>
+
+
+                <div id="calendar"></div>
+                <input type="hidden" id="tipo" name="tipo" value="0" />
                     
                     <!-- Add event -->
                     <div class="modal fade" id="addNew-event" data-backdrop="static" data-keyboard="false">
@@ -431,7 +434,8 @@
                             allDay: false,
                             backgroundColor:'{{$taller['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$taller['url']}}'
+                            url: '{{url('/')}}{{$taller['url']}}',
+                            tipo: 4
                             },
                         @endforeach
 
@@ -442,6 +446,7 @@
                                 $fecha_end=explode('-',$clase['fecha_final']);
                                 $hora_start=explode(':',$clase['hora_inicio']);
                                 $hora_end=explode(':',$clase['hora_final']);
+
 
                                 if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
                                     $etiqueta = $clase['etiqueta'];
@@ -461,7 +466,8 @@
                             allDay: false,
                             backgroundColor:'{{$etiqueta}}',
                             className: '{{$actividad}}',
-                            url: '{{$url}}'
+                            url: '{{$url}}',
+                            tipo: 1
                             },
                         @endforeach
 
@@ -480,7 +486,8 @@
                             allDay: false,
                             backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$clasepersonalizada['url']}}'
+                            url: '{{url('/')}}{{$clasepersonalizada['url']}}',
+                            tipo: 2
                             },
                         @endforeach
 
@@ -499,7 +506,8 @@
                             allDay: false,
                             backgroundColor:'{{$fiesta['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$fiesta['url']}}'
+                            url: '{{url('/')}}{{$fiesta['url']}}',
+                            tipo: 3
                             },
                         @endforeach
 
@@ -518,7 +526,8 @@
                             allDay: false,
                             backgroundColor:'{{$cita['etiqueta']}}',
                             className: 'actividad',
-                            url: '{{url('/')}}{{$cita['url']}}'
+                            url: '{{url('/')}}{{$cita['url']}}',
+                            tipo: 5
                             },
                         @endforeach
 
@@ -538,6 +547,7 @@
                                 backgroundColor:'{{$transmision['etiqueta']}}',
                                 className: 'actividad',
                                 url: '{{url('/')}}/agendar/transmisiones/operaciones/{{$transmision['id']}}',
+                                tipo: 6
 
                             },
                         @endforeach
@@ -762,11 +772,13 @@
                         $(eventElement).attr('data-container','body');
                         $(eventElement).attr('data-html','true');
                         $(eventElement).attr('title','');
+
+                        tipo = $('#tipo').val();
+                        if(tipo != 0){
+                            return tipo.indexOf(event.tipo) >= 0
+                        }
+
                     },
-                    // eventMouseover: function(event, element) {
-                    //     $(this).tooltip({title:event.description, html: true, container: "body"});
-                    //     $(this).tooltip('show');
-                    // }
                 });
 
                 //Create and ddd Action button with dropdown in Calendar header. 
@@ -795,6 +807,37 @@
 
 
                 cId.find('.fc-toolbar').append(actionMenu);
+
+                var actionMenu = '<ul class="actions actions-alt" id="fc-tipo">' +
+                                    '<li class="dropdown">' +
+                                        '<a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>' +
+                                        '<ul class="dropdown-menu dropdown-menu-right">' +
+                                            '<li>' +
+                                                '<a class="pointer active" data-tipo="0">Todos</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="1">Clases Grupales</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="2">Clases Personalizadas</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="3">Fiestas y Eventos</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="4">Talleres</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="5">Citas</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="6">Transmisiones</a>' +
+                                            '</li>' +
+                                        '</ul>' +
+                                    '</div>' +
+                                '</li>';
+
+                cId.find('.fc-clear').after(actionMenu);
                 
                 //Event Tag Selector
                 (function(){
@@ -837,6 +880,18 @@
                     $('#fc-actions li').removeClass('active');
                     $(this).parent().addClass('active');
                     cId.fullCalendar('changeView', dataView);  
+                });
+
+                $('body').on('click', '#fc-tipo', function(e){
+                    e.preventDefault();
+                });
+
+
+                $(".dropdown-menu a").unbind('click').bind('click', function(e) {
+                    tipo = $(this).data('tipo')
+                    $('#tipo').val(tipo)
+                    cId.fullCalendar('rerenderEvents');
+                    $('.dropdown').removeClass('open')
                 });
 
 
