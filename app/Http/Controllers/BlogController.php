@@ -457,7 +457,23 @@ class BlogController extends BaseController {
 
 		}
 
-    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total]);
+        $recientes = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+            ->select('entradas_blog.*', 'bloggers.nombre')
+            ->where('entradas_blog.academia_id', $id)
+            ->orderBy('entradas_blog.created_at', 'desc')
+            ->where('entradas_blog.boolean_mostrar', 1)
+            ->limit(4)
+        ->get();
+
+        $populares = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+            ->select('entradas_blog.*', 'bloggers.nombre')
+            ->where('entradas_blog.academia_id', $id)
+            ->orderBy('entradas_blog.cantidad_visitas', 'desc')
+            ->where('entradas_blog.boolean_mostrar', 1)
+            ->limit(4)
+        ->get();
+
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'recientes' => $recientes, 'populares' => $populares]);
 	    
  	}
 
