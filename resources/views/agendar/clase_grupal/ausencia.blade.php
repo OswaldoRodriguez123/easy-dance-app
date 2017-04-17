@@ -76,7 +76,7 @@
                                     <td class="text-center disabled">{{$alumno->apellido}}</td>
                                     <td class="text-center disabled">{{$alumno->celular}}</td>
                                     <td class="text-center disabled"><a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-15"></i></a></td>
-                                    <td class="text-center disabled"><span style="display:none">{{inasistencias[$id]}}</span></td>
+                                    <td class="text-center disabled"><span style="display:none">{{$inasistencias[$id]}}</span></td>
                                 </tr>
                             @endforeach 
                                                            
