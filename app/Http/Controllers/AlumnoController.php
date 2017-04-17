@@ -457,14 +457,13 @@ class AlumnoController extends BaseController
 
             // $clases_grupales = InscripcionClaseGrupal::where('alumno_id', $id)->get();
 
-            $clases_grupales = DB::table('alumnos')
-                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            $clases_grupales = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.razon_entrega',  'inscripcion_clase_grupal.talla_franela')
                 ->where('inscripcion_clase_grupal.alumno_id', $id)
-                ->where('inscripcion_clase_grupal.deleted_at', null)
+                ->where('clases_grupales.deleted_at', null)
             ->get();
 
             $array_descripcion = array();
@@ -480,10 +479,8 @@ class AlumnoController extends BaseController
             $subtotal = 0;
             $impuesto = 0;
 
-            $item_factura = DB::table('items_factura_proforma')
-            ->select('items_factura_proforma.*')
-            ->where('items_factura_proforma.alumno_id', '=', $id)
-            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+            $item_factura =ItemsFacturaProforma::where('items_factura_proforma.alumno_id', '=', $id)
+                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
             ->get();
 
             foreach($item_factura as $items_factura){
@@ -492,14 +489,12 @@ class AlumnoController extends BaseController
                     
             }
 
-            $perfil = DB::table('perfil_evaluativo')
-                ->join('alumnos', 'perfil_evaluativo.usuario_id', '=', 'alumnos.id')
+            $perfil = PerfilEvaluativo::join('alumnos', 'perfil_evaluativo.usuario_id', '=', 'alumnos.id')
                 ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
                 ->where('alumnos.id', $id)
             ->first();
 
-            $usuario = DB::table('users')
-                ->join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
+            $usuario = User::join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
                 ->select('users.imagen')
                 ->where('alumnos.id', $id)
             ->first();

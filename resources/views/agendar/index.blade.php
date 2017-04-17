@@ -639,9 +639,28 @@
                                 var instructor = tmp2[1]
                                 var especialidad = tmp[1]
                                 var nivel = tmp[2]
+                                var imagen_instructor = tmp[3]
+                                var sexo = tmp[4]
+
+                                if(imagen_instructor){
+                                    imagen = '/assets/uploads/usuario/'+imagen_instructor
+
+                                }else{
+                                    if(sexo == 'F'){
+                                        imagen = '/assets/img/Mujer.jpg'
+                                    }else{
+                                        imagen = '/assets/img/Hombre.jpg'
+                                    }
+                                }
+
+                                if(sexo == 'F'){
+                                    sexo_instructor = 'Instructora:'
+                                }else{
+                                    sexo_instructor = 'Instructor:'
+                                }
 
 
-                                var contenido = 'Instructor: ' + instructor + '<br>'
+                                var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                                 contenido += 'Especialidad: ' + especialidad + '<br>'
                                 contenido += 'Nivel: ' + nivel + '<br>'
 
@@ -666,8 +685,28 @@
                             var especialidad = tmp[1]
                             var nombre = tmp[2]
 
+                            var imagen_instructor = tmp[3]
+                            var sexo = tmp[4]
 
-                            var contenido = 'Instructor: ' + instructor + '<br>'
+                            if(imagen_instructor){
+                                imagen = '/assets/uploads/usuario/'+imagen_instructor
+
+                            }else{
+                                if(sexo == 'F'){
+                                    imagen = '/assets/img/Mujer.jpg'
+                                }else{
+                                    imagen = '/assets/img/Hombre.jpg'
+                                }
+                            }
+
+                            if(sexo == 'F'){
+                                sexo_instructor = 'Instructora:'
+                            }else{
+                                sexo_instructor = 'Instructor:'
+                            }
+
+
+                            var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                             contenido += 'Especialidad: ' + especialidad + '<br>'
                             contenido += 'Nombre: ' + nombre + '<br>'
 
@@ -685,21 +724,49 @@
                             var tmp2 = tmp[0].split('-')
                             var instructor = tmp2[1]
                             var tipo = tmp[1]
+                            var imagen_instructor = tmp[2]
+                            var sexo = tmp[3]
 
-                            var contenido = 'Instructor: ' + instructor + '<br>'
+                            if(imagen_instructor){
+                                imagen = '/assets/uploads/usuario/'+imagen_instructor
+
+                            }else{
+                                if(sexo == 'F'){
+                                    imagen = '/assets/img/Mujer.jpg'
+                                }else{
+                                    imagen = '/assets/img/Hombre.jpg'
+                                }
+                            }
+
+                            if(sexo == 'F'){
+                                sexo_instructor = 'Instructora:'
+                            }else{
+                                sexo_instructor = 'Instructor:'
+                            }
+
+                            var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                             contenido += 'Tipo: ' + tipo + '<br>'
 
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-calendar-check'></i>");
                         }
+
+                        // $(eventElement).tooltip({
+                        //     title: 'asd'
+                        // })
 
                         $(eventElement).attr('data-trigger','hover');
                         $(eventElement).attr('data-toggle','popover');
                         $(eventElement).attr('data-placement','top');
                         $(eventElement).attr('data-content','<p class="c-negro">'+contenido+'</p>');
                         $(eventElement).attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+                        $(eventElement).attr('data-container','body');
                         $(eventElement).attr('data-html','true');
                         $(eventElement).attr('title','');
                     },
+                    // eventMouseover: function(event, element) {
+                    //     $(this).tooltip({title:event.description, html: true, container: "body"});
+                    //     $(this).tooltip('show');
+                    // }
                 });
 
                 //Create and ddd Action button with dropdown in Calendar header. 
@@ -794,6 +861,7 @@
                 $('.disabled').attr('data-placement','top');
                 $('.disabled').attr('data-content','<p class="c-negro">Esta clase esta vencida</p>');
                 $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+                $('.disabled').attr('data-container','body');
                 $('.disabled').attr('data-html','true');
                 $('.disabled').attr('title','');
 
@@ -802,6 +870,10 @@
         
 
             });   
+
+            $('body').click(function() {
+                $('[data-toggle="popover"]').popover(); 
+            });
 
                   
         </script>

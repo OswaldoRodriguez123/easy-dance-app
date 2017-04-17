@@ -124,17 +124,10 @@ Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enh
 //BLOG
 
 Route::get('blog', 'BlogController@index');
-Route::get('blog/publicar', 'BlogController@publicar');
-Route::post('blog/publicar', 'BlogController@store');
 Route::get('blog/entrada/{id}', 'BlogController@entrada');
 Route::get('blog/categoria/{id}', 'BlogController@categoria');
 Route::get('blog/entradas/{id}', 'BlogController@entradas_por_autor');
 Route::get('blog/directorio', 'BlogController@directorio');
-
-//LIDERES EN ACCION
-
-Route::get('lideres-en-accion','LiderController@index');
-Route::get('lideres-en-accion/empezar','LiderController@empezar');
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
@@ -1061,7 +1054,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::get('/invitar', 'EmbajadorController@index');
 			Route::post('/invitar', 'EmbajadorController@invitar');	
-			Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');		
+			Route::get('/invitar/enhorabuena', 'EmbajadorController@enhorabuena');	
+
+			//LIDERES EN ACCION
+
+			Route::get('lideres-en-accion','LiderController@index');
+			Route::get('lideres-en-accion/empezar','LiderController@empezar');	
 
 		});//END MIDDLEWARE ALUMNO
 
@@ -1131,6 +1129,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
 			Route::post('agendar/clases-grupales/actualizar-cancelacion', 'ClaseGrupalController@update_cancelacion');
 			Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
+
+			//BLOG
+
+			Route::get('blog/publicar', 'BlogController@publicar');
+			Route::post('blog/publicar', 'BlogController@store');
 		
 
 		});//END MIDDLEWARE INSTRUCTOR
