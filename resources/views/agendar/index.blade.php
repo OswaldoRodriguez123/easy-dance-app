@@ -685,7 +685,7 @@
                                 var tmp = check.split("!");
 
                                 if(tmp[1]){
-                                     var contenido = tmp[1].substr(0, 30)
+                                     var contenido = tmp[1].substr(0, 50) + '...'
                                  }else{
                                     contenido = ''
                                  }

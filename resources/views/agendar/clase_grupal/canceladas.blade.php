@@ -954,9 +954,9 @@
        });
     });
 
-      $('html,body').animate({
-            scrollTop: $("#id-"+elemento).offset().top-90,
-      }, 1500);          
+      // $('html,body').animate({
+      //       scrollTop: $("#id-"+elemento).offset().top-90,
+      // }, 1500);          
 
   }
 
