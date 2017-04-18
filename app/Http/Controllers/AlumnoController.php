@@ -57,14 +57,7 @@ class AlumnoController extends BaseController
     
     public function principal()
 	{
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
-            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-        ->get();
-
+        
         $alumnoc = DB::table('users')
             ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
             ->select('alumnos.id as id')
@@ -74,24 +67,49 @@ class AlumnoController extends BaseController
             ->where('users.confirmation_token', '!=', null)
         ->get();
 
-        $collection=collect($alumnod);
-        $grouped = $collection->groupBy('id');     
-        $deuda = $grouped->toArray();
-
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
-
         $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->where('tipo', 1)->orderBy('nombre', 'asc')->get();
 
         $array = array();
+        $in = array(2,4);
 
         foreach($alumnos as $alumno){
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('alumno_id','=',$alumno->id)
+            ->sum('importe_neto');
+
+            $activacion = User::where('usuario_id', $alumno->id)
+                ->whereIn('usuario_tipo', $in)
+                ->where('confirmation_token', '!=', null)
+            ->first();
 
             $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
+
+            $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$in)->first();
+
+            if($usuario){
+
+              if($usuario->imagen){
+                $imagen = $usuario->imagen;
+              }else{
+                $imagen = '';
+              }
+
+            }else{
+                $imagen = '';
+            }
+
+            if($activacion){
+                $activacion = 1;
+            }else{
+                $activacion = 0;
+            }
             
+            $alumno_array['activacion']=$activacion;
+            $alumno_array['deuda']=$deuda;
+            $alumno_array['imagen']=$imagen;
             $alumno_array['edad']=$edad;
             $array[$alumno->id] = $alumno_array;
 

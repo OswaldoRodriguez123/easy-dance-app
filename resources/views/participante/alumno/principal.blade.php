@@ -119,14 +119,45 @@
                             <tbody>
 
                             @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno['id']; ?>
+                                <?php $id = $alumno['id']; 
+
+                                    $contenido = '';
+
+                                    if($alumno['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
+
+                                    }else{
+                                        if($alumno['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
+
+
+                                    $contenido = '<p class="c-negro">' .
+
+                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
+
+                                    'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
+                                    'Número Móvil: ' . $alumno['celular'] . '<br>'.
+                                    'Correo Electrónico: ' . $alumno['correo'] . '<br>'.
+                                    'Edad: ' . $alumno['edad'] . '<br>'.
+
+
+
+                                    '</p>';
+                    
+                                    
+
+                                ?>
                                 <!-- can('view-alumnos', $alumno) -->
                                 @if($alumno['deleted_at'] == null)
-                                    <tr id="row_{{$id}}" class="seleccion" data-tipo = "1">
+                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion" data-tipo = "1">
                                 @else
                                     <tr id="row_{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
                                 @endif
-                                    <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa"> @if($alumno['activacion']) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                     <td class="text-center previa">
                                         @if($alumno['edad'] >= 18)
@@ -154,7 +185,7 @@
 
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center previa">
-                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
+                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
                                     </td>
                                     <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
