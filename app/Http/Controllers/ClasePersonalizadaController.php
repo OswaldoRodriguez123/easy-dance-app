@@ -1200,7 +1200,6 @@ class ClasePersonalizadaController extends BaseController {
     public function destroy($id)
     {
         $clasepersonalizada = InscripcionClasePersonalizada::find($id);
-        $horarios = HorarioClasePersonalizada::where('clase_personalizada_id',$id)->delete();
         
         if($clasepersonalizada->delete()){
             return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
