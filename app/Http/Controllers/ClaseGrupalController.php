@@ -3790,6 +3790,7 @@ class ClaseGrupalController extends BaseController {
                             $total_inasistencia = $total_inasistencia + 1;
 
                         }
+                        
                         $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
                         $j = $j + 1;
                        
@@ -3823,6 +3824,7 @@ class ClaseGrupalController extends BaseController {
                         if(!$horario_bloqueado){
 
                             $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
+
                             if($asistencia){
                                 $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                                 $hora = $asistencia->hora;

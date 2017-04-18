@@ -52,8 +52,8 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="id" data-type="numeric">Identificación</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="fecha" data-type="numeric">Fecha</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="porcentaje_descuento">Porcentaje de Descuento</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -63,7 +63,7 @@
                             @foreach ($promocion as $promociones)
                                 <?php $id = $promociones['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$promociones['id']}}</td> 
+                                    <td class="text-center previa">{{$promociones['fecha_inicio']}} / {{$promociones['fecha_final']}}</td> 
                                     <td class="text-center previa">{{$promociones['nombre']}}</td>
                                     <td class="text-center previa">{{$promociones['porcentaje_descuento']}} </td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
