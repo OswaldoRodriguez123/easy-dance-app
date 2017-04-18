@@ -1152,42 +1152,42 @@
                                                    </span>
                                                 </a>
 
-                                                  <div class="dropup">
-                                                  <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
-                                                      <li class="hidden-xs">
-                                                          <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
-                                                      </li>
-
-                                                      @if($alumno['activacion']) 
-                                                      
+                                                  <div class="dropup" dropdown-append-to-body>
+                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
                                                         <li class="hidden-xs">
-                                                          <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
+                                                            <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
                                                         </li>
 
-                                                      @endif
+                                                        @if($alumno['activacion']) 
+                                                        
+                                                          <li class="hidden-xs">
+                                                            <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
+                                                          </li>
 
-                                                      <li class="hidden-xs">
-                                                          <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
-                                                      </li>
+                                                        @endif
 
-                                                      <li class="hidden-xs">
-                                                          <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
-                                                      </li>
+                                                        <li class="hidden-xs">
+                                                            <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
+                                                        </li>
 
-                                                      <li class="hidden-xs">
-                                                          <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
-                                                      </li>
+                                                        <li class="hidden-xs">
+                                                            <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
+                                                        </li>
 
-                                                      <li class="hidden-xs">
-                                                          <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
-                                                      </li>
+                                                        <li class="hidden-xs">
+                                                            <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
+                                                        </li>
 
-                                                      <li class="hidden-xs">
-                                                          <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
-                                                      </li>
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                        </li>
 
 
-                                                  </ul>
+                                                    </ul>
                                                 </div>
                                             </li>
                                         </ul>
@@ -1365,7 +1365,7 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
           // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
         },
         language: {
@@ -2548,16 +2548,6 @@
       $('#modalError').modal('hide');
      }
 
-    $( ".dropdown-toggle" ).hover(function() {
-
-      if($('.dropdown').hasClass('open')){
-
-      }else{
-        $( this ).click();
-      }
-     
-    });
-
     $('.table-responsive').on('show.bs.dropdown', function () {
       $('.table-responsive').css( "overflow", "inherit" );
     });
@@ -2703,6 +2693,17 @@
 
         }
 
+    });
+
+
+    $( ".dropdown-toggle" ).hover(function() {
+
+      if($('.dropdown').hasClass('open')){
+
+      }else{
+        $( this ).click();
+      }
+     
     });
 
     
