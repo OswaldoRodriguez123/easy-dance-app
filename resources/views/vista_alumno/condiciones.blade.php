@@ -187,13 +187,14 @@
 
                                       <p>A través de nuestra plataforma web cada participante podrá disfrutar de las todas las ventajas y beneficios que nuestra academia brinda de manera gratuita, siempre que el alumno cumpla con todas las normas académicas y administrativas recientes o por crearse en "Tu Clase de Baile", todo el material de imagen, videos, recreación, apoyo académico, productos, promociones, citas, valoraciones, campañas o cualquier otro ítem habilitado en la plataforma, tendrán un costo adicional al paquete seleccionado que lo incluya cuando el alumno incumpla con los protocolos y normativas establecidas y deberá pagar las cuotas indicadas por la institución para hacerse acreedor de los servicios o productos perdidos, los montos podrán variar según lo disponga el departamento administrativo. "Tu Clase de Baile" no se encuentra en la obligación de reponer productos o servicios perdidos por el alumno debido al incumplimiento de las normas y protocolos institucionales.</p>
 
-                                      <div class="f-18 f-700">28. Consulta</div><br>
 
-                                      <p>Si tiene alguna pregunta o comentario sobre estos términos de servicio, no dude en contactarnos por vía telefónica a los números que aparecen en nuestro sitio web <a href="www.tuclasedebaile.com.co">www.tuclasedebaile.com.co</a></p>
-
-                                      <div class="f-18 f-700">29. Repaso</div><br>
+                                      <div class="f-18 f-700">28. Repaso</div><br>
 
                                       <p>Todo integrante que se vea en la necesidad de reforzar sus conocimientos o prácticas de clases de baile, debido a la carencia de habilidades o por inasistencias recurrente a las clases , el alumno deberá asistir a las actividades  de repaso o tomar clases personalizadas, con el objetivo  de mantener la armonía del aprendizaje grupal , el instructor de planta  o profesor de diagnóstico recomendará dichas actividades según el caso personal de cada integrante, es importante resaltar  que para continuar su avance y certificación por cada nivel , deberá estar avalado por los profesores de la institución , de lo contrario nuestros profesores podrán  solicitar que el integrante repita la nivelación  en los horarios disponibles que la academia al momento posea. </a></p>
+
+                                      <div class="f-18 f-700">29. Consulta</div><br>
+
+                                      <p>Si tiene alguna pregunta o comentario sobre estos términos de servicio, no dude en contactarnos por vía telefónica a los números que aparecen en nuestro sitio web <a href="www.tuclasedebaile.com.co">www.tuclasedebaile.com.co</a></p>
 
                                       </div>
                                     </div>
