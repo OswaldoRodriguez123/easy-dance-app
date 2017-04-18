@@ -146,6 +146,7 @@ class ClaseGrupalController extends BaseController {
                 $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                     ->select('clases_grupales.fecha_inicio')
                     ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                    ->orderBy('inscripcion_clase_grupal.created_at', 'desc')
                 ->first();
 
                 if($clase_grupal)
@@ -3581,6 +3582,7 @@ class ClaseGrupalController extends BaseController {
             $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->select('clases_grupales.fecha_inicio')
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                ->orderBy('inscripcion_clase_grupal.created_at', 'desc')
             ->first();
 
             if($clase_grupal)
@@ -3660,8 +3662,8 @@ class ClaseGrupalController extends BaseController {
 
         foreach($inscripciones as $inscripcion_clase_grupal){
 
-            $clase_grupal = ClaseGrupal::Leftjoin('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-              ->Leftjoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            $clase_grupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+              ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
               ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
               ->where('clases_grupales.id',$inscripcion_clase_grupal->clase_grupal_id)
             ->first();
