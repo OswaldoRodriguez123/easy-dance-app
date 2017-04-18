@@ -62,11 +62,12 @@
 
                             @foreach ($promocion as $promociones)
                                 <?php $id = $promociones['id']; ?>
-                                <tr id="row_{{$id}}" class="seleccion">
+                                <tr id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$promociones['fecha_inicio']}} / {{$promociones['fecha_final']}}</td> 
                                     <td class="text-center previa">{{$promociones['nombre']}}</td>
                                     <td class="text-center previa">{{$promociones['porcentaje_descuento']}} </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <!-- <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td> -->
                                 </tr>
                             @endforeach  
                                                            
@@ -96,6 +97,7 @@
 
         route_detalle="{{url('/')}}/especiales/promociones/detalle";
         route_operacion="{{url('/')}}/especiales/promociones/operaciones";
+        route_eliminar="{{url('/')}}/especiales/promociones/eliminar/";
 
         $(document).ready(function(){
 
@@ -172,6 +174,84 @@
             var route =route_operacion+"/"+this.id;
             window.location=route;
          });
+
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+
+                var id = $(this).closest('tr').attr('id');
+                // var temp = row.split('_');
+                // var id = temp[1];
+                element = this;
+
+                swal({   
+                    title: "Desea eliminar la promoción?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
+          }
+                });
+            });
+      
+        function eliminar(id, element){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}";
+         procesando();
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+
+                        swal("Exito!","La promoción ha sido eliminada!","success");
+                        finprocesado();
+                        
+                        }
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      }
 
     </script>
 @stop
