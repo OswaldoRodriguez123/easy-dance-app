@@ -43,19 +43,17 @@
                              <span class="f-22">Cada participante inscrito en la academia podrá invitar a participar a sus amistades y familiares a través del código de referencia que se le asigna de manera automática, por cada persona inscrita a través del código acumulará <b>25.000</b> puntos.</span>
 
                             <div class="checkbox bottom-align-text">
-                              <label><input type="checkbox" value="Referir a un amigo">asd</label>
+                                <div class="toggle-switch p-l-10 m-l-10" data-ts-color="purple">
+                                    <input type="hidden" name="referir">
+                                    <span class="p-r-10 f-700 f-16">No</span><input id="referir" type="checkbox" hidden="hidden" value="Referir a un amigo">
+                                    <label for="referir" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                </div>
                             </div>
 
                         </div>
 
-                        <div class="col-sm-12 opaco-0-8 m-t-10 p-10" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                        <div class="clearfix"></div>
 
-                            <span class="f-25"><i class="icon_a-clase-personalizada"></i> <span class="f-700">Referir a un amigo</span></span><br>
-
-                             <span class="f-22">Cada participante inscrito en la academia podrá invitar a participar a sus amistades y familiares a través del código de referencia que se le asigna de manera automática, por cada persona inscrita a través del código acumulará <b>25.000</b> puntos.</span>
-
-                         
-                        </div>
 
                     </div>
                 </div>
@@ -74,6 +72,20 @@
         selected = array();
 
         selected.push($(this).val());
+    });
+
+    $("input:checkbox").on('change', function(){
+        
+        if ($(this).is(":checked")){
+            valor = $(this).val()
+        }else{
+            valor = ''
+        }
+
+        nombre = $(this).attr('id')
+        $('input[name='+nombre+']').val(valor)
+
+        console.log($('input[name='+nombre+']').val())
     });
 
     

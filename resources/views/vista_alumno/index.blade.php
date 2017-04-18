@@ -473,30 +473,12 @@
 
                     </div>
 
-                  <!-- <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1)">
-                        <div style="width:100%; padding:5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1)" class="text-left f-16 f-700">Consultarle al profesor</div>
+                    <div class="clearfix p-b-15"></div>
 
+                    <a href="{{url('/')}}/lideres-en-accion"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_referido.jpg" alt=""></a>
 
+                  
 
-                          <div class="col-sm-12">
-
-                          <div class="clearfix p-b-15"></div>
-                          <div class="text-center">
-                          <i class="icon_a-pagar f-50"></i>
-                          </div>
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
-
-                          </div>
-
-                      <span class="text-center">
-
-                          <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 consulta_instructor" style="width:100%; padding:5px"> </i> Consultar </button> 
-                      </span>
-
-
-                    </div> 
- -->
                   </div>
 
                     <div class="clearfix p-b-15"></div>
@@ -629,7 +611,6 @@
           $.each(enlace, function (index, array) {
 
             if(array.tipo == 1){
-              console.log('entro')
               fecha_inicio = "<p class='f-15 f-700'> Fecha de Inicio : "+array.fecha_inicio+"</p>"
             }else{
               fecha_inicio = ''

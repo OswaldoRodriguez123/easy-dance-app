@@ -161,6 +161,11 @@
                           <div class="f-18 f-700">28. Consulta</div><br>
 
                           <p>Si tiene alguna pregunta o comentario sobre estos términos de servicio, no dude en contactarnos por vía telefónica a los números que aparecen en nuestro sitio web <a href="www.tuclasedebaile.com.co">www.tuclasedebaile.com.co</a></p>
+
+                          <div class="f-18 f-700">29. Repaso</div><br>
+
+                          <p>Todo integrante que se vea en la necesidad de reforzar sus conocimientos o prácticas de clases de baile, debido a la carencia de habilidades o por inasistencias recurrente a las clases , el alumno deberá asistir a las actividades  de repaso o tomar clases personalizadas, con el objetivo  de mantener la armonía del aprendizaje grupal , el instructor de planta  o profesor de diagnóstico recomendará dichas actividades según el caso personal de cada integrante, es importante resaltar  que para continuar su avance y certificación por cada nivel , deberá estar avalado por los profesores de la institución , de lo contrario nuestros profesores podrán  solicitar que el integrante repita la nivelación  en los horarios disponibles que la academia al momento posea. </a></p>
+
                         </div>
                       </div>
 
