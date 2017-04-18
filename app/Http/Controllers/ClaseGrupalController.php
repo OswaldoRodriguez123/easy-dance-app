@@ -170,7 +170,7 @@ class ClaseGrupalController extends BaseController {
 
                     $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
-                    if($ultima_asistencia_horario && $ultima_asistencia_clase){
+                    if($ultima_asistencia_horario OR $ultima_asistencia_clase){
 
                         if($ultima_asistencia_horario){
                             if($ultima_asistencia_clase){
