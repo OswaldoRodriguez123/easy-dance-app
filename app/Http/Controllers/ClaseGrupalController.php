@@ -155,8 +155,8 @@ class ClaseGrupalController extends BaseController {
 
                     if($horario){
 
-                        $fecha_horario = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                        $fecha_clase = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                        $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                        $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
                         $dia_clase = $fecha_clase->dayOfWeek;
                         $dia_horario = $fecha_horario->dayOfWeek;
 
@@ -191,7 +191,7 @@ class ClaseGrupalController extends BaseController {
                             $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
                         }
                     }else{
-                        continue;
+                        $fecha = $fecha_clase;
                     }
 
                     while($fecha <= Carbon::now())
@@ -3590,8 +3590,8 @@ class ClaseGrupalController extends BaseController {
 
                 if($horario){
 
-                    $fecha_horario = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                    $fecha_clase = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                    $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                    $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
                     $dia_clase = $fecha_clase->dayOfWeek;
                     $dia_horario = $fecha_horario->dayOfWeek;
 
@@ -3605,7 +3605,7 @@ class ClaseGrupalController extends BaseController {
 
                 $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
-                if($ultima_asistencia_horario && $ultima_asistencia_clase){
+                if($ultima_asistencia_horario OR $ultima_asistencia_clase){
 
                     if($ultima_asistencia_horario){
                         if($ultima_asistencia_clase){
@@ -3626,7 +3626,7 @@ class ClaseGrupalController extends BaseController {
                         $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
                     }
                 }else{
-                    continue;
+                    $fecha = $fecha_clase;
                 }
 
                 while($fecha <= Carbon::now())
