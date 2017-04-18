@@ -2008,4 +2008,20 @@ a{
     padding-top: 20%;
 }
 
+.password{
+    position: relative;
+}
+
+.password input[type="password"]{
+    padding-right: 30px;
+}
+
+.password #show_password {
+/*    display:none;*/
+/*    right: 15px;*/
+    position: absolute;
+    top: 12px;
+    cursor:pointer;
+}
+
 

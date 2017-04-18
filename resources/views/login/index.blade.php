@@ -32,95 +32,85 @@
         </div>-->
         <div id="formlogin" >
         
-        <div class="lc-block toggled"  style="padding:0px 0px 0px 0px; background: #4E1E43 !important;margin-bottom:10px; vertical-align: top; box-shadow: none;">
-             <img id="imagen" src="{{url('/')}}/assets/img/logo.png" width="200" >
-        </div><div class="clearfix m-b-20"></div>
-        <div class="lc-block toggled" id="l-login" style="margin-top:10px;vertical-align: top;">
-             
-             
-            
-            <!-- <form id="FormLogin"> -->
-            <form  name="agregar" method="POST" action="{{ url('/login') }}" >
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="input-group m-b-30">
-                    <span class="input-group-addon"><i class="zmdi zmdi-account zmdi-hc-2x"></i></span>
-                    <div class="fg-line">
-
-                        <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
-                    </div>
-                </div>
-                
-                <div class="input-group m-b-30">
-                    <span class="input-group-addon"><i class="zmdi zmdi-lock zmdi-hc-2x"></i></span>
-                    <div class="fg-line">
-                        <input type="password" class="form-control" id="password" name="password">
-                    </div>
-                </div>
-                
-                <div class="clearfix"></div>
-                
-<!--                 <div class="col-sm-6">
-                    <div class="checkbox">
-                        <label class="f-14">
-                            <input type="checkbox" value="">
-                            <i class="input-helper"></i>
-                            Recordarme
-                        </label>
-                    </div>
-                </div> -->
-
-
-                <div class="col-sm-6 ">
-
-                    <label class="m-b-30 p-t-5 f-14">
-                        <a href="{{url('/')}}/restablecer" data-block="#l-forget-password">Olvidaste tu contraseña?</a> 
-                    </label>
-
-                </div>
-
-                <div class="col-sm-6 ">
-
-                    <!-- <label class="m-b-30 p-t-5 f-14">
-                        <a href="{{url('/')}}/activar">Deseas activar tu cuenta?</a> 
-                    </label> -->
-
-                    <label class="m-b-30 p-t-5 f-14">
-                        <a href="{{url('/')}}/registro">Crear una cuenta</a> 
-                    </label>
-
-                </div>
-
-                    <!--<ul class="login-navigation">
-                        <li data-block="#l-forget-password" ><a href="">Olvidaste tu contraseña?</a></li>
-                        <li data-block="#l-forget-password" class="bgm-orange">Forgot Password?</li>
-                    </ul>-->
-
-
-                <button type= "submit" class="btn btn-login bgm-blue btn-float opaco-0-8"><i class="zmdi zmdi-arrow-forward"></i></button>
-                @if (count($errors) > 0)
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li class = "help-block error-span c-youtube">{!! $error !!}</li>
-                        @endforeach
-                    </ul>
-                @endif 
-
-                <br>
-
-                @if(session('alert_confirmacion'))
-                    <ul>
-                        <li class = "help-block error-span c-youtube">{{ session('alert_confirmacion') }}</li>
-                    </ul>
-                @endif  
-            
-
-
-            </form>
-
+            <div class="lc-block toggled"  style="padding:0px 0px 0px 0px; background: #4E1E43 !important;margin-bottom:10px; vertical-align: top; box-shadow: none;">
+                 <img id="imagen" src="{{url('/')}}/assets/img/logo.png" width="200" >
             </div>
 
+            <div class="clearfix m-b-20"></div>
+
+            <div class="lc-block toggled" id="l-login" style="margin-top:10px;vertical-align: top;">
+             
+             
+                <form name="agregar" method="POST" action="{{ url('/login') }}" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="input-group m-b-30">
+                        <span class="input-group-addon"><i class="zmdi zmdi-account zmdi-hc-2x"></i></span>
+                        <div class="fg-line">
+
+                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group m-b-30">
+                        <span class="input-group-addon"><i class="zmdi zmdi-lock zmdi-hc-2x"></i></span>
+                        <div class="fg-line password">
+                            <input type="password" class="form-control" id="password" name="password">
+                            <span id="show_password" class="zmdi zmdi-eye f-15"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    
+    <!--                 <div class="col-sm-6">
+                        <div class="checkbox">
+                            <label class="f-14">
+                                <input type="checkbox" value="">
+                                <i class="input-helper"></i>
+                                Recordarme
+                            </label>
+                        </div>
+                    </div> -->
 
 
+                    <div class="col-sm-6 ">
+
+                        <label class="m-b-30 p-t-5 f-14">
+                            <a href="{{url('/')}}/restablecer" data-block="#l-forget-password">Olvidaste tu contraseña?</a> 
+                        </label>
+
+                    </div>
+
+                    <div class="col-sm-6 ">
+
+                        <!-- <label class="m-b-30 p-t-5 f-14">
+                            <a href="{{url('/')}}/activar">Deseas activar tu cuenta?</a> 
+                        </label> -->
+
+                        <label class="m-b-30 p-t-5 f-14">
+                            <a href="{{url('/')}}/registro">Crear una cuenta</a> 
+                        </label>
+
+                    </div>
+
+                    <button type= "submit" class="btn btn-login bgm-blue btn-float opaco-0-8"><i class="zmdi zmdi-arrow-forward"></i></button>
+                    @if (count($errors) > 0)
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class = "help-block error-span c-youtube">{!! $error !!}</li>
+                            @endforeach
+                        </ul>
+                    @endif 
+
+                    <br>
+
+                    @if(session('alert_confirmacion'))
+                        <ul>
+                            <li class = "help-block error-span c-youtube">{{ session('alert_confirmacion') }}</li>
+                        </ul>
+                    @endif  
+                
+                </form>
+            </div>
         </div>
         
 
@@ -281,6 +271,29 @@
     </script>-->
 
          <script type="text/javascript">
+
+            // $("#password").on("keyup",function(){
+            //     if($(this).val()){
+            //         $("#show_password").show();
+            //     }
+            //     else{
+            //         $("#show_password").hide();
+            //     }
+            // });
+
+            $("#show_password").on("click",function(){
+                if($(this).hasClass('zmdi-eye')){
+                    $("#show_password").removeClass('zmdi-eye');
+                    $("#show_password").addClass('zmdi-eye-off');
+                    $("#password").attr('type','text');
+                }
+                else{
+                    $("#show_password").addClass('zmdi-eye');
+                    $("#show_password").removeClass('zmdi-eye-off');
+                    $("#password").attr('type','password');
+                }
+            });
+
             $(document).ready(function(){
                 @if (count($errors) > 0)
                     var animation = 'shake';
