@@ -736,11 +736,11 @@
 
                                 if(array.cliente == 1)
                                 {
-                                    cliente = '<i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                                    cliente = '<span style="display:none">1</span><i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                                     cliente_valor = cliente_valor + 1
                                     total = total + 1
                                 }else{
-                                    cliente = '<i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                                    cliente = '<span style="display:none">0</span><i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Visitante" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                                     nocliente = nocliente + 1
                                     total = total + 1
                                 }
