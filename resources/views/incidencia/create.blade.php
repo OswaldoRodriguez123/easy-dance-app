@@ -29,7 +29,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/incidencias" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Incidencias</a>
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -48,7 +48,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="zmdi zmdi-email f-25" id="id-clase_grupal_id"></i> Sección de Incidencias </span>                                                         
+                            <span class="f-25 c-morado"><i class="zmdi icon_f-incidencias f-25" id="id-clase_grupal_id"></i> Sección de Incidencias </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -170,7 +170,7 @@
 <script type="text/javascript">
 
     route_agregar="{{url('/')}}/incidencias/generar";
-    route_principal="{{url('/')}}/inicio";
+    route_principal="{{url('/')}}/incidencias";
 
   $(document).ready(function(){
 

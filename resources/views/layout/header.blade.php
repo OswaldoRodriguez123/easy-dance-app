@@ -78,7 +78,7 @@
                                             <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
                                         </li>
                                         <li class="hidden-xs">
-                                            <a href="{{url('incidencias/generar')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
+                                            <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
                                         </li>
                                         <li class="hidden-xs">
                                             <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Generar Citas</a>

@@ -929,10 +929,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			//INCIDENCIAS
 
+			Route::get('incidencias', 'IncidenciaController@principal');
 			Route::get('incidencias/generar/{id}', 'IncidenciaController@createconid');
 			Route::get('incidencias/generar', 'IncidenciaController@create');
 			Route::post('incidencias/generar', 'IncidenciaController@store');
-			Route::get('incidencias/detalle/{id}', 'SugerenciaController@planilla');
+			Route::get('incidencias/detalle/{id}', 'IncidenciaController@planilla');
+			Route::delete('incidencias/eliminar/{id}', 'IncidenciaController@destroy');
 
 			//BUSCADOR
 

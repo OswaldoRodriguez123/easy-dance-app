@@ -17,6 +17,15 @@ use DB;
 
 class IncidenciaController extends BaseController {
 
+    public function principal()
+    {
+        $incidencias = Incidencia::join('staff', 'incidencias.staff_id', '=', 'staff.id')
+            ->select('incidencias.*', 'staff.nombre', 'staff.apellido')
+            ->where('incidencias.academia_id' , Auth::user()->academia_id)
+        ->get();
+
+        return view('incidencia.principal')->with('incidencias', $incidencias);
+    }
 
     public function createconid($id)
     {
@@ -83,19 +92,32 @@ class IncidenciaController extends BaseController {
     public function planilla($id)
     {
 
-        $sugerencia = Sugerencia::join('users', 'sugerencias.usuario_id', '=', 'users.id')
-                ->select('sugerencias.*', 'users.nombre as nombre', 'users.apellido as apellido')
-                ->where('sugerencias.id', '=' , $id)
-            ->first();
+        $incidencia = Incidencia::join('staff', 'incidencias.staff_id', '=', 'staff.id')
+            ->where('incidencias.id', '=' , $id)
+        ->first();
 
-        if($sugerencia){
+        if($incidencia){
 
-            return view('sugerencia.planilla')->with(['sugerencia' => $sugerencia]);
+            return view('incidencia.planilla')->with(['incidencia' => $incidencia]);
 
         }else{
            return redirect("inicio"); 
         }
 
+    }
+
+
+    public function destroy($id)
+    {
+
+        $incidencia = Incidencia::find($id);
+        
+        if($incidencia->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno");
     }
 
 
