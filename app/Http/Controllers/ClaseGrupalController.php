@@ -3547,7 +3547,7 @@ class ClaseGrupalController extends BaseController {
                 continue;
             }
 
-            $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+            $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->where('fecha', '>=', $fecha_clase)->first();
 
             if($ultima_asistencia_horario){
 
