@@ -682,7 +682,8 @@
 
                                 var check = event.url
 
-                                var tmp = check.split("!"); 
+                                var tmp = check.split("!");
+                                console.log(tmp)
                 
                                 var contenido = tmp[1].substr(0, 30)
 
