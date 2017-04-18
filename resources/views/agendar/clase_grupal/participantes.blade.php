@@ -1071,7 +1071,6 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="talla" data-order="desc">Talla</th>
                                     <th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Balance E</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -1128,20 +1127,8 @@
                                 @if($alumno['tipo'] == 1)
                                   <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}">
 
-
-                                      @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
-                                        <td class="text-center previa"><i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i></td>
-                                      @else
-                                        @if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0)
-                                          <td class="text-center previa"><i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></td>
-                                        @else
-                                          @if($alumno['boolean_franela'])
-                                            <td class="text-center previa"><i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i></td>
-                                          @else
-                                            <td class="text-center previa"><i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></td>
-                                          @endif
-                                        @endif
-                                      @endif
+                                      
+                                      <td class="text-center previa"></td>
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
@@ -1151,7 +1138,6 @@
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
-                                      <td class="text-center previa">{{$alumno['talla_franela']}}</td>
                                       <td class="text-center previa"><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i></td>
                                       <td class="text-center previa">
                                       <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
@@ -1221,7 +1207,6 @@
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
-                                      <td class="text-center previa"></td>
                                       <td class="text-center previa"></td>
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
                                       <td class="text-center"><i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i></td>
@@ -1560,11 +1545,10 @@
 
                               var rowId=inscripcion.id;
                               var rowNode=t.row.add( [
-                              ''+iconos+'',
+                              '',
                               ''+identificacion+'',
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
-                              ''+talla_franela+'',
                               '<i class="zmdi zmdi-label-alt-outline f-20 p-r-3 c-verde"></i>',
                               ''+deuda+'',
                               ''
