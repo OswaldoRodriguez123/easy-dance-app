@@ -899,6 +899,8 @@ public function PresencialesFiltros(Request $request)
                 }else{
                     $presencial_array['cliente'] = 0;
                 }
+            }else{
+                $presencial_array['cliente'] = 0;
             }
 
             $total_visitantes = $total_visitantes + 1;
