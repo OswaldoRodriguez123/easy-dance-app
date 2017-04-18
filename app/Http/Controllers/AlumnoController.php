@@ -117,7 +117,7 @@ class AlumnoController extends BaseController
 
         $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-		return view('participante.alumno.principal')->with(['alumnos' => $array, 'instructor' => $instructor,'deuda' => $deuda, 'activacion' => $activacion, 'edad' => '']);
+		return view('participante.alumno.principal')->with(['alumnos' => $array, 'instructor' => $instructor]);
 	}
 
 

@@ -38,8 +38,9 @@ class VisitanteController extends BaseController {
 
 
         $visitantes = Visitante::Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
+            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
-            ->select('visitantes_presenciales.*', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'config_como_nos_conociste.nombre as como_se_entero')
+            ->select('visitantes_presenciales.*', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'config_como_nos_conociste.nombre as como_se_entero', 'config_especialidades.nombre as especialidad')
             ->where('visitantes_presenciales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -52,6 +53,10 @@ class VisitanteController extends BaseController {
 
             $collection=collect($visitante);     
             $visitante_array = $collection->toArray();
+
+            if($visitante->especialidad == '' OR $visitante->especialidad == null){
+                $visitante_array['especialidad']='Sin Especificar';
+            }  
 
             $visitante_array['fecha_registro']=$fecha->toDateString();
             $array[$visitante->id] = $visitante_array;

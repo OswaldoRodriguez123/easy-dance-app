@@ -38,6 +38,7 @@ use App\CredencialAlumno;
 use App\CredencialInstructor;
 use App\Staff;
 use App\Visitante;
+use App\User;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -455,31 +456,6 @@ class ClaseGrupalController extends BaseController {
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
             ->get();
 
-            $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('inscripcion_clase_grupal.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
-                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-                ->where('alumnos.deleted_at', '=', null)
-            ->get();
-
-            $collection=collect($alumnod);
-            $grouped = $collection->groupBy('id');     
-            $deuda = $grouped->toArray();
-
-            $alumnoc = DB::table('users')
-                ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-                ->select('alumnos.id as id')
-                ->where('users.academia_id','=', Auth::user()->academia_id)
-                ->where('alumnos.deleted_at', '=', null)
-                ->where('users.usuario_tipo', '=', 2)
-                ->where('users.confirmation_token', '!=', null)
-            ->get();
-
-            $collection=collect($alumnoc);
-            $grouped = $collection->groupBy('id');     
-            $activacion = $grouped->toArray();
-
             $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
                 ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
                 ->where('reservaciones_visitantes.tipo_id', '=', $id)
@@ -577,6 +553,23 @@ class ClaseGrupalController extends BaseController {
                     $credencial->save();
                 }
 
+                $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                    ->where('alumno_id','=',$alumno->id)
+                ->sum('importe_neto');
+
+                $activacion = User::where('usuario_id', $alumno->id)
+                    ->whereIn('usuario_tipo', $tipo_clase)
+                    ->where('confirmation_token', '!=', null)
+                ->first();
+
+                if($activacion){
+                    $activacion = 1;
+                }else{
+                    $activacion = 0;
+                }
+                
+                $alumno_array['activacion']=$activacion;
+                $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
                 $alumno_array['cantidad'] = $credencial->cantidad;
                 $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;

@@ -228,8 +228,33 @@
                             <tbody class="text-center" >
 
                             @foreach ($visitantes as $visitante)
-                                <?php $id = $visitante['id']; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
+                                <?php 
+                                  $id = $visitante['id']; 
+
+                                  if($visitante['sexo'] == 'F'){
+                                      $imagen = '/assets/img/Mujer.jpg';
+                                  }else{
+                                      $imagen = '/assets/img/Hombre.jpg';
+                                  }
+
+                                  $contenido = '';
+
+                                  $contenido = '<p class="c-negro">' .
+
+                                  $visitante['nombre'] . ' ' . $visitante['apellido']. ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
+
+                                  'Número Móvil: ' . $visitante['celular'] . '<br>'.
+                                  'Correo Electrónico: ' . $visitante['correo'] . '<br>'.
+                                  'Especialidad de Interés: ' . $visitante['especialidad'] . '<br>'.
+
+
+
+                                  '</p>';
+
+
+                                ?>
+
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa"> @if($visitante['cliente'])<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
                                     <td class="text-center previa">

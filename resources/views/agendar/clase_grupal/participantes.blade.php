@@ -1080,11 +1080,53 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno['inscripcion_id'];?>
-                                <?php $alumno_id = $alumno['id'];?>
+                                <?php 
+
+                                  $id = $alumno['inscripcion_id'];
+                                  $alumno_id = $alumno['id'];
+
+                                  if($alumno['sexo'] == 'F'){
+                                      $imagen = '/assets/img/Mujer.jpg';
+                                  }else{
+                                      $imagen = '/assets/img/Hombre.jpg';
+                                  }
+
+                                  if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
+
+                                    $camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
+                                  }else{
+                                    if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0){
+                                      $camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
+                                    }else{
+
+                                      if($alumno['boolean_franela']){
+                                        $camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
+                                      }else{
+                                        $camiseta_programacion = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
+                                      }
+
+                                    }
+                                  }
+                                  
+
+                                  $contenido = '';
+
+                                  $contenido = '<p class="c-negro">' .
+
+                                  $alumno['nombre'] . ' ' . $alumno['apellido']. ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
+
+                                  'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
+                                  'Talla: ' . $alumno['talla_franela'] . '<br>'.
+                                  'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
+
+
+
+                                  '</p>';
+
+                                ;?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}">
+                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}">
 
 
                                       @if($alumno['boolean_franela'] && $alumno['boolean_programacion'])
@@ -1112,7 +1154,7 @@
                                       <td class="text-center previa">{{$alumno['talla_franela']}}</td>
                                       <td class="text-center previa"><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i></td>
                                       <td class="text-center previa">
-                                      <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                      <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                       </td>
                                       <td class="text-center"> 
 
@@ -1130,7 +1172,7 @@
                                                           <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
                                                       </li>
 
-                                                      @if(isset($activacion[$alumno_id])) 
+                                                      @if($alumno['activacion']) 
                                                       
                                                         <li class="hidden-xs">
                                                           <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
