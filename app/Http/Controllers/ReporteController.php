@@ -805,9 +805,9 @@ public function PresencialesFiltros(Request $request)
             if($request->tipo){
 
                 $actual = Carbon::now();
-                // $geoip = new GeoIP();
-                // $geoip->setIp($request->ip());
-                // $actual->tz = $geoip->getTimezone();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+                $actual->tz = $geoip->getTimezone();
 
                 if($request->tipo == 1){
                     $start = $actual->toDateString();
@@ -878,6 +878,10 @@ public function PresencialesFiltros(Request $request)
             //     $total_clientes = $total_clientes + 1;
             // }
 
+
+            $collection=collect($presencial);     
+            $presencial_array = $collection->toArray();
+
             if($presencial->alumno_id){
 
                 $inscripcion = InscripcionClaseGrupal::where('alumno_id', $presencial->alumno_id)->first();
@@ -888,8 +892,12 @@ public function PresencialesFiltros(Request $request)
                     {
                         $array_promotor[$inscripcion->instructor_id]['cantidad']++;
                     }
+
+                    $presencial_array['cliente'] = 1;
                     
                     $total_clientes = $total_clientes + 1;
+                }else{
+                    $presencial_array['cliente'] = 0;
                 }
             }
 
@@ -947,9 +955,7 @@ public function PresencialesFiltros(Request $request)
             }else{
                 $cantidad_5++;
             }
-        
-            $collection=collect($presencial);     
-            $presencial_array = $collection->toArray();
+
             if($presencial->especialidad == '' OR $presencial->especialidad == null){
                 $presencial_array['especialidad']='Sin Especificar';
             }   
