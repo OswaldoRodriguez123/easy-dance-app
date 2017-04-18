@@ -467,6 +467,7 @@
                             backgroundColor:'{{$etiqueta}}',
                             className: '{{$actividad}}',
                             url: '{{$url}}',
+                            descripcion: '{{$clase['descripcion']}}',
                             tipo: 1
                             },
                         @endforeach
@@ -603,12 +604,12 @@
                                     }
                                 });
                             }else{
-                                var fecha = tmp[3]
-                                var hora = tmp[4]
-                                var sexo = tmp[6]
-                                var imagen = tmp[5]
-                                var instructor = tmp[2]
-                                var cancelacion = tmp[1]
+                                var fecha = tmp[2]
+                                var hora = tmp[3]
+                                var sexo = tmp[5]
+                                var imagen = tmp[4]
+                                var instructor = tmp[1]
+                                var cancelacion = calEvent.descripcion
                                 var id = tmp[0]
                                 $('#id').val(id);
                                 $('.span_fecha').text(fecha)
@@ -683,8 +684,9 @@
                                 var check = event.url
 
                                 var tmp = check.split("!"); 
-                
                                 var contenido = tmp[1]
+                                console.log(contenido)
+                                var contenido = contenido.substr(0, 30) + "..."
 
                                 eventElement.find(".fc-title").append("  <i class='zmdi zmdi-close-circle f-15'></i>");
                             }
