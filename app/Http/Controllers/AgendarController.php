@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Taller;
 use App\ClaseGrupal;
 use App\ClasePersonalizada;
+use App\InscripcionClasePersonalizadas;
 use App\Cita;
 use App\ConfigClasesPersonalizadas;
 use App\Fiesta;
@@ -226,7 +227,7 @@ class AgendarController extends BaseController
 
             $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
 
-    		$clasespersonalizadas = ClasePersonalizada::join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+    		$clasespersonalizadas = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
     				->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
                     ->join('config_especialidades', 'config_especialidades.id', '=', 'inscripcion_clase_personalizada.especialidad_id')
                     ->join('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
@@ -237,7 +238,7 @@ class AgendarController extends BaseController
                     ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
             ->get();
 
-            $horarios_clasespersonalizadas = ClasePersonalizada::join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+            $horarios_clasespersonalizadas = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
                     ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
                     ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_personalizadas.especialidad_id')
                     ->join('instructores', 'instructores.id', '=', 'horarios_clases_personalizadas.instructor_id')
