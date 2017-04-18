@@ -9,7 +9,7 @@ use App\Http\Requests;
 use App\Taller;
 use App\ClaseGrupal;
 use App\ClasePersonalizada;
-use App\InscripcionClasePersonalizadas;
+use App\InscripcionClasePersonalizada;
 use App\Cita;
 use App\ConfigClasesPersonalizadas;
 use App\Fiesta;
