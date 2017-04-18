@@ -683,9 +683,14 @@
                                 var check = event.url
 
                                 var tmp = check.split("!");
-                                console.log(tmp)
+
+                                if(tmp[1]){
+                                     var contenido = tmp[1].substr(0, 30)
+                                 }else{
+                                    contenido = ''
+                                 }
                 
-                                var contenido = tmp[1].substr(0, 30)
+                               
 
                                 eventElement.find(".fc-title").append("  <i class='zmdi zmdi-close-circle f-15'></i>");
                             }
