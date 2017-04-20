@@ -19,6 +19,9 @@ use App\ConfigNiveles;
 use App\Instructor;
 use App\InscripcionClaseGrupal;
 use App\ItemsFacturaProforma;
+use App\ConfigPagosStaff;
+use App\PagoStaff;
+use App\ConfigServicios;
 use Carbon\Carbon;
 use Validator;
 use DB;
@@ -1390,82 +1393,145 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion->alumno_id = $request->alumno_id;
                 $inscripcion->fecha_pago = $proxima_fecha;
                 $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
+                $inscripcion->costo_inscripcion = $request->costo_inscripcion;
                 $inscripcion->costo_mensualidad = $request->costo_mensualidad;
                 $inscripcion->boolean_franela = $request->boolean_franela;
                 $inscripcion->boolean_programacion = $request->boolean_programacion;
                 $inscripcion->razon_entrega = $request->razon_entrega;
                 $inscripcion->talla_franela = $request->talla_franela;
 
-                $inscripcion->save();
+                if($inscripcion->save()){
 
-                $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
+                    $alumno = Alumno::find($request->alumno_id);
 
-                if($visitante){
-                    $visitante->cliente = 1;
-                    $visitante->save();
-                }
+                    if($alumno->instructor_id){
 
-                if($request->costo_inscripcion != 0)
-                {
+                        $staff_id = $alumno->instructor_id;
+                        $in = array(3,4);
 
-                    $item_factura = new ItemsFacturaProforma;
+                        $config_servicios = ConfigServicios::where('tipo_id',$request->clase_grupal_id)->whereIn('tipo',$in)->get();
+
+                        foreach($config_servicios as $servicio){
+
+                           $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
+
+                           if($config_pago){
+
+                                if($config_pago->tipo == 1){
+
+                                    $config_clase_grupal = ConfigClasesGrupales::find($request->clase_grupal_id);
+
+                                    if($config_clase_grupal){
+
+                                        if($servicio->tipo == 3){
+                                            $costo = $config_clase_grupal->costo_inscripcion;
+                                        }else{
+                                            $costo = $config_clase_grupal->costo_mensualidad;
+                                        }
+                                        
+
+                                    }else{
+                                        $costo = $servicio->costo;
+                                    }
+
+                                    $porcentaje = $config_pago->monto / 100;
+                                    $monto = $costo * $porcentaje;
+
+                                    if($monto > 0 ){
+
+                                        $pago = new PagoStaff;
+
+                                        $pago->staff_id=$staff_id;
+                                        $pago->tipo=$config_pago->tipo;
+                                        $pago->monto=$monto;
+                                        $pago->servicio_id=$servicio->id;
+
+                                        $pago->save();
+                                    }
+                                   
+                                }else{
+
+                                    $pago = new PagoStaff;
+
+                                    $pago->staff_id=$staff_id;
+                                    $pago->tipo=$config_pago->tipo;
+                                    $pago->monto=$config_pago->monto;
+                                    $pago->servicio_id=$servicio->id;
+
+                                    $pago->save();
+                                    
+                                }
+                            }
+                        }
                         
-                    $item_factura->alumno_id = $request->alumno_id;
-                    $item_factura->academia_id = Auth::user()->academia_id;
-                    $item_factura->fecha = Carbon::now()->toDateString();
-                    $item_factura->item_id = $request->clase_grupal_id;
-                    $item_factura->nombre = $clasegrupal->nombre;
-                    $item_factura->tipo = 3;
-                    $item_factura->cantidad = 1;
-                    $item_factura->precio_neto = 0;
-                    $item_factura->impuesto = 0;
-                    $item_factura->importe_neto = $request->costo_inscripcion;
-                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                        
-                    $item_factura->save();
+                    }
 
-                }
+                    $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
 
-                if($request->costo_mensualidad != 0)
-                {
+                    if($visitante){
+                        $visitante->cliente = 1;
+                        $visitante->save();
+                    }
 
-                    $item_factura = new ItemsFacturaProforma;
-                        
-                    $item_factura->alumno_id = $request->alumno_id;
-                    $item_factura->academia_id = Auth::user()->academia_id;
-                    $item_factura->fecha = Carbon::now()->toDateString();
-                    $item_factura->item_id = $request->clase_grupal_id;
-                    $item_factura->nombre = $clasegrupal->nombre;
-                    $item_factura->tipo = 4;
-                    $item_factura->cantidad = 1;
-                    $item_factura->precio_neto = 0;
-                    $item_factura->impuesto = 0;
-                    $item_factura->importe_neto = $request->costo_mensualidad;
-                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                        
-                    $item_factura->save();
+                    if($request->costo_inscripcion != 0)
+                    {
 
-                }
+                        $item_factura = new ItemsFacturaProforma;
+                            
+                        $item_factura->alumno_id = $request->alumno_id;
+                        $item_factura->academia_id = Auth::user()->academia_id;
+                        $item_factura->fecha = Carbon::now()->toDateString();
+                        $item_factura->item_id = $request->clase_grupal_id;
+                        $item_factura->nombre = $clasegrupal->nombre;
+                        $item_factura->tipo = 3;
+                        $item_factura->cantidad = 1;
+                        $item_factura->precio_neto = 0;
+                        $item_factura->impuesto = 0;
+                        $item_factura->importe_neto = $request->costo_inscripcion;
+                        $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                            
+                        $item_factura->save();
 
-                $deuda = DB::table('alumnos')
-                    ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                    ->where('alumnos.id','=', $request->alumno_id)
-                ->sum('items_factura_proforma.importe_neto');
+                    }
 
+                    if($request->costo_mensualidad != 0)
+                    {
 
-                $alumno = Alumno::find($request->alumno_id);
+                        $item_factura = new ItemsFacturaProforma;
+                            
+                        $item_factura->alumno_id = $request->alumno_id;
+                        $item_factura->academia_id = Auth::user()->academia_id;
+                        $item_factura->fecha = Carbon::now()->toDateString();
+                        $item_factura->item_id = $request->clase_grupal_id;
+                        $item_factura->nombre = $clasegrupal->nombre;
+                        $item_factura->tipo = 4;
+                        $item_factura->cantidad = 1;
+                        $item_factura->precio_neto = 0;
+                        $item_factura->impuesto = 0;
+                        $item_factura->importe_neto = $request->costo_mensualidad;
+                        $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                            
+                        $item_factura->save();
 
-                // $array[$i] = $alumno;
+                    }
 
-            // }
-            
+                    $deuda = DB::table('alumnos')
+                        ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                        ->where('alumnos.id','=', $request->alumno_id)
+                    ->sum('items_factura_proforma.importe_neto');
 
-            Session::forget('id_alumno');
+                    // $array[$i] = $alumno;
 
-            // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
+                // }
+                
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 'array' => $alumno, 200]);
+                Session::forget('id_alumno');
+
+                // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 'array' => $alumno, 200]);
+            }
 
             // if(count($alumnos) > 2)
             // {

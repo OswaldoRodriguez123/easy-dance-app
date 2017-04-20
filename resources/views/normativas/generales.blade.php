@@ -163,8 +163,18 @@
 
                           <p>Todo integrante que se vea en la necesidad de reforzar sus conocimientos o prácticas de clases de baile, debido a la carencia de habilidades o por inasistencias recurrente a las clases , el alumno deberá asistir a las actividades  de repaso o tomar clases personalizadas, con el objetivo  de mantener la armonía del aprendizaje grupal , el instructor de planta  o profesor de diagnóstico recomendará dichas actividades según el caso personal de cada integrante, es importante resaltar  que para continuar su avance y certificación por cada nivel , deberá estar avalado por los profesores de la institución , de lo contrario nuestros profesores podrán  solicitar que el integrante repita la nivelación  en los horarios disponibles que la academia al momento posea. </a></p>
 
+                          <div class="f-18 f-700">29. Congelar</div><br>
 
-                          <div class="f-18 f-700">29. Consulta</div><br>
+                          <p>Todo participante activo de la academia que haya ingresado por un curso pago y no a través de una membrecía u obsequio, tendrá la posibilidad congelar el ciclo en el que se encuentra, para validar esta actividad deberá considerar los siguientes pasos:<br> 
+                          • El participante deberá formalizar su proceso de congelamiento en el área de recepción.<br>
+                          • La organización ofrecerá tres (meses) para la reactivación de su cupo.<br>
+                          • Al momento de reactivar su cupo deberá gestionar un pago en la sección de administración por concepto de reinicio de $20.000.<br>
+                          • Una vez que sea activado su cupo sólo podrá ingresar a un curso que esté en el nivel del que congeló o una clase inferior, en caso que desee continuar en el curso que se encontraba o de un nivel superior deberá recibir clases personalizadas hasta ser nivelado en el curso que aspire. <br>
+                          • La actividad de congelar un curso, sólo es válido en un rango de una vez por año.<br>
+                          • Después que el alumno haya aplicado la actividad de congelar un curso en que se encuentre activo, perderá el privilegio del uso de transferencia de su cupo a otra persona durante la etapa que ha sido congelada su clase grupal. </a></p>
+
+
+                          <div class="f-18 f-700">30. Consulta</div><br>
 
                           <p>Si tiene alguna pregunta o comentario sobre estos términos de servicio, no dude en contactarnos por vía telefónica a los números que aparecen en nuestro sitio web <a href="www.tuclasedebaile.com.co">www.tuclasedebaile.com.co</a></p>
 

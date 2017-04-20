@@ -927,6 +927,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/staff/update/cargo','StaffController@updateCargo');
 			Route::put('configuracion/staff/update/horario','StaffController@updateHorario');
 
+			Route::get('configuracion/staff/pagos/{id}', 'StaffController@principalpagos');
+			Route::post('configuracion/staff/pagar', 'StaffController@pagar');
+
+			Route::post('configuracion/staff/agregarpago', 'StaffController@agregarpago');
+			Route::delete('configuracion/staff/eliminarpago/{id}', 'StaffController@eliminarpago');
+			Route::post('configuracion/staff/agregarpagofijo', 'StaffController@agregarpagofijo');
+			Route::delete('configuracion/staff/eliminarpagofijo/{id}', 'StaffController@eliminarpagofijo');
+
 			//INCIDENCIAS
 
 			Route::get('incidencias', 'IncidenciaController@principal');
