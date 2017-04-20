@@ -836,12 +836,9 @@
                               $("#msj_porcentaje").html("Debe mejorar");
                             }else if(porcentaje<="20"){
                               $("#barra-progreso").css("background-color","orange");
-                              $("#msj_porcentaje").html("Regular");
+                              $("#msj_porcentaje").html("Bueno");
                             }else if(porcentaje<="30"){
                               $("#barra-progreso").css("background-color","gold");
-                              $("#msj_porcentaje").html("Bueno");
-                            }else if(porcentaje<"40"){
-                              $("#barra-progreso").css("background-color","greenyellow ");
                               $("#msj_porcentaje").html("Muy bueno");
                             }else{
                               $("#barra-progreso").css("background-color","green");
