@@ -1110,9 +1110,11 @@
 		                                }
 
 		                                $talla_franela = $alumno['talla_franela'];
+		                                $deuda = $alumno['deuda'];
                                   	}else{
                                   		$camiseta_programacion = '';
                                   		$talla_franela = '';
+                                  		$deuda = 0;
                                   	}
 
                                   
@@ -1125,7 +1127,7 @@
 
                                   'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
                                   'Talla: ' . $talla_franela . '<br>'.
-                                  'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
+                                  'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
 
 
 
