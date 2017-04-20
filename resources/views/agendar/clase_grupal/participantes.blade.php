@@ -1124,7 +1124,7 @@
                                   $alumno['nombre'] . ' ' . $alumno['apellido']. ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
 
                                   'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
-                                  'Talla: ' . $alumno['talla_franela'] . '<br>'.
+                                  'Talla: ' . $talla_franela . '<br>'.
                                   'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
 
 
