@@ -1090,22 +1090,31 @@
                                       $imagen = '/assets/img/Hombre.jpg';
                                   }
 
-                                  if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
+                                  	if($alumno['tipo'] == 1){
 
-                                    $camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
-                                  }else{
-                                    if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0){
-                                      $camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
-                                    }else{
+	                                 	if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
 
-                                      if($alumno['boolean_franela']){
-                                        $camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
-                                      }else{
-                                        $camiseta_programacion = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
-                                      }
+		                                   $camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
+		                                }else{
+		                                	if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0){
+		                                      	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
+		                                    }else{
 
-                                    }
-                                  }
+		                                      	if($alumno['boolean_franela']){
+		                                        $camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
+		                                      	}else{
+		                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
+		                                      	}
+
+		                                    }
+		                                }
+
+		                                $talla_franela = $alumno['talla_franela'];
+                                  	}else{
+                                  		$camiseta_programacion = '';
+                                  		$talla_franela = '';
+                                  	}
+
                                   
 
                                   $contenido = '';
