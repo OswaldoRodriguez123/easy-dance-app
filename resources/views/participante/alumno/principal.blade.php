@@ -109,6 +109,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="confirmacion" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -137,7 +138,7 @@
 
                                     $contenido = '<p class="c-negro">' .
 
-                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
+                                    $alumno['nombre'] . ' ' . $alumno['apellido'] .'<br><br>' .
 
                                     'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
                                     'Número Móvil: ' . $alumno['celular'] . '<br>'.
@@ -158,6 +159,17 @@
                                     <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
                                 @endif
                                     <td class="text-center previa"> @if($alumno['activacion']) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                    <td class="text-center previa">
+                                        @if($alumno['imagen'])
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                        @else
+                                            @if($alumno['sexo'] == 'M')
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            @else
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+                                      @endif
+                                    </td>
                                     <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                     <td class="text-center previa">
                                         @if($alumno['edad'] >= 18)

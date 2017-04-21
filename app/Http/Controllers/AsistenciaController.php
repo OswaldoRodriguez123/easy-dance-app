@@ -657,10 +657,7 @@ class AsistenciaController extends BaseController
 
       $array = array(2,4);
 
-      $alumnos = DB::table('alumnos')
-        ->select('alumnos.*')
-        ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        ->where('alumnos.deleted_at', '=', null)
+      $alumnos = Alumno::where('alumnos.academia_id','=', Auth::user()->academia_id)
         ->orderBy('nombre', 'asc')
       ->get();
 
