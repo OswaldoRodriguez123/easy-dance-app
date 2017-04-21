@@ -35,13 +35,14 @@
                     <div class="card">
                         <div class="card-header">
 
-                            <div class="text-right">
-                            <!--<a class="f-16 p-t-0 text-right text-success" data-toggle="modal" href="#modalAgregar">Agregar Nuevo Participante <i class="zmdi zmdi-account-add zmdi-hc-fw f-20 c-verde"></i></a>-->
+                          <div class="text-right">
+                            <span class="f-15">Asignadas: <span id="horas_asignadas">{{$clasepersonalizada->horas_asignadas}}</span> Horas</span><br>
+                            <span class="f-15">Restantes: <span id="horas_restantes">{{$horas_restantes}}</span> Horas</span>
+                          </div>
 
-                            <br><br><p class="text-center opaco-0-8 f-22" id="id-clase"><i class="icon_a-clase-personalizada p-r-5"></i> Clase: {{$clasepersonalizada->nombre}}</p>
-                            <hr class="linea-morada">
-
-                            </div>                                                        
+                          <br><br><p class="text-center opaco-0-8 f-22" id="id-clase"><i class="icon_a-clase-personalizada p-r-5"></i> Clase: {{$clasepersonalizada->nombre}}</p>
+                          <hr class="linea-morada">
+                                            
                         </div>
                         <form name="agregar_clase_grupal" id="agregar_clase_grupal">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -268,6 +269,7 @@
 		                                    <th class="text-center" data-column-id="nombre" data-order="desc">Día</th>
 		                                    <th class="text-center" data-column-id="estatu_c" data-order="desc">Hora Inicio</th>
 		                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Hora Final</th>
+                                        <th class="text-center">Cantidad Horas</th>
 		                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acción</th>
 		                                </tr>
 		                            </thead>
@@ -348,6 +350,7 @@
       route_eliminar="{{url('/')}}/agendar/clases-personalizadas/multihorario/eliminarhorario";
       route_cancelar = "{{url('/')}}/agendar/clases-personalizadas/multihorario/cancelarhorarios";
       route_guardar = "{{url('/')}}/agendar/clases-personalizadas/multihorario/guardarhorarios";
+      var horas_restantes = "{{$horas_restantes}}"
 
         var t=$('#tablelistar').DataTable({
         processing: true,
@@ -438,6 +441,10 @@
                           var dia_de_semana_id = respuesta.array.dia_de_semana;
                           var hora_inicio = respuesta.array.hora_inicio;
                           var hora_final = respuesta.array.hora_final;
+                          var hora_asignada = respuesta.array.hora_asignada;
+
+                          horas_restantes = parseInt(horas_restantes - hora_asignada)
+                          $('#horas_restantes').text(horas_restantes)
 
                           var rowId=respuesta.array.id;
                           var rowNode=t.row.add( [
@@ -447,6 +454,7 @@
                           ''+dia_de_semana_id+'',
                           ''+hora_inicio+'',
                           ''+hora_final+'',
+                          ''+hora_asignada+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
@@ -465,6 +473,8 @@
                           "opacity": ("1")
                         });
                         $(".cancelar").removeAttr("disabled");
+
+
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                       }, 1000);
@@ -516,7 +526,10 @@
                   success: function (data) {
                     if(data.status=='OK'){
                         
-                      
+                      var hora_asignada = data.hora_asignada;
+
+                      horas_restantes = parseInt(horas_restantes + hora_asignada)
+                      $('#horas_restantes').text(horas_restantes)
                                          
                     }else{
                       swal(
