@@ -443,14 +443,6 @@ class ClaseGrupalController extends BaseController {
 
         if($clasegrupal){
 
-            $tipo_id = array($id);
-            $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $id)->get();
-
-            foreach($horarios_clases_grupales as $horario){
-                $tipo_id[] = $horario->id;
-
-            }
-
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'inscripcion_clase_grupal.tipo_pago')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
@@ -490,13 +482,26 @@ class ClaseGrupalController extends BaseController {
             $asistencia_roja = $clasegrupal->asistencia_rojo;
             $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
 
+            $tipo_id = array($id);
+            $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $id)->get();
+            $cantidad_clases = 1;
+
+            foreach($horarios_clases_grupales as $horario){
+                $tipo_id[] = $horario->id;
+                $cantidad_clases++;
+
+            }
+
             foreach($alumnos_inscritos as $alumno){
 
+                $fecha_de_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
                 $clases_completadas = 0;
+                $fecha = '';
 
                 $tipo_clase = array(1,2);
-                    
+
                 $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
 
                 if($ultima_asistencia){
 
@@ -506,28 +511,30 @@ class ClaseGrupalController extends BaseController {
                     $fecha = $fecha_de_inicio;
                 }
 
+                $fecha_a_comparar = $fecha;
+
                 if(Carbon::now() < $fecha_de_finalizacion){
-                    while($fecha < Carbon::now()){
-                        $clases_completadas++;
-                        $fecha->addWeek();
+                    while($fecha_a_comparar < Carbon::now()){
+                        $clases_completadas = $clases_completadas + $cantidad_clases;
+                        $fecha_a_comparar->addWeek();
                     }
                 }else{
-                    while($fecha < $fecha_de_finalizacion){
-                        $clases_completadas++;
-                        $fecha->addWeek();
+                    while($fecha_a_comparar < $fecha_de_finalizacion){
+                        $clases_completadas = $clases_completadas + $cantidad_clases;
+                        $fecha_a_comparar->addWeek();
                     }
                 }
 
                 if($clases_completadas >= $asistencia_roja){
                     $estatus="c-youtube";
 
-                    if($asistencia_roja > 0)
-                    {
-                        // $alumno->deleted_at = Carbon::now();
-                        // $alumno->save();
-                    }
+                    // if($asistencia_roja > 0)
+                    // {
+                    //     // $alumno->deleted_at = Carbon::now();
+                    //     // $alumno->save();
+                    // }
                     
-                    continue;
+                    // continue;
                 }else if($clases_completadas >= $asistencia_amarilla){
                     $estatus="c-amarillo";
                 }else{

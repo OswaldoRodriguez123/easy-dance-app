@@ -1129,7 +1129,12 @@
                                   <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}">
 
                                       
-                                      <td class="text-center previa"></td>
+                                      <td class="text-center previa"> 
+                                        @if($alumno['activacion']) 
+                                          <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+
+                                        @endif
+                                      </td>
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
@@ -1141,7 +1146,7 @@
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
                                       <td class="text-center previa"><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i></td>
                                       <td class="text-center previa">
-                                      <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                        <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                       </td>
                                       <td class="text-center"> 
 
@@ -1355,7 +1360,7 @@
         serverSide: false,
         pageLength: 25,  
         paging: false,
-        order: [[0, 'desc']],
+        order: [[3, 'asc']],
         fnDrawCallback: function() {
           $('.dataTables_paginate').hide();
         /*if ($('#tablelistar tr').length < 25) {
