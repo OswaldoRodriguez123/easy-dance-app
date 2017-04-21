@@ -747,7 +747,7 @@ class BlogController extends BaseController {
         if($entrada)
         {
             if($entrada->imagen){
-                $imagen = "http://app.easydancelatino.com/assets/uploads/entradas/".$nombre_img;
+                $imagen = "http://app.easydancelatino.com/assets/uploads/entradas/".$entrada->imagen;
 
             }else{
                 $imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
