@@ -489,135 +489,6 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
-                               <div class="clearfix p-b-35"></div>
-
-
-                               <div class="col-sm-12">
-
-                               <span class="f-22 c-morado"> Datos Administrativos de la Clase Grupal </span>
-
-                               <hr>
-
-                               </div>
-
-                               
-
-                               <br>
-
-                               <div class="col-sm-12">
-                            
-                                <table class="table table-striped table-bordered">
-                               <tr class="detalle" data-toggle="modal" href="#modalCostoInscripcion-ClaseGrupal">
-                                 <td width="70%">
-                                    <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_inscripcion" class="zmdi  {{ empty($clasegrupal->costo_inscripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                                   <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
-                                   <span class="f-14"> Costo Inscripcion </span>
-                                 </td>
-                                 <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion">{{$clasegrupal->costo_inscripcion}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                                </tr>
-                                </table>
-                                 
-                               </div>
-
-                               <br>
-
-                               <div class="col-sm-12">
-                                 
-
-                                  <table class="table table-striped table-bordered">
-                                   <tr class="detalle" data-toggle="modal" href="#modalCostoMensualidad-ClaseGrupal">
-                                     <td width="70%">
-                                        <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_mensualidad" class="zmdi  {{ empty($clasegrupal->costo_mensualidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                                       <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
-                                       <span class="f-14"> Costo Mensualidad</span>
-                                     </td>
-                                     <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad">{{$clasegrupal->costo_mensualidad}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                                    </tr>
-                                  </table>
-
-                               </div>
-
-                               <br>
-
-                               <div class="col-sm-12">
-
-                                    <table class="table table-striped table-bordered">
-                                   <tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
-                                     <td width="70%">
-                                      <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio_preferencial" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
-                                      <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
-                                      <span class="f-14">Fecha de primer cobro automático </span>
-                                     </td>
-                                     <td class="f-14 m-l-15" id="clasegrupal-fecha_inicio_preferencial" ><span id="clasegrupal-fecha_inicio_preferencial">
-                                     {{ $clasegrupal->fecha_inicio_preferencial == 0000-00-00 ? \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y') : \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio_preferencial)->format('d/m/Y') }}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
-                                    </tr>
-                                    </table>
-
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
-
-                                <div class="col-sm-12">
-
-                                  <label for="alumno" class="c-morado f-22">Entrega</label>
-                                  <hr>
-
-                                  <div class="col-sm-6">
-
-                                    <span for="alumno" class="c-morado f-16">Camiseta</span>
-
-                                    <br></br>
-                                    <input type="text" id="boolean_franela" name="boolean_franela" value="" hidden="hidden">
-                                    <div class="p-t-10">
-                                      <div class="toggle-switch" data-ts-color="purple">
-                                      <span class="p-r-10 f-700 f-16">No</span><input id="franela" type="checkbox">
-                                      
-                                      <label for="franela-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-                                    </div>
-
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <div class="form-group fg-line">
-                                      <label for="talla_franela">Talla de la Camiseta</label>
-                                      <input type="text" class="form-control input-sm" name="talla_franela" id="talla_franela" placeholder="Ej. 12">
-                                   </div>
-
-                                  </div>
-
-                                  <div class="col-sm-6">
-
-                                    <span for="alumno" class="c-morado f-16">Programación</span>
-
-
-                                    <br></br>
-                                    <input type="text" id="boolean_programacion" name="boolean_programacion" value="" hidden="hidden">
-                                    <div class="p-t-10">
-                                      <div class="toggle-switch" data-ts-color="purple">
-                                      <span class="p-r-10 f-700 f-16">No</span><input id="programacion" type="checkbox">
-                                      
-                                      <label for="programacion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                      </div>
-                                    </div>
-
-                                  </div>
-
-                                </div>
-
-
-                                <div class="col-sm-12 p-20" id="textarea_entrega" style="display:none">
-
-                                  <div class="clearfix p-b-10"></div>
-                                 
-                                  <label for="razon_entrega" id="id-razon_entrega">Explique las razones por la cual no fue entregado</label>
-                                  <br></br>
-
-                                  <div class="fg-line">
-                                    <textarea class="form-control" id="razon_entrega" name="razon_entrega" rows="2"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12 p-20">
                                     <label>Permite Promociones</label> 
@@ -686,7 +557,158 @@
                                   </div>
 
 
+                                <div class="clearfix p-b-35"></div>
+
+
+                               <div class="col-sm-12">
+
+                               <span class="f-22 c-morado"> Datos Administrativos de la Clase Grupal </span>
+
+                               <hr>
+
+                               </div>
+
+                               
+
+                               <br>
+
+                               <div class="col-sm-12">
+                            
+                                <table class="table table-striped table-bordered">
+                               <tr class="detalle" data-toggle="modal" href="#modalCostoInscripcion-ClaseGrupal">
+                                 <td width="70%">
+                                    <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_inscripcion" class="zmdi  {{ empty($clasegrupal->costo_inscripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                   <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
+                                   <span class="f-14"> Costo Inscripcion </span>
+                                 </td>
+                                 <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion">{{$clasegrupal->costo_inscripcion}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                                </tr>
+                                </table>
+                                 
+                               </div>
+
+                               <br>
+
+                               <div class="col-sm-12">
+                                 
+
+                                  <table class="table table-striped table-bordered">
+                                   <tr class="detalle" data-toggle="modal" href="#modalCostoMensualidad-ClaseGrupal">
+                                     <td width="70%">
+                                        <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_mensualidad" class="zmdi  {{ empty($clasegrupal->costo_mensualidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                       <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
+                                       <span class="f-14"> Costo Mensualidad</span>
+                                     </td>
+                                     <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad">{{$clasegrupal->costo_mensualidad}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                                    </tr>
+                                  </table>
+
+                               </div>
+
+                               <br>
+
+                               <div class="col-sm-12">
+
+                                    <table class="table table-striped table-bordered">
+                                   <tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
+                                     <td width="70%">
+                                      <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio_preferencial" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                                      <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
+                                      <span class="f-14">Fecha de primer cobro automático </span>
+                                     </td>
+                                     <td class="f-14 m-l-15" id="clasegrupal-fecha_inicio_preferencial" ><span id="clasegrupal-fecha_inicio_preferencial">
+                                     {{ $clasegrupal->fecha_inicio_preferencial == 0000-00-00 ? \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y') : \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio_preferencial)->format('d/m/Y') }}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                                    </tr>
+                                    </table>
+
                                 </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-22">Modalidad de Pago</span>
+                                    <hr>
+
+                                    <div class="form-group fg-line ">
+                                      <div class="p-t-10">
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="tipo_pago" id="contado" value="1" type="radio" checked >
+                                          <i class="input-helper"></i>  
+                                          Contado
+                                      </label>
+                                      <label class="radio radio-inline m-r-20">
+                                          <input name="tipo_pago" id="credito" value="2" type="radio">
+                                          <i class="input-helper"></i>  
+                                          Crédito
+                                      </label>
+                                      </div>
+                                    </div>
+                                </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+
+                                  <label for="alumno" class="c-morado f-22">Entrega</label>
+                                  <hr>
+
+                                  <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-16">Camiseta</span>
+
+                                    <br></br>
+                                    <input type="text" id="boolean_franela" name="boolean_franela" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="franela" type="checkbox">
+                                      
+                                      <label for="franela-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <div class="form-group fg-line">
+                                      <label for="talla_franela">Talla de la Camiseta</label>
+                                      <input type="text" class="form-control input-sm" name="talla_franela" id="talla_franela" placeholder="Ej. 12">
+                                   </div>
+
+                                  </div>
+
+                                  <div class="col-sm-6">
+
+                                    <span for="alumno" class="c-morado f-16">Programación</span>
+
+
+                                    <br></br>
+                                    <input type="text" id="boolean_programacion" name="boolean_programacion" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="programacion" type="checkbox">
+                                      
+                                      <label for="programacion-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+
+                                <div class="col-sm-12 p-20" id="textarea_entrega" style="display:none">
+
+                                  <div class="clearfix p-b-10"></div>
+                                 
+                                  <label for="razon_entrega" id="id-razon_entrega">Explique las razones por la cual no fue entregado</label>
+                                  <br></br>
+
+                                  <div class="fg-line">
+                                    <textarea class="form-control" id="razon_entrega" name="razon_entrega" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                              </div>
 
 
                               
@@ -1434,13 +1456,10 @@
                 var token = $('input:hidden[name=_token]').val();
                 var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
                 var alumno_id = $('#alumno_id').val();
-                var instructor_id = $('#instructor_id').val();
-                $("#guardar").attr("disabled","disabled");
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
+                var instructor_id = $('#instructor_id').val();      
+                var tipo_pago = $('input[name=tipo_pago]').val();     
                 limpiarMensaje();
-                var array = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, "permitir": permitir, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val()};
+                var array = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val(), tipo_pago: tipo_pago};
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -2690,7 +2709,7 @@
 
           porcentaje = valor_promocion / 100;
           descuento_inscripcion = costo_inscripcion * porcentaje
-          descuento_mensualidad = costo_inscripcion * porcentaje
+          descuento_mensualidad = costo_mensualidad * porcentaje
           costo_inscripcion_nuevo = costo_inscripcion - descuento_inscripcion
           costo_mensualidad_nuevo = costo_mensualidad - descuento_mensualidad
 
@@ -2733,7 +2752,7 @@
 
           porcentaje = valor_promocion / 100;
           descuento_inscripcion = costo_inscripcion * porcentaje
-          descuento_mensualidad = costo_inscripcion * porcentaje
+          descuento_mensualidad = costo_mensualidad * porcentaje
           costo_inscripcion_nuevo = costo_inscripcion - descuento_inscripcion
           costo_mensualidad_nuevo = costo_mensualidad - descuento_mensualidad
 

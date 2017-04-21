@@ -53,6 +53,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha" data-type="numeric">Fecha</th>
+                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="porcentaje_descuento">Porcentaje de Descuento</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -60,12 +61,16 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($promocion as $promociones)
-                                <?php $id = $promociones['id']; ?>
+                            @foreach ($promociones as $promocion)
+                                <?php $id = $promocion['id']; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$promociones['fecha_inicio']}} / {{$promociones['fecha_final']}}</td> 
-                                    <td class="text-center previa">{{$promociones['nombre']}}</td>
-                                    <td class="text-center previa">{{$promociones['porcentaje_descuento']}} </td>
+                                    <td class="text-center previa">{{$promocion['fecha_inicio']}} / {{$promocion['fecha_final']}}</td> 
+                                    <td class="text-center previa">
+                                        <span class="{{ empty($promocion['dias_restantes']) ? 'c-youtube' : '' }}">{{$promocion['status']}}</span>
+                                        Restan {{$promocion['dias_restantes']}} Días
+                                    </td>
+                                    <td class="text-center previa">{{$promocion['nombre']}}</td>
+                                    <td class="text-center previa">{{$promocion['porcentaje_descuento']}}% </td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                     <!-- <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td> -->
                                 </tr>

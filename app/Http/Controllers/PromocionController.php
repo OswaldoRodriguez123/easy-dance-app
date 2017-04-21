@@ -30,8 +30,29 @@ class PromocionController extends BaseController {
 
     public function principal()
     {
+        $promociones = Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('especiales.promocion.principal')->with(['promocion' => Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        foreach($promociones as $promocion){
+            $fecha = Carbon::createFromFormat('Y-m-d',$promocion->fecha_final);
+            if($fecha >= Carbon::now()){
+
+                $dias_restantes = $fecha->diffInDays();
+
+                $status = 'Activa';
+
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
+            }
+
+            $collection=collect($promocion);     
+            $promocion_array = $collection->toArray();
+            $promocion_array['status']=$status;
+            $promocion_array['dias_restantes']=$dias_restantes;
+            $array[$promocion->id] = $promocion_array;
+        }
+
+        return view('especiales.promocion.principal')->with(['promociones' => $array]);
     }
 
     public function codigo()
