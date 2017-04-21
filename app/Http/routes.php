@@ -257,6 +257,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/imagen', 'ConfigClasesGrupalesController@updateImagen');
 			Route::put('configuracion/clases-grupales/update/inasistencias','ConfigClasesGrupalesController@updateAsistencias');
 			Route::put('configuracion/clases-grupales/update/avanzado','ConfigClasesGrupalesController@updateAvanzado');
+			Route::put('configuracion/clases-grupales/update/promocion','ConfigClasesGrupalesController@updatePromocion');
 
 			//CLASES PERSONALIZADAS
 
@@ -621,7 +622,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/clases-personalizadas/update/instructor', 'ClasePersonalizadaController@updateInstructor');
 			Route::put('agendar/clases-personalizadas/update/horario', 'ClasePersonalizadaController@updateHorario');
 
-			//MULTIHORARIO CLASES GRUPALES
+			//MULTIHORARIO CLASES PERSONALIZADAS
 
 			Route::get('agendar/clases-personalizadas/multihorario/{id}', 'MultihorarioClasePersonalizadaController@principal');
 			Route::post('agendar/clases-personalizadas/multihorario/agregarhorario', 'MultihorarioClasePersonalizadaController@agregar');

@@ -22,116 +22,6 @@
 
 
  <div class="modal fade" id="modalAlumno" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                    <h4 class="modal-title c-negro">Participante: <span class="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                </div>
-                <form name="agregar_asistencia" id="agregar_asistencia"  >
-                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                   <div class="modal-body">                           
-                   <div class="row p-t-20 p-b-0">
-
-                       <div class="col-sm-3">
-
-                            <img name = "alumno_imagen" id ="alumno_imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                            <div class="clearfix p-b-15"></div>
-
-                            <p class="p-l-10 span_alumno" id="asistencia-nombre-alumno"></p>
-
-                            <span class="p-l-30" id="identificacion_participante"></span>
-
-                        
-                              
-                       </div>
-
-                       <div class="col-sm-5">
-                         <div class="form-group fg-line">
-
-                            <table class="table table-striped table-bordered historial">
-                             <tr class="detalle historial">
-                             <td class = "historial"></td>
-                             <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-16 f-700 historial">Balance Económico: </span><span class = "f-16 f-700 historial" id="asistencia-estado_economico" name="asistencia-estado_economico"></span> <i class="zmdi zmdi-money f-20 m-r-5 historial" name="status_economico" id="status_economico"></i></td>
-                            </tr>
-                            </table>
-                          </div>
-                       </div>
-
-                       <div class="col-sm-4">
-                         <div class="form-group fg-line">
-                            <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
-                            <div class="clearfix p-b-15"></div>
-                            <span class="text-center"><i id="asistencia-estado_ausencia" class="zmdi zmdi-label-alt-outline f-20"></i></span>
-                         </div>
-                       </div>
-                       
-
-                       <div class="col-sm-9">
-                          
-                          <div class="row p-t-20 p-b-0">
-
-                               <div class="col-sm-12">
-                                    <div class="form-group fg-line">
-                                    <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label>
-                                            <div class="dtp-container fg-line">
-                                            <input name="fecha_nacimiento_participante" id="fecha_nacimiento_participante" class="form-control date-picker" placeholder="Seleciona" type="text" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix"></div> 
-          
-                               <div class="col-sm-12">
-
-                               <label for="apellido" id="id-correo_participante">Correo Electrónico</label>
-
-                                    <div class="form-group fg-line ">
-                                      <input type="text" class="form-control input-sm proceso" name="correo_participante" id="correo_participante" placeholder="Ej. easydance@gmail.com" disabled>
-                                      </div>
-      
-                               </div>
-
-                               <div class="clearfix"></div> 
-                               <br>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="apellido" id="id-celular_participante">Teléfono Móvil</label>
-
-                                    <div class="form-group fg-line ">
-                                      <input type="text" class="form-control input-sm input-mask" name="celular_participante" id="celular_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
-                                      </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
-                               <br>
-
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="apellido" id="id-telefono_participante">Teléfono Local</label> 
-
-                                    <div class="form-group fg-line ">
-                                      <input disabled type="text" class="form-control input-sm input-mask" name="telefono_participante" id="telefono_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
-                                      </div>
-                               </div>
-
-
-                       </div>
-
-                       <div class="clearfix"></div> 
-
-                   </div>
-                   
-                </div>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
- <div class="modal fade" id="modalAlumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -618,12 +508,12 @@
                             
                                 <table class="table table-striped table-bordered">
                                <tr class="detalle" data-toggle="modal" href="#modalCostoInscripcion-ClaseGrupal">
-                                 <td>
+                                 <td width="70%">
                                     <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_inscripcion" class="zmdi  {{ empty($clasegrupal->costo_inscripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                    <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
                                    <span class="f-14"> Costo Inscripcion </span>
                                  </td>
-                                 <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion"><span>{{$clasegrupal->costo_inscripcion}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                                 <td class="f-14 m-l-15" ><span id="clasegrupal-costo_inscripcion">{{$clasegrupal->costo_inscripcion}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                                 </tr>
                                 </table>
                                  
@@ -634,16 +524,16 @@
                                <div class="col-sm-12">
                                  
 
-                                    <table class="table table-striped table-bordered">
+                                  <table class="table table-striped table-bordered">
                                    <tr class="detalle" data-toggle="modal" href="#modalCostoMensualidad-ClaseGrupal">
-                                     <td>
+                                     <td width="70%">
                                         <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-costo_mensualidad" class="zmdi  {{ empty($clasegrupal->costo_mensualidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                        <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
                                        <span class="f-14"> Costo Mensualidad</span>
                                      </td>
-                                     <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad"><span>{{$clasegrupal->costo_mensualidad}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                                     <td class="f-14 m-l-15" ><span id="clasegrupal-costo_mensualidad">{{$clasegrupal->costo_mensualidad}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                                     </tr>
-                                    </table>
+                                  </table>
 
                                </div>
 
@@ -665,12 +555,12 @@
 
                                 </div>
 
-                                <br><br>
+                                <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12">
 
                                   <label for="alumno" class="c-morado f-22">Entrega</label>
-                                  <div class="clearfix p-b-35"></div>
+                                  <hr>
 
                                   <div class="col-sm-6">
 
@@ -686,8 +576,7 @@
                                       </div>
                                     </div>
 
-
-                                    <br>
+                                    <div class="clearfix p-b-35"></div>
 
                                     <div class="form-group fg-line">
                                       <label for="talla_franela">Talla de la Camiseta</label>
@@ -716,9 +605,9 @@
                                 </div>
 
 
-                                <div class="col-sm-12" id="textarea_entrega" style="display:none">
+                                <div class="col-sm-12 p-20" id="textarea_entrega" style="display:none">
 
-                                  <div class="clearfix p-b-35"></div>
+                                  <div class="clearfix p-b-10"></div>
                                  
                                   <label for="razon_entrega" id="id-razon_entrega">Explique las razones por la cual no fue entregado</label>
                                   <br></br>
@@ -729,6 +618,75 @@
                                 </div>
 
                                 <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12 p-20">
+                                    <label>Permite Promociones</label> 
+                                    
+                                    <br></br>
+                                    <input type="text" id="boolean_promociones" name="boolean_promociones" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="promociones" type="checkbox">
+                                      
+                                      <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+                                
+                                  <div id="div_promocion" style="display: none">
+                                    <div class="clearfix p-b-35"></div>
+
+                                      <div class="form-group fg-line ">
+                                          <div class="p-t-10">
+                                          <label class="radio radio-inline m-r-20">
+                                              <input name="tipo_promocion" id="ambas" value="T" type="radio" checked >
+                                              <i class="input-helper"></i>  
+                                              Ambas
+                                          </label>
+                                          <label class="radio radio-inline m-r-20">
+                                              <input name="tipo_promocion" id="inscripcion" value="I" type="radio">
+                                              <i class="input-helper"></i>  
+                                              Inscripción
+                                          </label>
+                                          <label class="radio radio-inline m-r-20">
+                                              <input name="tipo_promocion" id="mensualidad" value="M" type="radio">
+                                              <i class="input-helper"></i>  
+                                              Mensualidad
+                                          </label>
+                                          </div>
+                                        </div>
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                      <label>Selecciona la promoción</label> 
+
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a-promocion f-22"></i></span>
+                                        <div class="fg-line">
+                                        <div class="select">
+
+                                          <select class="selectpicker" id="promocion_id" name="promocion_id" title="Selecciona" data-live-search="true">
+
+                                            <option value = "">Selecciona</option>
+
+                                            @foreach ( $promociones as $promocion )
+                                              
+                                              <option value = "{{ $promocion->porcentaje_descuento }}">{{ $promocion->nombre}} - {{ $promocion->porcentaje_descuento}}%</option>
+                                          
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                        </div>
+                                        <div class="has-error" id="error-promocion_id">
+                                          <span >
+                                            <small class="help-block error-span" id="error-promocion_id_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                                </div>
 
 
                               
@@ -1267,6 +1225,8 @@
         var hombres = "{{$hombres}}";
         var mujeres = "{{$mujeres}}";
         var permitir = 0;
+        var costo_inscripcion = "{{$clasegrupal->costo_inscripcion}}"
+        var costo_mensualidad = "{{$clasegrupal->costo_mensualidad}}"
 
         $(document).ready(function(){
 
@@ -1307,6 +1267,8 @@
             }
         });
 
+        $("#promociones").attr("checked", false); //VALOR POR DEFECTO
+        $("#ambas").attr("checked", true);
 
         $("#boolean_franela").val('1');  //VALOR POR DEFECTO
         $("#franela").attr("checked", true); //VALOR POR DEFECTO
@@ -2716,6 +2678,104 @@
         $( this ).click();
       }
      
+    });
+
+    $("input[name=tipo_promocion]").on('change', function(){
+
+      if ($("#promociones").is(":checked")){
+
+        if($('#promocion_id').val()){
+
+          valor_promocion = $('#promocion_id').val()
+
+          porcentaje = valor_promocion / 100;
+          descuento_inscripcion = costo_inscripcion * porcentaje
+          descuento_mensualidad = costo_inscripcion * porcentaje
+          costo_inscripcion_nuevo = costo_inscripcion - descuento_inscripcion
+          costo_mensualidad_nuevo = costo_mensualidad - descuento_mensualidad
+
+          if($(this).val() == 'T'){
+
+            $('#clasegrupal-costo_inscripcion').text(costo_inscripcion_nuevo)
+            $('#clasegrupal-costo_mensualidad').text(costo_mensualidad_nuevo)
+
+          }else{
+            if($(this).val() == 'I'){
+              $('#clasegrupal-costo_inscripcion').text(costo_inscripcion_nuevo)
+              $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+            }else{
+              $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+              $('#clasegrupal-costo_mensualidad').text(costo_mensualidad_nuevo)
+            }
+
+          }
+
+        }else{
+          $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+          $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+        }
+      }else{
+        $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+        $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+      }
+
+    });
+
+
+    $("#promocion_id").on('change', function(){
+
+      if ($("#promociones").is(":checked")){
+
+        if($('#promocion_id').val()){
+
+          valor_promocion = $('#promocion_id').val()
+          tipo_promocion = $("input[name=tipo_promocion]").val()
+
+          porcentaje = valor_promocion / 100;
+          descuento_inscripcion = costo_inscripcion * porcentaje
+          descuento_mensualidad = costo_inscripcion * porcentaje
+          costo_inscripcion_nuevo = costo_inscripcion - descuento_inscripcion
+          costo_mensualidad_nuevo = costo_mensualidad - descuento_mensualidad
+
+          if(tipo_promocion == 'T'){
+
+            $('#clasegrupal-costo_inscripcion').text(costo_inscripcion_nuevo)
+            $('#clasegrupal-costo_mensualidad').text(costo_mensualidad_nuevo)
+
+          }else{
+            if(tipo_promocion == 'I'){
+              $('#clasegrupal-costo_inscripcion').text(costo_inscripcion_nuevo)
+              $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+            }else{
+              $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+              $('#clasegrupal-costo_mensualidad').text(costo_mensualidad_nuevo)
+            }
+
+          }
+
+        }else{
+          $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+          $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+        }
+      }else{
+        $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+        $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+      }
+
+    });
+
+
+    $("#promociones").on('change', function(){
+      if ($("#promociones").is(":checked")){
+        $('#div_promocion').show();
+      }else{
+        $("#ambas").attr("checked", true);
+        $('#div_promocion').hide();
+        $('#clasegrupal-costo_inscripcion').text(costo_inscripcion)
+        $('#clasegrupal-costo_mensualidad').text(costo_mensualidad)
+        $('#promocion_id').val('')
+        $('#promocion_id').selectpicker('refresh')
+      }       
     });
 
     

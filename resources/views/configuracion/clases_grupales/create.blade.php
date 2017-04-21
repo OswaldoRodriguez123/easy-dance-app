@@ -190,20 +190,41 @@
                                           </div>
                                           
                                        </div>
-                                       <div class="has-error" id="error-impuesto">
-                                            <span >
-                                                <small class="help-block error-span" id="error-impuesto_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                        </div>
                                        <div class="has-error" id="error-incluye_iva">
                                             <span >
                                                 <small class="help-block error-span" id="error-incluye_iva_mensaje" ></small>                                           
                                             </span>
                                         </div>
-                                     </div>
+                                    </div>
+
 
                                <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                   <div class="form-group fg-line ">
+                                      <label>Permite Promociones</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si esta clase grupal permite promociones" title="" data-original-title="Ayuda"></i>
+                                      
+                                      <br></br>
+                                      <input type="text" id="boolean_promociones" name="boolean_promociones" value="" hidden="hidden">
+                                      <div class="p-t-10">
+                                        <div class="toggle-switch" data-ts-color="purple">
+                                        <span class="p-r-10 f-700 f-16">No</span><input id="promociones" type="checkbox">
+                                        
+                                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                        </div>
+                                      </div>
+                                      
+                                   </div>
+                                   <div class="has-error" id="error-boolean_promociones">
+                                        <span >
+                                            <small class="help-block error-span" id="error-boolean_promociones_mensaje" ></small>                                           
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                               <div class="clearfix p-b-35"></div>
+
 
 
                               <div class="col-sm-12">
@@ -452,8 +473,18 @@
             $("#incluye_iva").val('1');
           }else{
             $("#incluye_iva").val('0');
-          }   
-          console.log($("#incluye_iva").val());     
+          }       
+        });
+
+        $("#promociones").attr("checked", true); //VALOR POR DEFECTO
+        $("#boolean_promociones").val('1');
+
+        $("#promociones").on('change', function(){
+          if ($("#promociones").is(":checked")){
+            $("#boolean_promociones").val('1');
+          }else{
+            $("#boolean_promociones").val('0');
+          }       
         });
 
         $('body,html').animate({scrollTop : 0}, 500);

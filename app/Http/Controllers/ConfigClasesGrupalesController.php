@@ -102,6 +102,7 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->tiempo_tolerancia = $request->tiempo_tolerancia;
         $clasegrupal->asistencia_rojo = $request->asistencia_rojas;
         $clasegrupal->asistencia_amarilla = $request->asistencia_amarillas;
+        $clasegrupal->boolean_promociones = $request->boolean_promociones;
 
         if($clasegrupal->save()){
 
@@ -352,6 +353,19 @@ class ConfigClasesGrupalesController extends BaseController {
 
         if($clasegrupal->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'incluye_iva', 'valor' => $request->incluye_iva, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno/edit/{$request->id}");
+    }
+
+    public function updatePromocion(Request $request){
+
+        $clasegrupal = ConfigClasesGrupales::find($request->id);
+        $clasegrupal->boolean_promociones = $request->boolean_promociones;
+
+        if($clasegrupal->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'boolean_promociones', 'valor' => $request->boolean_promociones, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

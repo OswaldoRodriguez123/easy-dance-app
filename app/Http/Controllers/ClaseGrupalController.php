@@ -39,6 +39,7 @@ use App\CredencialInstructor;
 use App\Staff;
 use App\Visitante;
 use App\User;
+use App\Promocion;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -673,9 +674,11 @@ class ClaseGrupalController extends BaseController {
                 );
             }
 
+            $promociones = Promocion::where('academia_id', Auth::user()->academia_id)->get();
 
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
+
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'promociones' => $promociones]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
