@@ -1090,12 +1090,20 @@
 		                                    }
 		                                }
 
+                                    if($alumno['tipo_pago'] == 1){
+                                      $tipo_pago = 'Contado';
+                                    }else{
+                                      $tipo_pago = 'Crédito';
+                                    }
+
 		                                $talla_franela = $alumno['talla_franela'];
 		                                $deuda = $alumno['deuda'];
+
                                   	}else{
                                   		$camiseta_programacion = '';
                                   		$talla_franela = '';
                                   		$deuda = 0;
+                                      $tipo_pago = '';
                                   	}
 
                                   
@@ -1109,6 +1117,7 @@
 	                                  	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
 	                                  	'Talla: ' . $talla_franela . '<br>'.
 	                                  	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
+                                      'Modalidad de pago: ' . $tipo_pago . '<br>'.
 
 
 
