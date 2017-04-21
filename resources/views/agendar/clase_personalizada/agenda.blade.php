@@ -122,9 +122,13 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
-  
+                        <div class="card-header">
 
+                            <div class="text-right">
+                              <span class="f-15">Asignadas: <span id="horas_asignadas">{{$horas_asignadas}}</span> Horas</span><br>
+                              <span class="f-15">Restantes: <span id="horas_restantes">{{$horas_restantes}}</span> Horas</span>
+                            </div>
+  
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clase-personalizada f-25"></i> Clase Personalizada: {{$nombre}}</p>
                             <hr class="linea-morada">
 
@@ -161,6 +165,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
+                                    <th class="text-center" data-column-id="horas" data-order="desc">Cantidad Horas</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="operaciones" data-order="desc">Operaciones</th>
@@ -172,6 +177,7 @@
                                 <tr id="{{$fecha['id']}}" class="disabled" data-instructor="{{$fecha['instructor']}}" data-especialidad="{{$fecha['especialidad']}}" data-fecha="{{$fecha['fecha_inicio']}}" data-hora="{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}" data-tipo="{{$fecha['tipo']}}">
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
+                                    <td class="text-center previa">{{$fecha['hora_asignada']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
                                     <td class="text-center previa">
@@ -277,6 +283,7 @@
                 var rowNode=t.row.add( [
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.hora_asignada+'',
                 ''+array.especialidad+'',
                 ''+array.instructor+'' ,
                 '<i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>'
@@ -299,6 +306,7 @@
                 var rowNode=t.row.add( [
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.hora_asignada+'',
                 ''+array.especialidad+'',
                 ''+array.instructor+'' ,
                 ''
@@ -322,6 +330,7 @@
                 var rowNode=t.row.add( [
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
+                ''+array.hora_asignada+'',
                 ''+array.especialidad+'',
                 ''+array.instructor+'' ,
                 ''

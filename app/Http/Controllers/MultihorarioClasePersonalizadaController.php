@@ -305,7 +305,7 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
                     $horas_restantes = Session::get('horas_restantes');
 
-                    if($hora_asignada < $horas_restantes){
+                    if($hora_asignada <= $horas_restantes){
 
                         $horas_restantes = $horas_restantes - $hora_asignada;
 
@@ -362,8 +362,11 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
         $arreglo = Session::get('horarios');
         $hora_asignada = $arreglo[$id][0]['hora_asignada'];
+        $horas_restantes = Session::get('horas_restantes');
+        $horas_restantes = intval($horas_restantes + $hora_asignada);
         unset($arreglo[$id]);
         Session::put('horarios', $arreglo);
+        Session::put('horas_restantes', $horas_restantes);
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'hora_asignada' => $hora_asignada, 200]);
 
