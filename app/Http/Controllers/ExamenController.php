@@ -235,6 +235,12 @@ class ExamenController extends BaseController {
             if($request->boolean_grupal){
                 if(!$request->clase_grupal_id){
                     return response()->json(['errores' => ['clase_grupal_id' => [0, 'Ups! La Clase Grupal es requerida']], 'status' => 'ERROR'],422);
+                }else{
+                    $examen = Examen::where('clase_grupal_id',$request->clase_grupal_id)->first(){
+                        if($examen){
+                            return response()->json(['errores' => ['clase_grupal_id' => [0, 'Ups! Esta clase grupal ya posee un examen']], 'status' => 'ERROR'],422);
+                        }
+                    }
                 }
             }
 

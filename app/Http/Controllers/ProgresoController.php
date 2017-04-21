@@ -202,21 +202,21 @@ class ProgresoController extends BaseController {
     			// $clase_16->save();
     		}
 
-            $examenes = Examen::where('clase_grupal_id',$id)->get();
-
+            $examen = Examen::where('clase_grupal_id',$id)->first();
+            $evaluaciones = Evaluacion::where('alumno_id',Auth::user()->usuario_id)->where('examen_id',$examen->id)->get();
             $i = 1;
 
-            $evaluaciones = array();
+            $evaluacion_array = array();
 
-            foreach($examenes as $examen){
+            foreach($evaluaciones as $evaluacion){
 
-                $evaluacion = Evaluacion::where('alumno_id',Auth::user()->usuario_id)->where('examen_id',$examen->id)->first();
-                $evaluaciones[$i] = $evaluacion->porcentaje;
+                
+                $evaluacion_array[$i] = intval($evaluacion->porcentaje);
                 $i++;
                 
             }
 
-	        return view('progreso.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id, 'academia' => $academia, 'evaluaciones' => $evaluaciones]);
+	        return view('progreso.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id, 'academia' => $academia, 'evaluaciones' => $evaluacion_array]);
 
         }else{
        		return redirect("progreso"); 
