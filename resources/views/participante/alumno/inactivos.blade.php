@@ -156,18 +156,47 @@
                                     @endif
                                     </td>
                                     <td class="text-center disabled">{{$alumno->nombre}} {{$alumno->apellido}}</td>
-                                    <td class="text-center">{{$alumno->clase_grupal_nombre}}</td>
+                                    <td class="text-center disabled">{{$alumno->clase_grupal_nombre}}</td>
                                     <td class="text-center disabled">
                                     <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
                                     </td>
                                     
                                     <td class="text-center disabled"> 
+
+
+                                        <ul class="top-menu pointer">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+
+                                                  <div class="dropup" dropdown-append-to-body>
+                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+
+                                                        <li class="hidden-xs">
+                                                            <a class="restablecer"><i class="zmdi zmdi-refresh-alt f-20 p-r-10"></i> Restablecer Alumno</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
                                         
-                                        <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer" id="{{$id}}" name="restablecer" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer Alumno" title="" data-original-title=""></i>
+                                        <!-- <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer" id="{{$id}}" name="restablecer" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer Alumno" title="" data-original-title=""></i>
 
                                         <i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer congelar_alumno" id="{{$id}}" name="congelar_alumno" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Congelar Alumno" title="" data-original-title=""></i>
 
-                                        <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i>
+                                        <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i> -->
                                     </td>
                                 </tr>
                             @endforeach 
@@ -290,8 +319,8 @@
             });
 
         
-      $("i[name=eliminar").click(function(){
-                id = this.id;
+      $(".eliminar").click(function(){
+                var id = $(this).closest('tr').attr('id');
                 element = this;
                 var padre=$(this).parents('tr');
                 swal({   
@@ -329,7 +358,7 @@
                     data:id,
                     success:function(respuesta){
 
-                        t.row( $(element).parents('tr') )
+                        t.row($(element).parents('tr'))
                             .remove()
                             .draw();
                         swal("Exito!","La inscripción ha sido eliminada permanentemente!","success");
@@ -455,8 +484,8 @@
             });
         });
 
-        $("i[name=restablecer").click(function(){
-                id = this.id;
+        $(".restablecer").click(function(){
+                var id = $(this).closest('tr').attr('id');
                 element = this;
             swal({   
                     title: "¿Seguro deseas restablecer al alumno ?",   
@@ -553,7 +582,17 @@
             for (i = 0; i < fLen; i++) {
                 $("#error-"+campo[i]+"_mensaje").html('');
             }
-      }
+        }
+
+        $( ".dropdown-toggle" ).hover(function() {
+
+          if($('.dropdown').hasClass('open')){
+
+          }else{
+            $( this ).click();
+          }
+         
+        });
 
 
 

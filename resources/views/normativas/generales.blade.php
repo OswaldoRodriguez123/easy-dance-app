@@ -173,8 +173,11 @@
                           • La actividad de congelar un curso, sólo es válido en un rango de una vez por año.<br>
                           • Después que el alumno haya aplicado la actividad de congelar un curso en que se encuentre activo, perderá el privilegio del uso de transferencia de su cupo a otra persona durante la etapa que ha sido congelada su clase grupal. </a></p>
 
+                          <div class="f-18 f-700">30. Transferencia</div><br>
 
-                          <div class="f-18 f-700">30. Consulta</div><br>
+                          <p>En caso que un alumno desee realizar una transferencia de un curso a otro, después de haber iniciado sus clases recurrentes, la academia buscará la posibilidad de aplicar dicha transferencia siempre y cuando cuente con los horarios y cupos de disponibilidad como a su vez que cuente con un grupo que maneje la misma nivelación o alguna inferior, en caso que la academia no posea dichas características y el alumno no pueda o no desee continuar en los horarios en el que está inscrito, la academia no se obliga a devolver el monto o parte del plan de inscripción o mensualidad que el alumno haya realizado.</p>
+
+                          <div class="f-18 f-700">31. Consulta</div><br>
 
                           <p>Si tiene alguna pregunta o comentario sobre estos términos de servicio, no dude en contactarnos por vía telefónica a los números que aparecen en nuestro sitio web <a href="www.tuclasedebaile.com.co">www.tuclasedebaile.com.co</a></p>
 

@@ -1144,9 +1144,11 @@
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
-                                      <td class="text-center previa"><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i></td>
                                       <td class="text-center previa">
-                                        <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                        <span style="display: none">{{$alumno['estatus']}}</span><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i>
+                                      </td>
+                                      <td class="text-center previa">
+                                        <span style="display: none">{{$alumno['deuda']}}</span><i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                       </td>
                                       <td class="text-center"> 
 
