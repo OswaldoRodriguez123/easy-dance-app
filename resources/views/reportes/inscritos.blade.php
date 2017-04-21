@@ -199,7 +199,57 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-8 col-md-offset-4">
+                                <table class="table display cell-border" id="tipo_pago" >
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" data-column-id="adultos_niños">Modalidad de Pago:</th>
+                                                <th class="text-center" data-column-id="cantidad"></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+
+                                            <tr>
+                                                <td>
+                                                    <span style="padding-left: 3%">Contado</span>
+                                                </td>
+
+                                                <td>
+                                                    <span style="padding-left: 3%" id="contado">0</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span style="padding-left: 3%">Crédito</span>
+                                                </td>
+
+                                                <td>
+                                                    <span style="padding-left: 3%" id="credito">0</span>
+                                                </td>
+                                            </tr>
+
+
+
+                                            <tr>
+                                                <td>
+                                                    <span style="padding-left: 3%">Total</span>
+                                                </td>
+
+                                                <td>
+                                                    <span style="padding-left: 3%" class ="total_inscritos" id="total_inscritos">0</span>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                            </div>
                         </div>
+
+                    
 
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
@@ -429,6 +479,11 @@
 
                         $("#mujeres").text(datos.mujeres);
                         $("#hombres").text(datos.hombres);
+
+
+                        $("#contado").text(datos.contado);
+                        $("#credito").text(datos.credito);
+                        $("#total_inscritos").text(datos.total_inscritos);
 
                         var data1 = ''
                         data1 += '[';
