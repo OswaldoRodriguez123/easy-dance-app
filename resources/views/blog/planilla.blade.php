@@ -499,7 +499,7 @@
 
                                   <hr>
                                   
-                                  <a id="enviar"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <i name="enviar" class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -631,7 +631,10 @@
     route_enviar="{{url('/')}}/blog/entrada/enviar/";
     route_principal="{{url('/')}}/blog";
 
+    var id = "{{$id}}"
+
     $(document).ready(function(){
+
 
       if("{{$entrada->boolean_mostrar}}" == 1){
         $("#boolean_mostrar").val('1');  //VALOR POR DEFECTO
@@ -918,9 +921,10 @@
   });
     
     function eliminar(){
-       var route = route_eliminar + "{{$id}}";
-       var token = '{{ csrf_token() }}';
-       procesando();
+
+      procesando();
+      var route = route_eliminar + id;
+      var token = '{{ csrf_token() }}';
               
       $.ajax({
           url: route,
@@ -939,7 +943,7 @@
       });
     }
 
-  $("#enviar").click(function(){
+  $("i[name=enviar]").click(function(){
       swal({   
           title: "Desea enviar la entrada por correo",   
           text: "Confirmar envio!",   
@@ -966,9 +970,9 @@
 
   function enviar(){
 
-    var route = route_enviar + "{{$id}}";
-    var token = '{{ csrf_token() }}';
     procesando();
+    var route = route_enviar + id;
+    var token = '{{ csrf_token() }}';
 
     $.ajax({
       url: route,
@@ -978,17 +982,17 @@
       success:function(respuesta){
 
         swal("Listo!","Correo enviado exitósamente!","success");
+        finprocesado();
 
       },
       error:function(msj){
 
         swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+        finprocesado();
 
       }
     });
     
-    finprocesado();
-
   }
 
   function countChar(val) {
@@ -1000,8 +1004,13 @@
     }
   };
 
+  function procesando(){
+    $("body").addClass('loader-active');
+    $("#loader-procesando").addClass('active');
+  }
 
-   </script> 
+
+  </script> 
   
 		
 @stop
