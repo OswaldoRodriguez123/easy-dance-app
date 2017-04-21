@@ -664,6 +664,7 @@ class BlogController extends BaseController {
 	        $entrada->academia_id = Auth::user()->academia_id;
 	        $entrada->titulo = $titulo;
 	        $entrada->categoria = $request->categoria;
+            $entrada->dirigido = $request->dirigido;
 
 	        if($entrada->save()){
 

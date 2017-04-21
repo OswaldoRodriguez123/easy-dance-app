@@ -546,6 +546,24 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="entrada-categoria" data-valor="{{$entrada->categoria_id}}"><span>{{$entrada->categoria}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="disabled">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-dirigido" class="zmdi {{ empty($entrada->dirigido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
+                               <span class="f-14"> A quien va dirigido </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="entrada-dirigido" class="capitalize">
+
+                              @if($entrada->dirigido == 1)
+                                Todos
+                              @elseif($entrada->dirigido == 2)
+                                Visitantes Presenciales
+                              @else
+                                Alumnos
+                              @endif
+
+                             </span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modal-Contenido">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-contenido" class="zmdi {{ empty($contenido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
