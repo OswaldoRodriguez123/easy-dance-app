@@ -249,6 +249,9 @@ class StaffController extends BaseController
                 ->where('staff.id', $id)
             ->get();
 
+            $tmp = array();
+            $tmp2 = array();
+
             $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
             foreach($config_servicio as $item){

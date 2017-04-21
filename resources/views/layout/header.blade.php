@@ -101,11 +101,11 @@
                                 </li>
 
                                 <li style="margin-top: 26px; right: 55%">
-                                        <a class="f-15 text-header f-700" href="{{url('/')}}/progreso"> MI PROGRESO</a>
-                                    </li>
+                                    <a class="f-15 text-header f-700" href="{{url('/')}}/progreso"><span class="f-15 text-header f-700">MI PROGRESO</span></a>
+                                </li>
 
                                 <li style="margin-top: 26px; right: 50%">
-                                    <a class="f-15 text-header f-700" href="{{url('/')}}/programacion">PASO A PASO</a>
+                                    <a class="f-15 text-header f-700" href="{{url('/')}}/programacion"><span class="f-15 text-header f-700">PASO A PASO</span></a>
                                 </li>
 
 
