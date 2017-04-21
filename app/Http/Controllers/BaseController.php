@@ -231,7 +231,7 @@ class BaseController extends Controller {
         } while ($len_stripped > $limit);
 
         // Load as HTML ignoring errors
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         @$dom->loadHTML('<?xml encoding="utf-8" ?>'.$value, LIBXML_HTML_NODEFDTD);
 
         // Fix the html errors
