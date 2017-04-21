@@ -15,6 +15,8 @@ use App\CategoriaBlog;
 use App\Academia;
 use App\User;
 use App\Blogger;
+use App\Alumno;
+use App\Visitante;
 use File;
 use Mail;
 
@@ -757,18 +759,54 @@ class BlogController extends BaseController {
 
             $contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
-            $array = [
-                'imagen' => $imagen,
-                'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
-                'msj_html' => $this->cut_html($contenido, 350),
-                'email' => 'bfsraptor@hotmail.com',
-                'subj' => $entrada->titulo
-            ];
+            if($entrada->dirigido == 1 OR $entrada->dirigido == 2){
 
-            Mail::send('correo.personalizado', $array, function($msj) use ($array){
-                $msj->subject($array['subj']);
-                $msj->to($array['email']);
-            });
+                $alumnos = Alumno::where('academia_id',$entrada->academia_id)->where('correo', '!=', '')->get();
+
+                foreach($alumnos as $alumno){
+
+                    if($alumno->correo){
+
+                        $array = [
+                            'imagen' => $imagen,
+                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+                            'msj_html' => $this->cut_html($contenido, 350),
+                            'email' => $alumno->correo,
+                            'subj' => $entrada->titulo
+                        ];
+
+                        Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['email']);
+                        });
+                    }
+                }
+            }
+
+            else{
+
+                $visitantes = Visitante::where('academia_id',$entrada->academia_id)->where('correo', '!=', '')->get();
+
+                foreach($visitantes as $visitante){
+
+                    if($visitante->correo){
+
+                        $array = [
+                            'imagen' => $imagen,
+                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+                            'msj_html' => $this->cut_html($contenido, 350),
+                            'email' => $visitante->correo,
+                            'subj' => $entrada->titulo
+                        ];
+
+                        Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['email']);
+                        });
+                    }
+                }
+
+            }
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
