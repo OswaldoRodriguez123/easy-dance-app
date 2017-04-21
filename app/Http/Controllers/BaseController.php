@@ -213,7 +213,7 @@ class BaseController extends Controller {
     }
     
     function cut_html ($html, $limit) {
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadHTML(mb_convert_encoding("<div>{$html}</div>", "HTML-ENTITIES", "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         cut_html_recursive($dom->documentElement, $limit);
         return substr($dom->saveHTML($dom->documentElement), 5, -6);
