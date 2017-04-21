@@ -674,7 +674,9 @@ class ClaseGrupalController extends BaseController {
                 );
             }
 
-            $promociones = Promocion::where('academia_id', Auth::user()->academia_id)->get();
+            $hoy = Carbon::now()->toDateString();
+
+            $promociones = Promocion::where('academia_id', Auth::user()->academia_id)->where('fecha_inicio', '<=', $hoy)->where('fecha_final', '>=', $hoy)->get();
 
 
 
