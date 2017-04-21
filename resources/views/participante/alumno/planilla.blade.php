@@ -1094,6 +1094,7 @@
                          <div class="col-sm-12">
                               <p class="text-center opaco-0-8 f-22">Datos del Alumno</p>
                               <p class="text-center opaco-0-8 f-12">Fecha de registro: {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$alumno->created_at)->format('d-m-Y')}}</p>
+                              <p class="text-center opaco-0-8 f-12">Modalidad de Pago: {{$tipo_pago}}</p>
                           </div>
 
                         <div class="col-sm-12">

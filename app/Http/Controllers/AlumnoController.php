@@ -553,12 +553,17 @@ class AlumnoController extends BaseController
             $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$id)->first();
 
             if($inscripcion_clase_grupal){
+                if($inscripcion_clase_grupal->tipo_pago == 1){
+                    $tipo_pago = 'Contado';
+                }else{
+                    $tipo_pago = 'Credito';
+                }
 
             }else{
-                
+                $tipo_pago = 'Contado';
             }
 
-            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad]);
+            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago]);
         }else{
            return redirect("participante/alumno"); 
         }

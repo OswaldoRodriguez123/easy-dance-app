@@ -1473,7 +1473,7 @@
                 var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
                 var alumno_id = $('#alumno_id').val();
                 var instructor_id = $('#instructor_id').val();      
-                var tipo_pago = $('input[name=tipo_pago]').val();     
+                var tipo_pago = $('input:checked[name=tipo_pago]').val();     
                 limpiarMensaje();
                 var array = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val(), tipo_pago: tipo_pago};
                 $.ajax({
@@ -2802,6 +2802,7 @@
 
 
     $("#promociones").on('change', function(){
+
       if ($("#promociones").is(":checked")){
         $('#div_promocion').show();
       }else{
