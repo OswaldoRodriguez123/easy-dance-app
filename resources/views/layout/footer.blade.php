@@ -1,28 +1,27 @@
-   
 <footer id="footer">
 
-		    <div class="bg-gris p-10 footer-text" >
-			<p> <b><a href="http://easydancelatino.com/" target="_blank" > www.easydancelatino.com </a></b></p> 
+    <div class="bg-gris p-10 footer-text">
 
+		<p><b><a href="http://easydancelatino.com/" target="_blank"> www.easydancelatino.com </a></b></p> 
 
-			<p class="f-35">
-			    <a href="https://www.facebook.com/Easydancelatino/" target="_blank" title="Facebook">
-			    	<i class="flaticon-facebook"></i>
-			    </a>
-			    <a href="https://www.instagram.com/easydancelatino/" target="_blank" title="Instagram">
-			    	<i class="flaticon-instagram"></i>
-			    </a>
-			    <a href="https://twitter.com/EasyDanceLatino" target="_blank" title="Twitter" >
-			    	<i class="flaticon-twitter" ></i>
-			    </a> 
-			    <a href="https://plus.google.com/u/0/104687135628887176910" target="_blank" title="Google+" >
-			    	<i class="flaticon-google-plus"></i>
-			    </a>
-			</p>
-            
-            <section id="content" >
-        <div class="container">
+		<p class="f-35">
+		    <a href="https://www.facebook.com/Easydancelatino/" target="_blank" title="Facebook">
+		    	<i class="flaticon-facebook"></i>
+		    </a>
+		    <a href="https://www.instagram.com/easydancelatino/" target="_blank" title="Instagram">
+		    	<i class="flaticon-instagram"></i>
+		    </a>
+		    <a href="https://twitter.com/EasyDanceLatino" target="_blank" title="Twitter">
+		    	<i class="flaticon-twitter" ></i>
+		    </a> 
+		    <a href="https://plus.google.com/u/0/104687135628887176910" target="_blank" title="Google+">
+		    	<i class="flaticon-google-plus"></i>
+		    </a>
+		</p>
+	    
+		<div class="row">
 			<div class="col-sm-4">
+
 			    <h4>Empresa</h4>
 
 			    <p class="m-t-5 m-b-5"><a href="{{url('empresa/sobre-la-empresa')}}" class="enlace-footer"  >Sobre la empresa</a></p> 
@@ -36,18 +35,6 @@
 			    <p class="m-t-5 m-b-5"><a href="http://easydancelatino.com/#/noticias" target="_blank" >Noticias</a></p>
 
 			</div>
-
-			<!--<div class="col-sm-3">
-			    
-			    <h4>Easy Dance</h4>
-
-			    <p class="m-t-5 m-b-5"  ><a href="http://easydancelatino.com" target="_blank" >Para academias</a></p> 
-
-			    <p class="m-t-5 m-b-5"  ><a  >Para alumnos </a></p>
-
-			    <p class="m-t-5 m-b-5"  ><a  >Para instructores </a></p> 
-
-			</div>-->
 
 			<div class="col-sm-4">
 			    
@@ -75,16 +62,11 @@
 
 
 			</div>
+		</div>
 
-			</div>
+		<br>
 
-			</section>
+		<small class="c-negro">Copyright &copy; 2017 Easy Dance, todos los derechos reservados.</small>
 
-			<br>
-
-			<small class="c-negro">Copyright &copy; 2016 Easy Dance, todos los derechos reservados.  </small>
-
-
-
-			</div>
-        </footer>
+	</div>
+</footer>

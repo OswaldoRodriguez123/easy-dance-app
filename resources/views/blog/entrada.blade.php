@@ -324,3 +324,5 @@
 
   </script>
 @stop
+
+@extends('layout.footer')
