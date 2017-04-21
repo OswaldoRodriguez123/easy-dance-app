@@ -732,25 +732,49 @@ class BlogController extends BaseController {
 	                $entrada->save();
 
 	            }
-
-	            $array = [
-					'imagen' => $imagen,
-					'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
-					'msj_html' => str_limit($request->contenido, $limit = 350, $end = '...'),
-					'email' => 'coliseodelasalsa@gmail.com',
-					'subj' => $request->titulo
-				];
-
-				// Mail::send('correo.personalizado', $array, function($msj) use ($array){
-				// 	$msj->subject($array['subj']);
-				//     $msj->to($array['email']);
-				// });
 	            
 	            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 	        }else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
 	    }
+    }
+
+    public function enviar($id){
+
+        $entrada = EntradaBlog::find($id);
+
+        if($entrada)
+        {
+            if($entrada->imagen){
+                $imagen = "http://app.easydancelatino.com/assets/uploads/entradas/".$nombre_img;
+
+            }else{
+                $imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+
+            }
+
+            $contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+
+            $array = [
+                'imagen' => $imagen,
+                'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+                'msj_html' => $contenido,
+                'email' => 'bfsraptor@hotmail.com',
+                'subj' => $entrada->titulo
+            ];
+
+            Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                $msj->subject($array['subj']);
+                $msj->to($array['email']);
+            });
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
     }
 
     public function edit($id){

@@ -499,7 +499,7 @@
 
                                   <hr>
                                   
-                                  <!-- <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
+                                  <a id="enviar"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -610,6 +610,7 @@
    <script type="text/javascript">
     route_update="{{url('/')}}/blog/entrada/update";
     route_eliminar="{{url('/')}}/blog/entrada/eliminar/";
+    route_enviar="{{url('/')}}/blog/entrada/enviar/";
     route_principal="{{url('/')}}/blog";
 
     $(document).ready(function(){
@@ -928,6 +929,52 @@
       $('#charNum').text(60 - len);
     }
   };
+
+  $("#enviar").click(function(){
+      swal({   
+          title: "Desea enviar la entrada por correo",   
+          text: "Confirmar envio!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Enviar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+
+        enviar();
+        }
+      });
+  });
+
+  function enviar(){
+
+   var route = route_enviar + "{{$id}}";
+   var token = $('input:hidden[name=_token]').val();
+    procesando();
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        success:function(respuesta){
+
+            swal("Listo!","Correo enviado exitósamente!","success");
+
+        },
+        error:function(msj){
+
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+            }
+
+        });
+    
+      finprocesado();
+
+  }
+
 
    </script> 
   

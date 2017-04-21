@@ -149,7 +149,6 @@
                                         <option value="1">Todos</option>
                                         <option value="2">Visitantes Presenciales</option>
                                         <option value="3">Alumnos</option>
-                                        <option value="4">En Espera</option>
                                         
                                       </select>
                                     </div>
