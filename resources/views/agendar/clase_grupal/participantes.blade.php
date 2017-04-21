@@ -2295,7 +2295,6 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","El alumno ha sido eliminado!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                         eliminar(id, element);
           }
@@ -2334,6 +2333,8 @@
                           t.row( $(element).parents('tr') )
                             .remove()
                             .draw();
+
+                          swal("Exito!","El alumno ha sido eliminado!","success");
 
                           if(sexo == 'F'){
 

@@ -692,9 +692,7 @@
 
        $( "#cancelar" ).click(function() {
 
-        $('.panel-collapse').collapse({
-          toggle: false
-        });
+        $('.panel-collapse').collapse('hide');
 
         $("#agregar_clase_grupal")[0].reset();
         limpiarMensaje();

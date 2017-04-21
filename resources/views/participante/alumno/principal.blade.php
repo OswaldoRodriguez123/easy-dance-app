@@ -51,7 +51,7 @@
                                         </a>
                                         <ul class="dropdown-menu dm-icon pull-right">
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/eliminados"><i name="eliminados" id="eliminados" class="tm-icon zmdi zmdi-refresh-alt f-25 pointer eliminados detalle"></i>&nbsp;Bandeja Eliminados</a>
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/eliminados"><i name="eliminados" id="eliminados" class="tm-icon zmdi zmdi-delete f-25 pointer eliminados detalle"></i>&nbsp;Bandeja Eliminados</a>
                                             </li>
 
                                             <li class="hidden-xs">

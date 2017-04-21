@@ -162,6 +162,8 @@
                                     </td>
                                     
                                     <td class="text-center disabled"> 
+                                        
+                                        <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer" id="{{$id}}" name="restablecer" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer Alumno" title="" data-original-title=""></i>
 
                                         <i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer congelar_alumno" id="{{$id}}" name="congelar_alumno" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Congelar Alumno" title="" data-original-title=""></i>
 
@@ -406,6 +408,98 @@
                           finprocesado();
                           $('#modalCongelar').modal('hide');
                           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+
+                          $(".procesando").removeClass('show');
+                          $(".procesando").addClass('hidden');
+                          finprocesado();
+                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }                       
+                        
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        finprocesado();
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }            
+
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+
+                    }
+                });
+              }
+            });
+        });
+
+        $("i[name=restablecer").click(function(){
+                id = this.id;
+                element = this;
+            swal({   
+                    title: "¿Seguro deseas restablecer al alumno ?",   
+                    text: "Confirmar el restablecimiento",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#ec6c62",   
+                    confirmButtonText: "Sí, restablecer",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+            if (isConfirm) {
+
+                var route = route_restablecer + id;
+                var token = $('input:hidden[name=_token]').val();
+                procesando();    
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          // var nType = 'success';
+                          // var nTitle="Ups! ";
+                          // var nMensaje=respuesta.mensaje;
+
+                          row = $('#'+id)
+                          
+                          t.row($(row))
+                            .remove()
+                            .draw();
+                            swal("Exito!","El alumno ha sido restablecido correctamente!","success");
+
+                          finprocesado();
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
