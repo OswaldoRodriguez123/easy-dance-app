@@ -245,7 +245,7 @@ class StaffController extends BaseController
 
             $pagos_staff = ConfigPagosStaff::join('config_servicios', 'config_pagos_staff.servicio_id', '=', 'config_servicios.id')
                 ->join('staff', 'config_pagos_staff.staff_id', '=', 'staff.id')
-                ->select('config_pagos_staff.*', 'config_servicios.nombre as nombre')
+                ->select('config_pagos_staff.*', 'config_servicios.nombre as nombre', 'config_servicios.costo')
                 ->where('staff.id', $id)
             ->get();
 
@@ -253,8 +253,20 @@ class StaffController extends BaseController
 
             foreach($config_servicio as $item){
 
-                $tmp[]=array('id' => $item['id'].'-'.$item['tipo'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+                $tmp[]=array('id' => $item['id'].'-'.$item['tipo'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
             }
+
+            foreach($pagos_staff as $pago){
+                if($pago->tipo == 1){
+                    $porcentaje = $pago->monto / 100;
+                    $monto_porcentaje = $pago->costo * $porcentaje;
+                }else{
+                    $monto_porcentaje = '';
+                }
+
+                $tmp2[]=array('id' => $pago->id, 'nombre' => $pago->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => floatval($monto_porcentaje), 'tipo_servicio' => $pago->tipo_servicio, 'servicio_id' => $pago->servicio_id);
+            }
+
 
             //$config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
@@ -267,7 +279,10 @@ class StaffController extends BaseController
             $collection=collect($tmp);   
             $linea_servicio = $collection->toArray();
 
-            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'pagos_staff' => $pagos_staff,  'linea_servicio' => $linea_servicio]);
+            $collection=collect($tmp2);   
+            $pagos = $collection->toArray();
+
+            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'pagos_staff' => $pagos,  'linea_servicio' => $linea_servicio]);
         }else{
            return redirect("staff"); 
         }
@@ -731,7 +746,7 @@ class StaffController extends BaseController
     {
         
         $rules = [
-            'cantidad' => 'required|numeric|min:1',
+            'cantidad' => 'required|min:1',
             'tipo_pago' => 'required'
         ];
 
@@ -784,18 +799,31 @@ class StaffController extends BaseController
 
                     if(!$posee_pago){
 
-                        $servicio = ConfigServicios::find($servicio);
+                        $monto = floatval(str_replace(',', '', $request->cantidad));
+                        $servicio = ConfigServicios::find($servicio_id);
+
+                        if($monto  > $servicio->costo){
+                            return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+                        }
 
                         $config_pagos = new ConfigPagosStaff;
 
                         $config_pagos->servicio_id = $servicio_id;
                         $config_pagos->staff_id = $request->id;
                         $config_pagos->tipo = $request->tipo_pago;
-                        $config_pagos->monto = $request->cantidad;
+                        $config_pagos->monto = $monto;
                         $config_pagos->tipo_servicio = $tipo_servicio;
 
                         $config_pagos->save();
 
+                        if($config_pagos->tipo == 1){
+                            $porcentaje = $config_pagos->monto / 100;
+                            $monto_porcentaje = $servicio->costo * $porcentaje;
+                        }else{
+                            $monto_porcentaje = '';
+                        }
+                        
+                        $config_pagos['monto_porcentaje'] = $monto_porcentaje;
                         $config_pagos['nombre'] = $servicio->nombre;
 
                         array_push($array, $config_pagos);
@@ -819,17 +847,33 @@ class StaffController extends BaseController
 
                     if(!$posee_pago){
 
+                        $monto = floatval(str_replace(',', '', $request->cantidad));
+
+                        $servicio = ConfigServicios::find($servicio_id);
+
+                        if($monto  > $servicio->costo){
+                            return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+                        }
+
                         $config_pagos = new ConfigPagosStaff;
 
                         $config_pagos->servicio_id = $servicio;
                         $config_pagos->staff_id = $request->id;
                         $config_pagos->tipo = $request->tipo_pago;
-                        $config_pagos->monto = $request->cantidad;
+                        $config_pagos->monto = $monto;
 
                         $config_pagos->save();
 
-                        $servicio = ConfigServicios::find($servicio);
+                        
 
+                        if($config_pagos->tipo == 1){
+                            $porcentaje = $config_pagos->monto / 100;
+                            $monto_porcentaje = $servicio->costo * $porcentaje;
+                        }else{
+                            $monto_porcentaje = '';
+                        }
+                        
+                        $config_pagos['monto_porcentaje'] = $monto_porcentaje;
                         $config_pagos['nombre'] = $servicio->nombre;
 
                         array_push($array, $config_pagos);

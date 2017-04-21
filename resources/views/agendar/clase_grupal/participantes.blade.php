@@ -1094,14 +1094,15 @@
 
 	                                 	if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
 
-		                                   $camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
+		                                	$camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
 		                                }else{
 		                                	if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0){
+
 		                                      	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
 		                                    }else{
 
 		                                      	if($alumno['boolean_franela']){
-		                                        $camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
+		                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
 		                                      	}else{
 		                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
 		                                      	}
@@ -1119,19 +1120,19 @@
 
                                   
 
-                                  $contenido = '';
+                                 	$contenido = '';
 
-                                  $contenido = '<p class="c-negro">' .
+                                 	$contenido = '<p class="c-negro">' .
 
-                                  $alumno['nombre'] . ' ' . $alumno['apellido']. ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
+	                                  	$alumno['nombre'] . ' ' . $alumno['apellido']. ' <img class="lv-img-sm" src="'.$imagen.'" alt=""><br><br>' .
 
-                                  'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
-                                  'Talla: ' . $talla_franela . '<br>'.
-                                  'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
+	                                  	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
+	                                  	'Talla: ' . $talla_franela . '<br>'.
+	                                  	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
 
 
 
-                                  '</p>';
+                                  	'</p>';
 
                                 ;?>
 

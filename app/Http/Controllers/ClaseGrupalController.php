@@ -19,9 +19,6 @@ use App\ConfigNiveles;
 use App\Instructor;
 use App\InscripcionClaseGrupal;
 use App\ItemsFacturaProforma;
-use App\ConfigPagosStaff;
-use App\PagoStaff;
-use App\ConfigServicios;
 use Carbon\Carbon;
 use Validator;
 use DB;
@@ -1403,68 +1400,6 @@ class ClaseGrupalController extends BaseController {
                 if($inscripcion->save()){
 
                     $alumno = Alumno::find($request->alumno_id);
-
-                    if($alumno->instructor_id){
-
-                        $staff_id = $alumno->instructor_id;
-                        $in = array(3,4);
-
-                        $config_servicios = ConfigServicios::where('tipo_id',$request->clase_grupal_id)->whereIn('tipo',$in)->get();
-
-                        foreach($config_servicios as $servicio){
-
-                           $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
-
-                           if($config_pago){
-
-                                if($config_pago->tipo == 1){
-
-                                    $config_clase_grupal = ConfigClasesGrupales::find($request->clase_grupal_id);
-
-                                    if($config_clase_grupal){
-
-                                        if($servicio->tipo == 3){
-                                            $costo = $config_clase_grupal->costo_inscripcion;
-                                        }else{
-                                            $costo = $config_clase_grupal->costo_mensualidad;
-                                        }
-                                        
-
-                                    }else{
-                                        $costo = $servicio->costo;
-                                    }
-
-                                    $porcentaje = $config_pago->monto / 100;
-                                    $monto = $costo * $porcentaje;
-
-                                    if($monto > 0 ){
-
-                                        $pago = new PagoStaff;
-
-                                        $pago->staff_id=$staff_id;
-                                        $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$monto;
-                                        $pago->servicio_id=$servicio->id;
-
-                                        $pago->save();
-                                    }
-                                   
-                                }else{
-
-                                    $pago = new PagoStaff;
-
-                                    $pago->staff_id=$staff_id;
-                                    $pago->tipo=$config_pago->tipo;
-                                    $pago->monto=$config_pago->monto;
-                                    $pago->servicio_id=$servicio->id;
-
-                                    $pago->save();
-                                    
-                                }
-                            }
-                        }
-                        
-                    }
 
                     $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
 

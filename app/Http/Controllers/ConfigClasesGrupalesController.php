@@ -141,6 +141,7 @@ class ConfigClasesGrupalesController extends BaseController {
             $servicio->descripcion = $request->descripcion;
             $servicio->incluye_iva = $request->incluye_iva;
             $servicio->tipo = 3;
+            $servicio->tipo_id = $clasegrupal->id;
 
             $servicio->save();
 
@@ -152,6 +153,7 @@ class ConfigClasesGrupalesController extends BaseController {
             $servicio->imagen = '';
             $servicio->descripcion = $request->descripcion;
             $servicio->tipo = 4;
+            $servicio->tipo_id = $clasegrupal->id;
 
             $servicio->save();
             

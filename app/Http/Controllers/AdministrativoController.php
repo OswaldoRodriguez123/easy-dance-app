@@ -20,6 +20,7 @@ use App\Presupuesto;
 use App\ItemsPresupuesto;
 use App\ConfigProductos;
 use App\ConfigServicios;
+use App\ClaseGrupal;
 use App\MercadopagoMovs;
 use App\User;
 use App\Familia;
@@ -35,6 +36,8 @@ use Redirect;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use App\ConfigPagosStaff;
+use App\PagoStaff;
 
 class AdministrativoController extends BaseController {
 
@@ -706,6 +709,7 @@ class AdministrativoController extends BaseController {
 
     public function storeFactura(Request $request)
     {
+        $alumno = Alumno::withTrashed()->find($request->id);
  
         if (Session::has('pagos')) {
            
@@ -856,10 +860,55 @@ class AdministrativoController extends BaseController {
 
                                 $item_factura->save();
                             }
-                        }else if($item_proforma->tipo == 4){
+                        }else if($item_proforma->tipo == 4 OR $item_proforma->tipo == 3){
 
-                            $inscripcion_clase_grupal = InscripcionClaseGrupal::find($item_proforma->item_id);
-                            
+                            $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id',$item_proforma->item_id)->where('alumno_id', $alumno->id)->first();
+
+                            if($inscripcion_clase_grupal->instructor_id){
+
+                                $staff_id = $inscripcion_clase_grupal->instructor_id;
+
+                                $tmp_clase_grupal = ClaseGrupal::find($item_proforma->item_id);
+
+                                $servicio = ConfigServicios::where('tipo_id',$tmp_clase_grupal->clase_grupal_id)->where('tipo',$item_proforma->tipo)->first();
+
+                                $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
+
+                                if($config_pago){
+
+                                    if($config_pago->tipo == 1){
+
+                                        $porcentaje = $config_pago->monto / 100;
+                                        $monto = $item_proforma->importe_neto * $porcentaje;
+
+                                        if($monto > 0 ){
+
+                                            $pago = new PagoStaff;
+
+                                            $pago->staff_id=$staff_id;
+                                            $pago->tipo=$config_pago->tipo;
+                                            $pago->monto=$monto;
+                                            $pago->servicio_id=$servicio->id;
+
+                                            $pago->save();
+                                        }
+                                       
+                                    }else{
+
+                                        $pago = new PagoStaff;
+
+                                        $pago->staff_id=$staff_id;
+                                        $pago->tipo=$config_pago->tipo;
+                                        $pago->monto=$config_pago->monto;
+                                        $pago->servicio_id=$servicio->id;
+
+                                        $pago->save();
+                                        
+                                    }
+                                }
+                                
+                            }
+
                             if($inscripcion_clase_grupal){
                                 $inscripcion_clase_grupal->tiene_mora = 0;
                                 $inscripcion_clase_grupal->save();
@@ -928,9 +977,55 @@ class AdministrativoController extends BaseController {
 
                             $item_factura->save();
                         }
-                    }else if($item_proforma->tipo == 4){
 
-                        $inscripcion_clase_grupal = InscripcionClaseGrupal::find($item_proforma->item_id);
+                    }else if($item_proforma->tipo == 4 OR $item_proforma->tipo == 3){
+
+                        $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id',$item_proforma->item_id)->where('alumno_id', $alumno->id)->first();
+
+                        if($inscripcion_clase_grupal->instructor_id){
+
+                            $staff_id = $inscripcion_clase_grupal->instructor_id;
+
+                            $tmp_clase_grupal = ClaseGrupal::find($item_proforma->item_id);
+
+                            $servicio = ConfigServicios::where('tipo_id',$tmp_clase_grupal->clase_grupal_id)->where('tipo',$item_proforma->tipo)->first();
+
+                            $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
+
+                            if($config_pago){
+
+                                if($config_pago->tipo == 1){
+
+                                    $porcentaje = $config_pago->monto / 100;
+                                    $monto = $item_proforma->importe_neto * $porcentaje;
+
+                                    if($monto > 0 ){
+
+                                        $pago = new PagoStaff;
+
+                                        $pago->staff_id=$staff_id;
+                                        $pago->tipo=$config_pago->tipo;
+                                        $pago->monto=$monto;
+                                        $pago->servicio_id=$servicio->id;
+
+                                        $pago->save();
+                                    }
+                                   
+                                }else{
+
+                                    $pago = new PagoStaff;
+
+                                    $pago->staff_id=$staff_id;
+                                    $pago->tipo=$config_pago->tipo;
+                                    $pago->monto=$config_pago->monto;
+                                    $pago->servicio_id=$servicio->id;
+
+                                    $pago->save();
+                                    
+                                }
+                            }
+
+                        }
                         
                         if($inscripcion_clase_grupal){
                             $inscripcion_clase_grupal->tiene_mora = 0;
@@ -989,7 +1084,6 @@ class AdministrativoController extends BaseController {
             //FINAL
 
             $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::withTrashed()->find($request->id);
             $usuario = User::where('usuario_id', $request->id)->first();
 
             if($usuario){

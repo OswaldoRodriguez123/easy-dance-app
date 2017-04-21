@@ -1098,14 +1098,14 @@
 
                         <div class="col-sm-12">
                           <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modalPromotor-Alumno">
+                            <!-- <tr class="detalle" data-toggle="modal" href="#modalPromotor-Alumno">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi {{ empty($alumno->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
                                <span class="f-14"> Promotor </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-instructor_id" class="capitalize">{{$alumno->instructor_nombre}} {{$alumno->instructor_apellido}}</span></td>
-                            </tr>
+                            </tr> -->
                             <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($alumno->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      

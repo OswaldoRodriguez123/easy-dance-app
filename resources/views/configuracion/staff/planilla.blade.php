@@ -71,22 +71,24 @@
                                               <div class="select">
                                                 <select class="selectpicker bs-select-hidden" id="tipo_id" name="tipo_id" multiple="" data-max-options="5" title="Todas">
 
-                                                 @foreach ( $linea_servicio as $servicio )
-                                                  <?php $exist = false; 
-                                                    $tmp = $servicio['id'];
-                                                    $servicio_id = $tmp[0]
-                                                  ?>
+                                                @foreach ( $linea_servicio as $servicio )
+                                                    <?php $exist = false; 
+                                                      $tmp = explode('-',$servicio['id']);
+                                                      $servicio_id = $tmp[0]
+                                                    ?>
                                                   @foreach ( $pagos_staff as $pagos)
-                                                    @if ($pagos->servicio_id==$servicio_id )
+                                                    @if ($pagos['servicio_id']==$servicio_id )
                                                       <?php $exist = true; ?>
                                                     @endif
                                                   @endforeach
+
                                                   @if ($exist)
-                                                      <option value = "{{ $servicio['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $servicio['nombre'] }}</option>
+                                                      <option value = "{{ $servicio['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $servicio['nombre'] }} - {{ number_format($servicio['costo'], 2, '.' , '.') }} </option>
                                                   @else
-                                                      <option value = "{{ $servicio['id'] }}"> {{ $servicio['nombre'] }}</option>
+                                                      <option value = "{{ $servicio['id'] }}"> {{ $servicio['nombre'] }} - {{ number_format($servicio['costo'], 2, '.' , '.') }}</option>
                                                   @endif
-                                                 @endforeach
+
+                                                @endforeach
                                                 </select>
                                               </div>
                                         </div>
@@ -132,7 +134,7 @@
                                           <div class="input-group">
                                             <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                             <div class="fg-line">
-                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="00000000" placeholder="Ej. 5000">
+                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000,000,000,000" placeholder="Ej. 5000">
                                             </div>
                                           </div>
                                         </div>
@@ -160,6 +162,7 @@
                                                 <th class="text-center" data-column-id="servicio">Servicio</th>
                                                 <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
                                                 <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                                <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
                                                 <th class="text-center" data-column-id="operaciones">Operaciones</th>
 
                                             </tr>
@@ -167,12 +170,12 @@
                                         <tbody>
 
                                         @foreach ($pagos_staff as $pagos)
-                                            <?php $id = $pagos->id; ?>
-                                            <tr id="{{$id}}" class="seleccion" data-tipo_servicio="{{$pagos->tipo_servicio}}">
-                                                <td class="text-center">{{$pagos->nombre}}</td>
+                                            <?php $id = $pagos['id']; ?>
+                                            <tr id="{{$id}}" class="seleccion" data-tipo_servicio="{{$pagos['tipo_servicio']}}">
+                                                <td class="text-center">{{$pagos['nombre']}}</td>
                                                 <td class="text-center">
 
-                                                @if($pagos->tipo == 1)
+                                                @if($pagos['tipo'] == 1)
 
                                                   Porcentaje
                                                 @else
@@ -183,7 +186,21 @@
 
         
                                                 </td>
-                                                <td class="text-center">{{$pagos->monto}}</td>
+                                                <td class="text-center">
+
+                                                  @if($pagos['tipo'] == 1)
+
+                                                    {{$pagos['monto']}}%
+                                                  @else
+
+                                                    {{ number_format($pagos['monto'], 2, '.' , '.') }}
+
+                                                  @endif
+
+                                                  
+
+                                                </td>
+                                                <td class="text-center">{{ number_format($pagos['monto_porcentaje'], 2, '.' , '.') }}</td>
                                                 <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                               </tr>
                                         @endforeach 
@@ -1080,8 +1097,16 @@
       $("#hora_final").val($("#alumno-hora_final").text());
     })
 
+    $('.modal').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $('#form_pago')[0].reset();
+      $('#tipo_servicio').selectpicker('refresh')
+      $('#tipo_id').selectpicker('refresh')
+
+    })
+
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "cargo", "hora_inicio", "hora_final"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "cargo", "hora_inicio", "hora_final", "cantidad"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1611,15 +1636,20 @@
 
                   if(array.tipo == 1){
                     tipo = 'Porcentaje'
+                    monto = array.monto+"%"
+                    monto_porcentaje = 0;
                   }else{
                     tipo = 'Tasa Fija'
+                    monto = formatmoney(parseFloat(array.monto))
+                    monto_porcentaje = formatmoney(parseFloat(array.monto_porcentaje))
                   }
 
                   var rowId=array.id;
                   var rowNode=h.row.add( [
                   ''+array.nombre+'',
                   ''+tipo+'',
-                  ''+array.monto+'',
+                  ''+monto+'',
+                  ''++'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
@@ -1816,6 +1846,10 @@
 
         $('#tipo_id').selectpicker('refresh');
     });
+
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
 
    </script> 
 
