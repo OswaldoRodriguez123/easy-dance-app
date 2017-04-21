@@ -1,4 +1,4 @@
-<header id="header" class="clearfix" data-current-skin="purple">
+<header id="header" class="clearfix">
         <ul class="header-inner">
             @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
                 <li id="menu-trigger" data-trigger="#sidebar">
