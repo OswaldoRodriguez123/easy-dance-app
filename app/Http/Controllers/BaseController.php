@@ -211,35 +211,36 @@ class BaseController extends Controller {
         }
 
     }
-    
-    function cut_html ($html, $limit) {
-        $dom = new \DOMDocument();
-        $dom->loadHTML(mb_convert_encoding("<div>{$html}</div>", "HTML-ENTITIES", "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        cut_html_recursive($dom->documentElement, $limit);
-        return substr($dom->saveHTML($dom->documentElement), 5, -6);
-    }
 
-    function cut_html_recursive ($element, $limit) {
-        if($limit > 0) {
-            if($element->nodeType == 3) {
-                $limit -= strlen($element->nodeValue);
-                if($limit < 0) {
-                    $element->nodeValue = substr($element->nodeValue, 0, strlen($element->nodeValue) + $limit);
-                }
-            }
-            else {
-                for($i = 0; $i < $element->childNodes->length; $i++) {
-                    if($limit > 0) {
-                        $limit = cut_html_recursive($element->childNodes->item($i), $limit);
-                    }
-                    else {
-                        $element->removeChild($element->childNodes->item($i));
-                        $i--;
-                    }
-                }
-            }
+    function cut_html($value, $limit)
+    {
+        $value = html_entity_decode($value);
+
+        if (mb_strwidth($value, 'UTF-8') <= $limit) {
+            return $value;
         }
-        return $limit;
+
+        // Strip text with HTML tags, sum html len tags too.
+        // Is there another way to do it?
+        do {
+            $len          = mb_strwidth($value, 'UTF-8');
+            $len_stripped = mb_strwidth(strip_tags($value), 'UTF-8');
+            $len_tags     = $len - $len_stripped;
+
+            $value = mb_strimwidth($value, 0, $limit + $len_tags, '', 'UTF-8');
+        } while ($len_stripped > $limit);
+
+        // Load as HTML ignoring errors
+        $dom = new DOMDocument();
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>'.$value, LIBXML_HTML_NODEFDTD);
+
+        // Fix the html errors
+        $value = $dom->saveHtml($dom->getElementsByTagName('body')->item(0));
+
+        // Remove body tag
+        $value = mb_strimwidth($value, 6, mb_strwidth($value, 'UTF-8') - 13, '', 'UTF-8'); // <body> and </body>
+        // Remove empty tags
+        return preg_replace('/<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)*\s*\/?>\s*<\/\1\s*>/', '', $value);
     }
 
 }
