@@ -210,7 +210,36 @@ class BaseController extends Controller {
 
         }
 
-    }    
+    }
+    
+    function cut_html ($html, $limit) {
+        $dom = new DOMDocument();
+        $dom->loadHTML(mb_convert_encoding("<div>{$html}</div>", "HTML-ENTITIES", "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        cut_html_recursive($dom->documentElement, $limit);
+        return substr($dom->saveHTML($dom->documentElement), 5, -6);
+    }
 
+    function cut_html_recursive ($element, $limit) {
+        if($limit > 0) {
+            if($element->nodeType == 3) {
+                $limit -= strlen($element->nodeValue);
+                if($limit < 0) {
+                    $element->nodeValue = substr($element->nodeValue, 0, strlen($element->nodeValue) + $limit);
+                }
+            }
+            else {
+                for($i = 0; $i < $element->childNodes->length; $i++) {
+                    if($limit > 0) {
+                        $limit = cut_html_recursive($element->childNodes->item($i), $limit);
+                    }
+                    else {
+                        $element->removeChild($element->childNodes->item($i));
+                        $i--;
+                    }
+                }
+            }
+        }
+        return $limit;
+    }
 
 }
