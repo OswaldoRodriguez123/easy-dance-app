@@ -305,8 +305,6 @@
 
 @stop
 
-@extends('layout.footer')
-
 @section('js') 
         
       <script type="text/javascript">
