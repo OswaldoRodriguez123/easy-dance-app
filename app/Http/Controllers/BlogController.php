@@ -759,7 +759,7 @@ class BlogController extends BaseController {
             $array = [
                 'imagen' => $imagen,
                 'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
-                'msj_html' => $contenido,
+                'msj_html' => str_limit(strip_tags($contenido), $limit = 350, $end = '...'),
                 'email' => 'bfsraptor@hotmail.com',
                 'subj' => $entrada->titulo
             ];

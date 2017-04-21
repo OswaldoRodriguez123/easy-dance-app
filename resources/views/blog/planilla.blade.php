@@ -921,15 +921,6 @@
       });
     }
 
-  function countChar(val) {
-    var len = val.value.length;
-    if (len >= 60) {
-      val.value = val.value.substring(0, 60);
-    } else {
-      $('#charNum').text(60 - len);
-    }
-  };
-
   $("#enviar").click(function(){
       swal({   
           title: "Desea enviar la entrada por correo",   
@@ -943,6 +934,13 @@
       }, function(isConfirm){   
       if (isConfirm) {
 
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+
         enviar();
         }
       });
@@ -950,30 +948,39 @@
 
   function enviar(){
 
-   var route = route_enviar + "{{$id}}";
-   var token = $('input:hidden[name=_token]').val();
+    var route = route_enviar + "{{$id}}";
+    var token = '{{ csrf_token() }}';
     procesando();
+
     $.ajax({
-        url: route,
-        headers: {'X-CSRF-TOKEN': token},
-        type: 'POST',
-        dataType: 'json',
-        success:function(respuesta){
+      url: route,
+      headers: {'X-CSRF-TOKEN': token},
+      type: 'POST',
+      dataType: 'json',
+      success:function(respuesta){
 
-            swal("Listo!","Correo enviado exitósamente!","success");
+        swal("Listo!","Correo enviado exitósamente!","success");
 
-        },
-        error:function(msj){
+      },
+      error:function(msj){
 
-              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
 
-            }
-
-        });
+      }
+    });
     
-      finprocesado();
+    finprocesado();
 
   }
+
+  function countChar(val) {
+    var len = val.value.length;
+    if (len >= 60) {
+      val.value = val.value.substring(0, 60);
+    } else {
+      $('#charNum').text(60 - len);
+    }
+  };
 
 
    </script> 
