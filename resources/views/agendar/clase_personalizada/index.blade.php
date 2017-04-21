@@ -146,7 +146,8 @@
                                 <tr>
                                     <th class="text-center" data-column-id="acepto" data-order="desc"></th>
                                     <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th>
-                                    <th class="text-center" data-column-id="clase_personalizada" data-order="desc">Clase</th>                           
+                                    <th class="text-center" data-column-id="clase_personalizada" data-order="desc">Clase</th>
+                                    <th class="text-center" data-column-id="horas" data-order="desc">Horas Restantes</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc" >Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc" >Hora</th>
@@ -522,7 +523,8 @@
                 var rowNode=t.row.add( [
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+ ' ' + array.cantidad_horas + ' ' + horas+'',
+                ''+array.clase_personalizada_nombre+'',
+                ''+array.cantidad_horas + ' ' + horas+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
@@ -545,6 +547,7 @@
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
+                '',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
@@ -570,6 +573,7 @@
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
+                '',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'',
@@ -592,6 +596,7 @@
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
+                '',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
@@ -616,6 +621,7 @@
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
+                '',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'',
@@ -638,6 +644,7 @@
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
                 ''+array.clase_personalizada_nombre+'',
+                '',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
