@@ -144,11 +144,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="acepto" data-order="desc"></th>
                                     <th class="text-center" data-column-id="alumno" data-order="desc">Alumno</th>
-                                    <th class="text-center" data-column-id="clase_personalizada" data-order="desc">Clase Personalizada</th>                           
+                                    <th class="text-center" data-column-id="clase_personalizada" data-order="desc">Clase</th>                           
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc" >Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc" >Hora</th>
@@ -205,11 +203,9 @@
         $("#activas").prop("checked", true);
 
          $("#imagen_principal").bind("change", function() {
-            //alert('algo cambio');
             
             setTimeout(function(){
               var fileinput = $("#imagena img").attr('src');
-              //alert(fileinput);
               var image64 = $("input:hidden[name=imageBase64]").val(fileinput);
             },500);
 
@@ -511,16 +507,22 @@
 
             $.each(activas, function (index, array) {
 
-              if(array.boolean_alumno_aceptacion == 1){
-                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-              }else{
-                acepto = '';
-              }
+                if(array.boolean_alumno_aceptacion == 1){
+                  acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
+                }else{
+                  acepto = '';
+                }
+
+                if(array.cantidad_horas > 1){
+                  horas = 'Horas';
+                }else{
+                  horas = 'Hora';
+                }
 
                 var rowNode=t.row.add( [
                 ''+acepto+'' ,
                 ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
+                ''+array.clase_personalizada_nombre+ ' ' + array.cantidad_horas + ' ' + horas+'',
                 ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
                 ''+array.fecha_inicio+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,

@@ -940,6 +940,7 @@ class ClasePersonalizadaController extends BaseController {
         }
 
         $clasepersonalizada = new InscripcionClasePersonalizada;
+        $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
         
         $fecha_inicio = $fecha_inicio->toDateString();
         $fecha_final = $fecha_final->toDateString();
@@ -954,6 +955,7 @@ class ClasePersonalizadaController extends BaseController {
         $clasepersonalizada->especialidad_id = $request->especialidad_id;
         $clasepersonalizada->estudio_id = $request->estudio_id;
         $clasepersonalizada->promotor_id =  $request->promotor_id;
+        $clasepersonalizada->cantidad_horas =  $clase_personalizada->cantidad_horas;
 
         // return redirect("/home");
         if($clasepersonalizada->save()){
@@ -964,8 +966,6 @@ class ClasePersonalizadaController extends BaseController {
                 $visitante->cliente = 1;
                 $visitante->save();
             }
-
-            $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
             
             if($request->precio_id)
             {
@@ -1030,14 +1030,14 @@ class ClasePersonalizadaController extends BaseController {
             ];
 
             Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-                });
+                $msj->subject($array['subj']);
+                $msj->to($array['correo']);
+            });
 
             Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
-                    $msj->subject($array2['subj']);
-                    $msj->to($array2['correo']);
-                });
+                $msj->subject($array2['subj']);
+                $msj->to($array2['correo']);
+            });
 
             Session::forget('id_alumno');
 

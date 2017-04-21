@@ -35,7 +35,7 @@
             <ul class="ca-menu-c col-sm-5" style="width: 720px;">
 
 
-                    <li data-ripplecator class ="dark-ripples">
+<!--                     <li data-ripplecator class ="dark-ripples">
                         <a href="{{url('/')}}/configuracion/clases-personalizadas/participantes/{{$id}}">
                             <span class="ca-icon-c"><i class="icon_a-participantes f-35 boton blue sa-warning" 
                                    data-original-title="Ver Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
@@ -56,7 +56,7 @@
                                 <h3 class="ca-sub-c"></h3>
                             </div>
                         </a>
-                    </li>
+                    </li> -->
 
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar">

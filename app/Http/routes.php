@@ -271,6 +271,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::put('configuracion/clases-personalizadas/update/nombre', 'ConfigClasePersonalizadaController@updateNombre');
 			Route::put('configuracion/clases-personalizadas/update/costo', 'ConfigClasePersonalizadaController@updateCosto');
+			Route::put('configuracion/clases-personalizadas/update/hora', 'ConfigClasePersonalizadaController@updateHora');
 			Route::put('configuracion/clases-personalizadas/update/imagen', 'ConfigClasePersonalizadaController@updateImagen');
 			Route::put('configuracion/clases-personalizadas/update/descripcion', 'ConfigClasePersonalizadaController@updateDescripcion');
 			Route::put('configuracion/clases-personalizadas/update/etiqueta', 'ConfigClasePersonalizadaController@updateEtiqueta');
@@ -1059,7 +1060,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('programacion','ProgresoController@principalprogramacion');
 			Route::get('programacion/{id}','ProgresoController@programacion');
 
-			Route::get('certificado','ProgresoController@certificado');
+			Route::get('/certificado/','ProgresoController@certificado');
 
 			//EMBAJADOR
 

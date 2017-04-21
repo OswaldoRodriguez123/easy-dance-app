@@ -150,12 +150,29 @@
                                   
                                 <div class="col-sm-4">
 
-                                    <div style="margin-left: 30% ; padding: 5% ; border:1px solid" class="opaco-0-3">
-                                        <h4 class="text-center">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
+                                    <div id="certificado" class="opaco-0-3 certificado">
+                                        <h4 class="text-center" id="titulo_certificado">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
+                                        
+                                        <div class="text-center p-t-10">
+                                            <a class ="f-15 f-700" style="display:none" id="link_certificado">Ver Certificado</a>
+                                        </div>
 
                                         <div class="clearfix"></div>
 
                                         <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
+
+                                        <div id="certificado_estrellas" class="rating-list text-center" style="display: none">
+                                            <div class="rl-star">
+                                                <span id="certificado_puntaje" class="f-15 m-r-5"></span>
+                                                <i id="certificado_estrella_1" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_2" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_3" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_4" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_5" class="zmdi zmdi-star"></i>
+                                       
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <br>
@@ -334,6 +351,7 @@
 
         j2 = j+1;
         j3 = j+2;
+        porcentaje_final = 0;
 
         if(evaluaciones[j]){
             porcentaje = evaluaciones[j]
@@ -358,6 +376,8 @@
             if(porcentaje >= 100){
                 $('#titulo_1_estrella_5').addClass('active')
             }
+
+            porcentaje_final = porcentaje_final + porcentaje
         }
 
         if(evaluaciones[j2]){
@@ -383,12 +403,15 @@
             if(porcentaje >= 100){
                 $('#titulo_2_estrella_5').addClass('active')
             }
+
+            porcentaje_final = porcentaje_final + porcentaje
         }
 
         if(evaluaciones[j3]){
             porcentaje = evaluaciones[j3]
             $('#titulo_3_puntaje').text(porcentaje+"%");
             $('#titulo_3_estrellas').show();
+
             if(porcentaje >= 20){
                 $('#titulo_3_estrella_1').addClass('active')
             }
@@ -408,6 +431,40 @@
             if(porcentaje >= 100){
                 $('#titulo_3_estrella_5').addClass('active')
             }
+
+            porcentaje_final = porcentaje_final + porcentaje
+            porcentaje_final = parseInt(porcentaje_final / 3)
+
+            $('#certificado_estrellas').show();
+            $('#certificado').removeClass('opaco-0-3')
+            $('#certificado_puntaje').text(porcentaje_final+"%");
+
+            if(porcentaje_final >= 20){
+                $('#certificado_estrella_1').addClass('active')
+            }
+
+            if(porcentaje_final >= 40){
+                $('#certificado_estrella_2').addClass('active')
+            }
+
+            if(porcentaje_final >= 60){
+                $('#certificado_estrella_3').addClass('active')
+            }
+
+            if(porcentaje_final >= 80){
+                $('#certificado_estrella_4').addClass('active')
+            }
+
+            if(porcentaje_final >= 100){
+                $('#certificado_estrella_5').addClass('active')
+            }
+
+            $('#link_certificado').show();
+
+            $('#link_certificado').attr('href', "http://"+location.host+"/certificado/?id={{$id}}&tipo=1")
+
+            $('#titulo_certificado').text('HAS LOGRADO OBTENER DE MANERA EXITOSA EL CERTIFICADO DEL CICLO BÁSICO')
+
         }
 
         if(window["clase_"+j]['clase_1'] == 1){

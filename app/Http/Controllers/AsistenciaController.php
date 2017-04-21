@@ -16,6 +16,8 @@ use App\HorarioClaseGrupal;
 
 use App\ClasePersonalizada;
 
+use App\HorarioClasePersonalizada;
+
 use App\InscripcionClasePersonalizada;
 
 use App\Asistencia;
@@ -1539,8 +1541,41 @@ class AsistenciaController extends BaseController
                 if($asistencia->save()){
 
                   if($clase_id[2] == '3'){
+
                     $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
-                    $clase_personalizada->estatus = '2';
+                    $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio)->toDateString();
+
+                    if($fecha_inicio != Carbon::now()->toDateString()){
+
+                      $horario = HorarioClasePersonalizada::where('clase_personalizada_id', $clase_personalizada->id)->where('fecha', Carbon::now()->toDateString())->first();
+
+                      if($horario){
+
+                        $hie = explode(':',$horario->hora_inicio);
+                        $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                        $hfe = explode(':',$horario->hora_final);
+                        $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                        $resta_horas = $hora_inicio->diffInHours($hora_final);
+
+                      }else{
+                        $resta_horas = 0;
+                      }
+
+                    }else{
+                      $hie = explode(':',$clase_personalizada->hora_inicio);
+                      $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                      $hfe = explode(':',$clase_personalizada->hora_final);
+                      $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                      $resta_horas = $hora_inicio->diffInHours($hora_final); 
+                    }
+
+                    $cantidad_horas = $clase_personalizada->cantidad_horas - $resta_horas;
+
+                    $clase_personalizada->cantidad_horas = $cantidad_horas;
                     $clase_personalizada->save();
                     
                   }else if($clase_id[2] == '4'){

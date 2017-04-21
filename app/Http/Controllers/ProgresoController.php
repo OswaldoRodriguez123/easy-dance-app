@@ -352,9 +352,8 @@ class ProgresoController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
 
         $id = $_GET['id'];
-
         $tipo = $_GET['tipo'];
-    
+
         $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',Auth::user()->usuario_id)->first();
 
         if($find){
