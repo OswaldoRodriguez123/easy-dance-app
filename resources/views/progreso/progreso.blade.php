@@ -87,11 +87,24 @@
                                     <div class="col-sm-4">
                                     
                                         <span id="titulo_1" class="f-14 opaco-0-8 f-700"> TITULO 1</span> <span class="pull-right f-14 opaco-0-8 f-700"><span id="barra_1_span">0</span> % COMPLETADA</span>
-                                    
+
+                                                                            
                                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
                                             <div id="barra_1" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-
                                         </div>
+
+                                        <div id="titulo_1_estrellas" class="rating-list text-center" style="display: none">
+                                            <div class="rl-star">
+                                                <span id="titulo_1_puntaje" class="f-15 m-r-5"></span>
+                                                <i id="titulo_1_estrella_1" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_1_estrella_2" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_1_estrella_3" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_1_estrella_4" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_1_estrella_5" class="zmdi zmdi-star"></i>
+                                       
+                                            </div>
+                                        </div>
+
 
                                         <div class="clearfix m-b-10"></div>
 
@@ -101,6 +114,18 @@
                                             <div id="barra_2" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
 
+                                        <div id="titulo_2_estrellas" class="rating-list text-center" style="display: none">
+                                            <div class="rl-star">
+                                                <span id="titulo_2_puntaje" class="f-15 m-r-5"></span>
+                                                <i id="titulo_2_estrella_1" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_2_estrella_2" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_2_estrella_3" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_2_estrella_4" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_2_estrella_5" class="zmdi zmdi-star"></i>
+                                       
+                                            </div>
+                                        </div>
+
                                         <div class="clearfix m-b-10"></div>
 
                                         <span id="titulo_3" class="f-14 opaco-0-8 f-700"> TITULO 3</span> <span class="pull-right f-14 opaco-0-8 f-700"><span id="barra_3_span">0</span> % COMPLETADA</span>
@@ -108,17 +133,46 @@
                                         <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
                                             <div id="barra_3" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
+
+                                        <div id="titulo_3_estrellas" class="rating-list text-center" style="display: none">
+                                            <div class="rl-star">
+                                                <span id="titulo_3_puntaje" class="f-15 m-r-5"></span>
+                                                <i id="titulo_3_estrella_1" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_3_estrella_2" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_3_estrella_3" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_3_estrella_4" class="zmdi zmdi-star"></i>
+                                                <i id="titulo_3_estrella_5" class="zmdi zmdi-star"></i>
+                                       
+                                            </div>
+                                        </div>
                                     </div>
 
                                   
                                 <div class="col-sm-4">
 
-                                    <div style="margin-left: 30% ; padding: 5% ; border:1px solid" class="opaco-0-3">
-                                        <h4 class="text-center">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
+                                    <div id="certificado" class="opaco-0-3 certificado">
+                                        <h4 class="text-center" id="titulo_certificado">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
+                                        
+                                        <div class="text-center p-t-10">
+                                            <a class ="f-15 f-700" style="display:none" id="link_certificado">Ver Certificado</a>
+                                        </div>
 
                                         <div class="clearfix"></div>
 
                                         <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
+
+                                        <div id="certificado_estrellas" class="rating-list text-center" style="display: none">
+                                            <div class="rl-star">
+                                                <span id="certificado_puntaje" class="f-15 m-r-5"></span>
+                                                <i id="certificado_estrella_1" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_2" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_3" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_4" class="zmdi zmdi-star"></i>
+                                                <i id="certificado_estrella_5" class="zmdi zmdi-star"></i>
+                                       
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <br>
@@ -194,6 +248,7 @@
     var i = 1;
     var j = 1;
 
+    var evaluaciones = <?php echo json_encode($evaluaciones);?>;
     var clase_1 = <?php echo json_encode($clase_1);?>;
     var clase_2 = <?php echo json_encode($clase_2);?>;
     var clase_3 = <?php echo json_encode($clase_3);?>;
@@ -281,7 +336,7 @@
             $('#titulo_1').text('INTERMEDIO I')
             $('#titulo_2').text('INTERMEDIO II')
             $('#titulo_3').text('INTERMEDIO III')
-        }else if(j == 4){
+        }else if(j == 7){
             $('#titulo_1').text('AVANZADO I')
             $('#titulo_2').text('AVANZADO II')
             $('#titulo_3').text('AVANZADO III')
@@ -296,6 +351,121 @@
 
         j2 = j+1;
         j3 = j+2;
+        porcentaje_final = 0;
+
+        if(evaluaciones[j]){
+            porcentaje = evaluaciones[j]
+            $('#titulo_1_puntaje').text(porcentaje+"%");
+            $('#titulo_1_estrellas').show();
+            if(porcentaje >= 20){
+                $('#titulo_1_estrella_1').addClass('active')
+            }
+
+            if(porcentaje >= 40){
+                $('#titulo_1_estrella_2').addClass('active')
+            }
+
+            if(porcentaje >= 60){
+                $('#titulo_1_estrella_3').addClass('active')
+            }
+
+            if(porcentaje >= 80){
+                $('#titulo_1_estrella_4').addClass('active')
+            }
+
+            if(porcentaje >= 100){
+                $('#titulo_1_estrella_5').addClass('active')
+            }
+
+            porcentaje_final = porcentaje_final + porcentaje
+        }
+
+        if(evaluaciones[j2]){
+            porcentaje = evaluaciones[j2]
+            $('#titulo_2_puntaje').text(porcentaje+"%");
+            $('#titulo_2_estrellas').show();
+            if(porcentaje >= 20){
+                $('#titulo_2_estrella_1').addClass('active')
+            }
+
+            if(porcentaje >= 40){
+                $('#titulo_2_estrella_2').addClass('active')
+            }
+
+            if(porcentaje >= 60){
+                $('#titulo_2_estrella_3').addClass('active')
+            }
+
+            if(porcentaje >= 80){
+                $('#titulo_2_estrella_4').addClass('active')
+            }
+
+            if(porcentaje >= 100){
+                $('#titulo_2_estrella_5').addClass('active')
+            }
+
+            porcentaje_final = porcentaje_final + porcentaje
+        }
+
+        if(evaluaciones[j3]){
+            porcentaje = evaluaciones[j3]
+            $('#titulo_3_puntaje').text(porcentaje+"%");
+            $('#titulo_3_estrellas').show();
+
+            if(porcentaje >= 20){
+                $('#titulo_3_estrella_1').addClass('active')
+            }
+
+            if(porcentaje >= 40){
+                $('#titulo_3_estrella_2').addClass('active')
+            }
+
+            if(porcentaje >= 60){
+                $('#titulo_3_estrella_3').addClass('active')
+            }
+
+            if(porcentaje >= 80){
+                $('#titulo_3_estrella_4').addClass('active')
+            }
+
+            if(porcentaje >= 100){
+                $('#titulo_3_estrella_5').addClass('active')
+            }
+
+            porcentaje_final = porcentaje_final + porcentaje
+            porcentaje_final = parseInt(porcentaje_final / 3)
+
+            $('#certificado_estrellas').show();
+            $('#certificado').removeClass('opaco-0-3')
+            $('#certificado_puntaje').text(porcentaje_final+"%");
+
+            if(porcentaje_final >= 20){
+                $('#certificado_estrella_1').addClass('active')
+            }
+
+            if(porcentaje_final >= 40){
+                $('#certificado_estrella_2').addClass('active')
+            }
+
+            if(porcentaje_final >= 60){
+                $('#certificado_estrella_3').addClass('active')
+            }
+
+            if(porcentaje_final >= 80){
+                $('#certificado_estrella_4').addClass('active')
+            }
+
+            if(porcentaje_final >= 100){
+                $('#certificado_estrella_5').addClass('active')
+            }
+
+            $('#link_certificado').show();
+
+            $('#link_certificado').attr('href', "http://"+location.host+"/certificado/?id={{$id}}&tipo=1")
+
+            $('#titulo_certificado').text('HAS LOGRADO OBTENER DE MANERA EXITOSA EL CERTIFICADO DEL CICLO BÁSICO')
+
+        }
 
         if(window["clase_"+j]['clase_1'] == 1){
 
@@ -325,7 +495,6 @@
         }
 
         total = 0
-
 
         if(window["clase_"+j2]['clase_1'] == 1){
 

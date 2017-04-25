@@ -1358,9 +1358,6 @@
                   }
                 });
             });
-      function eliminar(id){
-         
-      }
 
             
         </script>

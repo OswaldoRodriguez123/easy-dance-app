@@ -30,8 +30,29 @@ class PromocionController extends BaseController {
 
     public function principal()
     {
+        $promociones = Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('especiales.promocion.principal')->with(['promocion' => Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
+        foreach($promociones as $promocion){
+            $fecha = Carbon::createFromFormat('Y-m-d',$promocion->fecha_final);
+            if($fecha >= Carbon::now()){
+
+                $dias_restantes = $fecha->diffInDays();
+
+                $status = 'Activa';
+
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
+            }
+
+            $collection=collect($promocion);     
+            $promocion_array = $collection->toArray();
+            $promocion_array['status']=$status;
+            $promocion_array['dias_restantes']=$dias_restantes;
+            $array[$promocion->id] = $promocion_array;
+        }
+
+        return view('especiales.promocion.principal')->with(['promociones' => $array]);
     }
 
     public function codigo()
@@ -68,7 +89,7 @@ class PromocionController extends BaseController {
     $rules = [
         'nombre' => 'required|min:3|max:80',
         'numero' => 'required',
-        'porcentaje_descuento' => 'required|numeric',
+        'porcentaje_descuento' => 'required|numeric|max:100',
         'fecha' => 'required',
         'descripcion' => 'min:3|max:500',
         'edad_inicio' => 'numeric',
@@ -86,6 +107,7 @@ class PromocionController extends BaseController {
         'descripcion.max' => 'El máximo de caracteres permitidos son 500',
         'porcentaje_descuento.required' => 'Ups! El porcentaje de descuento es requerido',
         'porcentaje_descuento.numeric' => 'Ups! El porcentaje de descuento es inválido , debe contener sólo números',
+        'porcentaje_descuento.max' => 'Ups! El porcentaje de descuento no puede ser mayor a 100',
         'fecha.required' => 'Ups! La fecha de promoción  es requerida',
         'edad_inicio.numeric' => 'Ups! La edad es inválida , debe contener sólo números',
         'edad_final.numeric' => 'Ups! La edad es inválida , debe contener sólo números',

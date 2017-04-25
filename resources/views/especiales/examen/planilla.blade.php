@@ -1086,7 +1086,7 @@
                              </td>
                              <td  class="f-14 m-l-15" id="examen-tipo">{{$examen->tipo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Examen">
+                            <tr class="disabled">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-clase_grupal" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>

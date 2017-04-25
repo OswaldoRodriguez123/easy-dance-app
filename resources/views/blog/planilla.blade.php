@@ -499,7 +499,7 @@
 
                                   <hr>
                                   
-                                  <!-- <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
+                                  <i name="enviar" class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -545,6 +545,24 @@
                                <span class="f-14"> Tópico </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="entrada-categoria" data-valor="{{$entrada->categoria_id}}"><span>{{$entrada->categoria}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="disabled">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-dirigido" class="zmdi {{ empty($entrada->dirigido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
+                               <span class="f-14"> A quien va dirigido </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="entrada-dirigido" class="capitalize">
+
+                              @if($entrada->dirigido == 1)
+                                Todos
+                              @elseif($entrada->dirigido == 2)
+                                Visitantes Presenciales
+                              @else
+                                Alumnos
+                              @endif
+
+                             </span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modal-Contenido">
                              <td>
@@ -610,9 +628,13 @@
    <script type="text/javascript">
     route_update="{{url('/')}}/blog/entrada/update";
     route_eliminar="{{url('/')}}/blog/entrada/eliminar/";
+    route_enviar="{{url('/')}}/blog/entrada/enviar/";
     route_principal="{{url('/')}}/blog";
 
+    var id = "{{$id}}"
+
     $(document).ready(function(){
+
 
       if("{{$entrada->boolean_mostrar}}" == 1){
         $("#boolean_mostrar").val('1');  //VALOR POR DEFECTO
@@ -899,9 +921,10 @@
   });
     
     function eliminar(){
-       var route = route_eliminar + "{{$id}}";
-       var token = '{{ csrf_token() }}';
-       procesando();
+
+      procesando();
+      var route = route_eliminar + id;
+      var token = '{{ csrf_token() }}';
               
       $.ajax({
           url: route,
@@ -920,6 +943,58 @@
       });
     }
 
+  $("i[name=enviar]").click(function(){
+      swal({   
+          title: "Desea enviar la entrada por correo",   
+          text: "Confirmar envio!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Enviar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+
+        enviar();
+        }
+      });
+  });
+
+  function enviar(){
+
+    procesando();
+    var route = route_enviar + id;
+    var token = '{{ csrf_token() }}';
+
+    $.ajax({
+      url: route,
+      headers: {'X-CSRF-TOKEN': token},
+      type: 'POST',
+      dataType: 'json',
+      success:function(respuesta){
+
+        swal("Listo!","Correo enviado exitósamente!","success");
+        finprocesado();
+
+      },
+      error:function(msj){
+
+        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+        finprocesado();
+
+      }
+    });
+    
+  }
+
   function countChar(val) {
     var len = val.value.length;
     if (len >= 60) {
@@ -929,7 +1004,13 @@
     }
   };
 
-   </script> 
+  function procesando(){
+    $("body").addClass('loader-active');
+    $("#loader-procesando").addClass('active');
+  }
+
+
+  </script> 
   
 		
 @stop

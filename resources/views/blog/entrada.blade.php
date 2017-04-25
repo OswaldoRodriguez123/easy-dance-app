@@ -1,24 +1,5 @@
 @extends('layout.master')
 
-@section('css_vendor')
-
-  <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
-  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
-  <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
-  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
-
-
-
-@stop
-
-@section('js_vendor')
-<script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
-
-<script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-@stop
-
 @section('content')
 
   <div class="container">
@@ -343,5 +324,3 @@
 
   </script>
 @stop
-
-@extends('layout.footer')

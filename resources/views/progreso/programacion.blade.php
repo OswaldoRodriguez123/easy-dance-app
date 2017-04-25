@@ -93,52 +93,7 @@
                                     <div class="col-sm-3">
                                     <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
 
-                                      @if($notas)
-                                            <div class="rating-list text-center">
-
-                                              <span class="f-12">Resultado final : {{$notas['nota']}} puntos de {{$notas['total']}}</span>
-
-                                              <br>
-                                              <div class="rl-star">
-                                                  @if($notas['porcentaje'] >= 20)
-                                                      <i class="zmdi zmdi-star active"></i>
-                                                  @else
-                                                      <i class="zmdi zmdi-star"></i>
-                                                  @endif
-
-                                                  @if($notas['porcentaje'] >= 40)
-                                                      <i class="zmdi zmdi-star active"></i>
-                                                  @else
-                                                      <i class="zmdi zmdi-star"></i>
-                                                  @endif
-
-                                                  @if($notas['porcentaje'] >= 60)
-                                                      <i class="zmdi zmdi-star active"></i>
-                                                  @else
-                                                      <i class="zmdi zmdi-star"></i>
-                                                  @endif
-
-                                                  @if($notas['porcentaje'] >= 80)
-                                                      <i class="zmdi zmdi-star active"></i>
-                                                  @else
-                                                      <i class="zmdi zmdi-star"></i>
-                                                  @endif
-
-                                                  @if($notas['porcentaje'] >= 100)
-                                                      <i class="zmdi zmdi-star active"></i>
-                                                  @else
-                                                      <i class="zmdi zmdi-star"></i>
-                                                  @endif
-                                                  
-                                              </div>
-                                          </div>
-                                        @else
-
-                                          <div style="padding-bottom: 25%"></div>
-                                          
-                                        @endif
-
-
+                                     
                                         <div class="eos-menu" id="nivelacion_1">
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">

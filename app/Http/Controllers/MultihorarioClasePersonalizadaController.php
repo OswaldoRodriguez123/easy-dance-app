@@ -27,24 +27,59 @@ class MultihorarioClasePersonalizadaController extends BaseController
     	Session::forget('horarios');
 
         $clasepersonalizada = ClasePersonalizada::join('inscripcion_clase_personalizada', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-        ->select('clases_personalizadas.nombre', 'inscripcion_clase_personalizada.id')
-        ->where('inscripcion_clase_personalizada.id', $id)
+            ->select('clases_personalizadas.cantidad_horas as horas_asignadas', 'inscripcion_clase_personalizada.*')
+            ->where('inscripcion_clase_personalizada.id', $id)
         ->first();
 
-        $dias_de_semana = DiasDeSemana::all();
-        $config_especialidades = ConfigEspecialidades::all();
-        $config_estudios = ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();        
-        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+        if($clasepersonalizada){
 
-        return view(
-        	'agendar.clase_personalizada.multihorario.multihorario', 
-        	compact('id','clasepersonalizada',
-        		    'dias_de_semana',
-        		    'config_especialidades',
-        		    'config_estudios',
-        		    'instructores'
-        		   )
-        	);
+            $horas_asignadas = 0;
+
+            $hie = explode(':',$clasepersonalizada->hora_inicio);
+            $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+            $hfe = explode(':',$clasepersonalizada->hora_final);
+            $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+            $hora_asignada = $hora_inicio->diffInHours($hora_final);
+            $horas_asignadas = $horas_asignadas + $hora_asignada;
+
+            // $horarios = HorarioClasePersonalizada::where('clase_personalizada_id',$clasepersonalizada->id)->get();
+
+            // foreach($horarios as $horario){
+            //     $hie = explode(':',$horario->hora_inicio);
+            //     $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+            //     $hfe = explode(':',$horario->hora_final);
+            //     $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+            //     $hora_asignada = $hora_inicio->diffInHours($hora_final);
+            //     $horas_asignadas = $horas_asignadas + $hora_asignada;
+            // }
+
+            $horas_restantes = $clasepersonalizada->horas_asignadas - $horas_asignadas;
+
+            $dias_de_semana = DiasDeSemana::all();
+            $config_especialidades = ConfigEspecialidades::all();
+            $config_estudios = ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();        
+            $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            Session::put('horas_restantes', $horas_restantes);
+
+            return view(
+            	'agendar.clase_personalizada.multihorario.multihorario', 
+            	compact('id','clasepersonalizada',
+            		    'dias_de_semana',
+            		    'config_especialidades',
+            		    'config_estudios',
+            		    'instructores',
+                        'horas_asignadas',
+                        'horas_restantes'
+            		   )
+            	);
+        }else{
+            return redirect("agendar/clases-personalizadas"); 
+        }
     }
 
     public function agregar(Request $request){
@@ -260,40 +295,59 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
                 if($fecha_inicio->between($fecha_inicio_clase, $fecha_final_clase)){
 
-                    $find = Instructor::find($request->instructor_acordeon_id);
-                    $instructor = $find->nombre . " " . $find->apellido;
+                    $hie = explode(':',$request->hora_inicio_acordeon);
+                    $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], '00');
 
-                    // $find = DiasDeSemana::find($request->dia_de_semana_id);
-                    // $dia_de_semana = $find->nombre;
-                    $dia_de_semana = $fecha_inicio->toDateString();
+                    $hfe = explode(':',$request->hora_final_acordeon);
+                    $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], '00');
 
-                    $find = ConfigEspecialidades::find($request->especialidad_acordeon_id);
-                    $especialidad = $find->nombre;
+                    $hora_asignada = $hora_inicio->diffInHours($hora_final);
 
-                    $find = ConfigEstudios::find($request->estudio_id);
-                    $estudio = $find->nombre;
+                    $horas_restantes = Session::get('horas_restantes');
 
-                    $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta]);
+                    if($hora_asignada <= $horas_restantes){
+
+                        $horas_restantes = $horas_restantes - $hora_asignada;
+
+                        Session::put('horas_restantes', $horas_restantes);
+
+                        $find = Instructor::find($request->instructor_acordeon_id);
+                        $instructor = $find->nombre . " " . $find->apellido;
+
+                        // $find = DiasDeSemana::find($request->dia_de_semana_id);
+                        // $dia_de_semana = $find->nombre;
+                        $dia_de_semana = $fecha_inicio->toDateString();
+
+                        $find = ConfigEspecialidades::find($request->especialidad_acordeon_id);
+                        $especialidad = $find->nombre;
+
+                        $find = ConfigEstudios::find($request->estudio_id);
+                        $estudio = $find->nombre;
+
+                        $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta, 'hora_asignada' => $hora_asignada]);
 
 
-                    Session::push('horarios', $array);
+                        Session::push('horarios', $array);
 
+                        $items = Session::get('horarios');
+                        end( $items );
+                        $contador = key( $items );
 
-                    $items = Session::get('horarios');
-                    end( $items );
-                    $contador = key( $items );
+                        $array=array(
+                            'instructor' => $instructor, 
+                            'dia_de_semana' => $dia_de_semana,
+                            'especialidad' => $especialidad,
+                            'estudio' => $estudio,
+                            'hora_inicio' => $request->hora_inicio_acordeon,
+                            'hora_final' => $request->hora_final_acordeon,
+                            'hora_asignada' => $hora_asignada,
+                            'id'=>$contador
+                        );                                  
 
-                    $array=array(
-                        'instructor' => $instructor, 
-                        'dia_de_semana' => $dia_de_semana,
-                        'especialidad' => $especialidad,
-                        'estudio' => $estudio,
-                        'hora_inicio' => $request->hora_inicio_acordeon,
-                        'hora_final' => $request->hora_final_acordeon,
-                        'id'=>$contador
-                    );                                  
-
-                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+                        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+                    }else{
+                        return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! Has superado el límite de horas asignadas']], 'status' => 'ERROR'],422);
+                    }
             }else{
                 return response()->json(['errores' => ['fecha' => [0, 'Ups! Esta fecha no esta dentro del rango']], 'status' => 'ERROR'],422);
             }
@@ -307,10 +361,14 @@ class MultihorarioClasePersonalizadaController extends BaseController
     public function eliminar($id){
 
         $arreglo = Session::get('horarios');
+        $hora_asignada = $arreglo[$id][0]['hora_asignada'];
+        $horas_restantes = Session::get('horas_restantes');
+        $horas_restantes = intval($horas_restantes + $hora_asignada);
         unset($arreglo[$id]);
         Session::put('horarios', $arreglo);
+        Session::put('horas_restantes', $horas_restantes);
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'hora_asignada' => $hora_asignada, 200]);
 
     }
 

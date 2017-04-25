@@ -71,7 +71,7 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
+                               <div class="col-sm-6">
                                  
                                     <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
 
@@ -84,6 +84,23 @@
                                  <div class="has-error" id="error-costo">
                                       <span >
                                           <small class="help-block error-span" id="error-costo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="col-sm-6">
+                                 
+                                    <label for="nombre" id="id-cantidad_horas">Cantidad de Horas</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm input-mask" name="cantidad_horas" id="cantidad_horas" data-mask="000" placeholder="Ej. 10">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-cantidad_horas">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_horas_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -548,7 +565,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen"];
+    var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen", 'cantidad_horas'];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -1008,7 +1025,7 @@
               
             });
       function limpiarMensaje(){
-        var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen", "participantes", "precio"];
+        var campo = ["nombre", "color_etiqueta", "costo", "tiempo_expiracion", "imagen", "participantes", "precio", "cantidad_horas"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

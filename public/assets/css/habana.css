@@ -2024,4 +2024,10 @@ a{
     cursor:pointer;
 }
 
+.certificado{
+    margin-left: 30%; 
+    padding: 5%; 
+    border:1px solid;
+}
+
 

@@ -9,6 +9,10 @@ use App\Http\Requests;
 use App\Staff;
 use App\HorarioStaff;
 use App\ConfigStaff;
+use App\ConfigPagosStaff;
+use App\ConfigServicios;
+use App\ConfigProductos;
+use App\PagoStaff;
 use App\DiasDeSemana;
 use Mail;
 use DB;
@@ -39,8 +43,27 @@ class StaffController extends BaseController
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
         Session::forget('horarios_staff');
+        Session::forget('pagos_staff');
 
-        return view('configuracion.staff.create')->with(['dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($config_servicio as $item){
+
+            $tmp[]=array('id' => $item['id'].'-'.$item['tipo'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+        }
+
+        //$config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        //foreach($config_producto as $item){
+
+            //$tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+           
+        //}
+
+        $collection=collect($tmp);   
+        $linea_servicio = $collection->toArray();
+
+        return view('configuracion.staff.create')->with(['dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'linea_servicio' => $linea_servicio]);
     }
 
     public function store(Request $request)
@@ -143,17 +166,43 @@ class StaffController extends BaseController
 
                 $horarios = Session::get('horarios_staff');
 
-                foreach ($horarios as $tmp) {
+                if($horarios){
 
-                    $horario = new HorarioStaff;
-                    $horario->staff_id = $staff->id;
-                    $horario->dia_de_semana_id = $tmp['dia_de_semana_id'];
-                    $horario->hora_inicio = $tmp['hora_inicio'];
-                    $horario->hora_final = $tmp['hora_final'];
-                    $horario->save();
-                    
-                    
+                    foreach ($horarios as $tmp) {
+
+                        $horario = new HorarioStaff;
+                        $horario->staff_id = $staff->id;
+                        $horario->dia_de_semana_id = $tmp['dia_de_semana_id'];
+                        $horario->hora_inicio = $tmp['hora_inicio'];
+                        $horario->hora_final = $tmp['hora_final'];
+                        $horario->save();
+                        
+                        
+                    }
                 }
+
+                $config_pagos = Session::get('pagos_staff');
+
+                if($config_pagos){
+
+                    foreach ($config_pagos as $pagos_staff) {
+
+                        $config_pago = new ConfigPagosStaff;
+
+                        $config_pago->servicio_id = $pagos_staff['servicio_id'];
+                        $config_pago->staff_id = $staff->id;
+                        $config_pago->tipo = $pagos_staff['tipo'];
+                        $config_pago->monto = $pagos_staff['monto'];
+                        $config_pago->tipo_servicio = $pagos_staff['tipo_servicio'];
+
+                        $config_pago->save();
+                        
+                        
+                    }
+                }
+
+                Session::forget('horarios_staff');
+                Session::forget('pagos_staff');
 
 
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -193,7 +242,50 @@ class StaffController extends BaseController
                 ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
                 ->where('staff.academia_id' , Auth::user()->academia_id)
             ->get();
-            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff]);
+
+            $pagos_staff = ConfigPagosStaff::join('config_servicios', 'config_pagos_staff.servicio_id', '=', 'config_servicios.id')
+                ->join('staff', 'config_pagos_staff.staff_id', '=', 'staff.id')
+                ->select('config_pagos_staff.*', 'config_servicios.nombre as nombre', 'config_servicios.costo')
+                ->where('staff.id', $id)
+            ->get();
+
+            $tmp = array();
+            $tmp2 = array();
+
+            $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+            foreach($config_servicio as $item){
+
+                $tmp[]=array('id' => $item['id'].'-'.$item['tipo'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+            }
+
+            foreach($pagos_staff as $pago){
+                if($pago->tipo == 1){
+                    $porcentaje = $pago->monto / 100;
+                    $monto_porcentaje = $pago->costo * $porcentaje;
+                }else{
+                    $monto_porcentaje = '';
+                }
+
+                $tmp2[]=array('id' => $pago->id, 'nombre' => $pago->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => floatval($monto_porcentaje), 'tipo_servicio' => $pago->tipo_servicio, 'servicio_id' => $pago->servicio_id);
+            }
+
+
+            //$config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+            //foreach($config_producto as $item){
+
+                //$tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+               
+            //}
+
+            $collection=collect($tmp);   
+            $linea_servicio = $collection->toArray();
+
+            $collection=collect($tmp2);   
+            $pagos = $collection->toArray();
+
+            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'pagos_staff' => $pagos,  'linea_servicio' => $linea_servicio]);
         }else{
            return redirect("staff"); 
         }
@@ -542,9 +634,362 @@ class StaffController extends BaseController
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
+
+    public function agregarpago(Request $request)
+    {
+        
+        $rules = [
+            'cantidad' => 'required|numeric|min:1',
+            'tipo_pago' => 'required'
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Monto es requerido',
+            'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            if($request->tipo_pago == 1){
+                if($request->cantidad > 100){
+                    return response()->json(['errores' => ['cantidad' => [0, 'Ups! El porcentaje no puede ser mayor a 100']], 'status' => 'ERROR'],422);
+                }
+            }
+
+            $array = array();
+
+            if($request->servicio_id != 'null'){
+
+                $servicios = explode(",", $request->servicio_id);
+
+                foreach($servicios as $servicio){
+
+                    $tmp = explode('-',$servicio);
+                    $servicio_id = $tmp[0];
+                    $tipo_servicio = $tmp[1];
+
+                    $servicio = ConfigServicios::find($servicio);
+
+                    $config_pagos=array('servicio_id' => $servicio_id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'tipo_servicio' => $tipo_servicio, 'nombre' => $servicio->nombre);
+
+                    Session::push('pagos_staff', $config_pagos);
+
+                    $item = Session::get('pagos_staff');
+                    end( $item );
+                    $contador = key( $item );
+
+                    $config_pagos['id'] = $contador;
+
+                    array_push($array, $config_pagos);
+
+
+                }
+                
+
+
+            }else{
+
+                $servicios = ConfigServicios::where('academia_id', Auth::user()->academia_id)
+                    ->get();
+
+                foreach($servicios as $servicio){
+
+                    $servicio = ConfigServicios::find($servicio);
+
+
+                    $config_pagos=array('servicio_id' => $servicio_id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'tipo_servicio' => $tipo_servicio, 'nombre' => $servicio->nombre);
+
+                    Session::push('pagos_staff', $config_pagos);
+
+                    $item = Session::get('pagos_staff');
+                    end( $item );
+                    $contador = key( $item );
+
+                    $config_pagos['id'] = $contador.'-'.$tipo_servicio;
+
+                    array_push($array, $config_pagos);
+
+
+                }
+
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);   
+        }
+    }
+
+    public function eliminarpago($id){
+
+        $arreglo = Session::get('pagos_staff');
+
+        $tmp = explode('-',$id);
+        $servicio_id = $tmp[0];
+        $id = $arreglo[$servicio_id]['servicio_id'].'-'.$arreglo[$servicio_id]['tipo_servicio'];
+
+        unset($arreglo[$servicio_id]);
+        Session::put('pagos_staff', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
+
+    }
+
       
 
+    public function agregarpagofijo(Request $request)
+    {
+        
+        $rules = [
+            'cantidad' => 'required|min:1',
+            'tipo_pago' => 'required'
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Monto es requerido',
+            'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            // return redirect("/home")
+
+            // ->withErrors($validator)
+            // ->withInput();
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            //dd($validator);
+
+        }
+
+        else{
+
+            if($request->tipo_pago == 1){
+                if($request->cantidad > 100){
+                    return response()->json(['errores' => ['cantidad' => [0, 'Ups! El porcentaje no puede ser mayor a 100']], 'status' => 'ERROR'],422);
+                }
+            }
+
+            $array = array();
+
+            if($request->servicio_id != 'null'){
+
+                $servicios = explode(",", $request->servicio_id);
+
+                foreach($servicios as $servicio){
+
+                    $tmp = explode('-',$servicio);
+                    $servicio_id = $tmp[0];
+                    $tipo_servicio = $tmp[1];
+
+                    $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
+                        ->where('servicio_id', $servicio_id)
+                    ->first();
+
+
+                    if(!$posee_pago){
+
+                        $monto = floatval(str_replace(',', '', $request->cantidad));
+                        $servicio = ConfigServicios::find($servicio_id);
+
+                        if($monto  > $servicio->costo){
+                            return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+                        }
+
+                        $config_pagos = new ConfigPagosStaff;
+
+                        $config_pagos->servicio_id = $servicio_id;
+                        $config_pagos->staff_id = $request->id;
+                        $config_pagos->tipo = $request->tipo_pago;
+                        $config_pagos->monto = $monto;
+                        $config_pagos->tipo_servicio = $tipo_servicio;
+
+                        $config_pagos->save();
+
+                        if($config_pagos->tipo == 1){
+                            $porcentaje = $config_pagos->monto / 100;
+                            $monto_porcentaje = $servicio->costo * $porcentaje;
+                        }else{
+                            $monto_porcentaje = '';
+                        }
+                        
+                        $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+                        $config_pagos['nombre'] = $servicio->nombre;
+
+                        array_push($array, $config_pagos);
+
+
+                    }
+
+                }
+
+
+            }else{
+
+                $servicios = ConfigServicios::where('academia_id', Auth::user()->academia_id)
+                    ->get();
+
+                foreach($servicios as $servicio){
+
+                    $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
+                        ->where('servicio_id', $servicio)
+                    ->first();
+
+                    if(!$posee_pago){
+
+                        $monto = floatval(str_replace(',', '', $request->cantidad));
+
+                        $servicio = ConfigServicios::find($servicio_id);
+
+                        if($monto  > $servicio->costo){
+                            return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+                        }
+
+                        $config_pagos = new ConfigPagosStaff;
+
+                        $config_pagos->servicio_id = $servicio;
+                        $config_pagos->staff_id = $request->id;
+                        $config_pagos->tipo = $request->tipo_pago;
+                        $config_pagos->monto = $monto;
+
+                        $config_pagos->save();
+
+                        
+
+                        if($config_pagos->tipo == 1){
+                            $porcentaje = $config_pagos->monto / 100;
+                            $monto_porcentaje = $servicio->costo * $porcentaje;
+                        }else{
+                            $monto_porcentaje = '';
+                        }
+                        
+                        $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+                        $config_pagos['nombre'] = $servicio->nombre;
+
+                        array_push($array, $config_pagos);
+
+
+                    }
+
+                }
+
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);   
+        }
+    }
+
+    public function eliminarpagofijo($id)
+    {
+
+        $tmp = explode('-',$id);
+        $servicio_id = $tmp[0];
+
+        $pago = ConfigPagosStaff::find($servicio_id);
+        $id = $pago->servicio_id.'-'.$pago->tipo_servicio;
+        
+        if($pago->delete()){
+
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
         // return redirect("alumno");
+    }
+
+    public function principalpagos($id)
+    {
+
+        $staff = Staff::find($id);
+
+        if($staff)
+        {
+
+            $pagadas = PagoStaff::join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
+                ->join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
+                ->select('pagos_staff.created_at as fecha', 'config_servicios.nombre as servicio', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'pagos_staff.monto', 'pagos_staff.tipo', 'pagos_staff.id')
+                ->where('staff.id', $id)
+                ->where('pagos_staff.boolean_pago', 1)
+                ->limit(150)
+            ->get();
+
+            $por_pagar = PagoStaff::join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
+                ->join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
+                ->select('pagos_staff.created_at as fecha', 'config_servicios.nombre as servicio', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'pagos_staff.monto', 'pagos_staff.tipo', 'pagos_staff.id')
+                ->where('staff.id', $id)
+                ->where('pagos_staff.boolean_pago', 0)
+                ->limit(150)
+            ->get();
+
+            $total = PagoStaff::where('staff_id', $id)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
+
+            return view('configuracion.staff.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'staff' => $staff, 'id' => $id ]);
+        }else{ 
+
+            return redirect("configuracion/staff"); 
+        }
+    }
+
+    public function pagar(Request $request)
+    {
+        $rules = [
+            'pagos' => 'required',
+        ];
+
+        $messages = [
+
+            'pagos.required' => 'Ups! Debe seleccionar un pago',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+        
+            $pagos = explode(",", $request->pagos);
+            $array = array();
+
+            foreach($pagos as $pago_staff)
+            {
+                if($pago_staff != ''){
+
+                    $pago = PagoStaff::find($pago_staff);
+                    $pago->boolean_pago = 1;
+
+                    $pago->save();
+
+                    array_push($array,$pago_staff);
+
+                }
+            }
+
+
+            return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+
+        }
+    }
     
 
 }

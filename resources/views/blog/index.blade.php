@@ -79,7 +79,7 @@
 
                 <div style="padding: 10px">
 
-                  <a onclick="procesando()" href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}} 
+                  <a href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}} 
 
                   @if(Auth::check())
                     @if(Auth::user()->usuario_tipo == 1)
@@ -110,7 +110,7 @@
                   <div class="row">
                     <div class="col-sm-4 imagen-blog-contenedor">
 
-                      <a onclick="procesando()" href="{{$entrada['url']}}" class="imagen-blog-link">
+                      <a href="{{$entrada['url']}}" class="imagen-blog-link">
 
                         @if($entrada['imagen'])
                           <img class="imagen-blog-img img-responsive" src="{{url('/')}}{{$entrada['imagen']}}" alt="">
@@ -131,12 +131,12 @@
    
                       <p>{{ str_limit(strip_tags($entrada['contenido']), $limit = 350, $end = '...') }} </p>
 
-                      <a onclick="procesando()" href="{{$entrada['url']}}">Ver más</a>
+                      <a href="{{$entrada['url']}}">Ver más</a>
 
                       @if(Auth::check())
                         @if(Auth::user()->usuario_tipo == 1)
 
-                          <a onclick="procesando()" class="btn-blanco bottom-align-text" href="{{url('/')}}/blog/entrada/editar/{{$entrada['id']}}">Editar</a>
+                          <a class="btn-blanco bottom-align-text" href="{{url('/')}}/blog/entrada/editar/{{$entrada['id']}}">Editar</a>
                    
                         @endif
                       @endif
@@ -304,8 +304,6 @@
 
 
 @stop
-
-@extends('layout.footer')
 
 @section('js') 
         

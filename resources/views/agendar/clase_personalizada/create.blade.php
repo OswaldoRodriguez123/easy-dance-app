@@ -60,7 +60,7 @@
                                </div>
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
+                               <div class="col-sm-6">
                                  
                                     <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
 
@@ -73,6 +73,24 @@
                                  <div class="has-error" id="error-costo">
                                       <span >
                                           <small class="help-block error-span" id="error-costo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <div class="col-sm-6">
+                                 
+                                    <label for="nombre" id="id-cantidad_horas">Cantidad de Horas</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm input-mask" name="cantidad_horas" id="cantidad_horasz" data-mask="000" placeholder="Ej. 10">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-cantidad_horas">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_horas_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>

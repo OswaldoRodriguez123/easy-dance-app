@@ -351,6 +351,177 @@
 
                         <div class="clearfix p-b-35"></div>
 
+
+                         <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="id">Comisiones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Configura las comisones del staff" title="" data-original-title="Ayuda"></i>
+                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-collapse">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePago" aria-expanded="false" aria-controls="collapsePago">
+                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapsePago" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    
+                                    <div class="clearfix p-b-35"></div>
+                                    
+                                    <div class="panel-body">
+                                    
+                                     <div class="col-sm-12">
+                                    <div class="clearfix p-b-35"></div>
+
+                                        <label for="clase_grupal_id" id="id-clase_grupal_id">Linea de Servicio</label>
+
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                          <div class="fg-line">
+                                              <div class="select">
+                                                <div class="select">
+                                                  <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                                      <option value="0">Todas</option>
+                                                      <option value="99">Academia</option>
+                                                      <option value="1">Servicio</option>
+                                                      <option value="2">Producto</option>
+                                                      <option value="3">Inscripción y Mensualidad</option>
+                                                      <option value="9">Clase Personalizada</option>
+                                                      <option value="14">Fiestas y Eventos</option>
+                                                      <option value="5">Talleres</option>
+                                                      <option value="11">Campañas</option>
+                                                  </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="has-error" id="error-clase_grupal_id">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                               
+                                              </span>
+                                          </div>
+                                        </div>
+
+                                      <div class="clearfix p-b-35"></div>
+                                   
+                                   
+                                  <div class="col-sm-12">
+                                    <div class="clearfix p-b-35"></div>
+
+                                        <label for="tipo_id" id="id-tipo_id">Detalle</label>
+
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a icon_f-servicios f-22"></i></span>
+                                          <div class="fg-line">
+                                              <div class="select">
+                                                <select class="selectpicker bs-select-hidden" id="tipo_id" name="tipo_id" multiple="" data-max-options="5" title="Todas">
+
+                                                 @foreach ( $linea_servicio as $servicio )
+              
+                                                    <option value = "{{ $servicio['id'] }}"> {{ $servicio['nombre'] }}</option>
+        
+                                                 @endforeach
+                                                </select>
+                                              </div>
+                                        </div>
+                                        </div>
+                                         <div class="has-error" id="error-tipo_id">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-tipo_id_mensaje" ></small>                               
+                                              </span>
+                                          </div>
+                                        </div>
+
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                   
+                                      <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
+
+                                      <div class="form-group fg-line ">
+                                        <div class="p-t-10">
+                                          <label class="radio radio-inline m-r-20">
+                                              <input name="tipo_pago" id="porcentaje" value="1" type="radio" checked>
+                                              <i class="input-helper"></i>  
+                                              Porcentaje 
+                                          </label>
+                                          <label class="radio radio-inline m-r-20 ">
+                                              <input name="tipo_pago" id="tasa_fija" value="2" type="radio">
+                                              <i class="input-helper"></i>  
+                                              Tasa Fija 
+                                          </label>
+                                      </div>
+                                      </div>
+                                   <div class="has-error" id="error-tipo">
+                                        <span >
+                                            <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+
+                                   <div class="clearfix p-b-35"></div>
+
+                                        <div class="form-group">
+                                            <label for="cantidad" id="id-cantidad">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por clase grupal" title="" data-original-title="Ayuda"></i>
+                                            
+                                          <div class="input-group">
+                                            <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                            <div class="fg-line">
+                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="00000000" placeholder="Ej. 5000">
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-cantidad">
+                                          <span >
+                                              <small id="error-cantidad_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                     
+                                  <div class="card-header text-left">
+                                  <button type="button" class="btn btn-blanco m-r-10 f-10" id="addpago" >Agregar Linea</button>
+                                  </div>
+
+                                  <br></br>
+
+                                  <div class="table-responsive row">
+                                     <div class="col-md-12">
+                                      <table class="table table-striped table-bordered text-center " id="tablepagos" >
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th class="text-center" data-column-id="servicio">Servicio</th>
+                                                <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
+                                                <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                                <th class="text-center" data-column-id="operaciones">Operaciones</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                                       
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+                                  </div> <!-- TABLE RESPONSIVE -->
+                                </div><!--  COL-SM-12 -->
+                                
+                        <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapsePago')" ></i></div>
+
+                        <div class="clearfix p-b-35"></div>
+
+                          <hr></hr>
+                    
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                     </div>
+
+
+
+                        <div class="clearfix p-b-35"></div>
+
                     
   
 
@@ -407,6 +578,8 @@
   route_enhorabuena="{{url('/')}}/configuracion/staff";
   route_horario="{{url('/')}}/configuracion/staff/agregarhorario";
   route_eliminar="{{url('/')}}/configuracion/staff/eliminarhorario";
+  route_agregar_pago="{{url('/')}}/configuracion/staff/agregarpago";
+  route_eliminar_pago="{{url('/')}}/configuracion/staff/eliminarpago/";
   
   $(document).ready(function(){
 
@@ -850,6 +1023,44 @@
                         }
                     }
         });
+  var h=$('#tablepagos').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25,
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').hide();
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
 
   function collapse_minus(collaps){
    $('#'+collaps).collapse('hide');
@@ -864,6 +1075,249 @@
     $("#guardar").removeAttr("disabled");
     $("#guardar").css({"opacity": ("1")});
   })
+
+
+  $("#addpago").click(function(){
+
+
+      $("#addpago").attr("disabled","disabled");
+        $("#addpago").css({
+          "opacity": ("0.2")
+        });
+
+      var route = route_agregar_pago;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_staff" ).serialize(); 
+      limpiarMensaje();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos+"&servicio_id="+$("#tipo_id").val(),
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+                $('#tipo_servicio').val(0)
+                $('#tipo_id').val(0)
+                $('#cantidad').val('')
+                $('#tipo_servicio').selectpicker('refresh')
+                $('#tipo_id').selectpicker('refresh')
+
+                $.each(respuesta.array, function (index, array) {
+
+                  if(array.tipo == 1){
+                    tipo = 'Porcentaje'
+                  }else{
+                    tipo = 'Tasa Fija'
+                  }
+
+                  var rowId=array.id;
+                  var rowNode=h.row.add( [
+                  ''+array.nombre+'',
+                  ''+tipo+'',
+                  ''+array.monto+'',
+                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .attr('data-tipo_servicio',array.tipo_servicio)
+                  // .attr('data-precio',precio_neto)
+                  .addClass('seleccion');
+
+                  $("#tipo_id option[value='"+array.servicio_id+"-"+array.tipo_servicio+"']").attr("disabled","disabled");
+                  $("#tipo_id option[value='"+array.servicio_id+"-"+array.tipo_servicio+"']").data("icon","glyphicon-remove");
+
+                  
+
+                });
+
+                $('#tipo_id').val('');
+                $('#tipo_id').selectpicker('refresh');
+                
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $("#addpago").removeAttr("disabled");
+                $("#addpago").css({
+                  "opacity": ("1")
+                });
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              $("#addpago").removeAttr("disabled");
+                $("#addpago").css({
+                  "opacity": ("1")
+                });                        
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
+
+  $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
+
+                var id = $(this).closest('tr').attr('id') + '-' + $(this).closest('tr').data('tipo_servicio');
+                element = this;
+
+                swal({   
+                    title: "Desea eliminar esta configuración?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar_pago(id, element);
+          }
+                });
+            });
+      
+        function eliminar_pago(id, element){
+         var route = route_eliminar_pago + id;
+         var token = "{{ csrf_token() }}";
+         procesando()
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          console.log(respuesta.id)
+
+                          $("#tipo_id option[value='"+respuesta.id+"']").removeAttr("disabled");
+                          $("#tipo_id option[value='"+respuesta.id+"']").data("icon","");
+
+                          $('#tipo_id').selectpicker('refresh');
+
+                          h.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+
+                          swal("Exito!","La configuración ha sido eliminada!","success");
+                          finprocesado()
+                        
+                        }
+                    },
+                    error:function(msj){
+                      $("#msj-danger").fadeIn(); 
+                      var text="";
+                      console.log(msj);
+                      var merror=msj.responseJSON;
+                      text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                      $("#msj-error").html(text);
+                      setTimeout(function(){
+                               $("#msj-danger").fadeOut();
+                              }, 3000);
+                      }
+                });
+           }
+
+      $('#tipo_servicio').on('change', function(){
+        $('#tipo_id').val('')
+        options = $('#tipo_id option');
+        id = $(this).val();
+
+        if(id != 0){
+          $.each(options, function (index, array) {  
+            tmp = array.value
+            tmp2 =  tmp.split('-')
+            value = tmp2[0]
+            tipo = tmp2[1]
+            option = $("#tipo_id option[value='"+array.value+"']")
+
+            if(id == 99){
+
+              not_in = [1,2,3,4,9,5,11,14]
+              if(!$.inArray(tipo, not_in)){
+                  option.show();
+              }else{  
+                  option.hide();
+              } 
+
+            }else{
+
+              if(id != 3){
+
+
+                if(tipo == id){
+                    option.show();
+                }else{  
+                    option.hide();
+                }  
+
+              }else{    
+
+                if(tipo == 3 || tipo == 4){
+                    option.show();
+                }else{  
+                    option.hide();
+                }  
+              }          
+            }
+          });
+        }else{
+          options.show();
+        }
+
+        $('#tipo_id').selectpicker('refresh');
+    });
 
 
 </script> 

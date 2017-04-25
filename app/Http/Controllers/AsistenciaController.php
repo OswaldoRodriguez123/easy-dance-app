@@ -16,6 +16,8 @@ use App\HorarioClaseGrupal;
 
 use App\ClasePersonalizada;
 
+use App\HorarioClasePersonalizada;
+
 use App\InscripcionClasePersonalizada;
 
 use App\Asistencia;
@@ -99,7 +101,7 @@ class AsistenciaController extends BaseController
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
             ->join('instructores', 'asistencias_instructor.instructor_id', '=', 'instructores.id')
-            ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'asistencias_instructor.hora_salida')
+            ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre', 'instructores.apellido', 'asistencias_instructor.hora_salida')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
@@ -107,7 +109,7 @@ class AsistenciaController extends BaseController
             ->join('academias', 'asistencias_staff.academia_id', '=', 'academias.id')
             ->join('staff', 'asistencias_staff.staff_id', '=', 'staff.id')
             ->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
-            ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'asistencias_staff.hora_salida', 'config_staff.nombre as cargo')
+            ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre', 'staff.apellido', 'asistencias_staff.hora_salida', 'config_staff.nombre as cargo')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
@@ -129,30 +131,228 @@ class AsistenciaController extends BaseController
             }
           }
 
+          $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+          $i = $fecha->dayOfWeek;
+
+          if($i == 1){
+
+            $dia = 'Lunes';
+
+          }else if($i == 2){
+
+            $dia = 'Martes';
+
+          }else if($i == 3){
+
+            $dia = 'Miercoles';
+
+          }else if($i == 4){
+
+            $dia = 'Jueves';
+
+          }else if($i == 5){
+
+            $dia = 'Viernes';
+
+          }else if($i == 6){
+
+            $dia = 'Sabado';
+
+          }else if($i == 0){
+
+            $dia = 'Domingo';
+
+          }
+
           if($clasegrupal)
           {
             $collection=collect($asistencia);     
             $asistencia_array = $collection->toArray();
-                
-            $asistencia_array['nombre_instructor']=$instructor->nombre;
-            $asistencia_array['apellido_instructor']=$instructor->apellido;
-            $array[$asistencia->id] = $asistencia_array;
+            
+            $asistencia_array['dia']=$dia;
+            $asistencia_array['hora']=$instructor->nombre . ' ' . $instructor->apellido;
+            $asistencia_array['hora_salida']=$asistencia->hora;
+            $asistencia_array['tipo']='A';
+            $array[] = $asistencia_array;
           }
         }
 
         foreach($clases_personalizadas as $asistencia){
+
+          $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+          $i = $fecha->dayOfWeek;
+
+          if($i == 1){
+
+            $dia = 'Lunes';
+
+          }else if($i == 2){
+
+            $dia = 'Martes';
+
+          }else if($i == 3){
+
+            $dia = 'Miercoles';
+
+          }else if($i == 4){
+
+            $dia = 'Jueves';
+
+          }else if($i == 5){
+
+            $dia = 'Viernes';
+
+          }else if($i == 6){
+
+            $dia = 'Sabado';
+
+          }else if($i == 0){
+
+            $dia = 'Domingo';
+
+          }
+
           $collection=collect($asistencia);     
           $asistencia_array = $collection->toArray();
-          $array[$asistencia->id] = $asistencia_array;
+          $asistencia_array['dia']=$dia;
+          $asistencia_array['hora']=$asistencia->nombre_instructor . ' ' . $instructor->apellido_instructor;
+          $asistencia_array['hora_salida']=$asistencia->hora;
+          $asistencia_array['tipo']='A';
+          $array[] = $asistencia_array;
         }
 
         foreach($citas as $asistencia){
+
+          $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+          $i = $fecha->dayOfWeek;
+
+          if($i == 1){
+
+            $dia = 'Lunes';
+
+          }else if($i == 2){
+
+            $dia = 'Martes';
+
+          }else if($i == 3){
+
+            $dia = 'Miercoles';
+
+          }else if($i == 4){
+
+            $dia = 'Jueves';
+
+          }else if($i == 5){
+
+            $dia = 'Viernes';
+
+          }else if($i == 6){
+
+            $dia = 'Sabado';
+
+          }else if($i == 0){
+
+            $dia = 'Domingo';
+
+          }
+
           $collection=collect($asistencia);     
           $asistencia_array = $collection->toArray();
-          $array[$asistencia->id] = $asistencia_array;
+          $asistencia_array['dia']=$dia;
+          $asistencia_array['hora']=$asistencia->nombre_instructor . ' ' . $instructor->apellido_instructor;
+          $asistencia_array['hora_salida']=$asistencia->hora;
+          $asistencia_array['tipo']='A';
+          $array[] = $asistencia_array;
         }
 
-        return view('asistencia.asistencia')->with(['alumnos_asistencia' => $array, 'instructores_asistencia' => $instructores, 'staff_asistencia' => $staff]);  
+
+
+        foreach($instructores as $asistencia){
+
+          $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+          $i = $fecha->dayOfWeek;
+
+          if($i == 1){
+
+            $dia = 'Lunes';
+
+          }else if($i == 2){
+
+            $dia = 'Martes';
+
+          }else if($i == 3){
+
+            $dia = 'Miercoles';
+
+          }else if($i == 4){
+
+            $dia = 'Jueves';
+
+          }else if($i == 5){
+
+            $dia = 'Viernes';
+
+          }else if($i == 6){
+
+            $dia = 'Sabado';
+
+          }else if($i == 0){
+
+            $dia = 'Domingo';
+
+          }
+
+          $collection=collect($asistencia);     
+          $asistencia_array = $collection->toArray();
+          $asistencia_array['dia']=$dia;
+          $asistencia_array['tipo']='I';
+          $array[] = $asistencia_array;
+        }
+
+        foreach($staff as $asistencia){
+
+          $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+          $i = $fecha->dayOfWeek;
+
+          if($i == 1){
+
+            $dia = 'Lunes';
+
+          }else if($i == 2){
+
+            $dia = 'Martes';
+
+          }else if($i == 3){
+
+            $dia = 'Miercoles';
+
+          }else if($i == 4){
+
+            $dia = 'Jueves';
+
+          }else if($i == 5){
+
+            $dia = 'Viernes';
+
+          }else if($i == 6){
+
+            $dia = 'Sabado';
+
+          }else if($i == 0){
+
+            $dia = 'Domingo';
+
+          }
+
+          $collection=collect($asistencia);     
+          $asistencia_array = $collection->toArray();
+          $asistencia_array['clase']=$asistencia->cargo;
+          $asistencia_array['dia']=$dia;
+          $asistencia_array['tipo']='S';
+          $array[] = $asistencia_array;
+        }
+
+        return view('asistencia.asistencia')->with(['asistencias' => $array]);  
 
         }  
 
@@ -457,10 +657,7 @@ class AsistenciaController extends BaseController
 
       $array = array(2,4);
 
-      $alumnos = DB::table('alumnos')
-        ->select('alumnos.*')
-        ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        ->where('alumnos.deleted_at', '=', null)
+      $alumnos = Alumno::where('alumnos.academia_id','=', Auth::user()->academia_id)
         ->orderBy('nombre', 'asc')
       ->get();
 
@@ -1341,8 +1538,41 @@ class AsistenciaController extends BaseController
                 if($asistencia->save()){
 
                   if($clase_id[2] == '3'){
+
                     $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
-                    $clase_personalizada->estatus = '2';
+                    $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio)->toDateString();
+
+                    if($fecha_inicio != Carbon::now()->toDateString()){
+
+                      $horario = HorarioClasePersonalizada::where('clase_personalizada_id', $clase_personalizada->id)->where('fecha', Carbon::now()->toDateString())->first();
+
+                      if($horario){
+
+                        $hie = explode(':',$horario->hora_inicio);
+                        $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                        $hfe = explode(':',$horario->hora_final);
+                        $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                        $resta_horas = $hora_inicio->diffInHours($hora_final);
+
+                      }else{
+                        $resta_horas = 0;
+                      }
+
+                    }else{
+                      $hie = explode(':',$clase_personalizada->hora_inicio);
+                      $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                      $hfe = explode(':',$clase_personalizada->hora_final);
+                      $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                      $resta_horas = $hora_inicio->diffInHours($hora_final); 
+                    }
+
+                    $cantidad_horas = $clase_personalizada->cantidad_horas - $resta_horas;
+
+                    $clase_personalizada->cantidad_horas = $cantidad_horas;
                     $clase_personalizada->save();
                     
                   }else if($clase_id[2] == '4'){

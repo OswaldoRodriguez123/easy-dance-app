@@ -66,10 +66,10 @@
 
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="tipo" id="tipo" data-live-search="true">
-                                            <option value="1">Todo</option>
                                             <option value="2">Ingresos</option>
                                             <option value="3">Egresos</option>
                                             <option value="4">Cuentas por Cobrar</option>
+                                            <option value="1">Todo</option>
                                         </select>
                                     </div>
                                 </div>

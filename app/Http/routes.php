@@ -153,6 +153,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('blog/entrada/update/mostrar', 'BlogController@updateMostrar');
 			Route::put('blog/entrada/update/contenido', 'BlogController@updateContenido');
 			Route::delete('blog/entrada/eliminar/{id}', 'BlogController@destroy');
+			Route::post('blog/entrada/enviar/{id}', 'BlogController@enviar');
 
 			//BLOGGERS
 
@@ -257,6 +258,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/clases-grupales/update/imagen', 'ConfigClasesGrupalesController@updateImagen');
 			Route::put('configuracion/clases-grupales/update/inasistencias','ConfigClasesGrupalesController@updateAsistencias');
 			Route::put('configuracion/clases-grupales/update/avanzado','ConfigClasesGrupalesController@updateAvanzado');
+			Route::put('configuracion/clases-grupales/update/promocion','ConfigClasesGrupalesController@updatePromocion');
 
 			//CLASES PERSONALIZADAS
 
@@ -270,6 +272,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 			Route::put('configuracion/clases-personalizadas/update/nombre', 'ConfigClasePersonalizadaController@updateNombre');
 			Route::put('configuracion/clases-personalizadas/update/costo', 'ConfigClasePersonalizadaController@updateCosto');
+			Route::put('configuracion/clases-personalizadas/update/hora', 'ConfigClasePersonalizadaController@updateHora');
 			Route::put('configuracion/clases-personalizadas/update/imagen', 'ConfigClasePersonalizadaController@updateImagen');
 			Route::put('configuracion/clases-personalizadas/update/descripcion', 'ConfigClasePersonalizadaController@updateDescripcion');
 			Route::put('configuracion/clases-personalizadas/update/etiqueta', 'ConfigClasePersonalizadaController@updateEtiqueta');
@@ -621,7 +624,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('agendar/clases-personalizadas/update/instructor', 'ClasePersonalizadaController@updateInstructor');
 			Route::put('agendar/clases-personalizadas/update/horario', 'ClasePersonalizadaController@updateHorario');
 
-			//MULTIHORARIO CLASES GRUPALES
+			//MULTIHORARIO CLASES PERSONALIZADAS
 
 			Route::get('agendar/clases-personalizadas/multihorario/{id}', 'MultihorarioClasePersonalizadaController@principal');
 			Route::post('agendar/clases-personalizadas/multihorario/agregarhorario', 'MultihorarioClasePersonalizadaController@agregar');
@@ -927,6 +930,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/staff/update/cargo','StaffController@updateCargo');
 			Route::put('configuracion/staff/update/horario','StaffController@updateHorario');
 
+			Route::get('configuracion/staff/pagos/{id}', 'StaffController@principalpagos');
+			Route::post('configuracion/staff/pagar', 'StaffController@pagar');
+
+			Route::post('configuracion/staff/agregarpago', 'StaffController@agregarpago');
+			Route::delete('configuracion/staff/eliminarpago/{id}', 'StaffController@eliminarpago');
+			Route::post('configuracion/staff/agregarpagofijo', 'StaffController@agregarpagofijo');
+			Route::delete('configuracion/staff/eliminarpagofijo/{id}', 'StaffController@eliminarpagofijo');
+
 			//INCIDENCIAS
 
 			Route::get('incidencias', 'IncidenciaController@principal');
@@ -1050,7 +1061,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('programacion','ProgresoController@principalprogramacion');
 			Route::get('programacion/{id}','ProgresoController@programacion');
 
-			Route::get('certificado','ProgresoController@certificado');
+			Route::get('/certificado/','ProgresoController@certificado');
 
 			//EMBAJADOR
 

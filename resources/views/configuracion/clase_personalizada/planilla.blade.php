@@ -124,6 +124,60 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalHora-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Clase Personalizada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_hora_clase_personalizada" id="edit_hora_clase_personalizada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label>Cantidad de Horas</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="cantidad_horas" id="cantidad_horas" data-mask="000" placeholder="Ej. 10" value="{{$clasepersonalizada->cantidad_horas}}">
+                                 </div>
+                                 <div class="has-error" id="error-cantidad_horas">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_horas_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$clasepersonalizada->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_hora_clase_personalizada" data-update="hora" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="modal fade" id="modalEtiqueta-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
@@ -546,7 +600,7 @@
 
                                   <hr></hr>
 
-                                  <a href="{{url('/')}}/configuracion/clases-personalizadas/participantes/{{$clasepersonalizada->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <!-- <a href="{{url('/')}}/configuracion/clases-personalizadas/participantes/{{$clasepersonalizada->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -585,6 +639,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasepersonalizada-costo"><span>{{ number_format($clasepersonalizada->costo, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalHora-ClasePersonalizada">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad_horas" class="zmdi {{ empty($clasepersonalizada->cantidad_horas) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-time f-22"></i> </span>
+                               <span class="f-14"> Cantidad de Horas </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-cantidad_horas"><span>{{$clasepersonalizada->cantidad_horas}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDescripcion-ClasePersonalizada">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($clasepersonalizada->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -618,7 +680,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a-cancelacion-temprana-tardia zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Cancelación temprana/ tardía </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-tiempo_expiracion"><span>{{$clasepersonalizada->tiempo_expiracion}} Horas</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="clasepersonalizada-tiempo_expiracion">{{$clasepersonalizada->tiempo_expiracion}}</span> Horas <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalPrecio-ClasePersonalizada">
                              <td>
@@ -710,10 +772,14 @@
       $("#color_etiqueta").val($("#clasepersonalizada-color_etiqueta").text()); 
     })
 
-
     $('#modalExpiracion-ClasePersonalizada').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#tiempo_expiracion").val("{{$clasepersonalizada->tiempo_expiracion}}"); 
+      $("#tiempo_expiracion").val($("#clasepersonalizada-tiempo_expiracion").text()); 
+    })
+
+    $('#modalHora-ClasePersonalizada').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#cantidad_horas").val($("#clasepersonalizada-cantidad_horas").text()); 
     })
 
     $('#modalPrecio-ClasePersonalizada').on('show.bs.modal', function (event) {
@@ -723,7 +789,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["nombre","fecha", "especialidades", "instructor", "alumno_id", "hora_inicio", "hora_final", "estudio"];
+        var campo = ["nombre", "fecha", "especialidades", "instructor", "alumno_id", "hora_inicio", "hora_final", "estudio", "cantidad_horas"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -732,7 +798,6 @@
 
       function errores(merror){
         console.log(merror);
-        var campo = ["nombre","fecha", "especialidades", "instructor", "alumno_id", "hora_inicio", "hora_final", "estudio"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {

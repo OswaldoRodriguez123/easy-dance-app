@@ -13,6 +13,232 @@
 @stop
 
 @section('content')
+
+              <div class="modal fade" id="modalPago" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Pago<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            </div>
+                            <form name="form_pago" id="form_pago"  >
+                               <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                               <input type="hidden" name="id" value="{{ $alumno->id }}">
+                               <div class="modal-body">                           
+                               <div class="row p-t-20 p-b-0">
+
+                                  <div class="col-sm-12">
+                                    <div class="clearfix p-b-35"></div>
+
+                                        <label for="clase_grupal_id" id="id-clase_grupal_id">Linea de Servicio</label>
+
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                          <div class="fg-line">
+                                              <div class="select">
+                                                <div class="select">
+                                                  <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                                      <option value="0">Todas</option>
+                                                      <option value="99">Academia</option>
+                                                      <option value="1">Servicio</option>
+                                                      <option value="2">Producto</option>
+                                                      <option value="3">Inscripción y Mensualidad</option>
+                                                      <option value="9">Clase Personalizada</option>
+                                                      <option value="14">Fiestas y Eventos</option>
+                                                      <option value="5">Talleres</option>
+                                                      <option value="11">Campañas</option>
+                                                  </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="has-error" id="error-clase_grupal_id">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                               
+                                              </span>
+                                          </div>
+                                        </div>
+
+                                      <div class="clearfix p-b-35"></div>
+                                   
+                                   
+                                  <div class="col-sm-12">
+                                    <div class="clearfix p-b-35"></div>
+
+                                        <label for="tipo_id" id="id-tipo_id">Detalle</label>
+
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a icon_f-servicios f-22"></i></span>
+                                          <div class="fg-line">
+                                              <div class="select">
+                                                <select class="selectpicker bs-select-hidden" id="tipo_id" name="tipo_id" multiple="" data-max-options="5" title="Todas">
+
+                                                @foreach ( $linea_servicio as $servicio )
+                                                    <?php $exist = false; 
+                                                      $tmp = explode('-',$servicio['id']);
+                                                      $servicio_id = $tmp[0]
+                                                    ?>
+                                                  @foreach ( $pagos_staff as $pagos)
+                                                    @if ($pagos['servicio_id']==$servicio_id )
+                                                      <?php $exist = true; ?>
+                                                    @endif
+                                                  @endforeach
+
+                                                  @if ($exist)
+                                                      <option value = "{{ $servicio['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $servicio['nombre'] }} - {{ number_format($servicio['costo'], 2, '.' , '.') }} </option>
+                                                  @else
+                                                      <option value = "{{ $servicio['id'] }}"> {{ $servicio['nombre'] }} - {{ number_format($servicio['costo'], 2, '.' , '.') }}</option>
+                                                  @endif
+
+                                                @endforeach
+                                                </select>
+                                              </div>
+                                        </div>
+                                        </div>
+                                         <div class="has-error" id="error-tipo_id">
+                                              <span >
+                                                  <small class="help-block error-span" id="error-tipo_id_mensaje" ></small>                               
+                                              </span>
+                                          </div>
+                                        </div>
+
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                   
+                                      <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
+
+                                      <div class="form-group fg-line ">
+                                        <div class="p-t-10">
+                                          <label class="radio radio-inline m-r-20">
+                                              <input name="tipo_pago" id="porcentaje" value="1" type="radio" checked>
+                                              <i class="input-helper"></i>  
+                                              Porcentaje 
+                                          </label>
+                                          <label class="radio radio-inline m-r-20 ">
+                                              <input name="tipo_pago" id="tasa_fija" value="2" type="radio">
+                                              <i class="input-helper"></i>  
+                                              Tasa Fija 
+                                          </label>
+                                      </div>
+                                      </div>
+                                   <div class="has-error" id="error-tipo">
+                                        <span >
+                                            <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+
+                                   <div class="clearfix p-b-35"></div>
+
+                                        <div class="form-group">
+                                            <label for="cantidad" id="id-cantidad">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por clase grupal" title="" data-original-title="Ayuda"></i>
+                                            
+                                          <div class="input-group">
+                                            <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                            <div class="fg-line">
+                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000,000,000,000" placeholder="Ej. 5000">
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-cantidad">
+                                          <span >
+                                              <small id="error-cantidad_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+
+                                      <div class="clearfix p-b-35"></div>
+
+                                     
+                                  <div class="card-header text-left">
+                                  <button type="button" class="btn btn-blanco m-r-10 f-10" id="addpago" >Agregar Linea</button>
+                                  </div>
+
+                                  <br></br>
+
+                                  <div class="table-responsive row">
+                                     <div class="col-md-12">
+                                      <table class="table table-striped table-bordered text-center " id="tablepagos" >
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th class="text-center" data-column-id="servicio">Servicio</th>
+                                                <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
+                                                <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                                <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
+                                                <th class="text-center" data-column-id="operaciones">Operaciones</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach ($pagos_staff as $pagos)
+                                            <?php $id = $pagos['id']; ?>
+                                            <tr id="{{$id}}" class="seleccion" data-tipo_servicio="{{$pagos['tipo_servicio']}}">
+                                                <td class="text-center">{{$pagos['nombre']}}</td>
+                                                <td class="text-center">
+
+                                                @if($pagos['tipo'] == 1)
+
+                                                  Porcentaje
+                                                @else
+
+                                                  Tasa Fija
+
+                                                @endif
+
+        
+                                                </td>
+                                                <td class="text-center">
+
+                                                  @if($pagos['tipo'] == 1)
+
+                                                    {{$pagos['monto']}}%
+                                                  @else
+
+                                                    {{ number_format($pagos['monto'], 2, '.' , '.') }}
+
+                                                  @endif
+
+                                                  
+
+                                                </td>
+                                                <td class="text-center">{{ number_format($pagos['monto_porcentaje'], 2, '.' , '.') }}</td>
+                                                <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                              </tr>
+                                        @endforeach 
+                                                                       
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+                                  </div> <!-- TABLE RESPONSIVE -->
+                                </div><!--  COL-SM-12 -->
+                              </div><!-- ROW -->
+
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="clearfix"></div> 
+                              <div class="modal-footer p-b-20 m-b-20">
+                                <div class="col-sm-12 text-left">
+                                  <div class="procesando hidden">
+                                  <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                  <div class="preloader pls-purple">
+                                      <svg class="pl-circular" viewBox="25 25 50 50">
+                                          <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                      </svg>
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12">                            
+
+                                  <a class="btn-blanco m-r-5 f-12 dismiss" href="#" data-formulario="edit_administrativo_academia" data-update="administrativo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                </div>
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
      
             <div class="modal fade" id="modalID-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -646,6 +872,7 @@
                                   <hr></hr>
                                   
                                   <!-- <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
+                                  <a href="{{url('/')}}/configuracion/staff/pagos/{{$alumno->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="icon_f-incidencias f-20 m-r-5 boton blue sa-warning" data-original-title="Incidencia" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
@@ -739,7 +966,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-horario"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            
+                            <tr class="detalle" data-toggle="modal" id="modalPe" href="#modalPago">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-pago" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-pagar f-22"></i> </span>
+                               <span class="f-14">Comisiones</span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="instructor-pago"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            </tr>
+                          
 
 
                            
@@ -773,6 +1008,11 @@
     route_email="{{url('/')}}/correo/sesion/";
     route_eliminarhorario="{{url('/')}}/configuracion/staff/eliminarhorariofijo";
     route_agregarhorario="{{url('/')}}/configuracion/staff/agregarhorariofijo/";
+
+    route_agregar_pago="{{url('/')}}/configuracion/staff/agregarpagofijo";
+    route_eliminar_pago="{{url('/')}}/configuracion/staff/eliminarpagofijo/";
+
+    var linea_servicio = <?php echo json_encode($linea_servicio);?>;
 
     $(document).ready(function(){
 
@@ -857,8 +1097,16 @@
       $("#hora_final").val($("#alumno-hora_final").text());
     })
 
+    $('.modal').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $('#form_pago')[0].reset();
+      $('#tipo_servicio').selectpicker('refresh')
+      $('#tipo_id').selectpicker('refresh')
+
+    })
+
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "cargo", "hora_inicio", "hora_final"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "cargo", "hora_inicio", "hora_final", "cantidad"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1288,7 +1536,6 @@
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -1314,9 +1561,295 @@
                     }
         });
 
-  $(".dismiss").click(function(){
-            $('.modal').modal('hide');
+  var h=$('#tablepagos').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25,
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').hide();
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+    $("#addpago").click(function(){
+
+
+      $("#addpago").attr("disabled","disabled");
+        $("#addpago").css({
+          "opacity": ("0.2")
+        });
+
+      var route = route_agregar_pago;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_pago" ).serialize(); 
+      limpiarMensaje();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos+"&servicio_id="+$("#tipo_id").val(),
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+                $("#form_pago")[0].reset();
+
+                $.each(respuesta.array, function (index, array) {
+
+                  if(array.tipo == 1){
+                    tipo = 'Porcentaje'
+                    monto = array.monto+"%"
+                    monto_porcentaje = 0;
+                  }else{
+                    tipo = 'Tasa Fija'
+                    monto = formatmoney(parseFloat(array.monto))
+                    monto_porcentaje = formatmoney(parseFloat(array.monto_porcentaje))
+                  }
+
+                  var rowId=array.id;
+                  var rowNode=h.row.add( [
+                  ''+array.nombre+'',
+                  ''+tipo+'',
+                  ''+monto+'',
+                  ''++'',
+                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .attr('data-tipo_servicio',array.tipo_servicio)
+                  // .attr('data-precio',precio_neto)
+                  .addClass('seleccion');
+
+                  $("#tipo_id option[value='"+array.servicio_id+"-"+array.tipo_servicio+"']").attr("disabled","disabled");
+                  $("#tipo_id option[value='"+array.servicio_id+"-"+array.tipo_servicio+"']").data("icon","glyphicon-remove");
+
+                  
+
+                });
+
+                $('#tipo_id').val('');
+                $('#tipo_id').selectpicker('refresh');
+                
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $("#addpago").removeAttr("disabled");
+                $("#addpago").css({
+                  "opacity": ("1")
+                });
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              $("#addpago").removeAttr("disabled");
+                $("#addpago").css({
+                  "opacity": ("1")
+                });                        
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
+
+  $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
+
+                var id = $(this).closest('tr').attr('id') + '-' + $(this).closest('tr').data('tipo_servicio');
+                element = this;
+
+                swal({   
+                    title: "Desea eliminar esta configuración?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar_pago(id, element);
+          }
+                });
+            });
+      
+        function eliminar_pago(id, element){
+         var route = route_eliminar_pago + id;
+         var token = "{{ csrf_token() }}";
+         procesando()
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          console.log(respuesta.id)
+
+                          $("#tipo_id option[value='"+respuesta.id+"']").removeAttr("disabled");
+                          $("#tipo_id option[value='"+respuesta.id+"']").data("icon","");
+
+                          $('#tipo_id').selectpicker('refresh');
+
+                          h.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+
+                          swal("Exito!","La configuración ha sido eliminada!","success");
+                          finprocesado()
+                        
+                        }
+                    },
+                    error:function(msj){
+                      $("#msj-danger").fadeIn(); 
+                      var text="";
+                      console.log(msj);
+                      var merror=msj.responseJSON;
+                      text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                      $("#msj-error").html(text);
+                      setTimeout(function(){
+                               $("#msj-danger").fadeOut();
+                              }, 3000);
+                      }
+                });
+           }
+
+    $(".dismiss").click(function(){
+      $('.modal').modal('hide');
+    });
+
+    $('#tipo_servicio').on('change', function(){
+        $('#tipo_id').val('')
+        options = $('#tipo_id option');
+        id = $(this).val();
+
+        if(id != 0){
+          $.each(options, function (index, array) {  
+            tmp = array.value
+            tmp2 =  tmp.split('-')
+            value = tmp2[0]
+            tipo = tmp2[1]
+            option = $("#tipo_id option[value='"+array.value+"']")
+
+            if(id == 99){
+
+              not_in = [1,2,3,4,9,5,11,14]
+              if(!$.inArray(tipo, not_in)){
+                  option.show();
+              }else{  
+                  option.hide();
+              } 
+
+            }else{
+
+              if(id != 3){
+
+
+                if(tipo == id){
+                    option.show();
+                }else{  
+                    option.hide();
+                }  
+
+              }else{    
+
+                if(tipo == 3 || tipo == 4){
+                    option.show();
+                }else{  
+                    option.hide();
+                }  
+              }          
+            }
           });
+        }else{
+          options.show();
+        }
+
+        $('#tipo_id').selectpicker('refresh');
+    });
+
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
 
    </script> 
 

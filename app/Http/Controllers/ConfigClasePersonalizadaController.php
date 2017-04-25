@@ -177,6 +177,7 @@ class ConfigClasePersonalizadaController extends BaseController {
 
         'nombre' => 'required',
         'costo' => 'required|numeric',
+        'cantidad_horas' => 'required|numeric',
         'color_etiqueta' => 'required',
         'tiempo_expiracion' => 'numeric',
 
@@ -185,8 +186,10 @@ class ConfigClasePersonalizadaController extends BaseController {
     $messages = [
 
         'nombre.required' => 'Ups! El Nombre  es requerido',
-        'costo.numeric' => 'Ups! El costo es inválido, debe contener sólo  números',
+        'costo.numeric' => 'Ups! El costo es inválido, debe contener sólo números',
         'costo.required' => 'Ups! El costo es requerido',
+        'cantidad_horas.numeric' => 'Ups! La cantidad de horas es inválida, debe contener sólo números',
+        'cantidad_horas.required' => 'Ups! La cantidad de horas son requeridas',
         'color_etiqueta.required' => 'Ups! La etiqueta es requerida',
         'tiempo_expiracion.numeric' => 'Ups! El Tiempo de expiración es inválido, debe contener sólo  números',
     ];
@@ -208,6 +211,7 @@ class ConfigClasePersonalizadaController extends BaseController {
         $clasepersonalizada->academia_id = Auth::user()->academia_id;
         $clasepersonalizada->nombre = $nombre;
         $clasepersonalizada->costo = $request->costo;
+        $clasepersonalizada->cantidad_horas = $request->cantidad_horas;
         $clasepersonalizada->descripcion = $request->descripcion;
         $clasepersonalizada->color_etiqueta = $request->color_etiqueta;
         $clasepersonalizada->tiempo_expiracion = $request->tiempo_expiracion;
@@ -490,7 +494,42 @@ class ConfigClasePersonalizadaController extends BaseController {
 
             if($clasepersonalizada->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'nombre', 'valor' => $nombre, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateHora(Request $request){
+
+    $rules = [
+
+        'cantidad_horas' => 'required|numeric',
+
+    ];
+
+    $messages = [
+
+        'cantidad_horas.numeric' => 'Ups! La cantidad de horas es inválida, debe contener sólo números',
+        'cantidad_horas.required' => 'Ups! La cantidad de horas son requeridas',
+
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+            $clasepersonalizada = ClasePersonalizada::find($request->id);
+            $clasepersonalizada->cantidad_horas = $request->cantidad_horas;
+
+            if($clasepersonalizada->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }

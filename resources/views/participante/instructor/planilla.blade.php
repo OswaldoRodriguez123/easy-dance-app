@@ -1577,8 +1577,8 @@
   route_principal="{{url('/')}}/participante/instructor";
   route_email="{{url('/')}}/correo/sesion/";
 
-  route_agregar="{{url('/')}}/participante/instructor/agregarpago";
-  route_eliminar="{{url('/')}}/participante/instructor/eliminarpago/";
+  route_agregar_pago="{{url('/')}}/participante/instructor/agregarpago";
+  route_eliminar_pago="{{url('/')}}/participante/instructor/eliminarpago/";
 
    $(document).ready(function(){
 
@@ -2161,13 +2161,13 @@
             var nAnimOut = $(this).attr('data-animation-out')
                         swal("Exito!","La configuración ha sido eliminada!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
+                        eliminar_pago(id, element);
           }
                 });
             });
       
-        function eliminar(id, element){
-         var route = route_eliminar + id;
+        function eliminar_pago(id, element){
+         var route = route_eliminar_pago + id;
          var token = "{{ csrf_token() }}";
                 
                 $.ajax({
@@ -2227,7 +2227,7 @@
           "opacity": ("0.2")
         });
 
-      var route = route_agregar;
+      var route = route_agregar_pago;
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#form_pago" ).serialize(); 
       limpiarMensaje();

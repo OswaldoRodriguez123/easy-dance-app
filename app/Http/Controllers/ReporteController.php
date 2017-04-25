@@ -590,7 +590,7 @@ class ReporteController extends BaseController
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular', 'config_niveles_baile.nombre as nivel', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular', 'config_niveles_baile.nombre as nivel', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'inscripcion_clase_grupal.tipo_pago')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id);
 
         if($request->sexo)
@@ -629,8 +629,13 @@ class ReporteController extends BaseController
         $total = 0;
         $mujeres = 0;
         $hombres = 0;
+        $credito = 0;
+        $contado = 0;
+        $total_inscritos = 0;
 
         foreach($inscritos as $inscrito){
+
+            $total_inscritos++;
 
             $fecha = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_inicio);
             $i = $fecha->dayOfWeek;
@@ -665,6 +670,11 @@ class ReporteController extends BaseController
 
             }
  
+            if($inscrito->tipo_pago == 1){
+                $contado++;
+            }else{
+                $credito++;
+            }
 
             if($inscrito->sexo == 'F'){
                 $mujeres++;
@@ -723,6 +733,9 @@ class ReporteController extends BaseController
                 'hombres'           => $hombres,
                 'total'             => $total,
                 'sexos'             => $array_sexo,
+                'contado'           => $contado,
+                'credito'           => $credito,
+                'total_inscritos'   => $total_inscritos,
                 'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente',
                 'status'            => 'OK'
 
