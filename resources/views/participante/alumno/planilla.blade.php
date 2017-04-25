@@ -11,7 +11,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="{{url('/')}}/assets/js/jquery.webcam.js"></script>
+<script type="text/javascript" src="{{url('/')}}/assets/js/photobooth_min.js"></script>
 @stop
 
 @section('content')
@@ -28,31 +28,13 @@
                            <div class="modal-body">                           
                              <div class="row p-t-20 p-b-0">
 
-                                <div class="col-sm-6 webcam-container size640x480" >
-                                  <div id="webcam"
-                                       data-swffile="sAS3Cam.swf"
-                                       data-preview-width="640" data-preview-height="480"
-                                       data-resolution-width="640" data-resolution-height="480"
-                                       data-stage-scale-mode="noScale" data-stage-align="TL"
-                                       class="size640x480">
-                                  </div>
-                                </div>
+                                <div id="col-sm-12" style="width: 300px; height: 300px">
 
-                                <div class="col-sm-6 webcam-text">
-                                  <div>
-                                    <input id="popup-webcam-take-photo"
-                                           type="button"
-                                           disabled="disabled"
-                                           value="Take a photo"
-                                           style="display:none" />
-                                  </div>
-                                  <p class="webcam-error"></p>
-                                </div>
-         
-                                <div class="clearfix"></div>
+                                  <div id="example"></div>
+                                  <div id="gallery"></div>
 
-                                <div id="col-sm-12 result"></div>
-                                                         
+                                </div>
+                                                                    
                           
                                 <input type="hidden" name="id" value="{{$alumno->id}}"></input>
                               
@@ -1333,76 +1315,20 @@
 
     $(document).ready(function(){
 
-      $('#webcam').webcam({
-        noCameraFound: function () {
-            this.debug('error', 'Web camera is not available');
-        },
+      document.addEventListener("DOMContentLoaded", function(event) { 
+          var container = document.getElementById("example");
+          var gallery = document.getElementById("gallery");
+          var myPhotobooth = new Photobooth(container);
+          myPhotobooth.onImage = function(dataUrl){ 
+              var myImage = document.createElement("img");
+              myImage.src = dataUrl; 
+              gallery.appendChild(myImage);
+          };
+      });
 
-        error: function(e) {
-            this.debug('error', 'Internal camera plugin error');
-        },
-
-        cameraDisabled: function () {
-            this.debug('error', 'Please allow access to your camera');
-        },
-
-        debug: function(type, string) {
-            if (type == 'error') {
-                $(".webcam-error").html(string);
-            } else {
-                $(".webcam-error").html('');
-            }
-        },
-
-        cameraEnabled:  function () {
-            this.debug('notice', 'Camera enabled');
-            if (this.isCameraEnabled) return;
-
-            this.isCameraEnabled = true;
-            $('#popup-webcam-cams')
-                .append($.map(this.getCameraList(), function(cam, i) {
-                    return '<option value="' + i + '">' + cam + '</option>';
-                }).join(''));
-
-            setTimeout($.proxy(function() {
-                this.setCamera('0');
-                $('#popup-webcam-take-photo')
-                    .prop('disabled', false)
-                    .show();
-            }, this), 750);
-        }
-    });
-
-    $('#popup-webcam-cams').change(function() {
-        var $cam = $('#webcam');
-        var success = $cam.webcam('setCamera', $(this).val());
-        if (!success) {
-            $cam.webcam('debug', 'error', 'Unable to select camera');
-        } else {
-            $cam.webcam('debug', 'notice', 'Camera changed');
-        }
-    });
-
-    $('#popup-webcam-take-photo').click(function(e) {
-        e.preventDefault();
-
-        var api = $('#webcam').data('webcam');
-        var result = api.save();
-        if (result && result.length) {
-            var shotResolution = api.getResolution();
-
-            var img = new Image();
-            img.src = 'data:image/jpeg;base64,' + result;
-            $('#result').append(img);
-
-            alert('base64encoded jpeg (' + shotResolution[0] + 'x' + shotResolution[1] + '): ' + result.length + 'chars');
-
-            /* resume camera capture */
-            api.setCamera($('#popup-webcam-cams').val());
-        } else {
-            api.debug('error', 'Broken camera');
-        }
-    });
+      // $( '#example' ).photobooth().on( "image", function( event, dataUrl ){
+      //   $( "#gallery" ).show().html( '<img src="' + dataUrl + '" >');
+      // });
 
       $('#cantidad_actual').val(0);
 
