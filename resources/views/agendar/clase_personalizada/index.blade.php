@@ -197,7 +197,7 @@
                                   <td class="text-center previa">{{$clase_personalizada['instructor_nombre']}} {{$clase_personalizada['instructor_apellido']}}</td>
                                   <td class="text-center previa">{{$clase_personalizada['fecha_inicio']}}</td>
                                   <td class="text-center previa">{{$clase_personalizada['hora_inicio']}} - {{$clase_personalizada['hora_final']}}</td>
-                                  @if($tipo == 1)
+                                  @if($tipo == 'A')
                                     <td class="text-center previa">
                                       <i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
                                     </td>
