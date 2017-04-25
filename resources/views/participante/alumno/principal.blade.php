@@ -274,7 +274,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,    
-        order: [[2, 'asc']],
+        order: [[4, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($alumnos)}}" < 25) {
               $('.dataTables_paginate').hide();
