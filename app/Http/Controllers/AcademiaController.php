@@ -66,15 +66,15 @@ class AcademiaController extends BaseController {
 	{
         $academia = Academia::find(Auth::user()->academia_id);
 
-        $clases_personalizadas = InscripcionClasePersonalizada::all();
+        // $clases_personalizadas = InscripcionClasePersonalizada::all();
 
-        foreach($clases_personalizadas as $clase_personalizada){
-            $config_clase_personalizada = ClasePersonalizada::find($clase_personalizada->id);
-            if($config_clase_personalizada){
-                $clase_personalizada->cantidad_horas = $config_clase_personalizada->cantidad_horas;
-                $clase_personalizada->save();
-            }
-        }
+        // foreach($clases_personalizadas as $clase_personalizada){
+        //     $config_clase_personalizada = ClasePersonalizada::find($clase_personalizada->id);
+        //     if($config_clase_personalizada){
+        //         $clase_personalizada->cantidad_horas = $config_clase_personalizada->cantidad_horas;
+        //         $clase_personalizada->save();
+        //     }
+        // }
 
         // foreach($clases_personalizadas as $clase_personalizada){
 
