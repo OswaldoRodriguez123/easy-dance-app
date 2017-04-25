@@ -44,6 +44,7 @@ use App\Sugerencia;
 use App\Staff;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Image;
 
 
 class AlumnoController extends BaseController
