@@ -704,6 +704,48 @@ class AlumnoController extends BaseController
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function updateImagen(Request $request)
+    {          
+        if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+
+            $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imageBase64 );
+            $type =  explode( '/',  $split[0]);
+
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
+
+            if($ext == 'png'){
+                $extension = '.png';
+            }
+
+            $nombre_img = "usuario-". Auth::user()->id . $extension;
+            $image = base64_decode($base64_string);
+
+            // \Storage::disk('usuario')->put($nombre_img,  $image);
+            $img = Image::make($image)->resize(300, 300);
+            $img->save('assets/uploads/usuario/'.$nombre_img);
+
+            }else{
+                $nombre_img = "";
+            }
+
+            $in = array(2,4);
+
+            $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo', $in)->first();
+
+            if($usuario){
+                $usuario->imagen = $nombre_img;
+                $usuario->save(); 
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
+    }
+
     public function updatePromotor(Request $request){
         $alumno = Alumno::find($request->id);
         $alumno->instructor_id = $request->instructor_id;

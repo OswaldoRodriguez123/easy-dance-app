@@ -11,9 +11,76 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{{url('/')}}/assets/js/jquery.webcam.js"></script>
 @stop
 
 @section('content')
+
+            <div class="modal fade" id="modalImagen-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_imagen_alumno" id="edit_imagen_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="imageBase64" id="imageBase64">
+                           <div class="modal-body">                           
+                             <div class="row p-t-20 p-b-0">
+
+                                <div class="col-sm-6 webcam-container size640x480" >
+                                  <div id="webcam"
+                                       data-swffile="sAS3Cam.swf"
+                                       data-preview-width="640" data-preview-height="480"
+                                       data-resolution-width="640" data-resolution-height="480"
+                                       data-stage-scale-mode="noScale" data-stage-align="TL"
+                                       class="size640x480">
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-6 webcam-text">
+                                  <div>
+                                    <input id="popup-webcam-take-photo"
+                                           type="button"
+                                           disabled="disabled"
+                                           value="Take a photo"
+                                           style="display:none" />
+                                  </div>
+                                  <p class="webcam-error"></p>
+                                </div>
+         
+                                <div class="clearfix"></div>
+
+                                <div id="col-sm-12 result"></div>
+                                                         
+                          
+                                <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                              
+
+                                <div class="clearfix"></div> 
+                                
+                              </div>
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_alumno" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
 
             <div class="modal fade" id="modalPromotor-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -1105,6 +1172,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-instructor_id" class="capitalize">{{$alumno->instructor_nombre}} {{$alumno->instructor_apellido}}</span></td>
                             </tr> -->
+                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Alumno">
+                             <td width="50%"> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image f-22"></i> </span>
+                              <span class="f-14">Imagen </span>
+                             </td>
+                             <td class="f-14 m-l-15"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($alumno->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
@@ -1257,6 +1332,77 @@
     cantidad_actual = 0;
 
     $(document).ready(function(){
+
+      $('#webcam').webcam({
+        noCameraFound: function () {
+            this.debug('error', 'Web camera is not available');
+        },
+
+        error: function(e) {
+            this.debug('error', 'Internal camera plugin error');
+        },
+
+        cameraDisabled: function () {
+            this.debug('error', 'Please allow access to your camera');
+        },
+
+        debug: function(type, string) {
+            if (type == 'error') {
+                $(".webcam-error").html(string);
+            } else {
+                $(".webcam-error").html('');
+            }
+        },
+
+        cameraEnabled:  function () {
+            this.debug('notice', 'Camera enabled');
+            if (this.isCameraEnabled) return;
+
+            this.isCameraEnabled = true;
+            $('#popup-webcam-cams')
+                .append($.map(this.getCameraList(), function(cam, i) {
+                    return '<option value="' + i + '">' + cam + '</option>';
+                }).join(''));
+
+            setTimeout($.proxy(function() {
+                this.setCamera('0');
+                $('#popup-webcam-take-photo')
+                    .prop('disabled', false)
+                    .show();
+            }, this), 750);
+        }
+    });
+
+    $('#popup-webcam-cams').change(function() {
+        var $cam = $('#webcam');
+        var success = $cam.webcam('setCamera', $(this).val());
+        if (!success) {
+            $cam.webcam('debug', 'error', 'Unable to select camera');
+        } else {
+            $cam.webcam('debug', 'notice', 'Camera changed');
+        }
+    });
+
+    $('#popup-webcam-take-photo').click(function(e) {
+        e.preventDefault();
+
+        var api = $('#webcam').data('webcam');
+        var result = api.save();
+        if (result && result.length) {
+            var shotResolution = api.getResolution();
+
+            var img = new Image();
+            img.src = 'data:image/jpeg;base64,' + result;
+            $('#result').append(img);
+
+            alert('base64encoded jpeg (' + shotResolution[0] + 'x' + shotResolution[1] + '): ' + result.length + 'chars');
+
+            /* resume camera capture */
+            api.setCamera($('#popup-webcam-cams').val());
+        } else {
+            api.debug('error', 'Broken camera');
+        }
+    });
 
       $('#cantidad_actual').val(0);
 

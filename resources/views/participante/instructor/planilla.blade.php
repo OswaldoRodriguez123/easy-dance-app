@@ -1493,7 +1493,7 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Imagen de Perfil</span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="campana-imagen_perfil"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Instructor">
                              <td>
