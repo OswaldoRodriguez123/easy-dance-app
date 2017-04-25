@@ -171,7 +171,7 @@
 
                                 ?>
 
-                                <tr id="{{$id}}" data-tipo = "{{$tipo}}">
+                                <tr id="{{$id}}" class="seleccion" data-tipo = "{{$tipo}}">
 
                                   @if($tipo == 'F')
 
@@ -297,7 +297,7 @@
           window.location=route;
 
 
-        }else if(tipo == 'canceladas'){
+        }else if(row.data('tipo') == 'canceladas'){
 
           var fecha = $(row).find('td').eq(4).html();
           var hora = $(row).find('td').eq(5).html();
