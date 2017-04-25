@@ -173,11 +173,24 @@
                           • La actividad de congelar un curso, sólo es válido en un rango de una vez por año.<br>
                           • Después que el alumno haya aplicado la actividad de congelar un curso en que se encuentre activo, perderá el privilegio del uso de transferencia de su cupo a otra persona durante la etapa que ha sido congelada su clase grupal. </a></p>
 
-                          <div class="f-18 f-700">30. Transferencia</div><br>
+                          <div class="f-18 f-700">31. Membrecías</div><br>
+
+                          <p>Todos aquellos servicios que han sido obtenido por medio de una promoción, membrecías, premios u otros completamente gratis, la academia se abstiene en brindar los beneficios de canjes, congelar ciclo y transferencias.</p>
+
+                          <div class="f-18 f-700">32. Valoración recurrente</div><br>
+
+                          <p>Todo integrante para ascender de nivel deberá ser valorado por el instructor de diagnóstico en la sección de <b>Valoración recurrente</b>, en caso que el alumno no asista a la clase del festejo (en el que se realiza su valoración) deberá realizar un diagnóstico en calidad de <b>cita exclusiva</b> y de esta forma ser valorado por el instructor, para así continuar con su proceso de aprendizaje en la clase que le corresponde.</p>
+
+                          <div class="f-18 f-700">33. Derecho de imagen</div><br>
+
+                          <p>El alumno autoriza a la academia a ceder los derechos de explotación sobre las fotografías, imágenes o videos  a que indistintamente puedan utilizar todo el material visual y gráfico para fines publicitarios de proyección e imagen.</p>
+
+                          <div class="f-18 f-700">34. Transferencia</div><br>
 
                           <p>En caso que un alumno desee realizar una transferencia de un curso a otro, después de haber iniciado sus clases recurrentes, la academia buscará la posibilidad de aplicar dicha transferencia siempre y cuando cuente con los horarios y cupos de disponibilidad como a su vez que cuente con un grupo que maneje la misma nivelación o alguna inferior, en caso que la academia no posea dichas características y el alumno no pueda o no desee continuar en los horarios en el que está inscrito, la academia no se obliga a devolver el monto o parte del plan de inscripción o mensualidad que el alumno haya realizado.</p>
 
-                          <div class="f-18 f-700">31. Consulta</div><br>
+
+                          <div class="f-18 f-700">35. Consulta</div><br>
 
                           <p>Si tiene alguna pregunta o comentario sobre estos términos de servicio, no dude en contactarnos por vía telefónica a los números que aparecen en nuestro sitio web <a href="www.tuclasedebaile.com.co">www.tuclasedebaile.com.co</a></p>
 
