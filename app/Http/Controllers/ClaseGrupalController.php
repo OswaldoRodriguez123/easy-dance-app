@@ -492,13 +492,15 @@ class ClaseGrupalController extends BaseController {
 
             }
 
+            $tipo_clase = array(1,2);
+            $in = array(2,4);
+
             foreach($alumnos_inscritos as $alumno){
 
                 $fecha_de_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
                 $clases_completadas = 0;
                 $fecha = '';
 
-                $tipo_clase = array(1,2);
 
                 $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
