@@ -28,12 +28,7 @@
                            <div class="modal-body">                           
                              <div class="row p-t-20 p-b-0">
 
-                                <div id="col-sm-12" style="width: 300px; height: 300px">
-
-                                  <div id="example"></div>
-                                  <div id="gallery"></div>
-
-                                </div>
+                                
                                                                     
                           
                                 <input type="hidden" name="id" value="{{$alumno->id}}"></input>
@@ -1138,10 +1133,17 @@
 
 					           	<div class="col-sm-9">
 
-                         <div class="col-sm-12">
+                          <div class="col-sm-12">
                               <p class="text-center opaco-0-8 f-22">Datos del Alumno</p>
                               <p class="text-center opaco-0-8 f-12">Fecha de registro: {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$alumno->created_at)->format('d-m-Y')}}</p>
                               <p class="text-center opaco-0-8 f-12">Modalidad de Pago: {{$tipo_pago}}</p>
+
+
+
+                              <div id="example" style="min-height: 200px; min-width: 200px"></div>
+                              <div id="gallery"></div>
+
+                             
                           </div>
 
                         <div class="col-sm-12">
@@ -1326,9 +1328,9 @@
           };
       });
 
-      // $( '#example' ).photobooth().on( "image", function( event, dataUrl ){
-      //   $( "#gallery" ).show().html( '<img src="' + dataUrl + '" >');
-      // });
+      $( '#example' ).photobooth().on( "image", function( event, dataUrl ){
+        $( "#gallery" ).show().html( '<img src="' + dataUrl + '" >');
+      });
 
       $('#cantidad_actual').val(0);
 
