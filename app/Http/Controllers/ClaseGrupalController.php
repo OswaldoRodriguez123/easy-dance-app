@@ -541,10 +541,6 @@ class ClaseGrupalController extends BaseController {
                     $estatus="c-verde";
                 }
 
-                $collection=collect($alumno);     
-                $alumno_array = $collection->toArray();
-                $alumno_array['estatus'] = $estatus;
-
                 // ----------
 
                 $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
@@ -575,7 +571,26 @@ class ClaseGrupalController extends BaseController {
                 }else{
                     $activacion = 0;
                 }
-                
+
+                $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$in)->first();
+
+                if($usuario){
+
+                  if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                  }else{
+                    $imagen = '';
+                  }
+
+                }else{
+                    $imagen = '';
+                }
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+
+                $alumno_array['imagen'] = $imagen;
+                $alumno_array['estatus'] = $estatus;
                 $alumno_array['activacion']=$activacion;
                 $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
