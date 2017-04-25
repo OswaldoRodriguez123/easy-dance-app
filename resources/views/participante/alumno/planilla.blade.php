@@ -1544,6 +1544,9 @@
 
     })
 
+    $('#modalImagen-Alumno').on('hidden.bs.modal', function (event) {
+      Webcam.reset();
+    })
 
     function limpiarMensaje(){
         var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "fecha_pago", "costo_mensualidad"];
