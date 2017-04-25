@@ -248,9 +248,7 @@ class AgendarController extends BaseController
                 ->join('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
                 ->select('clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'inscripcion_clase_personalizada.*', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
                 ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-                ->where('clases_personalizadas.deleted_at', '=', null)
-                ->where('inscripcion_clase_personalizada.estatus', '=', 1)
-                ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'));
+                ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->toDateString());
 
         if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
             $query->where('inscripcion_clase_personalizada.alumno_id', '=', Auth::user()->usuario_id);
@@ -265,9 +263,7 @@ class AgendarController extends BaseController
                 ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
                 ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
                 ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-                ->where('clases_personalizadas.deleted_at', '=', null)
-                ->where('inscripcion_clase_personalizada.estatus', '=', 1)
-                ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->format('Y-m-d'));
+                ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->toDateString());
 
         if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
             $query->where('inscripcion_clase_personalizada.alumno_id', '=', Auth::user()->usuario_id);
