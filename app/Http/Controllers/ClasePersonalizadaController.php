@@ -108,7 +108,7 @@ class ClasePersonalizadaController extends BaseController {
 
                 if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'A';
-                }else if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
+                }else if($fecha_inicio <= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'F';
                 }else{
                     $tipo = 'C';
@@ -133,7 +133,7 @@ class ClasePersonalizadaController extends BaseController {
 
                 if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'A';
-                }else if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
+                }else if($fecha_inicio <= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'F';
                 }else{
                     $tipo = 'C';
