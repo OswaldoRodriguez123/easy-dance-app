@@ -114,7 +114,10 @@
                                     <select class="selectpicker" name="forma_pago_id" id="forma_pago_id" data-live-search="true">
                                         <option value="">Selecciona</option>
                                         @foreach ( $formas_pago as $forma )
-                                          <option value = "{{ $forma->id }}">{{ $forma->nombre }}</option>
+
+                                          @if($forma->nombre != 'Puntos Acumulados')
+                                            <option value = "{{ $forma->id }}">{{ $forma->nombre }}</option>
+                                          @endif
                                         @endforeach       
                                     </select>
                                 </div>

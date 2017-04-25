@@ -864,54 +864,64 @@ class AdministrativoController extends BaseController {
 
                             $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id',$item_proforma->item_id)->where('alumno_id', $alumno->id)->first();
 
-                            if($inscripcion_clase_grupal->instructor_id){
+                            if($inscripcion_clase_grupal){
 
-                                $staff_id = $inscripcion_clase_grupal->instructor_id;
 
-                                $tmp_clase_grupal = ClaseGrupal::find($item_proforma->item_id);
+                                if($inscripcion_clase_grupal->instructor_id){
 
-                                $servicio = ConfigServicios::where('tipo_id',$tmp_clase_grupal->clase_grupal_id)->where('tipo',$item_proforma->tipo)->first();
+                                    $staff_id = $inscripcion_clase_grupal->instructor_id;
 
-                                $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
+                                    $tmp_clase_grupal = ClaseGrupal::find($item_proforma->item_id);
 
-                                if($config_pago){
+                                    if($tmp_clase_grupal){
 
-                                    if($config_pago->tipo == 1){
+                                        $servicio = ConfigServicios::where('tipo_id',$tmp_clase_grupal->clase_grupal_id)->where('tipo',$item_proforma->tipo)->first();
 
-                                        $porcentaje = $config_pago->monto / 100;
-                                        $monto = $item_proforma->importe_neto * $porcentaje;
+                                        if($servicio){
 
-                                        if($monto > 0 ){
+                                            $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
 
-                                            $pago = new PagoStaff;
+                                            if($config_pago){
 
-                                            $pago->staff_id=$staff_id;
-                                            $pago->tipo=$config_pago->tipo;
-                                            $pago->monto=$monto;
-                                            $pago->servicio_id=$servicio->id;
+                                                if($config_pago->tipo == 1){
 
-                                            $pago->save();
+                                                    $porcentaje = $config_pago->monto / 100;
+                                                    $monto = $item_proforma->importe_neto * $porcentaje;
+
+                                                    if($monto > 0 ){
+
+                                                        $pago = new PagoStaff;
+
+                                                        $pago->staff_id=$staff_id;
+                                                        $pago->tipo=$config_pago->tipo;
+                                                        $pago->monto=$monto;
+                                                        $pago->servicio_id=$servicio->id;
+
+                                                        $pago->save();
+                                                    }
+                                                   
+                                                }else{
+
+                                                    $pago = new PagoStaff;
+
+                                                    $pago->staff_id=$staff_id;
+                                                    $pago->tipo=$config_pago->tipo;
+                                                    $pago->monto=$config_pago->monto;
+                                                    $pago->servicio_id=$servicio->id;
+
+                                                    $pago->save();
+                                                    
+                                                }
+                                            }
+
                                         }
-                                       
-                                    }else{
 
-                                        $pago = new PagoStaff;
-
-                                        $pago->staff_id=$staff_id;
-                                        $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$config_pago->monto;
-                                        $pago->servicio_id=$servicio->id;
-
-                                        $pago->save();
-                                        
                                     }
                                 }
-                                
-                            }
 
-                            if($inscripcion_clase_grupal){
                                 $inscripcion_clase_grupal->tiene_mora = 0;
                                 $inscripcion_clase_grupal->save();
+
                             }
                             
                         }else if ($item_proforma->tipo == 2) {
@@ -982,54 +992,64 @@ class AdministrativoController extends BaseController {
 
                         $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id',$item_proforma->item_id)->where('alumno_id', $alumno->id)->first();
 
-                        if($inscripcion_clase_grupal->instructor_id){
+                        if($inscripcion_clase_grupal){
 
-                            $staff_id = $inscripcion_clase_grupal->instructor_id;
 
-                            $tmp_clase_grupal = ClaseGrupal::find($item_proforma->item_id);
+                            if($inscripcion_clase_grupal->instructor_id){
 
-                            $servicio = ConfigServicios::where('tipo_id',$tmp_clase_grupal->clase_grupal_id)->where('tipo',$item_proforma->tipo)->first();
+                                $staff_id = $inscripcion_clase_grupal->instructor_id;
 
-                            $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
+                                $tmp_clase_grupal = ClaseGrupal::find($item_proforma->item_id);
 
-                            if($config_pago){
+                                if($tmp_clase_grupal){
 
-                                if($config_pago->tipo == 1){
+                                    $servicio = ConfigServicios::where('tipo_id',$tmp_clase_grupal->clase_grupal_id)->where('tipo',$item_proforma->tipo)->first();
 
-                                    $porcentaje = $config_pago->monto / 100;
-                                    $monto = $item_proforma->importe_neto * $porcentaje;
+                                    if($servicio){
 
-                                    if($monto > 0 ){
+                                        $config_pago = ConfigPagosStaff::where('servicio_id',$servicio->id)->where('tipo_servicio',$servicio->tipo)->where('staff_id',$staff_id)->first();
 
-                                        $pago = new PagoStaff;
+                                        if($config_pago){
 
-                                        $pago->staff_id=$staff_id;
-                                        $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$monto;
-                                        $pago->servicio_id=$servicio->id;
+                                            if($config_pago->tipo == 1){
 
-                                        $pago->save();
+                                                $porcentaje = $config_pago->monto / 100;
+                                                $monto = $item_proforma->importe_neto * $porcentaje;
+
+                                                if($monto > 0 ){
+
+                                                    $pago = new PagoStaff;
+
+                                                    $pago->staff_id=$staff_id;
+                                                    $pago->tipo=$config_pago->tipo;
+                                                    $pago->monto=$monto;
+                                                    $pago->servicio_id=$servicio->id;
+
+                                                    $pago->save();
+                                                }
+                                               
+                                            }else{
+
+                                                $pago = new PagoStaff;
+
+                                                $pago->staff_id=$staff_id;
+                                                $pago->tipo=$config_pago->tipo;
+                                                $pago->monto=$config_pago->monto;
+                                                $pago->servicio_id=$servicio->id;
+
+                                                $pago->save();
+                                                
+                                            }
+                                        }
+
                                     }
-                                   
-                                }else{
 
-                                    $pago = new PagoStaff;
-
-                                    $pago->staff_id=$staff_id;
-                                    $pago->tipo=$config_pago->tipo;
-                                    $pago->monto=$config_pago->monto;
-                                    $pago->servicio_id=$servicio->id;
-
-                                    $pago->save();
-                                    
                                 }
                             }
 
-                        }
-                        
-                        if($inscripcion_clase_grupal){
                             $inscripcion_clase_grupal->tiene_mora = 0;
                             $inscripcion_clase_grupal->save();
+
                         }
                         
                     }else if ($item_proforma->tipo == 2) {
