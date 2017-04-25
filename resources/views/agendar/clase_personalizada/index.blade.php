@@ -171,7 +171,7 @@
 
                                 ?>
 
-                                <tr data-tipo = "{{$tipo}}">
+                                <tr id="{{$id}}" data-tipo = "{{$tipo}}">
 
                                   @if($tipo == 'F')
 
