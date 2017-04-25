@@ -169,27 +169,27 @@
                                     $horas = 'Hora';
                                   }
 
-                                  if($tipo == 'F'){
-
-                                    if(isset($asistencias[$id])){
-                                      $acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>';
-                                    }else{
-                                      $acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
-                                    }
-
-                                  }else{
-                                    if($clase_personalizada['boolean_alumno_aceptacion'] == 1){
-                                      $acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>';
-                                    }else{
-                                      $acepto = '';
-                                    }
-                                  }
-
                                 ?>
 
                                 <tr data-tipo = "{{$tipo}}">
 
-                                  <td class="text-center previa"><span style="display: none">{{$tipo}}</span>{{$acepto}}</td>
+                                  @if($tipo == 'F')
+
+                                    @if(isset($asistencias[$id]))
+                                      <td class="text-center previa"><span style="display: none">{{$tipo}}</span><i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i></td>
+                                    @else
+
+                                      <td class="text-center previa"><span style="display: none">{{$tipo}}</span><i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i></td>
+                                    @endif
+                                  @else
+
+                                    @if($clase_personalizada['boolean_alumno_aceptacion'] == 1)
+                                      <td class="text-center previa"><span style="display: none">{{$tipo}}</span><i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i></td>
+                                    @else
+
+                                      <td class="text-center previa"><span style="display: none">{{$tipo}}</span><i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i></td>
+                                    @endif
+                                  @endif
 
                                   <td class="text-center previa">{{$clase_personalizada['alumno_nombre']}} {{$clase_personalizada['alumno_apellido']}}</td>
                                   <td class="text-center previa">{{$clase_personalizada['clase_personalizada_nombre']}}</td>
