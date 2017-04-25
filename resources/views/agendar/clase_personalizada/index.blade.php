@@ -288,8 +288,10 @@
 			});
         
       function previa(t){
+        
         var row = $(t).closest('tr');
-        if(row.data('tipo') == '1')
+
+        if(row.data('tipo') == 'A')
         {
 
           var id = $(row).attr('id');
@@ -297,7 +299,7 @@
           window.location=route;
 
 
-        }else if(row.data('tipo') == 'canceladas'){
+        }else if(row.data('tipo') == 'C'){
 
           var fecha = $(row).find('td').eq(4).html();
           var hora = $(row).find('td').eq(5).html();
@@ -320,7 +322,7 @@
          });
 
 
-        function countChar2(val) {
+      function countChar2(val) {
         var len = val.value.length;
         if (len >= 2000) {
           val.value = val.value.substring(0, 2000);
@@ -502,219 +504,44 @@
                 });
     };
 
+     $('input[name="tipo"]').on('change', function(){
 
-        function clear(){
+        if($(this).val() == 'A'){
 
-            t.clear().draw();
-            // t.destroy();
-         }
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#canceladas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).addClass( "c-verde" );
 
-         // $('input[name="tipo"]').on('change', function(){
-         //    clear();
-         //    if ($(this).val()=='activas') {
-         //          tipo = 'activas';
-         //          rechargeActivas();
-         //    } else if($(this).val()=='finalizadas')  {
-         //          tipo= 'finalizadas';
-         //          rechargeFinalizadas();
-         //    }else{
-         //          tipo= 'canceladas';
-         //          rechargeCanceladas();
-         //    }
-         // });
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw(); 
 
-         $('input[name="tipo"]').on('change', function(){
+        }else if($(this).val() == 'F'){
 
-            if($(this).val() == 'A'){
+            $( "#finalizadas2" ).addClass( "c-verde" );
+            $( "#canceladas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
 
-                $( "#finalizadas2" ).removeClass( "c-verde" );
-                $( "#canceladas2" ).removeClass( "c-verde" );
-                $( "#activas2" ).addClass( "c-verde" );
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw();
 
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw(); 
+        }else{
 
-            }else if($(this).val() == 'F'){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#canceladas2" ).addClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
 
-                $( "#finalizadas2" ).addClass( "c-verde" );
-                $( "#canceladas2" ).removeClass( "c-verde" );
-                $( "#activas2" ).removeClass( "c-verde" );
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw();
 
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw();
-
-            }else{
-
-                $( "#finalizadas2" ).removeClass( "c-verde" );
-                $( "#canceladas2" ).addClass( "c-verde" );
-                $( "#activas2" ).removeClass( "c-verde" );
-
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw();
-
-            }
-    
-        });
-
-         function rechargeActivas(){
-
-            $.each(activas, function (index, array) {
-
-                if(array.boolean_alumno_aceptacion == 1){
-                  acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-                }else{
-                  acepto = '';
-                }
-
-                if(array.cantidad_horas > 1){
-                  horas = 'Horas';
-                }else{
-                  horas = 'Hora';
-                }
-
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
-                ''+array.cantidad_horas + ' ' + horas+'',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''+array.fecha_inicio+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-
-            $.each(activas2, function (index, array) {
-
-              if(array.boolean_alumno_aceptacion == 1){
-                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-              }else{
-                acepto = '';
-              }
-
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
-                '',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''+array.fecha+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                '<i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
         }
 
-        function rechargeFinalizadas(){
-
-            $.each(finalizadas, function (index, array) {
-
-              if(asistencias[array.id]){
-                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-              }else{
-                acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
-              }
-
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
-                '',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''+array.fecha_inicio+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'',
-                ''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('disabled');
-            });
-
-            $.each(finalizadas2, function (index, array) {
-
-              if(asistencias[array.id]){
-                acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-              }else{
-                acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
-              }
-
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
-                '',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''+array.fecha+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                ''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('disabled');
-            });
-        }
-
-        function rechargeCanceladas(){
-    
-            $.each(canceladas, function (index, array) {
-
-                if(array.boolean_alumno_aceptacion == 1){
-                  acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-                }else{
-                  acepto = '';
-                }
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
-                '',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''+array.fecha_inicio+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'',
-                ''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .attr('data-cancelacion',array.razon_cancelacion)
-                    .addClass('disabled');
-            });
-
-            $.each(canceladas2, function (index, array) {
-
-                if(array.boolean_alumno_aceptacion == 1){
-                  acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-                }else{
-                  acepto = '';
-                }
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+array.clase_personalizada_nombre+'',
-                '',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''+array.fecha+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                ''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .attr('data-cancelacion',array.razon_cancelacion)
-                    .addClass('disabled');
-            });
-        }
-
+    });
 
 		</script>
 @stop
