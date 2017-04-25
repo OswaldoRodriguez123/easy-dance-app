@@ -120,15 +120,15 @@ class ClasePersonalizadaController extends BaseController {
                 $array[] = $personalizada_array;
             }
 
-            $clases_personalizadas = InscripcionClasePersonalizada::join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
+            $horarios_clases_personalizadas = HorarioClasePersonalizada::join('inscripcion_clase_personalizada', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
+                ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
                 ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-                ->join('horarios_clases_personalizadas', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
                 ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
-                ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
+                ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->get();
             
-            foreach($clases_personalizadas as $clase_personalizada){
+            foreach($horarios_clases_personalizadas as $clase_personalizada){
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio);
 
                 if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
