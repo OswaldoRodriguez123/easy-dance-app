@@ -169,7 +169,7 @@
                                     $horas = 'Hora';
                                   }
 
-                                  if($tipo == 2){
+                                  if($tipo == 'F'){
 
                                     if($asistencias[$id]){
                                       $acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>';
