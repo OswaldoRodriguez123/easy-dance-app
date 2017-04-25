@@ -1649,7 +1649,7 @@
                   ''+array.nombre+'',
                   ''+tipo+'',
                   ''+monto+'',
-                  ''++'',
+                  ''+monto_porcentaje+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
