@@ -1332,15 +1332,6 @@
 
     $(document).ready(function(){
 
-      Webcam.set({
-        width: 320,
-        height: 240,
-        image_format: 'jpeg',
-        jpeg_quality: 90
-      });
-
-      Webcam.attach( '#webcam' );
-
       $('#cantidad_actual').val(0);
 
       if($('#tr_contacto').data('valor') != ''){
@@ -1537,6 +1528,20 @@
 
     $('#modalCostoMensualidad-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();
+    })
+
+    $('#modalImagen-Alumno').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+
+      Webcam.set({
+        width: 300,
+        height: 300,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+      });
+
+      Webcam.attach( '#webcam' );
+
     })
 
 
