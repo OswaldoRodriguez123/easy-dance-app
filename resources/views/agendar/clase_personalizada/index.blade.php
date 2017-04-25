@@ -250,7 +250,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,  
-        order: [[4, 'desc'], [5, 'asc']],
+        order: [[5, 'desc'], [6, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
