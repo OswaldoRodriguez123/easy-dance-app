@@ -51,10 +51,10 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -64,6 +64,17 @@
                                 <?php $id = $instructor['id']; ?>
                                 
                                 <tr id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">
+                                        @if($instructor['imagen'])
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
+                                        @else
+                                            @if($instructor['sexo'] == 'M')
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            @else
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+                                      @endif
+                                    </td>
                                     <td class="text-center previa">{{$instructor['identificacion']}}</td>
                                     <td class="text-center previa">
                                     @if($instructor['sexo']=='F')
@@ -81,7 +92,6 @@
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_instructor}} {{$apellido_instructor}} </td>
-                                    <td class="text-center previa"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal"></i></td>
                                     <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
                                     <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>

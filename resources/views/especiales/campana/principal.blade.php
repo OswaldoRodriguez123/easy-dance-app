@@ -62,6 +62,7 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="fecha_inicio" data-order="desc">Fecha Inicio</th>
                                     <th class="text-center" data-column-id="fecha_final" data-order="desc">Fecha Final</th>
+                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="meta" data-order="desc">Meta</th>
                                     <th class="text-center" data-column-id="actual" data-order="desc">Actual</th>
                                     @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
@@ -78,6 +79,10 @@
                                     <td class="text-center previa">{{$campana['nombre']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_final']}}</td>
+                                    <td class="text-center previa">
+                                        <span class="{{ empty($promocion['dias_restantes']) ? 'c-youtube' : '' }}">{{$campana['status']}}</span>
+                                        Restan {{$campana['dias_restantes']}} Días
+                                    </td>
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
                                     <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
                                     @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)

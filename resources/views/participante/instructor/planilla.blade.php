@@ -1359,13 +1359,17 @@
                             <div class="clearfix p-b-15"></div>
                             
                         <a href="" class="pull-right">
-                           @if($instructor->sexo=='F')
-                              <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
-                           @else
-                              <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                           @endif
-
+                          @if($imagen)
+                            <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}" alt="" width="70px" height="auto"> 
+                          @else
+                             @if($instructor->sexo=='F')
+                                <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
+                             @else
+                                <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                             @endif
+                          @endif
                         </a>
+
                       </div>
                       <div class="card-body p-b-20">
                         <div class="row">

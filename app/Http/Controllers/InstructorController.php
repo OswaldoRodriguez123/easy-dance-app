@@ -35,13 +35,43 @@ class InstructorController extends BaseController {
 
         if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
 
-            return view('participante.instructor.principal')->with('instructores', Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+            $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+            $array = array();
+
+            foreach($instructores as $instructor){
+
+                $usuario = User::where('usuario_id',$instructor->id)->where('usuario_tipo',3)->first();
+
+                if($usuario){
+
+                  if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                  }else{
+                    $imagen = '';
+                  }
+
+                }else{
+                    $imagen = '';
+                }
+
+
+                $collection=collect($instructor);     
+                $instructor_array = $collection->toArray();
+
+                $instructor_array['imagen']=$imagen;
+                $array[$instructor->id] = $instructor_array;
+
+            }
+
+            return view('participante.instructor.principal')->with('instructores', $array);
         }else{
 
              $academia = Academia::find(Auth::user()->academia_id);
-             $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
 
-            return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructor, 'academia' => $academia]);
+             $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
+
+            return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructores, 'academia' => $academia]);
 
         }
 
@@ -780,9 +810,23 @@ class InstructorController extends BaseController {
                 ->where('instructores.id', $id)
             ->get();
 
+            $usuario = User::where('usuario_id',$id)->where('usuario_tipo',3)->first();
+
+            if($usuario){
+
+              if($usuario->imagen){
+                $imagen = $usuario->imagen;
+              }else{
+                $imagen = '';
+              }
+
+            }else{
+                $imagen = '';
+            }
+
  
         //Devolver vista con datos del mapa
-           return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos_instructor]);
+           return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos_instructor, 'imagen' => $imagen]);
         }else{
            return redirect("participante/instructor"); 
         }
