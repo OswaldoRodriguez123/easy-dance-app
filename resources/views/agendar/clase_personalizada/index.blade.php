@@ -181,6 +181,8 @@
 
                                       <td class="text-center previa"><span style="display: none">{{$tipo}}</span><i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i></td>
                                     @endif
+                                  @else
+                                    <td class="text-center previa"></td>
                                   @endif
 
                                   <td class="text-center previa">{{$clase_personalizada['alumno_nombre']}} {{$clase_personalizada['alumno_apellido']}}</td>
