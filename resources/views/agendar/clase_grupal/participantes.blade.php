@@ -1525,6 +1525,7 @@
                               iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
                               
                             }else{
+
                               if(inscripcion.boolean_franela == 0 && inscripcion.boolean_programacion == 0)
                               {
                                 iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>' + ' ' + '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
@@ -1542,6 +1543,7 @@
                               
                               if(array.sexo=='F')
                               {
+                                imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/5.jpg" alt="">'
                                 valor = $('#span_mujeres').html()
                                 valor = parseInt(valor) + 1;
                                 $('#span_mujeres').html(valor)
@@ -1549,6 +1551,7 @@
                               }
                               else
                               {
+                                imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/4.jpg" alt="">'
                                 valor = $('#span_hombres').html()
                                 valor = parseInt(valor) + 1;
                                 $('#span_hombres').html(valor)
@@ -1567,6 +1570,7 @@
                               var rowId=inscripcion.id;
                               var rowNode=t.row.add( [
                               '',
+                              ''+imagen+'',
                               ''+identificacion+'',
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
