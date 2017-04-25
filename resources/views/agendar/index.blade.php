@@ -546,7 +546,7 @@
                                 allDay: false,
                                 backgroundColor:'{{$transmision['etiqueta']}}',
                                 className: 'actividad',
-                                url: '{{url('/')}}/agendar/transmisiones/operaciones/{{$transmision['id']}}',
+                                url: '{{url('/')}}/agendar/transmisiones/detalle/{{$transmision['id']}}',
                                 tipo: 6
 
                             },
