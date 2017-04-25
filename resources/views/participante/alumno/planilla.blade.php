@@ -30,10 +30,20 @@
 
                                <div class="col-sm-12">
 
-                                  <div id="snapshot p-b-20"></div>
-                                  <div id="webcam"></div>
+                                  <div id="snapshot" class="p-b-20">
 
-                                  <a class="btn-blanco m-r-5 f-12" href="#" onClick="take_snapshot()">Tomar Foto</a>
+                                    @if($imagen)
+                                      <img id="img_snapshot" class="img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}"> 
+                                    @else
+                                      <img id="img_snapshot" class="img-responsive">
+                                    @endif 
+
+                                  </div>
+
+                                  <div id="webcam">
+                                    
+                                  </div>
+
                                 </div>
                                 
                                 <input type="hidden" name="id" value="{{$alumno->id}}"></input>
@@ -53,8 +63,15 @@
                               </div>
                               </div>
                             </div>
-                            <div class="col-sm-12">                            
 
+                            <div class="col-sm-6 text-left">   
+
+                              <a class="btn-blanco m-r-5 f-12" href="#" onClick="take_snapshot()">Tomar Foto</a>                         
+                                      
+                            </div>
+
+                            <div class="col-sm-6 text-right">                         
+                                      
                               <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_alumno" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
@@ -2291,9 +2308,10 @@
       // take snapshot and get image data
       Webcam.snap( function(data_uri) {
         // display results in page
-        document.getElementById('snapshot').innerHTML =  
-          '<img src="'+data_uri+'"/>';
+
+        $('#img_snapshot').attr('src',data_uri)
         $("input:hidden[name=imageBase64]").val(data_uri);
+
       } );
     }
 
