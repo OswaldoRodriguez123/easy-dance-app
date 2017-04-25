@@ -171,7 +171,7 @@
 
                                   if($tipo == 'F'){
 
-                                    if($asistencias[$id]){
+                                    if(isset($asistencias[$id])){
                                       $acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>';
                                     }else{
                                       $acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
