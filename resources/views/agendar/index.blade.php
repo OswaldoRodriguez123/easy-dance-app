@@ -52,19 +52,22 @@
 
                                            <div class="clearfix"></div> 
                                            <div class="clearfix p-b-15"></div>
+                                            
 
-                                            <div class="col-sm-12 text-right">
-                                                <label for="">Activar Clase</label>
-                                              
-                                                <br></br>
-                                                <div class="p-t-10">
-                                                    <div class="toggle-switch" data-ts-color="purple">
-                                                    <span class="p-r-10 f-700 f-16">No</span><input id="activar" type="checkbox">
-                                                    
-                                                    <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            @if($usuario_tipo != 2 && $usuario_tipo != 4)
+                                                <div class="col-sm-12 text-right">
+                                                    <label for="">Activar Clase</label>
+                                                  
+                                                    <br></br>
+                                                    <div class="p-t-10">
+                                                        <div class="toggle-switch" data-ts-color="purple">
+                                                        <span class="p-r-10 f-700 f-16">No</span><input id="activar" type="checkbox">
+                                                        
+                                                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
 
 
                                            </div>
@@ -89,12 +92,17 @@
                                        </div>
                                        </div>
 
-                                       <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-12">                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16 guardar" > Actualizar</button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
-                                        </div>
-                                    </div></form>
+
+                                        
+                                        @if($usuario_tipo != 2 && $usuario_tipo != 4)
+                                            <div class="modal-footer p-b-20 m-b-20">
+                                                <div class="col-sm-12">                          
+                                                  <button type="button" class="btn-blanco btn m-r-10 f-16 guardar" > Actualizar</button>
+                                                  <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </form>
                                        
                                     </div>
                                 </div>
@@ -441,6 +449,7 @@
 
                         @foreach ($clases_grupales as $clase)
                             {
+
                             <?php
                                 $fecha_start=explode('-',$clase['fecha_inicio']);
                                 $fecha_end=explode('-',$clase['fecha_final']);
@@ -546,7 +555,7 @@
                                 allDay: false,
                                 backgroundColor:'{{$transmision['etiqueta']}}',
                                 className: 'actividad',
-                                url: '{{url('/')}}/agendar/transmisiones/detalle/{{$transmision['id']}}',
+                                url: "{{url('/')}}{{$transmision['url']}}",
                                 tipo: 6
 
                             },
@@ -561,10 +570,21 @@
                         var timestamp = d.getTime(); 
 
                         if(end>timestamp){
-                           $('#addNew-event').modal('show');   
-                           $('#addNew-event input:text').val('');
-                           $('#getStart').val(start);
-                           $('#getEnd').val(end);
+
+                            if("{{$usuario_tipo}}" != 2 && "{{$usuario_tipo}}" != 4){
+                                $('#addNew-event').modal('show');   
+                                $('#addNew-event input:text').val('');
+                                $('#getStart').val(start);
+                                $('#getEnd').val(end);
+
+                            }else{
+
+                                var agendar = 'clases-personalizadas';
+
+                                $('#agendar').val(agendar);
+
+                                $("#frm_agendar").submit();
+                           }
                            //console.log('bien');
                         }else{
                            //console.log('error');
@@ -585,23 +605,50 @@
                             var tmp = check.split("!"); 
                             var title = calEvent.title
 
+        
                             if(title != 'CANCELADA'){
 
-                                $('#fecha_inicio').val(calEvent.start);
-                                var token = $('input:hidden[name=_token]').val();
+                                if("{{$usuario_tipo}}" != 2 && "{{$usuario_tipo}}" != 4)
+                                {
 
-                                $.ajax({
-                                    url: "{{url('/')}}/guardar-fecha",
-                                        headers: {'X-CSRF-TOKEN': token},
-                                        type: 'POST',
-                                    dataType: 'json',
-                                    data:"fecha_inicio="+$('#fecha_inicio').val(),
-                                    success:function(respuesta){
 
-                                        window.location = calEvent.url
+                                    $('#fecha_inicio').val(calEvent.start);
+                                    var token = $('input:hidden[name=_token]').val();
 
+                                    $.ajax({
+                                        url: "{{url('/')}}/guardar-fecha",
+                                            headers: {'X-CSRF-TOKEN': token},
+                                            type: 'POST',
+                                        dataType: 'json',
+                                        data:"fecha_inicio="+$('#fecha_inicio').val(),
+                                        success:function(respuesta){
+
+                                            window.location = calEvent.url
+
+                                        }
+                                    });
+
+                                }else{
+                                    if(calEvent.tipo != 5 && calEvent.tipo != 6){
+
+                                        $('#fecha_inicio').val(calEvent.start);
+                                        var token = $('input:hidden[name=_token]').val();
+
+                                        $.ajax({
+                                            url: "{{url('/')}}/guardar-fecha",
+                                                headers: {'X-CSRF-TOKEN': token},
+                                                type: 'POST',
+                                            dataType: 'json',
+                                            data:"fecha_inicio="+$('#fecha_inicio').val(),
+                                            success:function(respuesta){
+
+                                                window.location = calEvent.url
+
+                                            }
+                                        });
                                     }
-                                });
+                                }
+
                             }else{
                                 var fecha = tmp[3]
                                 var hora = tmp[4]
@@ -638,6 +685,21 @@
                         var id = event.id
                         var tipo = id.split("-"); 
                         if (tipo[0] == 'transmision') {
+
+                            var tmp = id.split("!"); 
+
+                            var tmp2 = tmp[0].split('-')
+                            var tema = tmp2[1]
+                            var fecha = tmp[1]
+                            var hora = tmp[2]
+                            var presentador = tmp[3]
+
+
+                            var contenido = 'Tema: ' + tema + '<br>'
+                            contenido += 'Fecha: ' + fecha + '<br>'
+                            contenido += 'Hora: ' + hora + '<br>'
+                            contenido += 'Presentador: ' + presentador + '<br>'
+
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-camera-add'></i>");
                         }else if (tipo[0] == 'clase'){
                             titulo = eventElement.find(".fc-title").text()
@@ -914,6 +976,8 @@
                     var agendar = $(this).data('agendar');
 
                     $('#agendar').val(agendar);
+
+                    console.log($(this));
 
                     $("#frm_agendar").submit();
                      

@@ -361,9 +361,7 @@ class CampanaController extends BaseController {
     public function indexconacademia($id)
     {
 
-        $campanas = DB::table('campanas')
-            ->select('campanas.*')
-            ->where('campanas.academia_id' , '=' , $id)
+        $campanas = Campana::where('campanas.academia_id' , '=' , $id)
             ->OrderBy('campanas.created_at')
         ->get();
 
@@ -403,7 +401,13 @@ class CampanaController extends BaseController {
     public function operar($id)
     {   
         $campana = Campana::find($id);
-        return view('especiales.campana.operaciones')->with(['id' => $id, 'campana' => $campana]);        
+
+        if($campana){
+            return view('especiales.campana.operaciones')->with(['id' => $id, 'campana' => $campana]);        
+        }else{
+           return redirect("especiales/campañas"); 
+        }
+        
     }
 
     public function agregarrecompensa(Request $request){
@@ -1388,18 +1392,18 @@ class CampanaController extends BaseController {
     {
         Session::forget('invitaciones');
 
-         $campaña = Campana::find($id);
+        $campaña = Campana::find($id);
 
-         if($campaña->link_video){
+        if($campaña->link_video){
 
             $parts = parse_url($campaña->link_video);
             $partes = explode( '=', $parts['query'] );
             $link_video = $partes[1];
 
-            }
-            else{
-                $link_video = '';
-            }
+        }else{
+
+            $link_video = '';
+        }
 
         $recompensas = Recompensa::where('campana_id', $id)->get();
 
@@ -1485,11 +1489,9 @@ class CampanaController extends BaseController {
             }else{
 
                 if($diferencia_tiempo==1){
-                    // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dia";
                     $hora_segundos = $fecha_de_registro->format('H:i');
                     $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
                 }else{
-                    // $fecha_de_realizacion = "hace ".$diferencia_tiempo." dias";
                     $hora_segundos = $fecha_de_registro->format('H:i');
                     $dia = $fecha_de_registro->format('d');
 
@@ -1534,6 +1536,7 @@ class CampanaController extends BaseController {
                     $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
                 }
             }
+
             $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
 
             if($patrocinador->tipo_moneda == 1){
@@ -1569,7 +1572,15 @@ class CampanaController extends BaseController {
 
         $datos = DatosBancariosCampana::where('campana_id', $campaña->id)->get();
 
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos]);
+        $fecha_final = Carbon::createFromFormat('Y-m-d', $campaña->fecha_final);
+
+        if(Carbon::now() < $fecha_final){
+            $activa = 1;
+        }else{
+            $activa = 0;
+        }
+
+        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos, 'activa' => $activa]);
     }
 
     public function contribuirCampana($id)

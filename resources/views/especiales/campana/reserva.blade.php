@@ -24,8 +24,7 @@
 @section('content')
 
 
-<div style="padding:0 ; background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}');  height: 0;
-    padding-bottom: 35%; background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
+<div class="imagen_principal_campana" style="background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}')"></div>
 
 <!-- <div class="container"> -->
 
@@ -167,37 +166,38 @@
                
                 <div class="clearfix p-b-15"></div>
 
-  
-                      @if(Auth::check())
-                        @foreach ($recompensas as $recompensa)
+                      @if($activa)
+                        @if(Auth::check())
+                          @foreach ($recompensas as $recompensa)
 
-                          <div style="border: 1px solid;">
-                            <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">
-                              Recompensa
+                            <div style="border: 1px solid;">
+                              <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">
+                                Recompensa
+                              </div>
+
+                              <div class="col-sm-12">
+                                <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2, '.' , '.') }} </span> 
+                                <br>
+                                <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
+                                <br>
+                                <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
+
+                                <div class="clearfix p-b-15"></div>
+                                <div class="clearfix p-b-15"></div>
+                                <div class="clearfix p-b-15"></div>
+                              </div>
+
+                              <span class="text-center">
+                                   <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
+
+                                  <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
+                              </span>
                             </div>
 
-                            <div class="col-sm-12">
-                              <span class="text-center f-25 f-700" >{{ number_format($recompensa->cantidad, 2, '.' , '.') }} </span> 
-                              <br>
-                              <span class="text-center f-20 f-700" > {{$recompensa->nombre}}</span> 
-                              <br>
-                              <span class="text-center f-15 f-700 opaco-0-8" > {{$recompensa->descripcion}}</span> 
+                            <div class="clearfix p-b-15"></div>
 
-                              <div class="clearfix p-b-15"></div>
-                              <div class="clearfix p-b-15"></div>
-                              <div class="clearfix p-b-15"></div>
-                            </div>
-
-                            <span class="text-center">
-                                 <!--<button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" data-toggle="modal" href="#modalAgregar" style="width:100%; padding:5px"> </i> Contribuir </button>-->
-
-                                <button id="{{$recompensa->id}}" name ="{{$recompensa->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 recompensa" style="width:100%; padding:5px"> </i> Contribuir </button>
-                            </span>
-                          </div>
-
-                          <div class="clearfix p-b-15"></div>
-
-                        @endforeach 
+                          @endforeach 
+                        @endif
                       @endif
 
 <!--                       <div style="border: 1px solid;">
@@ -1066,7 +1066,7 @@
         error:function(msj){
           setTimeout(function(){ 
              if (typeof msj.responseJSON === "undefined") {
-              window.location = "http://localhost:8000/error";
+              window.location = "{{url('/')}}/error";
             }
             if(msj.responseJSON.status=="ERROR"){
               console.log(msj.responseJSON.errores);
@@ -1270,9 +1270,9 @@
           },
           error:function(msj){
             setTimeout(function(){ 
-              //  if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "http://localhost:8000/error";
-              // }
+               if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
               if(msj.responseJSON.status=="ERROR"){
                 errores(msj.responseJSON.errores);
                 var nTitle="    Ups! "; 

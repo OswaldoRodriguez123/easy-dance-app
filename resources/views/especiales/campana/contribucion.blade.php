@@ -43,7 +43,7 @@
                                     <th class="text-center" data-column-id="numero_cuenta" data-order="desc">Número de transferencia</th>
                                     <th class="text-center" data-column-id="rif" data-order="desc">Telefono</th>
                                     <th class="text-center" data-column-id="correo" data-order="desc">Correo Electronico</th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                    <!-- <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th> -->
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -89,7 +89,11 @@
                                     <td class="text-center previa">{{$contribucion['numero_cuenta']}}</td>
                                     <td class="text-center previa">{{$contribucion['telefono']}}</td>
                                     <td class="text-center previa">{{$contribucion['correo']}}</td>
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> &nbsp; <i data-toggle="modal" class="zmdi zmdi-check confirmar f-20 p-r-10"></i></td>
+                                    <td class="text-center"> 
+                                        <!-- <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> 
+                                        &nbsp;  -->
+                                        <i data-toggle="modal" class="zmdi zmdi-check confirmar f-20 p-r-10"></i>
+                                    </td>
 
                                   </tr>
                             @endforeach 

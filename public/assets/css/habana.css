@@ -2030,4 +2030,12 @@ a{
     border:1px solid;
 }
 
+.imagen_principal_campana{
+    padding:0 ; 
+    height: 0;
+    padding-bottom: 35%; 
+    background-repeat: no-repeat; background-size: cover; 
+    background-position: center;
+}
+
 

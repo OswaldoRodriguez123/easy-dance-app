@@ -107,7 +107,7 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="monto" data-order="desc">Monto</th>
                                     <th class="text-center" data-column-id="monto" data-order="desc">Cantidad</th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                    <!-- <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th> -->
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -119,7 +119,7 @@
                                     <td class="text-center previa">{{$patrocinador->nombre}} {{$patrocinador->apellido}}</td>
                                     <td class="text-center previa">{{$patrocinador->monto}}</td>
                                     <td class="text-center previa">{{$patrocinador->cantidad}}</td>
-                                    <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td>
+                                    <!-- <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td> -->
                                 </tr>
                             @endforeach 
                                                            
