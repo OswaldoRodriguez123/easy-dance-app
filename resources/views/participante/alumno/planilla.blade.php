@@ -1327,16 +1327,6 @@
 
       Webcam.attach( '#my_camera' );
 
-      function take_snapshot() {
-        // take snapshot and get image data
-        Webcam.snap( function(data_uri) {
-          // display results in page
-          document.getElementById('results').innerHTML = 
-            '<h2>Here is your image:</h2>' + 
-            '<img src="'+data_uri+'"/>';
-        } );
-      }
-
       $('#cantidad_actual').val(0);
 
       if($('#tr_contacto').data('valor') != ''){
@@ -2298,6 +2288,16 @@
     
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    }
+
+    function take_snapshot() {
+      // take snapshot and get image data
+      Webcam.snap( function(data_uri) {
+        // display results in page
+        document.getElementById('results').innerHTML = 
+          '<h2>Here is your image:</h2>' + 
+          '<img src="'+data_uri+'"/>';
+      } );
     }
 
    </script> 
