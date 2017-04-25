@@ -36,8 +36,9 @@
                         <div class="card-header">
 
                           <div class="text-right">
-                            <span class="f-15">Asignadas: <span id="horas_asignadas">{{$clasepersonalizada->horas_asignadas}}</span> Horas</span><br>
-                            <span class="f-15">Restantes: <span id="horas_restantes">{{$horas_restantes}}</span> Horas</span>
+                            <span class="f-15">Asignadas: <span>{{$clasepersonalizada->horas_asignadas}}</span> Horas</span><br>
+                            <span class="f-15">Agendadas: <span id="agendadas">{{$agendadas}}</span> Horas</span><br>
+                            <span class="f-15">Por Agendar: <span id="por_agendar">{{$por_agendar}}</span> Horas</span>
                           </div>
 
                           <br><br><p class="text-center opaco-0-8 f-22" id="id-clase"><i class="icon_a-clase-personalizada p-r-5"></i> Clase: {{$clasepersonalizada->nombre}}</p>
@@ -350,7 +351,9 @@
       route_eliminar="{{url('/')}}/agendar/clases-personalizadas/multihorario/eliminarhorario";
       route_cancelar = "{{url('/')}}/agendar/clases-personalizadas/multihorario/cancelarhorarios";
       route_guardar = "{{url('/')}}/agendar/clases-personalizadas/multihorario/guardarhorarios";
-      var horas_restantes = "{{$horas_restantes}}"
+
+      var agendadas = "{{$agendadas}}"
+      var por_agendar = "{{$por_agendar}}"
 
         var t=$('#tablelistar').DataTable({
         processing: true,
@@ -443,8 +446,12 @@
                           var hora_final = respuesta.array.hora_final;
                           var hora_asignada = respuesta.array.hora_asignada;
 
-                          horas_restantes = parseInt(horas_restantes - hora_asignada)
-                          $('#horas_restantes').text(horas_restantes)
+                          por_agendar = parseInt(por_agendar - hora_asignada)
+                          agendadas = parseInt(agendadas) + parseInt(hora_asignada)
+
+                          $('#agendadas').text(agendadas)
+                          $('#por_agendar').text(por_agendar)
+
 
                           var rowId=respuesta.array.id;
                           var rowNode=t.row.add( [
@@ -516,7 +523,6 @@
         var id = $(this).closest('tr').attr('id');
         var datos = $( "#agregar_clase_grupal" ).serialize();
         
-        console.log(token);
               $.ajax({
                    url: route_eliminar+"/"+id,
                    headers: {'X-CSRF-TOKEN': token},
@@ -527,9 +533,11 @@
                     if(data.status=='OK'){
                         
                       var hora_asignada = data.hora_asignada;
+                      por_agendar = parseInt(por_agendar + hora_asignada)
+                      agendadas = parseInt(agendadas) - parseInt(hora_asignada)
 
-                      horas_restantes = parseInt(horas_restantes + hora_asignada)
-                      $('#horas_restantes').text(horas_restantes)
+                      $('#agendadas').text(agendadas)
+                      $('#por_agendar').text(por_agendar)
                                          
                     }else{
                       swal(

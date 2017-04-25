@@ -33,7 +33,7 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
         if($clasepersonalizada){
 
-            $horas_asignadas = 0;
+            $agendadas = 0;
 
             $hie = explode(':',$clasepersonalizada->hora_inicio);
             $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
@@ -42,29 +42,30 @@ class MultihorarioClasePersonalizadaController extends BaseController
             $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
 
             $hora_asignada = $hora_inicio->diffInHours($hora_final);
-            $horas_asignadas = $horas_asignadas + $hora_asignada;
+            $agendadas = $agendadas + $hora_asignada;
 
-            // $horarios = HorarioClasePersonalizada::where('clase_personalizada_id',$clasepersonalizada->id)->get();
+            $horarios = HorarioClasePersonalizada::where('clase_personalizada_id',$clasepersonalizada->id)->get();
 
-            // foreach($horarios as $horario){
-            //     $hie = explode(':',$horario->hora_inicio);
-            //     $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+            foreach($horarios as $horario){
+                $hie = explode(':',$horario->hora_inicio);
+                $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
 
-            //     $hfe = explode(':',$horario->hora_final);
-            //     $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+                $hfe = explode(':',$horario->hora_final);
+                $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
 
-            //     $hora_asignada = $hora_inicio->diffInHours($hora_final);
-            //     $horas_asignadas = $horas_asignadas + $hora_asignada;
-            // }
+                $hora_asignada = $hora_inicio->diffInHours($hora_final);
+                $agendadas = $agendadas + $hora_asignada;
+            }
 
-            $horas_restantes = $clasepersonalizada->horas_asignadas - $horas_asignadas;
+            $asignadas = $clasepersonalizada->horas_asignadas;
+            $por_agendar = $clasepersonalizada->horas_asignadas - $agendadas;
 
             $dias_de_semana = DiasDeSemana::all();
             $config_especialidades = ConfigEspecialidades::all();
             $config_estudios = ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();        
             $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-            Session::put('horas_restantes', $horas_restantes);
+            Session::put('por_agendar', $por_agendar);
 
             return view(
             	'agendar.clase_personalizada.multihorario.multihorario', 
@@ -73,8 +74,9 @@ class MultihorarioClasePersonalizadaController extends BaseController
             		    'config_especialidades',
             		    'config_estudios',
             		    'instructores',
-                        'horas_asignadas',
-                        'horas_restantes'
+                        'asignadas',
+                        'agendadas',
+                        'por_agendar'
             		   )
             	);
         }else{
@@ -303,13 +305,13 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
                     $hora_asignada = $hora_inicio->diffInHours($hora_final);
 
-                    $horas_restantes = Session::get('horas_restantes');
+                    $por_agendar = Session::get('por_agendar');
 
-                    if($hora_asignada <= $horas_restantes){
+                    if($hora_asignada <= $por_agendar){
 
-                        $horas_restantes = $horas_restantes - $hora_asignada;
+                        $por_agendar = $por_agendar - $hora_asignada;
 
-                        Session::put('horas_restantes', $horas_restantes);
+                        Session::put('por_agendar', $por_agendar);
 
                         $find = Instructor::find($request->instructor_acordeon_id);
                         $instructor = $find->nombre . " " . $find->apellido;
@@ -362,11 +364,11 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
         $arreglo = Session::get('horarios');
         $hora_asignada = $arreglo[$id][0]['hora_asignada'];
-        $horas_restantes = Session::get('horas_restantes');
-        $horas_restantes = intval($horas_restantes + $hora_asignada);
+        $por_agendar = Session::get('por_agendar');
+        $por_agendar = intval($por_agendar + $hora_asignada);
         unset($arreglo[$id]);
         Session::put('horarios', $arreglo);
-        Session::put('horas_restantes', $horas_restantes);
+        Session::put('por_agendar', $por_agendar);
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'hora_asignada' => $hora_asignada, 200]);
 
