@@ -116,17 +116,17 @@
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="activas" value="activas" type="radio">
+                                        <input name="tipo" id="activas" value="A" type="radio">
                                         <i class="input-helper"></i>  
                                         Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="finalizadas" value="finalizadas" type="radio" checked >
+                                        <input name="tipo" id="finalizadas" value="F" type="radio" checked >
                                         <i class="input-helper"></i>  
                                         Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="canceladas" value="canceladas" type="radio" checked >
+                                        <input name="tipo" id="canceladas" value="C" type="radio" checked >
                                         <i class="input-helper"></i>  
                                         Canceladas <i id="canceladas2" name="canceladas2" class="zmdi zmdi-close zmdi-hc-fw f-20"></i>
                                     </label>
@@ -156,8 +156,60 @@
                             </thead>
                             <tbody class="text-center" >
 
+                              @foreach($clases_personalizadas as $clase_personalizada)
 
-                                                           
+                                <?php 
+
+                                  $id = $clase_personalizada['id'];
+                                  $tipo = $clase_personalizada['tipo'];
+
+                                  if($clase_personalizada['cantidad_horas'] > 1){
+                                    $horas = 'Horas';
+                                  }else{
+                                    $horas = 'Hora';
+                                  }
+
+                                  if($tipo == 2){
+
+                                    if($asistencias[$id]){
+                                      $acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>';
+                                    }else{
+                                      $acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
+                                    }
+
+                                  }else{
+                                    if($clase_personalizada['boolean_alumno_aceptacion'] == 1){
+                                      $acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>';
+                                    }else{
+                                      $acepto = '';
+                                    }
+                                  }
+
+                                ?>
+
+                                <tr data-tipo = "{{$tipo}}">
+
+                                  <td class="text-center previa"><span style="display: none">{{$tipo}}</span>{{$acepto}}</td>
+
+                                  <td class="text-center previa">{{$clase_personalizada['alumno_nombre']}} {{$clase_personalizada['alumno_apellido']}}</td>
+                                  <td class="text-center previa">{{$clase_personalizada['clase_personalizada_nombre']}}</td>
+                                  <td class="text-center previa">{{$clase_personalizada['cantidad_horas']}} {{$horas}}</td>
+                                  <td class="text-center previa">{{$clase_personalizada['instructor_nombre']}} {{$clase_personalizada['instructor_apellido']}}</td>
+                                  <td class="text-center previa">{{$clase_personalizada['fecha_inicio']}}</td>
+                                  <td class="text-center previa">{{$clase_personalizada['hora_inicio']}} - {{$clase_personalizada['hora_final']}}</td>
+                                  @if($tipo == 1)
+                                    <td class="text-center previa">
+                                      <i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                    </td>
+
+                                  @else
+                                    <td class="text-center previa"></td>
+                                  @endif
+
+                                </tr>
+
+                              @endforeach
+                                                            
                             </tbody>
                         </table>
                          </div>
@@ -186,18 +238,6 @@
         route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle"
         route_operacion="{{url('/')}}/agendar/clases-personalizadas/operaciones"
         route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
-
-        var finalizadas = <?php echo json_encode($finalizadas);?>;
-        var finalizadas2 = <?php echo json_encode($finalizadas2);?>;
-        var activas = <?php echo json_encode($activas);?>;
-        var activas2 = <?php echo json_encode($activas2);?>;
-        var canceladas = <?php echo json_encode($canceladas);?>;
-        var canceladas2 = <?php echo json_encode($canceladas2);?>;
-        var asistencias = <?php echo json_encode($asistencias);?>;
-
-        tipo = 'activas';
-
-
             
         $(document).ready(function(){
 
@@ -245,15 +285,17 @@
                         }
                     }
         });
-    
 
-        rechargeActivas();
-        
+          t
+          .columns(0)
+          .search('1')
+          .draw(); 
+    
 			});
         
       function previa(t){
         var row = $(t).closest('tr');
-        if(tipo == 'activas')
+        if(row.data('tipo') == '1')
         {
 
           var id = $(row).attr('id');
@@ -466,23 +508,6 @@
                 });
     };
 
-    $("#activas").click(function(){
-            $( "#finalizadas2" ).removeClass( "c-verde" );
-            $( "#canceladas2" ).removeClass( "c-verde" );
-            $( "#activas2" ).addClass( "c-verde" );
-        });
-
-        $("#finalizadas").click(function(){
-            $( "#finalizadas2" ).addClass( "c-verde" );
-            $( "#canceladas2" ).removeClass( "c-verde" );
-            $( "#activas2" ).removeClass( "c-verde" );
-        });
-
-        $("#canceladas").click(function(){
-            $( "#finalizadas2" ).removeClass( "c-verde" );
-            $( "#canceladas2" ).addClass( "c-verde" );
-            $( "#activas2" ).removeClass( "c-verde" );
-        });
 
         function clear(){
 
@@ -490,19 +515,58 @@
             // t.destroy();
          }
 
+         // $('input[name="tipo"]').on('change', function(){
+         //    clear();
+         //    if ($(this).val()=='activas') {
+         //          tipo = 'activas';
+         //          rechargeActivas();
+         //    } else if($(this).val()=='finalizadas')  {
+         //          tipo= 'finalizadas';
+         //          rechargeFinalizadas();
+         //    }else{
+         //          tipo= 'canceladas';
+         //          rechargeCanceladas();
+         //    }
+         // });
+
          $('input[name="tipo"]').on('change', function(){
-            clear();
-            if ($(this).val()=='activas') {
-                  tipo = 'activas';
-                  rechargeActivas();
-            } else if($(this).val()=='finalizadas')  {
-                  tipo= 'finalizadas';
-                  rechargeFinalizadas();
+
+            if($(this).val() == 'A'){
+
+                $( "#finalizadas2" ).removeClass( "c-verde" );
+                $( "#canceladas2" ).removeClass( "c-verde" );
+                $( "#activas2" ).addClass( "c-verde" );
+
+                t
+                .columns(0)
+                .search($(this).val())
+                .draw(); 
+
+            }else if($(this).val() == 'F'){
+
+                $( "#finalizadas2" ).addClass( "c-verde" );
+                $( "#canceladas2" ).removeClass( "c-verde" );
+                $( "#activas2" ).removeClass( "c-verde" );
+
+                t
+                .columns(0)
+                .search($(this).val())
+                .draw();
+
             }else{
-                  tipo= 'canceladas';
-                  rechargeCanceladas();
+
+                $( "#finalizadas2" ).removeClass( "c-verde" );
+                $( "#canceladas2" ).addClass( "c-verde" );
+                $( "#activas2" ).removeClass( "c-verde" );
+
+                t
+                .columns(0)
+                .search($(this).val())
+                .draw();
+
             }
-         });
+    
+        });
 
          function rechargeActivas(){
 
