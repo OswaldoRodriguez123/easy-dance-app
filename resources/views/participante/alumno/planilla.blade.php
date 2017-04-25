@@ -11,7 +11,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="{{url('/')}}/assets/js/photobooth_min.js"></script>
+<script type="text/javascript" src="{{url('/')}}/assets/js/webcam.min.js"></script>
 @stop
 
 @section('content')
@@ -28,6 +28,13 @@
                            <div class="modal-body">                           
                              <div class="row p-t-20 p-b-0">
 
+                              <div id="results">Your captured image will appear here...</div>
+
+                              <div id="my_camera"></div>
+
+                              <input type=button value="Take Snapshot" onClick="take_snapshot()">
+  
+                          
                                 
                                                                     
                           
@@ -1137,12 +1144,6 @@
                               <p class="text-center opaco-0-8 f-22">Datos del Alumno</p>
                               <p class="text-center opaco-0-8 f-12">Fecha de registro: {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$alumno->created_at)->format('d-m-Y')}}</p>
                               <p class="text-center opaco-0-8 f-12">Modalidad de Pago: {{$tipo_pago}}</p>
-
-
-
-                              <div id="example" style="min-height: 200px; min-width: 200px"></div>
-                              <div id="gallery"></div>
-
                              
                           </div>
 
@@ -1317,20 +1318,24 @@
 
     $(document).ready(function(){
 
-      document.addEventListener("DOMContentLoaded", function(event) { 
-          var container = document.getElementById("example");
-          var gallery = document.getElementById("gallery");
-          var myPhotobooth = new Photobooth(container);
-          myPhotobooth.onImage = function(dataUrl){ 
-              var myImage = document.createElement("img");
-              myImage.src = dataUrl; 
-              gallery.appendChild(myImage);
-          };
+      Webcam.set({
+        width: 320,
+        height: 240,
+        image_format: 'jpeg',
+        jpeg_quality: 90
       });
 
-      $( '#example' ).photobooth().on( "image", function( event, dataUrl ){
-        $( "#gallery" ).show().html( '<img src="' + dataUrl + '" >');
-      });
+      Webcam.attach( '#my_camera' );
+
+      function take_snapshot() {
+        // take snapshot and get image data
+        Webcam.snap( function(data_uri) {
+          // display results in page
+          document.getElementById('results').innerHTML = 
+            '<h2>Here is your image:</h2>' + 
+            '<img src="'+data_uri+'"/>';
+        } );
+      }
 
       $('#cantidad_actual').val(0);
 
