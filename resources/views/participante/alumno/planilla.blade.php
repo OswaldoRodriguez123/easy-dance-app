@@ -28,22 +28,19 @@
                            <div class="modal-body">                           
                              <div class="row p-t-20 p-b-0">
 
-                              <div id="results">Your captured image will appear here...</div>
+                               <div class="col-sm-12">
 
-                              <div id="my_camera"></div>
+                                  <div id="snapshot p-b-20"></div>
+                                  <div id="webcam"></div>
 
-                              <input type=button value="Take Snapshot" onClick="take_snapshot()">
-  
-                          
+                                  <a class="btn-blanco m-r-5 f-12" href="#" onClick="take_snapshot()">Tomar Foto</a>
+                                </div>
                                 
-                                                                    
-                          
                                 <input type="hidden" name="id" value="{{$alumno->id}}"></input>
-                              
-
+                                
                                 <div class="clearfix"></div> 
                                 
-                              </div>
+                            </div>
                         </div>
                         <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -1325,7 +1322,7 @@
         jpeg_quality: 90
       });
 
-      Webcam.attach( '#my_camera' );
+      Webcam.attach( '#webcam' );
 
       $('#cantidad_actual').val(0);
 
@@ -2294,9 +2291,9 @@
       // take snapshot and get image data
       Webcam.snap( function(data_uri) {
         // display results in page
-        document.getElementById('results').innerHTML = 
-          '<h2>Here is your image:</h2>' + 
+        document.getElementById('snapshot').innerHTML =  
           '<img src="'+data_uri+'"/>';
+        $("input:hidden[name=imageBase64]").val(data_uri);
       } );
     }
 
