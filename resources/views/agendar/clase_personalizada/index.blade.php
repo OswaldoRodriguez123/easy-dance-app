@@ -288,7 +288,7 @@
 
           t
           .columns(0)
-          .search('1')
+          .search('A')
           .draw(); 
     
 			});
