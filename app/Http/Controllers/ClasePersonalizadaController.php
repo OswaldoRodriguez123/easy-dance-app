@@ -126,6 +126,7 @@ class ClasePersonalizadaController extends BaseController {
                 ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
+                ->where('clases_personalizadas.deleted_at','=', null)
             ->get();
             
             foreach($horarios_clases_personalizadas as $clase_personalizada){
