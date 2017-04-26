@@ -931,8 +931,12 @@ class ClasePersonalizadaController extends BaseController {
         }
 
         $clasepersonalizada = new InscripcionClasePersonalizada;
-        $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
         
+        $clase_personalizada = ClasePersonalizada::Leftjoin('config_servicios', 'clases_personalizadas.id', '=', 'config_servicios.tipo_id')
+            ->select('clases_personalizadas.*', 'config_servicios.id as servicio_id')
+            ->where('clases_personalizadas.id', '=', $request->clase_personalizada_id)
+        ->first();
+
         $fecha_inicio = $fecha_inicio->toDateString();
         $fecha_final = $fecha_final->toDateString();
 
@@ -977,7 +981,7 @@ class ClasePersonalizadaController extends BaseController {
             $item_factura->alumno_id = $request->alumno_id;
             $item_factura->academia_id = Auth::user()->academia_id;
             $item_factura->fecha = Carbon::now()->toDateString();
-            $item_factura->item_id = $clasepersonalizada->id;
+            $item_factura->item_id = $clase_personalizada->servicio_id;
             $item_factura->nombre = $clase_personalizada->nombre;
             $item_factura->tipo = 9;
             $item_factura->cantidad = 1;

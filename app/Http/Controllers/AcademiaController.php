@@ -91,19 +91,24 @@ class AcademiaController extends BaseController {
         //     $servicio->save();
         // }
 
-        // $servicios = ConfigServicios::all();
+        $servicios = ConfigServicios::all();
 
-        // foreach($servicios as $servicio){
-        //     $servicio->tipo_id = $servicio->id;
-        //     $servicio->save();
-        // }
+        foreach($servicios as $servicio){
 
-        // $productos = ConfigProductos::all();
+            if(!$servicio->tipo_id){
+                $servicio->tipo_id = $servicio->id;
+                $servicio->save();
+            }
+        }
 
-        // foreach($productos as $producto){
-        //     $producto->tipo_id = $producto->id;
-        //     $producto->save();
-        // }
+        $productos = ConfigProductos::all();
+
+        foreach($productos as $producto){
+            if(!$producto->tipo_id){
+                $producto->tipo_id = $producto->id;
+                $producto->save();
+            }
+        }
 
 
         // $patrocinadores = Patrocinador::all();
