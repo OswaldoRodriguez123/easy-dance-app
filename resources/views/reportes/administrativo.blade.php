@@ -155,7 +155,7 @@
 
 
                                     <div class="dropdown">
-                                        <a role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                        <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
                                             Pulsa Aqui <span class="caret"></span>
                                         </a>
                                         <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
@@ -309,6 +309,10 @@
 
     var linea_servicio = <?php echo json_encode($linea_servicio);?>;
 
+    tipo_dropdown = ''
+    tipo_servicio = ''
+    nombre_servicio = ''
+
     var nFrom = $(this).attr('data-from');
     var nAlign = $(this).attr('data-align');
     var nIcons = $(this).attr('data-icon');
@@ -394,17 +398,19 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            var nombre = [];
-            $('#tipo_id option:selected').each(function() {
-              nombre.push($(this).text());
-            });
+            // var nombre = [];
+
+            // $('#tipo_id option:selected').each(function() {
+            //   nombre.push($(this).text());
+            // });
+
             procesando();
             $.ajax({
                 url: route_filtrar,
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
                 dataType: 'json',
-                data: datos+"&nombre="+nombre,
+                data: datos+"&nombre_servicio="+nombre_servicio+"&servicio_tipo="+tipo_servicio+"&tipo_dropdown="+tipo_dropdown,
                 success:function(respuesta){
 
                     var nType = 'success';
@@ -437,7 +443,7 @@
                     });
 
 
-                    tipo = $('#tipo').val()
+                    tipo = $('#tipo').val();
 
                     if(tipo != 4){
 
@@ -579,6 +585,15 @@
 
         }
 
+        $('body').on('click','.servicio_detalle',function(e){
+            
+            tipo_dropdown = $(this).data('tipo_dropdown')
+            tipo_servicio = $(this).data('tipo_servicio')
+            nombre_servicio = $(this).data('nombre_servicio')
+
+            $('#detalle_boton').text(nombre_servicio)
+        });
+
         $('#tipo').on('change', function(){
 
             id = $(this).val();
@@ -664,36 +679,26 @@
 
         $('#tipo_servicio').on('change', function(){
 
+            tipo_servicio = $(this).val();
+            nombre = '';
+            tipo_dropdown = ''
+
+            $('#detalle_boton').text('Pulsa Aqui')
+
             id = $(this).val();
-            $('#tipo_id').empty();
+            $('#dropdown_principal').empty();
 
             if(id == 99){
 
-                                          //                 <li class="dropdown-submenu">
-                                          //   <a tabindex="-1" href="#">Hover me for more options</a>
-                                          //   <ul class="dropdown-menu">
-                                          //     <li><a tabindex="-1" href="#">Second level</a></li>
-                                          //     <li class="dropdown-submenu">
-                                          //       <a tabindex="-1" href="#" href="#">Even More..</a>
-                                          //       <ul class="dropdown-menu">
-                                          //           <li><a href="#">3rd level</a></li>
-                                          //           <li><a href="#">3rd level</a></li>
-                                          //       </ul>
-                                          //     </li>
-                                          //     <li><a href="#">Second level</a></li>
-                                          //     <li><a href="#">Second level</a></li>
-                                          //   </ul>
-                                          // </li>
-
                 contenido = '';
 
-                contenido += '<li class="dropdown-submenu">'
-                contenido += '<a class="pointer">Clases Grupales</a>'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales">'
+                contenido += '<a>Clases Grupales</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 3 || array.tipo == 4){
-                        contenido += '<li><a href="#'+array.id+'">'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -702,14 +707,14 @@
                 $('#dropdown_principal').append(contenido);
 
                 contenido = '';
-
-                contenido += '<li class="dropdown-submenu">'
-                contenido += '<a class="pointer">Clases Personalizadas</a>'
+            
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas">'
+                contenido += '<a>Clases Personalizadas</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 9){
-                        contenido += '<li><a href="#'+array.id+'">'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -719,13 +724,13 @@
 
                 contenido = '';
 
-                contenido += '<li class="dropdown-submenu">'
-                contenido += '<a class="pointer">Productos</a>'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos">'
+                contenido += '<a>Productos</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 2){
-                        contenido += '<li><a href="#'+array.id+'">'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -735,13 +740,13 @@
 
                 contenido = '';
 
-                contenido += '<li class="dropdown-submenu">'
-                contenido += '<a class="pointer">Servicios</a>'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios">'
+                contenido += '<a>Servicios</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 1){
-                        contenido += '<li><a class = "pointer" data-valor="'+array.id+'">'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -749,58 +754,54 @@
 
                 $('#dropdown_principal').append(contenido);
 
-                                              // <li><a href="#">Second level</a></li>
-                                              // <li><a href="#">Second level</a></li>
-                                            
-
-            }else if(id == 14){
-                $('#tipo_id').append( new Option('Productos',14));
-                $('#tipo_id').append( new Option('Servicios',14));
-            }else if(id == 5){
-                $('#tipo_id').append( new Option('Productos',5));
-                $('#tipo_id').append( new Option('Servicios',5));
-            }else if(id == 11){
-                $('#tipo_id').append( new Option('Productos',11));
-                $('#tipo_id').append( new Option('Servicios',11));
-            }
-            
-            $('#tipo_id').selectpicker('refresh');
-        });
-
-        $('#tipo_servicio').on('change', function(){
-
-            id = $(this).val();
-            $('#tipo_id').empty();
-
-            if(id == 99){
-
                 contenido = '';
-
-                contenido += '<li class="dropdown-submenu">'
-                contenido += '<a tabindex="-1" href="#">Clases Grupales</a>'
-                contenido += '<ul class="dropdown-menu">'
-                contenido += '</ul></li>'
-
-
-                                              // <li><a href="#">Second level</a></li>
-                                              // <li><a href="#">Second level</a></li>
-                                            
-                $('#tipo_id').append( new Option('Clases Grupales',3));
-                $('#tipo_id').append( new Option('Clases Personalizadas',9));
-                $('#tipo_id').append( new Option('Productos',2));
-                $('#tipo_id').append( new Option('Servicios',1));
-            }else if(id == 14){
-                $('#tipo_id').append( new Option('Productos',14));
-                $('#tipo_id').append( new Option('Servicios',14));
-            }else if(id == 5){
-                $('#tipo_id').append( new Option('Productos',5));
-                $('#tipo_id').append( new Option('Servicios',5));
-            }else if(id == 11){
-                $('#tipo_id').append( new Option('Productos',11));
-                $('#tipo_id').append( new Option('Servicios',11));
-            }
             
-            $('#tipo_id').selectpicker('refresh');
+
+                }else if(id == 14){
+                    
+
+                    $.each(linea_servicio, function (index, array) {  
+
+                        if(array.tipo == 14){
+
+                            contenido = '';
+
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>';
+
+                            $('#dropdown_principal').append(contenido);
+
+                        }                   
+                    });
+                    
+                }else if(id == 5){
+                    
+                    $.each(linea_servicio, function (index, array) {  
+
+                        if(array.tipo == 5){
+
+                            contenido = '';
+
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>';
+
+                            $('#dropdown_principal').append(contenido);
+
+                        }                   
+                    });
+                }else if(id == 11){
+
+                    $.each(linea_servicio, function (index, array) {  
+
+                        if(array.tipo == 11){
+
+                            contenido = '';
+
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>';
+
+                            $('#dropdown_principal').append(contenido);
+
+                        }                   
+                    });
+                }
         });
 
         function collapse_minus(collaps){

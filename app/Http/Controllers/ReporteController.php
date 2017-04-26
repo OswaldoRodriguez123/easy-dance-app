@@ -1938,30 +1938,42 @@ public function PresencialesFiltros(Request $request)
 
                 //LINEA DE SERVICIO
 
-                if($request->tipo_servicio)
+                if($request->servicio_tipo)
                 {
 
-                    if($request->tipo_servicio == 99)
+                    if($request->servicio_tipo == 99)
                     {
                         $not_in = array(5,11,14);
                         $query->whereNotIn('items_factura.tipo', $not_in);
+                    }else if($request->servicio_tipo == 3){
+                        $in = array(3,4);
+                        $query->whereIn('items_factura.tipo', $in);
                     }else{
-                        $query->where('items_factura.tipo', $request->tipo_servicio);
+                        $query->where('items_factura.tipo', $request->servicio_tipo);
                     }
                 }
 
                 //DETALLE
 
-                if($request->nombre)
+                // if($request->nombre)
+                // {
+                //     $array_explode = explode(",", $request->nombre);
+                //     $tipo = array();
+
+                //     foreach($array_explode as $explode){
+                //         $tipo[] = $explode;
+                //     }
+
+                //     $query->whereIn('items_factura.nombre', $tipo);
+                // }
+
+                if($request->nombre_servicio)
                 {
-                    $array_explode = explode(",", $request->nombre);
-                    $tipo = array();
+                    if($request->tipo_dropdown == 2){
 
-                    foreach($array_explode as $explode){
-                        $tipo[] = $explode;
+                        $query->where('items_factura.nombre', $request->nombre_servicio);
+
                     }
-
-                    $query->whereIn('items_factura.nombre', $tipo);
                 }
 
                 //FECHA
@@ -1972,7 +1984,7 @@ public function PresencialesFiltros(Request $request)
                     $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
                     $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
                     $query->whereBetween('facturas.fecha', [$start,$end]);
-                    
+
                 }else{
 
                     if($request->tipo){
