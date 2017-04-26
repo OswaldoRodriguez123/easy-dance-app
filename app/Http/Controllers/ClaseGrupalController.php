@@ -1501,7 +1501,7 @@ class ClaseGrupalController extends BaseController {
                     ->Leftjoin('config_servicios', 'config_clases_grupales.id', '=', 'config_servicios.tipo_id')
                     ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio', 'config_clases_grupales.id', 'config_servicios.id as servicio_id', 'clases_grupales.fecha_inicio_preferencial')
                     ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-                ->first(););
+                ->first();
 
                 $inscripcion = new InscripcionClaseGrupal;
 
