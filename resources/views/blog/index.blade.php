@@ -129,7 +129,7 @@
 
                     <div class="col-sm-8">
    
-                      <p>{{ str_limit(strip_tags($entrada['contenido']), $limit = 350, $end = '...') }} </p>
+                      <p>{{$entrada['contenido'])}}</p>
 
                       <a href="{{$entrada['url']}}">Ver más</a>
 
