@@ -692,13 +692,13 @@
 
                 contenido = '';
 
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales">'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales" data-servicio_id ="3">'
                 contenido += '<a>Clases Grupales</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 3 || array.tipo == 4){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -708,13 +708,13 @@
 
                 contenido = '';
             
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas">'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas" data-servicio_id ="9">'
                 contenido += '<a>Clases Personalizadas</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 9){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -724,13 +724,13 @@
 
                 contenido = '';
 
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos">'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos" data-servicio_id ="2">'
                 contenido += '<a>Productos</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 2){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -740,13 +740,13 @@
 
                 contenido = '';
 
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios">'
+                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios" data-servicio_id ="1">'
                 contenido += '<a>Servicios</a>'
                 contenido += '<ul class="dropdown-menu">'
 
                 $.each(linea_servicio, function (index, array) {  
                     if(array.tipo == 1){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>'
+                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                     }                   
                 });
 
@@ -766,7 +766,7 @@
 
                             contenido = '';
 
-                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>';
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
 
                             $('#dropdown_principal').append(contenido);
 
@@ -774,14 +774,14 @@
                     });
                     
                 }else if(id == 5){
-                    
+
                     $.each(linea_servicio, function (index, array) {  
 
                         if(array.tipo == 5){
 
                             contenido = '';
 
-                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>';
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
 
                             $('#dropdown_principal').append(contenido);
 
@@ -795,7 +795,7 @@
 
                             contenido = '';
 
-                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'"><a>'+array.nombre+'</a></li>';
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
 
                             $('#dropdown_principal').append(contenido);
 

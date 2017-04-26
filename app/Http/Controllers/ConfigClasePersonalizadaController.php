@@ -228,6 +228,7 @@ class ConfigClasePersonalizadaController extends BaseController {
             $servicio->descripcion = $request->descripcion;
             $servicio->incluye_iva = 0;
             $servicio->tipo = 9;
+            $servicio->tipo_id = $clasepersonalizada->id;
 
             $servicio->save();
 

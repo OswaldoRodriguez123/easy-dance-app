@@ -1402,13 +1402,7 @@ class ClaseGrupalController extends BaseController {
             $proxima_fecha = Carbon::createFromFormat('d/m/Y', $fecha_pago);
             $proxima_fecha = $proxima_fecha->toDateString();
 
-            $clasegrupal = DB::table('config_clases_grupales')
-                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                    ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio')
-                    ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-                ->first();
-
-             $array=array();
+            $array=array();
 
             // for($i = 1 ; $i<count($alumnos) ; $i++)
             // {
@@ -1438,6 +1432,13 @@ class ClaseGrupalController extends BaseController {
                         $visitante->save();
                     }
 
+                    $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                        ->Leftjoin('config_servicios', 'config_clases_grupales.id', '=', 'config_servicios.tipo_id')
+                        ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'config_clases_grupales.id', 'config_servicios.id as servicio_id')
+                        ->where('clases_grupales.id', '=', $request->clase_grupal_id)
+                    ->first();
+
+
                     if($request->costo_inscripcion != 0)
                     {
 
@@ -1446,7 +1447,7 @@ class ClaseGrupalController extends BaseController {
                         $item_factura->alumno_id = $request->alumno_id;
                         $item_factura->academia_id = Auth::user()->academia_id;
                         $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $request->clase_grupal_id;
+                        $item_factura->item_id = $clasegrupal->servicio_id;
                         $item_factura->nombre = 'Inscripción ' . $clasegrupal->nombre;
                         $item_factura->tipo = 3;
                         $item_factura->cantidad = 1;
@@ -1467,7 +1468,7 @@ class ClaseGrupalController extends BaseController {
                         $item_factura->alumno_id = $request->alumno_id;
                         $item_factura->academia_id = Auth::user()->academia_id;
                         $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $request->clase_grupal_id;
+                        $item_factura->item_id = $clasegrupal->servicio_id;
                         $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
                         $item_factura->tipo = 4;
                         $item_factura->cantidad = 1;
