@@ -1540,40 +1540,44 @@ class AsistenciaController extends BaseController
                   if($clase_id[2] == '3'){
 
                     $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
-                    $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio)->toDateString();
 
-                    if($fecha_inicio != Carbon::now()->toDateString()){
+                    if($clase_personalizada){
 
-                      $horario = HorarioClasePersonalizada::where('clase_personalizada_id', $clase_personalizada->id)->where('fecha', Carbon::now()->toDateString())->first();
+                      $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio)->toDateString();
 
-                      if($horario){
+                      if($fecha_inicio != Carbon::now()->toDateString()){
 
-                        $hie = explode(':',$horario->hora_inicio);
-                        $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+                        $horario = HorarioClasePersonalizada::where('clase_personalizada_id', $clase_personalizada->id)->where('fecha', Carbon::now()->toDateString())->first();
 
-                        $hfe = explode(':',$horario->hora_final);
-                        $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+                        if($horario){
 
-                        $resta_horas = $hora_inicio->diffInHours($hora_final);
+                          $hie = explode(':',$horario->hora_inicio);
+                          $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                          $hfe = explode(':',$horario->hora_final);
+                          $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                          $resta_horas = $hora_inicio->diffInHours($hora_final);
+
+                        }else{
+                          $resta_horas = 0;
+                        }
 
                       }else{
-                        $resta_horas = 0;
+                        $hie = explode(':',$clase_personalizada->hora_inicio);
+                        $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                        $hfe = explode(':',$clase_personalizada->hora_final);
+                        $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                        $resta_horas = $hora_inicio->diffInHours($hora_final); 
                       }
 
-                    }else{
-                      $hie = explode(':',$clase_personalizada->hora_inicio);
-                      $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+                      $cantidad_horas = $clase_personalizada->cantidad_horas - $resta_horas;
 
-                      $hfe = explode(':',$clase_personalizada->hora_final);
-                      $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
-
-                      $resta_horas = $hora_inicio->diffInHours($hora_final); 
+                      $clase_personalizada->cantidad_horas = $cantidad_horas;
+                      $clase_personalizada->save();
                     }
-
-                    $cantidad_horas = $clase_personalizada->cantidad_horas - $resta_horas;
-
-                    $clase_personalizada->cantidad_horas = $cantidad_horas;
-                    $clase_personalizada->save();
                     
                   }else if($clase_id[2] == '4'){
                     $clase_personalizada = Cita::find($clase_id[3]);

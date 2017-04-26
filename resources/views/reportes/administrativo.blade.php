@@ -79,12 +79,8 @@
 
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
-                                            <option value="0">Todas</option>
-                                            <option value="99">Academia</option>
-                                            <option value="1">Servicio</option>
-                                            <option value="2">Producto</option>
-                                            <option value="3">Inscripción y Mensualidad</option>
-                                            <option value="9">Clase Personalizada</option>
+                                            <option value="0">Seleccione</option>
+                                            <option value="99">Academia Recepción</option>
                                             <option value="14">Fiestas y Eventos</option>
                                             <option value="5">Talleres</option>
                                             <option value="11">Campañas</option>
@@ -131,20 +127,54 @@
                                 <div class="col-md-4">
                                     <label>Detalle</label>
 
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id" multiple="" data-max-options="5" title="Todas">
+                                    <!-- <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo_id" id="tipo_id" multiple="" data-max-options="5" title="Todas"> 
+                                        
 
-                                            @foreach ($linea_servicio as $servicio)
-                                                <?php 
-                                                    $id = $servicio['id']; 
-                                                    $tipo = $servicio['tipo'];
-                                                ?>
-                                                <option value="{{$id}}-{{$tipo}}">                       
-                                                    {{$servicio['nombre']}}
+                                            foreach ($linea_servicio as $servicio)
+                                                <php 
+                                                    $id = servicio['id']; 
+                                                    $tipo = servicio['tipo'];
+                                                >
+                                                <option value="id-tipo">                       
+                                                    servicio['nombre']
                                                 </option>
-                                            @endforeach 
+                                            endforeach 
                                         </select>
-                                    </div>
+                                    </div> -->
+
+                                    <!-- <div class="dropdown">
+                                        <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#">
+                                            Dropdown <span class="caret"></span>
+                                        </a>
+                                        <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                          
+                                        </ul>
+                                    </div> -->
+
+                                    <div class="dropdown">
+                                    <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                                        Dropdown <span class="caret"></span>
+                                    </a>
+                                    <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                      <li class="dropdown-submenu">
+                                        <a tabindex="-1" href="#">Hover me for more options</a>
+                                        <ul class="dropdown-menu">
+                                          <li><a tabindex="-1" href="#">Second level</a></li>
+                                          <li class="dropdown-submenu">
+                                            <a href="#">Even More..</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">3rd level</a></li>
+                                                <li><a href="#">3rd level</a></li>
+                                            </ul>
+                                          </li>
+                                          <li><a href="#">Second level</a></li>
+                                          <li><a href="#">Second level</a></li>
+                                        </ul>
+                                      </li>
+                                    </ul>
+                                </div>
+
                                 </div>
 
 
@@ -275,6 +305,8 @@
                         </div>  
                     </div>
                 </div>
+
+                
             </section>
 
             <button class="btn btn-float bgm-red m-btn" data-action="print"><i class="zmdi zmdi-print"></i></button>
@@ -583,38 +615,163 @@
             $('#clase_grupal_id').selectpicker('refresh');
         });
 
+        // $('#tipo_servicio').on('change', function(){
+
+        //     id = $(this).val();
+
+        //     if(id != 0){
+        //         tmp = [];
+
+        //         if(id == 99){
+        //             $.each(linea_servicio, function (index, array) {  
+        //                 not_in = [5,11,14]
+        //                 tipo = array.tipo
+        //                 if($.inArray(tipo, not_in)){
+        //                     tmp.push(array);
+        //                 }                   
+        //             });
+        //         }else{
+        //             $.each(linea_servicio, function (index, array) {  
+        //                 if(array.tipo == id){
+        //                     tmp.push(array);
+        //                 }                   
+        //             });
+        //         }
+        //     }else{
+        //         tmp = linea_servicio
+        //     }
+
+        //     $('#tipo_id').empty();
+
+        //     $.each(tmp, function (index, array) {                     
+        //       $('#tipo_id').append( new Option(array.nombre,array.id+'-'+array.tipo));
+        //     });
+
+        //     $('#tipo_id').selectpicker('refresh');
+        // });
+
+        // $('#tipo_servicio').on('change', function(){
+
+        //     id = $(this).val();
+        //     $('#tipo_id').empty();
+
+        //     if(id == 99){
+        //         $('#tipo_id').append( new Option('Clases Grupales',3));
+        //         $('#tipo_id').append( new Option('Clases Personalizadas',9));
+        //         $('#tipo_id').append( new Option('Productos',2));
+        //         $('#tipo_id').append( new Option('Servicios',1));
+        //     }else if(id == 14){
+        //         $('#tipo_id').append( new Option('Productos',14));
+        //         $('#tipo_id').append( new Option('Servicios',14));
+        //     }else if(id == 5){
+        //         $('#tipo_id').append( new Option('Productos',5));
+        //         $('#tipo_id').append( new Option('Servicios',5));
+        //     }else if(id == 11){
+        //         $('#tipo_id').append( new Option('Productos',11));
+        //         $('#tipo_id').append( new Option('Servicios',11));
+        //     }
+            
+        //     $('#tipo_id').selectpicker('refresh');
+        // });
+
         $('#tipo_servicio').on('change', function(){
 
             id = $(this).val();
-
-            if(id != 0){
-                tmp = [];
-
-                if(id == 99){
-                    $.each(linea_servicio, function (index, array) {  
-                        not_in = [1,2,3,4,9,5,11,14]
-                        tipo = array.tipo
-                        if($.inArray(tipo, not_in)){
-                            tmp.push(array);
-                        }                   
-                    });
-                }else{
-                    $.each(linea_servicio, function (index, array) {  
-                        if(array.tipo == id){
-                            tmp.push(array);
-                        }                   
-                    });
-                }
-            }else{
-                tmp = linea_servicio
-            }
-
             $('#tipo_id').empty();
 
-            $.each(tmp, function (index, array) {                     
-              $('#tipo_id').append( new Option(array.nombre,array.id+'-'+array.tipo));
-            });
+            if(id == 99){
 
+                contenido = '';
+
+                contenido += '<li class="dropdown-submenu">'
+                contenido += '<a tabindex="-1" href="#">Clases Grupales</a>'
+                contenido += '<ul class="dropdown-menu">'
+                contenido += '<li><a href="#">Second level</a></li>'
+                contenido += '</ul></li>'
+
+                $('#dropdown_principal').append(contenido);
+
+                contenido = '';
+
+                contenido += '<li class="dropdown-submenu">'
+                contenido += '<a href="#">Clases Personalizadas</a>'
+                contenido += '<ul class="dropdown-menu">'
+                contenido += '<li><a href="#">Second level</a></li>'
+                contenido += '</ul></li>'
+
+                $('#dropdown_principal').append(contenido);
+
+                contenido = '';
+
+                contenido += '<li class="dropdown-submenu">'
+                contenido += '<a href="#">Productos</a>'
+                contenido += '<ul class="dropdown-menu">'
+                contenido += '<li><a href="#">Second level</a></li>'
+                contenido += '</ul></li>'
+
+                $('#dropdown_principal').append(contenido);
+
+                contenido = '';
+
+                contenido += '<li class="dropdown-submenu">'
+                contenido += '<a href="#">Servicios</a>'
+                contenido += '<ul class="dropdown-menu">'
+                contenido += '<li><a href="#">Second level</a></li>'
+                contenido += '</ul></li>'
+
+                $('#dropdown_principal').append(contenido);
+
+                                              // <li><a href="#">Second level</a></li>
+                                              // <li><a href="#">Second level</a></li>
+                                            
+
+            }else if(id == 14){
+                $('#tipo_id').append( new Option('Productos',14));
+                $('#tipo_id').append( new Option('Servicios',14));
+            }else if(id == 5){
+                $('#tipo_id').append( new Option('Productos',5));
+                $('#tipo_id').append( new Option('Servicios',5));
+            }else if(id == 11){
+                $('#tipo_id').append( new Option('Productos',11));
+                $('#tipo_id').append( new Option('Servicios',11));
+            }
+            
+            $('#tipo_id').selectpicker('refresh');
+        });
+
+        $('#tipo_servicio').on('change', function(){
+
+            id = $(this).val();
+            $('#tipo_id').empty();
+
+            if(id == 99){
+
+                contenido = '';
+
+                contenido += '<li class="dropdown-submenu">'
+                contenido += '<a tabindex="-1" href="#">Clases Grupales</a>'
+                contenido += '<ul class="dropdown-menu">'
+                contenido += '</ul></li>'
+
+
+                                              // <li><a href="#">Second level</a></li>
+                                              // <li><a href="#">Second level</a></li>
+                                            
+                $('#tipo_id').append( new Option('Clases Grupales',3));
+                $('#tipo_id').append( new Option('Clases Personalizadas',9));
+                $('#tipo_id').append( new Option('Productos',2));
+                $('#tipo_id').append( new Option('Servicios',1));
+            }else if(id == 14){
+                $('#tipo_id').append( new Option('Productos',14));
+                $('#tipo_id').append( new Option('Servicios',14));
+            }else if(id == 5){
+                $('#tipo_id').append( new Option('Productos',5));
+                $('#tipo_id').append( new Option('Servicios',5));
+            }else if(id == 11){
+                $('#tipo_id').append( new Option('Productos',11));
+                $('#tipo_id').append( new Option('Servicios',11));
+            }
+            
             $('#tipo_id').selectpicker('refresh');
         });
 
