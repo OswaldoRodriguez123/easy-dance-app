@@ -42,6 +42,7 @@ use App\NotificacionUsuario;
 use App\Incidencia;
 use App\Sugerencia;
 use App\Staff;
+use App\CredencialAlumno;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Image;
