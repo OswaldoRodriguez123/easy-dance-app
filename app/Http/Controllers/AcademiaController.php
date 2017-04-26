@@ -114,41 +114,29 @@ class AcademiaController extends BaseController {
         // 	$patrocinador->save();
         // }
 
-        // $facturas = ItemsFactura::all();
+        $facturas = ItemsFactura::all();
 
-        // foreach($facturas as $factura){
+        foreach($facturas as $factura){
 
-        //     if($factura->tipo == 3 OR $factura->tipo == 4){
-        //         $inscripcion = ClaseGrupal::withTrashed()->find($factura->item_id);
-        //         if($inscripcion){
+            if($factura->tipo == 3){
 
-        //             $clase = ConfigClasesGrupales::withTrashed()->find($inscripcion->clase_grupal_id);
-
-        //             $factura->nombre = $clase->nombre;
-        //             $factura->save();
-        //         }
+                    $factura->nombre = 'Inscripción ' . $clase->nombre;
+                    $factura->save();
                 
-        //     }
-        // }
+            }
+        }
 
-        // $facturas = ItemsFacturaProforma::all();
+        $facturas = ItemsFacturaProforma::all();
 
-        // foreach($facturas as $factura){
+        foreach($facturas as $factura){
 
-        //     if($factura->tipo == 3 OR $factura->tipo == 4){
-        //         $inscripcion = ClaseGrupal::withTrashed()->find($factura->item_id);
-        //         if($inscripcion){
+            if($factura->tipo == 3){
 
-        //             $clase = ConfigClasesGrupales::withTrashed()->find($inscripcion->clase_grupal_id);
-
-        //             $factura->nombre = $clase->nombre;
-        //             $factura->save();
-        //         }
+                    $factura->nombre = 'Inscripción ' . $clase->nombre;
+                    $factura->save();
                 
-        //     }
-        // }
-
-        
+            }
+        }
 
         // $facturas = ItemsFacturaProforma::all();
 
