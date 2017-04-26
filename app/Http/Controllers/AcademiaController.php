@@ -66,15 +66,15 @@ class AcademiaController extends BaseController {
 	{
         $academia = Academia::find(Auth::user()->academia_id);
 
-        $inscripciones = InscripcionClaseGrupal::all();
+        // $inscripciones = InscripcionClaseGrupal::all();
 
-        foreach($inscripciones as $inscripcion){
-            $clase_grupal = ClaseGrupal::withTrashed()->find($inscripcion->clase_grupal_id);
+        // foreach($inscripciones as $inscripcion){
+        //     $clase_grupal = ClaseGrupal::withTrashed()->find($inscripcion->clase_grupal_id);
             
-            $inscripcion->clase_grupal_id = $clase_grupal->clase_grupal_id;
-            $inscripcion->save();
+        //     $inscripcion->clase_grupal_id = $clase_grupal->clase_grupal_id;
+        //     $inscripcion->save();
             
-        }
+        // }
 
         // foreach($clases_personalizadas as $clase_personalizada){
 
