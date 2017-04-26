@@ -95,6 +95,9 @@ class ConfigProductosController extends BaseController {
 
         if($producto->save()){
 
+            $producto->tipo_id = $producto->id;
+            $producto->save()
+
             if($request->imageBase64){
 
                 $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);

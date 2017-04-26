@@ -101,8 +101,12 @@ class ConfigServiciosController extends BaseController {
         $servicio->meses_despues = $request->meses_despues;
         $servicio->incluye_iva = $request->incluye_iva;
         $servicio->tipo = $request->tipo;
+        $servicio->tipo_id = $servicio->id;
 
         if($servicio->save()){
+
+            $servicio->tipo_id = $servicio->id;
+            $servicio->save()
 
             if($request->imageBase64){
 

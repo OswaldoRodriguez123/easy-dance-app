@@ -94,16 +94,17 @@ class AcademiaController extends BaseController {
         // $servicios = ConfigServicios::all();
 
         // foreach($servicios as $servicio){
-        //     $nombre = explode(" ", $servicio->nombre);
-
-        //     if($nombre[0] == 'Inscripción'){
-        //         $servicio->tipo = 3;
-        //         $servicio->save();
-        //     }else if($nombre[0] == 'Cuota' OR $nombre[0] == 'Mensualidad'){
-        //         $servicio->tipo = 4;
-        //         $servicio->save();
-        //     }
+        //     $servicio->tipo_id = $servicio->id;
+        //     $servicio->save();
         // }
+
+        // $productos = ConfigProductos::all();
+
+        // foreach($productos as $producto){
+        //     $producto->tipo_id = $producto->id;
+        //     $producto->save();
+        // }
+
 
         // $patrocinadores = Patrocinador::all();
 
