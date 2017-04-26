@@ -114,29 +114,41 @@ class AcademiaController extends BaseController {
         // 	$patrocinador->save();
         // }
 
-        // $facturas = ItemsFactura::all();
+        $facturas = ItemsFactura::all();
 
-        // foreach($facturas as $factura){
+        foreach($facturas as $factura){
 
-        //     if($factura->tipo == 3){
+            if($factura->tipo == 4){
 
-        //             $factura->nombre = 'Inscripción ' . $factura->nombre;
-        //             $factura->save();
+                $explode = explode(' ', $factura->nombre);
+
+                if($explode[0] != 'Remanente' && $explode[0] != 'Abono'){
+
+                    $factura->nombre = 'Cuota ' . $factura->nombre;
+                    $factura->save();
+
+                }
                 
-        //     }
-        // }
+            }
+        }
 
-        // $facturas = ItemsFacturaProforma::all();
+        $facturas = ItemsFacturaProforma::all();
 
-        // foreach($facturas as $factura){
+        foreach($facturas as $factura){
 
-        //     if($factura->tipo == 3){
+            if($factura->tipo == 4){
 
-        //             $factura->nombre = 'Inscripción ' . $factura->nombre;
-        //             $factura->save();
-                
-        //     }
-        // }
+                $explode = explode(' ', $factura->nombre);
+
+                if($explode[0] != 'Remanente' && $explode[0] != 'Abono'){
+
+                    $factura->nombre = 'Cuota ' . $factura->nombre;
+                    $factura->save();
+
+                }
+        
+            }
+        }
 
         // $facturas = ItemsFacturaProforma::all();
 
