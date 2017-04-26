@@ -54,10 +54,8 @@
                               <div class="select">
                                 <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
                                     <option value = "0">Todos</option>
-                                    <option value = "S">Servicio</option>
-                                    <option value = "I">Inscripción y Mensualidad</option>
+                                    <option value = "A">Academia Recepción</option>
                                     <option value = "T">Taller</option>
-                                    <option value = "R">Clase Personalizada</option>
                                     <option value = "C">Campaña</option>
                                     <option value = "F">Fiesta y Eventos</option>
                                 
@@ -109,7 +107,16 @@
                                     </td>
                                     <td class="text-center previa">{{$servicio['tipo']}}</td>
                                     <td class="text-center previa">{{ number_format($servicio['costo'], 2, '.' , '.') }} </td>
-                                    <td class="text-center disabled"> <span style="display: none">{{$tipo}}</span><i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        <span style="display: none">
+                                            @if($tipo == 'S' OR $tipo == 'I' OR $tipo == 'R')
+                                                A
+                                            @else
+                                                {{$tipo}}
+                                            @endif
+                                        </span> 
+                                        <i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i>
+                                    </td>
                                 </tr>
                             @endforeach 
                                                            

@@ -100,6 +100,8 @@ class BlogController extends BaseController {
 
 			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
 
+            $contenido = $this->cut_html($contenido, 350);
+
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();
 
@@ -236,6 +238,7 @@ class BlogController extends BaseController {
             }
 
 			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+            $contenido = $this->cut_html($contenido, 350);
 
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();
@@ -388,6 +391,7 @@ class BlogController extends BaseController {
             }
 
 			$contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+            $contenido = $this->cut_html($contenido, 350);
 
 			$collection=collect($entrada);     
             $entrada_array = $collection->toArray();

@@ -513,10 +513,8 @@ class AlumnoController extends BaseController
                 ->where('alumnos.id', $id)
             ->first();
 
-            $usuario = User::join('alumnos', 'users.usuario_id', '=', 'alumnos.id')
-                ->select('users.imagen')
-                ->where('alumnos.id', $id)
-            ->first();
+            $in = array(2,4);
+            $usuario = User::where('usuario_id',$id)->whereIn('usuario_tipo',$in)->first();
 
             if($perfil){
                 $tiene_perfil = 1;
@@ -530,23 +528,11 @@ class AlumnoController extends BaseController
                 $imagen = '';
             }
 
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->first();
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->get();
+            $puntos_referidos = 0;
 
-            if(!$alumno_remuneracion)
-            {
-                
-                $alumno_remuneracion = new AlumnoRemuneracion;
-                $alumno_remuneracion->alumno_id = $id;
-                $alumno_remuneracion->remuneracion = 0;
-                $alumno_remuneracion->save();
-            }
-
-            
-
-            if($alumno_remuneracion){
-                $puntos_referidos = $alumno_remuneracion->remuneracion;
-            }else{
-                $puntos_referidos = 0;
+            foreach($alumno_remuneracion as $remuneracion){
+            	$puntos_referidos = $puntos_referidos + $remuneracion->remuneracion;
             }
 
             $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
