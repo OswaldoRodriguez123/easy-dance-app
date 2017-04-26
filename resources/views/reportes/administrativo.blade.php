@@ -152,28 +152,16 @@
                                         </ul>
                                     </div> -->
 
+
+
                                     <div class="dropdown">
-                                    <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
-                                        Dropdown <span class="caret"></span>
-                                    </a>
-                                    <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                      <li class="dropdown-submenu">
-                                        <a tabindex="-1" href="#">Hover me for more options</a>
-                                        <ul class="dropdown-menu">
-                                          <li><a tabindex="-1" href="#">Second level</a></li>
-                                          <li class="dropdown-submenu">
-                                            <a href="#">Even More..</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">3rd level</a></li>
-                                                <li><a href="#">3rd level</a></li>
-                                            </ul>
-                                          </li>
-                                          <li><a href="#">Second level</a></li>
-                                          <li><a href="#">Second level</a></li>
+                                        <a role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                            Pulsa Aqui <span class="caret"></span>
+                                        </a>
+                                        <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                                         </ul>
-                                      </li>
-                                    </ul>
-                                </div>
+                                    </div>
+             
 
                                 </div>
 
@@ -681,12 +669,34 @@
 
             if(id == 99){
 
+                                          //                 <li class="dropdown-submenu">
+                                          //   <a tabindex="-1" href="#">Hover me for more options</a>
+                                          //   <ul class="dropdown-menu">
+                                          //     <li><a tabindex="-1" href="#">Second level</a></li>
+                                          //     <li class="dropdown-submenu">
+                                          //       <a tabindex="-1" href="#" href="#">Even More..</a>
+                                          //       <ul class="dropdown-menu">
+                                          //           <li><a href="#">3rd level</a></li>
+                                          //           <li><a href="#">3rd level</a></li>
+                                          //       </ul>
+                                          //     </li>
+                                          //     <li><a href="#">Second level</a></li>
+                                          //     <li><a href="#">Second level</a></li>
+                                          //   </ul>
+                                          // </li>
+
                 contenido = '';
 
                 contenido += '<li class="dropdown-submenu">'
-                contenido += '<a tabindex="-1" href="#">Clases Grupales</a>'
+                contenido += '<a class="pointer">Clases Grupales</a>'
                 contenido += '<ul class="dropdown-menu">'
-                contenido += '<li><a href="#">Second level</a></li>'
+
+                $.each(linea_servicio, function (index, array) {  
+                    if(array.tipo == 3 || array.tipo == 4){
+                        contenido += '<li><a href="#'+array.id+'">'+array.nombre+'</a></li>'
+                    }                   
+                });
+
                 contenido += '</ul></li>'
 
                 $('#dropdown_principal').append(contenido);
@@ -694,9 +704,15 @@
                 contenido = '';
 
                 contenido += '<li class="dropdown-submenu">'
-                contenido += '<a href="#">Clases Personalizadas</a>'
+                contenido += '<a class="pointer">Clases Personalizadas</a>'
                 contenido += '<ul class="dropdown-menu">'
-                contenido += '<li><a href="#">Second level</a></li>'
+
+                $.each(linea_servicio, function (index, array) {  
+                    if(array.tipo == 9){
+                        contenido += '<li><a href="#'+array.id+'">'+array.nombre+'</a></li>'
+                    }                   
+                });
+
                 contenido += '</ul></li>'
 
                 $('#dropdown_principal').append(contenido);
@@ -704,9 +720,15 @@
                 contenido = '';
 
                 contenido += '<li class="dropdown-submenu">'
-                contenido += '<a href="#">Productos</a>'
+                contenido += '<a class="pointer">Productos</a>'
                 contenido += '<ul class="dropdown-menu">'
-                contenido += '<li><a href="#">Second level</a></li>'
+
+                $.each(linea_servicio, function (index, array) {  
+                    if(array.tipo == 2){
+                        contenido += '<li><a href="#'+array.id+'">'+array.nombre+'</a></li>'
+                    }                   
+                });
+
                 contenido += '</ul></li>'
 
                 $('#dropdown_principal').append(contenido);
@@ -714,9 +736,15 @@
                 contenido = '';
 
                 contenido += '<li class="dropdown-submenu">'
-                contenido += '<a href="#">Servicios</a>'
+                contenido += '<a class="pointer">Servicios</a>'
                 contenido += '<ul class="dropdown-menu">'
-                contenido += '<li><a href="#">Second level</a></li>'
+
+                $.each(linea_servicio, function (index, array) {  
+                    if(array.tipo == 1){
+                        contenido += '<li><a class = "pointer" data-valor="'+array.id+'">'+array.nombre+'</a></li>'
+                    }                   
+                });
+
                 contenido += '</ul></li>'
 
                 $('#dropdown_principal').append(contenido);

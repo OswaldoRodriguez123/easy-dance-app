@@ -1943,11 +1943,8 @@ public function PresencialesFiltros(Request $request)
 
                     if($request->tipo_servicio == 99)
                     {
-                        $not_in = array(1,2,3,4,5,11,14);
+                        $not_in = array(5,11,14);
                         $query->whereNotIn('items_factura.tipo', $not_in);
-                    }else if($request->tipo_servicio == 3){
-                        $in = array(3,4);
-                        $query->whereIn('tipo', $in);
                     }else{
                         $query->where('items_factura.tipo', $request->tipo_servicio);
                     }
@@ -1970,10 +1967,12 @@ public function PresencialesFiltros(Request $request)
                 //FECHA
 
                 if($request->boolean_fecha){
+
                     $fecha = explode(' - ', $request->fecha2);
                     $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
                     $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
                     $query->whereBetween('facturas.fecha', [$start,$end]);
+                    
                 }else{
 
                     if($request->tipo){
