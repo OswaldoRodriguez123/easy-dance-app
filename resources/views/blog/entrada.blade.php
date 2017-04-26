@@ -257,70 +257,70 @@
 
     $(document).on( 'click', '.recientes_populares', function () {
 
-      if(!$(this).hasClass('checked')){
+          if(!$(this).hasClass('checked')){
 
-        $('#recientes_populares').empty();
+            $('#recientes_populares').empty();
 
-        if($(this).attr('id') == 'populares'){
+            if($(this).attr('id') == 'populares'){
 
-          $.each(populares, function (index, entrada) {
+              $.each(populares, function (index, entrada) {
 
-            contenido = '';
-            url = "http://"+location.host+"/blog/entrada/"+entrada.id;
+                contenido = '';
+                url = "http://"+location.host+"/blog/entrada/"+entrada.id;
 
-            if(entrada.imagen_poster){
-              imagen = "http://"+location.host+"/assets/uploads/entradas/"+entrada.imagen_poster;
-            }else
-            {
-              imagen = "{{url('/')}}/assets/img/EASY_DANCE_3_.jpg"
+                if(entrada.imagen_poster){
+                  imagen = "http://"+location.host+"/assets/uploads/entradas/"+entrada.imagen_poster;
+                }else
+                {
+                  imagen = "{{url('/')}}/assets/img/EASY_DANCE_3_.jpg"
+                }
+
+                contenido += '<div class="row">'
+                contenido += '<div class="col-sm-5">'
+                contenido += '<a onclick="procesando()" href="'+url+'">'
+                contenido += '<img class="img-responsive" src="'+imagen+'" alt=""><br></a></div>'
+                contenido += '<div class="col-sm-7">'
+                contenido += '<a onclick="procesando()" class ="f-15" href="'+url+'">'+entrada.titulo+'</a><br><br></div></div>'
+
+                $('#recientes_populares').append(contenido)
+
+              });
+
+            }else{
+
+              $.each(recientes, function (index, entrada) {
+
+                contenido = '';
+                url = "http://"+location.host+"/blog/entrada/"+entrada.id;
+
+                if(entrada.imagen_poster){
+                  imagen = "http://"+location.host+"/assets/uploads/entradas/"+entrada.imagen_poster;
+                }else
+                {
+                  imagen = "{{url('/')}}/assets/img/EASY_DANCE_3_.jpg"
+                }
+
+                contenido += '<div class="row">'
+                contenido += '<div class="col-sm-5">'
+                contenido += '<a onclick="procesando()" href="'+url+'">'
+                contenido += '<img class="img-responsive" src="'+imagen+'" alt=""><br></a></div>'
+                contenido += '<div class="col-sm-7">'
+                contenido += '<a onclick="procesando()" class ="f-15" href="'+url+'">'+entrada.titulo+'</a><br><br></div></div>'
+                
+                $('#recientes_populares').append(contenido)
+
+              });
             }
 
-            contenido += '<div class="row">'
-            contenido += '<div class="col-sm-5">'
-            contenido += '<a onclick="procesando()" href="'+url+'">'
-            contenido += '<img class="img-responsive" src="'+imagen+'" alt=""><br></a></div>'
-            contenido += '<div class="col-sm-7">'
-            contenido += '<a onclick="procesando()" class ="f-15" href="'+url+'">'+entrada.titulo+'</a><br><br></div></div>'
+            $('.recientes_populares').addClass('c-negro')
+            $('.recientes_populares').removeClass('c-azul')
+            $('.recientes_populares').removeClass('checked')
+            $(this).addClass('checked')
+            $(this).addClass('c-azul')
+            $(this).removeClass('c-negro')
 
-            $('#recientes_populares').append(contenido)
-
-          });
-
-        }else{
-
-          $.each(recientes, function (index, entrada) {
-
-            contenido = '';
-            url = "http://"+location.host+"/blog/entrada/"+entrada.id;
-
-            if(entrada.imagen_poster){
-              imagen = "http://"+location.host+"/assets/uploads/entradas/"+entrada.imagen_poster;
-            }else
-            {
-              imagen = "{{url('/')}}/assets/img/EASY_DANCE_3_.jpg"
-            }
-
-            contenido += '<div class="row">'
-            contenido += '<div class="col-sm-5">'
-            contenido += '<a onclick="procesando()" href="'+url+'">'
-            contenido += '<img class="img-responsive" src="'+imagen+'" alt=""><br></a></div>'
-            contenido += '<div class="col-sm-7">'
-            contenido += '<a onclick="procesando()" class ="f-15" href="'+url+'">'+entrada.titulo+'</a><br><br></div></div>'
-            
-            $('#recientes_populares').append(contenido)
-
-          });
-        }
-
-        $('.recientes_populares').addClass('c-negro')
-        $('.recientes_populares').removeClass('c-azul')
-        $('.recientes_populares').removeClass('checked')
-        $(this).addClass('checked')
-        $(this).addClass('c-azul')
-        $(this).removeClass('c-negro')
-
-      }
-    });
+          }
+        });
 
   </script>
 @stop

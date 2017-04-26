@@ -1331,26 +1331,6 @@ class ClaseGrupalController extends BaseController {
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $alumnosclasegrupal->alumno_id, 'inscripcion' => $alumnosclasegrupal, 'array'=> $alumno, 'deuda' => $deuda, 200]);
         }
 
-        // comprobar si esta inscrito
-        // if(!$alumnosclasegrupal){ 
-
-
-            // $count = DB::table('inscripcion_clase_grupal')
-            //     ->select('inscripcion_clase_grupal.*')
-            //     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
-            //     ->count();
-
-            // $estudio = DB::table('config_estudios')
-            //     ->join('clases_grupales', 'config_estudios.id', '=', 'clases_grupales.estudio_id')
-            //     ->select('config_estudios.capacidad')
-            //     ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-            // ->first();
-
-            // if($estudio->capacidad - $clasegrupal->cantidad_reservaciones <= $count){
-            //     return response()->json(['errores'=>'CAPACIDAD LLENA', 'status' => 'ERROR-SERVIDOR'],422);
-            // }
-
-            
 
             if($request->permitir == 0)
             {
@@ -1517,11 +1497,11 @@ class ClaseGrupalController extends BaseController {
 
         if(!$alumnosclasegrupal){ 
 
-            $clasegrupal = DB::table('config_clases_grupales')
-                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                    ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_inicio_preferencial', 'config_clases_grupales.costo_mensualidad', 'config_clases_grupales.costo_inscripcion')
+                $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->Leftjoin('config_servicios', 'config_clases_grupales.id', '=', 'config_servicios.tipo_id')
+                    ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio', 'config_clases_grupales.id', 'config_servicios.id as servicio_id', 'clases_grupales.fecha_inicio_preferencial')
                     ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-                ->first();
+                ->first(););
 
                 $inscripcion = new InscripcionClaseGrupal;
 
@@ -1533,37 +1513,47 @@ class ClaseGrupalController extends BaseController {
 
                 $inscripcion->save();
 
-                $item_factura = new ItemsFacturaProforma;
-                    
-                $item_factura->alumno_id = Auth::user()->usuario_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $request->clase_grupal_id;
-                $item_factura->nombre = 'Inscripcion ' . $clasegrupal->nombre;
-                $item_factura->tipo = 3;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $clasegrupal->costo_inscripcion;
-                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                    
-                $item_factura->save();
+                if($clasegrupal->costo_inscripcion != 0)
+                {
 
-                $item_factura = new ItemsFacturaProforma;
-                    
-                $item_factura->alumno_id = Auth::user()->usuario_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $request->clase_grupal_id;
-                $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
-                $item_factura->tipo = 4;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $clasegrupal->costo_mensualidad;
-                $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                    
-                $item_factura->save();
+                    $item_factura = new ItemsFacturaProforma;
+                        
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $clasegrupal->servicio_id;
+                    $item_factura->nombre = 'Inscripción ' . $clasegrupal->nombre;
+                    $item_factura->tipo = 3;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $clasegrupal->costo_inscripcion;
+                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                        
+                    $item_factura->save();
+
+                }
+
+                if($clasegrupal->costo_mensualidad != 0)
+                {
+
+                    $item_factura = new ItemsFacturaProforma;
+                        
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $clasegrupal->servicio_id;
+                    $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                    $item_factura->tipo = 4;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $clasegrupal->costo_mensualidad;
+                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                        
+                    $item_factura->save();
+
+                }
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 200]);
 
