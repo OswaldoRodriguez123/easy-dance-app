@@ -1394,6 +1394,7 @@ class AcademiaController extends BaseController {
         $asistencia_roja = 6;
         $inscripciones = InscripcionClaseGrupal::where('alumno_id',$id)->get();
         $in = array(1,2);
+        $status = true;
 
         foreach($inscripciones as $inscripcion_clase_grupal){
 
