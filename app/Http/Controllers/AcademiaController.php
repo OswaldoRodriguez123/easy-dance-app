@@ -132,34 +132,63 @@ class AcademiaController extends BaseController {
         //     }
         // }
 
-        // $facturas = ItemsFacturaProforma::all();
+        $facturas = ItemsFacturaProforma::all();
 
-        // foreach($facturas as $factura){
+        foreach($facturas as $factura){
 
-        //     if($factura->tipo == 4){
+            if($factura->tipo == 3){
 
-        //         $explode = explode(' ', $factura->nombre);
+                $explode = explode(' ', $factura->nombre);
 
-        //         if($explode[0] != 'Remanente' && $explode[0] != 'Abono'){
+                if($explode[0] == 'Inscripción'){
 
-        //             $factura->nombre = 'Cuota ' . $factura->nombre;
-        //             $factura->save();
+                    if($explode[1] == 'Remanente' OR $explode[1] == 'Abono'){
 
-        //         }
+                        $nombre = '';
+
+                        foreach($explode as $tmp){
+
+                            if($tmp != 'Inscripción'){
+                                $nombre = $nombre . ' ' . $tmp;
+                            }
+                        }
+
+                        $factura->nombre = $nombre;
+                        $factura->save();
+                    }
+                }
         
-        //     }
-        // }
+            }
+        }
 
-        // $facturas = ItemsFacturaProforma::all();
+        $facturas = ItemsFacturaProforma::all();
 
-        // foreach($facturas as $factura){
-        //     $nombre = explode(" ", $factura->nombre);
+        foreach($facturas as $factura){
 
-        //     if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
-        //         $factura->tipo = 14;
-        //         $factura->save();
-        //     }
-        // }
+            if($factura->tipo == 3){
+
+                $explode = explode(' ', $factura->nombre);
+
+                if($explode[0] == 'Inscripción'){
+
+                    if($explode[1] == 'Remanente' OR $explode[1] == 'Abono'){
+
+                        $nombre = '';
+
+                        foreach($explode as $tmp){
+
+                            if($tmp != 'Inscripción'){
+                                $nombre = $nombre . ' ' . $tmp;
+                            }
+                        }
+
+                        $factura->nombre = $nombre;
+                        $factura->save();
+                    }
+                }
+        
+            }
+        }
 
         // $facturas = ConfigProductos::all();
 
