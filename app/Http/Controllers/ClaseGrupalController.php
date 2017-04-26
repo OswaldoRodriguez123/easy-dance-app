@@ -1438,7 +1438,6 @@ class ClaseGrupalController extends BaseController {
                         ->where('clases_grupales.id', '=', $request->clase_grupal_id)
                     ->first();
 
-
                     if($request->costo_inscripcion != 0)
                     {
 

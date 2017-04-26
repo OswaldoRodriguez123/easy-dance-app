@@ -96,7 +96,7 @@ class ConfigProductosController extends BaseController {
         if($producto->save()){
 
             $producto->tipo_id = $producto->id;
-            $producto->save()
+            $producto->save();
 
             if($request->imageBase64){
 

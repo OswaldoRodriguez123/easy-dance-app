@@ -1967,11 +1967,11 @@ public function PresencialesFiltros(Request $request)
                 //     $query->whereIn('items_factura.nombre', $tipo);
                 // }
 
-                if($request->nombre_servicio)
+                if($request->servicio_id)
                 {
                     if($request->tipo_dropdown == 2){
 
-                        $query->where('items_factura.nombre', $request->servicio_id);
+                        $query->where('items_factura.item_id', $request->servicio_id);
 
                     }
                 }

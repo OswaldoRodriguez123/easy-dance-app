@@ -312,6 +312,7 @@
     tipo_dropdown = ''
     tipo_servicio = ''
     nombre_servicio = ''
+    servicio_id = ''
 
     var nFrom = $(this).attr('data-from');
     var nAlign = $(this).attr('data-align');
@@ -410,7 +411,7 @@
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
                 dataType: 'json',
-                data: datos+"&nombre_servicio="+nombre_servicio+"&servicio_tipo="+tipo_servicio+"&tipo_dropdown="+tipo_dropdown,
+                data: datos+"&nombre_servicio="+nombre_servicio+"&servicio_tipo="+tipo_servicio+"&tipo_dropdown="+tipo_dropdown+"&servicio_id="+servicio_id,
                 success:function(respuesta){
 
                     var nType = 'success';
@@ -590,6 +591,7 @@
             tipo_dropdown = $(this).data('tipo_dropdown')
             tipo_servicio = $(this).data('tipo_servicio')
             nombre_servicio = $(this).data('nombre_servicio')
+            servicio_id = $(this).data('servicio_id')
 
             $('#detalle_boton').text(nombre_servicio)
         });
@@ -682,6 +684,7 @@
             tipo_servicio = $(this).val();
             nombre = '';
             tipo_dropdown = ''
+            servicio_id = ''
 
             $('#detalle_boton').text('Pulsa Aqui')
 

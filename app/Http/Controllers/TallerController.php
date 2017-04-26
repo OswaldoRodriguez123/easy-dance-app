@@ -331,6 +331,7 @@ class TallerController extends BaseController {
             $servicio->descripcion = $descripcion;
             $servicio->incluye_iva = 1;
             $servicio->tipo = 5;
+            $servicio->tipo_id = $taller->id;
 
             $servicio->save();
 

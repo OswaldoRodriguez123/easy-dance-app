@@ -106,7 +106,7 @@ class ConfigServiciosController extends BaseController {
         if($servicio->save()){
 
             $servicio->tipo_id = $servicio->id;
-            $servicio->save()
+            $servicio->save();
 
             if($request->imageBase64){
 
