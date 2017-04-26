@@ -127,9 +127,9 @@
 
                     </div>
 
-                    <div class="col-sm-8">
+                    <div class="col-sm-8 contenido">
    
-                      {!! $entrada['contenido'] !!}...
+                      {!! $entrada['contenido'] !!}
 
                       <a href="{{$entrada['url']}}">Ver más</a>
 
@@ -315,6 +315,17 @@
 
         var inicio = 10;
         var final = 13;
+
+        $(document).ready(function(){
+
+          contenidos = $('.contenido p:last');
+
+          $.each(contenidos, function (index, array) {
+            $(array).append('<span class="f-15 f-700">...</span>');
+          });
+
+        });
+
 
         $(document).on( 'click', '.entrada', function () {
           url = $(this).data('url');
