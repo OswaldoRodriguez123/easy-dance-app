@@ -129,7 +129,7 @@
 
                     <div class="col-sm-8">
    
-                      <p>{!! $entrada['contenido'] !!}</p>
+                      {!! $entrada['contenido'] !!}...
 
                       <a href="{{$entrada['url']}}">Ver más</a>
 
