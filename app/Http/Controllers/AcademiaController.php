@@ -69,7 +69,7 @@ class AcademiaController extends BaseController {
         $inscripciones = InscripcionClaseGrupal::all();
 
         foreach($inscripciones as $inscripcion){
-            $clase_grupal = ClaseGrupal::find($inscripcion->clase_grupal_id);
+            $clase_grupal = ClaseGrupal::withTrashed()->find($inscripcion->clase_grupal_id);
             
             $inscripcion->clase_grupal_id = $clase_grupal->clase_grupal_id;
             $inscripcion->save();
