@@ -1344,7 +1344,7 @@ class AlumnoController extends BaseController
         $delete = InscripcionClaseGrupal::where('alumno_id',$id)->forceDelete();
         $delete = InscripcionTaller::where('alumno_id',$id)->forceDelete();
         $delete = InscripcionClasePersonalizada::where('alumno_id',$id)->forceDelete();
-        $delete = InscripcionCoreografia::where('alumno_id',$id)->forceDelete();
+        // $delete = InscripcionCoreografia::where('alumno_id',$id)->forceDelete();
         $delete = Asistencia::where('alumno_id',$id)->forceDelete();
         $delete = Cita::where('alumno_id',$id)->forceDelete();
         $array = array(2, 4);
@@ -1383,7 +1383,7 @@ class AlumnoController extends BaseController
                     $delete = InscripcionClaseGrupal::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionTaller::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionClasePersonalizada::where('alumno_id',$hijo->id)->forceDelete();
-                    $delete = InscripcionCoreografia::where('alumno_id',$hijo->id)->forceDelete();
+                    // $delete = InscripcionCoreografia::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = Asistencia::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = Cita::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = PerfilEvaluativo::where('usuario_id', $hijo->id)->forceDelete();
