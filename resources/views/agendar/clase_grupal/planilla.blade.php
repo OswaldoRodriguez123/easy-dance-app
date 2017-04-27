@@ -1267,10 +1267,6 @@
                                             @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
 
                                               <li class="hidden-xs">
-                                                <a class="pointer modal_trasladar"><i class="zmdi zmdi-trending-up f-16 boton blue"></i>Trasladar</a>
-                                              </li>
-
-                                              <li class="hidden-xs">
                                                 <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
                                               </li>
 

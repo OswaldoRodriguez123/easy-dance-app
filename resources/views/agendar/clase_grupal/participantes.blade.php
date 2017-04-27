@@ -905,9 +905,7 @@
                                   </div>
                                </div>
 
-
-                               <input type="hidden" name="id" value="{{$clasegrupal->clase_grupal_id}}"></input>
-                               <input type="hidden" name="alumno_id"></input>
+                               <input type="hidden" name="transferir_inscripcion_id" id="transferir_inscripcion_id"></input>
                             
 
                                <div class="clearfix"></div> 
@@ -1482,7 +1480,7 @@
                 procesando();
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
-                var clase_grupal_id = $('input:hidden[name=clase_grupal_id]').val();
+                var clase_grupal_id = "{{$id}}";
                 var alumno_id = $('#alumno_id').val();
                 var instructor_id = $('#instructor_id').val();      
                 var tipo_pago = $('input:checked[name=tipo_pago]').val();     
@@ -2586,9 +2584,11 @@
 
       var alumno_id = $(this).closest('tr').data('alumno_id');
       var nombre = $(this).closest('tr').data('nombre');
+      var inscripcion_id = $(this).closest('tr').attr('id');
 
       $('.span_alumno').text(nombre);
       $('input[name=alumno_id]').val(alumno_id)
+      $('.transferir_inscripcion_id').val(inscripcion_id)
 
       $('#modalTransferir').modal('show')
 

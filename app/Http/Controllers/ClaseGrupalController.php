@@ -2630,16 +2630,14 @@ class ClaseGrupalController extends BaseController {
     public function Transferir(Request $request)
     {
         $rules = [
-            'id' => 'required',
-            'alumno_id' => 'required',
+            'transferir_inscripcion_id' => 'required',
             'clase_grupal_id' => 'required',
         ];
 
         $messages = [
 
-            'id.required' => 'Ups! La Clase Grupal es requerida',
+            'transferir_inscripcion_id.required' => 'Ups! La Clase Grupal es requerida',
             'clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
-            'alumno_id.required' => 'Ups! El alumno es requerido',
             
         ];
 
@@ -2651,16 +2649,15 @@ class ClaseGrupalController extends BaseController {
 
         }else{
 
-            $inscripcion = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->id)->first();
-
+            $inscripcion = InscripcionClaseGrupal::find($request->transferir_inscripcion_id);
             $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
 
             if($clasegrupal && $inscripcion)
             {
 
-                $id = $inscripcion->id;
+                $id = $request->transferir_inscripcion_id;
                 
-                $existe = InscripcionClaseGrupal::where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+                $existe = InscripcionClaseGrupal::where('alumno_id', $inscripcion->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
 
                 if(!$existe){
 
@@ -2669,6 +2666,7 @@ class ClaseGrupalController extends BaseController {
                     $inscripcion->clase_grupal_id = $request->clase_grupal_id;
                     $inscripcion->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
                     $inscripcion->save();
+                    
                 }else{
 
                     $inscripcion->delete();
