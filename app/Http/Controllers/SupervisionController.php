@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Supervision;
 use App\ConfigSupervision;
 use App\HorarioSupervision;
+use App\DetalleSupervisionEvaluacion;
+use App\SupervisionEvaluacion;
+use App\Academia;
 use DB;
+use Session;
 
 class SupervisionController extends BaseController {
 
@@ -565,5 +569,164 @@ class SupervisionController extends BaseController {
 	        }
 	    }
     }
+
+    public function evaluar($id)
+    {   
+    	Session::put('id_supervision_evaluacion', $id);
+
+        $supervision = Supervision::join('staff', 'staff.id', '=', 'supervisiones.staff_id')
+        	->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
+            ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido')
+            ->where('supervisiones.id', $id)
+        ->first();
+
+        if($supervision){
+
+        	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->where('id', '!=', $supervision->staff_id)->get();
+        	$staff = Staff::find($supervision->supervisor_id);
+
+	    	if($staff){
+	    		$supervisor = $staff->nombre . ' ' . $staff->apellido;
+	    	}else{
+	    		$supervisor = '';
+	    	}
+
+	    	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
+            $hoy = Carbon::now()->format('d-m-Y');
+            $academia = Academia::find(Auth::user()->academia_id);
+            $numero_de_items = count($items_a_evaluar);
+
+            return view('configuracion.supervision.evaluar')
+                   ->with(['staffs' => $staffs, 'supervision' => $supervision, 'fecha' => $hoy, 'items_a_evaluar' => $items_a_evaluar, 'id' => $id, 'numero_de_items'=>$numero_de_items, 'academia' => $academia]);
+        }else{
+           return redirect("configuracion/supervisiones"); 
+        }
+    }
+
+    public function storeEvaluacion(Request $request)
+    {
+
+        $rules = [
+
+            'supervisor_id' => 'required',
+            'total_nota' => 'required',
+            'observacion' => 'max:1000',
+        ];
+
+        $messages = [
+
+            'supervisor_id.required' => 'Ups! Debe seleccionar un Supervisor',
+            'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
+            'observacion.max' => 'Ups! no pueden ser mas de 1000 caracteres',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $detalle_nota=explode(",",$request->nota_detalle);
+            $detalle_nombre=explode(",",$request->nombre_detalle);
+
+            $evaluacion = new SupervisionEvaluacion;
+
+            $evaluacion->supervisor_id = $request->supervisor_id;
+            $evaluacion->supervision_id = $request->supervision_id;
+            $evaluacion->total = $request->total_nota;
+            $evaluacion->observacion = $request->observacion;
+            $evaluacion->porcentaje = $request->barra_de_progreso;
+
+            if($evaluacion->save()){
+
+                for ($i=0; $i < count($detalle_nota)-1; $i++) {
+
+                    $detalles = new DetalleSupervisionEvaluacion;
+
+                    $detalles->nombre = $detalle_nombre[$i];
+                    $detalles->nota = intval($detalle_nota[$i]);
+                    $detalles->evaluacion_id = $evaluacion->id;
+                    $detalles->save();
+                }
+      
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function evaluaciones()
+    {
+        $id_evaluacion = Session::get('id_supervision_evaluacion');
+
+        $evaluaciones= SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id', '=', 'supervisiones.id')
+            ->join('staff', 'supervisiones.staff_id', '=', 'staff.id')
+            ->select('supervision_evaluacion.*','staff.nombre', 'staff.apellido')
+            ->where('staff.academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
+
+        $array = array();
+
+        foreach($evaluaciones as $evaluacion){
+
+        	$staff = Staff::find($evaluacion->supervisor_id);
+
+        	if($staff){
+        		$supervisor = $staff->nombre . ' ' . $staff->apellido;
+        	}else{
+        		$supervisor = '';
+        	}
+
+        	$collection=collect($evaluacion);   
+
+            $supervision_array = $collection->toArray();
+            $supervision_array['supervisor']=$supervisor;
+            $array[$evaluacion->id] = $supervision_array;
+        }
+
+        return view('configuracion.supervision.evaluaciones')->with(['evaluaciones' => $array,'id_evaluacion'=>$id_evaluacion]);
+    }
+
+    public function getDetalle($id){
+
+        //DATOS DE ENCABEZADO
+        
+        $evaluacion = SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id','=','supervisiones.id')
+    		->join('staff', 'supervisiones.supervisor_id','=','staff.id')
+	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
+	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervision_evaluacion.total', 'supervision_evaluacion.porcentaje')
+	        ->where('supervision_evaluacion.id', $id)
+        ->first($id);
+        
+        $staff = SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id','=','supervisiones.id')
+    		->join('staff', 'supervisiones.staff_id','=','staff.id')
+            ->select('staff.*')
+            ->where('supervision_evaluacion.id','=',$id)
+        ->first();
+
+        $academia = SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id','=','supervisiones.id')
+			->join('staff', 'supervisiones.staff_id','=','staff.id')
+			->join('academias', 'staff.academia_id','=','academias.id')
+            ->select('academias.*')
+            ->where('supervision_evaluacion.id','=',$id)
+        ->first();
+            
+        //DATOS DE DETALLE
+        $detalles_notas = DetalleSupervisionEvaluacion::select('nombre', 'nota')
+            ->where('evaluacion_id','=',$id)
+        ->get();
+        
+        return view('configuracion.supervision.detalle')->with([
+        	'evaluacion'               => $evaluacion,
+            'staff'                    => $staff, 
+            'academia'                 => $academia, 
+            'detalle_notas'            => $detalles_notas,
+
+        ]);
+    }
+
 
 }

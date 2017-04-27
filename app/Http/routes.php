@@ -946,6 +946,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('configuracion/supervisiones', 'SupervisionController@principal');
 			Route::get('configuracion/supervisiones/agregar', 'SupervisionController@create');
 			Route::post('configuracion/supervisiones/agregar', 'SupervisionController@store');
+			Route::get('configuracion/supervisiones/evaluar/{id}', 'SupervisionController@evaluar');
+			Route::post('configuracion/supervisiones/evaluar', 'SupervisionController@storeEvaluacion');
+			Route::get('configuracion/supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
+			Route::get('configuracion/supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');
+
+			
 
 			//INCIDENCIAS
 
