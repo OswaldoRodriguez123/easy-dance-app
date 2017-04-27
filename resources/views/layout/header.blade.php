@@ -57,6 +57,10 @@
                                         </li>
 
                                         <li class="hidden-xs">
+                                            <a href="{{url('configuracion/supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
+                                        </li>
+
+                                        <li class="hidden-xs">
                                             <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
                                         </li>
 

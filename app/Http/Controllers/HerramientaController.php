@@ -41,6 +41,7 @@ use App\Patrocinador;
 use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
+use App\ConfigSupervision;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -64,7 +65,14 @@ class HerramientaController extends BaseController {
         $valoraciones = ConfigTipoExamen::where('academia_id' , Auth::user()->academia_id)->get();
         $puntajes = Puntaje::where('academia_id' , Auth::user()->academia_id)->get();
 
-        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes]);
+        $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+
+        $supervisiones = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
+            ->select('config_supervision.*', 'config_staff.nombre as cargo')
+            ->where('config_supervision.academia_id' , Auth::user()->academia_id)
+        ->get();
+
+        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes, 'supervisiones' => $supervisiones, 'cargos' => $cargos]);
 
     }
 
@@ -363,6 +371,58 @@ class HerramientaController extends BaseController {
         $puntaje = Puntaje::find($id);
 
         $puntaje->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    Public function agregarsupervision(Request $request){
+        
+    $rules = [
+
+        'nombre_supervision' => 'required',
+        'cargo_supervision' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_supervision.required' => 'Ups! El Nombre es requerido',
+        'cargo_supervision.required' => 'Ups! El Cargo es requerido',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = title_case($request->nombre_supervision);
+
+        $supervision = new ConfigSupervision;
+                                        
+        $supervision->academia_id = Auth::user()->academia_id;
+        $supervision->nombre = $nombre;
+        $supervision->cargo_id = $request->cargo_supervision;
+
+        $supervision->save();
+
+        $config_staff = ConfigStaff::find($request->cargo_supervision);
+        $cargo = $config_staff->nombre;
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $supervision, 'id' => $supervision->id, 'cargo' => $cargo, 200]);
+
+        }
+    }
+
+    public function eliminarsupervision($id){
+
+        $supervision = ConfigSupervision::find($id);
+
+        $supervision->delete();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
