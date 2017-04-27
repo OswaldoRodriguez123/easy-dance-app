@@ -37,7 +37,7 @@
 
             <hr style="border-bottom: 1px solid #ccc">
 
-            <p class="f-15 f-700">{!! nl2br($entrada['contenido']) !!}</p>
+            <p class="f-15 f-700">{!! $entrada['contenido'] !!}</p>
 
             <div class="clearfix p-b-20"></div>
 
