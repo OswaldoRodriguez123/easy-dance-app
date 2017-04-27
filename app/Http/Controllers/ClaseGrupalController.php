@@ -702,8 +702,6 @@ class ClaseGrupalController extends BaseController {
 
             $promociones = Promocion::where('academia_id', Auth::user()->academia_id)->where('fecha_inicio', '<=', $hoy)->where('fecha_final', '>=', $hoy)->get();
 
-
-
             return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'promociones' => $promociones]);
 
         }else{
@@ -2326,8 +2324,7 @@ class ClaseGrupalController extends BaseController {
     public function edit($id)
     {
 
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+        $clase_grupal_join = ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -2615,11 +2612,9 @@ class ClaseGrupalController extends BaseController {
 	        		}
 	        	}
 		        
-
 		        $horarios = HorarioClaseGrupal::where('clase_grupal_id', $request->id)->delete();
 		        $asistencias = Asistencia::where('clase_grupal_id', $request->id)->delete();
 
-	
 	    		if($clasegrupal->delete()){
 	        		return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
 		        }else{
