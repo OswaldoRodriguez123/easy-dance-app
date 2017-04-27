@@ -2657,6 +2657,8 @@
 
             swal("Exito!","El alumno ha sido transferido!","success");
 
+            $('.modal').modal('hide')
+
           },
           error:function (msj, ajaxOptions, thrownError){
             setTimeout(function(){ 
