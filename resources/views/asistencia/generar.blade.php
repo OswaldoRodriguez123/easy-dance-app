@@ -329,8 +329,24 @@
                             <tbody>
 
                             @foreach ($alumnosacademia as $alumno)
-                                <?php $id = $alumno['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}" >
+                                <?php $id = $alumno['id']; 
+                                  $contenido = '<p class="c-negro">' .
+
+                                    $alumno['nombre'] . ' ' . $alumno['apellido'] .'<br><br>' .
+
+                                    'Clase Grupal: ' . $alumno['nombre_clase']  . '<br>'.
+                                    'Día: ' . $alumno['dia_clase'] . '<br>'.
+                                    'Hora: ' . $alumno['hora_clase'] . '<br>'.
+                                    'Instructor: ' . $alumno['instructor_clase'] . '<br>'.
+
+
+
+                                    '</p>';
+
+                                ?>
+
+
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}" >
 
                                     <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">

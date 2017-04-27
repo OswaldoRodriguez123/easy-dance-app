@@ -70,7 +70,7 @@ class AsistenciaController extends BaseController
             ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias.academia_id', '=', 'academias.id')
-            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id', 'asistencias.id')
+            ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id', 'asistencias.id', 'alumnos.id as alumno_id')
             ->where('academias.id','=',Auth::user()->academia_id)
             ->orderBy('asistencias.created_at','desc')
             ->limit(150)
@@ -720,6 +720,58 @@ class AsistenciaController extends BaseController
       foreach($alumnos as $alumno){
 
         $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+        $inscripcion = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
+            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+            ->orderBy('inscripcion_clase_grupal.created_at', 'desc')
+          ->first();
+
+          if($inscripcion){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia_clase = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia_clase = 'Martes';
+
+            }else if($i == 3){
+
+              $dia_clase = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia_clase = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia_clase = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia_clase = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia_clase = 'Domingo';
+
+            }
+
+            $instructor_clase = $inscripcion->instructor_nombre . ' ' . $inscripcion->instructor_apellido;
+            $nombre_clase = $inscripcion->nombre;
+            $hora_clase = $inscripcion->hora_inicio . ' / ' . $inscripcion->hora_final;
+          }else{
+            $instructor_clase = '';
+            $nombre_clase = '';
+            $hora_clase = '';
+            $dia_clase = '';
+          }
 
         if($usuario){
 
@@ -735,7 +787,11 @@ class AsistenciaController extends BaseController
 
         $collection=collect($alumno);     
         $alumno_array = $collection->toArray();
-            
+        
+        $alumno_array['nombre_clase']=$nombre_clase;
+        $alumno_array['hora_clase']=$hora_clase;
+        $alumno_array['instructor_clase']=$instructor_clase;
+        $alumno_array['dia_clase']=$dia_clase;
         $alumno_array['imagen']=$imagen;
         $array_alumno[$alumno->id] = $alumno_array;
 
