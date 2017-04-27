@@ -2635,9 +2635,9 @@
 
             element = $('#'+respuesta.id)
                           
-            var sexo = $(element).closest('tr').data('sexo');
+            var sexo = $(element).data('sexo');
 
-            t.row( $(element).parents('tr') )
+            t.row($(element))
               .remove()
               .draw();
 
