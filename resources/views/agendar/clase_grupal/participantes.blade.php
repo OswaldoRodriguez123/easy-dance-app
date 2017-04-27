@@ -2588,7 +2588,7 @@
 
       $('.span_alumno').text(nombre);
       $('input[name=alumno_id]').val(alumno_id)
-      $('.transferir_inscripcion_id').val(inscripcion_id)
+      $('#transferir_inscripcion_id').val(inscripcion_id)
 
       $('#modalTransferir').modal('show')
 
