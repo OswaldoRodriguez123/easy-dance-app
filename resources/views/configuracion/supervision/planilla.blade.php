@@ -295,7 +295,9 @@
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Supervisión<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_fecha_supervision" id="edit_fecha_supervision"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <input type="hidden" name="id" id="id" value="{{$supervision->id}}"></input>
+
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
@@ -362,9 +364,6 @@
                                 <div class="clearfix p-b-15"></div>
 
                               @endforeach
-
-
-                               <input type="hidden" name="id" value="{{$supervision->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -672,159 +671,7 @@
         });
       }
 
-      var t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        bPaginate: false,
-        bInfo:false,
-        bFilter:false,
-        pageLength: 25,   
-        order: [[0, 'desc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "Buscar:",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-
-      $("#add").click(function(){
-
-              var route = route_edit;
-                  var token = $('input:hidden[name=_token]').val();
-                  var datos = '&item_nuevo='+ $('#item_nuevo').val()+'&id='+$('#id').val(); 
-                  limpiarMensaje();
-                  $.ajax({
-                      url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
-                          dataType: 'json',
-                          data:datos,
-                      success:function(respuesta){
-                        setTimeout(function(){ 
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          if(respuesta.status=="OK"){
-                            var nType = 'success';
-                            var nTitle="Ups! ";
-                            var nMensaje=respuesta.mensaje;
-
-                            var item_nuevo = respuesta.item_nuevo;
-
-                            var rowId=respuesta.id;
-                            var rowNode=t.row.add( [
-                            ''+item_nuevo+'',
-                            '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                            ] ).draw(false).node();
-                            $( rowNode )
-                            .attr('id',rowId)
-                            .addClass('seleccion');
-
-                          }else{
-                            var nTitle="Ups! ";
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                            var nType = 'danger';
-                          }                       
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          $(".cancelar").removeAttr("disabled");
-                          $("#add").removeAttr("disabled");
-                          $("#add").css({
-                            "opacity": ("1")
-                          });
-
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }, 1000);
-                      },
-                      error:function(msj){
-                        setTimeout(function(){ 
-                        //   if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                          if(msj.responseJSON.status=="ERROR"){
-                            console.log(msj.responseJSON.errores);
-                            errores(msj.responseJSON.errores);
-                            var nTitle="    Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                          }else{
-                            var nTitle="   Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          }                        
-                          $("#add").removeAttr("disabled");
-                          $("#add").css({
-                            "opacity": ("1")
-                          });
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nType = 'danger';
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY";                       
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                        }, 1000);
-                      }
-                  });
-            });
-
-$('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-                  var padre=$(this).parents('tr');
-                  var token = $('input:hidden[name=_token]').val();
-                  var id = $(this).closest('tr').attr('id');
-                        $.ajax({
-                             url: route_eliminar_item+"/"+id,
-                             headers: {'X-CSRF-TOKEN': token},
-                             type: 'POST',
-                             dataType: 'json',                
-                            success: function (data) {
-                              if(data.status=='OK'){
-
-                                                                            
-                              }else{
-                                swal(
-                                  'Solicitud no procesada',
-                                  'Ha ocurrido un error, intente nuevamente por favor',
-                                  'error'
-                                );
-                              }
-                            },
-                            error:function (xhr, ajaxOptions, thrownError){
-                              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                            }
-                          })
-
-                        t.row( $(this).parents('tr') )
-                                .remove()
-                                .draw();   
-
-                          
-                        });
-
-    function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+      function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
                     icon: icon,
                     title: titulo,
