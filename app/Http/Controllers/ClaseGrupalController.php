@@ -1333,6 +1333,7 @@ class ClaseGrupalController extends BaseController {
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $alumnosclasegrupal->alumno_id, 'inscripcion' => $alumnosclasegrupal, 'array'=> $alumno, 'deuda' => $deuda, 200]);
         }
 
+        $alumno = Alumno::find($request->alumno_id);
 
         if($request->permitir == 0)
         {
@@ -1401,8 +1402,6 @@ class ClaseGrupalController extends BaseController {
             $inscripcion->tipo_pago = $request->tipo_pago;
 
             if($inscripcion->save()){
-
-                $alumno = Alumno::find($request->alumno_id);
         
                 $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                     ->select('config_clases_grupales.nombre', 'clases_grupales.*')
