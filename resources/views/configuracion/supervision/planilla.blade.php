@@ -564,6 +564,8 @@
 
       $('.cargo_{{$supervision->cargo_id}}').show();
 
+      $('input[name="id"]').val("{{$id}}")
+
       frecuencias = $('input[type="checkbox"].frecuencia');
       supervisiones = $('input[type="checkbox"].supervision');
       var items_a_evaluar = [];
