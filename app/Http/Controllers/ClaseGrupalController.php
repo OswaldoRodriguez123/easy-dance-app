@@ -1334,6 +1334,11 @@ class ClaseGrupalController extends BaseController {
         }
 
         $alumno = Alumno::find($request->alumno_id);
+        
+        $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+            ->select('config_clases_grupales.nombre', 'clases_grupales.*')
+            ->where('clases_grupales.id', '=', $clase_grupal_id)
+        ->first();
 
         if($request->permitir == 0)
         {
@@ -1402,11 +1407,6 @@ class ClaseGrupalController extends BaseController {
             $inscripcion->tipo_pago = $request->tipo_pago;
 
             if($inscripcion->save()){
-        
-                $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                    ->select('config_clases_grupales.nombre', 'clases_grupales.*')
-                    ->where('clases_grupales.id', '=', $clase_grupal_id)
-                ->first();
                                     
                 $in = array(3,4);
                 $servicio = ConfigServicios::where('tipo',$in)->where('tipo_id', $clasegrupal->clase_grupal_id)->first();
