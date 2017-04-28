@@ -1461,10 +1461,6 @@
 
         $("#agregar").click(function(){
 
-                var costo_inscripcion = $("#clasegrupal-costo_inscripcion").text();
-                var costo_mensualidad = $("#clasegrupal-costo_mensualidad").text();
-                var fecha_pago = $("#clasegrupal-fecha_inicio_preferencial").text();
-
                 // var values = $('#alumno_id').val();
 
                 // if(values){
@@ -1480,18 +1476,23 @@
                 procesando();
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
-                var clase_grupal_id = "{{$id}}";
-                var alumno_id = $('#alumno_id').val();
-                var instructor_id = $('#instructor_id').val();      
+                // var clase_grupal_id = "{{$id}}";
+                // var alumno_id = $('#alumno_id').val();
+                // var instructor_id = $('#instructor_id').val();      
+                var costo_inscripcion = $("#clasegrupal-costo_inscripcion").text();
+                var costo_mensualidad = $("#clasegrupal-costo_mensualidad").text();
+                var fecha_pago = $("#clasegrupal-fecha_inicio_preferencial").text();
                 var tipo_pago = $('input:checked[name=tipo_pago]').val();     
                 limpiarMensaje();
-                var array = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val(), tipo_pago: tipo_pago};
+                var datos = $("#agregar_inscripcion").serialize(); 
+                // var datos = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val(), tipo_pago: tipo_pago};
+
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:array,
+                        data: datos+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');

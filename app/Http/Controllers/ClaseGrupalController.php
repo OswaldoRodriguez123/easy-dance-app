@@ -13,6 +13,7 @@ use App\Academia;
 use App\Cuotas;
 use App\DiasDeSemana;
 use App\ConfigEstudios;
+use App\ConfigServicios;
 use App\ConfigEspecialidades;
 use App\ConfigClasesGrupales;
 use App\ConfigNiveles;
@@ -1334,7 +1335,7 @@ class ClaseGrupalController extends BaseController {
         }
 
         $alumno = Alumno::find($request->alumno_id);
-        
+
         $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
             ->select('config_clases_grupales.nombre', 'clases_grupales.*')
             ->where('clases_grupales.id', '=', $clase_grupal_id)
