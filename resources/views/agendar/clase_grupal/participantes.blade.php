@@ -1473,7 +1473,7 @@
 
                 // }
 
-                // procesando();
+                procesando();
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 // var clase_grupal_id = "{{$id}}";
