@@ -310,7 +310,7 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            // procesando(); 
+            procesando(); 
 
             t.clear().draw();
 
