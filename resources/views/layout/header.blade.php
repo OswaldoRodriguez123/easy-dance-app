@@ -57,10 +57,6 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('configuracion/supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
-                                        </li>
-
-                                        <li class="hidden-xs">
                                             <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
                                         </li>
 
@@ -232,9 +228,19 @@
                                      <li class="hidden-xs">
                                         <a href=""><i class="zmdi zmdi-help"></i> Ayuda</a>
                                     </li> -->
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
+                                    </li>
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Calendario Laboral</a>
+                                    </li>
+
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
                                     </li>
+
                                     <!-- <li class="hidden-xs">
                                         <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
                                     </li> -->

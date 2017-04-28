@@ -26,7 +26,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/citas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Citas</a><ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/eventos-laborales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Eventos Laborales</a><ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -44,39 +44,84 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado" id="id-cita_id"><i class="zmdi zmdi-calendar-check f-25"></i> Crea tu Cita </span>                                                         
+                            <span class="f-25 c-morado" id="id-evento_id"><i class="zmdi zmdi-calendar-check f-25"></i> Crea tu Evento Laboral </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
-                          <form name="agregar_cita" id="agregar_cita"  >
+                          <form name="agregar_evento" id="agregar_evento"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
                                 <div class="col-sm-12">
                                  
+                                    <label for="cargo" id="id-cargo">Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo a supervisar" title="" data-original-title="Ayuda"></i>
 
-                                    <label for="alumno_id" id="id-alumno_id">Cliente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual deseas asignar la cita" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
-
-                                         @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                        <select class="selectpicker" name="cargo" id="cargo" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $config_staff as $cargo )
+                                          <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
                                           @endforeach
                                         </select>
                                       </div>
                                     </div>
-                                    <div class="has-error" id="error-alumno_id">
+                                    <div class="has-error" id="error-cargo">
                                       <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                        <small class="help-block error-span" id="error-cargo_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                                 
+                                    <label for="cargo" id="id-staff_id">Staff</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el supervisor" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="staff_id" id="staff_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $staffs as $staff )
+                                          <option value = "{{ $staff['id'] }}">{{ $staff['nombre'] }} {{ $staff['apellido'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-staff_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-staff_id_mensaje" ></small>                                           
                                       </span>
                                     </div>
                                   </div>
                                </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 
+                                    <label for="nombre" id="id-nombre">Nombre de la actividad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la actividad" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-fiesta f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Fiesta de fin de año">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-nombre">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
                                <div class="clearfix p-b-35"></div>
 
                                 <div class="col-sm-12">
@@ -163,63 +208,9 @@
                                     </div>
                                 </div>
 
-                                <div class="clearfix p-b-35"></div>
+                                
 
-                                       <div class="col-sm-12">
-                                 
-                                    <label for="tipo_id" id="id-tipo_id">Tipo de Cita</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de la cita" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="tipo_id" id="tipo_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $config_citas as $tipo )
-                                            <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
-                                          @endforeach
-
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-tipo_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-tipo_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-12">
-                                 
-                                    <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> 
-                                     <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $instructoresacademia as $instructores )
-                                            <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-instructor_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-
-
-                               <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
 
                           <div class="modal-footer p-b-20 m-b-20">
@@ -268,12 +259,13 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/agendar/citas/agregar";
-  route_principal="{{url('/')}}/agendar/citas";
+  route_agregar="{{url('/')}}/configuracion/eventos-laborales/agregar";
+  route_principal="{{url('/')}}/configuracion/eventos-laborales";
+
+  var staffs = <?php echo json_encode($staffs);?>;
 
 
   $(document).ready(function(){
-        document.getElementById("nombre").focus();
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
         //var cardImg = $(this).closest('#content').find('h1');
@@ -296,7 +288,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["alumno_id", "fecha", "hora_inicio", "hora_final", "instructor_id",  "tipo_id"];
+    var campo = ["staff_id", "cargo", "fecha", "hora_inicio", "hora_final"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -385,15 +377,8 @@
 
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_cita" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
+                var datos = $( "#agregar_evento" ).serialize(); 
+                procesando();      
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -409,25 +394,13 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
                           window.location = route_principal;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
 
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
                           finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
 
                           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                         }                       
@@ -448,14 +421,7 @@
                           var nTitle="   Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        $("#guardar").removeAttr("disabled");
                         finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
@@ -471,14 +437,12 @@
      
 
       function limpiarMensaje(){
-        var campo = ["alumno_id", "fecha", "hora_inicio", "hora_final", "instructor_id",  "tipo_id"];
+        var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
         }
       }
-
-
 
     function errores(merror){
       var elemento="";
@@ -501,20 +465,70 @@
 
   }
 
-   $( "#cancelar" ).click(function() {
-    $("#agregar_cita")[0].reset();
+  $( "#cancelar" ).click(function() {
+    $("#agregar_evento")[0].reset();
+    $('#cargo').selectpicker('refresh')
+    $('#staff_id').selectpicker('refresh')
     limpiarMensaje();
     $('html,body').animate({
-    scrollTop: $("#id-cita_id").offset().top-90,
+    scrollTop: $("#id-evento_id").offset().top-90,
     }, 1000);
   });
 
-   $("#tipo_id").on('change', function(){
-      nombre = $("#tipo_id option:selected").text();
-      if(nombre == 'Diagnóstico de Ingreso'){
-        $('#color_etiqueta').val('#ec5402')
+   $("#cargo").on('change', function(){
+      nombre = $("#cargo option:selected").text();
+
+      if(nombre == 'Coordinador de pista'){
+        $('#color_etiqueta').val('#519ff0')
+        $('.cp-value').css('background-color',"#519ff0")
+      }
+
+      if(nombre == 'Coordinador de eventos'){
+        $('#color_etiqueta').val('#b851f0')
+        $('.cp-value').css('background-color',"#b851f0")
+      }
+
+      if(nombre == 'Promotor'){
+        $('#color_etiqueta').val('#f051ec')
+        $('.cp-value').css('background-color',"#f051ec")
+      }
+
+      if(nombre == 'Supervisor'){
+        $('#color_etiqueta').val('#f06451')
         $('.cp-value').css('background-color',"#ec5402")
       }
+
+      if(nombre == 'Recepción'){
+        $('#color_etiqueta').val('#f0e651')
+        $('.cp-value').css('background-color',"#f0e651")
+      }
+
+      if(nombre == 'Instructor'){
+        $('#color_etiqueta').val('#a4f051')
+        $('.cp-value').css('background-color',"#a4f051")
+      }
+
+      if(nombre == 'Administrador'){
+        $('#color_etiqueta').val('#51f07e')
+        $('.cp-value').css('background-color',"#51f07e")
+      }
+
+    });
+
+   $('#cargo').on('change', function(){
+
+      id = $(this).val();
+      $('#staff_id').empty();
+
+      var staff = $.grep(staffs, function(e){ return e.cargo == id; });
+
+      $('#staff_id').append( new Option("Selecciona",""));
+
+      $.each(staff, function (index, arreglo) {
+        $('#staff_id').append( new Option(arreglo.nombre + ' ' + arreglo.apellido,arreglo.id));
+      });
+          
+      $('#staff_id').selectpicker('refresh');
 
     });
 

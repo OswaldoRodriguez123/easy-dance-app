@@ -25,128 +25,11 @@
             <section id="content">
                 <div class="container">
 
-                <?php //dd($talleres[0]->nombre); ?>
-<div id="calendar"></div>
+                <div id="calendar"></div>
                     
-                    <!-- Add event -->
-                    <div class="modal fade" id="addNew-event" data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <!--<h4 class="modal-title">Agendar</h4>-->
-                                    <i class="icon_a-agendar f-35" ></i>
-                                    <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                </div>
-                                <div class="modal-body m-b-20">
-                                    <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}. Que bueno tenerte aquí... </p> 
-                                    <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para agendar? Empieza yaaa...</p>
-                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <div class="col-sm-3">
-                                    	<ul class="ca-menu" style="margin: 0 auto;">
-		                                    <li style="height: 250px;">
-		                                        <a href="#" class="agendar" data-agendar="clases-grupales">
-		                                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_a-clases-grupales"></i></span>
-		                                            <div class="ca-content" style="top: 35%;">
-		                                                <h2 class="ca-main f-20">Clases Grupales</h2>
-		                                                <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
-		                                            </div>
-		                                        </a>
-		                                    </li>
-		                                </ul>
-                                    </div>
-                                    <div class="col-sm-3">
-                                    	<ul class="ca-menu" style="margin: 0 auto;">
-		                                    <li style="height: 250px;">
-		                                        <a href="#" class="agendar" data-agendar="clases-personalizadas">
-		                                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_a-clase-personalizada"></i></span>
-		                                            <div class="ca-content" style="top: 35%;">
-		                                                <h2 class="ca-main f-20">Clases Personalizadas</h2>
-		                                                <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
-		                                            </div>
-		                                        </a>
-		                                    </li>
-		                                </ul>
-                                    </div>
-                                    <div class="col-sm-3">
-                                    	<ul class="ca-menu" style="margin: 0 auto;">
-		                                    <li style="height: 250px;">
-		                                        <a href="#" class="agendar" data-agendar="talleres" >
-		                                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_a-talleres"></i></span>
-		                                            <div class="ca-content" style="top: 35%;">
-		                                                <h2 class="ca-main f-20">Talleres</h2>
-		                                                <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
-		                                            </div>
-		                                        </a>
-		                                    </li>
-		                                </ul>
-                                    </div>
-                                    <div class="col-sm-3">
-                                    	<ul class="ca-menu" style="margin: 0 auto;">
-		                                    <li style="height: 250px;">
-		                                        <a href="#" class="agendar" data-agendar="fiestas-eventos">
-		                                            <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_a-fiesta"></i></span>
-		                                            <div class="ca-content" style="top: 35%;">
-		                                                <h2 class="ca-main f-20">Fiestas y Eventos</h2>
-		                                                <h3 class="ca-sub" style="line-height: 20px;">Actívate ya!</h3>
-		                                            </div>
-		                                        </a>
-		                                    </li>
-		                                </ul>
-                                    </div>
-
-                                    <div class="clearfix p-b-10"></div>
-
-
-                                    	
-                                        
-                                        <!--<div class="form-group">
-                                            <label for="eventName">Event Name</label>
-                                            <div class="fg-line">
-                                                <input type="text" class="input-sm form-control" id="eventName" placeholder="eg: Sports day">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="eventName">Event Name</label>
-                                            <div class="fg-line">
-                                                <input type="text" class="input-sm form-control" id="eventName" placeholder="eg: Sports day">
-                                            </div>
-                                        </div>
-
-                                        
-                                        <div class="form-group">
-                                            <label for="eventName">Tag Color</label>
-                                            <div class="event-tag">
-                                                <span data-tag="bgm-teal" class="bgm-teal selected"></span>
-                                                <span data-tag="bgm-red" class="bgm-red"></span>
-                                                <span data-tag="bgm-pink" class="bgm-pink"></span>
-                                                <span data-tag="bgm-blue" class="bgm-blue"></span>
-                                                <span data-tag="bgm-lime" class="bgm-lime"></span>
-                                                <span data-tag="bgm-green" class="bgm-green"></span>
-                                                <span data-tag="bgm-cyan" class="bgm-cyan"></span>
-                                                <span data-tag="bgm-orange" class="bgm-orange"></span>
-                                                <span data-tag="bgm-purple" class="bgm-purple"></span>
-                                                <span data-tag="bgm-gray" class="bgm-gray"></span>
-                                                <span data-tag="bgm-black" class="bgm-black"></span>
-                                            </div>
-                                        </div>-->
-                                        
-                                        <input type="hidden" id="getStart" name="getStart" />
-                                        <input type="hidden" id="getEnd" name="getEnd" />
-                                        <input type="hidden" id="agendar" name="agendar" value ="citas"/>
-                                    </form>
-                                </div>
-                                
-                                <div class="modal-footer">
-                                    <!--<button type="submit" class="btn btn-link" id="addEvent">Add Event</button>
-                                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="modalFechaPasada" tabindex="-1" role="dialog" aria-hidden="true">
+                
+                      
+            <div class="modal fade" id="modalFechaPasada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -213,23 +96,22 @@
     
                     events: [
 
-                        @foreach ($citas as $cita)
+                        @foreach ($eventos as $evento)
                         {
                             <?php
-                            $fecha_start=explode('-',$cita->fecha);
-                            $fecha_end=explode('-',$cita->fecha);
-                            $hora_start=explode(':',$cita->hora_inicio);
-                            $hora_end=explode(':',$cita->hora_final);
-                            $titulo = $cita->alumno_nombre . ' ' . $cita->alumno_apellido; 
+                            $fecha_start=explode('-',$evento->fecha);
+                            $fecha_end=explode('-',$evento->fecha);
+                            $hora_start=explode(':',$evento->hora_inicio);
+                            $hora_end=explode(':',$evento->hora_final);
                             ?>
-                            id: 'cita-{{$cita->id}}',
-                            title: "{{$titulo}}" ,
+                            id: 'evento-{{$evento->id}}',
+                            title: "{{$evento->nombre}}" ,
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
                             allDay: false,
-                            backgroundColor:'{{$cita->color_etiqueta}}',
-                            className: '{{$cita->tipo_nombre}}',
-                            url: '{{url('/')}}/agendar/citas/detalle/{{$cita->id}}'
+                            backgroundColor:'{{$evento->color_etiqueta}}',
+                            className: 'actividad',
+                            url: '{{url('/')}}/configuracion/eventos-laborales/detalle/{{$evento->id}}'
                             },
                         @endforeach
 
@@ -245,7 +127,7 @@
 
                         if(end>timestamp){
 
-                            var token = $('input:hidden[name=_token]').val();
+                            var token = "{{ csrf_token() }}";
 
                             $.ajax({
                                 url: "{{url('/')}}/guardar-fecha",
@@ -255,7 +137,7 @@
                                 data:"fecha_inicio="+end._d,
                                 success:function(respuesta){
 
-                                    window.location = "{{url('/')}}/agendar/citas/agregar"
+                                    window.location = "{{url('/')}}/configuracion/eventos-laborales/agregar"
 
                                 }
                             });
@@ -273,7 +155,7 @@
                         // //console.log(view);
                         // 
                         $('#fecha_inicio').val(calEvent.start);
-                        var token = $('input:hidden[name=_token]').val();
+                        var token = "{{ csrf_token() }}";
 
                         $.ajax({
                             url: "{{url('/')}}/guardar-fecha",
@@ -386,7 +268,7 @@
                         .replace(/\n/g, '<br />');
                 }
 
-                $('.fc-toolbar').css('background-image',"url('{{url('/')}}/assets/img/citas_header.jpg')");
+                $('.fc-toolbar').css('background-image',"url('{{url('/')}}/assets/img/eventos_laborales_header.jpg')");
 
 
             });                        

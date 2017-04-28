@@ -312,6 +312,21 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/coreografias/update/tiempo_duracion', 'CoreografiaController@updateTiempoDuracion');
 			Route::put('configuracion/coreografias/update/coreografo', 'CoreografiaController@updateCoreografo');
 
+			//EVENTOS LABORALES
+
+			Route::get('configuracion/eventos-laborales','EventoLaboralController@principal');
+			Route::get('configuracion/eventos-laborales/calendario','EventoLaboralController@calendario');
+			Route::get('configuracion/eventos-laborales/agregar','EventoLaboralController@create');
+			Route::post('configuracion/eventos-laborales/agregar','EventoLaboralController@store');
+			Route::delete('configuracion/eventos-laborales/eliminar/{id}', 'EventoLaboralController@destroy');
+			Route::get('configuracion/eventos-laborales/detalle/{id}','EventoLaboralController@edit');
+
+			Route::put('configuracion/eventos-laborales/update/staff', 'EventoLaboralController@updateStaff');
+			Route::put('configuracion/eventos-laborales/update/nombre', 'EventoLaboralController@updateNombre');
+			Route::put('configuracion/eventos-laborales/update/fecha', 'EventoLaboralController@updateFecha');
+			Route::put('configuracion/eventos-laborales/update/horario', 'EventoLaboralController@updateHorario');
+			Route::put('configuracion/eventos-laborales/update/etiqueta', 'EventoLaboralController@updateEtiqueta');
+
 
 			//PAGOS
 

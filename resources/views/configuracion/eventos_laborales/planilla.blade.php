@@ -17,14 +17,130 @@
 @section('content')
      
   
-
-            <div class="modal fade" id="modalFecha-Cita" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalStaff-Evento" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Cita<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_fecha_cita" id="edit_fecha_cita"  >
+                        <form name="edit_staff_evento" id="edit_staff_evento"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="apellido">Staff</label>
+
+                                      <div class="select">
+                                        <select class="form-control selectpicker bs-select-hidden" data-live-search="true" id="staff_id" name="staff_id">
+                                          @foreach ( $staffs as $staff )
+                                            
+                                            <option value = "{{ $staff->id }}">{{ $staff->nombre }} {{ $staff->apellido }}</option>
+                                           
+                                          @endforeach
+                                        </select>
+                                      </div> 
+                                    </div>
+                                    <div class="has-error" id="error-staff_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-staff_id_mensaje" ></small>                                           
+                                      </span>
+                                 </div>
+                               </div>
+
+                               <input type="hidden" name="id" id="id" value="{{$evento->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_staff_evento" data-update="staff" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalNombre-Evento" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_nombre_evento" id="edit_nombre_evento"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Actividad</label>
+                                        <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="50 Caracteres" value="{{$evento->nombre}}">
+                                    </div>
+                                    <div class="has-error" id="error-nombre">
+                                      <span >
+                                          <small id="error-nombre_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$evento->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_nombre_evento" data-update="nombre" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalFecha-Evento" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_fecha_evento" id="edit_fecha_evento"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -42,7 +158,7 @@
                                 </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$cita->id}}"></input>
+                               <input type="hidden" name="id" value="{{$evento->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -63,7 +179,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_fecha_cita" data-update="fecha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_fecha_evento" data-update="fecha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -71,13 +187,13 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalHorario-Cita" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalHorario-Evento" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Cita<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_horario_cita" id="edit_horario_cita"  >
+                        <form name="edit_horario_evento" id="edit_horario_evento"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -105,7 +221,7 @@
                                <div class="clearfix"></div> 
 
 
-                               <input type="hidden" name="id" value="{{$cita->id}}"></input>
+                               <input type="hidden" name="id" value="{{$evento->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -126,7 +242,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_horario_cita" data-update="horario" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_horario_evento" data-update="horario" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -134,202 +250,14 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalInstructor-Cita" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Cita<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_instructor_cita" id="edit_instructor_cita"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group fg-line">
-                                    <label for="apellido">Instructores</label>
-
-                                      <div class="select">
-                                        <select class="form-control" id="instructor_id" name="instructor_id">
-
-                                        @foreach ( $instructoresacademia as $instructor )
-                                        <option value = "{{$instructor['id'] }}">{{$instructor['nombre'] }} {{$instructor['apellido'] }}</option>
-                                        @endforeach 
-                                        
-                                        </select>
-                                      </div> 
-                                    </div>
-                                    <div class="has-error" id="error-instructor_id">
-                                      <span >
-                                          <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
-                                      </span>
-                                 </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$cita->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_instructor_cita" data-update="instructor" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalAlumno-Cita" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Cita<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_alumno_cita" id="edit_alumno_cita"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group fg-line">
-                                    <label for="apellido">Cliente</label>
-
-                                      <div class="select">
-                                        <select class="form-control" id="alumno_id" name="alumno_id">
-
-                                        @foreach ( $alumnosacademia as $alumno )
-                                        <option value = "{{$alumno['id'] }}">{{$alumno['nombre'] }} {{$alumno['apellido'] }}</option>
-                                        @endforeach 
-                                        
-                                        </select>
-                                      </div> 
-                                    </div>
-                                    <div class="has-error" id="error-alumno_id">
-                                      <span >
-                                          <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
-                                      </span>
-                                 </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$cita->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_alumno_cita" data-update="alumno" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalTipo-Cita" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Cita<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_tipo_cita" id="edit_tipo_cita"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group fg-line">
-                                    <label for="apellido">Tipo</label>
-
-                                      <div class="select">
-                                        <select class="form-control" id="tipo_id" name="tipo_id">
-
-                                        @foreach ( $config_citas as $tipo )
-                                          <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
-                                        @endforeach
-                                        
-                                        </select>
-                                      </div> 
-                                    </div>
-                                    <div class="has-error" id="error-tipo_id">
-                                      <span >
-                                          <small class="help-block error-span" id="error-tipo_id_mensaje" ></small>                                           
-                                      </span>
-                                 </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$cita->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_tipo_cita" data-update="tipo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalEtiqueta-Cita" tabindex="-1" role="dialog" aria-hidden="true">
+            
+            <div class="modal fade" id="modalEtiqueta-Evento" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Cita<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_etiqueta_cita" id="edit_etiqueta_cita"  >
+                        <form name="edit_etiqueta_evento" id="edit_etiqueta_evento"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -340,10 +268,10 @@
 
                                             <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
                                             <div class="fg-line dropdown">
-                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$cita->color_etiqueta}}" data-toggle="dropdown">
+                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="{{$evento->color_etiqueta}}" data-toggle="dropdown">
                                                     
                                                 <div class="dropdown-menu">
-                                                    <div class="color-picker" data-cp-default="{{$cita->color_etiqueta}}"></div>
+                                                    <div class="color-picker" data-cp-default="{{$evento->color_etiqueta}}"></div>
                                                 </div>
                                                 
                                                 <i class="cp-value"></i>
@@ -359,7 +287,7 @@
 
                                <div class="clearfix"></div> 
 
-                               <input type="hidden" name="id" value="{{$cita->id}}"></input>
+                               <input type="hidden" name="id" value="{{$evento->id}}"></input>
 
                                
                                
@@ -379,7 +307,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_cita" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_etiqueta_evento" data-update="etiqueta" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -391,7 +319,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/citas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Citas</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/eventos-laborales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Eventos</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -425,8 +353,8 @@
                                         <a href="#" class="disabled">
                                             <span class="ca-icon-planilla"><i class="zmdi zmdi-calendar-check"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Citas</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo citas</h3>
+                                                <h2 class="ca-main-planilla">Vista Eventos</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo eventos</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -440,7 +368,7 @@
 
                                   <hr></hr>
                                   
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$cita->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$evento->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                 
@@ -459,62 +387,55 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos de la Cita</p>
+                              <p class="text-center opaco-0-8 f-22">Datos del Evento</p>
                           </div>
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modalAlumno-Cita">
+                            <tr class="detalle" data-toggle="modal" href="#modalStaff-Evento">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($cita->alumno_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
-                               <span class="f-14"> Cliente </span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-staff_id" class="zmdi {{ empty($evento->staff_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_f-staff f-22"></i> </span>
+                               <span class="f-14"> Staff </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="cita-alumno_id" class="capitalize">{{$cita->alumno_nombre}} {{$cita->alumno_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="evento-staff_id" class="capitalize">{{$evento->staff_nombre}} {{$evento->staff_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFecha-Cita">
+                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Evento">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha" class="zmdi {{ empty($cita->fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($evento->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-fiesta f-22"></i> </span>
+                               <span class="f-14"> Actividad </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="evento-nombre" class="capitalize">{{$evento->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalFecha-Evento">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha" class="zmdi {{ empty($evento->fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
                                <span class="f-14"> Fecha </span>
                              </td>
-                             <td class="f-14 m-l-15"><span id="cita-fecha">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$cita->fecha)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                             <td class="f-14 m-l-15"><span id="evento-fecha">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$evento->fecha)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Cita">
+                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Evento">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi {{ empty($cita->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi {{ empty($evento->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
                                <span class="f-14"> Horario </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="cita-hora_inicio">{{$cita->hora_inicio}}</span> - <span id="cita-hora_final">{{$cita->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="evento-hora_inicio">{{$evento->hora_inicio}}</span> - <span id="evento-hora_final">{{$evento->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Cita">
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Evento">
                                <td>
-                                 <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($cita->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                 <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($evento->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
                                  <span class="f-14"> Color de Etiqueta  </span>
                                </td>
                                <td  class="f-14 m-l-15">
-                                <span id="cita-color_etiqueta">{{$cita->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$cita->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
+                                <span id="evento-color_etiqueta">{{$evento->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$evento->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
                               </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalTipo-Cita">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo_id" class="zmdi  {{ empty($cita->tipo_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
-                               <span class="f-14"> Tipo </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="cita-tipo_nombre"><span>{{$cita->tipo_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalInstructor-Cita">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi  {{ empty($cita->instructor_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
-                               <span class="f-14"> Instructor  </span>
-                             </td>
-                             <td  class="f-14 m-l-15" id="cita-instructor_id" ><span id="cita-instructor_id">{{$cita->instructor_nombre}} {{$cita->instructor_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
+               
                             
 
                            </table>
@@ -540,9 +461,9 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/agendar/citas/update";
-    route_eliminar="{{url('/')}}/agendar/citas/eliminar/";
-    route_principal="{{url('/')}}/agendar/citas";
+    route_update="{{url('/')}}/configuracion/eventos-laborales/update";
+    route_eliminar="{{url('/')}}/configuracion/eventos-laborales/eliminar/";
+    route_principal="{{url('/')}}/configuracion/eventos-laborales";
 
     $(document).ready(function(){
 
@@ -564,20 +485,20 @@
 
       });
 
-    $('#modalFecha-Cita').on('show.bs.modal', function (event) {
+    $('#modalFecha-Evento').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#fecha").val($("#cita-fecha").text()); 
+      $("#fecha").val($("#evento-fecha").text()); 
     })
-    $('#modalHorario-Cita').on('show.bs.modal', function (event) {
+    $('#modalHorario-Evento').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#hora_inicio").val($("#cita-hora_inicio").text()); 
-      $("#hora_final").val($("#cita-hora_final").text()); 
+      $("#hora_inicio").val($("#evento-hora_inicio").text()); 
+      $("#hora_final").val($("#evento-hora_final").text()); 
     })
 
 
 
     function limpiarMensaje(){
-        var campo = ["alumno_id", "fecha", "hora_inicio", "hora_final", "instructor_id",  "tipo_id"];
+        var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -598,17 +519,17 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-         if(c.name=='alumno_id' || c.name=='tipo_id' || c.name=='instructor_id'){
+         if(c.name=='staff_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
             
-            $("#cita-"+c.name).text(texto);
+            $("#evento-"+c.name).text(texto);
           }else if(c.name=='color_etiqueta'){
-            $("#cita-"+c.name).text(c.value);
+            $("#evento-"+c.name).text(c.value);
             $("#color_etiqueta_container").css('background-color',c.value);
           }else{
-            $("#cita-"+c.name).text(c.value.toLowerCase());
+            $("#evento-"+c.name).text(c.value.toLowerCase());
           }
 
           if(c.value == ''){
@@ -673,14 +594,7 @@
         var nAnimIn = "animated flipInY";
         var nAnimOut = "animated flipOutY"; 
         limpiarMensaje();
-        $(".guardar").attr("disabled","disabled");
-         procesando();
-        $("#guardar").css({
-            "opacity": ("0.2")
-        });
-        $(".cancelar").attr("disabled","disabled");
-        $(".procesando").removeClass('hidden');
-        $(".procesando").addClass('show');
+        procesando();
         form=$(this).data('formulario');
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
@@ -710,15 +624,10 @@
                 }
 
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                 $(".procesando").removeClass('show');
-                 $(".procesando").addClass('hidden');
-                 $(".guardar").removeAttr("disabled");
-                 finprocesado();
-                $("#guardar").css({
-                  "opacity": ("1")
-                });
-                 $(".cancelar").removeAttr("disabled");
-                 $('.modal').modal('hide');
+
+                finprocesado();
+          
+                $('.modal').modal('hide');
               }, 1000);  
             },
             error:function (msj, ajaxOptions, thrownError){
@@ -736,15 +645,8 @@
                   var nTitle=" Ups! "; 
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 }
-                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  $(".procesando").removeClass('show');
-                  $(".procesando").addClass('hidden');
-                  $(".guardar").removeAttr("disabled");
-                  finprocesado();
-                  $("#guardar").css({
-                    "opacity": ("1")
-                  });
-                  $(".cancelar").removeAttr("disabled");
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                finprocesado();
               }, 1000);             
             }
         })
@@ -752,9 +654,8 @@
     })
 
     $("i[name=eliminar]").click(function(){
-                id = this.id;
                 swal({   
-                    title: "Desea eliminar la cita",   
+                    title: "Desea eliminar el evento",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -770,22 +671,21 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
+
+            eliminar(id);
           }
                 });
             });
-      function eliminar(id){
-         var route = route_eliminar + id;
+      function eliminar(){
+         var route = route_eliminar + "{{$id}}";
          var token = $('input:hidden[name=_token]').val();
+         procesando();
                 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'DELETE',
                     dataType: 'json',
-                    data:id,
                     success:function(respuesta){
 
                         window.location=route_principal; 
@@ -804,24 +704,6 @@
                                 }
                 });
       }
-
-      function countChar(val) {
-        var len = val.value.length;
-        if (len >= 2000) {
-          val.value = val.value.substring(0, 2000);
-        } else {
-          $('#charNum').text(2000 - len);
-        }
-      };
-
-      function countChar2(val) {
-        var len = val.value.length;
-        if (len >= 10000) {
-          val.value = val.value.substring(0, 10000);
-        } else {
-          $('#charNum2').text(10000 - len);
-        }
-      };
     
    </script> 
 
