@@ -1396,7 +1396,7 @@ class ClaseGrupalController extends BaseController {
                                     
                 $in = array(3,4);
                 $config_clase_grupal = ConfigClasesGrupales::withTrashed()->find($clasegrupal->clase_grupal_id);
-                $servicio = ConfigServicios::where('tipo',$in)->where('tipo_id', $config_clase_grupal->id)->first();
+                $servicio = ConfigServicios::withTrashed()->where('tipo',$in)->where('tipo_id', $config_clase_grupal->id)->first();
 
                 if($servicio){
                     $servicio_id = $servicio->id;
