@@ -1335,8 +1335,6 @@ class ClaseGrupalController extends BaseController {
         $alumno = Alumno::find($request->alumno_id);
         $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
 
-        dd($clasegrupal);
-
         if($request->permitir == 0)
         {
             
