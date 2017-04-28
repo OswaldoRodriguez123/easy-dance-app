@@ -60,7 +60,6 @@ class ClaseGrupalController extends BaseController {
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-            ->where('config_clases_grupales.deleted_at', '=', null)
             ->OrderBy('clases_grupales.hora_inicio')
         ->get();
 
@@ -72,7 +71,6 @@ class ClaseGrupalController extends BaseController {
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
-            ->where('config_clases_grupales.deleted_at', '=', null)
             ->OrderBy('horario_clase_grupales.hora_inicio')
         ->get();
 
@@ -1397,7 +1395,7 @@ class ClaseGrupalController extends BaseController {
             if($inscripcion->save()){
                                     
                 $in = array(3,4);
-                $config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
+                $config_clase_grupal = ConfigClasesGrupales::withTrashed()->find($clasegrupal->clase_grupal_id);
                 $servicio = ConfigServicios::where('tipo',$in)->where('tipo_id', $config_clase_grupal->id)->first();
 
                 if($servicio){
