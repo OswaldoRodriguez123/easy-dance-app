@@ -1313,9 +1313,7 @@ class ClaseGrupalController extends BaseController {
 
     else{
 
-        $clase_grupal_id = Session::get('clase_grupal_id');
-
-        $alumnosclasegrupal = InscripcionClaseGrupal::withTrashed()->where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $clase_grupal_id)->first();
+        $alumnosclasegrupal = InscripcionClaseGrupal::withTrashed()->where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
 
         if($alumnosclasegrupal){
             $alumnosclasegrupal->deleted_at = null;
@@ -1338,7 +1336,7 @@ class ClaseGrupalController extends BaseController {
 
         $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
             ->select('config_clases_grupales.nombre', 'clases_grupales.*')
-            ->where('clases_grupales.id', '=', $clase_grupal_id)
+            ->where('clases_grupales.id', '=', $request->clase_grupal_id)
         ->first();
 
         if($request->permitir == 0)
@@ -1351,7 +1349,7 @@ class ClaseGrupalController extends BaseController {
                     $hombres = DB::table('inscripcion_clase_grupal')
                         ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                         ->select('inscripcion_clase_grupal.*')
-                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
+                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
                         ->where('alumnos.sexo', '=', 'M')
                     ->count();
 
@@ -1370,7 +1368,7 @@ class ClaseGrupalController extends BaseController {
                     $mujeres = DB::table('inscripcion_clase_grupal')
                         ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                         ->select('inscripcion_clase_grupal.*')
-                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
+                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
                         ->where('alumnos.sexo', '=', 'F')
                     ->count();
 
@@ -1395,7 +1393,7 @@ class ClaseGrupalController extends BaseController {
             $inscripcion = new InscripcionClaseGrupal;
 
             $inscripcion->instructor_id = $request->instructor_id;
-            $inscripcion->clase_grupal_id = $clase_grupal_id;
+            $inscripcion->clase_grupal_id = $request->clase_grupal_id;
             $inscripcion->alumno_id = $request->alumno_id;
             $inscripcion->fecha_pago = $proxima_fecha;
             $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
