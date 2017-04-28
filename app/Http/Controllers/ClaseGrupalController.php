@@ -1334,150 +1334,156 @@ class ClaseGrupalController extends BaseController {
         }
 
 
-            if($request->permitir == 0)
+        if($request->permitir == 0)
+        {
+            
+            if($alumno->sexo == 'M')
             {
+                if(!is_null($clasegrupal->cantidad_hombres)){
+
+                    $hombres = DB::table('inscripcion_clase_grupal')
+                        ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                        ->select('inscripcion_clase_grupal.*')
+                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
+                        ->where('alumnos.sexo', '=', 'M')
+                    ->count();
+
+
+                    if($clasegrupal->cantidad_hombres <= $hombres){
+                        return response()->json(['mensaje'=>'Ups! La cantidad de hombres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
+                    }
+                }
+
+            }
+
+            else{
+
+                if(!is_null($clasegrupal->cantidad_mujeres)){
+
+                    $mujeres = DB::table('inscripcion_clase_grupal')
+                        ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                        ->select('inscripcion_clase_grupal.*')
+                        ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
+                        ->where('alumnos.sexo', '=', 'F')
+                    ->count();
+
+                    if($clasegrupal->cantidad_mujeres <= $mujeres){
+                        return response()->json(['mensaje'=>'Ups! La cantidad de mujeres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
+                    }
+                }
+
+            }
+        }
+
+        // $alumnos = explode('-',$request->alumno_id);
+
+        $fecha_pago = trim($request->fecha_pago);
+        $proxima_fecha = Carbon::createFromFormat('d/m/Y', $fecha_pago);
+        $proxima_fecha = $proxima_fecha->toDateString();
+
+        $array=array();
+
+        // for($i = 1 ; $i<count($alumnos) ; $i++)
+        // {
+            $inscripcion = new InscripcionClaseGrupal;
+
+            $inscripcion->instructor_id = $request->instructor_id;
+            $inscripcion->clase_grupal_id = $clase_grupal_id;
+            $inscripcion->alumno_id = $request->alumno_id;
+            $inscripcion->fecha_pago = $proxima_fecha;
+            $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
+            $inscripcion->costo_inscripcion = $request->costo_inscripcion;
+            $inscripcion->costo_mensualidad = $request->costo_mensualidad;
+            $inscripcion->boolean_franela = $request->boolean_franela;
+            $inscripcion->boolean_programacion = $request->boolean_programacion;
+            $inscripcion->razon_entrega = $request->razon_entrega;
+            $inscripcion->talla_franela = $request->talla_franela;
+            $inscripcion->tipo_pago = $request->tipo_pago;
+
+            if($inscripcion->save()){
+
                 $alumno = Alumno::find($request->alumno_id);
-                $clasegrupal = ClaseGrupal::find($clase_grupal_id);
+        
+                $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->select('config_clases_grupales.nombre', 'clases_grupales.*')
+                    ->where('clases_grupales.id', '=', $clase_grupal_id)
+                ->first();
+                                    
+                $in = array(3,4);
+                $servicio = ConfigServicios::where('tipo',$in)->where('tipo_id', $clasegrupal->clase_grupal_id)->first();
 
-                if($alumno->sexo == 'M')
+                if($servicio){
+                    $servicio_id = $servicio->id;
+                }else{
+                    $servicio_id = $clasegrupal->clase_grupal_id;
+                }
+
+                $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
+
+                if($visitante){
+                    $visitante->cliente = 1;
+                    $visitante->save();
+                }
+
+                if($request->costo_inscripcion != 0)
                 {
-                    if(!is_null($clasegrupal->cantidad_hombres)){
 
-                        $hombres = DB::table('inscripcion_clase_grupal')
-                            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                            ->select('inscripcion_clase_grupal.*')
-                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
-                            ->where('alumnos.sexo', '=', 'M')
-                        ->count();
+                    $item_factura = new ItemsFacturaProforma;
+                        
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $servicio_id;
+                    $item_factura->nombre = 'Inscripción ' . $clasegrupal->nombre;
+                    $item_factura->tipo = 3;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $request->costo_inscripcion;
+                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                        
+                    $item_factura->save();
 
+                }
 
-                        if($clasegrupal->cantidad_hombres <= $hombres){
-                            return response()->json(['mensaje'=>'Ups! La cantidad de hombres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
-                        }
-                    }
+                if($request->costo_mensualidad != 0)
+                {
+
+                    $item_factura = new ItemsFacturaProforma;
+                        
+                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $servicio_id;
+                    $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                    $item_factura->tipo = 4;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $request->costo_mensualidad;
+                    $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                        
+                    $item_factura->save();
 
                 }
 
-                else{
+                $deuda = DB::table('alumnos')
+                    ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+                    ->where('alumnos.id','=', $request->alumno_id)
+                ->sum('items_factura_proforma.importe_neto');
 
-                    if(!is_null($clasegrupal->cantidad_mujeres)){
+                // $array[$i] = $alumno;
 
-                        $mujeres = DB::table('inscripcion_clase_grupal')
-                            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                            ->select('inscripcion_clase_grupal.*')
-                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
-                            ->where('alumnos.sexo', '=', 'F')
-                        ->count();
+            // }
+            
 
-                        if($clasegrupal->cantidad_mujeres <= $mujeres){
-                            return response()->json(['mensaje'=>'Ups! La cantidad de mujeres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
-                        }
-                    }
+            Session::forget('id_alumno');
 
-                }
-            }
+            // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
 
-            // $alumnos = explode('-',$request->alumno_id);
-
-            $fecha_pago = trim($request->fecha_pago);
-            $proxima_fecha = Carbon::createFromFormat('d/m/Y', $fecha_pago);
-            $proxima_fecha = $proxima_fecha->toDateString();
-
-            $array=array();
-
-            // for($i = 1 ; $i<count($alumnos) ; $i++)
-            // {
-                $inscripcion = new InscripcionClaseGrupal;
-
-                $inscripcion->instructor_id = $request->instructor_id;
-                $inscripcion->clase_grupal_id = $clase_grupal_id;
-                $inscripcion->alumno_id = $request->alumno_id;
-                $inscripcion->fecha_pago = $proxima_fecha;
-                $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
-                $inscripcion->costo_inscripcion = $request->costo_inscripcion;
-                $inscripcion->costo_mensualidad = $request->costo_mensualidad;
-                $inscripcion->boolean_franela = $request->boolean_franela;
-                $inscripcion->boolean_programacion = $request->boolean_programacion;
-                $inscripcion->razon_entrega = $request->razon_entrega;
-                $inscripcion->talla_franela = $request->talla_franela;
-                $inscripcion->tipo_pago = $request->tipo_pago;
-
-                if($inscripcion->save()){
-
-                    $alumno = Alumno::find($request->alumno_id);
-
-                    $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
-
-                    if($visitante){
-                        $visitante->cliente = 1;
-                        $visitante->save();
-                    }
-
-                    $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                        ->Leftjoin('config_servicios', 'config_clases_grupales.id', '=', 'config_servicios.tipo_id')
-                        ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'config_clases_grupales.id', 'config_servicios.id as servicio_id')
-                        ->where('clases_grupales.id', '=', $clase_grupal_id)
-                    ->first();
-
-                    if($request->costo_inscripcion != 0)
-                    {
-
-                        $item_factura = new ItemsFacturaProforma;
-                            
-                        $item_factura->alumno_id = $request->alumno_id;
-                        $item_factura->academia_id = Auth::user()->academia_id;
-                        $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $clasegrupal->servicio_id;
-                        $item_factura->nombre = 'Inscripción ' . $clasegrupal->nombre;
-                        $item_factura->tipo = 3;
-                        $item_factura->cantidad = 1;
-                        $item_factura->precio_neto = 0;
-                        $item_factura->impuesto = 0;
-                        $item_factura->importe_neto = $request->costo_inscripcion;
-                        $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                            
-                        $item_factura->save();
-
-                    }
-
-                    if($request->costo_mensualidad != 0)
-                    {
-
-                        $item_factura = new ItemsFacturaProforma;
-                            
-                        $item_factura->alumno_id = $request->alumno_id;
-                        $item_factura->academia_id = Auth::user()->academia_id;
-                        $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $clasegrupal->servicio_id;
-                        $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
-                        $item_factura->tipo = 4;
-                        $item_factura->cantidad = 1;
-                        $item_factura->precio_neto = 0;
-                        $item_factura->impuesto = 0;
-                        $item_factura->importe_neto = $request->costo_mensualidad;
-                        $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
-                            
-                        $item_factura->save();
-
-                    }
-
-                    $deuda = DB::table('alumnos')
-                        ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                        ->where('alumnos.id','=', $request->alumno_id)
-                    ->sum('items_factura_proforma.importe_neto');
-
-                    // $array[$i] = $alumno;
-
-                // }
-                
-
-                Session::forget('id_alumno');
-
-                // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 'array' => $alumno, 200]);
-            }
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 'array' => $alumno, 200]);
+        }
 
             // if(count($alumnos) > 2)
             // {
