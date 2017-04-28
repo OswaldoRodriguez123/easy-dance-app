@@ -17,21 +17,14 @@
 @stop
 @section('content')
 
-<!--<a href="{{url('/')}}/especiales/examenes/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>-->
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-
-                        @if(isset($id_evaluacion))
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-                        @else
-
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-
-                        @endif
-                        
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
                             <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
@@ -41,40 +34,53 @@
                             <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                            
                         </ul>
-                
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-right">
-                            <!--<span class="f-16 p-t-0 text-success">Agregar un Examen <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>-->
+  
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-examen f-25"></i> Sección de Evaluaciones</p>
-                            <hr class="linea-morada">                                                        
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Sección de Agenda</p>
+                            <hr class="linea-morada">
+
+                            <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <div class="p-t-10">
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="activas" value="activas" type="radio">
+                                            <i class="input-helper"></i>  
+                                            Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                        </label>
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="finalizadas" value="finalizadas" type="radio" checked >
+                                            <i class="input-helper"></i>  
+                                            Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                        </label>
+                                    </div>
+                                    
+                                </div>
+                            </div> 
+
+                            <div class="clearfix"></div>                                                                           
                         </div>
+
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="organizador"></th>
-                                    <th class="text-center" data-column-id="nombre">Staff</th>
-                                    <th class="text-center" data-column-id="instructor">Supervisor</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
-                                    <th class="text-center" data-column-id="nota">Nota</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($evaluaciones as $evaluacion)
-                                <?php $id = $evaluacion['id']; ?>
-                                <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa"><span style="display: none">{{$id}}</span></td>
-                                    <td class="text-center previa">{{$evaluacion['nombre']}} {{$evaluacion['apellido']}}</td>
-                                    <td class="text-center previa">{{$evaluacion['supervisor']}}</td>
-                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
-                                    <td class="text-center previa">{{$evaluacion['total']}}</td>
+                            @foreach ($activas as $horario)
+                                <tr id="{{$horario['id']}}" class="disabled" data-fecha="{{$horario['fecha']}}">
+                                    <td class="text-center previa">{{$horario['fecha']}}</td>
                                 </tr>
+
                             @endforeach  
                                                            
                             </tbody>
@@ -101,18 +107,22 @@
 
 <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/configuracion/supervisiones/evaluaciones/detalle/";
 
-        $(document).ready(function(){
+    var finalizadas = <?php echo json_encode($finalizadas);?>;
+    var activas = <?php echo json_encode($activas);?>;
+
+    $(document).ready(function(){
+
+        $("#activas").prop("checked", true);
 
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
         pageLength: 25,   
-        order: [[0, 'desc']],
+        order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -138,15 +148,62 @@
                         }
                     }
         });
-    
+    });
 
-        });
 
-    function previa(t){
+    $("#activas").click(function(){
+        $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#activas2" ).addClass( "c-verde" );
+    });
 
-            var id = $(t).closest('tr').attr('id');
-            window.location=route_detalle+id;
+    $("#finalizadas").click(function(){
+        $( "#finalizadas2" ).addClass( "c-verde" );
+        $( "#activas2" ).removeClass( "c-verde" );
+    });
+
+
+     function rechargeActivas(){
+
+
+            $.each(activas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.fecha+''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .addClass('disabled')
+                    .attr('data-fecha', array.fecha_inicio);
+            });
         }
+
+        function rechargeFinalizadas(){
+
+            $.each(finalizadas, function (index, array) {
+
+                var rowNode=t.row.add( [
+                ''+array.fecha+''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .addClass('disabled')
+                    .addClass('seleccion_deleted');
+            });
+        }
+
+        function clear(){
+
+            t.clear().draw();
+        }
+
+        $('input[name="tipo"]').on('change', function(){
+            clear();
+            if ($(this).val()=='activas') {
+                tipo = 'activas';
+                rechargeActivas();
+            } else if($(this).val()=='finalizadas')  {
+                tipo= 'finalizadas';
+                rechargeFinalizadas();
+            }
+         });
 
 
     </script>

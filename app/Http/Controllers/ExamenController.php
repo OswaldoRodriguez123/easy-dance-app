@@ -29,13 +29,6 @@ class ExamenController extends BaseController {
 	 * @return Response
 	 */
 
-    
-	public function index()
-	{
-
-		return view('academia.editar')->with('academia', Academia::all());                      
-	}
-
     public function principal()
     {
         $examen_join = DB::table('examenes')
@@ -350,7 +343,6 @@ class ExamenController extends BaseController {
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -385,7 +377,6 @@ class ExamenController extends BaseController {
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
@@ -407,7 +398,6 @@ class ExamenController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
 
@@ -436,14 +426,12 @@ class ExamenController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateInstructor(Request $request){
         $examen = Examen::find($request->id);
         $examen->instructor_id = $request->instructor_id;
 
-        // return redirect("alumno/edit/{$request->id}");
         if($examen->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -471,7 +459,6 @@ class ExamenController extends BaseController {
             $examen = Examen::find($request->id);
             $examen->genero = $request->genero;
 
-            // return redirect("alumno/edit/{$request->id}");
             if($examen->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
@@ -531,7 +518,6 @@ class ExamenController extends BaseController {
         $examen->boolean_grupal = $request->boolean_grupal;
         $examen->clase_grupal_id = $request->clase_grupal_id;
 
-        // return redirect("alumno/edit/{$request->id}");
         if($examen->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{

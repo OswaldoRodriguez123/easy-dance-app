@@ -946,10 +946,19 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::get('configuracion/supervisiones', 'SupervisionController@principal');
 			Route::get('configuracion/supervisiones/agregar', 'SupervisionController@create');
 			Route::post('configuracion/supervisiones/agregar', 'SupervisionController@store');
+			Route::delete('configuracion/supervisiones/eliminar/{id}', 'SupervisionController@destroy');
+			Route::get('configuracion/supervisiones/detalle/{id}', 'SupervisionController@edit');
 			Route::get('configuracion/supervisiones/evaluar/{id}', 'SupervisionController@evaluar');
+			Route::get('configuracion/supervisiones/agenda/{id}', 'SupervisionController@agenda');
 			Route::post('configuracion/supervisiones/evaluar', 'SupervisionController@storeEvaluacion');
 			Route::get('configuracion/supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
+			Route::get('configuracion/supervisiones/evaluaciones/{id}', 'SupervisionController@evaluaciones_por_supervision');
 			Route::get('configuracion/supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');
+			Route::put('configuracion/supervisiones/update/supervisor','SupervisionController@updateSupervisor');
+			Route::put('configuracion/supervisiones/update/cargo','SupervisionController@updateCargo');
+			Route::put('configuracion/supervisiones/update/staff','SupervisionController@updateStaff');
+			Route::put('configuracion/supervisiones/update/fecha','SupervisionController@updateFecha');
+			Route::put('configuracion/supervisiones/update/items','SupervisionController@updateItems');
 
 			
 

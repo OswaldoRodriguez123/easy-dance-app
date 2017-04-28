@@ -28,8 +28,6 @@
 
                 <div class="container invoice">
 
-
-
                     <div class="block-header hidden-print">
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/evaluaciones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de evaluaciones</a>
 
