@@ -435,6 +435,8 @@ class ClaseGrupalController extends BaseController {
     public function participantes($id)
     {
 
+        Session::put('clase_grupal_id', $id);
+
         $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
@@ -1310,7 +1312,9 @@ class ClaseGrupalController extends BaseController {
 
     else{
 
-        $alumnosclasegrupal = InscripcionClaseGrupal::withTrashed()->where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+        $clase_grupal_id = Session::get('clase_grupal_id');
+
+        $alumnosclasegrupal = InscripcionClaseGrupal::withTrashed()->where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $clase_grupal_id)->first();
 
         if($alumnosclasegrupal){
             $alumnosclasegrupal->deleted_at = null;
@@ -1333,8 +1337,7 @@ class ClaseGrupalController extends BaseController {
             if($request->permitir == 0)
             {
                 $alumno = Alumno::find($request->alumno_id);
-                $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
-
+                $clasegrupal = ClaseGrupal::find($clase_grupal_id);
 
                 if($alumno->sexo == 'M')
                 {
@@ -1343,7 +1346,7 @@ class ClaseGrupalController extends BaseController {
                         $hombres = DB::table('inscripcion_clase_grupal')
                             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                             ->select('inscripcion_clase_grupal.*')
-                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
+                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
                             ->where('alumnos.sexo', '=', 'M')
                         ->count();
 
@@ -1362,7 +1365,7 @@ class ClaseGrupalController extends BaseController {
                         $mujeres = DB::table('inscripcion_clase_grupal')
                             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                             ->select('inscripcion_clase_grupal.*')
-                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
+                            ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
                             ->where('alumnos.sexo', '=', 'F')
                         ->count();
 
@@ -1387,7 +1390,7 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion = new InscripcionClaseGrupal;
 
                 $inscripcion->instructor_id = $request->instructor_id;
-                $inscripcion->clase_grupal_id = $request->clase_grupal_id;
+                $inscripcion->clase_grupal_id = $clase_grupal_id;
                 $inscripcion->alumno_id = $request->alumno_id;
                 $inscripcion->fecha_pago = $proxima_fecha;
                 $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
@@ -1413,7 +1416,7 @@ class ClaseGrupalController extends BaseController {
                     $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
                         ->Leftjoin('config_servicios', 'config_clases_grupales.id', '=', 'config_servicios.tipo_id')
                         ->select('config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'config_clases_grupales.id', 'config_servicios.id as servicio_id')
-                        ->where('clases_grupales.id', '=', $request->clase_grupal_id)
+                        ->where('clases_grupales.id', '=', $clase_grupal_id)
                     ->first();
 
                     if($request->costo_inscripcion != 0)
