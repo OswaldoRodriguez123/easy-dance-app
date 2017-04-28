@@ -455,26 +455,21 @@
                                   
 
 
-<!--                                   
-                              <div class="col-sm-12 text-center"> 
+                                  <div class="col-sm-12 text-center"> 
 
-                              <br></br>
+                                  <br></br>
 
-                              <span class="f-16 f-700">Acciones</span>
+                                  <span class="f-16 f-700">Acciones</span>
 
-                              <hr></hr>
+                                  <hr></hr>
+                                  
+                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
+                                  <br></br>
+                                    
+                                   
+                                </div>
 
-
-
-                              <br></br>
-                                
-                              <hr></hr>
-
-                              <br></br>
-
-                               
-                            </div> -->
                                 </div> 
                               </div>
                               <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
@@ -563,7 +558,10 @@
 
 @section('js') 
    <script type="text/javascript">
+
     route_update="{{url('/')}}/agendar/clases-grupales/multihorario/update";
+    route_eliminar="{{url('/')}}/agendar/clases-grupales/multihorario/eliminar/";
+    route_principal="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}";
 
     $(document).ready(function(){
 
@@ -917,9 +915,8 @@
     })
 
     $("i[name=eliminar]").click(function(){
-                id = this.id;
                 swal({   
-                    title: "Desea eliminar la clase grupal",   
+                    title: "Desea eliminar el multihorario",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -935,22 +932,21 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
+
+            eliminar();
           }
                 });
             });
-      function eliminar(id){
-         var route = route_eliminar + id;
+      function eliminar(){
+         var route = route_eliminar + "{{$id}}";
          var token = $('input:hidden[name=_token]').val();
+         procesando()
                 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'DELETE',
                     dataType: 'json',
-                    data:id,
                     success:function(respuesta){
 
                         window.location=route_principal; 

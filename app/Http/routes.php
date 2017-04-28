@@ -605,6 +605,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('agendar/clases-grupales/multihorario/cancelarhorarios', 'MultihorarioClaseGrupalController@CancelarHorarios');
 			Route::post('agendar/clases-grupales/multihorario/guardarhorarios', 'MultihorarioClaseGrupalController@GuardarHorarios');
 			Route::get('agendar/clases-grupales/multihorario/detalle/{id}', 'MultihorarioClaseGrupalController@edit');
+			Route::delete('agendar/clases-grupales/multihorario/eliminar/{id}', 'MultihorarioClaseGrupalController@destroy');
 			Route::put('agendar/clases-grupales/multihorario/update/especialidad', 'MultihorarioClaseGrupalController@updateEspecialidad');
 			Route::put('agendar/clases-grupales/multihorario/update/instructor', 'MultihorarioClaseGrupalController@updateInstructor');
 			Route::put('agendar/clases-grupales/multihorario/update/dia', 'MultihorarioClaseGrupalController@updateDia');
