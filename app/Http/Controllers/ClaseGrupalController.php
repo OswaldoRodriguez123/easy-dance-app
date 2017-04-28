@@ -1333,11 +1333,9 @@ class ClaseGrupalController extends BaseController {
         }
 
         $alumno = Alumno::find($request->alumno_id);
+        $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
 
-        $clasegrupal = ConfigClasesGrupales::join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-            ->select('config_clases_grupales.nombre', 'clases_grupales.*')
-            ->where('clases_grupales.id', '=', $request->clase_grupal_id)
-        ->first();
+        dd($clasegrupal);
 
         if($request->permitir == 0)
         {
@@ -1346,13 +1344,10 @@ class ClaseGrupalController extends BaseController {
             {
                 if(!is_null($clasegrupal->cantidad_hombres)){
 
-                    $hombres = DB::table('inscripcion_clase_grupal')
-                        ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                        ->select('inscripcion_clase_grupal.*')
+                    $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                         ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
                         ->where('alumnos.sexo', '=', 'M')
                     ->count();
-
 
                     if($clasegrupal->cantidad_hombres <= $hombres){
                         return response()->json(['mensaje'=>'Ups! La cantidad de hombres permitida en esta clase grupal ha llegado a su limite, deseas inscribir al alumno de todas maneras?', 'status' => 'CANTIDAD-FULL'],422);
@@ -1365,9 +1360,7 @@ class ClaseGrupalController extends BaseController {
 
                 if(!is_null($clasegrupal->cantidad_mujeres)){
 
-                    $mujeres = DB::table('inscripcion_clase_grupal')
-                        ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                        ->select('inscripcion_clase_grupal.*')
+                    $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                         ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->clase_grupal_id)
                         ->where('alumnos.sexo', '=', 'F')
                     ->count();
@@ -1408,7 +1401,8 @@ class ClaseGrupalController extends BaseController {
             if($inscripcion->save()){
                                     
                 $in = array(3,4);
-                $servicio = ConfigServicios::where('tipo',$in)->where('tipo_id', $clasegrupal->clase_grupal_id)->first();
+                $config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
+                $servicio = ConfigServicios::where('tipo',$in)->where('tipo_id', $config_clase_grupal->id)->first();
 
                 if($servicio){
                     $servicio_id = $servicio->id;
@@ -1432,7 +1426,7 @@ class ClaseGrupalController extends BaseController {
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $servicio_id;
-                    $item_factura->nombre = 'Inscripción ' . $clasegrupal->nombre;
+                    $item_factura->nombre = 'Inscripción ' . $config_clase_grupal->nombre;
                     $item_factura->tipo = 3;
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;
@@ -1453,7 +1447,7 @@ class ClaseGrupalController extends BaseController {
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $servicio_id;
-                    $item_factura->nombre = 'Cuota ' . $clasegrupal->nombre;
+                    $item_factura->nombre = 'Cuota ' . $config_clase_grupal->nombre;
                     $item_factura->tipo = 4;
                     $item_factura->cantidad = 1;
                     $item_factura->precio_neto = 0;
