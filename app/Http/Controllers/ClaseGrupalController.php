@@ -54,33 +54,31 @@ class ClaseGrupalController extends BaseController {
 
     public function principal(Request $request){
 
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+        $clase_grupal_join = ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('config_clases_grupales.deleted_at', '=', null)
             ->OrderBy('clases_grupales.hora_inicio')
         ->get();
 
-        $horarios_clase_grupales = DB::table('horario_clase_grupales')
-            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+        $horarios_clase_grupales = HorarioClaseGrupal::join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
             ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->where('config_clases_grupales.deleted_at', '=', null)
             ->OrderBy('horario_clase_grupales.hora_inicio')
         ->get();
 
         $array = array();
 
         $academia = Academia::find(Auth::user()->academia_id);
-
         
         if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 3 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
 
