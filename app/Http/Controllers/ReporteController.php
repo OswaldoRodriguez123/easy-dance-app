@@ -12,6 +12,8 @@ use App\ClaseGrupal;
 use App\Examen;
 use App\Instructor;
 use App\Staff;
+use App\HorarioStaff;
+use App\AsistenciaStaff;
 use App\InscripcionTaller;
 use App\InscripcionClaseGrupal;
 use App\InscripcionCoreografia;
@@ -3079,6 +3081,177 @@ public function PresencialesFiltros(Request $request)
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'talleres' => $talleres, 'eventos' => $eventos, 'generales' => $generales, 'campanas' => $campanas, 'egresos_talleres' => $egresos_talleres, 'egresos_eventos' => $egresos_eventos, 'egresos_generales' => $egresos_generales, 'egresos_campanas' => $egresos_campanas, 'inscritos_hombres' => $inscritos_hombres, 'inscritos_mujeres' => $inscritos_mujeres, 'visitantes_hombres' => $visitantes_hombres, 'visitantes_mujeres' => $visitantes_mujeres, 'referidos_hombres' => $referidos_hombres, 'referidos_mujeres' => $referidos_mujeres, 'array_visitante' => $array_conociste, 'array_inscrito' => $array_inscrito, 'array_referido' => $array_referido, 200]);
+    }
+
+    public function AsistenciasPersonal()
+    {
+        $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
+
+        return view('reportes.asistencias_personal')->with(['staffs' => $staffs]);
+    }
+
+    public function AsistenciasPersonalFiltros(Request $request)
+    {
+        
+        $query = Asistencia::join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre')
+            ->where('alumnos.deleted_at',null)
+            ->where('clases_grupales.deleted_at',null);
+
+        $query = Staff::where('academia_id','=',Auth::user()->academia_id);
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha2);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+        }else{
+
+            if($request->fecha){
+
+                $actual = Carbon::now();
+                $geoip = new GeoIP();
+                $geoip->setIp($request->ip());
+                $actual->tz = $geoip->getTimezone();
+
+                if($request->fecha == 1){
+                    $start = $actual->toDateString();
+                    $end = $actual->toDateString();  
+                }else if($request->fecha == 2){
+                    $start = $actual->startOfMonth()->toDateString();
+                    $end = $actual->endOfMonth()->toDateString();  
+                }else if($request->fecha == 3){
+                    $start = $actual->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                }
+            }
+        }
+
+        if($request->staff_id){
+            $query->where('id',$request->staff_id);
+        }
+
+        $staffs = $query->get();
+
+        $fecha_final = Carbon::now()->toDateString();
+        $fecha_final_limite = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_final . " 00:00:00");
+
+        $efectivos = 0;
+        $retrasos = 0;
+        $inasistencias = 0;
+        $array_estatus = array();
+        $array = array();
+
+        foreach($staffs as $staff){
+
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $staff->created_at)->toDateString();
+            $fecha_inicio_limite = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_inicio . " 00:00:00");
+
+            $horarios = HorarioStaff::join('dias_de_semana', 'horarios_staff.dia_de_semana_id', '=', 'dias_de_semana.id')
+                ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
+                ->where('staff_id' , $staff->id)
+            ->get();
+
+            foreach($horarios as $horario){
+
+                $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $start . " 00:00:00");
+                $fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $end . " 00:00:00");
+
+                $entrada_horario = Carbon::createFromFormat('H:i:s', $horario->hora_inicio);
+                $salida_horario = Carbon::createFromFormat('H:i:s', $horario->hora_final);
+
+                if($fecha_final > $fecha_final_limite){
+                    $fecha_final = $fecha_final_limite;
+                }
+
+                while($fecha_inicio <= $fecha_final){
+
+                    if($fecha_inicio >= $fecha_inicio_limite){
+
+                        $asistencia = AsistenciaStaff::where('fecha',$fecha_inicio)->where('staff_id',$staff->id)->first();
+
+                        if($asistencia){
+
+                            $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                            $i = $fecha->dayOfWeek;
+
+                            if($i == 1){
+
+                              $dia = 'Lunes';
+
+                            }else if($i == 2){
+
+                              $dia = 'Martes';
+
+                            }else if($i == 3){
+
+                              $dia = 'Miercoles';
+
+                            }else if($i == 4){
+
+                              $dia = 'Jueves';
+
+                            }else if($i == 5){
+
+                              $dia = 'Viernes';
+
+                            }else if($i == 6){
+
+                              $dia = 'Sabado';
+
+                            }else if($i == 0){
+
+                              $dia = 'Domingo';
+
+                            }
+
+                            $hora_entrada = Carbon::createFromFormat('H:i:s', $asistencia->hora);
+                            $hora_salida = Carbon::createFromFormat('H:i:s', $asistencia->hora_salida);
+
+                            if($hora_entrada <= $entrada_horario && $hora_salida >= $salida_horario){
+
+                                if($request->tipo == 1 OR $request->tipo == 2){
+
+                                    $array[] = array('fecha' => $asistencia->fecha, "hora" => $asistencia->hora, 'clase' => '<i class="zmdi zmdi-check c-verde f-15"></i>', 'nombre' => $staff->nombre, 'apellido' => $staff->apellido, 'hora_salida' => $asistencia->hora_salida, 'dia' => $dia, 'tipo' => 'S', 'tipo_asistencia_staff' => 1);
+                                    $efectivos++;
+                                }
+
+                            }else{
+
+                                if($request->tipo == 1 OR $request->tipo == 3){
+                                    $array[] = array('fecha' => $asistencia->fecha, "hora" => $asistencia->hora, 'clase' => '<i class="zmdi zmdi-alert-circle-o c-amarillo f-15"></i>', 'nombre' => $staff->nombre, 'apellido' => $staff->apellido, 'hora_salida' => $asistencia->hora_salida, 'dia' => $dia, 'tipo' => 'S', 'tipo_asistencia_staff' => 2);
+                                    $retrasos++;
+                                }
+                            }
+
+                        }else{
+
+                            if($request->tipo == 1 OR $request->tipo == 4){
+
+                                $array[] = array('fecha' => $fecha_inicio->toDateString(), "hora" => '', 'clase' => '<i class="zmdi zmdi-close c-youtube f-15"></i>', 'nombre' => $staff->nombre, 'apellido' => $staff->apellido, 'hora_salida' => '', 'dia' => $horario->dia, 'tipo' => 'S', 'tipo_asistencia_staff' => 3);
+                                $inasistencias++;
+                            }
+                        }
+                    }
+
+                    $fecha_inicio->addWeek();
+
+                }
+
+            }
+        }
+
+        $array_efectivos = array('Horario efectivo', $efectivos);
+        $array_retrasos = array('Retraso de horario', $retrasos);
+        $array_inasistencias = array('Inasistencias', $inasistencias);
+
+        array_push($array_estatus, $array_efectivos);
+        array_push($array_estatus, $array_retrasos);
+        array_push($array_estatus, $array_inasistencias);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'estatus' => $array_estatus, 200]);
+
     }
 
 }

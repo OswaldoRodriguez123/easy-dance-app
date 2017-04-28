@@ -93,6 +93,11 @@
                   <li data-hovercolor="#f44336">
                       <a data-toggle="modal" href="{{url('/')}}/reportes/master"><h2 data-type="mText" class="sti-item">Master</h2><span data-type="icon" class="sti-icon sti-icon-reportes10 sti-item"></span></a>
                   </li>
+
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/asistencias-personal"><h2 data-type="mText" class="sti-item">Asistencias Personal</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>
+                  </li>
+
                 </ul>
               </div>
             </div>

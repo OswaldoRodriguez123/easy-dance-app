@@ -72,6 +72,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="fecha">Supervisor</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -79,6 +80,7 @@
                             @foreach ($activas as $horario)
                                 <tr id="{{$horario['id']}}" class="disabled" data-fecha="{{$horario['fecha']}}">
                                     <td class="text-center previa">{{$horario['fecha']}}</td>
+                                    <td class="text-center previa">{{$horario['supervisor']}}</td>
                                 </tr>
 
                             @endforeach  
@@ -168,7 +170,8 @@
             $.each(activas, function (index, array) {
 
                 var rowNode=t.row.add( [
-                ''+array.fecha+''
+                ''+array.fecha+'',
+                ''+array.supervisor+''
                 ] ).draw(false).node();
                 $( rowNode )
                     .addClass('disabled')
@@ -181,7 +184,8 @@
             $.each(finalizadas, function (index, array) {
 
                 var rowNode=t.row.add( [
-                ''+array.fecha+''
+                ''+array.fecha+'',
+                ''+array.supervisor+''
                 ] ).draw(false).node();
                 $( rowNode )
                     .addClass('disabled')

@@ -40,7 +40,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                        <div class="text-left"><a class="text-success f-20" href="{{url('/')}}/reportes/asistencias">Reporte</a></div>
+                        <!-- <div class="text-left"><a class="text-success f-20" href="{{url('/')}}/reportes/asistencias">Reporte</a></div> -->
 
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-shield-check zmdi-hc-fw f-25"></i> Registro de asistencia</p>
                         <hr class="linea-morada">
@@ -95,7 +95,13 @@
                                         <td class="text-center previa"><span style="display: none">{{$asistencia['tipo']}}</span></td>
                                         <td class="text-center previa">{{$asistencia['fecha']}}</td>
                                         <td class="text-center previa">{{$asistencia['dia']}}</td>
-                                        <td class="text-center previa">{{$asistencia['clase']}}</td>
+                                        <td class="text-center previa">
+                                            @if($asistencia['tipo'] != 'S')
+                                                {{$asistencia['clase']}}
+                                            @else
+                                                {!! $asistencia['clase'] !!}
+                                            @endif
+                                        </td>
                                         <td class="text-center previa">{{$asistencia['nombre']}} {{$asistencia['apellido']}}</td>
                                         <td class="text-center previa">{{$asistencia['hora']}}</td>
                                         <td class="text-center previa">{{$asistencia['hora_salida']}}</td>
@@ -130,44 +136,8 @@
 
             $(document).ready(function(){
 
-                t=$('#tablelistar').DataTable({
-                    processing: true,
-                    serverSide: false,
-                    pageLength: 25,  
-                    order: [[1, 'desc'], [5, 'desc']],
-                    language: {
-                          searchPlaceholder: "Buscar"
-                    },
-                    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-                      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled");
-                    },
-                    language: {
-                                    processing:     "Procesando ...",
-                                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                                    searchPlaceholder: "BUSCAR",
-                                    lengthMenu:     "Mostrar _MENU_ Registros",
-                                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                                    infoPostFix:    "",
-                                    loadingRecords: "...",
-                                    zeroRecords:    "No se encontraron registros coincidentes",
-                                    emptyTable:     "No hay datos disponibles en la tabla",
-                                    paginate: {
-                                        first:      "Primero",
-                                        previous:   "Anterior",
-                                        next:       "Siguiente",
-                                        last:       "Ultimo"
-                                    },
-                                    aria: {
-                                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                                    }
-                                }
-
-                });
-
+                $('#alumnos').prop('checked',true)
+        
                 t
                 .columns(0)
                 .search('A')
@@ -175,162 +145,97 @@
             
             });
 
+            t=$('#tablelistar').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25,  
+                order: [[1, 'desc'], [6, 'desc']],
+                language: {
+                      searchPlaceholder: "Buscar"
+                },
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled");
+                },
+                language: {
+                                processing:     "Procesando ...",
+                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                searchPlaceholder: "BUSCAR",
+                                lengthMenu:     "Mostrar _MENU_ Registros",
+                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                infoPostFix:    "",
+                                loadingRecords: "...",
+                                zeroRecords:    "No se encontraron registros coincidentes",
+                                emptyTable:     "No hay datos disponibles en la tabla",
+                                paginate: {
+                                    first:      "Primero",
+                                    previous:   "Anterior",
+                                    next:       "Siguiente",
+                                    last:       "Ultimo"
+                                },
+                                aria: {
+                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                }
+                            }
 
-             // $('input[name="tipo"]').on('change', function(){
-             //    procesando();
-             //    t.clear().draw();
-
-             //    if ($(this).val()=='alumnos') {
-             //        rechargeAlumno();
-             //    }else if ($(this).val()=='instructores')  {
-             //        rechargeInstructor();
-             //    }else{
-             //        rechargeStaff();
-             //    }
-                
-             // });
-
-            function rechargeAlumno(){
-
-                setTimeout(function(){
-                
-                    document.getElementById('participante').innerHTML = 'Participante';
-                    document.getElementById('hora').innerHTML = 'Hora';  
-                    document.getElementById('clase').innerHTML = 'Clase';
-
-                    $.each(alumno, function (index, array) {
-                        var rowNode=t.row.add( [
-                        ''+array.fecha+'',
-                        ''+array.clase+'',
-                        ''+array.nombre+ ' '+array.apellido+'',
-                        ''+array.nombre+ ' '+array.apellido+'',
-                        ''+array.hora+''
-                        // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                        ] ).draw(false).node();
-                        $( rowNode )
-                            .attr('id',array.id)
-                            .addClass('seleccion');
-                    });
-
-                    finprocesado();
-
-                }, 1000);
-            }
-
-            function rechargeInstructor(){
-                
-                document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-                document.getElementById('hora').innerHTML = 'Hora Salida';
-                document.getElementById('clase').innerHTML = 'Clase';
-
-                $.each(instructor, function (index, array) {
-                    var rowNode=t.row.add( [
-                    ''+array.fecha+'',
-                    ''+array.clase+'',
-                    ''+array.nombre+ ' '+array.apellido_instructor+'',
-                    ''+array.hora+'',
-                    ''+array.hora_salida+''
-                    // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('seleccion');
-                });
-                finprocesado();
-            }
-
-            function rechargeStaff(){
-                
-                document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-                document.getElementById('hora').innerHTML = 'Hora Salida';
-                document.getElementById('clase').innerHTML = 'Cargo'; 
-
-                $.each(staff, function (index, array) {
-                    var rowNode=t.row.add( [
-                    ''+array.fecha+'',
-                    ''+array.cargo+'',
-                    ''+array.nombre_staff+ ' '+array.apellido_staff+'',
-                    ''+array.hora+'',
-                    ''+array.hora_salida+''
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('seleccion');
-                });
-                finprocesado();
-            }
+            });
 
             $('input[name="tipo"]').on('change', function(){
 
-            if($(this).val() == 'A'){
+                if($(this).val() == 'A'){
 
-                document.getElementById('participante').innerHTML = 'Participante';
-                document.getElementById('hora').innerHTML = 'Hora';  
-                document.getElementById('clase').innerHTML = 'Clase';
-                document.getElementById('nombre').innerHTML = 'Instructor';
+                    document.getElementById('participante').innerHTML = 'Participante';
+                    document.getElementById('hora').innerHTML = 'Hora';  
+                    document.getElementById('clase').innerHTML = 'Clase';
+                    document.getElementById('nombre').innerHTML = 'Instructor';
 
-                $( "#instructores2" ).removeClass( "c-verde" );
-                $( "#staff2" ).removeClass( "c-verde" );
-                $( "#alumnos2" ).addClass( "c-verde" );
+                    $( "#instructores2" ).removeClass( "c-verde" );
+                    $( "#staff2" ).removeClass( "c-verde" );
+                    $( "#alumnos2" ).addClass( "c-verde" );
 
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw(); 
+                    t
+                    .columns(0)
+                    .search($(this).val())
+                    .draw(); 
 
-            }else if($(this).val() == 'I'){
+                }else if($(this).val() == 'I'){
 
-                document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-                document.getElementById('hora').innerHTML = 'Hora Salida';
-                document.getElementById('clase').innerHTML = 'Clase';
-                document.getElementById('nombre').innerHTML = 'Instructor';
+                    document.getElementById('participante').innerHTML = 'Hora Entrada'; 
+                    document.getElementById('hora').innerHTML = 'Hora Salida';
+                    document.getElementById('clase').innerHTML = 'Clase';
+                    document.getElementById('nombre').innerHTML = 'Instructor';
 
-                $( "#alumnos2" ).removeClass( "c-verde" );
-                $( "#staff2" ).removeClass( "c-verde" );
-                $( "#instructores2" ).addClass( "c-verde" );
+                    $( "#alumnos2" ).removeClass( "c-verde" );
+                    $( "#staff2" ).removeClass( "c-verde" );
+                    $( "#instructores2" ).addClass( "c-verde" );
 
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw();
+                    t
+                    .columns(0)
+                    .search($(this).val())
+                    .draw();
 
-            }else{
+                }else{
 
-                document.getElementById('participante').innerHTML = 'Hora Entrada'; 
-                document.getElementById('hora').innerHTML = 'Hora Salida';
-                document.getElementById('clase').innerHTML = 'Cargo'; 
-                document.getElementById('nombre').innerHTML = 'Nombre'; 
+                    document.getElementById('participante').innerHTML = 'Hora Entrada'; 
+                    document.getElementById('hora').innerHTML = 'Hora Salida';
+                    document.getElementById('clase').innerHTML = 'Status'; 
+                    document.getElementById('nombre').innerHTML = 'Nombre'; 
 
-                $( "#alumnos2" ).removeClass( "c-verde" );
-                $( "#instructores2" ).removeClass( "c-verde" );
-                $( "#staff2" ).addClass( "c-verde" );
+                    $( "#alumnos2" ).removeClass( "c-verde" );
+                    $( "#instructores2" ).removeClass( "c-verde" );
+                    $( "#staff2" ).addClass( "c-verde" );
 
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw();
+                    t
+                    .columns(0)
+                    .search($(this).val())
+                    .draw();
 
-            }
-    
-        });
-
-            // $("#alumnos").click(function(){
-            //     $( "#instructores2" ).removeClass( "c-verde" );
-            //     $( "#staff2" ).removeClass( "c-verde" );
-            //     $( "#alumnos2" ).addClass( "c-verde" );
-            // });
-
-            // $("#instructores").click(function(){
-            //     $( "#alumnos2" ).removeClass( "c-verde" );
-            //     $( "#staff2" ).removeClass( "c-verde" );
-            //     $( "#instructores2" ).addClass( "c-verde" );
-            // });
-
-            // $("#staff").click(function(){
-            //     $( "#alumnos2" ).removeClass( "c-verde" );
-            //     $( "#instructores2" ).removeClass( "c-verde" );
-            //     $( "#staff2" ).addClass( "c-verde" );
-            // });
+                }
+        
+            });
 
         </script>
 

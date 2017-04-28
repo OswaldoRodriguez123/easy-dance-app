@@ -52,6 +52,7 @@
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Supervisiones</p>
                             <hr class="linea-morada">
+
                                                          
                         </div>
                         <div class="table-responsive row">
@@ -85,7 +86,40 @@
                                     <td class="text-center previa">{{$supervision['cargo']}}</td>
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center previa">{{$supervision['fecha_inicio']}} / {{$supervision['fecha_final']}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        <ul class="top-menu">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+
+                                                  <div class="dropup" dropdown-append-to-body>
+                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/configuracion/supervisiones/agenda/{{$id}}"><i class="zmdi zmdi-eye f-20"></i> Ver Agenda</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/configuracion/supervisiones/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-20"></i> Evaluar</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/configuracion/supervisiones/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-20"></i> Historial</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                        </li>
+
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                                 </tr>
                                 <!-- endcan -->
                             @endforeach 
@@ -123,7 +157,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,    
-        order: [[2, 'asc']],
+        order: [[3, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
@@ -168,6 +202,25 @@
             var route =route_operacion+"/"+this.id;
             window.location=route;
          });
+
+
+        $( ".dropdown-toggle" ).hover(function() {
+
+          if($('.dropdown').hasClass('open')){
+
+          }else{
+            $( this ).click();
+          }
+         
+        });
+
+        $('.table-responsive').on('show.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "inherit" );
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "auto" );
+        })
 
 
         </script>

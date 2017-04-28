@@ -558,6 +558,7 @@ class SupervisionController extends BaseController {
 
 			        $horario->supervision_id = $supervision->id;
 			        $horario->fecha = $key;
+			        $horario->supervisor_id = $request->supervisor_id;
 
 			        $horario->save();
 				}
@@ -1145,6 +1146,7 @@ class SupervisionController extends BaseController {
 
 		        $horario->supervision_id = $request->id;
 		        $horario->fecha = $key;
+		        $horario->supervisor_id = $supervision->supervisor_id;
 
 		        $horario->save();
 			}
@@ -1337,6 +1339,7 @@ class SupervisionController extends BaseController {
         ->get();
 
         $array = array();
+        $porcentaje_total = 0;
 
         foreach($evaluaciones as $evaluacion){
 
@@ -1353,9 +1356,20 @@ class SupervisionController extends BaseController {
             $supervision_array = $collection->toArray();
             $supervision_array['supervisor']=$supervisor;
             $array[$evaluacion->id] = $supervision_array;
+            $porcentaje_total = $porcentaje_total + $evaluacion->porcentaje;
         }
 
-        return view('configuracion.supervision.evaluaciones')->with(['evaluaciones' => $array, 'id'=>$id]);
+        $cantidad = count($array);
+
+        if($cantidad > 0){
+
+	        $porcentaje = $porcentaje_total / $cantidad;
+	        $porcentaje = intval($porcentaje);
+        }else{
+        	$porcentaje = 0;
+        }
+
+        return view('configuracion.supervision.evaluaciones')->with(['evaluaciones' => $array, 'id'=>$id, 'porcentaje' => $porcentaje]);
     }
 
 
@@ -1415,16 +1429,19 @@ class SupervisionController extends BaseController {
     	$activas = array();
     	$finalizadas = array();
 
-    	$horarios = HorarioSupervision::where('supervision_id',$id)->get();
+    	$horarios = HorarioSupervision::join('staff', 'staff.id', '=', 'horarios_supervision.supervisor_id')
+    		->select('horarios_supervision.*', 'staff.nombre', 'staff.apellido')
+    		->where('supervision_id',$id)
+    	->get();
 
     	foreach($horarios as $horario){
 
     		$fecha = Carbon::createFromFormat('Y-m-d',$horario->fecha);
 
 	    	if($fecha >= Carbon::now()){
-	            $activas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString());
+	            $activas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString(), "supervisor" => $horario->nombre . ' ' . $horario->apellido);
 	        }else{
-	            $finalizadas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString());
+	            $finalizadas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString(), "supervisor" => $horario->nombre . ' ' . $horario->apellido);
 	        }
         }
 

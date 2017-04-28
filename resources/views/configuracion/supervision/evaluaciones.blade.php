@@ -47,7 +47,56 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                            <!--<span class="f-16 p-t-0 text-success">Agregar un Examen <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>-->
+
+                            @if($id)
+                                <div class="col-sm-4 col-sm-offset-8 text-center">
+
+                                    Porcentaje de Efectividad<br>
+
+                                    <div class="progress progress-striped m-t-10 m-b-10" style="border:1px solid; color:#4E1E43">
+                                        <div class="progress-bar progress-bar-morado" id="barra_progreso" role="progressbar" aria-valuenow="{{$porcentaje}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentaje}}%;"></div>
+                                    </div>
+
+                                    {{$porcentaje}}% de Efectividad
+
+                                    
+                                    <div class="rating-list">
+                                        <div class="rl-star">
+                                            @if($porcentaje >= 20)
+                                                <i class="zmdi zmdi-star active"></i>
+                                            @else
+                                                <i class="zmdi zmdi-star"></i>
+                                            @endif
+
+                                            @if($porcentaje >= 40)
+                                                <i class="zmdi zmdi-star active"></i>
+                                            @else
+                                                <i class="zmdi zmdi-star"></i>
+                                            @endif
+
+                                            @if($porcentaje >= 60)
+                                                <i class="zmdi zmdi-star active"></i>
+                                            @else
+                                                <i class="zmdi zmdi-star"></i>
+                                            @endif
+
+                                            @if($porcentaje >= 80)
+                                                <i class="zmdi zmdi-star active"></i>
+                                            @else
+                                                <i class="zmdi zmdi-star"></i>
+                                            @endif
+
+                                            @if($porcentaje >= 100)
+                                                <i class="zmdi zmdi-star active"></i>
+                                            @else
+                                                <i class="zmdi zmdi-star"></i>
+                                            @endif
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @endif
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-examen f-25"></i> Sección de Evaluaciones</p>
                             <hr class="linea-morada">                                                        

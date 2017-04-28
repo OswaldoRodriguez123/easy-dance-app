@@ -26,6 +26,8 @@ use App\AsistenciaInstructor;
 
 use App\AsistenciaStaff;
 
+use App\HorarioStaff;
+
 use App\Instructor;
 
 use App\ConfigPagosInstructor;
@@ -112,6 +114,8 @@ class AsistenciaController extends BaseController
             ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre', 'staff.apellido', 'asistencias_staff.hora_salida', 'config_staff.nombre as cargo')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
+
+        $staffs = Staff::where('academia_id','=',Auth::user()->academia_id)->get();
 
         $array = array();
 
@@ -309,48 +313,126 @@ class AsistenciaController extends BaseController
           $array[] = $asistencia_array;
         }
 
-        foreach($staff as $asistencia){
+        foreach($staffs as $staff){
 
-          $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
-          $i = $fecha->dayOfWeek;
+          $horarios = HorarioStaff::join('dias_de_semana', 'horarios_staff.dia_de_semana_id', '=', 'dias_de_semana.id')
+            ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
+            ->where('staff_id' , $staff->id)
+          ->get();
 
-          if($i == 1){
+          foreach($horarios as $horario){
 
-            $dia = 'Lunes';
+            $entrada_horario = Carbon::createFromFormat('H:i:s', $horario->hora_inicio);
+            $salida_horario = Carbon::createFromFormat('H:i:s', $horario->hora_final);
 
-          }else if($i == 2){
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $staff->created_at)->toDateString();
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_inicio . " 00:00:00");
+            $fecha_final = Carbon::now()->toDateString();
+            $fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_final . " 00:00:00");
 
-            $dia = 'Martes';
+            while($fecha_inicio <= $fecha_final){
 
-          }else if($i == 3){
+              $asistencia = AsistenciaStaff::where('fecha',$fecha_inicio)->where('staff_id',$staff->id)->first();
 
-            $dia = 'Miercoles';
+              if($asistencia){
 
-          }else if($i == 4){
+                $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+                $i = $fecha->dayOfWeek;
 
-            $dia = 'Jueves';
+                if($i == 1){
 
-          }else if($i == 5){
+                  $dia = 'Lunes';
 
-            $dia = 'Viernes';
+                }else if($i == 2){
 
-          }else if($i == 6){
+                  $dia = 'Martes';
 
-            $dia = 'Sabado';
+                }else if($i == 3){
 
-          }else if($i == 0){
+                  $dia = 'Miercoles';
 
-            $dia = 'Domingo';
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $hora_entrada = Carbon::createFromFormat('H:i:s', $asistencia->hora);
+                $hora_salida = Carbon::createFromFormat('H:i:s', $asistencia->hora_salida);
+
+                if($hora_entrada <= $entrada_horario && $hora_salida >= $salida_horario){
+
+                  $array[] = array('fecha' => $asistencia->fecha, "hora" => $asistencia->hora, 'clase' => '<i class="zmdi zmdi-check c-verde f-15"></i>', 'nombre' => $staff->nombre, 'apellido' => $staff->apellido, 'hora_salida' => $asistencia->hora_salida, 'dia' => $dia, 'tipo' => 'S', 'tipo_asistencia_staff' => 1);
+
+                }else{
+                  $array[] = array('fecha' => $asistencia->fecha, "hora" => $asistencia->hora, 'clase' => '<i class="zmdi zmdi-alert-circle-o c-amarillo f-15"></i>', 'nombre' => $staff->nombre, 'apellido' => $staff->apellido, 'hora_salida' => $asistencia->hora_salida, 'dia' => $dia, 'tipo' => 'S', 'tipo_asistencia_staff' => 2);
+                }
+
+              }else{
+                $array[] = array('fecha' => $fecha_inicio->toDateString(), "hora" => '', 'clase' => '<i class="zmdi zmdi-close c-youtube f-15"></i>', 'nombre' => $staff->nombre, 'apellido' => $staff->apellido, 'hora_salida' => '', 'dia' => $horario->dia, 'tipo' => 'S', 'tipo_asistencia_staff' => 3);
+              }
+
+              $fecha_inicio->addWeek();
+
+            }
 
           }
-
-          $collection=collect($asistencia);     
-          $asistencia_array = $collection->toArray();
-          $asistencia_array['clase']=$asistencia->cargo;
-          $asistencia_array['dia']=$dia;
-          $asistencia_array['tipo']='S';
-          $array[] = $asistencia_array;
         }
+
+        // foreach($staff as $asistencia){
+
+        //   $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+        //   $i = $fecha->dayOfWeek;
+
+        //   if($i == 1){
+
+        //     $dia = 'Lunes';
+
+        //   }else if($i == 2){
+
+        //     $dia = 'Martes';
+
+        //   }else if($i == 3){
+
+        //     $dia = 'Miercoles';
+
+        //   }else if($i == 4){
+
+        //     $dia = 'Jueves';
+
+        //   }else if($i == 5){
+
+        //     $dia = 'Viernes';
+
+        //   }else if($i == 6){
+
+        //     $dia = 'Sabado';
+
+        //   }else if($i == 0){
+
+        //     $dia = 'Domingo';
+
+        //   }
+
+        //   $collection=collect($asistencia);     
+        //   $asistencia_array = $collection->toArray();
+        //   $asistencia_array['clase']='';
+        //   $asistencia_array['dia']=$dia;
+        //   $asistencia_array['tipo']='S';
+        //   $array[] = $asistencia_array;
+        // }
 
         return view('asistencia.asistencia')->with(['asistencias' => $array]);  
 
