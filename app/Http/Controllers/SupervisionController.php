@@ -1173,7 +1173,7 @@ class SupervisionController extends BaseController {
 
         $supervision = Supervision::join('staff', 'supervisiones.staff_id','=','staff.id')
 	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
-	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones.cargo as cargo_id')
+	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones.cargo as cargo_id', 'supervisiones.id')
 	        ->where('supervisiones.id', $id)
         ->first();
 
