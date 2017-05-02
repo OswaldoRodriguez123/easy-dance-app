@@ -1485,12 +1485,36 @@ class SupervisionController extends BaseController {
 
     	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
-        $supervisiones = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
-            ->select('config_supervision.*', 'config_staff.nombre as cargo')
-            ->where('config_supervision.academia_id' , Auth::user()->academia_id)
-        ->get();
+    	$array = array();
 
-        return view('configuracion.supervision.configuracion')->with(['cargos' => $cargos, 'supervisiones' => $supervisiones]);
+    	foreach($cargos as $cargo){
+
+    		$items = ConfigSupervision::where('cargo_id',$cargo->id)->count();
+
+    		$collection=collect($cargo);   
+
+            $cargo_array = $collection->toArray();
+            $cargo_array['items']=$items;
+            $array[$cargo->id] = $cargo_array;
+
+    	}
+
+        return view('configuracion.supervision.configuracion')->with(['cargos' => $array]);
+
+    }
+
+
+    public function agregar_configuracion(){
+
+    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+
+    	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
+    		->select('config_supervision.*', 'config_staff.nombre as cargo')
+	    	->where('config_supervision.academia_id', Auth::user()->academia_id)
+	    	->orWhere('config_supervision.academia_id', null)
+    	->get();
+    	
+        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision]);
 
     }
 
