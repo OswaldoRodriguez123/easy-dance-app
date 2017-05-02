@@ -977,9 +977,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/supervisiones/update/items','SupervisionController@updateItems');
 			Route::get('configuracion/supervisiones/configuracion', 'SupervisionController@configuracion');
 			Route::get('configuracion/supervisiones/configuracion/agregar', 'SupervisionController@agregar_configuracion');
+			Route::post('configuracion/supervisiones/configuracion/agregar', 'SupervisionController@GuardarConfiguracion');
+			Route::post('configuracion/supervisiones/configuracion/cancelar', 'SupervisionController@cancelar_supervision');
 			Route::delete('configuracion/supervisiones/configuracion/eliminar/{id}', 'SupervisionController@eliminar_configuracion');
-			Route::post('configuracion/academia/supervision','HerramientaController@agregarsupervision');
-			Route::post('configuracion/academia/eliminarsupervision/{id}','HerramientaController@eliminarsupervision');
+			Route::post('configuracion/supervisiones/configuracion/agregarsupervision','SupervisionController@agregar_supervision_session');
+			Route::post('configuracion/supervisiones/configuracion/eliminarsupervision/{id}','SupervisionController@eliminar_supervision_session');
 
 			
 

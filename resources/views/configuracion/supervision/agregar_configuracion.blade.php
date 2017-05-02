@@ -161,12 +161,10 @@
                             </div>
                             <div class="col-sm-12 text-left">                           
 
-                              <!-- <a class="btn-blanco m-r-10 f-18 guardar" href="#" id="guardar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
-
-                            <!--   <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
                               <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
- -->
+
                             </div>
                         </div></form>
                     </div>
@@ -185,8 +183,11 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/configuracion/supervisiones/agregar";
-  route_principal="{{url('/')}}/configuracion/supervisiones";
+  route_agregar="{{url('/')}}/configuracion/supervisiones/configuracion/agregar";
+  route_agregar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/agregarsupervision";
+  route_eliminar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/eliminarsupervision/";
+  route_principal="{{url('/')}}/configuracion/supervisiones/configuracion";
+  route_cancelar = "{{url('/')}}/configuracion/supervisiones/configuracion/cancelar";
 
   $(document).ready(function(){
 
@@ -234,7 +235,7 @@
 
       var datos = $( "#agregar_supervision" ).serialize(); 
       procesando();
-      var route = "{{url('/')}}/configuracion/academia/supervision";
+      var route = route_agregar_supervision
       var token = $('input:hidden[name=_token]').val();
       limpiarMensaje();
       $.ajax({
@@ -257,13 +258,13 @@
                 var nMensaje=respuesta.mensaje;
 
                 var nombre = respuesta.array.nombre;
-                var cargo = respuesta.cargo;
+                var cargo = respuesta.array.cargo;
 
-                var rowId=respuesta.id;
+                var rowId=respuesta.array.id;
                 var rowNode=t.row.add( [
                 ''+nombre+'',
                 ''+cargo+'',
-                '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
@@ -322,7 +323,7 @@
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
       $.ajax({
-           url: "{{url('/')}}/configuracion/academia/eliminarsupervision/"+id,
+           url: route_eliminar_supervision+id,
            headers: {'X-CSRF-TOKEN': token},
            type: 'POST',
            dataType: 'json',                
@@ -349,12 +350,104 @@
     });
 
     function limpiarMensaje(){
-        var campo = ["cargo"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
-        }
+      var campo = ["cargo"];
+      fLen = campo.length;
+      for (i = 0; i < fLen; i++) {
+          $("#error-"+campo[i]+"_mensaje").html('');
       }
+    }
+
+    $("#guardar").click(function(){
+
+      var route = route_agregar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_supervision" ).serialize(); 
+      procesando();
+      limpiarMensaje();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                // finprocesado();
+                // var nType = 'success';
+                // $("#agregar_alumno")[0].reset();
+                // var nTitle="Ups! ";
+                // var nMensaje=respuesta.mensaje;
+                window.location = route_principal;
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+
+                finprocesado();
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }                       
+              
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              finprocesado();
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+  });
+
+    $("#cancelar").click(function(){
+
+        $.ajax({
+            url: route_cancelar,
+                headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}" },
+                type: 'POST',
+                dataType: 'json',
+            success:function(respuesta){
+
+              t
+              .clear()
+              .draw();
+              
+              $('html,body').animate({
+                scrollTop: $("#id-supervision").offset().top-90,
+              }, 1500)
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+
+               }, 1000);
+            }
+
+        });
+    });
 
 
 
