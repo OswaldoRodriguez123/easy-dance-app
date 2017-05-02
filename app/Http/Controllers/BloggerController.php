@@ -22,13 +22,13 @@ class BloggerController extends BaseController {
 
 		$bloggers = Blogger::where('academia_id', Auth::user()->academia_id)->get();
 
-		return view('blogger.principal')->with(['bloggers' => $bloggers]);
+		return view('configuracion.blogger.principal')->with(['bloggers' => $bloggers]);
 
 	}
 
 	public function create(){
 
-		return view('blogger.create')->with([]);
+		return view('configuracion.blogger.create')->with([]);
 
 	}
 
@@ -117,7 +117,7 @@ class BloggerController extends BaseController {
 		if($blogger)
 		{
 			
-            return view('blogger.planilla')->with(['blogger' => $blogger, 'id' => $id]);
+            return view('configuracion.blogger.planilla')->with(['blogger' => $blogger, 'id' => $id]);
 
 		}else{
 			return redirect("configuracion/blogger"); 

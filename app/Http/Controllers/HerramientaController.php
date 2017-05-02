@@ -65,14 +65,7 @@ class HerramientaController extends BaseController {
         $valoraciones = ConfigTipoExamen::where('academia_id' , Auth::user()->academia_id)->get();
         $puntajes = Puntaje::where('academia_id' , Auth::user()->academia_id)->get();
 
-        $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-
-        $supervisiones = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
-            ->select('config_supervision.*', 'config_staff.nombre as cargo')
-            ->where('config_supervision.academia_id' , Auth::user()->academia_id)
-        ->get();
-
-        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes, 'supervisiones' => $supervisiones, 'cargos' => $cargos]);
+        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes]);
 
     }
 

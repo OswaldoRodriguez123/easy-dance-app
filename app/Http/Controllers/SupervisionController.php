@@ -1448,4 +1448,17 @@ class SupervisionController extends BaseController {
         return view('configuracion.supervision.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'id'=>$id]);
     }
 
+    public function configuracion(){
+
+    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+
+        $supervisiones = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
+            ->select('config_supervision.*', 'config_staff.nombre as cargo')
+            ->where('config_supervision.academia_id' , Auth::user()->academia_id)
+        ->get();
+
+        return view('configuracion.supervision.configuracion')->with(['cargos' => $cargos, 'supervisiones' => $supervisiones]);
+
+    }
+
 }

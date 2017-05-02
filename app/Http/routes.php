@@ -204,8 +204,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('configuracion/academia/eliminarvaloracion/{id}','HerramientaController@eliminarvaloracion');
 			Route::post('configuracion/academia/puntaje','HerramientaController@agregarpuntaje');
 			Route::post('configuracion/academia/eliminarpuntaje/{id}','HerramientaController@eliminarpuntaje');
-			Route::post('configuracion/academia/supervision','HerramientaController@agregarsupervision');
-			Route::post('configuracion/academia/eliminarsupervision/{id}','HerramientaController@eliminarsupervision');
 			Route::put('configuracion/academia/update/referido', 'HerramientaController@updateReferido');
 
 			// PRODUCTOS
@@ -977,6 +975,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/supervisiones/update/staff','SupervisionController@updateStaff');
 			Route::put('configuracion/supervisiones/update/fecha','SupervisionController@updateFecha');
 			Route::put('configuracion/supervisiones/update/items','SupervisionController@updateItems');
+			Route::get('configuracion/supervisiones/configuracion', 'SupervisionController@configuracion');
+			Route::post('configuracion/academia/supervision','HerramientaController@agregarsupervision');
+			Route::post('configuracion/academia/eliminarsupervision/{id}','HerramientaController@eliminarsupervision');
 
 			
 
