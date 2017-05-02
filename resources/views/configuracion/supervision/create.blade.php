@@ -63,7 +63,6 @@
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker bs-select-hidden" name="supervisor_id" id="supervisor_id" data-live-search="true">
                                           <option value="">Selecciona</option>
@@ -72,7 +71,6 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                    </div>
                                     <div class="has-error" id="error-supervisor_id">
                                       <span >
                                         <small class="help-block error-span" id="error-supervisor_id_mensaje" ></small>                                           
@@ -89,7 +87,6 @@
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="cargo" id="cargo" data-live-search="true">
                                           <option value="">Selecciona</option>
@@ -98,7 +95,6 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                    </div>
                                     <div class="has-error" id="error-cargo">
                                       <span >
                                         <small class="help-block error-span" id="error-cargo_mensaje" ></small>                                           
@@ -115,7 +111,6 @@
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
                                       <div class="select">
                                         <select class="selectpicker" name="staff_id" id="staff_id" data-live-search="true">
                                           <option value="">Selecciona</option>
@@ -124,7 +119,6 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                    </div>
                                     <div class="has-error" id="error-staff_id">
                                       <span >
                                         <small class="help-block error-span" id="error-staff_id_mensaje" ></small>                                           
@@ -229,7 +223,6 @@
                                 <label for="cargo" id="id-frecuencia">Frecuencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="Indícale al sistema la frecuencia de de las supervisiones" title="" data-original-title="Ayuda"></i>
 
 
-                                <div class="fg-line">
                                   <div class="select">
                                     <select class="selectpicker bs-select-hidden" name="frecuencia" id="frecuencia" data-live-search="true" disabled>
                                       <option value="">Selecciona</option>
@@ -238,7 +231,6 @@
                                       <option value="3">Mensual</option>  
                                     </select>
                                   </div>
-                                </div>
                                 <div class="has-error" id="error-frecuencia">
                                   <span >
                                     <small class="help-block error-span" id="error-frecuencia_mensaje" ></small>                                           
@@ -581,18 +573,6 @@
       }, 1000);      
     }    
 
-      $( "#cancelar" ).click(function() {
-        $("#agregar_supervision")[0].reset();
-        $('#supervisor_id').selectpicker('refresh')
-        $('#cargo').selectpicker('refresh')
-        $('#staff_id').selectpicker('refresh')
-        limpiarMensaje();
-        $('html,body').animate({
-        scrollTop: $("#id-supervision").offset().top-90,
-        }, 1500);
-      });
-
-
       function collapse_minus(collaps){
        $('#'+collaps).collapse('hide');
       }
@@ -718,6 +698,21 @@
         }  
 
       });
+
+      $( "#cancelar" ).click(function() {
+
+        $('html,body').animate({
+          scrollTop: $("#id-supervision").offset().top-90,
+        }, 2000);
+
+        $("#agregar_supervision")[0].reset();
+        $('#supervisor_id').selectpicker('refresh')
+        $('#cargo').selectpicker('refresh')
+        $('#staff_id').selectpicker('refresh')
+        $('#frecuencia').selectpicker('refresh')
+        limpiarMensaje();
+      });
+
 
 
 </script> 

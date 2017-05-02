@@ -458,13 +458,12 @@ class AgendarController extends BaseController
 
         }
 
-        $transmisiones = Transmision::where('academia_id', Auth::user()->academia_id)->get();
+        $transmisiones = Transmision::where('academia_id', Auth::user()->academia_id)->where('fecha', '>=', Carbon::now()->format('Y-m-d'))->get();
 
         foreach ($transmisiones as $transmision) {
 
             $fecha=explode('-',$transmision->fecha);
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $fecha = $dt->toDateString();
+            $fecha = Carbon::createFromFormat('Y-m-d', $transmision->fecha)->toDateString();
             $tema=$transmision->tema;
             $hora=$transmision->hora;
             $presentador=$transmision->presentador;
