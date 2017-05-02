@@ -1174,6 +1174,7 @@ class SupervisionController extends BaseController {
     {
 
         $supervision = Supervision::find($id);
+        
         if($supervision){
 
         	$supervisor = Staff::find($supervision->supervisor_id);
@@ -1186,6 +1187,9 @@ class SupervisionController extends BaseController {
 
         	$staff = Staff::find($supervision->staff_id);
 
+        	$staff_a_supervisar = $staff->nombre . ' ' . $staff->apellido;
+        	$staff_id = $staff->id;
+
         	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         	$config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         	$dias_de_semana = DiasDeSemana::all();
@@ -1197,12 +1201,10 @@ class SupervisionController extends BaseController {
         	$cargo = ConfigStaff::find($supervision->cargo);
 
         	$cargo_a_supervisar = $cargo->nombre;
-        	$staff_a_supervisar = $staff->nombre . ' ' . $staff->apellido;
-        	$staff_id = $staff->id;
 
         	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
 
-            return view('configuracion.supervision.planilla')->with(['staffs' => $staffs, 'supervision' => $supervision, 'supervisor' => $supervisor, 'config_staff' => $config_staff, 'id' => $id, 'dias_de_semana' => $dias_de_semana, 'config_supervision' => $config_supervision, 'fecha_inicio' => $fecha_inicio, 'fecha_final' => $fecha_final, 'cargo_a_supervisar' => $cargo_a_supervisar, 'staff_a_supervisar' => $staff_a_supervisar, 'items_a_evaluar' => $items_a_evaluar, 'staff_id' => $staff_id]);
+            return view('configuracion.supervision.planilla')->with(['staffs' => $staffs, 'supervision' => $supervision, 'supervisor' => $supervisor, 'config_staff' => $config_staff, 'id' => $id, 'dias_de_semana' => $dias_de_semana, 'config_supervision' => $config_supervision, 'fecha_inicio' => $fecha_inicio, 'fecha_final' => $fecha_final, 'cargo_a_supervisar' => $cargo_a_supervisar, 'staff_a_supervisar' => $staff_a_supervisar, 'items_a_evaluar' => $items_a_evaluar, 'id_staff' => $staff_id]);
 
         }else{
            return redirect("configuracion/supervisiones");

@@ -550,7 +550,7 @@
 
     $(document).ready(function(){
 
-      console.log("{{$staff_id}}");
+      console.log("{{$id_staff}}");
 
       $.each(items, function (index, item) {
         $.each(config_supervision, function (index, supervision) {
@@ -564,7 +564,7 @@
         });
       });
 
-      $('.cargo_{{$staff_id}}').show();
+      $('.cargo_{{$id_staff}}').show();
 
       $('input[name="id"]').val("{{$id}}")
 
