@@ -3487,13 +3487,17 @@ class ClaseGrupalController extends BaseController {
         }
 
         $i = 0;
+        $dadas = 0;
+        $restantes = 0;
 
         if($dt >= Carbon::now()){
             $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
             $i++;
+            $dadas++;
         }else{
             $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
             $i++;
+            $restantes++;
         }
 
         while($dt->timestamp<$df->timestamp){
@@ -3551,11 +3555,14 @@ class ClaseGrupalController extends BaseController {
             }
 
             if($dt >= Carbon::now()){
+                
                 $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
+                $dadas++;
             }else{
                 $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
+                $restantes++;
             }
             
         }
@@ -3610,9 +3617,11 @@ class ClaseGrupalController extends BaseController {
             if($dt >= Carbon::now()){
                 $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
+                $dadas++;
             }else{
                 $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
+                $restantes++;
             }
 
             
@@ -3672,15 +3681,17 @@ class ClaseGrupalController extends BaseController {
                 if($dt >= Carbon::now()){
                     $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                     $i++;
+                    $dadas++;
                 }else{
                     $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                     $i++;
+                    $restantes++;
                 }
             }
 
         }
 
-        return view('agendar.clase_grupal.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'nombre' => $nombre, 'id' => $id]);
+        return view('agendar.clase_grupal.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'nombre' => $nombre, 'id' => $id, 'dadas' => $dadas, 'restantes' => $restantes]);
     }
 
     public function reservaciones_vencidas($id){
