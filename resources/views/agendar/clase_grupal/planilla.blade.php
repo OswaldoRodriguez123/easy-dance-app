@@ -1278,6 +1278,10 @@
                                                   <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/canceladas/{{$clasegrupal->id}}"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
                                               </li>
 
+                                              <li class="hidden-xs eliminar">
+                                                  <a class="pointer"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar Clase</a>
+                                              </li>
+
                                             @endif
                                         </ul>
                                     </li>
@@ -2068,8 +2072,7 @@
        
     })
 
-    $("i[name=eliminar]").click(function(){
-                id = this.id;
+    $(".eliminar").click(function(){
                 swal({   
                     title: "Desea eliminar la clase grupal",   
                     text: "Confirmar eliminación!",   
@@ -2089,20 +2092,20 @@
             var nAnimOut = $(this).attr('data-animation-out')
                         // swal("Done!","It was succesfully deleted!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
+                        eliminar();
           }
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
+         var route = route_eliminar + "{{$id}}";
          var token = $('input:hidden[name=_token]').val();
+         procesando();
                 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'DELETE',
                     dataType: 'json',
-                    data:id,
                     success:function(respuesta){
 
                         window.location=route_principal; 

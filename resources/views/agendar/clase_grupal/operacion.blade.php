@@ -150,6 +150,10 @@
                               <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/canceladas/{{$clasegrupal->id}}"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>
                           </li>
 
+                          <li class="hidden-xs eliminar">
+                              <a class ="pointer"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar Clase</a>
+                          </li>
+
                         @endif
                     </ul>
                   </li>
@@ -264,6 +268,7 @@
       function eliminar(id){
          var route = route_eliminar + "{{$id}}";
          var token = '{{ csrf_token() }}';
+         procesando();
                 
                 $.ajax({
                     url: route,

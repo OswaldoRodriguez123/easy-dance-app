@@ -2543,10 +2543,10 @@ class ClaseGrupalController extends BaseController {
     public function destroy($id)
     {
 
-        $exist = InscripcionClaseGrupal::where('clase_grupal_id', $id)->first();
+        // $exist = InscripcionClaseGrupal::where('clase_grupal_id', $id)->first();
 
-        if(!$exist)
-        {
+        // if(!$exist)
+        // {
             $horario_clase_grupal = HorarioClaseGrupal::where('clase_grupal_id', $id)->delete();
             $clasegrupal = ClaseGrupal::find($id);
         
@@ -2555,10 +2555,10 @@ class ClaseGrupalController extends BaseController {
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-        }
-        else{
-            return response()->json(['error_mensaje'=> 'Ups! Esta clase grupal no puede ser eliminada ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
-        }
+        // }
+        // else{
+        //     return response()->json(['error_mensaje'=> 'Ups! Esta clase grupal no puede ser eliminada ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
+        // }
     }
 
     public function Trasladar(Request $request)
