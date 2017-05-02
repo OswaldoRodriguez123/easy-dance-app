@@ -562,7 +562,7 @@
         });
       });
 
-      $('.cargo_{{$supervision->cargo_id}}').show();
+      $('.cargo_{{$supervision->cargo}}').show();
 
       $('input[name="id"]').val("{{$id}}")
 
