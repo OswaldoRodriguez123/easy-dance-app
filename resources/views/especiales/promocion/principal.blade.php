@@ -122,7 +122,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -169,9 +169,8 @@
             });
 
     function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_promocion = row.split('_');
-        var route =route_detalle+"/"+id_promocion[1];
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
         window.location=route;
       }
       
