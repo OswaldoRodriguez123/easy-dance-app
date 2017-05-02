@@ -553,7 +553,7 @@
       $.each(items, function (index, item) {
         $.each(config_supervision, function (index, supervision) {
 
-          console.log(supervision.nombre . ' ' . item)
+          console.log(supervision.nombre + ' ' + item)
 
           if(item == supervision.nombre){
 
