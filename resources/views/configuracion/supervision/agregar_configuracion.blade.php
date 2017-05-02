@@ -58,6 +58,10 @@
                             <div class="clearfix p-b-15"></div>
                                   <div class="col-sm-12">
 
+                                    <label for="id">Supervisión</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="clearfix p-b-35"></div>
+
                                    <div class="form-group fg-line">
                                         <label for="id">Cargo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
 
@@ -86,10 +90,7 @@
                                    <div class="clearfix p-b-15"></div>
 
                                    <div class="form-group fg-line">
-                                    <label for="id">Supervisión</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="clearfix p-b-35"></div>
-                                    
+                                
                                     <label for="nombre_nivel" id="id-nombre_supervision">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del cargo que deseas agregar" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
