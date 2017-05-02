@@ -550,6 +550,8 @@
 
     $(document).ready(function(){
 
+      console.log("{{$supervision->cargo_id}}");
+
       $.each(items, function (index, item) {
         $.each(config_supervision, function (index, supervision) {
 
