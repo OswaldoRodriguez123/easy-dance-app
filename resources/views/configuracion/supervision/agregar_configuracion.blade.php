@@ -269,8 +269,7 @@
                 .attr('id',rowId)
                 .addClass('seleccion');
 
-                $("#agregar_supervision")[0].reset();
-                $('#cargo_supervision').selectpicker('refresh')
+                $('#nombre_supervision').val('')
 
               }else{
                 var nTitle="Ups! ";

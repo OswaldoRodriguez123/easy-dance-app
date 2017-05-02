@@ -55,6 +55,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Cargo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Items a Evaluar</th>
+                                    <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -65,6 +66,7 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$cargo['nombre']}}</td>
                                     <td class="text-center previa">{{$cargo['items']}}</td>
+                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -91,6 +93,8 @@
 @section('js') 
             
         <script type="text/javascript">
+
+        route_eliminar="{{url('/')}}/configuracion/supervisiones/configuracion/eliminar/";
 
         $(document).ready(function(){
 
@@ -133,6 +137,82 @@
          
 
         });
+
+        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+
+                var id = $(this).closest('tr').attr('id');
+                element = this;
+
+                swal({   
+                    title: "Desea eliminar la configuracion?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
+          }
+                });
+            });
+      
+        function eliminar(id, element){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}";
+         procesando();
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          // finprocesado();
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+
+                        swal("Exito!","La configuración ha sido eliminada!","success");
+                        finprocesado();
+                        
+                        }
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      }
 
         </script>
 @stop

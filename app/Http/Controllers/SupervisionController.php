@@ -1521,4 +1521,16 @@ class SupervisionController extends BaseController {
 
     }
 
+    public function eliminar_configuracion($id){
+
+    	$cargos = ConfigSupervision::where('cargo_id', $id)->where('academia_id', Auth::user()->academia_id);
+
+    	if($cargos->delete()){
+			return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+		}else{
+			return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+		}
+
+    }
+
 }
