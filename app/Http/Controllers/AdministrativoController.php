@@ -269,12 +269,19 @@ class AdministrativoController extends BaseController {
         foreach($alumnos as $alumno)
         {
             $total = ItemsFacturaProforma::where('alumno_id', $alumno->id)->sum('importe_neto');
+
             if(!$total){
                 $total = 0;
             }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('alumno_id','=',$alumno->id)
+            ->first();
+
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             
+            $alumno_array['deuda']=$deuda;
             $alumno_array['total']=$total;
             $array[$alumno->id] = $alumno_array;
         }
