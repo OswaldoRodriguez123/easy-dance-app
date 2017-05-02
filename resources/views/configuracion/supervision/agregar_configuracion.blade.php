@@ -57,7 +57,35 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
                                   <div class="col-sm-12">
-                                    <div class="form-group fg-line">
+
+                                   <div class="form-group fg-line">
+                                        <label for="id">Cargo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
+
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
+                                          <div class="fg-line">
+                                          <div class="select">
+                                            <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
+
+                                              <option value="">Selecciona</option>
+                                              @foreach ( $cargos as $cargo )
+                                                <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
+                                              @endforeach
+                                            
+                                            </select>
+                                          </div>
+                                        </div>
+                                        </div>
+                                     <div class="has-error" id="error-cargo_supervision">
+                                          <span >
+                                              <small class="help-block error-span" id="error-cargo_supervision_mensaje" ></small>                               
+                                          </span>
+                                      </div>
+                                   </div>
+
+                                   <div class="clearfix p-b-15"></div>
+
+                                   <div class="form-group fg-line">
                                     <label for="id">Supervisión</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
 
                                     <div class="clearfix p-b-35"></div>
@@ -73,32 +101,6 @@
                                  <div class="has-error" id="error-nombre_supervision">
                                       <span >
                                           <small class="help-block error-span" id="error-nombre_supervision_mensaje" ></small>                               
-                                      </span>
-                                  </div>
-                               </div>
-
-
-                               <div class="form-group fg-line">
-                                    <label for="id">Cargo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
-                                      <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
-
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $cargos as $cargo )
-                                            <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
-                                          @endforeach
-                                        
-                                        </select>
-                                      </div>
-                                    </div>
-                                    </div>
-                                 <div class="has-error" id="error-cargo_supervision">
-                                      <span >
-                                          <small class="help-block error-span" id="error-cargo_supervision_mensaje" ></small>                               
                                       </span>
                                   </div>
                                </div>
@@ -127,7 +129,7 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($config_supervision as $supervision)
+                           <!--  @foreach ($config_supervision as $supervision)
 
                                 <?php $id = $supervision->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
@@ -135,7 +137,7 @@
                                     <td class="text-center previa">{{$supervision->cargo}}</td>
                                     <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                   </tr>
-                            @endforeach 
+                            @endforeach  -->
                                                            
                             </tbody>
                         </table>

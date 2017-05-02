@@ -1491,11 +1491,14 @@ class SupervisionController extends BaseController {
 
     		$items = ConfigSupervision::where('cargo_id',$cargo->id)->count();
 
-    		$collection=collect($cargo);   
+    		if($items > 0){
 
-            $cargo_array = $collection->toArray();
-            $cargo_array['items']=$items;
-            $array[$cargo->id] = $cargo_array;
+	    		$collection=collect($cargo);   
+
+	            $cargo_array = $collection->toArray();
+	            $cargo_array['items']=$items;
+	            $array[$cargo->id] = $cargo_array;
+            }
 
     	}
 
