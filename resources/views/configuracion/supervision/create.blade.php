@@ -114,8 +114,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="staff_id" id="staff_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          @foreach ( $staffs as $staff )
-                                          <option value = "{{ $staff['id'] }}">{{ $staff['nombre'] }} {{ $staff['apellido'] }}</option>
+                                          @foreach ( $staffs_instructores as $staff_instructor )
+                                            <option value = "{{$staff_instructor['id']}}-{{$staff_instructor['tipo']}}">{{ $staff_instructor['nombre'] }} / {{ $staff_instructor['cargo'] }}</option>
                                           @endforeach
                                         </select>
                                       </div>

@@ -42,8 +42,8 @@
                         <div class="card-header text-right">
 
                             <div class="text-right">
-                              <span class="f-15">Realizadas: <span id="horas_asignadas">{{$dadas}}</span><br>
-                              <span class="f-15">Restantes: <span id="horas_restantes">{{$restantes}}</span>
+                              <span class="f-15">Realizadas: <span id="horas_asignadas">{{$restantes}}</span><br>
+                              <span class="f-15">Restantes: <span id="horas_restantes">{{$dadas}}</span>
                             </div>
   
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Clase Grupal: {{$nombre}}</p>

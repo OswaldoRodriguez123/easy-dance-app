@@ -59,8 +59,23 @@ class SupervisionController extends BaseController {
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         $config_supervision = ConfigSupervision::where('academia_id', Auth::user()->academia_id)->get();
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        $instructores = Staff::where('academia_id', Auth::user()->academia_id)->get();
 
-        return view('configuracion.supervision.create')->with(['dias_de_semana' => $dias_de_semana, 'config_staff' => $config_staff, 'staffs' => $staffs, 'config_supervision' => $config_supervision]);
+        $array = array();
+
+        foreach($staffs as $item){
+
+            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 1, 'cargo' => 'Staff');
+
+        }
+
+        foreach($instructores as $item){
+
+            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor');
+
+        }
+
+        return view('configuracion.supervision.create')->with(['dias_de_semana' => $dias_de_semana, 'config_staff' => $config_staff, 'staffs' => $staffs, 'staffs_instructores' => $array, 'config_supervision' => $config_supervision]);
     }
 
     public function store(Request $request)
