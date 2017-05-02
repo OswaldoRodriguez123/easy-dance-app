@@ -65,13 +65,13 @@ class SupervisionController extends BaseController {
 
         foreach($staffs as $item){
 
-            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 1, 'cargo' => 'Staff');
+            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 1, 'cargo' => 'Staff', 'cargo_id' => $item['cargo']);
 
         }
 
         foreach($instructores as $item){
 
-            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor');
+            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor', 'cargo_id' => 1);
 
         }
 
@@ -109,6 +109,7 @@ class SupervisionController extends BaseController {
 	    else{
 
 	    	$fecha = explode(" - ", $request->fecha);	
+	    	$staff = explode("-", $request->staff_id);
 
 	    	$frecuencia = $request->frecuencia;
 	        $fecha_inicio = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
@@ -118,7 +119,8 @@ class SupervisionController extends BaseController {
 	        $supervision = new Supervision;
 
 	        $supervision->supervisor_id = $request->supervisor_id;
-	        $supervision->staff_id = $request->staff_id;
+	        $supervision->staff_id = $staff[0];
+	        $supervision->tipo_staff = $staff[1];
 	        $supervision->cargo = $request->cargo;
 	        $supervision->fecha_inicio = $fecha_inicio_original;
 	        $supervision->fecha_final = $fecha_final;
@@ -1217,7 +1219,23 @@ class SupervisionController extends BaseController {
 
         	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
 
-            return view('configuracion.supervision.planilla')->with(['staffs' => $staffs, 'supervision' => $supervision, 'supervisor' => $supervisor, 'config_staff' => $config_staff, 'id' => $id, 'dias_de_semana' => $dias_de_semana, 'config_supervision' => $config_supervision, 'fecha_inicio' => $fecha_inicio, 'fecha_final' => $fecha_final, 'cargo_a_supervisar' => $cargo_a_supervisar, 'staff_a_supervisar' => $staff_a_supervisar, 'items_a_evaluar' => $items_a_evaluar, 'cargo_id' => $cargo_id]);
+        	$instructores = Staff::where('academia_id', Auth::user()->academia_id)->get();
+
+	        $array = array();
+
+	        foreach($staffs as $item){
+
+	            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 1, 'cargo' => 'Staff', 'cargo_id' => $item['cargo']);
+
+	        }
+
+	        foreach($instructores as $item){
+
+	            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor', 'cargo_id' => 1);
+
+	        }
+
+            return view('configuracion.supervision.planilla')->with(['staffs' => $staffs, 'supervision' => $supervision, 'supervisor' => $supervisor, 'config_staff' => $config_staff, 'id' => $id, 'dias_de_semana' => $dias_de_semana, 'config_supervision' => $config_supervision, 'fecha_inicio' => $fecha_inicio, 'fecha_final' => $fecha_final, 'cargo_a_supervisar' => $cargo_a_supervisar, 'staff_a_supervisar' => $staff_a_supervisar, 'items_a_evaluar' => $items_a_evaluar, 'cargo_id' => $cargo_id, 'staffs_instructores' => $array]);
 
         }else{
            return redirect("configuracion/supervisiones");

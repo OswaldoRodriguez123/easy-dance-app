@@ -321,6 +321,7 @@
   route_principal="{{url('/')}}/configuracion/supervisiones";
 
   var staffs = <?php echo json_encode($staffs);?>;
+  var staffs_instructores = <?php echo json_encode($staffs_instructores);?>;
   var checkbox;
 
   $(document).ready(function(){
@@ -592,12 +593,12 @@
         id = $(this).val();
 
         if(id != ''){
-          $("#staff_id option[value='"+id+"']").attr("disabled","disabled");
-          $("#staff_id option[value='"+id+"']").data("icon","glyphicon-remove");
+          $("#staff_id option[value='"+id+"-1']").attr("disabled","disabled");
+          $("#staff_id option[value='"+id+"-1']").data("icon","glyphicon-remove");
         }
 
-        $("#staff_id option[value!='"+id+"']").removeAttr("disabled","disabled");
-        $("#staff_id option[value!='"+id+"']").data("icon","");
+        $("#staff_id option[value!='"+id+"-1']").removeAttr("disabled","disabled");
+        $("#staff_id option[value!='"+id+"-1']").data("icon","");
 
             
         $('#staff_id').selectpicker('refresh');
@@ -605,18 +606,23 @@
 
       $('#staff_id').on('change', function(){
 
-        id = $(this).val();
+        explode = $(this).val();
+        id = explode.split('-')
 
         if(id != ''){
-          $("#supervisor_id option[value='"+id+"']").attr("disabled","disabled");
-          $("#supervisor_id option[value='"+id+"']").data("icon","glyphicon-remove");
+          if(id[1] == '1'){
+            $("#supervisor_id option[value='"+id[0]+"']").attr("disabled","disabled");
+            $("#supervisor_id option[value='"+id[0]+"']").data("icon","glyphicon-remove");
+            $("#supervisor_id option[value!='"+id[0]+"']").removeAttr("disabled","disabled");
+            $("#supervisor_id option[value!='"+id[0]+"']").data("icon","");
+          }else{
+            $("#supervisor_id option[value!='"+explode+"']").removeAttr("disabled","disabled");
+            $("#supervisor_id option[value!='"+explode+"']").data("icon","");
+          }
         }
-        
-        $("#supervisor_id option[value!='"+id+"']").removeAttr("disabled","disabled");
-        $("#supervisor_id option[value!='"+id+"']").data("icon","");
 
-            
         $('#supervisor_id').selectpicker('refresh');
+
       });
 
       $('#cargo').on('change', function(){
@@ -633,26 +639,25 @@
 
         $('.supervisiones').hide();
         $('.cargo_'+id).show();
-
         $('#staff_id').empty();
 
-        var staff = $.grep(staffs, function(e){ return e.cargo == id; });
+        var staff = $.grep(staffs_instructores, function(e){ return e.cargo_id == id; });
 
         $('#staff_id').append( new Option("Selecciona",""));
 
         $.each(staff, function (index, arreglo) {
-          $('#staff_id').append( new Option(arreglo.nombre + ' ' + arreglo.apellido,arreglo.id));
+          $('#staff_id').append( new Option(arreglo.nombre + ' / ' +  arreglo.cargo,arreglo.id+'-'+arreglo.tipo));
         });
 
-        id = $('#supervisor_id').val()
+        id = $('#supervisor_id').val();
 
         if(id != ''){
-          $("#staff_id option[value='"+id+"']").attr("disabled","disabled");
-          $("#staff_id option[value='"+id+"']").data("icon","glyphicon-remove");
+          $("#staff_id option[value='"+id+"-1']").attr("disabled","disabled");
+          $("#staff_id option[value='"+id+"-1']").data("icon","glyphicon-remove");
         }
         
-        $("#staff_id option[value!='"+id+"']").removeAttr("disabled","disabled");
-        $("#staff_id option[value!='"+id+"']").data("icon","");
+        $("#staff_id option[value!='"+id+"-1']").removeAttr("disabled","disabled");
+        $("#staff_id option[value!='"+id+"-1']").data("icon","");
             
         $('#staff_id').selectpicker('refresh');
 

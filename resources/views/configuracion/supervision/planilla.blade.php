@@ -35,8 +35,10 @@
 
                                           @foreach ( $staffs as $staff )
                                             <?php $exist = false; ?>
-                                              @if ($supervision->staff_id == $staff->id)
-                                                <?php $exist = true; ?>
+                                              @if($supervision->tipo_staff == 1)
+                                                @if ($supervision->staff_id == $staff->id)
+                                                  <?php $exist = true; ?>
+                                                @endif
                                               @endif
                                             @if ($exist)
                                                 <option disabled data-icon = "glyphicon-remove" value = "{{ $staff->id }}">{{ $staff->nombre }} {{ $staff->apellido }}</option>
@@ -165,16 +167,20 @@
 
                                       <div class="select">
                                         <select class="form-control selectpicker bs-select-hidden" data-live-search="true" id="staff_id" name="staff_id">
-                                        @foreach ( $staffs as $staff )
-                                          <?php $exist = false; ?>
+                                        @foreach ( $staffs_instructores as $staff_instructor )
+                                          <?php 
+                                            $exist = false; 
+                                            $supervisor_id = $supervision->supervisor_id.'-'.'1';
+                                            $id_a_comparar = $staff_instructor['id'].'-'.$staff_instructor['tipo'];
 
-                                            @if ($supervision->supervisor_id == $staff->id)
+                                          ?>
+                                            @if ($supervisor_id == $id_a_comparar)
                                               <?php $exist = true; ?>
                                             @endif
                                           @if($exist)
-                                              <option disabled data-icon = "glyphicon-remove" value = "{{ $staff->id }}">{{ $staff->nombre }} {{ $staff->apellido }}</option>
+                                              <option disabled data-icon = "glyphicon-remove" value = "{{$staff_instructor['id']}}-{{$staff_instructor['tipo']}}">{{ $staff_instructor['nombre'] }} / {{ $staff_instructor['cargo'] }}</option>
                                           @else
-                                              <option value = "{{ $staff->id }}">{{ $staff->nombre }} {{ $staff->apellido }}</option>
+                                              <option value = "{{$staff_instructor['id']}}-{{$staff_instructor['tipo']}}">{{ $staff_instructor['nombre'] }} / {{ $staff_instructor['cargo'] }}</option>
                                           @endif
                                          @endforeach
                                         </select>
@@ -851,12 +857,12 @@
         id = $(this).val();
 
         if(id != ''){
-          $("#staff_id option[value='"+id+"']").attr("disabled","disabled");
-          $("#staff_id option[value='"+id+"']").data("icon","glyphicon-remove");
+          $("#staff_id option[value='"+id+"-1']").attr("disabled","disabled");
+          $("#staff_id option[value='"+id+"-1']").data("icon","glyphicon-remove");
         }
 
-        $("#staff_id option[value!='"+id+"']").removeAttr("disabled","disabled");
-        $("#staff_id option[value!='"+id+"']").data("icon","");
+        $("#staff_id option[value!='"+id+"-1']").removeAttr("disabled","disabled");
+        $("#staff_id option[value!='"+id+"-1']").data("icon","");
 
             
         $('#staff_id').selectpicker('refresh');
@@ -864,18 +870,41 @@
 
       $('#staff_id').on('change', function(){
 
-        id = $(this).val();
+        explode = $(this).val();
+        id = explode.split('-')
 
         if(id != ''){
-          $("#supervisor_id option[value='"+id+"']").attr("disabled","disabled");
-          $("#supervisor_id option[value='"+id+"']").data("icon","glyphicon-remove");
+          if(id[1] == '1'){
+            $("#supervisor_id option[value='"+id[0]+"']").attr("disabled","disabled");
+            $("#supervisor_id option[value='"+id[0]+"']").data("icon","glyphicon-remove");
+            $("#supervisor_id option[value!='"+id[0]+"']").removeAttr("disabled","disabled");
+            $("#supervisor_id option[value!='"+id[0]+"']").data("icon","");
+          }else{
+            $("#supervisor_id option[value!='"+explode+"']").removeAttr("disabled","disabled");
+            $("#supervisor_id option[value!='"+explode+"']").data("icon","");
+          }
         }
-        
-        $("#supervisor_id option[value!='"+id+"']").removeAttr("disabled","disabled");
-        $("#supervisor_id option[value!='"+id+"']").data("icon","");
 
-            
         $('#supervisor_id').selectpicker('refresh');
+
+      });
+
+
+      $('#cargo').on('change', function(){
+
+        $.each(supervisiones, function (index, array) {
+          $(array).prop('checked', false)
+          check = $(array).attr('id');
+          explode = check.split('_')
+          id = explode[1];
+          $('#supervision_'+id).val('');
+        });
+
+        id = $(this).val();
+
+        $('.supervisiones').hide();
+        $('.cargo_'+id).show();
+
       });
 
       $('.frecuencia').on('change', function(){
@@ -928,24 +957,6 @@
 
       });
 
-      $('#cargo').on('change', function(){
-
-        $.each(supervisiones, function (index, array) {
-          $(array).prop('checked', false)
-          check = $(array).attr('id');
-          explode = check.split('_')
-          id = explode[1];
-          $('#supervision_'+id).val('');
-        });
-
-        id = $(this).val();
-
-        $('.supervisiones').hide();
-        $('.cargo_'+id).show();
-
-      });
-
-    
    </script> 
 
    <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        

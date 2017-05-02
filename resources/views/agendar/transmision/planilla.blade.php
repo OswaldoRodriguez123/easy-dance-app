@@ -415,7 +415,10 @@
                 
                     <div class="block-header">
                       @if(Auth::user()->usuario_tipo == 1)
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/fiestas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Transmisión</a>
+                       <!-- <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/transmisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Transmisión</a> -->
+                        <?php $url = "/agendar/transmisiones" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
