@@ -72,6 +72,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="dia">Día</th>
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
@@ -83,6 +84,7 @@
                             @foreach ($activas as $fecha)
                                 <tr id="{{$fecha['id']}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
+                                    <td class="text-center previa">{{$fecha['dia']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>

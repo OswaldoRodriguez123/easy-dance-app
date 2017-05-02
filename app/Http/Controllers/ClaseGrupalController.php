@@ -3453,13 +3453,46 @@ class ClaseGrupalController extends BaseController {
 
         $tipo = 'activa';
         $bloqueo_id = 0;
+
+        $i = $dt->dayOfWeek;
+
+        if($i == 1){
+
+          $dia = 'Lunes';
+
+        }else if($i == 2){
+
+          $dia = 'Martes';
+
+        }else if($i == 3){
+
+          $dia = 'Miercoles';
+
+        }else if($i == 4){
+
+          $dia = 'Jueves';
+
+        }else if($i == 5){
+
+          $dia = 'Viernes';
+
+        }else if($i == 6){
+
+          $dia = 'Sabado';
+
+        }else if($i == 0){
+
+          $dia = 'Domingo';
+
+        }
+
         $i = 0;
 
         if($dt >= Carbon::now()){
-            $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+            $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
             $i++;
         }else{
-            $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+            $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
             $i++;
         }
 
@@ -3485,11 +3518,43 @@ class ClaseGrupalController extends BaseController {
                 $bloqueo_id = $horario_bloqueado->id;
             }
 
+            $i = $dt->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
             if($dt >= Carbon::now()){
-                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
             }else{
-                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
             }
             
@@ -3510,11 +3575,43 @@ class ClaseGrupalController extends BaseController {
             $tipo = 'activa';
             $bloqueo_id = 0;
 
+            $i = $dt->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
             if($dt >= Carbon::now()){
-                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+                $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
             }else{
-                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+                $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                 $i++;
             }
 
@@ -3540,11 +3637,43 @@ class ClaseGrupalController extends BaseController {
                     $bloqueo_id = $horario_bloqueado->id;
                 }
 
+                $i = $dt->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
                 if($dt >= Carbon::now()){
-                    $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+                    $activas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                     $i++;
                 }else{
-                    $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id);
+                    $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
                     $i++;
                 }
             }
