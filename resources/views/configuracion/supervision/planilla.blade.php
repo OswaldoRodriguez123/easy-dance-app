@@ -554,7 +554,6 @@
       $.each(config_supervision, function (index, supervision) {
 
         if($.inArray(items, supervision.nombre)){
-            console.log(supervision.nombre)
             $('#supervision_'+supervision.id).val(supervision.nombre);
             $('#switch2_'+supervision.id).prop('checked',true)
         }
