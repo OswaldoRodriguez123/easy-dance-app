@@ -550,18 +550,15 @@
 
     $(document).ready(function(){
 
-      $.each(items, function (index, item) {
-        $.each(config_supervision, function (index, supervision) {
 
-          console.log(supervision.nombre + ' ' + item)
+      $.each(config_supervision, function (index, supervision) {
 
-          if(item == supervision.nombre){
-
+        if($.inArray(items, supervision.nombre)){
+            console.log(supervision.nombre)
             $('#supervision_'+supervision.id).val(item);
             $('#switch2_'+supervision.id).prop('checked',true)
-          }
-        
-        });
+        }
+
       });
 
       $('.cargo_{{$cargo_id}}').show();
