@@ -1175,7 +1175,7 @@ class SupervisionController extends BaseController {
 
         $supervision = Supervision::join('staff', 'supervisiones.staff_id','=','staff.id')
 	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
-	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones.cargo as cargo_id', 'supervisiones.id')
+	        ->select('supervisiones.*', 'config_staff.nombre as nombre_cargo', 'staff.nombre', 'staff.apellido', 'supervisiones.cargo as cargo_id', 'supervisiones.id')
 	        ->where('supervisiones.id', $id)
         ->first();
 
@@ -1197,7 +1197,7 @@ class SupervisionController extends BaseController {
         	$fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_inicio . ' 00:00:00')->format('d/m/Y');
         	$fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_final . ' 00:00:00')->format('d/m/Y');
 
-        	$cargo_a_supervisar = $supervision->cargo;
+        	$cargo_a_supervisar = $supervision->nombre_cargo;
         	$staff_a_supervisar = $supervision->nombre . ' ' . $supervision->apellido;
 
         	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
