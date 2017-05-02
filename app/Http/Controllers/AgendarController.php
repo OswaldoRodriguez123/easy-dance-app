@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Taller;
+use App\HorarioClaseGrupal;
 use App\ClaseGrupal;
 use App\ClasePersonalizada;
 use App\InscripcionClasePersonalizada;
