@@ -75,9 +75,9 @@
 				                        	<small class="help-block error-span" id="error-supervisor_id_mensaje" ></small>                                
 				                      	</span>
 				                  	</div>  
-					                <h4>Cargo a Supervisar: {{ $supervision->cargo}}</h4>
+					                <h4>Cargo a Supervisar: {{ $cargo }}</h4>
 					                <div class="clearfix"></div>
-				                	<h4>Staff a Supervisar: {{ $supervision->nombre }} {{ $supervision->apellido }}</h4>
+				                	<h4>Staff a Supervisar: {{ $nombre }}</h4>
 				                	<div class="clearfix"></div>     
 				                </div>
 			            	</div>
@@ -106,13 +106,22 @@
 
 		                  					{{$items}}
 		                  				@else
-											{{ str_limit($items, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
+											{{ str_limit($items, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">...</span> <span class="c-azul">Ver mas</span>
 		                  				@endif
 
 	                  				</div>
 	  								<div class="clearfix"></div>  
-	  								<div class="input-slider m-b-25 m-l-25 slider-mov" id="slider{{$id}}"></div>
-	  								<strong class="pull-right text-muted slider-value" id="value-lower{{$id}}"></strong>
+	  								<div class="input-slider m-b-25 m-l-25 slider-mov div_{{$id}}" id="slider{{$id}}"></div>
+	  								<strong class="pull-right text-muted slider-value slider-value-visible div_{{$id}}" id="value-lower{{$id}}"></strong>
+
+	  								<div class="text-center p-t-10">
+
+		  								<div class="checkbox">
+		  									<span style="margin-right: 5px">Habilitar</span> <input style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
+		  								</div>
+
+	  								</div>
+
 	  				                  
 	  							</div>
 
@@ -128,7 +137,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-									<span class="f-30" id="eval_total">{{count($items_a_evaluar)}}</span> acumulados de <span class="f-30">{{(count($items_a_evaluar))*10}}</span>
+									<span class="f-30" id="puntos_acumulados">{{count($items_a_evaluar)}}</span> acumulados de <span id="puntos_totales" class="f-30">{{(count($items_a_evaluar))*10}}</span>
 									<div class="text-right" id="id-total"></div>
 									<input type="hidden" name="total_nota" id="total_nota" value="{{count($items_a_evaluar)}}">
 								</div>
@@ -215,10 +224,16 @@
 		route_agregar="{{url('/')}}/configuracion/supervisiones/evaluar";
 		route_principal="{{url('/')}}/configuracion/supervisiones/evaluaciones";
 
+		var puntos_acumulados = parseInt("{{count($items_a_evaluar)}}");
+		var numero_items = parseInt("{{$numero_de_items}}");
+		var puntos_totales = parseInt("{{(count($items_a_evaluar))*10}}")
 		var arrayNotas = new Array();
 		var items_a_evaluar = <?php echo json_encode($items_a_evaluar);?>;
+		var nota_actual = 0;
 
 		$(document).ready(function() {
+
+		    nota_actual = $("#total_nota").attr("value");
 
 			$("#agregar_evaluacion")[0].reset();
 
@@ -238,19 +253,24 @@
 			}
 
 			$('.slider-mov').change(function() {
-				notas = $('.slider-value').text();
+				notas = $('.slider-value-visible').text();
 				//Divido la cadena usando el separador
 				//punto (.) de las notas		
 				arrayNotas = notas.split(".");
-				var total = 0;
+				puntos_acumulados = 0;
 				for (var i = 0; i < arrayNotas.length-1; i++) {
-				    total += arrayNotas[i] << 0;
+				    puntos_acumulados += arrayNotas[i] << 0;
 				}
-				$("#eval_total").html(total);
-				$("#total_nota").val(total);
+
+				$("#puntos_acumulados").html(puntos_acumulados);
+				$("#total_nota").val(puntos_acumulados);
+
 			});
 
 		});
+
+
+		//READY
 
 		//Aqui cargo las barra de Slide	
 		function loadId(id){
@@ -266,6 +286,7 @@
 					'max': 10
 				}
 			});
+
 		    $('#slider'+id).Link('lower').to($('#value-lower'+id));
 		}
 
@@ -273,11 +294,9 @@
 
 	  	function porcentaje(){
 
-	  		var numero_items = {{$numero_de_items}};
 		    var nota_total = numero_items*10;
-		    var nota_actual =$("#total_nota").attr("value");
 		    
-		    porcetaje = (nota_actual*100)/nota_total;
+		    porcetaje = (puntos_acumulados*100)/nota_total;
 		    porcetaje = porcetaje.toFixed(2);
 		    $("#barra_de_progreso").attr("value",porcetaje);
 		    $("#text-progreso").text(porcetaje+"%");
@@ -412,13 +431,13 @@
 					$.each(items_examen,function(index,array){
 						$('#slider'+array).find('.noUi-origin').css('left','0%');
 						$('#value-lower'+array).text("1.00");
-						$("#eval_total").html(items_examen.length);
+						$("#puntos_acumulados").html(items_examen.length);
 						$("#total_nota").val(items_examen.length);
 						$("#agregar_evaluacion")[0].reset();
 					});
 
-	        $("#supervisor_id").val("{{$supervision->supervisor_id}}")
-	        $("#supervisor_id").selectpicker('render');
+			        $("#supervisor_id").val("{{$supervision->supervisor_id}}")
+			        $("#supervisor_id").selectpicker('render');
 
 					$('html,body').animate({scrollTop: $("#id-supervisor_id").
 						offset().top-90,}, 800);
@@ -431,6 +450,40 @@
 	        	$("#error-"+campo[i]+"_mensaje").html('');
 	    	}
 	  	}
+
+	  	$('input[type="checkbox"]').change(function(){
+	  		id = $(this).attr('id')
+	  		explode = id.split('_')
+	  		id = explode[1];
+	  		valor = parseInt($("#value-lower"+id).text());
+
+	  		if($(this).is(':checked')){
+
+	  			$('.div_'+id).show()
+	  			$('#value-lower'+id).addClass('slider-value-visible')
+	  			$('#value-lower'+id).removeClass('slider-value-invisible')
+	  			
+	  			puntos_totales = puntos_totales + 10
+	  			puntos_acumulados =  parseInt(puntos_acumulados) + valor;
+	  			numero_items++
+	  			arrayNotas[id] = valor;
+
+	  		}else{
+
+	  			$('.div_'+id).hide()
+	  			$('#value-lower'+id).removeClass('slider-value-visible')
+	  			$('#value-lower'+id).addClass('slider-value-invisible')
+
+	  			puntos_totales = puntos_totales - 10
+	  			puntos_acumulados = parseInt(puntos_acumulados) - valor;
+	  			numero_items--
+	  			arrayNotas[id] = 0;
+	  		}
+
+	  		$("#puntos_acumulados").html(puntos_acumulados);
+	  		$("#puntos_totales").html(puntos_totales);
+			$("#total_nota").val(puntos_totales);
+	  	})
 
 	</script>
 

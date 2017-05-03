@@ -17,6 +17,7 @@ use App\HorarioSupervision;
 use App\DetalleSupervisionEvaluacion;
 use App\SupervisionEvaluacion;
 use App\Academia;
+use App\Instructor;
 use DB;
 use Session;
 
@@ -59,7 +60,7 @@ class SupervisionController extends BaseController {
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         $config_supervision = ConfigSupervision::where('academia_id', Auth::user()->academia_id)->get();
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
-        $instructores = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
 
         $array = array();
 
@@ -1219,7 +1220,7 @@ class SupervisionController extends BaseController {
 
         	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
 
-        	$instructores = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        	$instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
 
 	        $array = array();
 
@@ -1246,17 +1247,25 @@ class SupervisionController extends BaseController {
     {   
     	Session::put('id_supervision_evaluacion', $id);
 
-        $supervision = Supervision::join('staff', 'staff.id', '=', 'supervisiones.staff_id')
-        	->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
-            ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido')
-            ->where('supervisiones.id', $id)
-        ->first();
+        $supervision = Supervision::find($id);
 
         if($supervision){
-
-        	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->where('id', '!=', $supervision->staff_id)->get();
+        	
         	$staff = Staff::find($supervision->supervisor_id);
 
+        	if($supervision->tipo_staff == 1){
+        		$staffs = Staff::where('academia_id', Auth::user()->academia_id)->where('id', '!=', $supervision->staff_id)->get();
+        		$staff = Staff::find($supervision->staff_id);
+        		$nombre = $staff->nombre . ' ' . $staff->apellido;
+        		$cargo = ConfigStaff::find($staff->cargo);
+        		$cargo = $cargo->nombre;
+        	}else{
+        		$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        		$instructor = Instructor::find($supervision->staff_id);
+        		$nombre = $instructor->nombre . ' ' . $instructor->apellido;
+        		$cargo = 'Instructor';
+        	}
+        
 	    	if($staff){
 	    		$supervisor = $staff->nombre . ' ' . $staff->apellido;
 	    	}else{
@@ -1269,7 +1278,7 @@ class SupervisionController extends BaseController {
             $numero_de_items = count($items_a_evaluar);
 
             return view('configuracion.supervision.evaluar')
-                   ->with(['staffs' => $staffs, 'supervision' => $supervision, 'fecha' => $hoy, 'items_a_evaluar' => $items_a_evaluar, 'id' => $id, 'numero_de_items'=>$numero_de_items, 'academia' => $academia]);
+                   ->with(['staffs' => $staffs, 'supervision' => $supervision, 'fecha' => $hoy, 'items_a_evaluar' => $items_a_evaluar, 'id' => $id, 'numero_de_items'=>$numero_de_items, 'academia' => $academia, 'nombre' => $nombre, 'cargo' => $cargo]);
         }else{
            return redirect("configuracion/supervisiones"); 
         }

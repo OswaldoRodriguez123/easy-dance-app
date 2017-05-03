@@ -24,10 +24,15 @@
                     <div class="block-header">
 
                         @if(isset($id_evaluacion))
+
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-                        @else
+
+                        @elseif(isset($id))
 
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @else
+
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
                         @endif
                         
@@ -48,7 +53,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            @if($id)
+                            @if(isset($id))
                                 <div class="col-sm-4 col-sm-offset-8 text-center">
 
                                     Porcentaje de Efectividad<br>
