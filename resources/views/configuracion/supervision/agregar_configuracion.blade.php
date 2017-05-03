@@ -23,6 +23,61 @@
 @stop
 @section('content')
 
+             <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Configuración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_edit" id="form_edit"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Nombre</label>
+                                        <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="150 Caracteres">
+                                    </div>
+                                    <div class="has-error" id="error-nombre">
+                                      <span >
+                                          <small id="error-nombre_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="supervision_id" id="supervision_id"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar_edicion">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <section id="content">
                 <div class="container">
@@ -105,7 +160,7 @@
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre_supervision" id="nombre_supervision" placeholder="Ej. Actitud">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_supervision" id="nombre_supervision" placeholder="Ej. Actitud" maxlength="150">
                                       </div>
                                     </div>
                                  <div class="has-error" id="error-nombre_supervision">
@@ -143,10 +198,10 @@
                                 @foreach ($config_supervision as $supervision)
 
                                     <?php $id = $supervision->id; ?>
-                                    <tr id="{{$id}}" class="seleccion" >
+                                    <tr id="{{$id}}" class="seleccion" data-nombre="{{$supervision->nombre}}" >
                                         <td class="text-center previa">{{$supervision->nombre}}</td>
                                         <td class="text-center previa">{{$supervision->cargo}}</td>
-                                        <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                        <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i> <i id={{$id}} class="zmdi zmdi-edit f-20 p-r-10 pointer acciones"></i></td>
                                       </tr>
                                 @endforeach 
                               @endif
@@ -206,6 +261,7 @@
   }
 
   route_agregar="{{url('/')}}/configuracion/supervisiones/configuracion/agregar";
+  route_editar="{{url('/')}}/configuracion/supervisiones/configuracion/update";
   route_principal="{{url('/')}}/configuracion/supervisiones/configuracion";
   route_cancelar = "{{url('/')}}/configuracion/supervisiones/configuracion/cancelar";
 
@@ -391,6 +447,16 @@
           .draw();
     });
 
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-edit', function () {
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+      var nombre = $(this).closest('tr').data('nombre');
+      $('#supervision_id').val(id)
+      $('#nombre').val(nombre)
+      $('#modalEditar').modal('show')
+    })
+
     function limpiarMensaje(){
       var campo = ["cargo"];
       fLen = campo.length;
@@ -398,6 +464,79 @@
           $("#error-"+campo[i]+"_mensaje").html('');
       }
     }
+
+    $("#guardar_edicion").click(function(){
+
+      procesando();
+
+      var route = route_editar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_edit" ).serialize(); 
+
+      limpiarMensaje();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+
+                
+                row = $('#'+respuesta.id);
+                $(row).data('nombre', respuesta.nombre);
+                $(row).find("td").eq(0).html(respuesta.nombre);
+                
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+                var nType = 'success';
+                $('.modal').modal('hide')
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+
+              }  
+              finprocesado();
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                     
+              
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              finprocesado();
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+      
+    });
 
     $("#guardar").click(function(){
 

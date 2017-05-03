@@ -985,6 +985,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::post('configuracion/supervisiones/configuracion/agregarsupervisionfija','SupervisionController@agregar_supervision_fija');
 			Route::post('configuracion/supervisiones/configuracion/eliminarsupervisionfija/{id}','SupervisionController@eliminar_supervision_fija');
 			Route::get('configuracion/supervisiones/configuracion/detalle/{id}', 'SupervisionController@editar_configuracion');
+			Route::post('configuracion/supervisiones/configuracion/update','SupervisionController@updateConfiguracion');
 
 			
 
