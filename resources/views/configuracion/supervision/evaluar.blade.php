@@ -99,6 +99,13 @@
 							@foreach( $items_a_evaluar as $items)
 	  							<?php $id = $i ?>
 
+	  							<?php
+	  								if($j == 3){
+	  									echo '<div class="clearfix"></div>';
+	  									$j = 1;
+	  								}
+  								?>
+
 	  							<div class="col-md-4 m-b-25">
 
 	                  				<div class="m-b-20 m-l-25">
@@ -128,11 +135,6 @@
 
 
 	  							<?php 
-
-	  								if($j == 3){
-	  									echo '<div class="clearfix"></div>';
-	  									$j = 1;
-	  								}
 
 				                  	$item[$i] = $i; 
 				                  	$i++;
