@@ -244,14 +244,14 @@
 
                                 <div class="cargo_{{$supervision->cargo_id}} supervisiones col-sm-6 m-b-20" style="display:none">
 
-                                    <span class="f-20 f-700">
+                                    <span class="f-15 f-700">
 
                                       @if(strlen($supervision->nombre) <= 30)
 
                                         {{$supervision->nombre}}
 
                                       @else
-                                        {{ str_limit($supervision->nombre, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
+                                        {{ str_limit($supervision->nombre, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$supervision->nombre}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
                                       @endif
    
 
@@ -261,7 +261,7 @@
 
                                     <div class="toggle-switch m-l-10" data-ts-color="purple" style="margin-top: 2px">
 
-                                        <span class="p-r-10 f-700 f-16">No</span>
+                                        <span class="p-r-10 f-700 f-15">No</span>
 
                                         <input class="supervision" id="switch2_{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
                                       
