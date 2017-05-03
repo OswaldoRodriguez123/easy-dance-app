@@ -93,22 +93,15 @@
 							
 							<hr>
 
-							<?php $i=0 ?>
-							<?php $j = 1 ?>
+							<?php $i=0; ?>
+							<?php $j=1; ?>
 
 							@foreach( $items_a_evaluar as $items)
 	  							<?php $id = $i ?>
 
-	  							<?php
-	  								if($j == 3){
-	  									echo '<div class="clearfix"></div>';
-	  									$j = 1;
-	  								}
-  								?>
+	  							<div class="col-md-4">
 
-	  							<div class="col-md-4 m-b-25">
-
-	                  				<div class="m-b-20 m-l-25">
+	                  				<div class="p-l-25">
 
 		                  				@if(strlen($items) <= 30)
 
@@ -135,6 +128,11 @@
 
 
 	  							<?php 
+
+	  								if($j == 3){
+	  									echo '<div class="clearfix m-b-25"></div>';
+	  									$j = 1;
+	  								}
 
 				                  	$item[$i] = $i; 
 				                  	$i++;
