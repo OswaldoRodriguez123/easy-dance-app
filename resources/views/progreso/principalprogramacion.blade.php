@@ -23,8 +23,7 @@
                     <div class="block-header">
 
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        
                     </div> 
                     
                     <div class="card">
@@ -33,78 +32,70 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-clases-grupales f-25"></i> Selecciona la clase grupal</p>
                             <hr class="linea-morada">                                                         
                         </div>
-
-
-
-
                         
                         <div class="card-body p-b-20">
                             <div class="row">
-                              <div class="container">
+                                <div class="container">
 
 
-                              @if(count($clase_grupal_join) > 0)
+                                    @if($clase_grupal_join)
 
-                                  @foreach($clase_grupal_join as $clase_grupal)
-                  
-                                      <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                                        @foreach($clase_grupal_join as $clase_grupal)
+                      
+                                            <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-                                        @if($clase_grupal->imagen)
-                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
-                                        @else
+                                                @if($clase_grupal->imagen)
+                                                    <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                                @else
 
-                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                                    <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
 
-                                        @endif
+                                                @endif
 
-                                        <div class="col-sm-7">
+                                                <div class="col-sm-7">
 
-                                        <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal->clase_grupal_nombre}}</p>
-                                    
-                                        <p class="f-15 f-700">{{ str_limit($clase_grupal->descripcion, $limit = 250, $end = '...') }}</p>
+                                                    <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal->clase_grupal_nombre}}</p>
+                                                
+                                                    <p class="f-15 f-700">{{ str_limit($clase_grupal->descripcion, $limit = 250, $end = '...') }}</p>
+
+                                                </div>
+
+                                                <div class="col-sm-3">
+
+                                                    <div style="padding-top: 50px; padding-left: 25%">
+                                                        <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_grupal->id}}">Ver progreso<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                                                    </div>
+
+                                                </div>    
+                                        
+                                            </div>
+
+                                            <div class="clearfix"></div>
+
+                                        @endforeach
+
+                                        <hr style="margin-top: 1px">
+
+                                    @else
+
+                                        <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
+
+
+                                            <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                                            <div class="c-morado f-30 text-center"> Ups! lo sentimos, no estas inscrito en ninguna clase grupal. </div>
+
 
                                         </div>
 
-                                        <div class="col-sm-3">
+                                    @endif
 
-                                        <div style="padding-top: 50px; padding-left: 25%">
-                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_grupal->id}}">Ver progreso<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
-                                        </div>
-
-                                        </div>
-
-                                                    
-                                    
-                                    </div>
-
-                                    <div class="clearfix"></div>
-
-                                @endforeach
-
-                                <hr style="margin-top: 1px">
-
-                                @else
-
-                               <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
-
-
-                                  <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
-                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, no estas inscrito en ninguna clase grupal. </div>
-
-
-                             </div>
-
-
-
-
-                            @endif
-
-                            <br><br><br>
+                                    <br><br><br>
                         
                         
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    
                 </div>
             </section>
 @stop

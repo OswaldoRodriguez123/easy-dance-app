@@ -189,14 +189,34 @@
   route_principal="{{url('/')}}/configuracion/supervisiones/configuracion";
   route_cancelar = "{{url('/')}}/configuracion/supervisiones/configuracion/cancelar";
 
+  var cargos = <?php echo json_encode($cargos);?>;
+  var cargos_usados = <?php echo json_encode($cargos_usados);?>;
+
   $(document).ready(function(){
+
+    console.log(cargos_usados)
+
+      $.each(cargos, function (index, cargo) {
+
+        if(!$.inArray(cargos_usados, cargo.id)){
+
+            console.log(cargo.id)
+            $("#cargo option[value='"+cargo.id+"']").attr("disabled","disabled");
+            $("#cargo option[value='"+cargo.id+"']").data("icon","glyphicon-remove");
+        }
+
+      });
+
+      $('#cargo').selectpicker('refresh')
+
 
       t=$('#tablelistar').DataTable({
       processing: true,
-      serverSide: false,
-      pageLength: 25,
-      //bPaginate: false,    
-      order: [[0, 'asc']],
+      serverSide: false, 
+      bPaginate: false, 
+      bFilter:false, 
+      bSort:false, 
+      order: [[1, 'asc']],
       fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
         $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
@@ -424,6 +444,8 @@
   });
 
     $("#cancelar").click(function(){
+
+      $('#nombre_supervision').val('')
 
         $.ajax({
             url: route_cancelar,

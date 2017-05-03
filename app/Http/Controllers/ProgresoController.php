@@ -29,8 +29,7 @@ class ProgresoController extends BaseController {
     public function index()
     {
 
-        $clase_grupal_join = DB::table('clases_grupales')
-        	->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        $clase_grupal_join = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', Auth::user()->usuario_id)
@@ -40,10 +39,7 @@ class ProgresoController extends BaseController {
 
         $academia = Academia::find(Auth::user()->academia_id);
 
-
-         return view('progreso.principal')->with(['clase_grupal_join' => $clase_grupal_join]);
-
-        
+        return view('progreso.principal')->with(['clase_grupal_join' => $clase_grupal_join]);
     
     }
 

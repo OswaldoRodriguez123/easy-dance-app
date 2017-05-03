@@ -1512,6 +1512,17 @@ class SupervisionController extends BaseController {
     	Session::forget('supervisiones');
 
     	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+    	$array = array();
+
+    	foreach($cargos as $cargo){
+
+	    	$items = ConfigSupervision::where('cargo_id',$cargo->id)->count();
+
+			if($items > 0){
+
+	    		$array[] = $cargo->id;
+	        }
+        }
 
     	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
     		->select('config_supervision.*', 'config_staff.nombre as cargo')
@@ -1519,7 +1530,7 @@ class SupervisionController extends BaseController {
 	    	->orWhere('config_supervision.academia_id', null)
     	->get();
     	
-        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision]);
+        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision, 'cargos_usados' => $array]);
 
     }
 
