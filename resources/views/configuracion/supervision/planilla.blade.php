@@ -244,7 +244,18 @@
 
                                 <div class="cargo_{{$supervision->cargo_id}} supervisiones col-sm-6 m-b-20" style="display:none">
 
-                                    <span class="f-20 f-700">{{$supervision->nombre}}</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
+                                    <span class="f-20 f-700">
+
+                                      @if(strlen($supervision->nombre) <= 30)
+
+                                        {{$supervision->nombre}}
+
+                                      @else
+                                        {{ str_limit($supervision->nombre, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
+                                      @endif
+   
+
+                                    </span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
 
                                     <input type="text" id="supervision_{{$supervision->id}}" name="supervision_{{$supervision->id}}" value="" hidden="hidden">
 
