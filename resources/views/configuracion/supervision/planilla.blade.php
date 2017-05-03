@@ -556,15 +556,13 @@
 
     $(document).ready(function(){
 
-      console.log(items)
-
       $.each(config_supervision, function (index, supervision) {
         $.each(items, function (index2, item) {
         // if($.inArray(items, supervision.nombre)){
         //     $('#supervision_'+supervision.id).val(supervision.nombre);
         //     $('#switch2_'+supervision.id).prop('checked',true)
         // }
-          if(item == supervision.nombre){
+          if(item.trim() == supervision.nombre.trim()){
               $('#supervision_'+supervision.id).val(supervision.nombre);
               $('#switch2_'+supervision.id).prop('checked',true)
           }
