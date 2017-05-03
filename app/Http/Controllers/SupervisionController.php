@@ -72,7 +72,7 @@ class SupervisionController extends BaseController {
 
         foreach($instructores as $item){
 
-            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor', 'cargo_id' => 1);
+            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor', 'cargo_id' => 20);
 
         }
 
@@ -1232,7 +1232,7 @@ class SupervisionController extends BaseController {
 
 	        foreach($instructores as $item){
 
-	            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor', 'cargo_id' => 1);
+	            $array[]=array('id' => $item['id'], 'nombre' => $item['nombre'] . ' ' . $item['apellido'], 'tipo' => 2, 'cargo' => 'Instructor', 'cargo_id' => 20);
 
 	        }
 

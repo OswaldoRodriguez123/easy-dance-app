@@ -53,5 +53,10 @@ class ConfigStaffTableSeeder extends Seeder
         'nombre' => 'Relacionista Público',
         'academia_id' => null,
       ));
+
+      ConfigStaff::create(array(
+        'nombre' => 'Instructor',
+        'academia_id' => null,
+      ));
     }
 }

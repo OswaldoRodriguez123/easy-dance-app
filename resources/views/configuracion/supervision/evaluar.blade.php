@@ -117,7 +117,7 @@
 	  								<div class="text-center p-t-10">
 
 		  								<div class="checkbox">
-		  									<span style="margin-right: 5px">Habilitar</span> <input style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
+		  									<span style="margin-right: 5px">Deshabilitar el item a evaluar</span> <input style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
 		  								</div>
 
 	  								</div>
