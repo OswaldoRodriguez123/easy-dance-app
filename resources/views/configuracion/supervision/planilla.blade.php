@@ -259,7 +259,7 @@
 
                                     <input type="text" id="supervision_{{$supervision->id}}" name="supervision_{{$supervision->id}}" value="" hidden="hidden">
 
-                                    <div class="toggle-switch m-l-10" data-ts-color="purple" style="padding-top: 1%">
+                                    <div class="toggle-switch m-l-10" data-ts-color="purple">
 
                                         <span class="p-r-10 f-700 f-15">No</span>
 
