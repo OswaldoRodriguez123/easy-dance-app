@@ -91,24 +91,24 @@ class AcademiaController extends BaseController {
         //     $servicio->save();
         // }
 
-        $servicios = ConfigServicios::all();
+        // $servicios = ConfigServicios::all();
 
-        foreach($servicios as $servicio){
+        // foreach($servicios as $servicio){
 
-            if(!$servicio->tipo_id){
-                $servicio->tipo_id = $servicio->id;
-                $servicio->save();
-            }
-        }
+        //     if(!$servicio->tipo_id){
+        //         $servicio->tipo_id = $servicio->id;
+        //         $servicio->save();
+        //     }
+        // }
 
-        $productos = ConfigProductos::all();
+        // $productos = ConfigProductos::all();
 
-        foreach($productos as $producto){
-            if(!$producto->tipo_id){
-                $producto->tipo_id = $producto->id;
-                $producto->save();
-            }
-        }
+        // foreach($productos as $producto){
+        //     if(!$producto->tipo_id){
+        //         $producto->tipo_id = $producto->id;
+        //         $producto->save();
+        //     }
+        // }
 
 
         // $patrocinadores = Patrocinador::all();
@@ -275,9 +275,8 @@ class AcademiaController extends BaseController {
             }
 
             return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
-        }
-
-        if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
+            
+        }else if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
 
             $alumno = Alumno::find(Auth::user()->usuario_id);
 
@@ -474,10 +473,7 @@ class AcademiaController extends BaseController {
             }else{
                 return view('vista_alumno.condiciones')->with('academia', $academia);
             }
-        }
-
-
-        if(Auth::user()->usuario_tipo == 3){
+        }else if(Auth::user()->usuario_tipo == 3){
 
 
             $instructor = Instructor::find(Auth::user()->usuario_id);
