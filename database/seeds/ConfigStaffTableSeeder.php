@@ -55,6 +55,7 @@ class ConfigStaffTableSeeder extends Seeder
       ));
 
       ConfigStaff::create(array(
+        'id' => 20,
         'nombre' => 'Instructor',
         'academia_id' => null,
       ));

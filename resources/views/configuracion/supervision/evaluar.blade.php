@@ -107,7 +107,7 @@
 
 		                  					{{$items}}
 		                  				@else
-											{{ str_limit($items, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">...</span> <span class="c-azul">Ver mas</span>
+											{{ str_limit($items, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span></span> 
 		                  				@endif
 
 	                  				</div>
