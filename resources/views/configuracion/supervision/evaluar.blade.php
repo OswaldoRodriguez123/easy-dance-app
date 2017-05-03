@@ -94,6 +94,7 @@
 							<hr>
 
 							<?php $i=0 ?>
+							<?php $j = 1 ?>
 
 							@foreach( $items_a_evaluar as $items)
 	  							<?php $id = $i ?>
@@ -125,9 +126,17 @@
 	  				                  
 	  							</div>
 
+
 	  							<?php 
-				                  $item[$i] = $i; 
-				                  $i++;
+
+	  								if($j == 3){
+	  									echo '<div class="clearfix"></div>';
+	  									$j = 1;
+	  								}
+
+				                  	$item[$i] = $i; 
+				                  	$i++;
+				                  	$j++;
 				                ?>
 							@endforeach
 							
