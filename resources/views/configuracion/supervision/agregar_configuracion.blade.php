@@ -67,17 +67,26 @@
 
                                         <div class="input-group">
                                           <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
-                                          <div class="fg-line">
                                           <div class="select">
-                                            <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
+                                            
 
-                                              <option value="">Selecciona</option>
-                                              @foreach ( $cargos as $cargo )
-                                                <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
-                                              @endforeach
+                                              @if(!isset($id))
+
+                                              <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
+
+                                                <option value="">Selecciona</option>
+                                                @foreach ( $cargos as $cargo )
+                                                  <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
+                                                @endforeach
+
+                                              @else
+                                                <input type="hidden" name="cargo_supervision" value="{{$id}}">
+                                                <select disabled class="selectpicker" name="cargo" id="cargo" data-live-search="true">
+                                                  <option value = "{{ $cargo->id }}">{{ $cargo->nombre }}</option>
+                                              @endif
+
                                             
                                             </select>
-                                          </div>
                                         </div>
                                         </div>
                                      <div class="has-error" id="error-cargo_supervision">
@@ -130,22 +139,24 @@
                             </thead>
                             <tbody class="text-center" >
 
-                           <!--  @foreach ($config_supervision as $supervision)
+                              @if(isset($id))
+                                @foreach ($config_supervision as $supervision)
 
-                                <?php $id = $supervision->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$supervision->nombre}}</td>
-                                    <td class="text-center previa">{{$supervision->cargo}}</td>
-                                    <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
-                                  </tr>
-                            @endforeach  -->
+                                    <?php $id = $supervision->id; ?>
+                                    <tr id="{{$id}}" class="seleccion" >
+                                        <td class="text-center previa">{{$supervision->nombre}}</td>
+                                        <td class="text-center previa">{{$supervision->cargo}}</td>
+                                        <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                      </tr>
+                                @endforeach 
+                              @endif
                                                            
                             </tbody>
                         </table>
                          </div>
                         </div>
 
-                    
+                        <div class="clearfix p-b-35"></div>
   
 
                           <div class="modal-footer p-b-20 m-b-20">
@@ -162,8 +173,10 @@
                             <div class="col-sm-12 text-left">                           
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
-
-                              <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+                              
+                              @if(!isset($id))
+                                <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+                              @endif
 
                             </div>
                         </div></form>
@@ -183,9 +196,16 @@
 @section('js') 
 <script type="text/javascript">
 
+  if("{{!isset($id)}}"){
+      route_agregar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/agregarsupervision";
+      route_eliminar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/eliminarsupervision/";
+
+  }else{
+      route_agregar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/agregarsupervisionfija";
+      route_eliminar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/eliminarsupervisionfija/";
+  }
+
   route_agregar="{{url('/')}}/configuracion/supervisiones/configuracion/agregar";
-  route_agregar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/agregarsupervision";
-  route_eliminar_supervision = "{{url('/')}}/configuracion/supervisiones/configuracion/eliminarsupervision/";
   route_principal="{{url('/')}}/configuracion/supervisiones/configuracion";
   route_cancelar = "{{url('/')}}/configuracion/supervisiones/configuracion/cancelar";
 
@@ -194,13 +214,10 @@
 
   $(document).ready(function(){
 
-    console.log(cargos_usados)
-
       $.each(cargos, function (index, cargo) {
 
         if(!$.inArray(cargos_usados, cargo.id)){
 
-            console.log(cargo.id)
             $("#cargo option[value='"+cargo.id+"']").attr("disabled","disabled");
             $("#cargo option[value='"+cargo.id+"']").data("icon","glyphicon-remove");
         }
@@ -209,13 +226,13 @@
 
       $('#cargo').selectpicker('refresh')
 
-
       t=$('#tablelistar').DataTable({
-      processing: true,
-      serverSide: false, 
-      bPaginate: false, 
-      bFilter:false, 
-      bSort:false, 
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false, 
       order: [[1, 'asc']],
       fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
@@ -278,8 +295,13 @@
                 var nMensaje=respuesta.mensaje;
 
                 var nombre = respuesta.array.nombre;
-                var cargo = respuesta.array.cargo;
 
+                if("{{isset($id)}}"){
+                  var cargo = respuesta.cargo;
+                }else{
+                  var cargo = respuesta.array.cargo;
+                }
+                
                 var rowId=respuesta.array.id;
                 var rowNode=t.row.add( [
                 ''+nombre+'',
@@ -379,68 +401,75 @@
 
     $("#guardar").click(function(){
 
-      var route = route_agregar;
-      var token = $('input:hidden[name=_token]').val();
-      var datos = $( "#agregar_supervision" ).serialize(); 
       procesando();
-      limpiarMensaje();
-      $.ajax({
-          url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'POST',
-              dataType: 'json',
-              data:datos,
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-                // finprocesado();
-                // var nType = 'success';
-                // $("#agregar_alumno")[0].reset();
-                // var nTitle="Ups! ";
-                // var nMensaje=respuesta.mensaje;
-                window.location = route_principal;
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
 
+      if("{{!isset($id)}}"){
+
+        var route = route_agregar;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = $( "#agregar_supervision" ).serialize(); 
+
+        limpiarMensaje();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+                  // finprocesado();
+                  // var nType = 'success';
+                  // $("#agregar_alumno")[0].reset();
+                  // var nTitle="Ups! ";
+                  // var nMensaje=respuesta.mensaje;
+                  window.location = route_principal;
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+
+                  finprocesado();
+
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                }                       
+                
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
                 finprocesado();
-
-                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-              }                       
-              
-            }, 1000);
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
-              if(msj.responseJSON.status=="ERROR"){
-                console.log(msj.responseJSON.errores);
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
-              finprocesado();
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
-          }
-      });
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+      }else{
+        window.location = route_principal;
+      }
   });
 
     $("#cancelar").click(function(){

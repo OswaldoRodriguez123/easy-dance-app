@@ -1534,8 +1534,25 @@ class SupervisionController extends BaseController {
 
     }
 
+    public function editar_configuracion($id){
 
-    Public function agregarsupervision(Request $request){
+    	Session::forget('supervisiones');
+
+    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+    	$cargo = ConfigStaff::find($id);
+
+    	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
+    		->select('config_supervision.*', 'config_staff.nombre as cargo')
+    		->where('config_supervision.cargo_id', $id)
+	    	->where('config_supervision.academia_id', Auth::user()->academia_id)
+    	->get();
+    	
+        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision, 'id' => $id, 'cargo' => $cargo, 'cargos_usados' => '']);
+
+    }
+
+
+    Public function agregar_supervision_fija(Request $request){
         
     $rules = [
 
@@ -1577,7 +1594,7 @@ class SupervisionController extends BaseController {
         }
     }
 
-    public function eliminarsupervision($id){
+    public function eliminar_supervision_fija($id){
 
         $supervision = ConfigSupervision::find($id);
 

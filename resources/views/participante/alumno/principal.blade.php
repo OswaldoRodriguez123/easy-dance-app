@@ -342,7 +342,7 @@
                 $( "#todos2" ).addClass( "c-verde" );
 
                 t
-                .columns(2)
+                .columns(3)
                 .search('')
                 .draw(); 
 
@@ -353,7 +353,7 @@
                 $( "#todos2" ).removeClass( "c-verde" );
 
                 t
-                .columns(2)
+                .columns(3)
                 .search($(this).val())
                 .draw();
 
@@ -364,7 +364,7 @@
                 $( "#todos2" ).removeClass( "c-verde" );
 
                 t
-                .columns(2)
+                .columns(3)
                 .search($(this).val())
                 .draw();
 

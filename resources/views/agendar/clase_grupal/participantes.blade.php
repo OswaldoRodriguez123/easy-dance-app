@@ -1142,9 +1142,9 @@
                                               <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                             @else
                                               <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                            @endif
                                         @endif
-                                      @endif
-                                    </td>
+                                      </td>
                                       <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
@@ -1216,6 +1216,15 @@
                                 @else
                                   <tr data-tipo ="{{$alumno['tipo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
                                       <td class="text-center previa"><span class="c-amarillo"><b>R</b></span></td>
+                                      <td class="text-center previa">
+
+                                        @if($alumno['sexo'] == 'M')
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                        @else
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+
+                                      </td>
                                       <td class="text-center previa">{{$alumno['fecha_vencimiento']}}</td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
@@ -2694,7 +2703,7 @@
             $( "#todos2" ).addClass( "c-verde" );
 
             t
-            .columns(2)
+            .columns(3)
             .search('')
             .draw(); 
 
@@ -2705,7 +2714,7 @@
             $( "#todos2" ).removeClass( "c-verde" );
 
             t
-            .columns(2)
+            .columns(3)
             .search($(this).val())
             .draw();
 
@@ -2716,7 +2725,7 @@
             $( "#todos2" ).removeClass( "c-verde" );
 
             t
-            .columns(2)
+            .columns(3)
             .search($(this).val())
             .draw();
 

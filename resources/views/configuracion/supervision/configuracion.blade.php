@@ -95,6 +95,7 @@
         <script type="text/javascript">
 
         route_eliminar="{{url('/')}}/configuracion/supervisiones/configuracion/eliminar/";
+        route_detalle="{{url('/')}}/configuracion/supervisiones/configuracion/detalle";
 
         $(document).ready(function(){
 
@@ -105,8 +106,8 @@
         //bPaginate: false,    
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -213,6 +214,13 @@
                                 }
                 });
       }
+
+        function previa(t){
+
+            var id = $(t).closest('tr').attr('id');
+            var route =route_detalle+"/"+id;
+            window.location=route;
+        }
 
         </script>
 @stop
