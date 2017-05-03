@@ -208,6 +208,7 @@
         route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
         route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
         route_principal="{{url('/')}}/agendar/clases-grupales";
+        route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar/";
 
         var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
 
@@ -426,6 +427,10 @@
                     operacion += '<i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>'
                     operacion += 'Cancelar Clase'
                     operacion += '</a></li>'
+                    operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
+                    operacion += '<i class="zmdi zmdi-delete f-20 boton red sa-warning"></i>'
+                    operacion += 'Eliminar Clase'
+                    operacion += '</a></li>'
                     operacion += '</ul></div></li></ul>'
        
                     var rowNode=t.row.add( [
@@ -546,6 +551,61 @@
     $('input[name=id]').val(id)
     $('#modalTrasladar-ClaseGrupal').modal('show')
   });
+
+  $('#tablelistar tbody').on( 'click', 'a.eliminar', function () {
+        var id = $(this).closest('tr').attr('id');
+                swal({   
+                    title: "Desea eliminar la clase grupal",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // swal("Done!","It was succesfully deleted!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id);
+          }
+                });
+            });
+      function eliminar(id){
+         var route = route_eliminar + id;
+         var token = $('input:hidden[name=_token]').val();
+         procesando();
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    success:function(respuesta){
+
+                        window.location=route_principal; 
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      }
 
 
 
