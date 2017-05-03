@@ -98,7 +98,7 @@
 							@foreach( $items_a_evaluar as $items)
 	  							<?php $id = $i ?>
 
-	  							<div class="col-md-4">
+	  							<div class="col-md-4 m-b-25">
 
 	                  				<div class="m-b-20 m-l-25">
 
