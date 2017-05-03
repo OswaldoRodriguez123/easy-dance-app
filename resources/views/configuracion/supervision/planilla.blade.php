@@ -246,12 +246,12 @@
 
                                     <span class="f-15 f-700">
 
-                                      @if(strlen($supervision->nombre) <= 30)
+                                      @if(strlen($supervision->nombre) <= 20)
 
                                         {{$supervision->nombre}}
 
                                       @else
-                                        {{ str_limit($supervision->nombre, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$supervision->nombre}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
+                                        {{ str_limit($supervision->nombre, $limit = 20, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$supervision->nombre}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
                                       @endif
    
 
