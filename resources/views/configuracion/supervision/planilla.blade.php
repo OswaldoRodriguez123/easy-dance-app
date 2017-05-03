@@ -242,21 +242,13 @@
 
                               @foreach($config_supervision as $supervision)
 
-                                <div class="cargo_{{$supervision->cargo_id}} supervisiones" style="display:none">
-                                  
-                                  <div class="clearfix p-b-35"></div>
-
-                                  <div class="col-sm-3 text-left">
+                                <div class="cargo_{{$supervision->cargo_id}} supervisiones col-sm-6 m-b-20" style="display:none">
 
                                     <span class="f-20 f-700">{{$supervision->nombre}}</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
 
-                                  </div>
-                                  
-                                  <div class="col-sm-3 text-left">
-                                  
                                     <input type="text" id="supervision_{{$supervision->id}}" name="supervision_{{$supervision->id}}" value="" hidden="hidden">
 
-                                    <div class="toggle-switch" data-ts-color="purple">
+                                    <div class="toggle-switch m-l-10" data-ts-color="purple" style="margin-top: 2px">
 
                                         <span class="p-r-10 f-700 f-16">No</span>
 
@@ -264,11 +256,14 @@
                                       
                                         <label for="switch2_{{$supervision->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                     </div>
-                                  </div>
 
                                 </div>
 
                               @endforeach
+
+
+                              <div class="clearfix p-b-35"></div>
+
 
                             </div>
                             <div class="modal-footer p-b-20 m-b-20">
