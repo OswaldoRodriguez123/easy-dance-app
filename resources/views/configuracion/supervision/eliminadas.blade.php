@@ -18,12 +18,11 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/supervisiones/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Supervisiones</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
@@ -41,19 +40,8 @@
                     
                     <div class="card">
                         <div class="card-header">
-                            <div class ="col-md-6 text-left">  
-                                <a class="email" href="{{url('/')}}/configuracion/supervisiones/eliminadas"><i class="zmdi zmdi-wrench f-20 m-r-5 boton blue sa-warning" data-original-title="Bandeja Eliminados" data-toggle="tooltip" data-placement="top" title=""></i></a>
-                            </div>
-
-                        
-
-                            <div class ="col-md-12 text-right">                                
- 
-                                <span class="f-16 p-t-0 text-success">Agregar una Supervisión <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
-
-                            </div>
-
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Supervisiones</p>
+    
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Eliminadas</p>
                             <hr class="linea-morada">
 
                                                          
@@ -63,6 +51,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="fecha">Fecha de Eliminación</th>
                                     <th class="text-center" data-column-id="supervisor">Supervisor</th>
                                     <th class="text-center" data-column-id="cargo">Cargo a Supervisar</th>
                                     <th class="text-center" data-column-id="staff">Staff a Supervisar</th>
@@ -85,44 +74,16 @@
                                     $apellido_alumno = $tmp[0];
 
                                     ?>
+                                    <td class="text-center previa">{{$supervision['created_at']}}</td>
                                     <td class="text-center previa">{{$supervision['supervisor']}}</td>
                                     <td class="text-center previa">{{$supervision['cargo']}}</td>
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center previa">{{$supervision['fecha_inicio']}} / {{$supervision['fecha_final']}}</td>
                                     <td class="text-center disabled"> 
-                                        <ul class="top-menu">
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
-                                                   <span class="f-15 f-700" style="color:black"> 
-                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
-                                                   </span>
-                                                </a>
-
-                                                  <div class="dropup" dropdown-append-to-body>
-                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
-
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/configuracion/supervisiones/agenda/{{$id}}"><i class="zmdi zmdi-eye f-20"></i> Ver Agenda</a>
-                                                        </li>
-
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/configuracion/supervisiones/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-20"></i> Evaluar</a>
-                                                        </li>
-
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/configuracion/supervisiones/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-20"></i> Historial</a>
-                                                        </li>
-
-                                                        <li class="hidden-xs">
-                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
-                                                        </li>
-
-
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="restablecer" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer" title="" data-original-title=""></i> 
+                                        <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i>
                                     </td>
+
                                 </tr>
                                 <!-- endcan -->
                             @endforeach 
@@ -151,8 +112,8 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/configuracion/supervisiones/detalle";
-        route_operacion="{{url('/')}}/configuracion/supervisiones/operaciones";
+        route_restablecer="{{url('/')}}/configuracion/supervisiones/restablecer/";
+        route_eliminar="{{url('/')}}/configuracion/supervisiones/eliminar_permanentemente/";
 
         $(document).ready(function(){
 
@@ -160,10 +121,10 @@
         processing: true,
         serverSide: false,
         pageLength: 25,    
-        order: [[3, 'asc']],
+        order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -193,37 +154,125 @@
           
         });
 
-        function previa(t){
-
-            var row = $(t).closest('tr').attr('id');
-            var id_alumno = row.split('_');
-            var route =route_detalle+"/"+id_alumno[1];
-            window.location=route;
-        }
-
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
-
-
-        $( ".dropdown-toggle" ).hover(function() {
-
-          if($('.dropdown').hasClass('open')){
-
-          }else{
-            $( this ).click();
+        $("i[name=restablecer").click(function(){
+                id = this.id;
+                element = this;
+                var padre=$(this).parents('tr');
+                swal({   
+                    title: "Desea restablecer la supervisión?",   
+                    text: "Confirmar restablecimiento!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Restablecer!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // swal("Done!","It was succesfully deleted!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        restablecer(id, element);
           }
-         
-        });
+                });
+            });
+      function restablecer(id){
+         var route = route_restablecer + id;
+         var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
 
-        $('.table-responsive').on('show.bs.dropdown', function () {
-          $('.table-responsive').css( "overflow", "inherit" );
-        });
+                        t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+                        swal("Exito!","La supervisión ha sido reestablecida!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      }
 
-        $('.table-responsive').on('hide.bs.dropdown', function () {
-          $('.table-responsive').css( "overflow", "auto" );
-        })
+      $("i[name=eliminar").click(function(){
+                id = this.id;
+                element = this;
+                var padre=$(this).parents('tr');
+                swal({   
+                    title: "Desea eliminar la supervisión permanentemente?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // swal("Done!","It was succesfully deleted!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
+          }
+                });
+            });
+      function eliminar(id){
+         var route = route_eliminar + id;
+         var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+
+                        t.row( $(element).parents('tr') )
+                            .remove()
+                            .draw();
+                        swal("Exito!","La supervisión ha sido eliminada permanentemente!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      }
 
 
         </script>

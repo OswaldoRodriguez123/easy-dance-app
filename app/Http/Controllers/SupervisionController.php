@@ -1773,4 +1773,80 @@ class SupervisionController extends BaseController {
         }
     }
 
+
+    public function eliminadas()
+	{
+
+        $supervisiones = Supervision::onlyTrashed()->join('staff', 'staff.id', '=', 'supervisiones.staff_id')
+        	->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
+            ->select('staff.*', 'supervisiones.supervisor_id', 'supervisiones.fecha_inicio', 'supervisiones.fecha_final', 'config_staff.nombre as cargo', 'supervisiones.id')
+            ->where('staff.academia_id', Auth::user()->academia_id)
+        ->get();
+
+        $array = array();
+
+        foreach($supervisiones as $supervision){
+        	$staff = Staff::find($supervision->supervisor_id);
+
+        	if($staff){
+        		$supervisor = $staff->nombre . ' ' . $staff->apellido;
+        	}else{
+        		$supervisor = '';
+        	}
+
+        	$collection=collect($supervision);   
+
+            $supervision_array = $collection->toArray();
+            $supervision_array['supervisor']=$supervisor;
+            $array[$supervision->id] = $supervision_array;
+        }
+
+		return view('configuracion.supervision.eliminadas')->with(['supervisiones' => $array]);
+	}
+
+	public function eliminar_permanentemente($id)
+    {
+        
+     	$supervision = Supervision::withTrashed()->find($id);
+
+     	if($supervision){
+
+     	    $evaluaciones = SupervisionEvaluacion::withTrashed()->where('supervision_id',$id)->get();
+
+        	foreach($evaluaciones as $evaluacion){
+        		$detalle_evaluacion = DetalleSupervisionEvaluacion::where('evaluacion_id',$evaluacion->id)->delete();
+        		$evaluacion->forceDelete();
+        	}
+
+	        if($supervision->forceDelete()){
+	            return response()->json(['mensaje' => '¡Excelente! La supervision ha sido eliminada permanentemente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+        }else{
+    		return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        
+    	}
+
+    }
+
+    public function restore($id)
+    {
+            
+        $supervision = Supervision::withTrashed()->find($id);
+
+        if($supervision){
+	        
+	        if($supervision->restore()){
+	            return response()->json(['mensaje' => '¡Excelente! La supervision ha sido restaurada satisfactoriamente', 'status' => 'OK', 200]);
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+    	}else{
+    		return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        
+    	}
+
+    }
+    
 }

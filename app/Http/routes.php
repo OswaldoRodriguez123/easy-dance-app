@@ -975,6 +975,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/supervisiones/update/staff','SupervisionController@updateStaff');
 			Route::put('configuracion/supervisiones/update/fecha','SupervisionController@updateFecha');
 			Route::put('configuracion/supervisiones/update/items','SupervisionController@updateItems');
+			Route::get('configuracion/supervisiones/eliminadas', 'SupervisionController@eliminadas');
+			Route::post('configuracion/supervisiones/configuracion/agregarsupervision','SupervisionController@agregar_supervision_session');
+			Route::post('configuracion/supervisiones/restablecer/{id}','SupervisionController@restore');
+			Route::delete('configuracion/supervisiones/eliminar_permanentemente/{id}','SupervisionController@eliminar_permanentemente');
+
 			Route::get('configuracion/supervisiones/configuracion', 'SupervisionController@configuracion');
 			Route::get('configuracion/supervisiones/configuracion/agregar', 'SupervisionController@agregar_configuracion');
 			Route::post('configuracion/supervisiones/configuracion/agregar', 'SupervisionController@GuardarConfiguracion');
