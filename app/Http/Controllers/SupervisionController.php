@@ -1204,8 +1204,23 @@ class SupervisionController extends BaseController {
         	}
 
         	$staff = Staff::find($supervision->staff_id);
-        	$staff_a_supervisar = $staff->nombre . ' ' . $staff->apellido;
 
+        	if($staff){
+        		$staff_a_supervisar = $staff->nombre . ' ' . $staff->apellido;
+        	}else{
+        		$staff_a_supervisar = '';
+        	}
+
+        	$cargo = ConfigStaff::find($supervision->cargo);
+
+        	if($cargo){
+        		$cargo_a_supervisar = $cargo->nombre;
+        		$cargo_id = $cargo->id;
+        	}else{
+        		$cargo_a_supervisar = '';
+        		$cargo_id = 0;
+        	}
+        	
         	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         	$config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         	$dias_de_semana = DiasDeSemana::all();
@@ -1213,10 +1228,6 @@ class SupervisionController extends BaseController {
 
         	$fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_inicio . ' 00:00:00')->format('d/m/Y');
         	$fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_final . ' 00:00:00')->format('d/m/Y');
-
-        	$cargo = ConfigStaff::find($supervision->cargo);
-        	$cargo_a_supervisar = $cargo->nombre;
-        	$cargo_id = $cargo->id;
 
         	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
 
