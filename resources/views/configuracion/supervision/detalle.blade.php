@@ -175,7 +175,7 @@
                                 </div>
                             </div>
 
-                            Nivel de progreso : {{$evaluacion->porcentaje}} <br>
+                            Nivel de progreso : {{intval($evaluacion->porcentaje)}} <br>
 
                             </div>
 
@@ -322,7 +322,7 @@
 
         
         porcentaje ="{{$evaluacion->porcentaje}}";
-        $("#text-progreso").text(porcentaje+"%");
+        $("#text-progreso").text(parseInt(porcentaje)+"%");
         $("#barra-progreso").css({
           "width": (porcentaje + "%")
         });        
