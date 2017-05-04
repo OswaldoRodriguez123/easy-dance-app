@@ -1195,7 +1195,7 @@ class SupervisionController extends BaseController {
 
         if($supervision){
 
-        	$supervisor = Staff::find($supervision->supervisor_id);
+        	$supervisor = Staff::withTrashed()->find($supervision->supervisor_id);
 
         	if($supervisor){
         		$supervisor = $supervisor->nombre . ' ' . $supervisor->apellido;
@@ -1203,7 +1203,7 @@ class SupervisionController extends BaseController {
         		$supervisor = '';
         	}
 
-        	$staff = Staff::find($supervision->staff_id);
+        	$staff = Staff::withTrashed()->find($supervision->staff_id);
 
         	if($staff){
         		$staff_a_supervisar = $staff->nombre . ' ' . $staff->apellido;
@@ -1211,7 +1211,7 @@ class SupervisionController extends BaseController {
         		$staff_a_supervisar = '';
         	}
 
-        	$cargo = ConfigStaff::find($supervision->cargo);
+        	$cargo = ConfigStaff::withTrashed()->find($supervision->cargo);
 
         	if($cargo){
         		$cargo_a_supervisar = $cargo->nombre;
