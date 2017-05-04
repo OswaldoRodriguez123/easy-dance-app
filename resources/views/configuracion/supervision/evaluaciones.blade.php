@@ -129,7 +129,7 @@
                                     <td class="text-center previa">{{$evaluacion['supervisor']}}</td>
                                     <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
                                     <td class="text-center previa">{{$evaluacion['total']}}</td>
-                                    <td class="text-center previa">{{intval($evaluacion['porcentaje'])}}</td>
+                                    <td class="text-center previa">{{intval($evaluacion['porcentaje'])}}%</td>
                                 </tr>
                             @endforeach  
                                                            
