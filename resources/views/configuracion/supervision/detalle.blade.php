@@ -175,7 +175,7 @@
                                 </div>
                             </div>
 
-                            Nivel de progreso : {{intval($evaluacion->porcentaje)}} <br>
+                            Nivel de progreso : {{intval($evaluacion->porcentaje)}}% <br>
 
                             </div>
 
