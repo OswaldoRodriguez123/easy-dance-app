@@ -1324,12 +1324,15 @@ class SupervisionController extends BaseController {
 
                 for ($i=0; $i < count($detalle_nota)-1; $i++) {
 
-                    $detalles = new DetalleSupervisionEvaluacion;
+                	if(intval($detalle_nota[$i]) <= 0){
 
-                    $detalles->nombre = $detalle_nombre[$i];
-                    $detalles->nota = intval($detalle_nota[$i]);
-                    $detalles->evaluacion_id = $evaluacion->id;
-                    $detalles->save();
+	                    $detalles = new DetalleSupervisionEvaluacion;
+
+	                    $detalles->nombre = $detalle_nombre[$i];
+	                    $detalles->nota = intval($detalle_nota[$i]);
+	                    $detalles->evaluacion_id = $evaluacion->id;
+	                    $detalles->save();
+                    }
                 }
       
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
