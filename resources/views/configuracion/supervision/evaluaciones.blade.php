@@ -116,6 +116,7 @@
                                     <th class="text-center" data-column-id="instructor">Supervisor</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nota">Nota</th>
+                                    <th class="text-center" data-column-id="nota">Porcentaje</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -128,6 +129,7 @@
                                     <td class="text-center previa">{{$evaluacion['supervisor']}}</td>
                                     <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
                                     <td class="text-center previa">{{$evaluacion['total']}}</td>
+                                    <td class="text-center previa">{{intval($evaluacion['porcentaje'])}}</td>
                                 </tr>
                             @endforeach  
                                                            
