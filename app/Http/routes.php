@@ -142,6 +142,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		------------------------------------------------------*/
 		Route::group(['middleware' => ['admin']], function() {
 
+			//MANUALES DE PROCEDIMIENTOS
+
+			Route::get('procedimientos', 'AcademiaController@procedimientos');
+
+
 			//BLOG
 
 			Route::get('blog/entrada/editar/{id}', 'BlogController@edit');

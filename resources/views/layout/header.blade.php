@@ -241,6 +241,10 @@
                                         <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
                                     </li>
 
+                                    <li class="hidden-xs">
+                                        <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
+                                    </li>
+
                                     <!-- <li class="hidden-xs">
                                         <a href="{{url('participante/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
                                     </li> -->

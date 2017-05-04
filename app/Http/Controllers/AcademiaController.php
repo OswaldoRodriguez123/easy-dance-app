@@ -1481,5 +1481,13 @@ class AcademiaController extends BaseController {
 
     }
 
+    public function procedimientos(){
+
+
+        return view('procedimientos.principal');
+        
+        
+    }
+
 
 }
