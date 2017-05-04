@@ -118,7 +118,7 @@
 	  								<div class="text-center p-t-10">
 
 		  								<div class="checkbox">
-		  									<span style="margin-right: 5px">Deshabilitar el item a evaluar</span> <input style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
+		  									<span id="span_{{$id}}" style="margin-right: 5px">Deshabilitar el item a evaluar</span> <input style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
 		  								</div>
 
 	  								</div>
@@ -468,6 +468,9 @@
 
 	  		if($(this).is(':checked')){
 
+	  			$('#span_'+id).removeClass('text-success');
+	  			$('#span_'+id).text('Deshabilitar el item a evaluar');
+
 	  			$('.div_'+id).show()
 	  			$('#value-lower'+id).addClass('slider-value-visible')
 	  			$('#value-lower'+id).removeClass('slider-value-invisible')
@@ -478,6 +481,9 @@
 	  			arrayNotas[id] = valor;
 
 	  		}else{
+
+	  			$('#span_'+id).addClass('text-success');
+	  			$('#span_'+id).text('Habilitar el item a evaluar');
 
 	  			$('.div_'+id).hide()
 	  			$('#value-lower'+id).removeClass('slider-value-visible')
