@@ -178,9 +178,9 @@ class RegistroController extends Controller {
         ];
 
         Mail::send('correo.correo', $array, function($msj) use ($array){
-                $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
-                $msj->to($array['email']);
-            });
+            $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
+            $msj->to($array['email']);
+        });
 
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -260,17 +260,18 @@ class RegistroController extends Controller {
     public function confirmacion($token){
 
         $token = trim($token);
-        
-        $user = User::where('confirmation_token', $token)
-        ->firstOrFail();
-        $user->confirmation_token = null;
-        $user->save();
+        $user = User::where('confirmation_token', $token)->first();
 
-        Auth::login($user);
+        if($user){
+            $user->confirmation_token = null;
+            $user->save();
 
-        return redirect('inicio')
-            ->with('alert', '¡Tu email ya fue confirmado!');
+            Auth::login($user);
+            return redirect('inicio');
+         
+        }else{
+            return redirect('login');
+        }
     }
-
 
 }

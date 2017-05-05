@@ -32,7 +32,8 @@ use App\Notificacion;
 use App\NotificacionUsuario;
 use App\HorarioBloqueado;
 use App\Progreso;
-use App\ReservacionVisitante;
+use App\Reservacion;
+use App\Participante;
 use App\Codigo;
 use App\Examen;
 use App\CredencialAlumno;
@@ -432,7 +433,11 @@ class ClaseGrupalController extends BaseController {
     public function participantes($id)
     {
 
-        Session::put('clase_grupal_id', $id);
+        $array = array();
+
+        $mujeres = 0;
+        $hombres = 0;
+
 
         $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -448,13 +453,12 @@ class ClaseGrupalController extends BaseController {
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
             ->get();
 
-            $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
-                ->where('reservaciones_visitantes.tipo_id', '=', $id)
-                ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+            $reservaciones = Reservacion::where('tipo_reservacion_id', '=', $id)
+                ->where('tipo_reservacion', '=', '1')
             ->get();
 
             foreach($reservaciones as $reservacion){
+
                 $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $reservacion->fecha_vencimiento);
                 if($fecha_vencimiento < Carbon::now()->format('Y-m-d')){
 
@@ -464,16 +468,38 @@ class ClaseGrupalController extends BaseController {
                 }
             }
 
-            $reservaciones = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
-                ->where('reservaciones_visitantes.tipo_id', '=', $id)
-                ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
+            $reservaciones = Reservacion::where('tipo_reservacion_id', '=', $id)
+                ->where('tipo_reservacion', '=', '1')
             ->get();
 
-            $array = array();
-            $mujeres = 0;
-            $hombres = 0;
+            foreach($reservaciones as $reservacion){
 
+                if($reservacion->tipo_usuario == 1){
+                    $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                }else if($reservacion->tipo_usuario == 2){
+                    $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                }else{
+                    $alumno = Participante::find($reservacion->tipo_usuario_id);
+                }
+
+                if($alumno->sexo == 'F'){
+                    $mujeres++;
+                }else{
+                    $hombres++;
+                }
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+                $alumno_array['nombre'] = $alumno->nombre;
+                $alumno_array['apellido'] = $alumno->apellido;
+                $alumno_array['sexo'] = $alumno->sexo;
+                $alumno_array['tipo'] = 2;
+                $alumno_array['alumno_id'] = $alumno->id;
+                $alumno_array['inscripcion_id'] = $reservacion->id;
+                $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
+                $array['2-'.$alumno->id] = $alumno_array;
+            
+            }
 
             $fecha_de_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
             $fecha_de_finalizacion = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
@@ -500,9 +526,7 @@ class ClaseGrupalController extends BaseController {
                 $clases_completadas = 0;
                 $fecha = '';
 
-
                 $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
-
 
                 if($ultima_asistencia){
 
@@ -606,21 +630,6 @@ class ClaseGrupalController extends BaseController {
                     $hombres++;
                 }
 
-            }
-
-            foreach($reservaciones as $alumno){
-
-                if($alumno->sexo == 'F'){
-                    $mujeres++;
-                }else{
-                    $hombres++;
-                }
-
-                $collection=collect($alumno);     
-                $alumno_array = $collection->toArray();
-
-                $alumno_array['tipo'] = 2;
-                $array['2-'.$alumno->id] = $alumno_array;
             }
 
             $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
@@ -740,7 +749,7 @@ class ClaseGrupalController extends BaseController {
 
     public function eliminar_reserva($id)
     {
-        $reserva = ReservacionVisitante::find($id);
+        $reserva = Reservacion::find($id);
         $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
         
         if($reserva->delete()){
@@ -842,43 +851,49 @@ class ClaseGrupalController extends BaseController {
             $partes = explode( '=', $parts['query'] );
             $link_video = $partes[1];
 
-            }
-            else{
-                $link_video = '';
-            }
+        }else{
+            $link_video = '';
+        }
 
-         // $cantidad_reservaciones = DB::table('reservaciones')
-         //     ->select('reservaciones.*')
-         //     ->where('tipo_id', '=', $id)
-         //     ->where('tipo_reservacion', '=', 1)
-         // ->count();
-
-         // if($clase_grupal_join->cupo_reservacion == 0){
-         //    $cupo_reservacion = 1;
-         // }
-         // else{
-         //    $cupo_reservacion = $clase_grupal_join->cupo_reservacion;
-         // }
-
-         // $cupos_restantes = $cupo_reservacion - $cantidad_reservaciones;
-
-         // if($cupos_restantes < 0){
-         //    $cupos_restantes = 0;
-         // }
+        $cantidad_hombres_reserva = 0;
+        $cantidad_mujeres_reserva = 0;
 
          $cantidad_hombres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
             ->where('alumnos.sexo','M')
         ->count();
 
-        $cantidad_hombres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-            ->where('reservaciones_visitantes.tipo_id',$id)
-            ->where('reservaciones_visitantes.tipo_reservacion','1')
-            ->where('visitantes_presenciales.sexo','M')
-        ->count();
+        $reservaciones = Reservacion::where('tipo_reservacion_id',$id)
+            ->where('tipo_reservacion','1')
+        ->get();
+
+        foreach($reservaciones as $reservacion){
+
+            if($reservacion->tipo_usuario == 1){
+                $usuario = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                if($usuario->sexo == 'M'){
+                    $cantidad_hombres_reserva++;
+                }else{
+                    $cantidad_mujeres_reserva++;
+                }
+            }else if($reservacion->tipo_usuario == 2){
+                $usuario = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                if($usuario->sexo == 'M'){
+                    $cantidad_hombres_reserva++;
+                }else{
+                    $cantidad_mujeres_reserva++;
+                }
+            }else{
+                $usuario = Participante::find($reservacion->tipo_usuario_id);
+                if($usuario->sexo == 'M'){
+                    $cantidad_hombres_reserva++;
+                }else{
+                    $cantidad_mujeres_reserva++;
+                }
+            }
+        }
 
         $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
-
         $cantidad_hombres = $clase_grupal_join->cantidad_hombres - $cantidad_hombres;
 
         if($cantidad_hombres < 0){
@@ -890,14 +905,7 @@ class ClaseGrupalController extends BaseController {
             ->where('alumnos.sexo','F')
         ->count();
 
-        $cantidad_mujeres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-            ->where('reservaciones_visitantes.tipo_id',$id)
-            ->where('reservaciones_visitantes.tipo_reservacion','1')
-            ->where('visitantes_presenciales.sexo','F')
-        ->count();
-
         $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
-
         $cantidad_mujeres = $clase_grupal_join->cantidad_mujeres - $cantidad_mujeres;
 
         if($cantidad_mujeres < 0){
@@ -907,8 +915,6 @@ class ClaseGrupalController extends BaseController {
         $cupos_restantes = $clase_grupal_join->cupo_maximo - $cantidad_mujeres + $cantidad_hombres;
 
         $cupos_totales = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva + $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
-
-
 
         // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
@@ -3696,15 +3702,37 @@ class ClaseGrupalController extends BaseController {
 
     public function reservaciones_vencidas($id){
 
-        $reservaciones = ReservacionVisitante::onlyTrashed()
-            ->join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-            ->select('visitantes_presenciales.*','reservaciones_visitantes.id as inscripcion_id', 'visitantes_presenciales.id as alumno_id', 'reservaciones_visitantes.fecha_vencimiento')
-            ->where('reservaciones_visitantes.tipo_id', '=', $id)
-            ->where('reservaciones_visitantes.tipo_reservacion', '=', '1')
-            ->whereNotNull('reservaciones_visitantes.deleted_at')
+        $reservaciones = Reservacion::onlyTrashed()->where('tipo_reservacion_id', '=', $id)
+            ->where('tipo_reservacion', '=', '1')
+            ->whereNotNull('deleted_at')
         ->get();
 
-        return view('agendar.clase_grupal.reservaciones_vencidas')->with(['reservaciones' => $reservaciones, 'id' => $id]);
+        $array = array();
+        
+        foreach($reservaciones as $reservacion){
+
+            if($reservacion->tipo_usuario == 1){
+                $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+            }else if($reservacion->tipo_usuario == 2){
+                $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+            }else{
+                $alumno = Participante::find($reservacion->tipo_usuario_id);
+            }
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            $alumno_array['nombre'] = $alumno->nombre;
+            $alumno_array['apellido'] = $alumno->apellido;
+            $alumno_array['sexo'] = $alumno->sexo;
+            $alumno_array['tipo'] = 2;
+            $alumno_array['alumno_id'] = $alumno->id;
+            $alumno_array['inscripcion_id'] = $reservacion->id;
+            $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
+            $array[$reservacion->id] = $alumno_array;
+        
+        }
+
+        return view('agendar.clase_grupal.reservaciones_vencidas')->with(['reservaciones' => $array, 'id' => $id]);
     }
 
     public function riesgo_ausencia(){

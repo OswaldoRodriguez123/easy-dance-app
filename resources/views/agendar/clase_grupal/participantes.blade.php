@@ -1059,7 +1059,7 @@
 
                             @foreach ($alumnos_inscritos as $alumno)
                                 <?php 
-
+                                
                                   $id = $alumno['inscripcion_id'];
                                   $alumno_id = $alumno['id'];
 

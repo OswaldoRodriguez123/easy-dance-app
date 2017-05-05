@@ -26,7 +26,7 @@
                                     <form name="form_reserva" id="form_reserva"  >
                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                        <input type="hidden" id="reservacion" name="reservacion" value="">
-                                       <input type="hidden" name="visitante_id" value="{{$visitante_id}}">
+                                       <input type="hidden" name="tipo_usuario_id" value="{{$tipo_usuario_id}}">
                                        <div class="modal-body">                           
                                        <div class="row p-t-20 p-b-0">
 

@@ -1273,9 +1273,7 @@ class CorreoController extends BaseController {
 
 		        //dd($validator);
 
-		    }
-
-		    else{
+		    }else{
 
 	 			$usuario = User::where('email', $request->email)->first();
 
@@ -1310,8 +1308,7 @@ class CorreoController extends BaseController {
 			            });
 
 			            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-		            }
-		            else{
+		            }else{
 	            		return response()->json(['error_mensaje' => 'Ups! Esta cuenta ya esta activada'], 422);
 	           	 	}	
 	            }else{

@@ -38,7 +38,7 @@ use App\Pago;
 use App\ItemsFactura;
 use App\ConfigPagosInstructor;
 use App\PagoInstructor;
-use App\ReservacionVisitante;
+use App\Reservacion;
 use App\CredencialAlumno;
 use App\Codigo;
 use App\Patrocinador;
@@ -243,7 +243,7 @@ class AcademiaController extends BaseController {
 
             if($fecha_comprobacion < $hoy){
 
-                $reservaciones = ReservacionVisitante::all();
+                $reservaciones = Reservacion::all();
 
                 foreach($reservaciones as $reservacion){
                     $fecha_vencimiento = Carbon::parse($reservacion->fecha_vencimiento);

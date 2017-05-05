@@ -739,7 +739,7 @@
                                   <a class="impresion"><i class="icon_a-examen f-20 m-r-5 boton blue sa-warning" data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/agregar/{{$visitante->id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/visitante/llamadas/{{$visitante->id}}"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Llamadas" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a href="{{url('/')}}/agendar/reservaciones/actividades/{{$visitante->id}}"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="reservar"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <br></br>
                                     
                                    
@@ -1303,6 +1303,37 @@
           $('#charNum').text(180 - len);
         }
       };
+
+      $(".reservar").click(function(){
+
+        procesando();
+        var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/2";
+        var token = '{{ csrf_token() }}';
+            
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+                window.location = "{{url('/')}}/agendar/reservaciones/actividades/{{$id}}"
+
+            },
+            error:function(msj){
+                        // $("#msj-danger").fadeIn(); 
+                        // var text="";
+                        // console.log(msj);
+                        // var merror=msj.responseJSON;
+                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        // $("#msj-error").html(text);
+                        // setTimeout(function(){
+                        //          $("#msj-danger").fadeOut();
+                        //         }, 3000);
+                        finprocesado();
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+        });
+    });
     
    </script> 
 

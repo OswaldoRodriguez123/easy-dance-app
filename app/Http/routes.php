@@ -51,6 +51,7 @@ Route::get('agendar/reservaciones/actividades/{id}','ReservaController@principal
 Route::post('agendar/reservaciones/agregar','ReservaController@guardar_reservacion_visitante');
 Route::get('reservacion/{id}','ReservaController@reserva');
 Route::post('reservacion/{id}', 'ReservaController@GuardarTipo');
+Route::post('reservacion/guardar-tipo-usuario/{id}', 'ReservaController@GuardarTipoUsuario');
 Route::post('reservar', 'ReservaController@store');
 Route::post('reservarconusuario', 'ReservaController@storeconusuario');
 Route::get('agendar/reservacion/completado', 'ReservaController@completado');

@@ -76,6 +76,17 @@
                         </a>
                     </li>
 
+
+                    <li data-ripplecator class ="dark-ripples">
+                        <a class="reservar">
+                            <span class="ca-icon-c"><i  class="zmdi zmdi-phone f-35 boton blue sa-warning" name="eliminar" id="{{$id}}" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <div class="ca-content-c">
+                                <h2 class="ca-main-c">Reservar</h2>
+                                <h3 class="ca-sub-c"></h3>
+                            </div>
+                        </a>
+                    </li>
+
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar" id = "{{$id}}">
                             <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
@@ -279,6 +290,37 @@
                                 }
                 });
       }
+
+      $(".reservar").click(function(){
+
+        procesando();
+        var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/1";
+        var token = '{{ csrf_token() }}';
+            
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+                window.location = "{{url('/')}}/agendar/reservaciones/actividades/{{$id}}"
+
+            },
+            error:function(msj){
+                        // $("#msj-danger").fadeIn(); 
+                        // var text="";
+                        // console.log(msj);
+                        // var merror=msj.responseJSON;
+                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        // $("#msj-error").html(text);
+                        // setTimeout(function(){
+                        //          $("#msj-danger").fadeOut();
+                        //         }, 3000);
+                        finprocesado();
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+        });
+    });
 
 	</script>
 @stop

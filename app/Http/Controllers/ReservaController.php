@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\ComoNosConociste;
 use App\Reservacion;
-use App\ReservacionVisitante;
 use App\ClaseGrupal;
 use App\Taller;
 use App\InscripcionClaseGrupal;
@@ -31,231 +30,258 @@ class ReservaController extends BaseController
 
     public function principal($id){
 
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'clases_grupales.cantidad_hombres', 'clases_grupales.cantidad_mujeres', 'clases_grupales.hora_inicio','clases_grupales.hora_final')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-            ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
-        $talleres_join = DB::table('talleres')
-            ->select('talleres.nombre', 'talleres.id', 'talleres.fecha_inicio', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres', 'talleres.hora_inicio','talleres.hora_final')
-            ->where('talleres.academia_id','=', Auth::user()->academia_id)
-            ->where('talleres.deleted_at', '=', null)
-        ->get();
+        $talleres_join = Taller::where('academia_id','=', Auth::user()->academia_id)->get();
 
         $array = array();
-
         $academia = Academia::find(Auth::user()->academia_id);
+        $cantidad_mujeres_reserva = 0;
+        $cantidad_hombres_reserva = 0;
 
+        foreach($clase_grupal_join as $clase_grupal){
 
-            foreach($clase_grupal_join as $clase_grupal){
-                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
-                if($fecha > Carbon::now()){
+            if($fecha > Carbon::now()){
 
-                    $cantidad_hombres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                        ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
-                        ->where('alumnos.sexo','M')
-                    ->count();
+                $cantidad_hombres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
+                    ->where('alumnos.sexo','M')
+                ->count();
 
-                    $cantidad_hombres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                        ->where('reservaciones_visitantes.tipo_id',$clase_grupal->id)
-                        ->where('reservaciones_visitantes.tipo_reservacion','1')
-                        ->where('visitantes_presenciales.sexo','M')
-                    ->count();
+                $cantidad_mujeres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
+                    ->where('alumnos.sexo','F')
+                ->count();
 
-                    $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+                $reservaciones = Reservacion::where('reservaciones.tipo_reservacion_id',$clase_grupal->id)
+                    ->where('tipo_reservacion','1')
+                ->get();
 
-                    $cantidad_hombres = $clase_grupal->cantidad_hombres - $cantidad_hombres;
-
-
-
-                    if($cantidad_hombres < 0){
-                        $cantidad_hombres = 0;
-                    }
-
-                    $cantidad_mujeres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                        ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
-                        ->where('alumnos.sexo','F')
-                    ->count();
-
-                    $cantidad_mujeres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                        ->where('reservaciones_visitantes.tipo_id',$clase_grupal->id)
-                        ->where('reservaciones_visitantes.tipo_reservacion','1')
-                        ->where('visitantes_presenciales.sexo','F')
-                    ->count();
-
-                    $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
-
-                    $cantidad_mujeres = $clase_grupal->cantidad_mujeres - $cantidad_mujeres;
-
-                    if($cantidad_mujeres < 0){
-                        $cantidad_mujeres = 0;
-                    }
-
-
-                    $clase_grupal_find = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                        ->select('config_clases_grupales.imagen', 'clases_grupales.id')
-                        ->where('clases_grupales.id',$clase_grupal->id)
-                    ->first();
-
-                    $i = $fecha->dayOfWeek;
-
-                    if($i == 1){
-
-                      $dia = 'Lunes';
-
-                    }else if($i == 2){
-
-                      $dia = 'Martes';
-
-                    }else if($i == 3){
-
-                      $dia = 'Miercoles';
-
-                    }else if($i == 4){
-
-                      $dia = 'Jueves';
-
-                    }else if($i == 5){
-
-                      $dia = 'Viernes';
-
-                    }else if($i == 6){
-
-                      $dia = 'Sabado';
-
-                    }else if($i == 0){
-
-                      $dia = 'Domingo';
-
-                    }
-
-                    $collection=collect($clase_grupal);     
-                    $clase_grupal_array = $collection->toArray();
-                    $clase_grupal_array['cantidad_hombres'] = $cantidad_hombres;
-                    $clase_grupal_array['cantidad_mujeres'] = $cantidad_mujeres;
-                    $clase_grupal_array['dia_de_semana']=$dia;
-
-                    $clase_grupal_array['id'] = '1-'.$clase_grupal->id;
-
-                    $clase_grupal_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
-
-                    if($clase_grupal_find->imagen){
-                        $clase_grupal_array['imagen'] = "/assets/uploads/clase_grupal/{$clase_grupal_find->imagen}";
+                foreach($reservaciones as $reservacion){
+                    if($reservacion->tipo_usuario == 1){
+                        $usuario = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                        if($usuario->sexo == 'M'){
+                            $cantidad_hombres_reserva++;
+                        }else{
+                            $cantidad_mujeres_reserva++;
+                        }
+                    }else if($reservacion->tipo_usuario == 2){
+                        $usuario = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                        if($usuario->sexo == 'M'){
+                            $cantidad_hombres_reserva++;
+                        }else{
+                            $cantidad_mujeres_reserva++;
+                        }
                     }else{
-                        $clase_grupal_array['imagen'] = "/assets/img/EASY_DANCE_3_.jpg";
+                        $usuario = Participante::find($reservacion->tipo_usuario_id);
+                        if($usuario->sexo == 'M'){
+                            $cantidad_hombres_reserva++;
+                        }else{
+                            $cantidad_mujeres_reserva++;
+                        }
                     }
-                    
-                    $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+                }
+
+                $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+                $cantidad_hombres = $clase_grupal->cantidad_hombres - $cantidad_hombres;
+
+                if($cantidad_hombres < 0){
+                    $cantidad_hombres = 0;
+                }
+
+                $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
+                $cantidad_mujeres = $clase_grupal->cantidad_mujeres - $cantidad_mujeres;
+
+                if($cantidad_mujeres < 0){
+                    $cantidad_mujeres = 0;
+                }
+
+
+                $clase_grupal_find = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->select('config_clases_grupales.imagen', 'clases_grupales.id')
+                    ->where('clases_grupales.id',$clase_grupal->id)
+                ->first();
+
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
 
                 }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                $clase_grupal_array['cantidad_hombres'] = $cantidad_hombres;
+                $clase_grupal_array['cantidad_mujeres'] = $cantidad_mujeres;
+                $clase_grupal_array['dia_de_semana']=$dia;
+
+                $clase_grupal_array['id'] = '1-'.$clase_grupal->id;
+
+                $clase_grupal_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
+
+                if($clase_grupal_find->imagen){
+                    $clase_grupal_array['imagen'] = "/assets/uploads/clase_grupal/{$clase_grupal_find->imagen}";
+                }else{
+                    $clase_grupal_array['imagen'] = "/assets/img/EASY_DANCE_3_.jpg";
+                }
+                
+                $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+
             }
+        }
 
-            foreach($talleres_join as $taller){
-                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+        foreach($talleres_join as $taller){
 
-                if($fecha > Carbon::now()){
+            $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
 
-                    $cantidad_hombres_inscripcion = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-                        ->where('inscripcion_taller.taller_id',$taller->id)
-                        ->where('alumnos.sexo','M')
-                    ->count();
+            if($fecha > Carbon::now()){
 
-                    $cantidad_hombres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                        ->where('reservaciones_visitantes.tipo_id',$taller->id)
-                        ->where('reservaciones_visitantes.tipo_reservacion','2')
-                        ->where('visitantes_presenciales.sexo','M')
-                    ->count();
+                $cantidad_hombres_inscripcion = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                    ->where('inscripcion_taller.taller_id',$taller->id)
+                    ->where('alumnos.sexo','M')
+                ->count();
 
-                    $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+                $cantidad_mujeres_inscripcion = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                    ->where('inscripcion_taller.taller_id',$taller->id)
+                    ->where('alumnos.sexo','F')
+                ->count();
 
-                    $cantidad_hombres = $taller->cantidad_hombres - $cantidad_hombres;
+                $reservaciones = Reservacion::where('reservaciones.tipo_reservacion_id',$taller->id)
+                    ->where('reservaciones_visitantes.tipo_reservacion','2')
+                ->get();
 
-                    if($cantidad_hombres < 0){
-                        $cantidad_hombres = 0;
-                    }
-
-                    $cantidad_mujeres_inscripcion = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-                        ->where('inscripcion_taller.taller_id',$taller->id)
-                        ->where('alumnos.sexo','F')
-                    ->count();
-
-                    $cantidad_mujeres_reserva = ReservacionVisitante::join('visitantes_presenciales', 'reservaciones_visitantes.visitante_id', '=', 'visitantes_presenciales.id')
-                        ->where('reservaciones_visitantes.tipo_id',$taller->id)
-                        ->where('reservaciones_visitantes.tipo_reservacion','2')
-                        ->where('visitantes_presenciales.sexo','F')
-                    ->count();
-
-                    $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
-
-                    $cantidad_mujeres = $taller->cantidad_mujeres - $cantidad_mujeres;
-
-                    if($cantidad_mujeres < 0){
-                        $cantidad_mujeres = 0;
-                    }
-
-                    $taller_find = Taller::find($taller->id);
-
-                    $i = $fecha->dayOfWeek;
-
-                    if($i == 1){
-
-                      $dia = 'Lunes';
-
-                    }else if($i == 2){
-
-                      $dia = 'Martes';
-
-                    }else if($i == 3){
-
-                      $dia = 'Miercoles';
-
-                    }else if($i == 4){
-
-                      $dia = 'Jueves';
-
-                    }else if($i == 5){
-
-                      $dia = 'Viernes';
-
-                    }else if($i == 6){
-
-                      $dia = 'Sabado';
-
-                    }else if($i == 0){
-
-                      $dia = 'Domingo';
-
-                    }
-
-                    $collection=collect($taller);     
-                    $taller_array = $collection->toArray();
-                    $taller_array['cantidad_hombres'] = $cantidad_hombres;
-                    $taller_array['cantidad_mujeres'] = $cantidad_mujeres;
-
-                    $taller_array['dia_de_semana'] = $dia;
-
-
-                    $taller_array['id'] = '2-'.$taller->id;
-
-                    $taller_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
-
-                    $taller_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
-
-                    if($taller_find->imagen){
-                        $taller_array['imagen'] = "/assets/uploads/taller/{$taller_find->imagen}";
+                foreach($reservaciones as $reservacion){
+                    if($reservacion->tipo_usuario == 1){
+                        $usuario = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                        if($usuario->sexo == 'M'){
+                            $cantidad_hombres_reserva++;
+                        }else{
+                            $cantidad_mujeres_reserva++;
+                        }
+                    }else if($reservacion->tipo_usuario == 2){
+                        $usuario = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                        if($usuario->sexo == 'M'){
+                            $cantidad_hombres_reserva++;
+                        }else{
+                            $cantidad_mujeres_reserva++;
+                        }
                     }else{
-                        $taller_array['imagen'] = "/assets/img/EASY_DANCE_3_.jpg";
+                        $usuario = Participante::find($reservacion->tipo_usuario_id);
+                        if($usuario->sexo == 'M'){
+                            $cantidad_hombres_reserva++;
+                        }else{
+                            $cantidad_mujeres_reserva++;
+                        }
                     }
-                    
-                    $array['2-'.$taller->id] = $taller_array;
+                }
+
+
+                $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+
+                $cantidad_hombres = $taller->cantidad_hombres - $cantidad_hombres;
+
+                if($cantidad_hombres < 0){
+                    $cantidad_hombres = 0;
+                }
+
+                $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
+
+                $cantidad_mujeres = $taller->cantidad_mujeres - $cantidad_mujeres;
+
+                if($cantidad_mujeres < 0){
+                    $cantidad_mujeres = 0;
+                }
+
+                $taller_find = Taller::find($taller->id);
+
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
 
                 }
-            }
 
-            return view('agendar.reservacion.principal')->with(['actividades' => $array, 'academia' => $academia, 'visitante_id' => $id]);
+                $collection=collect($taller);     
+                $taller_array = $collection->toArray();
+                $taller_array['cantidad_hombres'] = $cantidad_hombres;
+                $taller_array['cantidad_mujeres'] = $cantidad_mujeres;
+
+                $taller_array['dia_de_semana'] = $dia;
+
+
+                $taller_array['id'] = '2-'.$taller->id;
+
+                $taller_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
+
+                $taller_array['disponible'] = $cantidad_mujeres + $cantidad_hombres;
+
+                if($taller_find->imagen){
+                    $taller_array['imagen'] = "/assets/uploads/taller/{$taller_find->imagen}";
+                }else{
+                    $taller_array['imagen'] = "/assets/img/EASY_DANCE_3_.jpg";
+                }
+                
+                $array['2-'.$taller->id] = $taller_array;
+
+            }
+        }
+
+        return view('agendar.reservacion.principal')->with(['actividades' => $array, 'academia' => $academia, 'tipo_usuario_id' => $id]);
     }
    
 	public function reserva($id)
@@ -285,6 +311,15 @@ class ReservaController extends BaseController
     {
 
         Session::put('tipo', $id);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function GuardarTipoUsuario($id)
+    {
+
+        Session::put('tipo_usuario', $id);
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
@@ -338,22 +373,36 @@ class ReservaController extends BaseController
 
             $tipo_reservacion = Session::get('tipo');
 
-            $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)->where('tipo_id', $request->tipo_id)->where('correo', $request->email)->orderBy('created_at', 'desc')->first();
+            $participante = Participante::where('correo',$request->correo)->first();
 
-            if($tmp){
+            if($participante){
 
-                $fecha_creacion = $tmp->created_at;
-                $hora_limite = $fecha_creacion->addHours(48);
+                $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)
+                    ->where('tipo_reservacion_id', $request->tipo_id)
+                    ->where('tipo_usuario_id',$participante->id)
+                    ->where('tipo_usuario',3)
+                    ->orderBy('created_at', 'desc')
+                ->first();
 
-                if(Carbon::now() > $hora_limite){
-                    $tiene_reservacion = null;
+                if($tmp){
+
+                    $fecha_creacion = $tmp->created_at;
+                    $hora_limite = $fecha_creacion->addHours(48);
+
+                    if(Carbon::now() > $hora_limite){
+                        $tiene_reservacion = null;
+                    }else{
+                        $tiene_reservacion = 'Si';
+                    }
+
                 }else{
-                    $tiene_reservacion = 'Si';
+                    $tiene_reservacion = null;
                 }
-
             }else{
                 $tiene_reservacion = null;
             }
+
+
 
             if(!$tiene_reservacion){
 
@@ -383,17 +432,6 @@ class ReservaController extends BaseController
                     $academia = Academia::find($actividad_nombre->academia_id);
                 }
 
-                $reservacion = New Reservacion;
-
-                $reservacion->academia_id = $academia->id;
-                $reservacion->nombre = $request->nombre;
-                $reservacion->correo = $request->email;
-                $reservacion->sexo = $request->sexo;
-                $reservacion->telefono = $request->telefono;
-                $reservacion->celular = $request->celular;
-                $reservacion->tipo_reservacion = $tipo_reservacion;
-                $reservacion->tipo_id = $request->tipo_id;
-
                 $participante = New Participante;
 
                 $participante->nombre = $request->nombre;
@@ -405,13 +443,24 @@ class ReservaController extends BaseController
 
                 $participante->save();
 
+                $fecha_vencimiento = Carbon::now()->addDays(3);
+
+                $reservacion = New Reservacion;
+
+                $reservacion->academia_id = $academia->id;
+                $reservacion->tipo_reservacion = $tipo_reservacion;
+                $reservacion->tipo_reservacion_id = $request->tipo_id;
+                $reservacion->tipo_usuario = 3;
+                $reservacion->tipo_usuario_id = $participante->id;
+                $reservacion->fecha_vencimiento = $fecha_vencimiento;
+
                 if($reservacion->save()){
 
                     $codigo = New Codigo;
 
                     $codigo->academia_id = $reservacion->academia_id;
                     $codigo->item_id = $reservacion->id;
-                    $codigo->tipo = 1;
+                    $codigo->tipo = 2;
                     $codigo->codigo_validacion = $codigo_validacion;
                     $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
 
@@ -471,7 +520,7 @@ class ReservaController extends BaseController
 
     public function storeconusuario(Request $request)
     {
-       $request->merge(array('correo_registro' => trim($request->correo_registro)));
+        $request->merge(array('correo_registro' => trim($request->correo_registro)));
 
         $rules = [
             'correo_registro' => 'required|email',
@@ -506,7 +555,12 @@ class ReservaController extends BaseController
 
                     $tipo_reservacion = Session::get('tipo');
 
-                    $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)->where('tipo_id', $request->tipo_id)->where('correo', $request->correo_registro)->orderBy('created_at', 'desc')->first();
+                    $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)
+                        ->where('tipo_reservacion_id', $request->tipo_id)
+                        ->where('tipo_usuario_id',$participante->id)
+                        ->where('tipo_usuario',3)
+                        ->orderBy('created_at', 'desc')
+                    ->first();
 
                     if($tmp){
 
@@ -551,16 +605,16 @@ class ReservaController extends BaseController
                             $academia = Academia::find($actividad_nombre->academia_id);
                         }
 
+                        $fecha_vencimiento = Carbon::now()->addDays(3);
+
                         $reservacion = New Reservacion;
 
                         $reservacion->academia_id = $academia->id;
-                        $reservacion->nombre = $participante->nombre;
-                        $reservacion->correo = $participante->correo;
-                        $reservacion->sexo = $participante->sexo;
-                        $reservacion->telefono = $participante->telefono;
-                        $reservacion->celular = $participante->celular;
                         $reservacion->tipo_reservacion = $tipo_reservacion;
-                        $reservacion->tipo_id = $request->tipo_id;
+                        $reservacion->tipo_reservacion_id = $request->tipo_id;
+                        $reservacion->tipo_usuario = 3;
+                        $reservacion->tipo_usuario_id = $participante->id;
+                        $reservacion->fecha_vencimiento = $fecha_vencimiento;
 
                         if($reservacion->save()){
 
@@ -568,7 +622,7 @@ class ReservaController extends BaseController
 
                             $codigo->academia_id = $reservacion->academia_id;
                             $codigo->item_id = $reservacion->id;
-                            $codigo->tipo = 1;
+                            $codigo->tipo = 2;
                             $codigo->codigo_validacion = $codigo_validacion;
                             $codigo->fecha_vencimiento = Carbon::now()->addMonth()->toDateString();
 
@@ -655,8 +709,15 @@ class ReservaController extends BaseController
 
         else{
 
+            $tipo_usuario = Session::get('tipo_usuario');
+
             $id_explode=explode('-', $request->reservacion);
-            $find = ReservacionVisitante::where('tipo_id', $id_explode[1])->where('tipo_reservacion',$id_explode[0])->where('visitante_id',$request->visitante_id)->first();
+
+            $find = Reservacion::where('tipo_reservacion_id', $id_explode[1])
+                ->where('tipo_reservacion',$id_explode[0])
+                ->where('tipo_usuario', $tipo_usuario)
+                ->where('tipo_usuario_id',$request->tipo_usuario_id)
+            ->first();
 
             if($find){
                 return response()->json(['error_mensaje'=> 'Ups! Este visitante ya posee una reservación en esta actividad', 'status' => 'ERROR-RESERVA'],422);
@@ -670,19 +731,24 @@ class ReservaController extends BaseController
                 $fecha_vencimiento = $now->addDays(3);
             }
 
-            $reservacion = New ReservacionVisitante;
+            $reservacion = New Reservacion;
 
             $reservacion->academia_id = Auth::user()->academia_id;
-            $reservacion->visitante_id = $request->visitante_id;
+            $reservacion->tipo_usuario = $tipo_usuario;
+            $reservacion->tipo_usuario_id = $request->tipo_usuario_id;
             $reservacion->tipo_reservacion = $id_explode[0];
-            $reservacion->tipo_id = $id_explode[1];
+            $reservacion->tipo_reservacion_id = $id_explode[1];
             $reservacion->fecha_vencimiento = $fecha_vencimiento;
 
             if($reservacion->save()){
 
-                $visitante = Visitante::find($request->visitante_id);
+                if($tipo_reservacion == 1){
+                    $usuario = Alumno::find($request->tipo_usuario_id);
+                }else{
+                    $usuario = Visitante::find($request->tipo_usuario_id);
+                }
 
-                if($visitante->correo){
+                if($usuario->correo){
 
                     do{
 
@@ -713,8 +779,8 @@ class ReservaController extends BaseController
                         $subj = 'Has realizado una reservación';
 
                         $array = [
-                            'correo' => $visitante->correo,
-                            'nombre' => $visitante->nombre,
+                            'correo' => $usuario->correo,
+                            'nombre' => $usuario->nombre,
                             'actividad' => $actividad,
                             'academia' => $academia->nombre,
                             'codigo' => $codigo_validacion,
@@ -731,14 +797,14 @@ class ReservaController extends BaseController
                     }
                 }
 
-                if($visitante->celular){
+                if($usuario->celular){
 
-                    $celular = getLimpiarNumero($visitante->celular);
+                    $celular = getLimpiarNumero($usuario->celular);
                     $academia = Academia::find(Auth::user()->academia_id);
 
                     if($academia->pais_id == 11 && strlen($celular) == 10){
                         
-                        $mensaje = $visitante->nombre.'. Hemos reservado para ti una clase de baile para la fecha '.$fecha_vencimiento.', tu código para confirmar tu inscripcion es '.$codigo_validacion.'.';
+                        $mensaje = $usuario->nombre.'. Hemos reservado para ti una clase de baile para la fecha '.$fecha_vencimiento.', tu código para confirmar tu inscripcion es '.$codigo_validacion.'.';
 
                         $client = new Client(); //GuzzleHttp\Client
                         $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
@@ -747,7 +813,7 @@ class ReservaController extends BaseController
 
                 }
 
-                return response()->json(['mensaje' => '¡Excelente! La reserva se ha guardado satisfactoriamente', 'status' => 'OK', 'reservacion' => $request->reservacion, 'sexo' => $visitante->sexo, 200]);
+                return response()->json(['mensaje' => '¡Excelente! La reserva se ha guardado satisfactoriamente', 'status' => 'OK', 'reservacion' => $request->reservacion, 'sexo' => $usuario->sexo, 200]);
 
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
