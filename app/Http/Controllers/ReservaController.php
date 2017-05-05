@@ -743,7 +743,7 @@ class ReservaController extends BaseController
 
             if($reservacion->save()){
 
-                if($tipo_reservacion == 1){
+                if($tipo_usuario == 1){
                     $usuario = Alumno::find($request->tipo_usuario_id);
                 }else{
                     $usuario = Visitante::find($request->tipo_usuario_id);
@@ -807,7 +807,8 @@ class ReservaController extends BaseController
                         
                         $mensaje = $usuario->nombre.'. Hemos reservado para ti una clase de baile para la fecha '.$fecha_vencimiento.', tu código para confirmar tu inscripcion es '.$codigo_validacion.'.';
 
-                        $client = new Client(); //GuzzleHttp\Client
+                        $client = new Client();
+                        
                         $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
                     }
