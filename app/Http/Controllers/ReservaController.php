@@ -176,8 +176,8 @@ class ReservaController extends BaseController
                     ->where('alumnos.sexo','F')
                 ->count();
 
-                $reservaciones = Reservacion::where('reservaciones.tipo_reservacion_id',$taller->id)
-                    ->where('reservaciones_visitantes.tipo_reservacion','2')
+                $reservaciones = Reservacion::where('tipo_reservacion_id',$taller->id)
+                    ->where('tipo_reservacion','2')
                 ->get();
 
                 foreach($reservaciones as $reservacion){

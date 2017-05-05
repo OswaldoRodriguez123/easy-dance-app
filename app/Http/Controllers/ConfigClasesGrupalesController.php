@@ -227,6 +227,7 @@ class ConfigClasesGrupalesController extends BaseController {
         }
         
         $clasegrupal->costo_inscripcion = $costo_inscripcion;
+        
         if($clasegrupal->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_inscripcion', 'valor' => $costo_inscripcion, 200]);
         }else{
@@ -234,6 +235,65 @@ class ConfigClasesGrupalesController extends BaseController {
             }
         // return redirect("alumno/edit/{$request->id}");
         }
+    }
+
+    public function updateCostoMensualidad(Request $request){
+
+    $rules = [
+
+        'costo_mensualidad' => 'numeric',
+
+    ];
+
+    $messages = [
+
+        'costo_mensualidad.required' => 'Ups! El costo de la mensualidad es requerida',
+        'costo_mensualidad.numeric' => 'Ups! El campo del costo de la mensualidad en inválido , debe contener sólo números',        
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $clasegrupal = ConfigClasesGrupales::find($request->id);
+        
+        $costo_mensualidad = $request->costo_mensualidad;
+
+        if(trim($costo_mensualidad) == ''){
+            $costo_mensualidad = 0;
+        }
+
+        $clasegrupal->costo_mensualidad = $costo_mensualidad;
+
+        if($clasegrupal->save()){
+
+            $clases_grupales = ClaseGrupal::where('clase_grupal_id', $request->id)->get();
+
+            foreach($clases_grupales as $clase_grupal){
+
+                $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
+
+                foreach ($inscripcion_clase_grupal as $inscripcion) {
+
+                    $inscripcion->costo_mensualidad = $costo_mensualidad;
+                    $inscripcion->save();
+
+                }
+            }
+
+
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_mensualidad', 'valor' => $costo_mensualidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateAsistencias(Request $request){
@@ -277,57 +337,6 @@ class ConfigClasesGrupalesController extends BaseController {
             }
         // return redirect("alumno/edit/{$request->id}");
         }
-    }
-
-    public function updateCostoMensualidad(Request $request){
-
-    $rules = [
-
-        'costo_mensualidad' => 'numeric',
-
-    ];
-
-    $messages = [
-
-        'costo_mensualidad.required' => 'Ups! El costo de la mensualidad es requerida',
-        'costo_mensualidad.numeric' => 'Ups! El campo del costo de la mensualidad en inválido , debe contener sólo números',        
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $clasegrupal = ConfigClasesGrupales::find($request->id);
-        $clasegrupal2 = ClaseGrupal::where('clase_grupal_id', $request->id)->first();
-        $inscripcion_clase_grupal = InscripcionClaseGrupal::where('clase_grupal_id', $clasegrupal2->id)->get();
-
-        $costo_mensualidad = $request->costo_mensualidad;
-
-        if(trim($costo_mensualidad) == ''){
-            $costo_mensualidad = 0;
-        }
-        $clasegrupal->costo_mensualidad = $costo_mensualidad;
-
-        foreach ($inscripcion_clase_grupal as $inscripcion) {
-
-            $inscripcion->costo_mensualidad = $costo_mensualidad;
-            $inscripcion->save();
-
-        }
-
-        if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => 'costo_mensualidad', 'valor' => $costo_mensualidad, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
-        }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateDescripcion(Request $request){
