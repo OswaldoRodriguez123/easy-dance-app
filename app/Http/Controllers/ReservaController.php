@@ -721,7 +721,7 @@ class ReservaController extends BaseController
             ->first();
 
             if($find){
-                return response()->json(['error_mensaje'=> 'Ups! Este visitante ya posee una reservación en esta actividad', 'status' => 'ERROR-RESERVA'],422);
+                return response()->json(['error_mensaje'=> 'Ups! Este usuario ya posee una reservación en esta actividad', 'status' => 'ERROR-RESERVA'],422);
             }
 
             $now = Carbon::now();
