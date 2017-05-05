@@ -16,6 +16,7 @@ use App\Academia;
 use App\Codigo;
 use App\Participante;
 use App\Visitante;
+use App\Alumno;
 use Session;
 use Validator;
 use Mail;
