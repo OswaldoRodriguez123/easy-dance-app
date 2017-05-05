@@ -2360,7 +2360,7 @@
                             .remove()
                             .draw();
 
-                          swal("Exito!","El alumno ha sido eliminado!","success");
+                          swal("Exito!","La reservación ha sido eliminada!","success");
 
                           if(sexo == 'F'){
 
