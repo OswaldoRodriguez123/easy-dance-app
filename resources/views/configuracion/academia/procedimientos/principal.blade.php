@@ -83,7 +83,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/coordinacion de pista.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/coordinacion-de-pista-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/productora de eventos.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/productora-de-eventos-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/ventas.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/ventas-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/supervisor.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/supervisores-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/recepcionista.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/recepcionistas-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/instructores.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/instructores-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/administrativo.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/administrativo-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -244,7 +244,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/generar ambiente.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/ambiente-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -268,7 +268,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/roles de la aplicacion.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/roles-de-aplicacion-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
@@ -291,7 +291,7 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/guia de atencion al cliente.docx" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            <a href="{{url('/')}}/assets/uploads/procedimientos/guia-de-atencion-al-cliente-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
                                         </div>
                                     </div>
                                 </div>
