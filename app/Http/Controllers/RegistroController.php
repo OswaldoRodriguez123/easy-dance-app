@@ -171,7 +171,7 @@ class RegistroController extends Controller {
         //$link = Autologin::to($usuario, '/inicio');
 
         // $link = route('confirmacion', ['token' => $user->confirmation_token]);
-        $link = "{{url('/')}}/confirmacion/?token=".$user->confirmation_token;
+        $link = "/confirmacion/?token=".$user->confirmation_token;
 
         $array = [
            'nombre' => $usuario->nombre,
