@@ -1302,9 +1302,6 @@ class CorreoController extends BaseController {
 			                'link' => $link
 			            ];
 
-			            dd($array);
-
-
 			            Mail::send('correo.activacion', $array, function($msj) use ($array){
 			                $msj->subject($array['subj']);
 			                $msj->to($array['usuario']);
