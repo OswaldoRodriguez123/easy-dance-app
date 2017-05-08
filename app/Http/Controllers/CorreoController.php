@@ -1291,7 +1291,7 @@ class CorreoController extends BaseController {
 
 			            $subj = 'Activa tu cuenta en Easy Dance';
 			            // $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
-			            $link = "/confirmacion/?token=".$usuario->confirmation_token;
+			            $link = "confirmacion/?token=".$usuario->confirmation_token;
 
 			        	$array = [
 			            	'nombre' => $usuario->nombre,
@@ -1301,6 +1301,8 @@ class CorreoController extends BaseController {
 			                'subj' => $subj,
 			                'link' => $link
 			            ];
+
+			            dd($array);
 
 
 			            Mail::send('correo.activacion', $array, function($msj) use ($array){
