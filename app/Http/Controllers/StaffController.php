@@ -750,13 +750,15 @@ class StaffController extends BaseController
         
         $rules = [
             'cantidad' => 'required|min:1',
-            'tipo_pago' => 'required'
+            'tipo_pago' => 'required',
+            'servicio' => 'required',
         ];
 
         $messages = [
 
             'cantidad.required' => 'Ups! El Monto es requerido',
             'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            'servicio.required' => 'Ups! El Servicio es requerido',
             
         ];
 
@@ -764,14 +766,7 @@ class StaffController extends BaseController
 
         if ($validator->fails()){
 
-            // return redirect("/home")
-
-            // ->withErrors($validator)
-            // ->withInput();
-
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-            //dd($validator);
 
         }
 
@@ -785,108 +780,156 @@ class StaffController extends BaseController
 
             $array = array();
 
-            if($request->servicio_id != 'null'){
+            $tmp = explode('-',$request->servicio);
+            $servicio_id = $tmp[0];
+            $tipo_servicio = $tmp[1];
 
-                $servicios = explode(",", $request->servicio_id);
-
-                foreach($servicios as $servicio){
-
-                    $tmp = explode('-',$servicio);
-                    $servicio_id = $tmp[0];
-                    $tipo_servicio = $tmp[1];
-
-                    $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
-                        ->where('servicio_id', $servicio_id)
-                    ->first();
+            $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
+                ->where('servicio_id', $servicio_id)
+            ->first();
 
 
-                    if(!$posee_pago){
+            if(!$posee_pago){
 
-                        $monto = floatval(str_replace(',', '', $request->cantidad));
-                        $servicio = ConfigServicios::find($servicio_id);
+                $monto = floatval(str_replace(',', '', $request->cantidad));
+                $servicio = ConfigServicios::find($servicio_id);
 
-                        if($monto  > $servicio->costo){
-                            return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
-                        }
-
-                        $config_pagos = new ConfigPagosStaff;
-
-                        $config_pagos->servicio_id = $servicio_id;
-                        $config_pagos->staff_id = $request->id;
-                        $config_pagos->tipo = $request->tipo_pago;
-                        $config_pagos->monto = $monto;
-                        $config_pagos->tipo_servicio = $tipo_servicio;
-
-                        $config_pagos->save();
-
-                        if($config_pagos->tipo == 1){
-                            $porcentaje = $config_pagos->monto / 100;
-                            $monto_porcentaje = $servicio->costo * $porcentaje;
-                        }else{
-                            $monto_porcentaje = '';
-                        }
-                        
-                        $config_pagos['monto_porcentaje'] = $monto_porcentaje;
-                        $config_pagos['nombre'] = $servicio->nombre;
-
-                        array_push($array, $config_pagos);
-
-
-                    }
-
+                if($monto  > $servicio->costo){
+                    return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
                 }
 
+                $config_pagos = new ConfigPagosStaff;
 
-            }else{
+                $config_pagos->servicio_id = $servicio_id;
+                $config_pagos->staff_id = $request->id;
+                $config_pagos->tipo = $request->tipo_pago;
+                $config_pagos->monto = $monto;
+                $config_pagos->tipo_servicio = $tipo_servicio;
 
-                $servicios = ConfigServicios::where('academia_id', Auth::user()->academia_id)
-                    ->get();
+                $config_pagos->save();
 
-                foreach($servicios as $servicio){
-
-                    $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
-                        ->where('servicio_id', $servicio)
-                    ->first();
-
-                    if(!$posee_pago){
-
-                        $monto = floatval(str_replace(',', '', $request->cantidad));
-
-                        $servicio = ConfigServicios::find($servicio_id);
-
-                        if($monto  > $servicio->costo){
-                            return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
-                        }
-
-                        $config_pagos = new ConfigPagosStaff;
-
-                        $config_pagos->servicio_id = $servicio;
-                        $config_pagos->staff_id = $request->id;
-                        $config_pagos->tipo = $request->tipo_pago;
-                        $config_pagos->monto = $monto;
-
-                        $config_pagos->save();
-
-                        
-
-                        if($config_pagos->tipo == 1){
-                            $porcentaje = $config_pagos->monto / 100;
-                            $monto_porcentaje = $servicio->costo * $porcentaje;
-                        }else{
-                            $monto_porcentaje = '';
-                        }
-                        
-                        $config_pagos['monto_porcentaje'] = $monto_porcentaje;
-                        $config_pagos['nombre'] = $servicio->nombre;
-
-                        array_push($array, $config_pagos);
-
-
-                    }
-
+                if($config_pagos->tipo == 1){
+                    $porcentaje = $config_pagos->monto / 100;
+                    $monto_porcentaje = $servicio->costo * $porcentaje;
+                }else{
+                    $monto_porcentaje = '';
                 }
+                
+                $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+                $config_pagos['nombre'] = $servicio->nombre;
+
+                array_push($array, $config_pagos);
+
 
             }
+
+            
+
+
+     
+
+            // if($request->servicio_id != 'null'){
+
+            //     $servicios = explode(",", $request->servicio_id);
+
+            //     foreach($servicios as $servicio){
+
+            //         $tmp = explode('-',$servicio);
+            //         $servicio_id = $tmp[0];
+            //         $tipo_servicio = $tmp[1];
+
+            //         $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
+            //             ->where('servicio_id', $servicio_id)
+            //         ->first();
+
+
+            //         if(!$posee_pago){
+
+            //             $monto = floatval(str_replace(',', '', $request->cantidad));
+            //             $servicio = ConfigServicios::find($servicio_id);
+
+            //             if($monto  > $servicio->costo){
+            //                 return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+            //             }
+
+            //             $config_pagos = new ConfigPagosStaff;
+
+            //             $config_pagos->servicio_id = $servicio_id;
+            //             $config_pagos->staff_id = $request->id;
+            //             $config_pagos->tipo = $request->tipo_pago;
+            //             $config_pagos->monto = $monto;
+            //             $config_pagos->tipo_servicio = $tipo_servicio;
+
+            //             $config_pagos->save();
+
+            //             if($config_pagos->tipo == 1){
+            //                 $porcentaje = $config_pagos->monto / 100;
+            //                 $monto_porcentaje = $servicio->costo * $porcentaje;
+            //             }else{
+            //                 $monto_porcentaje = '';
+            //             }
+                        
+            //             $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+            //             $config_pagos['nombre'] = $servicio->nombre;
+
+            //             array_push($array, $config_pagos);
+
+
+            //         }
+
+            //     }
+
+
+            // }else{
+
+            //     $servicios = ConfigServicios::where('academia_id', Auth::user()->academia_id)
+            //         ->get();
+
+            //     foreach($servicios as $servicio){
+
+            //         $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
+            //             ->where('servicio_id', $servicio)
+            //         ->first();
+
+            //         if(!$posee_pago){
+
+            //             $monto = floatval(str_replace(',', '', $request->cantidad));
+
+            //             $servicio = ConfigServicios::find($servicio_id);
+
+            //             if($monto  > $servicio->costo){
+            //                 return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+            //             }
+
+            //             $config_pagos = new ConfigPagosStaff;
+
+            //             $config_pagos->servicio_id = $servicio;
+            //             $config_pagos->staff_id = $request->id;
+            //             $config_pagos->tipo = $request->tipo_pago;
+            //             $config_pagos->monto = $monto;
+
+            //             $config_pagos->save();
+
+                        
+
+            //             if($config_pagos->tipo == 1){
+            //                 $porcentaje = $config_pagos->monto / 100;
+            //                 $monto_porcentaje = $servicio->costo * $porcentaje;
+            //             }else{
+            //                 $monto_porcentaje = '';
+            //             }
+                        
+            //             $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+            //             $config_pagos['nombre'] = $servicio->nombre;
+
+            //             array_push($array, $config_pagos);
+
+
+            //         }
+
+            //     }
+
+            // }
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);   
         }
