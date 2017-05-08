@@ -784,19 +784,21 @@ class StaffController extends BaseController
             $servicio_id = $tmp[0];
             $tipo_servicio = $tmp[1];
 
-            $posee_pago = ConfigPagosStaff::where('staff_id', $request->id)
+
+            $monto = floatval(str_replace(',', '', $request->cantidad));
+            $servicio = ConfigServicios::find($servicio_id);
+
+            if($monto  > $servicio->costo){
+                return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+            }
+
+
+            $config_pagos = ConfigPagosStaff::where('staff_id', $request->id)
                 ->where('servicio_id', $servicio_id)
             ->first();
 
 
-            if(!$posee_pago){
-
-                $monto = floatval(str_replace(',', '', $request->cantidad));
-                $servicio = ConfigServicios::find($servicio_id);
-
-                if($monto  > $servicio->costo){
-                    return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
-                }
+            if(!$config_pagos){
 
                 $config_pagos = new ConfigPagosStaff;
 
@@ -821,6 +823,27 @@ class StaffController extends BaseController
                 array_push($array, $config_pagos);
 
 
+            }else{
+
+                $config_pagos->servicio_id = $servicio_id;
+                $config_pagos->staff_id = $request->id;
+                $config_pagos->tipo = $request->tipo_pago;
+                $config_pagos->monto = $monto;
+                $config_pagos->tipo_servicio = $tipo_servicio;
+
+                $config_pagos->save();
+
+                if($config_pagos->tipo == 1){
+                    $porcentaje = $config_pagos->monto / 100;
+                    $monto_porcentaje = $servicio->costo * $porcentaje;
+                }else{
+                    $monto_porcentaje = '';
+                }
+                
+                $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+                $config_pagos['nombre'] = $servicio->nombre;
+
+                array_push($array, $config_pagos);
             }
 
             
