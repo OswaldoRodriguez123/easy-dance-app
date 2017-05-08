@@ -13,10 +13,13 @@
 
 Route::get('error', 'AcademiaController@error');
 
-Route::get('/confirmacion/{token}', [
-    'uses' => 'RegistroController@confirmacion',
-    'as'   => 'confirmacion'
-]);
+// Route::get('/confirmacion/{token}', [
+//     'uses' => 'RegistroController@confirmacion',
+//     'as'   => 'confirmacion'
+// ]);
+
+
+Route::get('/confirmacion','RegistroController@confirmacion');
 
 Route::auth();
 

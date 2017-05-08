@@ -150,7 +150,7 @@ class RegistroController extends Controller {
 
     public function postRegister(Request $request)
     {
-    $validator = $this->validator($request->all());
+        $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
             // $this->throwValidationException(
@@ -169,7 +169,9 @@ class RegistroController extends Controller {
         $usuario = User::find($user->id);
         // $link = Autologin::user($usuario);
         //$link = Autologin::to($usuario, '/inicio');
-        $link = route('confirmacion', ['token' => $user->confirmation_token]);
+
+        // $link = route('confirmacion', ['token' => $user->confirmation_token]);
+        $link = "{{url('/')}}/confirmacion/?token=".$user->confirmation_token;
 
         $array = [
            'nombre' => $usuario->nombre,
@@ -256,22 +258,46 @@ class RegistroController extends Controller {
         return view('login.contrasena.salvavidas');
     }
 
+    public function confirmacion(){
 
-    public function confirmacion($token){
+        $token = $_GET['token'];
 
-        $token = trim($token);
-        $user = User::where('confirmation_token', $token)->first();
+        if($token){
 
-        if($user){
-            $user->confirmation_token = null;
-            $user->save();
+            $token = trim($token);
+            $user = User::where('confirmation_token', $token)->first();
 
-            Auth::login($user);
-            return redirect('inicio');
-         
+            if($user){
+                $user->confirmation_token = null;
+                $user->save();
+
+                Auth::login($user);
+                return redirect('inicio');
+             
+            }else{
+                return redirect('login');
+            }
         }else{
             return redirect('login');
         }
     }
+
+
+    // public function confirmacion($token){
+
+    //     $token = trim($token);
+    //     $user = User::where('confirmation_token', $token)->first();
+
+    //     if($user){
+    //         $user->confirmation_token = null;
+    //         $user->save();
+
+    //         Auth::login($user);
+    //         return redirect('inicio');
+         
+    //     }else{
+    //         return redirect('login');
+    //     }
+    // }
 
 }

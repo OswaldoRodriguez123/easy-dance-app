@@ -1290,7 +1290,8 @@ class CorreoController extends BaseController {
 						$usuario->save();
 
 			            $subj = 'Activa tu cuenta en Easy Dance';
-			            $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
+			            // $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
+			            $link = "{{url('/')}}/confirmacion/?token=".$usuario->confirmation_token;
 
 			        	$array = [
 			            	'nombre' => $usuario->nombre,
