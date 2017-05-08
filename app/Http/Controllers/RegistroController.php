@@ -258,9 +258,10 @@ class RegistroController extends Controller {
         return view('login.contrasena.salvavidas');
     }
 
-    public function confirmacion(){
+    public function confirmacion(Request $request){
 
-        $token = $_GET['token'];
+        $url = explode('=',$_SERVER['REQUEST_URI']);
+        $token = $url[1];
 
         if($token){
 
