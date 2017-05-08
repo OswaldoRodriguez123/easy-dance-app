@@ -75,7 +75,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th id="fecha" class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="dia">Día</th>
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
@@ -235,6 +235,10 @@
                     .addClass('disabled')
                     .attr('data-fecha', array.fecha_inicio);
             });
+
+            if($('#fecha').hasClass('sorting_desc')){
+                $('#fecha').click();
+            }
         }
 
         function rechargeFinalizadas(){
@@ -261,6 +265,10 @@
                     .addClass('disabled')
                     .addClass('seleccion_deleted');
             });
+
+            if($('#fecha').hasClass('sorting_asc')){
+                $('#fecha').click();
+            }
         }
 
         function clear(){

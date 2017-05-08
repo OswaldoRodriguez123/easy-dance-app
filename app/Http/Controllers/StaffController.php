@@ -846,11 +846,6 @@ class StaffController extends BaseController
                 array_push($array, $config_pagos);
             }
 
-            
-
-
-     
-
             // if($request->servicio_id != 'null'){
 
             //     $servicios = explode(",", $request->servicio_id);
