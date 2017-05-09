@@ -176,43 +176,6 @@ class VisitanteController extends BaseController {
     }
     }
 
-    public function updateID(Request $request){
-
-    $rules = [
-        'identificacion' => 'required|min:7|numeric|unique:visitantes_presenciales,identificacion, '.$request->id.'',
-    ];
-
-    $messages = [
-
-        'identificacion.required' => 'Ups! El identificador es requerido',
-        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
-        'identificacion.max' => 'El maximo de numeros permitidos son 20',
-        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
-        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $visitante = Visitante::find($request->id);
-        $visitante->identificacion = $request->identificacion;
-        
-        if($visitante->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-        // return redirect("alumno/edit/{$request->id}");
-        }
-    }
-
     public function updateNombre(Request $request){
 
     $rules = [

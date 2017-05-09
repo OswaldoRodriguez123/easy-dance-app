@@ -248,7 +248,7 @@ class AdministrativoController extends BaseController {
             $servicios_productos['2-'.$producto->id]=array('id' => $producto['id'], 'nombre' => $producto['nombre'] , 'costo' => $producto['costo'], 'iva' => $iva, 'incluye_iva' => $producto['incluye_iva'], 'disponibilidad' => $producto['cantidad'], 'tipo' => $producto['tipo'], 'servicio_producto' => 2);
 
         }
-        
+
         $proforma_join = DB::table('items_factura_proforma')
             ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
@@ -2678,7 +2678,7 @@ class AdministrativoController extends BaseController {
         $request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
-        'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
+        'identificacion' => 'required|min:7|numeric',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'sexo' => 'required',

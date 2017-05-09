@@ -101,7 +101,7 @@ class InstructorController extends BaseController {
 
 
     $rules = [
-        'identificacion' => 'required|min:7|numeric|unique:instructores,identificacion',
+        'identificacion' => 'required|min:7|numeric',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
@@ -344,7 +344,7 @@ class InstructorController extends BaseController {
     public function updateID(Request $request){
 
     $rules = [
-        'identificacion' => 'required|min:7|numeric|unique:instructores,identificacion, '.$request->id.'',
+        'identificacion' => 'required|min:7|numeric',
     ];
 
     $messages = [

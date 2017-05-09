@@ -73,7 +73,7 @@ class FamiliaController extends BaseController {
 
     $rules = [
         'apellido_familia' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
+        'identificacion' => 'required|min:7|numeric',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
@@ -444,7 +444,7 @@ class FamiliaController extends BaseController {
     $request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
-        'identificacion' => 'min:7|numeric|unique:alumnos,identificacion',
+        'identificacion' => 'min:7|numeric',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',

@@ -206,7 +206,7 @@ class AlumnoController extends BaseController
 		$request->merge(array('correo' => trim($request->correo)));
 
     $rules = [
-        'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion',
+        'identificacion' => 'required|min:7|numeric',
         'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
@@ -749,7 +749,7 @@ class AlumnoController extends BaseController
 
     public function updateID(Request $request){
         $rules = [
-            'identificacion' => 'required|min:7|numeric|unique:alumnos,identificacion, '.$request->id.'',
+            'identificacion' => 'required|min:7|numeric',
         ];
 
         $messages = [
