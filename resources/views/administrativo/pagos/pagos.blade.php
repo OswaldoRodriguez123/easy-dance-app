@@ -553,6 +553,12 @@
                                     <div class="fg-line">
                                       <div class="select">
                                         <select class="form-control" name="combo" id="combo">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $servicios_productos as $servicio_producto )
+                           
+                                            <option value = "{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}">{{$servicio_producto['nombre']}}</option>
+
+                                          @endforeach
                                         </select>
                                       </div>
                                     </div>
@@ -736,6 +742,10 @@
   var tipo = 'servicio';
   var checked = [];
   var itemlist= 0;
+  var disponible = 0;
+  var servicios_productos = '';
+  var servicios = []
+  var productos = []
 
   route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
   route_factura="{{url('/')}}/administrativo/pagos/gestion";
@@ -754,19 +764,21 @@
 
   $( document ).ready(function() {
 
+    servicios_productos = $('#combo option')
+
     $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
-        }
+      A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+      }
 
-      });
+    });
 
-      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+    $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
-        }
+      A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
+      }
 
-      });
+    });
 
 
     $('body,html').animate({scrollTop : 0}, 2000);
@@ -790,8 +802,8 @@
     $('#alumno_id').selectpicker('render');
 
     id = "{{{ $id or 'Default' }}}";
-    $('#disponibilidad_productos').toggleClass("disponibilidad_productos_no");
-    $('#disponibilidad_productos_campo').toggleClass("disponibilidad_productos_no");
+    $('#disponibilidad_productos').hide();
+    $('#disponibilidad_productos_campo').hide();
 
     if(id != 'Default'){
 
@@ -817,22 +829,22 @@
 
               $.each(respuesta.items, function (index, array) {
 
-                  var rowId=array[0].id;
-                  itemlist=array.length;
-                          var rowNode=t.row.add( [
-                          ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                          ''+array[0].id+'',
-                          ''+array[0].nombre+'',
-                          ''+array[0].cantidad+'',
-                          ''+formatmoney(parseFloat(array[0].precio_neto))+'',
-                          ''+array[0].impuesto+'',
-                          ''+formatmoney(parseFloat(array[0].importe_neto))+'',
-                          ''+ ' ' +''
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          // .attr('data-precio',precio_neto)
-                          .addClass('seleccion');
+                var rowId=array[0].id;
+                itemlist=array.length;
+                var rowNode=t.row.add( [
+                ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
+                ''+array[0].id+'',
+                ''+array[0].nombre+'',
+                ''+array[0].cantidad+'',
+                ''+formatmoney(parseFloat(array[0].precio_neto))+'',
+                ''+array[0].impuesto+'',
+                ''+formatmoney(parseFloat(array[0].importe_neto))+'',
+                ''+ ' ' +''
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                // .attr('data-precio',precio_neto)
+                .addClass('seleccion');
 
               });
 
@@ -901,8 +913,6 @@
         $('html,body').animate({
             scrollTop: $("#content").offset().top-90,
             }, 1000);
-            // scrollTop: $("#id-cliente").offset().top-90,
-            // }, 1000);
 
         }, 1000);
     }
@@ -914,22 +924,12 @@
         } ],
         processing: true,
         serverSide: false,
-        //pageLength: 25,
         bPaginate: false,
         bInfo:false,
         order: [[1, 'desc']],
         language: {
               searchPlaceholder: "Buscar"
         },
-        /*fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-        if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }
-        },*/
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
           $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled");
@@ -967,18 +967,9 @@
 
    });
 
-    $("#agregar_item")[0].reset();
+  $("#agregar_item")[0].reset();
     rechargeServicio();
 
-      // $("#impuesto").val($("#impuesto option:first").val());
-      // $("#combo").val($("#combo option:first").val());
-      // $('input[name="cantidad"]').val(1)
-      // $('input[name="importe_neto"]').val(0)
-      // $('input[name="precio_neto"]').val(0)
-      // $("#servicio").prop("checked", true);
-      // $('#alumno_id').selectpicker('render');
-
-    // impuestoglobal = $("#impuesto option:selected").val();
     impuestoglobal = 0;
     subtotalglobal = 0;
 
@@ -1032,8 +1023,6 @@
 
       var route = route_factura;
       var token = $('input:hidden[name=_token]').val();
-      // var datos = "&alumno_id="+$("#alumno_id option:selected" ).val();
-      // var datos = $( "#agregar_item" ).serialize();
       var datos = "&alumno_id="+alumno_id+"&items_factura="+checked;
       limpiarMensaje();
       procesando();
@@ -1090,63 +1079,82 @@
       });
   });
 
-    $("#servicio").click(function(){
-        $( "#producto2" ).removeClass( "c-verde" );
-        $( "#servicio2" ).addClass( "c-verde" );
-    });
-
-    $("#producto").click(function(){
-        $( "#servicio2" ).removeClass( "c-verde" );
-        $( "#producto2" ).addClass( "c-verde" );
-    });
-    
     function rechargeServicio(){
 
-    var servicio = <?php echo json_encode($servicio);?>;
+      tipo = 'servicio';
+      $( "#producto2" ).removeClass( "c-verde" );
+      $( "#servicio2" ).addClass( "c-verde" );
 
-    $('#combo').append( new Option("Selecciona",""));
-    $.each(servicio, function (index, array) {
-      $.each(array, function (index, arreglo) {
-        $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo + "-" + arreglo.tipo));
+      $.each(servicios_productos, function (index, array) {
+        id = array.value
+        explode = id.split('-');
+        if(explode[3] == '1'){
+          $('#combo option[value="'+array.value+'"]').show();
+        }else{
+          $('#combo option[value="'+array.value+'"]').hide();
+        }
       });
-    });
-    $('input[name="importe_neto"]').val(0)
-    $('input[name="precio_neto"]').val(0)
-    $('input[name="cantidad"]').val(1)
+
+      $('#disponibilidad_productos').hide();
+      $('#disponibilidad_productos_campo').hide();
 
     }
 
-    function rechargeProducto(){
+    // function rechargeProducto(){
 
-    var producto = <?php echo json_encode($producto);?>;
+    //   $('#combo').append( new Option("Selecciona",""));
+    //   $.each(productos, function (index, array) {
+    //     $('#combo').append( new Option(array.nombre,array.id + "-" + array.costo + "-" + array.tipo));
+    //   });
 
-    $('#combo').append( new Option("Selecciona",""));
-    $.each(producto, function (index, array) {
-      $.each(array, function (index, arreglo) {
-        $('#combo').append( new Option(arreglo.nombre,arreglo.id + "-" + arreglo.costo + "-" + arreglo.tipo));
-      });
-    });
 
-    $('input[name="importe_neto"]').val(0)
-    $('input[name="precio_neto"]').val(0)
-    } 
+    // } 
 
     $('input[name="tipo"]').on('change', function(){
 
-    if ($(this).val()=='servicio') {
-          tipo = 'servicio';
-          $('#combo').empty();
-          rechargeServicio();
-          $('#disponibilidad_productos').toggleClass("disponibilidad_productos_no");
-          $('#disponibilidad_productos_campo').toggleClass("disponibilidad_productos_no");
-    } else  {
-          tipo = 'producto';
-          $('#combo').empty();
-          rechargeProducto();
-          $('#disponibilidad_productos').toggleClass("disponibilidad_productos_no");
-          $('#disponibilidad_productos_campo').toggleClass("disponibilidad_productos_no");
-    }
+      if($(this).val()=='servicio') {
+
+        tipo = 'servicio';
+        $( "#producto2" ).removeClass( "c-verde" );
+        $( "#servicio2" ).addClass( "c-verde" );
+
+        $.each(servicios_productos, function (index, array) {
+          id = array.value
+          explode = id.split('-');
+          if(explode[3] == '1'){
+            $('#combo option[value="'+array.value+'"]').show();
+          }else{
+            $('#combo option[value="'+array.value+'"]').hide();
+          }
+        });
+
+        $('#disponibilidad_productos').hide();
+        $('#disponibilidad_productos_campo').hide();
+
+      }else{
+
+        tipo = 'producto';
+        $( "#servicio2" ).removeClass( "c-verde" );
+        $( "#producto2" ).addClass( "c-verde" );
+
+        $.each(servicios_productos, function (index, array) {
+          id = array.value
+          explode = id.split('-');
+          if(explode[3] == '2'){
+            $('#combo option[value="'+array.value+'"]').show();
+          }else{
+            $('#combo option[value="'+array.value+'"]').hide();
+          }
+        });
+
+        $('#disponibilidad_productos').show();
+        $('#disponibilidad_productos_campo').show();
+      }
+
       $('input[name="cantidad"]').val(1)
+      $('input[name="importe_neto"]').val(0)
+      $('input[name="precio_neto"]').val(0)
+
     });
 
 
@@ -1155,40 +1163,19 @@
       var combo = $(this).val();
       var split = combo.split('-');
       var costo = split[1];
-      var index = split[0];
+      var index = split[0];      
+      var incluye_iva = split[4];
+      var disponibilidad = split[5];
       var cantidad = $('input[name="cantidad"]').val()
       var costo2 = parseFloat(costo);
       var cantidad2 = parseFloat(cantidad);
-      var impuesto = $("#impuesto option:selected" ).val();
+      var impuesto = $("#impuesto option:selected").val();
 
-      if(tipo == 'servicio'){
-
-        var servicio = <?php echo json_encode($servicio);?>;
-
-        incluye_iva = servicio[index][0]['incluye_iva'];
-        console.log(incluye_iva);
-
-        if(incluye_iva != 0){
-          $("#impuesto").val($('#impuesto option').first().val());
-        }
-        else{
-          $("#impuesto").val($('#impuesto option').last().val());
-        }
-
-      }else{
-
-        var producto = <?php echo json_encode($producto);?>;
-        incluye_iva = producto[index][0]['incluye_iva'];
-        var disponible = producto[index][0]['disponibilidad'];
-        console.log(incluye_iva);
-
-        if(incluye_iva == 0){
-          $("#impuesto").val($('#impuesto option').first().val());
-        }
-        else{
-          $("#impuesto").val($('#impuesto option').last().val());
-        }
-
+      if(incluye_iva == 0){
+        $("#impuesto").val($('#impuesto option').first().val());
+      }
+      else{
+        $("#impuesto").val($('#impuesto option').last().val());
       }
 
       var total = costo2 * cantidad2
@@ -1206,7 +1193,7 @@
 
       $('input[name="importe_neto"]').val(formatmoney(total))
       $('input[name="cantidad"]').val(1)
-      $('input[name="campo_disponibilidad"]').val(disponible)
+      $('input[name="campo_disponibilidad"]').val(disponibilidad)
     });
 
     $("#cantidad").change(function(){
@@ -1279,8 +1266,8 @@
     // LINEA AGREGAR
 
     $("#add").click(function(){
-      $('#disponibilidad_productos').addClass("disponibilidad_productos_no");
-      $('#disponibilidad_productos_campo').addClass("disponibilidad_productos_no");
+      $('#disponibilidad_productos').hide();
+      $('#disponibilidad_productos_campo').hide();
 
       $("#add").attr("disabled","disabled");
         $("#add").css({
@@ -1348,7 +1335,6 @@
 
                           tipo = 'servicio';
                           $("#servicio").prop("checked", true);
-                          $('#combo').empty();
                           rechargeServicio();
 
                         }else{
@@ -1422,9 +1408,6 @@
                       subtotalglobal = subtotalglobal - data.importe_neto + impuesto;
                       impuestoglobal = impuestoglobal - impuesto;
                       totalfinal = subtotalglobal + impuestoglobal;
-
-                      console.log(data.importe_neto);
-                      console.log(impuesto);
 
                       $("#subtotal").text(subtotalglobal.toFixed(2));
                       $("#impuestototal").text(impuestoglobal.toFixed(2));
@@ -1501,7 +1484,6 @@
                     alumno_id = '';
                     $('#alumno_id').selectpicker('render');
                     limpiarMensaje();
-                    $('#combo').empty();
                     impuestoglobal = 0;
                     subtotalglobal = 0;
                     rechargeServicio();
@@ -1597,25 +1579,25 @@
               $.each(respuesta.items, function (index, array) {
 
 
-                          var rowId=array[0].id;
-                          var rowNode=t.row.add( [
-                          ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                          ''+array[0].id+'',
-                          ''+array[0].nombre+'',
-                          ''+array[0].cantidad+'',
-                          ''+formatmoney(parseFloat(array[0].precio_neto))+'',
-                          ''+array[0].impuesto+'',
-                          ''+formatmoney(parseFloat(array[0].importe_neto))+'',
-                          ''+'<i class="zmdi zmdi-delete f-20 p-r-10"></i>'+''
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          // .attr('data-precio',precio_neto)
-                          .addClass('seleccion');
+                var rowId=array[0].id;
+                var rowNode=t.row.add( [
+                ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
+                ''+array[0].id+'',
+                ''+array[0].nombre+'',
+                ''+array[0].cantidad+'',
+                ''+formatmoney(parseFloat(array[0].precio_neto))+'',
+                ''+array[0].impuesto+'',
+                ''+formatmoney(parseFloat(array[0].importe_neto))+'',
+                ''+'<i class="zmdi zmdi-delete f-20 p-r-10"></i>'+''
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                // .attr('data-precio',precio_neto)
+                .addClass('seleccion');
 
-                          // total = total + array[0].importe_neto;
-                 
-                    });
+                // total = total + array[0].importe_neto;
+           
+              });
 
               total = respuesta.total;
 

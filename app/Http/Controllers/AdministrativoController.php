@@ -228,35 +228,27 @@ class AdministrativoController extends BaseController {
             Session::forget('gestion'); 
         }
 
-        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-        $servicio=array();
+        $servicios_productos = array();
 
-        foreach($config_servicio as $item){
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
 
-            $iva = $item['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'costo' => $item['costo'], 'iva' => $iva, 'incluye_iva' => $item['incluye_iva'], 'tipo' => $item['tipo']);
+        foreach($config_servicio as $servicio){
 
-            $collection=collect($tmp);
-            $grouped = $collection->groupBy('id');     
-            $servicio = $grouped->toArray();
+            $iva = $servicio['costo'] * ($academia->porcentaje_impuesto / 100);
 
-            // dd($servicio);
+            $servicios_productos['1-'.$servicio->id]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1);
 
         }
 
-        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-        $producto=array();
+        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
 
-        foreach($config_producto as $items){
+        foreach($config_producto as $producto){
 
-            $iva = $items['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp2[]=array('id' => $items['id'], 'nombre' => $items['nombre'] , 'costo' => $items['costo'], 'iva' => $iva, 'incluye_iva' => $items['incluye_iva'], 'disponibilidad' => $items['cantidad'], 'tipo' => $items['tipo']);
+            $iva = $producto['costo'] * ($academia->porcentaje_impuesto / 100);
+            $servicios_productos['2-'.$producto->id]=array('id' => $producto['id'], 'nombre' => $producto['nombre'] , 'costo' => $producto['costo'], 'iva' => $iva, 'incluye_iva' => $producto['incluye_iva'], 'disponibilidad' => $producto['cantidad'], 'tipo' => $producto['tipo'], 'servicio_producto' => 2);
 
-            $collection2=collect($tmp2);
-            $grouped2 = $collection2->groupBy('id');     
-            $producto = $grouped2->toArray();
         }
-
+        
         $proforma_join = DB::table('items_factura_proforma')
             ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
@@ -265,6 +257,8 @@ class AdministrativoController extends BaseController {
         ->get();
 
         $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        $array = array();
 
         foreach($alumnos as $alumno)
         {
@@ -286,7 +280,7 @@ class AdministrativoController extends BaseController {
             $array[$alumno->id] = $alumno_array;
         }
 
-		return view('administrativo.pagos.pagos')->with(['alumnos' => $array, 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto]);
+		return view('administrativo.pagos.pagos')->with(['alumnos' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto]);
 	}
 
     // public function gestion($id)

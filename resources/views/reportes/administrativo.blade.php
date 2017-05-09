@@ -156,7 +156,7 @@
 
                                     <div class="dropdown">
                                         <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
-                                            Pulsa Aqui <span class="caret"></span>
+                                            Todos <span class="caret"></span>
                                         </a>
                                         <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                                         </ul>
@@ -686,7 +686,7 @@
             tipo_dropdown = ''
             servicio_id = ''
 
-            $('#detalle_boton').text('Pulsa Aqui')
+            $('#detalle_boton').text('Todos')
 
             id = $(this).val();
             $('#dropdown_principal').empty();
