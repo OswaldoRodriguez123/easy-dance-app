@@ -1335,7 +1335,7 @@
                               sortDescending: ": habilitado para ordenar la columna en orden descendente"
                           }
                       }
-          });
+            });
 
           });
 

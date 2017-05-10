@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Session;
 
-class LoginController extends Controller {
+class LoginController extends BaseController {
 
 	// use RedirectsUsers;
 
