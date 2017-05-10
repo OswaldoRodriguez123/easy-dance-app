@@ -440,6 +440,7 @@ class ClaseGrupalController extends BaseController {
 
         $mujeres = 0;
         $hombres = 0;
+        Carbon::setLocale('es');
 
 
         $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
