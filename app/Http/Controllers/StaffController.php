@@ -131,7 +131,7 @@ class StaffController extends BaseController
 
 	        $nombre = title_case($request->nombre);
 	        $apellido = title_case($request->apellido);
-	        $correo = strtolower($request->correo);
+	        $correo = trim(strtolower($request->correo));
 
             $usuario = User::where('email',$correo)->first();
 

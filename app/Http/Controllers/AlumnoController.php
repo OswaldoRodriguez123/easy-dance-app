@@ -262,7 +262,7 @@ class AlumnoController extends BaseController
 
         $nombre = title_case($request->nombre);
         $apellido = title_case($request->apellido);
-        $correo = strtolower($request->correo);
+        $correo = trim(strtolower($request->correo));
         $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
 
         $usuario = User::where('email',$correo)->first();
