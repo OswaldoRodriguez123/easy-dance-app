@@ -538,7 +538,7 @@ class ClaseGrupalController extends BaseController {
                         $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
                     }else{
                         $hora_segundos = $fecha_vencimiento->format('H:i');
-                        $dia = $fecha_de_registro->format('d');
+                        $dia = $fecha_vencimiento->format('d');
 
                         switch ($fecha_vencimiento->month) {
                             case 1:
