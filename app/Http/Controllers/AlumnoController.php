@@ -376,8 +376,6 @@ class AlumnoController extends BaseController
 
             $password = str_random(8);
 
-            $usuario = User::where('email',$correo)->first();
-
             if(!$usuario){
                 
                 $usuario = new User;
