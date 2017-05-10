@@ -498,17 +498,17 @@ class ClaseGrupalController extends BaseController {
                 if($diferencia_tiempo<1){
 
                     $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                    $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+                    $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
 
                     if($diferencia_tiempo<1){
 
                         $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                        $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+                        $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
 
                         if($diferencia_tiempo<1){
 
                             $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                            $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+                            $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
 
                             if($diferencia_tiempo==1){
                                 $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
