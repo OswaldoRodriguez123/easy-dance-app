@@ -493,94 +493,68 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+                $diferencia_tiempo = $now->diffInWeeks($fecha_vencimiento);
 
                 if($diferencia_tiempo<1){
 
                     $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                    $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
+                    $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
 
                     if($diferencia_tiempo<1){
 
                         $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                        $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
+                        $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
 
                         if($diferencia_tiempo<1){
 
                             $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                            $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
+                            $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
 
-                            if($diferencia_tiempo==1){
-                                $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                            if($diferencia_tiempo<1){
+
+                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                                $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
+
+                                if($diferencia_tiempo==1){
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                                }else{
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+                                }
                             }else{
-                                $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+
+                                if($diferencia_tiempo==1){
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                                }else{
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                                }
                             }
                         }else{
 
                             if($diferencia_tiempo==1){
-                                $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                                $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
                             }else{
-                                $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                                $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
                             }
                         }
                     }else{
 
                         if($diferencia_tiempo==1){
-                            $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
+                            $hora_segundos = $fecha_vencimiento->format('H:i');
+                            $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
                         }else{
-                            $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
+                             $fecha_de_realizacion = "en ".$diferencia_tiempo." días";
                         }
+                            
                     }
                 }else{
-
+                    
                     if($diferencia_tiempo==1){
-                        $hora_segundos = $fecha_vencimiento->format('H:i');
-                        $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
+                        $fecha_de_realizacion = "en ".$diferencia_tiempo." semana";
                     }else{
-                        $hora_segundos = $fecha_vencimiento->format('H:i');
-                        $dia = $fecha_vencimiento->format('d');
-
-                        switch ($fecha_vencimiento->month) {
-                            case 1:
-                                $mes = "Enero";
-                                break;
-                            case 2:
-                                $mes = "Febrero";
-                                break;
-                            case 3:
-                                $mes = "Marzo";
-                                break;
-                            case 4:
-                                $mes = "Abril";
-                                break;
-                            case 5:
-                                $mes = "Mayo";
-                                break;
-                            case 6:
-                                $mes = "Junio";
-                                break;
-                            case 7:
-                                $mes = "Julio";
-                                break;
-                            case 8:
-                                $mes = "Agosto";
-                                break;
-                            case 9:
-                                $mes = "Septiembre";
-                                break;
-                            case 10:
-                                $mes = "Octubre";
-                                break;
-                            case 11:
-                                $mes = "Noviembre";
-                                break;
-                            case 12:
-                                $mes = "Diciembre";
-                                break;
-                        }
-                        $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
+                        $fecha_de_realizacion = "en ".$diferencia_tiempo." semanas";
                     }
                 }
+
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
