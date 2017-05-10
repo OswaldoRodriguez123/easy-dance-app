@@ -1129,6 +1129,7 @@
 
                                       
                                       <td class="text-center previa"> 
+                                      <span style="display: none">1</span>
                                         @if($alumno['activacion']) 
                                           <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
 
@@ -1215,7 +1216,7 @@
                                   </tr>
                                 @else
                                   <tr data-tipo ="{{$alumno['tipo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
-                                      <td class="text-center previa"><span class="c-amarillo"><b>R</b></span></td>
+                                      <td class="text-center previa"><span style="display: none">2</span><span class="c-amarillo"><b>R</b></span></td>
                                       <td class="text-center previa">
 
                                         @if($alumno['sexo'] == 'M')
