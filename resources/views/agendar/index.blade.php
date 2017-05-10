@@ -771,7 +771,7 @@
                             var hora = tmp[5]
 
                             if(imagen_instructor){
-                                imagen = '/assets/uploads/usuario/'+imagen_instructor
+                                imagen = '/assets/uploads/instructor/'+imagen_instructor
 
                             }else{
                                 if(sexo == 'F'){
@@ -812,7 +812,7 @@
                             var hora = tmp[4]
 
                             if(imagen_instructor){
-                                imagen = '/assets/uploads/usuario/'+imagen_instructor
+                                imagen = '/assets/uploads/instructor/'+imagen_instructor
 
                             }else{
                                 if(sexo == 'F'){

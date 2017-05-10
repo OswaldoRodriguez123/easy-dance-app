@@ -122,10 +122,10 @@ class AgendarController extends BaseController
             $sexo = $clase->sexo;
             $especialidad = $clase->especialidad;
             $nivel = $clase->nivel;
-            $instructor = Instructor::find($clase->instructor_id);               
+            $instructor_imagen = Instructor::find($clase->instructor_id);               
             
-            if($instructor->imagen){
-                $imagen = $instructor->imagen;
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
             }else{
                 $imagen = '';
             }
@@ -195,10 +195,10 @@ class AgendarController extends BaseController
             $sexo = $clase->sexo;
             $especialidad = $clase->especialidad;
             $nivel = $clase->nivel;
-            $instructor = Instructor::find($clase->instructor_id);               
+            $instructor_imagen = Instructor::find($clase->instructor_id);               
             
-            if($instructor->imagen){
-                $imagen = $instructor->imagen;
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
             }else{
                 $imagen = '';
             }
@@ -292,10 +292,10 @@ class AgendarController extends BaseController
             $especialidad = $clasepersonalizada->especialidad;    
             $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
             $sexo = $clasepersonalizada->sexo;
-            $instructor = Instructor::find($clasepersonalizada->instructor_id);               
+            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
             
-            if($instructor->imagen){
-                $imagen = $instructor->imagen;
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
             }else{
                 $imagen = '';
             }
@@ -342,10 +342,10 @@ class AgendarController extends BaseController
             $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
             $sexo = $clasepersonalizada->sexo;
             
-            $instructor = Instructor::find($clasepersonalizada->instructor_id);               
+            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
             
-            if($instructor->imagen){
-                $imagen = $instructor->imagen;
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
             }else{
                 $imagen = '';
             }
@@ -440,10 +440,10 @@ class AgendarController extends BaseController
             $etiqueta=$cita->color_etiqueta;
             $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
             $sexo = $cita->sexo;
-            $instructor = Instructor::find($cita->instructor_id);               
+            $instructor_imagen = Instructor::find($cita->instructor_id);               
             
-            if($instructor->imagen){
-                $imagen = $instructor->imagen;
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
             }else{
                 $imagen = '';
             }
