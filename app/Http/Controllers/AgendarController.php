@@ -15,6 +15,7 @@ use App\Cita;
 use App\ConfigClasesPersonalizadas;
 use App\Fiesta;
 use App\Transmision;
+use App\Instructor;
 use App\User;
 use DB;
 
