@@ -491,6 +491,9 @@ class ClaseGrupalController extends BaseController {
                     $hombres++;
                 }
 
+                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                $tiempo_vencimiento = $fecha_vencimiento->diffForHumans(Carbon::now()); 
+
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
                 $alumno_array['nombre'] = $alumno->nombre;
@@ -499,6 +502,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['tipo'] = 2;
                 $alumno_array['alumno_id'] = $alumno->id;
                 $alumno_array['inscripcion_id'] = $reservacion->id;
+                $alumno_array['tiempo_vencimiento'] = $tiempo_vencimiento;
                 $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
                 $array['2-'.$alumno->id] = $alumno_array;
             

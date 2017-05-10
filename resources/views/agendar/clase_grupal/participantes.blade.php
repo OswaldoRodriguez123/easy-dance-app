@@ -1234,7 +1234,7 @@
                                       @endif
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
-                                      <td class="text-center previa"></td>
+                                      <td class="text-center previa">{{$alumno['tiempo_vencimiento']}}</td>
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
                                       <td class="text-center"><i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i></td>
                                   </tr>
