@@ -121,10 +121,10 @@ class AgendarController extends BaseController
             $sexo = $clase->sexo;
             $especialidad = $clase->especialidad;
             $nivel = $clase->nivel;
-            $instructor_usuario = User::where('usuario_id',$clase->instructor_id)->where('usuario_tipo',3)->first();                
+            $instructor = Instructor::find($clase->instructor_id);               
             
-            if($instructor_usuario->imagen){
-                $imagen = $instructor_usuario->imagen;
+            if($instructor->imagen){
+                $imagen = $instructor->imagen;
             }else{
                 $imagen = '';
             }
@@ -194,10 +194,10 @@ class AgendarController extends BaseController
             $sexo = $clase->sexo;
             $especialidad = $clase->especialidad;
             $nivel = $clase->nivel;
-            $instructor_usuario = User::where('usuario_id',$clase->instructor_id)->where('usuario_tipo',3)->first();           
+            $instructor = Instructor::find($clase->instructor_id);               
             
-            if($instructor_usuario->imagen){
-                $imagen = $instructor_usuario->imagen;
+            if($instructor->imagen){
+                $imagen = $instructor->imagen;
             }else{
                 $imagen = '';
             }
@@ -290,12 +290,11 @@ class AgendarController extends BaseController
             $instructor = $clasepersonalizada->instructor_nombre . ' ' .$clasepersonalizada->instructor_apellido;
             $especialidad = $clasepersonalizada->especialidad;    
             $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
-            $instructor_usuario = User::where('usuario_id',$clasepersonalizada->instructor_id)->where('usuario_tipo',3)->first(); 
             $sexo = $clasepersonalizada->sexo;
+            $instructor = Instructor::find($clasepersonalizada->instructor_id);               
             
-
-            if($instructor_usuario->imagen){
-                $imagen = $instructor_usuario->imagen;
+            if($instructor->imagen){
+                $imagen = $instructor->imagen;
             }else{
                 $imagen = '';
             }
@@ -340,11 +339,12 @@ class AgendarController extends BaseController
             $instructor = $clasepersonalizada->instructor_nombre . ' ' .$clasepersonalizada->instructor_apellido;
             $especialidad = $clasepersonalizada->especialidad;    
             $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
-            $instructor_usuario = User::where('usuario_id',$clasepersonalizada->instructor_id)->where('usuario_tipo',3)->first(); 
             $sexo = $clasepersonalizada->sexo;
             
-            if($instructor_usuario->imagen){
-                $imagen = $instructor_usuario->imagen;
+            $instructor = Instructor::find($clasepersonalizada->instructor_id);               
+            
+            if($instructor->imagen){
+                $imagen = $instructor->imagen;
             }else{
                 $imagen = '';
             }
@@ -439,11 +439,10 @@ class AgendarController extends BaseController
             $etiqueta=$cita->color_etiqueta;
             $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
             $sexo = $cita->sexo;
-
-            $instructor_usuario = User::where('usuario_id',$cita->instructor_id)->where('usuario_tipo',3)->first(); 
+            $instructor = Instructor::find($cita->instructor_id);               
             
-            if($instructor_usuario->imagen){
-                $imagen = $instructor_usuario->imagen;
+            if($instructor->imagen){
+                $imagen = $instructor->imagen;
             }else{
                 $imagen = '';
             }
